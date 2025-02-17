@@ -45,8 +45,8 @@ namespace = turkfm
 #	015 - ##
 #	016 - ##
 #	017 - ##
-#	018 - ##A Consuming Sickness
-#	019 - ##
+#	018 - A Consuming Sickness
+#	019 - The Ascent of Abdulmecid
 
 #020-029 - The Reign of Abdulmecid
 
@@ -67,7 +67,7 @@ namespace = turkfm
 #100-109 - Tanzimat Narrative Events
 #	100 - The Decaying Empire
 #	101 - Edict of Gülhane
-#	102 - ##The Men of the Tanzimat
+#	102 - The Men of the Tanzimat
 #	103 - ##
 #	104 - ##
 #	105 - ##
@@ -346,17 +346,18 @@ namespace = turkfm
 #1100-1109 - The Centralization of Tripolitania
 #	1100 - On the Margins of the Empire
 #	1101 - ##
-#	1107 - ##The Libyan Deserts
+#	1107 - The Libyan Deserts
 #	1108 - ##Senusiyya Extinguished
 #	1109 - ##House Senussi of Libya
 
 #1110-1119 - The Senusiyya Movement
-#	1110 - ##The Senussi Order
-#	1111 - ##The Grand Sanussi
-#	1112 - ##Senussi Withdraws to the Desert
-#	1113 - ##Armed Diplomacy
-#	1114 - ##Senusiyya Takes Root in State
-#	1115 - ##Senusiyya Expunged from State
+#	1110 - The Senussi Order
+#	1111 - The Grand Sanussi
+#	1112 - Senussi Withdraws to the Desert
+#	1113 - Armed Diplomacy
+#	1114 - Senusiyya Takes Root in State
+#	1115 - Senusiyya Expunged from State
+
 
 ########################################################################
 ##  #TURK0  THE LAST STRUGGLE OF THE OTTOMAN EMPIRE  Events  001-099  ##
@@ -976,6 +977,112 @@ turkfm.009 = { # The Healthy Man of Europe
 	
 }
 
+#### THE REIGN OF MAHMUD II ####
+
+
+
+turkfm.018 = { # A Consuming Sickness
+	type = country_event
+	placement = root
+	
+	title = turkfm.018.t
+	desc = turkfm.018.d
+	flavor = turkfm.018.f
+	
+	gui_window = event_window_1char_tabloid
+	
+	left_icon = scope:turkfm_ruler_scope
+	
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		ruler = {
+			has_template = template_turkfm_osmanoglu_mahmut_ii
+			NOT = {
+				has_trait = trait_turkfm_tuberculosis
+			}
+		}
+		year >= 1939
+	}
+	
+	immediate = {
+		ruler = {
+			add_trait = trait_turkfm_tuberculosis
+			save_scope_as = turkfm_ruler_scope
+		}
+		trigger_event = {
+			id = turkfm.019 # The Ascent of Abdulmecid
+			months = { 6 12 }
+		}
+	}
+	
+	option = {
+		name = turkfm.018.a
+		default_option = yes
+		show_as_tooltip = {
+			ruler = {
+				add_trait = trait_turkfm_tuberculosis
+			}
+		}
+	}
+	
+}
+
+turkfm.019 = { # The Ascent of Abdulmecid
+	type = country_event
+	placement = root
+	
+	title = turkfm.019.t
+	desc = turkfm.019.d
+	flavor = turkfm.019.f
+	
+	gui_window = event_window_2char
+	
+	left_icon = scope:turkfm_ruler_scope
+	right_icon = scope:turkfm_heir_scope
+	
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by turkfm.018
+	}
+	
+	immediate = {
+		ruler = {
+			save_scope_as = turkfm_ruler_scope
+		}
+		heir = {
+			save_scope_as = turkfm_heir_scope
+		}
+	}
+	
+	option = {
+		name = turkfm.019.a
+		default_option = yes
+		ruler = {
+			kill_character = yes
+		}
+		heir = {
+			set_character_as_ruler = yes
+		}
+	}
+	
+}
+
 ############################################################
 ##  #TURK1  THE REORDERING OF THE EMPIRE  Events 100-199  ##
 ############################################################
@@ -1136,10 +1243,11 @@ turkfm.102 = { # The Men of the Tanzimat
 	desc = turkfm.102.d
 	flavor = turkfm.102.f
 	
-	gui_window = event_window_2char_adventure
+	gui_window = event_window_3char_selection
 
 	left_icon = scope:turkfm_tanzimat_character_1
-	right_icon = scope:turkfm_tanzimat_character_2
+	center_icon = scope:turkfm_tanzimat_character_2
+	right_icon = scope:turkfm_tanzimat_character_3
 	
 	event_image = {
 		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_turkish_palace1.dds"
@@ -1159,19 +1267,123 @@ turkfm.102 = { # The Men of the Tanzimat
 			has_variable = turkfm_tanzimat_men_happened
 		}
 		has_global_variable = turkfm_tanzimat_started
+		var:turkfm_tanzimat_completion_var > 0
 	}
 	
 	immediate = {
 		set_variable = turkfm_tanzimat_men_happened
+		if = {
+			limit = {
+				ig:ig_intelligentsia = {
+					leader = {
+						has_template = template_turkfm_reshid_mustafa
+					}
+				}
+			}
+			ig:ig_intelligentsia = {
+				leader = {
+					save_scope_as = turkfm_tanzimat_character_1
+				}
+			}
+		}
+		else = {
+			create_character = {
+				template = template_turkfm_reshid_mustafa
+				on_created = {
+					place_character_in_void = 12
+				}
+			}
+			random_character_in_void = {
+				limit = {
+					has_template = template_turkfm_reshid_mustafa
+				}
+				save_scope_as = turkfm_tanzimat_character_1
+			}
+		}
+		create_character = {
+			template = template_turkfm_ali_mehmed
+			on_created = {
+				place_character_in_void = 12
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_turkfm_ali_mehmed
+			}
+			save_scope_as = turkfm_tanzimat_character_2
+		}
+		create_character = {
+			template = template_turkfm_fuad_mehmed
+			on_created = {
+				place_character_in_void = 12
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_turkfm_fuad_mehmed
+			}
+			save_scope_as = turkfm_tanzimat_character_3
+		}
 	}
 	
 	option = {
 		name = turkfm.102.a
 		default_option = yes
-	}
-	
-	option = {
-		name = turkfm.102.b
+		add_modifier = {
+			name = modifier_turkfm_reorganizing_spirit
+			months = very_long_modifier_time
+		}
+		if = {
+			limit = {
+				ig:ig_intelligentsia = {
+					leader = scope:turkfm_tanzimat_character_1
+				}
+			}
+			scope:turkfm_tanzimat_character_1 = {
+				add_modifier = {
+					name = modifier_turkfm_master_bureaucrat
+					months = long_modifier_time
+				}
+			}
+			scope:turkfm_tanzimat_character_2 = {
+				add_character_role = agitator
+				hidden_effect = {
+					free_character_from_void = yes
+				}
+			}
+			scope:turkfm_tanzimat_character_3 = {
+				add_character_role = agitator
+				hidden_effect = {
+					free_character_from_void = yes
+				}
+			}
+
+		}
+		else = {
+			scope:turkfm_tanzimat_character_1 = {
+				if = {
+					limit = {
+						empty_agitator_slots > 0
+					}
+					add_character_role = agitator
+					hidden_effect = {
+						free_character_from_void = yes
+					}
+				}
+			}
+			scope:turkfm_tanzimat_character_2 = {
+				add_character_role = agitator
+				hidden_effect = {
+					free_character_from_void = yes
+				}
+			}
+			scope:turkfm_tanzimat_character_3 = {
+				add_character_role = agitator
+				hidden_effect = {
+					free_character_from_void = yes
+				}
+			}
+		}
 	}
 
 }
@@ -12319,7 +12531,7 @@ turkfm.1110 = { # The Senussi Order
 	desc = turkfm.1110.d
 	flavor = turkfm.1110.f
 	
-	gui_window = event_window_1char_adventure
+	gui_window = event_window_2char_adventure
 	
 	left_icon = scope:turkfm_senussi_scope
 	
@@ -12336,6 +12548,7 @@ turkfm.1110 = { # The Senussi Order
 	dlc = dlc_grefm
 	
 	trigger = {
+		# triggered by je_turkfm_tri_senusiyya
 	}
 	
 	immediate = {
@@ -12344,7 +12557,7 @@ turkfm.1110 = { # The Senussi Order
 			limit = {
 				turkfm_is_senussi_trigger = yes
 			}
-			save_scope_as = turkfm_senussi_character_scope
+			save_scope_as = turkfm_senussi_scope
 		}
 	}
 	
@@ -12389,7 +12602,12 @@ turkfm.1111 = { # The Grand Sanusi
 	}
 	
 	immediate = {
-		turkfm_senussi_scope_effect = yes
+		random_character_in_void = {
+			limit = {
+				turkfm_is_senussi_trigger = yes
+			}
+			save_scope_as = turkfm_senussi_scope
+		}
 	}
 	
 	option = {
@@ -12401,7 +12619,7 @@ turkfm.1111 = { # The Grand Sanusi
 
 turkfm.1112 = { # Senussi Withdraws to the Desert
 	type = country_event
-	placement = root
+	placement = scope:kufra_scope
 	
 	title = turkfm.1112.t
 	desc = turkfm.1112.d
@@ -12427,6 +12645,15 @@ turkfm.1112 = { # Senussi Withdraws to the Desert
 	}
 	
 	immediate = {
+		random_character_in_void = {
+			limit = {
+				turkfm_is_senussi_trigger = yes
+			}
+			save_scope_as = turkfm_senussi_scope
+		}
+		c:LIB_KUF = {
+			save_scope_as = kufra_scope
+		}
 	}
 	
 	option = {
@@ -12438,7 +12665,7 @@ turkfm.1112 = { # Senussi Withdraws to the Desert
 
 turkfm.1113 = { # Armed Diplomacy
 	type = country_event
-	placement = root
+	placement = scope:kufra_capital_scope
 	
 	title = turkfm.1113.t
 	desc = turkfm.1113.d
@@ -12447,6 +12674,7 @@ turkfm.1113 = { # Armed Diplomacy
 	gui_window = event_window_1char_adventure
 	
 	left_icon = scope:turkfm_senussi_scope
+	right_icon = scope:turkfm_intimidation_scope
 	
 	event_image = {
 		video = "middleeast_courtroom_upheaval"
@@ -12465,13 +12693,30 @@ turkfm.1113 = { # Armed Diplomacy
 	}
 	
 	immediate = {
+		random_character_in_void = {
+			limit = {
+				turkfm_is_senussi_trigger = yes
+			}
+			save_scope_as = turkfm_senussi_scope
+		}
+		random_scope_character = {
+			limit = {
+				is_general = yes
+			}
+			save_scope_as = turkfm_intimidation_scope
+		}
+		c:LIB_KUF = {
+			capital = {
+				save_scope_as = kufra_capital_scope
+			}
+		}
 	}
 	
 	option = {
 		name = turkfm.1113.a
 		default_option = yes
 		custom_tooltip = {
-			text = turkfm.1113.tt
+			text = turkfm_senussi_lose_10
 			change_variable = {
 				name = turkfm_senussi_var
 				subtract = 10
@@ -12545,6 +12790,12 @@ turkfm.1114 = { # Senusiyya Takes Root in State
 			}
 			save_scope_as = turkfm_senussi_state_scope
 		}
+		random_character_in_void = {
+			limit = {
+				turkfm_is_senussi_trigger = yes
+			}
+			save_scope_as = turkfm_senussi_scope
+		}
 	}
 	
 	option = { # Allow them to Spread
@@ -12552,6 +12803,13 @@ turkfm.1114 = { # Senusiyya Takes Root in State
 		default_option = yes
 		scope:turkfm_senussi_state_scope = {
 			add_modifier = modifier_turkfm_senussi_stronghold
+		}
+		custom_tooltip = {
+			name = turkfm_senussi_lose_20
+			change_variable = {
+				name = turkfm_senussi_var
+				subtract = 20
+			}
 		}
 	}
 	
@@ -12577,7 +12835,7 @@ turkfm.1114 = { # Senusiyya Takes Root in State
 
 turkfm.1115 = { # Senusiyya Expunged from State
 	type = country_event
-	placement = root
+	placement = scope:turkfm_senussi_state_scope
 	
 	title = turkfm.1115.t
 	desc = turkfm.1115.d
@@ -12609,6 +12867,7 @@ turkfm.1115 = { # Senusiyya Expunged from State
 				state_region = STATE_TRIPOLI
 			}
 			has_modifier = modifier_turkfm_senussi_stronghold
+			is_largest_state_in_region = yes
 		}
 	}
 	
@@ -12628,6 +12887,12 @@ turkfm.1115 = { # Senusiyya Expunged from State
 			}
 			save_scope_as = turkfm_senussi_state_scope
 		}
+		random_character_in_void = {
+			limit = {
+				turkfm_is_senussi_trigger = yes
+			}
+			save_scope_as = turkfm_senussi_scope
+		}
 	}
 	
 	option = {
@@ -12635,6 +12900,13 @@ turkfm.1115 = { # Senusiyya Expunged from State
 		default_option = yes
 		scope:turkfm_senussi_state_scope = {
 			remove_modifier = modifier_turkfm_senussi_stronghold
+		}
+		custom_tooltip = {
+			name = turkfm_senussi_gain_20
+			change_variable = {
+				name = turkfm_senussi_var
+				add = 20
+			}
 		}
 	}
 	
