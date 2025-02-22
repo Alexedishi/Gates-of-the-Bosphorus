@@ -2501,11 +2501,28 @@ turkfm_massacre_effect = {
 }
 
 turkfm_update_riot_variables_effect = {
+	# Step 1, clear all variables
+	remove_variable = turkfm_riot_state_1_var
+	remove_variable = turkfm_riot_state_1_progress_var
+	remove_variable = turkfm_riot_state_2_var
+	remove_variable = turkfm_riot_state_2_progress_var
+	remove_variable = turkfm_riot_state_3_var
+	remove_variable = turkfm_riot_state_3_progress_var
+	
+	# Step 2, Recapture states and set appropriate progress variables
 	random_scope_state = {
 		limit = {
 			has_modifier = modifier_turkfm_race_riots
 		}
 		save_scope_as = turkfm_riot_state_1_scope
+		set_variable = {
+			name = turkfm_riot_state_1_var
+			value = scope:turkfm_riot_state_1_scope
+		}
+		set_variable = {
+			name = turkfm_riot_state_1_progress_var
+			value = turkfm_riot_1_progress_value
+		}
 	}
 	random_scope_state = {
 		limit = {
@@ -2515,6 +2532,14 @@ turkfm_update_riot_variables_effect = {
 			}
 		}
 		save_scope_as = turkfm_riot_state_2_scope
+		set_variable = {
+			name = turkfm_riot_state_2_var
+			value = scope:turkfm_riot_state_2_scope
+		}
+		set_variable = {
+			name = turkfm_riot_state_2_progress_var
+			value = turkfm_riot_2_progress_value
+		}
 	}
 	random_scope_state = {
 		limit = {
@@ -2525,45 +2550,6 @@ turkfm_update_riot_variables_effect = {
 			}
 		}
 		save_scope_as = turkfm_riot_state_3_scope
-	}
-	if = {
-		limit = {
-			exists = scope:turkfm_riot_state_1_scope
-		}
-		set_variable = {
-			name = turkfm_riot_state_1_var
-			value = scope:turkfm_riot_state_1_scope
-		}
-		set_variable = {
-			name = turkfm_riot_state_1_progress_var
-			value = turkfm_riot_1_progress_value
-		}
-	}
-	else = {
-		remove_variable = turkfm_riot_state_1_var
-		remove_variable = turkfm_riot_state_1_progress_var
-	}
-	if = {
-		limit = {
-			exists = scope:turkfm_riot_state_2_scope
-		}
-		set_variable = {
-			name = turkfm_riot_state_2_var
-			value = scope:turkfm_riot_state_2_scope
-		}
-		set_variable = {
-			name = turkfm_riot_state_2_progress_var
-			value = turkfm_riot_2_progress_value
-		}
-	}
-	else = {
-		remove_variable = turkfm_riot_state_2_var
-		remove_variable = turkfm_riot_state_2_progress_var
-	}
-	if = {
-		limit = {
-			exists = scope:turkfm_riot_state_3_scope
-		}
 		set_variable = {
 			name = turkfm_riot_state_3_var
 			value = scope:turkfm_riot_state_3_scope
@@ -2572,10 +2558,6 @@ turkfm_update_riot_variables_effect = {
 			name = turkfm_riot_state_3_progress_var
 			value = turkfm_riot_3_progress_value
 		}
-	}
-	else = {
-		remove_variable = turkfm_riot_state_3_var
-		remove_variable = turkfm_riot_state_3_progress_var
 	}
 }
 
