@@ -96,7 +96,7 @@ namespace = turkfm
 #	201 - The Rise of Nationalism
 #	202 - Nationalist Movements Intensify
 #	203 - ##To the Colors!
-#	204 - ##
+#	204 - [TECH] Adds je_turkfm_separatism_main
 #	205 - Riots Break Out in State
 #	206 - Balkan Country Rebellion
 #	207 - Riots in State Suppressed
@@ -1931,8 +1931,38 @@ turkfm.203 = { # To the Colors!
 
 }
 
-turkfm.204 = { #
-	orphan = yes
+turkfm.204 = { # Adds je_turkfm_separatism_main if missing
+	type = country_event
+	hidden = yes
+	
+	trigger = {
+		NOR = {
+			has_global_variable = turkfm_separatism_complete
+			has_journal_entry = je_turkfm_separatism_main
+		}
+		any_scope_state = {
+			region = sr:region_balkans
+		}
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				has_variable = turkfm_tension_started
+			}
+			add_journal_entry = {
+				type = je_turkfm_separatism_main
+			}
+		}
+		else = {
+			add_journal_entry = {
+				type = je_turkfm_separatism_main
+			}
+			trigger_event = {
+				id = turkfm.200 # The Peoples of the Empire
+			}
+		}
+	}
 }
 
 turkfm.205 = { # Riots Break Out in State
@@ -8166,10 +8196,13 @@ turkfm.309 = { # Adds the Eastern Question JE
 	hidden = yes
 	
 	trigger = {
-		has_diplomatic_relevance = c:TUR
 		NOR = {
-			has_journal_entry = je_turkfm_separatism_main
+			has_global_variable = turkfm_separatism_complete
 			has_journal_entry = je_turkfm_eastern_question
+			has_journal_entry = je_turkfm_separatism_main
+		}
+		c:TUR ?= {
+			has_diplomatic_relevance = root
 		}
 	}
 
@@ -8183,7 +8216,6 @@ turkfm.309 = { # Adds the Eastern Question JE
 			}
 		}
 		else = {
-			set_variable = turkfm_eqfm_started
 			add_journal_entry = {
 				type = je_turkfm_eastern_question
 			}
