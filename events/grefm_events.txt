@@ -44,10 +44,10 @@ namespace = grefm
 #	019 - The Return of the "Turk-Eater"
 
 #020-029 - Bavarocracy Support Events II
-#	020 - ##Bavarianism in Greece
-#	021 - ##The Search for a King
-#	022 - ##A Hellene Candidate
-#	023 - ##A Rhomaios Candidate
+#	020 - Bavarianism in Greece
+#	021 - The Search for a King
+#	022 - A Hellene Candidate
+#	023 - A Rhomaios Candidate
 #	024 - OPEN
 #	025 - OPEN
 #	026 - OPEN
@@ -307,11 +307,11 @@ namespace = grefm
 #	805 - Lombardia Reclaimed
 #	806 - Magna Graecia Reclaimed
 #	807 - Exarchate of Ravenna Reclaimed
-#	808 - OPEN
+#	808 - ##
 #	809 - Renovatio Imperii Romanorum
 
 #810-819 - General Byzantine Events
-#	810 - OPEN
+#	810 - ##
 
 #820-829 - Monument Events
 #	820 - The 14 Regions of Constantinople
@@ -322,9 +322,9 @@ namespace = grefm
 #	829 - ##The Imperial Library [MGR]
 
 #830-839 - Chariot Racing Events
-#	830 - Chariot Racing Re-established
-#	831 - Chariot Racing Expanded
-#	832 - Chariot Racing Technical Event [TECH]
+#	830 - Chariot Racing Technical Event [TECH]
+#	831 - Chariot Racing Re-established
+#	832 - ##
 #	833 - A Day at the Races
 #	834 - Inconclusive Race Results
 #	835 - Sporting Riot
@@ -348,10 +348,10 @@ namespace = grefm
 #	880 - OPEN
 
 #890-899 - The Holy Byzantine Emu Empire Events
-#	890 - ##The Emu has Landed
-#	891 - ##The Empire from Down Under
-#	892 - ##The Emu of the East
-#	893 - ##The Holy Byzantine Emu Empire
+#	890 - The Emu has Landed
+#	891 - The Empire from Down Under
+#	892 - The Emu of the East
+#	893 - The Holy Byzantine Emu Empire
 
 
 ##	#GRE9	TECHNICAL EVENTS	Events 900-999	##
@@ -11655,148 +11655,60 @@ grefm.824 = { # Notitia Urbis Constantinopolitanae
 
 #### CHARIOT RACING EVENTS ####
 
-grefm.830 = { # Chariot Racing Re-established
-	type = country_event
-	
-	title = grefm.830.t
-	desc = grefm.830.d
-	flavor = grefm.830.f
-	
-	placement = scope:byzantium_capital_state
-	
-	event_image = {
-		video = "byzfm_chariot_race"
-	}
-
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-
-	duration = 3
-	
-	dlc = dlc_grefm
-
-	trigger = { 
-		# triggered by grefm_chariot_racing_decision
-	}
-	
-	immediate = {
-		s:STATE_EASTERN_THRACE = {
-			random_scope_state = {
-				save_scope_as = byzantium_capital_state
-			}
-		}
-	}
-	
-	option = {
-		name = grefm.830.a
-		default_option = yes
-		if = {
-			limit = {
-				has_modifier = modifier_olympic_games
-			}
-			remove_modifier = modifier_olympic_games
-		}
-		add_modifier = {
-			name = modifier_grefm_chariot_racing
-		}
-		scope:byzantium_capital_state = {
-			add_modifier = {
-				name = modifier_grefm_held_chariot_races
-				months = 48
-			}
-		}
-		set_variable = {
-			name = grefm_held_chariot_races
-			months = 40
-		}
-		remove_variable = grefm_chariot_var
-	}
-
-}
-
-grefm.831 = { # Chariot Racing Expanded
-	type = country_event
-	
-	title = grefm.831.t
-	desc = grefm.831.d
-	flavor = grefm.831.f
-	
-	placement = scope:byzantium_capital_state
-	
-	event_image = {
-		video = "byzfm_chariot_race"
-	}
-
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-
-	duration = 3
-	
-	dlc = dlc_grefm
-
-	trigger = { # triggered by decision
-	}
-	
-	immediate = {
-		s:STATE_EASTERN_THRACE = {
-			random_scope_state = {
-				save_scope_as = byzantium_capital_state
-			}
-		}
-	}
-	
-	option = {
-		name = grefm.831.a
-		default_option = yes
-		if = {
-			limit = {
-				has_modifier = modifier_olympic_games
-			}
-			remove_modifier = modifier_olympic_games
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_grefm_chariot_racing
-			}
-			remove_modifier = modifier_grefm_chariot_racing
-		}
-		if = {
-			limit = {
-				NOT = {
-					has_modifier = modifier_grefm_expanded_chariot_racing
-				}
-			}
-			add_modifier = {
-				name = modifier_grefm_expanded_chariot_racing
-			}
-		}
-		remove_variable = grefm_chariot_var
-	}
-	
-}
-
-grefm.832 = { # Chariot Racing Technical Event
+grefm.830 = { # Chariot Racing Technical Event
 	type = country_event
 	placement = root
 	hidden = yes
 	
 	trigger = {
-		OR = {
-			has_modifier = modifier_grefm_chariot_racing
-			has_modifier = modifier_grefm_expanded_chariot_racing
-		}
-		NOT = {
-			has_variable = grefm_held_chariot_races
-		}
+		has_variable = grefm_chariot_racing_revived
 		month = 7
+		OR = {
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_original_roster
+				}
+			}
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_expanded_roster
+				}
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOR = {
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_original_roster
+				}
+			}
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_expanded_roster
+				}
+			}
+		}
+	}
+	
+	cooldown = {
+		months = 40
 	}
 
 	immediate = {
 		if = {
 			limit = {
-				has_modifier = modifier_grefm_chariot_racing
+				any_scope_state = {
+					is_production_method_active = {
+						building_type = gbbf_building_hippodrome
+						production_method = pm_gbbf_original_roster
+					}
+				}
 			}
 			random_list = {
 				40 = {
@@ -11829,9 +11741,14 @@ grefm.832 = { # Chariot Racing Technical Event
 				}
 			}
 		}
-		if = {
+		else_if = {
 			limit = {
-				has_modifier = modifier_grefm_expanded_chariot_racing
+				any_scope_state = {
+					is_production_method_active = {
+						building_type = gbbf_building_hippodrome
+						production_method = pm_gbbf_expanded_roster
+					}
+				}
 			}
 			random_list = {
 				25 = {
@@ -11872,19 +11789,79 @@ grefm.832 = { # Chariot Racing Technical Event
 				}
 			}
 		}
-		if = {
-			limit = {
-				NOT = {
-					has_variable = grefm_held_chariot_races
+	}
+	
+}
+
+grefm.831 = { # Chariot Racing Re-established
+	type = country_event
+	
+	title = grefm.831.t
+	desc = grefm.831.d
+	flavor = grefm.831.f
+	
+	placement = scope:byzantium_capital_state
+	
+	event_image = {
+		video = "byzfm_chariot_race"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	duration = 3
+	
+	dlc = dlc_grefm
+
+	trigger = { 
+		NOT = {
+			has_variable = grefm_chariot_racing_revived
+		}
+		OR = {
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_original_roster
 				}
 			}
-			set_variable = {
-				name = grefm_held_chariot_races
-				months = 40
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_expanded_roster
+				}
 			}
 		}
 	}
 	
+	cooldown = {
+		months = 6
+	}
+	
+	immediate = {
+		s:STATE_EASTERN_THRACE = {
+			random_scope_state = {
+				save_scope_as = byzantium_capital_state
+			}
+		}
+	}
+	
+	option = {
+		name = grefm.831.a
+		custom_tooltip = {
+			text = chariot_racing_enabled_tt
+			set_variable = grefm_chariot_racing_revived
+		}
+		scope:byzantium_capital_state = {
+			add_loyalists_in_state = {
+				value = small_radicals
+			}
+		}
+	}
+}
+
+grefm.832 = { # OPEN
+	orphan = yes
 }
 
 grefm.833 = { # A Day at the Races
@@ -11909,7 +11886,7 @@ grefm.833 = { # A Day at the Races
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by grefm.832
+		# triggered by grefm.830
 	}
 	
 	immediate = {
@@ -12245,7 +12222,7 @@ grefm.837 = { # team gets caught cheating
 	
 }
 
-grefm.838 = { # drag racing in the hippodrome
+grefm.838 = { # The Combustion Engine Takes the Hippodrome!
 	type = country_event
 	placement = root
 	
@@ -12267,10 +12244,41 @@ grefm.838 = { # drag racing in the hippodrome
 	
 	trigger = {
 		NOT = { has_variable = grefm_drag_racing_considered }
+		OR = {
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_original_roster
+				}
+			}
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_expanded_roster
+				}
+			}
+		}
 		any_scope_state = {
 			is_production_method_active = {
 				building_type = building_motor_industry
 				production_method = pm_automobile_production
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOR = {
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_original_roster
+				}
+			}
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_expanded_roster
+				}
 			}
 		}
 	}
