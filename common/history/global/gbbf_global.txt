@@ -7,7 +7,8 @@
 		add_state_trait = balkfm_state_trait_black_mountain
 	}
 	
-### Homeland Setup ###
+	
+### Homeland Setup
 	s:STATE_IONIAN_ISLANDS = {
 		add_homeland = cu:romaniote
 	}
@@ -54,7 +55,8 @@
 		add_homeland = cu:urum
 	}
 	
-### Country Creation ###
+	
+### Country Creation
 	create_country = {
 		tag = GBBF_CAP
 		origin = c:ATB
@@ -148,7 +150,8 @@
 		}
 	}
 	
-### State Name Assignment ###
+	
+### State Name Assignment
 	s:STATE_LIBYAN_DESERT = {
 		region_state:TRI = {
 			set_state_name = STATE_LIBYA_arabic
@@ -161,7 +164,8 @@
 		}
 	}
 	
-### State Claims ###
+	
+### State Claims
 	s:STATE_CRETE = {
 		add_claim = c:GRE
 	}
@@ -175,7 +179,8 @@
 		add_claim = c:TRI
 	}
 	
-### Culture Setup ###
+	
+### Culture Setup
 	every_state = {
 		limit = {
 			state_is_demotic_greek = yes
@@ -281,13 +286,8 @@
 			move_pop = s:STATE_LIBYAN_DESERT.region_state:LIB_KUF
 		}
 	}
-	c:TUN ?= {
-		trigger_event = {
-			id = turkfm.1200 # Between Seas and Sands
-		}
-	}
 	
-### Global Variable Setup ###
+### Global Variable Setup
 	set_global_variable = {
 		name = eocfm_council_var
 		value = 0
@@ -301,7 +301,7 @@
 		value = 0
 	}
 	
-### Diplomacy Setup ###
+### Diplomacy Setup
 	c:GRE = {
 		set_secret_goal = {
 			country = c:GRE_SAM
@@ -373,6 +373,10 @@
 			country = c:GRE
 			secret_goal = befriend
 		}
+		set_secret_goal = {
+			country = c:TUN
+			secret_goal = befriend
+		}
 	}
 	c:RUS ?= {
 		create_diplomatic_pact = {
@@ -401,7 +405,7 @@
 		}
 	}
 	
-### Lobbies Setup ###
+### Lobbies Setup
 	c:SER = {
 		create_political_lobby= {
 			type = lobby_pro_country
@@ -411,7 +415,7 @@
 		}
 	}
 	
-### Specific Country Setups ###	
+### Specific Country Setups
 	c:GRE = {
 		grefm_initialize_bavarocracy_variables_effect = yes
 		add_journal_entry = {
@@ -432,7 +436,6 @@
 		set_variable = eocfm_dissolved_monasteries
 		set_variable = grefm_mainland_claims_added
 		set_variable = eocfm_ruler_conversion_considered
-		eocfm_initialize_patriarchs_effect = yes # Greece is loadbearing too now bois
 		create_character = {
 			template = template_grefm_mavrokordatos_alexandros
 			on_created = {
@@ -554,6 +557,33 @@
 		set_variable = eocfm_controls_antioch
 	}
 	
+	c:EGY ?= {
+		set_variable = eocfm_controls_alexandria
+		set_variable = eocfm_controls_jerusalem
+	}
+	
+	c:TRI ?= {
+		turkfm_setup_libya_effect = yes
+		add_journal_entry = {
+			type = je_turkfm_tri_centralization
+		}
+		trigger_event = {
+			id = turkfm.1100 # On the Margins of the Empire
+		}
+		turkfm_initialize_senussi_effect = yes
+	}
+	
+	c:TUN ?= {
+		turkfm_setup_tunis_effect = yes
+		add_journal_entry = {
+			type = je_turkfm_tun_modernization
+		}
+		trigger_event = {
+			id = turkfm.1200 # Between Seas and Sands
+		}
+		balkfm_set_up_ottoman_legacies_effect = yes
+	}
+	
 	c:MON = {
 		balkfm_set_up_montenegro_effect = yes
 		trigger_event = {
@@ -637,22 +667,6 @@
 		balkfm_set_up_ottoman_legacies_effect = yes
 	}
 	
-	c:EGY ?= {
-		set_variable = eocfm_controls_alexandria
-		set_variable = eocfm_controls_jerusalem
-	}
-	
-	c:TRI ?= {
-		turkfm_setup_libya_effect = yes
-		add_journal_entry = {
-			type = je_turkfm_tri_centralization
-		}
-		trigger_event = {
-			id = turkfm.1100 # On the Margins of the Empire
-		}
-		turkfm_initialize_senussi_effect = yes
-	}
-	
 	c:RUS ?= {
 		add_modifier = modifier_eocfm_reformed_synod
 		set_variable = eocfm_is_autocephalous
@@ -680,9 +694,13 @@
 		}
 	}
 	
-### EOCFM Setup ###
-	# This should fire AFTER all other setup
-	
+### EOCFM Setup
+	every_country = {
+		limit = {
+			country_has_state_religion = rel:orthodox
+		}
+		eocfm_initialize_patriarchs_effect = yes # Creates the Patriarchs and yeets them into the void
+	}
 	if = { # Adds the Orthodox button to the community sidebar
 		limit = {
 			NOT = {
@@ -737,4 +755,14 @@
 			value = 0
 		}
 	}
+	
+
+### Final Cleanup
+	c:ALK = { # Cleans up any remaining alt-history tags
+		trigger_event = {
+			id = grefm.900
+			days = 1
+		}
+	}
+
 }
