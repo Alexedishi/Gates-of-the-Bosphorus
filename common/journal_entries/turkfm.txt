@@ -199,8 +199,6 @@ je_sick_man_syria = {
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
 
 	group = je_group_turkfm_sick_man
-	
-	should_be_pinned_by_default = yes
 
 	complete = {
 		owns_entire_state_region = STATE_ALEPPO
@@ -257,8 +255,6 @@ je_sick_man_egypt = {
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
 
 	group = je_group_turkfm_sick_man
-	
-	should_be_pinned_by_default = yes
 
 	complete = {
 		OR = {
@@ -302,8 +298,6 @@ je_turkfm_sick_man_crete = {
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
 
 	group = je_group_turkfm_sick_man
-	
-	should_be_pinned_by_default = yes
 
 	complete = {
 		OR = {
@@ -335,8 +329,6 @@ je_turkfm_sick_man_caucasus = {
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
 
 	group = je_group_turkfm_sick_man
-	
-	should_be_pinned_by_default = yes
 
 	complete = {
 		owns_entire_state_region = STATE_KARS
@@ -1930,25 +1922,62 @@ je_turkfm_tun_modernization = {
 		modifier_turkfm_tribal_administration
 	}
 	
-#	scripted_button = turkfm_visit_france_button
+	scripted_button = turkfm_visit_france_button
 	
 	complete = {
-		
+		NOR = {
+			has_law = law_type:law_hereditary_bureaucrats
+			has_law = law_type:law_consumption_based_taxation
+			has_law = law_type:law_land_based_taxation
+		}
+		any_scope_building = {
+			is_building_type = building_university
+			NOR = {
+				has_active_production_method = pm_simple_organization
+				has_active_production_method = pm_religious_bureaucrats
+			}
+			occupancy > 0.9
+			level >= 5
+		}
+		any_scope_building = {
+			filter = {
+				is_building_type = building_government_administration
+			}
+			count = all
+			NOR = {
+				has_active_production_method = pm_simple_organization
+				has_active_production_method = pm_religious_bureaucrats
+			}
+			occupancy >= 0.9
+		}
+		bureaucracy >= 0 
+		approaching_bureaucracy_shortage = no
 	}
 	
 	on_complete = {
+		trigger_event = {
+			id = turkfm.1209 # The Tunisian Fundamental Pact
+		}
 		set_variable = turkfm_tun_modernization_completed
 	}
 	
 	timeout = 10950 # 30 years
 	
 	on_timeout = {
+		trigger_event = {
+			id = turkfm.1208 # A Stagnant State
+		}
 		set_variable = turkfm_tun_modernization_completed
 	}
 	
 	invalid = {
 		has_variable = turkfm_tun_modernization_completed
 	}
+	
+	on_monthly_pulse = {
+		random_events = {
+			chance_of_no_event = 90
+			5 = turkfm.1201 # An Amibitous Bey
 
 	weight = 100
 	
