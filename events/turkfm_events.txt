@@ -362,11 +362,11 @@ namespace = turkfm
 ##  TURK12  TUNISIAN FLAVOR CONTENT  Events 1200-1299  ##
 
 #1200-1209 - The Modernization of Tunis
-#	1200 - ##Between Seas and Sands
-#	1201 - ##An Amibitious Bey
-#	1202 - ##A Stately Reception
-#	1208 - ##A Stagnant State
-#	1209 - ##The Tunisian Fundamental Pact
+#	1200 - Between Seas and Sands
+#	1201 - An Amibitious Bey
+#	1202 - A Stately Reception
+#	1208 - A Stagnant State
+#	1209 - The Tunisian Fundamental Pact
 
 ########################################################################
 ##  #TURK0  THE LAST STRUGGLE OF THE OTTOMAN EMPIRE  Events  001-099  ##
@@ -13243,6 +13243,22 @@ turkfm.1202 = { # A Stately Reception
 	option = {
 		name = turkfm.1202.a
 		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_western_inspirations
+			months = long_modifier_time
+		}
+		create_incident = {
+			country = c:TUR
+			value = 10
+		}
+		hidden_effect = {
+			c:TUR = {
+				set_secret_goal = {
+					country = c:TUN
+					secret_goal = antagonize
+				}
+			}
+		}
 	}
 	
 }
@@ -13277,6 +13293,14 @@ turkfm.1208 = { # A Stagnant State
 	option = {
 		name = turkfm.1208.a
 		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_failed_reforms
+			months = long_modifier_time
+			is_decaying = yes
+		}
+		add_radicals = {
+			value = medium_radicals
+		}
 	}
 	
 }
@@ -13311,6 +13335,24 @@ turkfm.1209 = { # The Tunisian Fundamental Pact
 	option = {
 		name = turkfm.1209.a
 		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_modernized_state
+			months = long_modifier_time
+		}
+		if = {
+			limit = {
+				has_journal_entry = je_earn_recognition
+			}
+			custom_tooltip = {
+				text = turkfm_recognition_gain_50
+				je:je_earn_recognition = {
+					add_progress = {
+						name = earn_recognition_progress_bar
+						value = 50
+					}
+				}
+			}
+		}	
 	}
 	
 }

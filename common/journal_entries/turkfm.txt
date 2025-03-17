@@ -1925,38 +1925,49 @@ je_turkfm_tun_modernization = {
 	scripted_button = turkfm_visit_france_button
 	
 	complete = {
-		NOR = {
-			has_law = law_type:law_hereditary_bureaucrats
-			has_law = law_type:law_consumption_based_taxation
-			has_law = law_type:law_land_based_taxation
-		}
-		any_scope_building = {
-			is_building_type = building_university
-			NOR = {
-				has_active_production_method = pm_simple_organization
-				has_active_production_method = pm_religious_bureaucrats
+		OR = {
+			AND = {
+				NOR = {
+					has_law = law_type:law_hereditary_bureaucrats
+					has_law = law_type:law_consumption_based_taxation
+					has_law = law_type:law_land_based_taxation
+				}
+				any_scope_building = {
+					is_building_type = building_university
+					NOR = {
+						has_active_production_method = pm_simple_organization
+						has_active_production_method = pm_religious_bureaucrats
+					}
+					occupancy > 0.9
+					level >= 5
+				}
+				any_scope_building = {
+					filter = {
+						is_building_type = building_government_administration
+					}
+					count = all
+					NOR = {
+						has_active_production_method = pm_simple_organization
+						has_active_production_method = pm_religious_bureaucrats
+					}
+					occupancy >= 0.9
+				}
+				bureaucracy >= 0 
+				approaching_bureaucracy_shortage = no
 			}
-			occupancy > 0.9
-			level >= 5
+			is_country_type = recognized
 		}
-		any_scope_building = {
-			filter = {
-				is_building_type = building_government_administration
-			}
-			count = all
-			NOR = {
-				has_active_production_method = pm_simple_organization
-				has_active_production_method = pm_religious_bureaucrats
-			}
-			occupancy >= 0.9
-		}
-		bureaucracy >= 0 
-		approaching_bureaucracy_shortage = no
 	}
 	
 	on_complete = {
 		trigger_event = {
 			id = turkfm.1209 # The Tunisian Fundamental Pact
+		}
+		if = {
+			limit = {
+				has_journal_entry = je_earn_recognition
+			}
+			custom_tooltip = turkfm_recognition_gain_50
 		}
 		set_variable = turkfm_tun_modernization_completed
 	}
