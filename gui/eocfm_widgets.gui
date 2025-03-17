@@ -1,70 +1,298 @@
 widget = {
 	name = "eocfm_main_window"
-	parentanchor = top|hcenter
 	size { 100% 100% }
 	layer = layer_ingame_menu
 	visible = "[GetMetaPlayer.GetPlayedOrObservedCountry.IsValid]"
 	
-	fullscreen_block_window = {
+	widget = {
 		parentanchor = top|hcenter
-		size { 100% 100% }
-		
-		filter_mouse = all
-		
+		size = { 100% 100% }
+		using = clickthrough_blocker
+		visible = "[GetVariableSystem.HasValue('com_open_window', 'eocfm_sidebar_button_sgui')]"
 		datacontext = "[GetPlayer]"
 		
-		visible = "[GetVariableSystem.HasValue('com_open_window', 'eocfm_sidebar_button_sgui')]"
+		state = {
+			name = _show
+			start_sound = {
+				soundeffect = "event:/SFX/UI/SideBar/society"
+			}
+			start_sound = {
+				soundeffect = "snapshot:/Dynamic/mute_world_80"
+			}
+			start_sound = {
+				soundeffect = "snapshot:/Dynamic/mute_vfx_war_100"
+			}
+			on_finish = "[GetVariableSystem.Set('com_fullscreen', 'com_fullscreen')]" 
+		}
 
-		blockoverride "back_button_fullscreen" {
-			close_button_large = {
-				name = "tutorial_highlight_close_button"
-				parentanchor = top|right
-				onclick = "[GetVariableSystem.Clear('com_open_window')]"
-				shortcut = "close_window"
+		state = {
+			name = _hide
+			start_sound = {
+				soundeffect = "event:/SFX/UI/SideBar/society_stop"
+			}
+			on_finish = "[GetVariableSystem.Clear('com_fullscreen')]"
+		}
+		
+		background = {
+			using = default_bg
+			margin = { 40 40 }
+		}
 
-				block "close_button_position" {
-					position = { -11 15 }
+		## HEADER ##
+		widget = {
+			size = { 100% 92 }
+			position = { 0 76 }
+
+			# behind filler
+			background = {
+				texture = "gfx/interface/backgrounds/sidepanel_filler.dds"
+				spriteType = CorneredTiled
+				spriteborder = { 20 20 }
+				margin = { 30 0 }
+
+				modify_texture = {
+					texture = "gfx/interface/backgrounds/default_bg_shading.dds"
+					spriteType = Corneredstretched
+					spriteborder = { 0 0 }
+					blend_mode = overlay
+					alpha = 0.8
+				}
+
+				modify_texture = {
+					using = texture_velvet
+				}
+			}
+			# behind decoration
+			background = {
+				texture = "gfx/interface/backgrounds/fullscreen_header_behind.dds"
+				spriteType = Corneredtiled
+				spriteborder = { 600 0 }
+				texture_density = 2
+				margin_left = -15
+				margin_right = -10
+
+				modify_texture = {
+					using = texture_velvet
+				}
+				modify_texture = {
+					using = texture_cloth
+					alpha = 0.15
 				}
 			}
 
+			# header base
+			background = {
+				using = top_header_bg
+				margin_left = -15
+				margin_right = -10
+
+				modify_texture = {
+					texture = "gfx/interface/backgrounds/fullscreen_header_title_mask.dds"
+					spriteType = Corneredtiled
+					spriteborder = { 600 0 }
+					texture_density = 2
+					blend_mode = alphamultiply
+				}
+			}
+			
+			# header dec left (copied header base to be able to mask a fade)
+			widget = {
+				size = { 50% 100% }
+				parentanchor = left
+
+				background = {
+					using = top_header_bg
+					margin_left = -15
+
+					modify_texture = {
+						texture = "gfx/interface/backgrounds/fullscreen_header_title_mask_half.dds"
+						spriteType = Corneredtiled
+						spriteborder = { 0 0 }
+						spriteborder_right = 0
+						spriteborder_left = 600
+						texture_density = 2
+						blend_mode = alphamultiply
+					}
+
+					modify_texture = {
+						texture = "gfx/interface/backgrounds/fullscreen_header_dec.dds"
+						spriteType = Corneredtiled
+						spriteborder = { 0 0 }
+						spriteborder_right = 0
+						spriteborder_left = 600
+						texture_density = 2
+						blend_mode = overlay
+					}
+
+					modify_texture = {
+						texture = "gfx/interface/masks/fade_horizontal_right.dds"
+						blend_mode = alphamultiply
+						alpha = 0.5
+					}
+				}
+			}
+			
+			# header dec right (copied header base to be able to mask a fade)
+			widget = {
+				size = { 50% 100% }
+				parentanchor = right
+
+				background = {
+					using = top_header_bg
+					margin_right = -10
+
+					modify_texture = {
+						texture = "gfx/interface/backgrounds/fullscreen_header_title_mask_half.dds"
+						mirror = horizontal
+						spriteType = Corneredtiled
+						spriteborder = { 0 0 }
+						spriteborder_right = 0
+						spriteborder_left = 600
+						texture_density = 2
+						blend_mode = alphamultiply
+					}
+
+					modify_texture = {
+						texture = "gfx/interface/backgrounds/fullscreen_header_dec.dds"
+						mirror = horizontal
+						spriteType = Corneredtiled
+						spriteborder = { 0 0 }
+						spriteborder_right = 0
+						spriteborder_left = 600
+						texture_density = 2
+						blend_mode = overlay
+					}
+
+					modify_texture = {
+						texture = "gfx/interface/masks/fade_horizontal_left.dds"
+						blend_mode = alphamultiply
+						alpha = 0.5
+					}
+				}
+			}
+			
+			divider_clean = {
+				blockoverride "fade" {}
+				parentanchor = bottom
+			}
+			
+			# header frame
+			widget = {
+				size = { 100% 100% }
+
+				background = {
+					texture = "gfx/interface/backgrounds/fullscreen_header_frame.dds"
+					spriteType = Corneredtiled
+					spriteborder = { 600 0 }
+					texture_density = 2
+					margin_right = 5
+				}
+			}
+			
+			textbox = {
+				text = "eocfm_gui_main_title"
+				parentanchor = center
+				position = { 0 8 }
+				autoresize = yes
+				using = header_font_fancy
+				fontsize = 50
+			}
+			
+			close_button_large = {
+				parentanchor = top|right
+				position = { -56 40 }
+				
+				onclick = "[GetVariableSystem.Clear('com_open_window')]"
+				shortcut = "close_window"
+			}
+			
 			back_button_large = {
-				position = { 11 15 }
 				parentanchor = top|left
+				position = { 61 40 }
+				
 				onclick = "[GetVariableSystem.Clear('com_open_window')]"
 				input_action = "back"
 			}
 		}
 
-		blockoverride "animation_state_block" {
-			state = {
-				name = _show
-				start_sound = {
-					soundeffect = "event:/SFX/UI/SideBar/society"
-				}
-				start_sound = {
-					soundeffect = "snapshot:/Dynamic/mute_world_80"
-				}
-				start_sound = {
-					soundeffect = "snapshot:/Dynamic/mute_vfx_war_100"
-				}
-				on_finish = "[GetVariableSystem.Set( 'com_fullscreen', 'com_fullscreen')]"
-			}
+		#left dark fade
+		widget = {
+			size = { 50 100% }
+			parentanchor = left
 
-			state = {
-				name = _hide
-				start_sound = {
-					soundeffect = "event:/SFX/UI/SideBar/society_stop"
+			background = {
+				using = dark_area
+				alpha = 0.5
+				mirror = horizontal
+
+				modify_texture = {
+					texture = "gfx/interface/masks/fade_horizontal_left_full.dds"
+					spriteType = Corneredstretched
+					spriteborder = { 0 0 }
+					blend_mode = alphamultiply
 				}
-				on_finish = "[GetVariableSystem.Clear('com_fullscreen')]"
+			}
+		}
+
+		#right dark fade
+		widget = {
+			size = { 50 100% }
+			parentanchor = right
+
+			background = {
+				using = dark_area
+				alpha = 0.5
+
+				modify_texture = {
+					texture = "gfx/interface/masks/fade_horizontal_left_full.dds"
+					spriteType = Corneredstretched
+					spriteborder = { 0 0 }
+					blend_mode = alphamultiply
+				}
+			}
+		}
+
+		### TOP FILLER
+		widget = {
+			size = { 100% 78 }
+
+			background = {
+				texture = "gfx/interface/main_hud/topbar_bg.dds"
+				shaderfile = "gfx/FX/pdxgui_default.shader"
+				spriteType = Corneredtiled
+				spriteborder = { 0 0 }
+				spriteborder_right = 100
+				margin_right = 100
+				texture_density = 2
+				using = hud_elements_alpha
+
+				modify_texture = {
+					texture = "gfx/interface/backgrounds/default_bg_shading.dds"
+					spriteType = Corneredstretched
+					spriteborder = { 0 0 }
+					blend_mode = overlay
+					alpha = 0.5
+				}
+				modify_texture = {
+					using = texture_velvet
+				}
+				modify_texture = {
+					using = fancy_pattern
+				}
+			}
+			icon = {
+				texture = "gfx/interface/main_hud/topbar_bg_border.dds"
+				position = { 0 -3 }
+				size = { 100% 2 }
+				spriteType = Corneredtiled
+				spriteborder = { 0 0 }
+				texture_density = 2
+				parentanchor = bottom
+				alpha = 0.06
 			}
 		}
 		
-		blockoverride "window_header_name"
-		{
-			text = "eocfm_gui_main_title"
-		}
-		
-
+		## Orthodox Widget Content
 		vbox = {
 			layoutpolicy_vertical = expanding
 			spacing = 5
