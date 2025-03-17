@@ -7,10 +7,9 @@
 # GRE1 - Bavarocracy Effects 
 # GRE2 - Archaeology Effects
 # GRE3 - Character Effects
-# GRE4 - Greek Separatism Effects
-# GRE5 - Heptanese Effects
-# GRE6 - Samos Effects
-# GRE7 - Byzantium Effects
+# GRE4 - Heptanese Effects
+# GRE5 - Minor Greek State Effects
+# GRE8 - Byzantium Effects
 ############################
 
 ## GRE0 - Technical Effects ##
@@ -19,7 +18,7 @@ grefm_setup_hellene_pops_effect = {
 	every_scope_pop = {
 		limit = {
 			has_pop_culture = greek
-			OR = {
+			NOR = {
 				is_pop_type = aristocrats
 				is_pop_type = capitalists
 				is_pop_type = clergymen
@@ -33,26 +32,8 @@ grefm_setup_hellene_pops_effect = {
 			}
 		}
 		change_pop_culture = {
-			target = cu:hellene
-			value = 1
-		}
-	}
-	every_scope_pop = {
-		limit = {
-			has_pop_culture = greek
-		}
-		change_pop_culture = {
-			target = cu:hellene
-			value = 0.6
-		}
-	}
-	every_scope_pop = {
-		limit = {
-			has_pop_culture = greek
-		}
-		change_pop_culture = {
 			target = cu:rhomaios
-			value = 1
+			value = 0.4
 		}
 	}
 }
@@ -64,47 +45,7 @@ grefm_setup_rhomaios_pops_effect = {
 		}
 		change_pop_culture = {
 			target = cu:rhomaios
-			value = 1
-		}
-	}
-	every_scope_pop = {
-		limit = {
-			has_pop_culture = rhomaios
-		}
-		change_pop_culture = {
-			target = cu:hellene
-			value = 0.05
-		}
-	}
-}
-
-grefm_rhomaios_country_start_effect = {
-	c:TUR ?= {
-		if = {
-			limit = {
-				c:TRB ?= {
-					is_player = no
-				}
-			}
-			annex = c:TRB
-		}
-		if = {
-			limit = {
-				c:GRE_CAP ?= {
-					is_player = no
-				}
-			}
-			annex = c:GRE_CAP
-		}
-	}
-	c:RUS ?= {
-		if = {
-			limit = {
-				c:THE ?= {
-					is_player = no
-				}
-			}
-			annex = c:THE
+			value = 0.90
 		}
 	}
 }
@@ -394,7 +335,7 @@ grefm_create_cyprus_characters_effect = {
 		first_name = Nikodemos
 		last_name = Mylonas
 		age = 65
-		culture = cu:hellene
+		culture = cu:greek
 		religion = rel:orthodox
 		historical = yes
 		is_general = yes
@@ -419,7 +360,7 @@ grefm_create_epirus_characters_effect = {
 		last_name = Grivas
 		historical = yes
 		birth_date = 1797.1.1
-		culture = cu:hellene
+		culture = cu:greek
 		religion = rel:orthodox
 		historical = yes
 		ig_leader = yes
@@ -436,7 +377,7 @@ grefm_create_epirus_characters_effect = {
 		first_name = Kitsos
 		last_name = Tzavelas
 		birth_date = 1800.1.1
-		culture = cu:hellene
+		culture = cu:greek
 		religion = rel:orthodox
 		historical = yes
 		is_general = yes
@@ -452,354 +393,7 @@ grefm_create_epirus_characters_effect = {
 }
 
 
-## GRE4 - Greek Separatism Effects ##
-
-grefm_intialize_separatism_variables_effect = {
-	set_global_variable = {
-		name = grefm_epirus_radicals_var
-		value = 0
-	}
-	set_global_variable = {
-		name = grefm_macedonia_radicals_var
-		value = 0
-	}
-	set_global_variable = {
-		name = grefm_skopia_radicals_var
-		value = 0
-	}
-	set_global_variable = {
-		name = grefm_smyrna_radicals_var
-		value = 0
-	}
-	set_global_variable = {
-		name = grefm_cyprus_radicals_var
-		value = 0
-	}
-	set_global_variable = {
-		name = grefm_crete_radicals_var
-		value = 0
-	}
-	set_global_variable = {
-		name = grefm_crete_accelerate_var
-		value = 0
-	}
-	set_global_variable = {
-		name = grefm_crete_nationalism_var
-		value = 0
-	}
-	set_global_variable = {
-		name = grefm_crete_progress_var
-		value = 0
-	}
-	set_global_variable = {
-		name = grefm_crete_revolt_var
-		value = 0
-	}
-}
-
-grefm_check_separatism_modifiers_effect = {
-	if = {
-		limit = {
-			has_modifier = modifier_grefm_supporting_epirus
-			has_state_in_state_region = STATE_ALBANIA
-		}
-		remove_modifier = modifier_grefm_supporting_epirus
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_grefm_supporting_macedonia
-			OR = {
-				owns_entire_state_region = STATE_MACEDONIA
-				NOT = {
-					any_state = {
-						state_region = s:STATE_MACEDONIA
-						owner = {
-							OR = {
-								country_has_state_religion = rel:sunni
-								country_has_state_religion = rel:shiite
-							}
-						}
-					}
-				}
-			}
-		}
-		remove_modifier = modifier_grefm_supporting_macedonia
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_grefm_supporting_skopia
-			OR = {
-				owns_entire_state_region = STATE_SKOPIA
-				NOT = {
-					any_state = {
-						state_region = s:STATE_SKOPIA
-						owner = {
-							OR = {
-								country_has_state_religion = rel:sunni
-								country_has_state_religion = rel:shiite
-							}
-						}
-					}
-				}
-			}
-		}
-		remove_modifier = modifier_grefm_supporting_skopia
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_grefm_supporting_smyrna
-			OR = {
-				owns_entire_state_region = STATE_AYDIN
-				NOT = {
-					any_state = {
-						state_region = s:STATE_AYDIN
-						owner = {
-							OR = {
-								country_has_state_religion = rel:sunni
-								country_has_state_religion = rel:shiite
-							}
-						}
-					}
-				}
-			}
-		}
-		remove_modifier = modifier_grefm_supporting_smyrna
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_grefm_supporting_cyprus
-			OR = {
-				owns_entire_state_region = STATE_CYPRUS
-				NOT = {
-					any_state = {
-						state_region = s:STATE_CYPRUS
-						owner = {
-							OR = {
-								country_has_state_religion = rel:sunni
-								country_has_state_religion = rel:shiite
-							}
-						}
-					}
-				}
-			}
-		}
-		remove_modifier = modifier_grefm_supporting_cyprus
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_grefm_supporting_crete
-			OR = {
-				owns_entire_state_region = STATE_CRETE
-				NOT = {
-					any_state = {
-						state_region = s:STATE_CRETE
-						owner = {
-							OR = {
-								country_has_state_religion = rel:sunni
-								country_has_state_religion = rel:shiite
-							}
-						}
-					}
-				}
-			}
-		}
-		remove_modifier = modifier_grefm_supporting_crete
-	}
-}
-
-grefm_calculate_separatism_variables_effect = {
-	set_global_variable = {
-		name = grefm_epirus_radicals_var
-		value = grefm_epirus_radicals_value
-	}
-	set_global_variable = {
-		name = grefm_macedonia_radicals_var
-		value = grefm_macedonia_radicals_value
-	}
-	set_global_variable = {
-		name = grefm_skopia_radicals_var
-		value = grefm_skopia_radicals_value
-	}
-	set_global_variable = {
-		name = grefm_smyrna_radicals_var
-		value = grefm_smyrna_radicals_value
-	}
-	set_global_variable = {
-		name = grefm_cyprus_radicals_var
-		value = grefm_cyprus_radicals_value
-	}
-	set_global_variable = {
-		name = grefm_crete_radicals_var
-		value = grefm_crete_radicals_value
-	}
-	set_global_variable = {
-		name = grefm_crete_accelerate_var
-		value = grefm_crete_accelerate_value
-	}
-	set_global_variable = {
-		name = grefm_crete_nationalism_var
-		value = grefm_crete_nationalism_value
-	}
-	set_global_variable = {
-		name = grefm_crete_progress_var
-		value = grefm_crete_progress_value
-	}
-}
-
-grefm_monthly_greek_separatism_effect = {
-	if = {
-		limit = {
-			has_modifier = modifier_grefm_supporting_epirus
-		}
-		s:STATE_ALBANIA = {
-			every_scope_state = {
-				limit = {
-					owner = {
-						OR = {
-							country_has_state_religion = rel:sunni
-							country_has_state_religion = rel:shiite
-						}
-					}
-				}
-				add_radicals_in_state = {
-					culture = cu:hellene
-					value = 0.05
-				}
-			}
-		}
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_grefm_supporting_macedonia
-		}
-		s:STATE_MACEDONIA = {
-			every_scope_state = {
-				limit = {
-					owner = {
-						OR = {
-							country_has_state_religion = rel:sunni
-							country_has_state_religion = rel:shiite
-						}
-					}
-				}
-				add_radicals_in_state = {
-					culture = cu:hellene
-					value = 0.05
-				}
-			}
-		}
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_grefm_supporting_skopia
-		}
-		s:STATE_SKOPIA = {
-			every_scope_state = {
-				limit = {
-					owner = {
-						OR = {
-							country_has_state_religion = rel:sunni
-							country_has_state_religion = rel:shiite
-						}
-					}
-				}
-				add_radicals_in_state = {
-					culture = cu:hellene
-					value = 0.05
-				}
-			}
-		}
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_grefm_supporting_smyrna
-		}
-		s:STATE_AYDIN = {
-			every_scope_state = {
-				limit = {
-					owner = {
-						OR = {
-							country_has_state_religion = rel:sunni
-							country_has_state_religion = rel:shiite
-						}
-					}
-				}
-				add_radicals_in_state = {
-					culture = cu:hellene
-					value = 0.05
-				}
-			}
-		}
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_grefm_supporting_cyprus
-		}
-		s:STATE_CYPRUS = {
-			every_scope_state = {
-				limit = {
-					owner = {
-						OR = {
-							country_has_state_religion = rel:sunni
-							country_has_state_religion = rel:shiite
-						}
-					}
-				}
-				add_radicals_in_state = {
-					culture = cu:hellene
-					value = 0.05
-				}
-			}
-		}
-	}
-	change_global_variable = {
-		name = grefm_crete_revolt_var
-		add = global_var:grefm_crete_progress_var
-	}
-	clamp_global_variable = {
-		name = grefm_crete_revolt_var
-		max = 200
-		min = 0
-	}
-}
-
-grefm_clean_up_separatism_effect = {
-	remove_global_variable = grefm_epirus_radicals_var
-	remove_global_variable = grefm_macedonia_radicals_var
-	remove_global_variable = grefm_skopia_radicals_var
-	remove_global_variable = grefm_smyrna_radicals_var
-	remove_global_variable = grefm_cyprus_radicals_var
-	remove_global_variable = grefm_crete_radicals_var
-	remove_global_variable = grefm_crete_accelerate_var
-	remove_global_variable = grefm_crete_nationalism_var
-	remove_global_variable = grefm_crete_progress_var
-	remove_global_variable = grefm_crete_revolt_var
-	remove_modifier = modifier_grefm_supporting_epirus
-	remove_modifier = modifier_grefm_supporting_macedonia
-	remove_modifier = modifier_grefm_supporting_skopia
-	remove_modifier = modifier_grefm_supporting_smyrna
-	remove_modifier = modifier_grefm_supporting_cyprus
-	remove_modifier = modifier_grefm_supporting_crete
-}
-
-grefm_greek_revolt_tension_effect = {
-	every_country = {
-		limit = {
-			OR = {
-				has_journal_entry = je_eqfm_main
-				has_journal_entry = je_eqfm_sub
-			}
-		}
-		post_notification = notification_grefm_greek_revolt
-	}
-	change_global_variable = {
-		name = eqfm_tension_var
-		add = 25
-	}
-}
-
-## GRE5 - Heptanese Effects ##
-
+## GRE4 - Heptanese Effects ##
 grefm_cleanup_ionian_jewery_effect = {
 	remove_modifier = modifier_grefm_jewish_legal_concessions
 	remove_modifier = modifier_grefm_denied_jewish_rights
@@ -809,10 +403,40 @@ grefm_cleanup_ionian_jewery_effect = {
 #	remove_modifier = modifier_grefm_blood_libel # if you get this modifier, you deserve it
 }
 
-## GRE6 - Samos Effects ##
+
+## GRE6 - Minor Greek State Effects ##
+grefm_setup_cappadocia_effect = {
+	c:TUR = {
+		create_diplomatic_pact = {
+			country = c:BYZ_CAP
+			type = puppet
+		}
+	}
+}
+
+grefm_setup_theodoro_effect = {
+	c:RUS = {
+		create_diplomatic_pact = {
+			country = c:GRA_THE
+			type = puppet
+		}
+		set_secret_goal = {
+			country = c:GRA_THE
+			secret_goal = protect
+		}
+	}
+}
+
+grefm_setup_trabzon_effect = {
+	c:TUR = {
+		create_diplomatic_pact = {
+			country = c:BYZ_TRB
+			type = puppet
+		}
+	}
+}
 
 grefm_setup_samos_effect = { # Laws copied over from Greece; the two countries were similarly giga-rural.
-
 	effect_starting_technology_tier_4_tech = yes
 	add_technology_researched = urban_planning
 	add_technology_researched = law_enforcement
@@ -858,27 +482,27 @@ grefm_setup_samos_effect = { # Laws copied over from Greece; the two countries w
 	
 	capital = {
 		create_pop = {
-			culture = hellene
+			culture = greek
 			pop_type = aristocrats
 			size = 400
 		}
 		create_pop = {
-			culture = hellene
+			culture = greek
 			pop_type = clergymen
 			size = 800
 		}
 		create_pop = {
-			culture = hellene
+			culture = greek
 			pop_type = laborers
 			size = 5000
 		}
 		create_pop = {
-			culture = hellene
+			culture = greek
 			pop_type = farmers
 			size = 4000
 		}
 		create_pop = {
-			culture = hellene
+			culture = greek
 			size = 15000
 		}
 		create_building = {
@@ -886,7 +510,7 @@ grefm_setup_samos_effect = { # Laws copied over from Greece; the two countries w
 			add_ownership = {
 				building = {
 					type = "building_manor_house"
-					country = "c:SAMO"
+					country = "c:GRE_SAM"
 					levels = 1
 					region = "STATE_EAST_AEGEAN_ISLANDS"
 				}
@@ -902,7 +526,7 @@ grefm_setup_samos_effect = { # Laws copied over from Greece; the two countries w
 			add_ownership = {
 				building = {
 					type = "building_manor_house"
-					country = "c:SAMO"
+					country = "c:GRE_SAM"
 					levels = 1
 					region = "STATE_EAST_AEGEAN_ISLANDS"
 				}
@@ -918,7 +542,7 @@ grefm_setup_samos_effect = { # Laws copied over from Greece; the two countries w
 			building = "building_port"
 			add_ownership = {
 				country = {
-					country = "c:SAMO"
+					country = "c:GRE_SAM"
 					levels = 1
 				}
 			}
@@ -963,7 +587,7 @@ grefm_generate_samos_ruler_effect = { # This effect is huge and icky, but holy m
 			var:grefm_samos_ruler_counter <= 1
 		}
 		create_character = { # fallback option
-			culture = cu:hellene
+			culture = cu:greek
 			interest_group = ig_landowners
 			noble = yes
 			traits = {
@@ -1022,7 +646,7 @@ grefm_generate_samos_ruler_effect = { # This effect is huge and icky, but holy m
 		create_character = { # Miltiadis Aristarchis
 			first_name = Miltiadis
 			last_name = Aristarchis
-			culture = cu:hellene #Uhh, sure? No info on him before or after being Prince.
+			culture = cu:greek #Uhh, sure? No info on him before or after being Prince.
 			interest_group = ig_landowners
 			noble = yes
 			traits = {
@@ -1043,7 +667,7 @@ grefm_generate_samos_ruler_effect = { # This effect is huge and icky, but holy m
 		create_character = { # Pavlos Mousouros
 			first_name = Pavlos
 			last_name = Mousouros
-			culture = cu:hellene
+			culture = cu:greek
 			interest_group = ig_landowners
 			noble = yes
 			traits = {
@@ -1101,7 +725,7 @@ grefm_generate_samos_ruler_effect = { # This effect is huge and icky, but holy m
 		create_character = { # Konstantinos Photiadis
 			first_name = Konstantinos
 			last_name = Photiadis
-			culture = cu:hellene
+			culture = cu:greek
 			interest_group = ig_landowners
 			traits = {
 				literary
@@ -1121,7 +745,7 @@ grefm_generate_samos_ruler_effect = { # This effect is huge and icky, but holy m
 		create_character = { # Alexander Karatheodori, sorry Georgios, no repeats.
 			first_name = Alexandros
 			last_name = Karatheodori
-			culture = cu:hellene
+			culture = cu:greek
 			interest_group = ig_intelligentsia # another phanariot
 			noble = yes
 			traits = {
@@ -1163,7 +787,7 @@ grefm_generate_samos_ruler_effect = { # This effect is huge and icky, but holy m
 		create_character = { # Stephanos Mousouros, grandson of our boy Stefanos; actually did a good job governing
 			first_name = Stefanos
 			last_name = Mousouros
-			culture = cu:hellene
+			culture = cu:greek
 			interest_group = ig_landowners
 			noble = yes
 			traits = {
@@ -1184,7 +808,7 @@ grefm_generate_samos_ruler_effect = { # This effect is huge and icky, but holy m
 		create_character = { # Konstantinos Vagianis
 			first_name = Konstantinos
 			last_name = Vagianis
-			culture = cu:hellene
+			culture = cu:greek
 			interest_group = ig_landowners
 			noble = yes
 			traits = {
@@ -1223,7 +847,7 @@ grefm_generate_samos_ruler_effect = { # This effect is huge and icky, but holy m
 		create_character = { # Alexandros Mavrogenis, son of Spyridon Mavrogenis
 			first_name = Alexandros
 			last_name = Mavrogenis
-			culture = cu:hellene
+			culture = cu:greek
 			interest_group = ig_landowners
 			noble = yes
 			traits = {
@@ -1244,7 +868,7 @@ grefm_generate_samos_ruler_effect = { # This effect is huge and icky, but holy m
 		create_character = { # Ioannis Vithynos
 			first_name = Ioannis
 			last_name = Vithynos
-			culture = cu:hellene
+			culture = cu:greek
 			interest_group = ig_landowners
 			traits = {
 				arrogant
@@ -1262,7 +886,7 @@ grefm_generate_samos_ruler_effect = { # This effect is huge and icky, but holy m
 		create_character = { # Konstantinos Karatheodoris, dude I swear it's all guys with Alexandros or Konstantinos as a name
 			first_name = Konstantinos
 			last_name = Karatheodoris
-			culture = cu:hellene
+			culture = cu:greek
 			interest_group = ig_landowners
 			noble = yes
 			traits = {
@@ -1281,7 +905,7 @@ grefm_generate_samos_ruler_effect = { # This effect is huge and icky, but holy m
 			# Fellow Samians, I am leaving because I don't want to execute the illegal orders of the Ottoman government. I hope that I will not be replaced by Andreas Kopasis -G. Georgiadis, what a chad
 			first_name = Andreas
 			last_name = Kopasis
-			culture = cu:hellene
+			culture = cu:greek
 			interest_group = ig_landowners
 			noble = yes
 			traits = {
@@ -1296,7 +920,7 @@ grefm_generate_samos_ruler_effect = { # This effect is huge and icky, but holy m
 	}
 	else = {
 		create_character = { # I'm skipping Grigorios Vegleris, Sophoulis declared union with Greece within a year of his appointment
-			culture = cu:hellene
+			culture = cu:greek
 			interest_group = ig_landowners
 			on_created = {
 				set_variable = grefm_samos_ruler_var
@@ -1306,7 +930,7 @@ grefm_generate_samos_ruler_effect = { # This effect is huge and icky, but holy m
 	}
 }
 
-## GRE7 - Byzantium Effects ##
+## GRE8 - Byzantium Effects ##
 
 grefm_cleanup_quadrennial_race_effect = {
 	remove_variable = grefm_chariot_reds

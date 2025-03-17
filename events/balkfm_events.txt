@@ -1,19 +1,11 @@
 ﻿#########################
 # BALKANS FLAVOR EVENTS #
 #########################
-# Events contained here are for tags that don't have enough content to justify being separated into their own modules, but have more than technical events.
-# This mod is GREECE-FIRST, everything else second (yes, even Byzantium). Just because a tag is included in this mod does NOT mean that it will receive content at the level of fidelity Greece or Byzantium, although everyone will have content up to 1936 eventually.
-# If you think that every country having issues with its constitution or with yeeting their monarchs is boring, take it up with them. The Balkans in the 1800s were allergic to political stability (yes this continued into the 1900s -looking at you Bosnia-).
-# Certain events/effect fire from the TUR scope; this is for ease of scripting since the Ottoman State is THE constant for most Balkan crises.
 
-####################
-
-# For Greece content, see the "grefm" module
-# For Byzantium content, see the "byzfm" module
+# For Greek content, see the "grefm" module
+# For Turkish content, see the "turkfm" module
 # For Balkan Nations content, see the "balkfm" module
-# For Ottoman/Turkish content, see the "turkfm" module
 # For Orthodox Church content, see the "eocfm" module
-# For Eastern Question content, see the "eqfm" module
 
 ####################
 
@@ -32,13 +24,13 @@ namespace = balkfm
 #001-009 - Hidden Technical Events (Debug Country Spawns)
 #	001 - Absolute Balkanization
 #	002 - Turk-splosion
-#	003 - Creates/Releases MON
-#	004	- Creates/Releases SER
-#	005 - Creates/Releases BUL
-#	006 - Creates/Releases ROM
-#	007 - Creates/Releases BOS
-#	008 - Creates/Releases ALB
-#	009 - Creates/Releases TRIU
+#	003 - ##
+#	004	- ##
+#	005 - ##
+#	006 - ##
+#	007 - ##
+#	008 - ##
+#	009 - ##
 
 #010-019 - Hidden Technical Events (Variable Cleanup)
 #	010 - The Unused Variable Dumpster Fire
@@ -58,9 +50,10 @@ namespace = balkfm
 #	084 - The South Bessarabian Retrocession
 
 #090-099 - Test Events
-#	098 - Test Event
-#	099 - Crisis Test Event
-
+#	090 - Test Event
+#	091 - Test Event
+#	092 - Crisis Test Event
+#	099 - GBBF Test Tag Spawn
 
 ##  #BALK1  GENERAL BALKANS EVENTS  Events 100-109  ##
 
@@ -95,10 +88,10 @@ namespace = balkfm
 #	209 - The Birth of Yugoslavia
 
 #210-219 - Yugoslavian Unification Mechnical Events
-#	210 - Yugoslavist Agitation (Agitator Event)
-#	211 - Yugoslavist Agitation (Target Event)
-#	212 - Yugoslavist Provocation (Provokatur Event)
-#	213 - Yugoslavist Provocation (Target Event)
+#	212>>210 - Yugoslavist Provocation (Provokatur Event)
+#	211 - ##Yugoslavist Provocation (Austrian Event)
+#	212 - ##Yugoslavist Provocation (Ottoman Event)
+#	213 - //
 #	214 - Yugoslavist Uprising in State
 #	215 - ##Yugoslav Country Seeks Union (Same Culture)
 #	216 - ##Yugoslav Country Seeks Union (Different Culture)
@@ -154,8 +147,8 @@ namespace = balkfm
 #	349 - Country Crosses the Border (Defender)
 
 #350-359 - Border Conflict Mechnical Events
-#	350 - Negociations on Headtaking (TUR)
-#	351 - Negociations on Headtaking (MON)
+#	350 - OPEN
+#	351 - OPEN
 #	352 - Montenegro Offers Ransom
 #	353 - Ottoman Reply to Ransom
 #	354 - Ottoman Noble Beheaded
@@ -169,8 +162,8 @@ namespace = balkfm
 #	360 - ##Osman Pasha Attacks! <<--1843, 1847
 #	361 - ##Omer Pasha Invades! <<--1862
 #	362 - OPEN
-#	363 - OPEN
-#	364 - OPEN
+#	363 - Negociations on Headtaking (TUR)
+#	364 - Negociations on Headtaking (MON)
 #	365 - Negociations Over Cattaro
 #	366 - The Black Mountain Lost
 #	367 - The Black Mountain Subdued
@@ -453,7 +446,6 @@ namespace = balkfm
 
 balkfm.001 = { # Absolute Balkanization
 	type = country_event
-	placement = root
 	hidden = yes
 	
 	trigger = {
@@ -469,7 +461,6 @@ balkfm.001 = { # Absolute Balkanization
 
 balkfm.002 = { # Turk-splosion
 	type = country_event
-	placement = root
 	hidden = yes
 	
 	trigger = {
@@ -477,52 +468,6 @@ balkfm.002 = { # Turk-splosion
 
 	immediate = {
 		balkfm_turkboom_effect = yes
-	}
-	
-	orphan = yes
-	
-}
-
-balkfm.003 = { # Releases MON
-	type = country_event
-	placement = root
-	hidden = yes
-	
-	trigger = {
-	}
-
-	immediate = {
-	}
-	
-	orphan = yes
-	
-}
-
-balkfm.004 = { # Releases SER
-	type = country_event
-	placement = root
-	hidden = yes
-	
-	trigger = {
-	}
-
-	immediate = {
-	}
-	
-	orphan = yes
-	
-}
-
-balkfm.005 = { # creates BUL when called
-	type = country_event
-	placement = root
-	hidden = yes
-	
-	trigger = {
-	}
-
-	immediate = {
-		balkfm_create_bulgaria_test = yes
 	}
 	
 	orphan = yes
@@ -546,7 +491,6 @@ balkfm.010 = { # The Unused Variable Dumpster Fire
 		set_variable = romania_unification_in_motion
 		set_variable = eocfm_crusade_attacker
 		set_variable = eocfm_crusade_defender
-		set_global_variable = eqfm_cancel_struggle
 		remove_variable = balkfm_1848_failed
 		
 		remove_variable = eocfm_devout_leader_var
@@ -564,6 +508,19 @@ balkfm.010 = { # The Unused Variable Dumpster Fire
 		remove_variable = eocfm_moscow_controller_var
 		remove_global_variable = eocfm_crusade_counter
 		remove_global_variable = eocfm_deposition_counter
+		
+		set_variable = crisis_character_1
+		set_variable = crisis_character_2
+		set_variable = crisis_character_3
+		set_variable = crisis_character_4
+		set_variable = crisis_character_5
+		set_variable = crisis_character_6
+		remove_variable = crisis_character_1
+		remove_variable = crisis_character_2
+		remove_variable = crisis_character_3
+		remove_variable = crisis_character_4
+		remove_variable = crisis_character_5
+		remove_variable = crisis_character_6
 	}
 	
 	orphan = yes
@@ -600,7 +557,7 @@ balkfm.030 = { # Creates Hersek with Smaïl-aga at the Helm; this is evaluated f
 		has_modifier = modifier_balkfm_tolerated_abuses
 		NOR = { 
 			has_global_variable = balkfm_smail_aga_rebelled
-			exists = c:HRSK
+			exists = c:TUR_BOS
 		}
 		any_character_in_void = {
 			has_template = template_balkfm_cengic_smail
@@ -620,11 +577,11 @@ balkfm.030 = { # Creates Hersek with Smaïl-aga at the Helm; this is evaluated f
 			save_scope_as = balkfm_smail_aga_scope
 		}
 		create_country = { # Hersek with Bosnia
-			tag = HRSK
+			tag = TUR_BOS
 			origin = c:TUR
 			state = s:STATE_BOSNIA.region_state:TUR
 		}
-		c:HRSK = {
+		c:TUR_BOS = {
 			if = {
 				limit = {
 					exists = scope:balkfm_smail_aga_scope
@@ -666,7 +623,7 @@ balkfm.030 = { # Creates Hersek with Smaïl-aga at the Helm; this is evaluated f
 		}
 		every_country = {
 			limit = {
-				has_journal_entry = je_eqfm_sub
+				has_journal_entry = je_turkfm_eastern_question
 			}
 			post_notification = notification_balkfm_hersek_smail
 		}
@@ -682,7 +639,7 @@ balkfm.031 = { # Creates Hersek with Ali Pasha at the Helm
 	trigger = { # this is evaluated from MON scope
 		has_global_variable = balkfm_ali_pasha_greenlight
 		NOT = { 
-			exists = c:HRSK
+			exists = c:TUR_BOS
 		}
 		any_character_in_void = {
 			has_template = template_balkfm_rizvanbegovic_ali
@@ -701,11 +658,11 @@ balkfm.031 = { # Creates Hersek with Ali Pasha at the Helm
 			save_scope_as = balkfm_ali_pasha_scope
 		}
 		create_country = { # Hersek using Bosnia
-			tag = HRSK
+			tag = TUR_BOS
 			origin = c:TUR
 			state = s:STATE_BOSNIA.region_state:TUR
 		}
-		c:HRSK = {
+		c:TUR_BOS = {
 			if = {
 				limit = {
 					exists = scope:balkfm_ali_pasha_scope
@@ -753,7 +710,7 @@ balkfm.031 = { # Creates Hersek with Ali Pasha at the Helm
 		remove_global_variable = balkfm_ali_pasha_greenlight
 		every_country = {
 			limit = {
-				has_journal_entry = je_eqfm_sub
+				has_journal_entry = je_turkfm_eastern_question
 			}
 			post_notification = notification_balkfm_hersek_ali
 		}
@@ -920,7 +877,7 @@ balkfm.082 = { # Ali Pasha Ascendant
 				save_scope_as = bosnia_state_scope
 			}
 		}
-		c:HRSK = {
+		c:TUR_BOS = {
 			save_scope_as = hersek_scope
 		}
 	}
@@ -1142,13 +1099,73 @@ balkfm.084 = { # The South Bessarabian Retrocession (romania.4 integrated into b
 
 #### TEST EVENTS####
 
-balkfm.098 = { # Test Event
+balkfm.090 = { # Test Event
 	type = country_event
 	placement = root
 	
-	title = balkfm.098.t
-	desc = balkfm.098.d
-	flavor = balkfm.098.f
+	title = balkfm.090.t
+	desc = balkfm.090.d
+	flavor = balkfm.090.f
+	
+	gui_window = event_window_1char_adventure
+	
+	left_icon = scope:turkfm_cutler_beckett_scope
+	
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_open_ocean.dds"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+	
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/unspecific/iceberg_in_the_antartica"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+	}
+	
+	immediate = {
+		ruler = {
+			save_scope_as = left_icon
+		}
+		ruler = {
+			save_scope_as = right_icon
+		}
+	}	
+	
+	option = {
+		name = balkfm.091.a
+		default_option = yes
+	}
+	
+	option = {
+		name = balkfm.091.b
+	}
+	
+	option = {
+		name = balkfm.091.c
+	}
+	
+	
+	option = {
+		name = balkfm.091.e
+	}
+	
+	orphan = yes
+
+}
+
+
+balkfm.091 = { # Test Event
+	type = country_event
+	placement = root
+	
+	title = balkfm.091.t
+	desc = balkfm.091.d
+	flavor = balkfm.091.f
 	
 	event_image = {
 		video = "unspecific_signed_contract"
@@ -1169,7 +1186,7 @@ balkfm.098 = { # Test Event
 	}	
 	
 	option = {
-		name = balkfm.098.a
+		name = balkfm.091.a
 		default_option = yes
 		create_diplomatic_pact = {
 			country = c:RUS
@@ -1182,7 +1199,7 @@ balkfm.098 = { # Test Event
 	}
 	
 	option = {
-		name = balkfm.098.b
+		name = balkfm.091.b
 		create_diplomatic_pact = {
 			country = c:RUS
 			type = war_reparations
@@ -1194,13 +1211,13 @@ balkfm.098 = { # Test Event
 	}
 	
 	option = {
-		name = balkfm.098.c
-		custom_tooltip = balkfm.098.tt
+		name = balkfm.091.c
+		custom_tooltip = balkfm.091.tt
 	}
 	
 	
 	option = {
-		name = balkfm.098.e
+		name = balkfm.091.e
 		add_journal_entry = {
 			type = je_balkfm_test_journal
 		}
@@ -1213,18 +1230,18 @@ balkfm.098 = { # Test Event
 
 }
 
-balkfm.099 = { # Crisis Test Event
+balkfm.092 = { # Crisis Test Event
 	type = country_event
 	placement = root
 	
-	title = balkfm.099.t
-	desc = balkfm.099.d
-	flavor = balkfm.099.f
+	title = balkfm.092.t
+	desc = balkfm.092.d
+	flavor = balkfm.092.f
 	
-	gui_window = event_window_superevent_crisis
+	gui_window = event_window_crisis
 	
 	event_image = {
-		video = "balkfm_balkan_crisis"
+		video = "turkfm_balkan_crisis"
 	}
 	
 	icon = "gfx/interface/icons/event_icons/event_default.dds"
@@ -1296,12 +1313,32 @@ balkfm.099 = { # Crisis Test Event
 	}
 	
 	option = {
-		name = balkfm.099.a
+		name = balkfm.092.a
 		default_option = yes
 	}
 	
 	orphan = yes
 
+}
+
+balkfm.099 = { # GBBF Test Tag Spawn
+	type = country_event
+	hidden = yes
+	
+	trigger = {
+	}
+
+	immediate = {
+		create_country = {
+			tag = GBBF
+			origin = root
+			province = p:x021374
+		}
+		play_as = c:GBBF
+	}
+	
+	orphan = yes
+	
 }
 
 
@@ -2097,126 +2134,13 @@ balkfm.209 = { # The Birth of Yugoslavia
 
 #### YUGOSLAVIAN UNIFICATION MECHANICAL EVENTS ####
 
-balkfm.210 = { # Yugoslavist Agitation (Agitator Event)
+balkfm.210 = { # Yugoslavist Provocation (Provocateur Event)
 	type = country_event
-	placement = scope:balkfm_agitation_state_scope
+	placement = scope:balkfm_rebellion_scope
 	
 	title = balkfm.210.t
 	desc = balkfm.210.d
 	flavor = balkfm.210.f
-	
-	event_image = {
-		video = "europenorthamerica_springtime_of_nations"
-	}
-	
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-	
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-	}
-	
-	immediate = {
-		random_state = {
-			limit = {
-				has_variable = balkfm_yugoslav_state_target
-			}
-			save_scope_as = balkfm_agitation_state_scope
-			owner = {
-				save_scope_as = balkfm_agitation_owner_scope
-			}
-		}
-		scope:balkfm_agitation_state_scope = {
-			remove_variable = balkfm_yugoslav_state_target
-		}
-	}
-	
-	option = {
-		name = balkfm.210.a
-		default_option = yes
-		create_incident = {
-			country = scope:balkfm_agitation_owner_scope
-			value = 10
-		}
-		show_as_tooltip = {
-			scope:balkfm_agitation_state_scope = {
-				balkfm_rile_up_yugoslavs_effect = yes
-			}
-		}
-		show_as_tooltip = {
-			scope:balkfm_agitation_state_scope = {
-				add_modifier = {
-					name = modifier_balkfm_separatist_tensions
-					months = normal_modifier_time
-				}
-			}
-		}
-	}
-
-}
-
-balkfm.211 = { # Yugoslavist Agitation (Target Event)
-	type = country_event
-	placement = scope:balkfm_agitation_state_scope
-	
-	title = balkfm.211.t
-	desc = balkfm.211.d
-	flavor = balkfm.211.f
-	
-	event_image = {
-		video = "europenorthamerica_springtime_of_nations"
-	}
-	
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-	
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-	}
-	
-	immediate = {
-		random_state = {
-			limit = {
-				has_variable = balkfm_yugoslav_state_target
-			}
-			save_scope_as = balkfm_agitation_state_scope
-		}
-		random_country = {
-			limit = {
-				has_variable = balkfm_yugoslav_agitation_actor
-			}
-			save_scope_as = balkfm_yugoslav_agitator_scope
-		}
-	}
-	
-	option = {
-		name = balkfm.211.a
-		default_option = yes
-		scope:balkfm_agitation_state_scope = {
-			balkfm_rile_up_yugoslavs_effect = yes
-			add_modifier = {
-				name = modifier_balkfm_separatist_tensions
-			}
-		}
-	}
-
-}
-
-balkfm.212 = { # Yugoslavist Provocation (Provocateur Event)
-	type = country_event
-	placement = scope:balkfm_rebellion_scope
-	
-	title = balkfm.212.t
-	desc = balkfm.212.d
-	flavor = balkfm.212.f
 	
 	event_image = {
 		video = "europenorthamerica_springtime_of_nations"
@@ -2239,10 +2163,7 @@ balkfm.212 = { # Yugoslavist Provocation (Provocateur Event)
 			limit = {
 				has_variable = balkfm_yugoslav_state_target
 			}
-			save_scope_as = balkfm_provocation_state_scope
-			owner = {
-				save_scope_as = balkfm_provocation_owner_scope
-			}
+			save_scope_as = balkfm_rebellion_state_scope
 			remove_variable = balkfm_yugoslav_state_target
 		}
 		random_country = {
@@ -2255,7 +2176,7 @@ balkfm.212 = { # Yugoslavist Provocation (Provocateur Event)
 	}
 	
 	option = { # 
-		name = balkfm.212.a
+		name = balkfm.210.a
 		default_option = yes
 		create_incident = {
 			country = scope:balkfm_provocation_owner_scope
@@ -2276,13 +2197,13 @@ balkfm.212 = { # Yugoslavist Provocation (Provocateur Event)
 	
 }
 
-balkfm.213 = { # Yugoslavist Provocation (Target Event)
+balkfm.211 = { # Yugoslavist Provocation (Austrian Event)
 	type = country_event
 	placement = scope:balkfm_rebellion_scope
 	
-	title = balkfm.213.t
-	desc = balkfm.213.d
-	flavor = balkfm.213.f
+	title = balkfm.211.t
+	desc = balkfm.211.d
+	flavor = balkfm.211.f
 	
 	event_image = {
 		video = "europenorthamerica_springtime_of_nations"
@@ -2305,10 +2226,7 @@ balkfm.213 = { # Yugoslavist Provocation (Target Event)
 			limit = {
 				has_variable = balkfm_yugoslav_state_target
 			}
-			save_scope_as = balkfm_provocation_state_scope
-			owner = {
-				save_scope_as = balkfm_provocation_owner_scope
-			}
+			save_scope_as = balkfm_rebellion_state_scope
 		}
 		balkfm_create_yugoslav_rebel_effect = yes
 		random_country = {
@@ -2323,7 +2241,7 @@ balkfm.213 = { # Yugoslavist Provocation (Target Event)
 			}
 			save_scope_as = balkfm_rebellion_scope
 		}
-		scope:balkfm_provocation_state_scope = {
+		scope:balkfm_rebellion_state_scope = {
 			state_region = {
 				add_claim = root
 			}
@@ -2341,16 +2259,16 @@ balkfm.213 = { # Yugoslavist Provocation (Target Event)
 	}
 	
 	option = { # Slap Them Down
-		name = balkfm.213.a
+		name = balkfm.211.a
 		default_option = yes
 		create_diplomatic_play = {
 			name = dp_yugoslav_rebellion
 			type = dp_return_state
-			target_state = scope:balkfm_provocation_state_scope
+			target_state = scope:balkfm_rebellion_state_scope
 			add_war_goal = {
 				holder = scope:balkfm_rebellion_scope
 				type = revoke_claim
-				target_state = scope:balkfm_provocation_state_scope
+				target_state = scope:balkfm_rebellion_state_scope
 				target_country = root
 			}
 		}
@@ -2360,7 +2278,7 @@ balkfm.213 = { # Yugoslavist Provocation (Target Event)
 	}
 	
 	option = { # Grant Autonomy
-		name = balkfm.213.b
+		name = balkfm.211.b
 		if = {
 			limit = {
 				is_country_type = unrecognized
@@ -2392,6 +2310,123 @@ balkfm.213 = { # Yugoslavist Provocation (Target Event)
 	
 }
 
+balkfm.212 = { # Yugoslavist Provocation (Ottoman Event)
+	type = country_event
+	placement = scope:balkfm_rebellion_scope
+	
+	title = balkfm.212.t
+	desc = balkfm.212.d
+	flavor = balkfm.212.f
+	
+	event_image = {
+		video = "europenorthamerica_springtime_of_nations"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by balkfm_austrian_provokation_button / balkfm_ottoman_provokation_button
+	}
+	
+	immediate = {
+		random_state = {
+			limit = {
+				has_variable = balkfm_yugoslav_state_target
+			}
+			save_scope_as = balkfm_rebellion_state_scope
+		}
+		balkfm_create_yugoslav_rebel_effect = yes
+		random_country = {
+			limit = {
+				has_variable = balkfm_yugoslav_provocation_actor
+			}
+			save_scope_as = balkfm_yugoslav_provocateur_scope
+		}
+		random_country = {
+			limit = {
+				has_variable = balkfm_rebellion_tag_tracker
+			}
+			save_scope_as = balkfm_rebellion_scope
+		}
+		scope:balkfm_rebellion_state_scope = {
+			state_region = {
+				add_claim = root
+			}
+		}
+		scope:balkfm_rebellion_scope = {
+			every_scope_state = {
+				remove_modifier = modifier_balkfm_separatist_tensions
+				add_modifier = {
+					name = modifier_balkfm_realized_rebellion
+					months = short_modifier_time
+				}
+				balkfm_calm_down_yugoslavs_effect = yes
+			}
+		}
+	}
+	
+	option = { # Slap Them Down
+		name = balkfm.212.a
+		default_option = yes
+		create_diplomatic_play = {
+			name = dp_yugoslav_rebellion
+			type = dp_return_state
+			target_state = scope:balkfm_rebellion_state_scope
+			add_war_goal = {
+				holder = scope:balkfm_rebellion_scope
+				type = revoke_claim
+				target_state = scope:balkfm_rebellion_state_scope
+				target_country = root
+			}
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+	
+	option = { # Grant Autonomy
+		name = balkfm.212.b
+		if = {
+			limit = {
+				is_country_type = unrecognized
+			}
+			create_diplomatic_pact = {
+				country = scope:balkfm_rebellion_scope
+				type = tributary
+			}
+		}
+		else = {
+			create_diplomatic_pact = {
+				country = scope:balkfm_rebellion_scope
+				type = protectorate
+			}
+		}
+		every_country = {
+			limit = {
+				is_subject_of = root
+			}
+			add_modifier = {
+				name = modifier_balkfm_spineless_overlord
+				months = long_modifier_time
+			}
+		}
+		ai_chance = {
+			base = 1
+		}
+	}
+	
+}
+
+balkfm.213 = { # OPEN
+	orphan = yes
+}
+
 balkfm.214 = { # Yugoslavist Uprising in State
 	type = country_event
 	placement = root
@@ -2419,6 +2454,7 @@ balkfm.214 = { # Yugoslavist Uprising in State
 		has_technology_researched = nationalism
 		any_scope_state = {
 			balkfm_is_yugoslav_homeland_trigger = yes
+			is_split_state = no
 			balkfm_yugoslav_high_radicals_trigger = yes
 		}
 	}
@@ -2432,6 +2468,7 @@ balkfm.214 = { # Yugoslavist Uprising in State
 		random_state = {
 			limit = {
 				balkfm_is_yugoslav_homeland_trigger = yes
+				is_split_state = no
 				balkfm_yugoslav_high_radicals_trigger = yes
 			}
 			save_scope_as = balkfm_provocation_state_scope
@@ -2442,6 +2479,7 @@ balkfm.214 = { # Yugoslavist Uprising in State
 				has_variable = balkfm_rebellion_tag_tracker
 			}
 			save_scope_as = balkfm_rebellion_scope
+			remove_variable = balkfm_rebellion_tag_tracker
 		}
 		scope:balkfm_provocation_state_scope = {
 			state_region = {
@@ -2626,7 +2664,7 @@ balkfm.216 = { # Yugoslav Country Seeks Union (Different Culture)
 			is_player = no
 			is_diplomatic_play_committed_participant = no
 			is_subject = no
-			relations:root >= relations_threshold:cordial
+			relations:root >= relations_threshold:amicable
 		}
 	}
 	
@@ -3525,7 +3563,18 @@ balkfm.330 = { # The Battle of Grahovo
 	}
 	
 	immediate = {
-		balkfm_create_ali_pasha_characters = yes
+		create_character = {
+			template = template_balkfm_rizvanbegovic_ali
+			on_created = {
+				place_character_in_void = 500
+			}
+		}
+		create_character = {
+			template = template_balkfm_cengic_smail
+			on_created = {
+				place_character_in_void = 500
+			}
+		}
 		balkfm_save_ali_pasha_scopes = yes
 		trigger_event = {
 			id = balkfm.331 # Negociations At Humac
@@ -3544,7 +3593,7 @@ balkfm.330 = { # The Battle of Grahovo
 				name = modifier_balkfm_ali_pasha
 			}
 		}
-#		balkfm_minor_border_progress_loss_effect = yes
+		balkfm_minor_border_progress_loss_effect = yes
 		c:TUR = {
 			post_notification = notification_balkfm_folk_hero_killed
 		}
@@ -3590,21 +3639,7 @@ balkfm.331 = { # Negociations At Humac
 		name = balkfm.331.a
 		default_option = yes
 		create_character = {
-			# Jakov Daković, Lord of Grahovo and Montenegrin war hero
-			first_name = Jakov
-			last_name = Dakovic
-			historical = yes
-			age = 44 # age in 1838, when was appointed Grand Duke
-			culture = cu:serb
-			religion = rel:orthodox
-			interest_group = ig_landowners
-			ideology = ideology_royalist
-			is_general = yes
-			traits = {
-				brave
-				popular_commander
-				expert_defensive_strategist
-			}
+			template = template_balkfm_dakovic_jakov
 		}
 		hidden_effect = {
 			c:TUR = {
@@ -3613,7 +3648,7 @@ balkfm.331 = { # Negociations At Humac
 				}
 			}
 		}
-#		balkfm_minor_border_progress_loss_effect = yes
+		balkfm_minor_border_progress_loss_effect = yes
 		set_global_variable = balkfm_humac_happened
 		ai_chance = {
 			base = 100
@@ -3632,7 +3667,7 @@ balkfm.331 = { # Negociations At Humac
 			type = dp_return_state
 			target_state = s:STATE_MONTENEGRO.region_state:TUR
 		}
-#		balkfm_minor_border_progress_gain_effect = yes
+		balkfm_minor_border_progress_gain_effect = yes
 		custom_tooltip = balkfm.331.tt
 		ai_chance = {
 			base = 1 # MON really shouldn't go full Rambo
@@ -3691,7 +3726,7 @@ balkfm.332 = { # Knives in the Dark
 			name = modifier_balkfm_tolerated_abuses
 			months = short_modifier_time
 		}
-#		balkfm_minor_border_progress_loss_effect = yes
+		balkfm_minor_border_progress_loss_effect = yes
 		ai_chance = {
 			base = 0
 		}
@@ -3728,27 +3763,14 @@ balkfm.333 = { # A Local Collaborator
 	
 	immediate = {
 		create_character = {
-			# Novica Cerović, Montenegrin vojvoda notable for killing Smaïl-aga
-			first_name = Novica
-			last_name = Cerovic
-			historical = yes
-			age = 35 # age in 1840
-			dna = mr_mon_novica_cerovic
-			culture = cu:serb
-			religion = rel:orthodox
-			interest_group = ig_rural_folk
-			ideology = ideology_land_reformer
-			traits = {
-				brave
-			}
+			template = template_balkfm_cerovic_novica
 			on_created = {
-				set_variable = balkfm_is_cerovic
 				place_character_in_void = 720 # 60 year lease on life
 			}
 		}
 		random_character_in_void = {
 			limit = {
-				has_variable = balkfm_is_cerovic
+				has_template = template_balkfm_cerovic_novica
 			}
 			save_scope_as = novica_cerovic_scope
 		}
@@ -3820,16 +3842,16 @@ balkfm.334 = { # The Demise of Smaïl-aga
 			country = c:TUR
 			value = 5
 		}
-#		c:TUR = {
-#			trigger_event = {
-#				id = balkfm.354 # Ottoman Noble Beheaded
-#			}
-#		}
+		c:TUR = {
+			trigger_event = {
+				id = balkfm.354 # Ottoman Noble Beheaded
+			}
+		}
 		add_loyalists = {
 			strata = poor
 			value = small_radicals
 		}
-#		balkfm_minor_border_progress_gain_effect = yes
+		balkfm_minor_border_progress_gain_effect = yes
 
 	}
 	
@@ -3885,7 +3907,7 @@ balkfm.335 = { # Unintended Consequences
 			id = balkfm.336 # Duplicitous Diplomacy
 			days = 90
 		}
-#		balkfm_minor_border_progress_loss_effect = yes
+		balkfm_minor_border_progress_loss_effect = yes
 	}
 	
 	option = { # expose the truth
@@ -3899,7 +3921,7 @@ balkfm.335 = { # Unintended Consequences
 			months = normal_modifier_time
 			is_decaying = yes
 		}
-#		balkfm_minor_border_progress_gain_effect = yes
+		balkfm_minor_border_progress_gain_effect = yes
 	}
 
 }
@@ -3986,7 +4008,7 @@ balkfm.337 = { # The Arrogance of Smaïl-aga
 	
 	cancellation_trigger = {
 		NOT = {
-			exists = c:HRSK
+			exists = c:TUR_BOS
 		}
 	}
 	
@@ -3994,7 +4016,7 @@ balkfm.337 = { # The Arrogance of Smaïl-aga
 		c:TUR = {
 			save_scope_as = ottoman_scope
 		}
-		c:HRSK = {
+		c:TUR_BOS = {
 			save_scope_as = hersek_scope
 		}
 	}
@@ -4007,7 +4029,7 @@ balkfm.337 = { # The Arrogance of Smaïl-aga
 		}
 		create_diplomatic_play = {
 			name = balkfm_pasha_rebellion
-			target_country = c:HRSK
+			target_country = c:TUR_BOS
 			type = dp_secession
 		}
 		hidden_effect = {
@@ -4016,12 +4038,12 @@ balkfm.337 = { # The Arrogance of Smaïl-aga
 					c:TUR = {
 						is_diplomatic_play_initiator = yes
 					}
-					c:HRSK = {
+					c:TUR_BOS = {
 						is_diplomatic_play_target = yes
 					}
 				}
 				add_diplomatic_play_war_support = { target = c:TUR value = 100 }
-				add_diplomatic_play_war_support = { target = c:HRSK value = 100 }
+				add_diplomatic_play_war_support = { target = c:TUR_BOS value = 100 }
 				add_war_goal = {
 					holder = c:TUR
 					type = conquer_state
@@ -4086,7 +4108,7 @@ balkfm.338 = { # The Arrogance of Ali Pasha
 	
 	cancellation_trigger = {
 		NOT = {
-			exists = c:HRSK
+			exists = c:TUR_BOS
 		}
 	}
 	
@@ -4094,7 +4116,7 @@ balkfm.338 = { # The Arrogance of Ali Pasha
 		c:TUR = {
 			save_scope_as = ottoman_scope
 		}
-		c:HRSK = {
+		c:TUR_BOS = {
 			save_scope_as = hersek_scope
 		}
 	}
@@ -4107,7 +4129,7 @@ balkfm.338 = { # The Arrogance of Ali Pasha
 		}
 		create_diplomatic_play = {
 			name = balkfm_pasha_rebellion
-			target_country = c:HRSK
+			target_country = c:TUR_BOS
 			type = dp_secession
 		}
 		hidden_effect = {
@@ -4116,12 +4138,12 @@ balkfm.338 = { # The Arrogance of Ali Pasha
 					c:TUR = {
 						is_diplomatic_play_initiator = yes
 					}
-					c:HRSK = { 
+					c:TUR_BOS = { 
 						is_diplomatic_play_target = yes
 					}
 				}
 				add_diplomatic_play_war_support = { target = c:TUR value = 100 }
-				add_diplomatic_play_war_support = { target = c:HRSK value = 100 }
+				add_diplomatic_play_war_support = { target = c:TUR_BOS value = 100 }
 				add_war_goal = {
 					holder = c:TUR
 					type = conquer_state
@@ -4194,7 +4216,7 @@ balkfm.339 = { # Ali Pasha's Demise
 		scope:ali_pasha_scope = {
 			kill_character = yes
 		}
-#		balkfm_minor_border_progress_gain_effect = yes
+		balkfm_minor_border_progress_gain_effect = yes
 		set_global_variable = balkfm_ali_pasha_waxed
 	}
 
@@ -4226,11 +4248,19 @@ balkfm.340 = { # Border Incursion Repelled (Attacker Variant)
 	}
 	
 	cancellation_trigger = {
-		has_global_variable = balkfm_border_conflict_resolved
+		has_global_variable = balkfm_karadag_resolved
 	}
 	
 	immediate = {
-		balkfm_save_border_conflict_scopes_effect = yes
+		balkfm_incursion_scopes_effect = yes
+		s:STATE_MONTENEGRO = {
+			random_scope_state = {
+				limit = {
+					owner = root
+				}
+				save_scope_as = montenegro_state_scope
+			}
+		}
 	}
 	
 	option = {
@@ -4275,7 +4305,10 @@ balkfm.341 = { # Border Villages Burned (Defender Event)
 	}
 	
 	cancellation_trigger = {
-		has_global_variable = balkfm_border_conflict_resolved
+		NOR = {
+			has_journal_entry = je_balkfm_mon_black_mountain
+			has_journal_entry = je_balkfm_tur_karadag
+		}
 	}
 	
 	immediate = {
@@ -4322,20 +4355,7 @@ balkfm.342 = { # Village Skirmish Escalates (Defender Event)
 	placement = root
 	
 	title = balkfm.342.t
-	desc = {
-		triggered_desc = {
-			desc = balkfm.342.d1
-			trigger = {	
-				c:MON = this
-			}
-		}
-		triggered_desc = {
-			desc = balkfm.342.d2
-			trigger = {	
-				c:TUR = this
-			}
-		}
-	}
+	desc =  balkfm.342.d
 	flavor = balkfm.342.f
 	
 	event_image = {
@@ -4369,7 +4389,10 @@ balkfm.342 = { # Village Skirmish Escalates (Defender Event)
 	}
 	
 	cancellation_trigger = {
-		has_global_variable = balkfm_border_conflict_resolved
+		NOR = {
+			has_journal_entry = je_balkfm_mon_black_mountain
+			has_journal_entry = je_balkfm_tur_karadag
+		}
 	}
 	
 	immediate = {
@@ -4377,7 +4400,7 @@ balkfm.342 = { # Village Skirmish Escalates (Defender Event)
 			name = balkfm_border_event_cooldown_var
 			months = 10
 		}
-		balkfm_save_border_conflict_scopes_effect = yes
+		balkfm_incursion_scopes_effect = yes
 	}
 	
 	
@@ -4646,7 +4669,10 @@ balkfm.343 = { # Border Incursion Repelled (Defender Event)
 	}
 	
 	cancellation_trigger = {
-		has_global_variable = balkfm_border_conflict_resolved
+		NOR = {
+			has_journal_entry = je_balkfm_mon_black_mountain
+			has_journal_entry = je_balkfm_tur_karadag
+		}
 	}
 	
 	immediate = {
@@ -4654,7 +4680,7 @@ balkfm.343 = { # Border Incursion Repelled (Defender Event)
 			name = balkfm_border_event_cooldown_var
 			months = 10
 		}
-		balkfm_save_border_conflict_scopes_effect = yes
+		balkfm_incursion_scopes_effect = yes
 		scope:balkfm_border_attacker_scope = {
 			trigger_event = {
 				id = balkfm.340 # Border Incursion Repelled (Attacker Variant)
@@ -4680,6 +4706,14 @@ balkfm.343 = { # Border Incursion Repelled (Defender Event)
 			create_bidirectional_truce = {
 				country = c:MON
 				months = 24
+			}
+		}
+		s:STATE_MONTENEGRO = {
+			random_scope_state = {
+				limit = {
+					owner = root
+				}
+				save_scope_as = montenegro_state_scope
 			}
 		}
 	}
@@ -4756,11 +4790,14 @@ balkfm.344 = { # Minority Population Massacred (Attacker Event)
 	}
 	
 	cancellation_trigger = {
-		has_global_variable = balkfm_border_conflict_resolved
+		NOR = {
+			has_journal_entry = je_balkfm_mon_black_mountain
+			has_journal_entry = je_balkfm_tur_karadag
+		}
 	}
 	
 	immediate = {
-		balkfm_save_border_conflict_scopes_effect = yes
+		balkfm_incursion_scopes_effect = yes
 		if = {
 			limit = {
 				c:MON = this
@@ -4775,6 +4812,14 @@ balkfm.344 = { # Minority Population Massacred (Attacker Event)
 			}
 			cu:serb = {
 				save_scope_as = balkfm_minority_culture
+			}
+		}
+		s:STATE_MONTENEGRO = {
+			random_scope_state = {
+				limit = {
+					owner = root
+				}
+				save_scope_as = montenegro_state_scope
 			}
 		}
 	}
@@ -4889,7 +4934,10 @@ balkfm.345 = { # Montenegrin Folk Hero Killed
 	}
 	
 	cancellation_trigger = {
-		has_global_variable = balkfm_border_conflict_resolved
+		NOR = {
+			has_journal_entry = je_balkfm_mon_black_mountain
+			has_journal_entry = je_balkfm_tur_karadag
+		}
 	}
 	
 	immediate = {
@@ -4932,7 +4980,10 @@ balkfm.346 = { # Ottoman Noble Captured
 	}
 	
 	cancellation_trigger = {
-		has_global_variable = balkfm_border_conflict_resolved
+		NOR = {
+			has_journal_entry = je_balkfm_mon_black_mountain
+			has_journal_entry = je_balkfm_tur_karadag
+		}
 	}
 	
 	cooldown = {
@@ -5022,7 +5073,10 @@ balkfm.348 = { # Country Crosses the Border (Attacker)
 	}
 	
 	cancellation_trigger = {
-		has_global_variable = balkfm_border_conflict_resolved
+		NOR = {
+			has_journal_entry = je_balkfm_mon_black_mountain
+			has_journal_entry = je_balkfm_tur_karadag
+		}
 	}
 	
 	immediate = {
@@ -5048,7 +5102,7 @@ balkfm.348 = { # Country Crosses the Border (Attacker)
 				value = 2
 			}
 		}
-		balkfm_save_border_conflict_scopes_effect = yes
+		balkfm_incursion_scopes_effect = yes
 		scope:balkfm_border_defender_scope = {
 			trigger_event = {
 				id = balkfm.349 # Country Crosses the Border (Defender)
@@ -5089,11 +5143,14 @@ balkfm.349 = { # Country Crosses the Border (Defender)
 	}
 	
 	cancellation_trigger = {
-		has_global_variable = balkfm_border_conflict_resolved
+		NOR = {
+			has_journal_entry = je_balkfm_mon_black_mountain
+			has_journal_entry = je_balkfm_tur_karadag
+		}
 	}
 	
 	immediate = {
-		balkfm_save_border_conflict_scopes_effect = yes
+		balkfm_incursion_scopes_effect = yes
 	}
 	
 	option = {
@@ -5106,173 +5163,12 @@ balkfm.349 = { # Country Crosses the Border (Defender)
 
 ## BORDER CONFLICT MECHANICAL EVENTS ##
 
-balkfm.350 = { # Negociations on Headtaking (TUR)
-	type = country_event
-	placement = root
-	
-	title = balkfm.350.t
-	desc = balkfm.350.d
-	flavor = balkfm.350.f
-	
-	event_image = {
-		video = "asia_politician_parliament_motion"
-	}
-	
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		# triggered by balkfm_renounce_headtaking_button
-	}
-	
-	immediate = {
-		c:MON = {
-			save_scope_as = montenegro_scope
-		}
-	}	
-	
-	option = { # For TUR, reject headtaking offer
-		name = balkfm.350.a
-		default_option = yes
-		add_modifier = {
-			name = modifier_balkfm_retained_headtaking
-			months = long_modifier_time
-		}
-		add_radicals = {
-			culture = cu:serb
-			value = medium_radicals
-		}
-		set_global_variable = balkfm_headtaking_rejected
-		c:MON = {
-			trigger_event = {
-				id = balkfm.351 # Negociations On Headtaking
-			}
-		}
-	}
-	
-	option = { # For TUR, accept headtaking offer
-		name = balkfm.350.b
-		add_modifier = {
-			name = modifier_balkfm_abolished_headtaking
-			months = normal_modifier_time
-		}
-		add_loyalists = {
-			culture = cu:serb
-			value = small_radicals
-		}
-		add_radicals = {
-			strata = rich
-			culture = cu:turkish
-			value = small_radicals
-		}
-		set_global_variable = balkfm_headtaking_accepted
-		c:MON = {
-			trigger_event = {
-				id = balkfm.351 # Negociations On Headtaking
-			}
-		}
-	}
-	
+balkfm.350 = {
+	orphan = yes
 }
 
-balkfm.351 = { # Negociations on Headtaking (MON)
-	type = country_event
-	placement = scope:balkfm_headtaking_country_scope
-	
-	title = balkfm.351.t
-	desc = {
-		triggered_desc = {
-			desc = balkfm.351.d1
-			trigger = {
-				has_global_variable = balkfm_headtaking_rejected
-			}
-		}
-		triggered_desc = {
-			desc = balkfm.351.d2
-			trigger = {
-				has_global_variable = balkfm_headtaking_accepted
-			}
-		}
-	}
-	flavor = balkfm.351.f
-	
-	gui_window = event_window_1char_tabloid
-
-	left_icon = scope:balkfm_headtaking_event_scope
-	
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
-	
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		# triggered by balkfm_renounce_headtaking_button
-	}
-	
-	immediate = {
-		if = {
-			limit = {
-				c:TUR = this
-			}
-			c:MON = {
-				save_scope_as = balkfm_headtaking_country_scope
-				ruler = {
-					save_scope_as = balkfm_headtaking_ruler_scope
-				}
-			}
-		}
-		if = {
-			limit = {
-				c:MON = this
-			}
-			c:TUR = {
-				save_scope_as = balkfm_headtaking_country_scope
-				ruler = {
-					save_scope_as = balkfm_headtaking_ruler_scope
-				}
-			}
-		}
-	}
-	
-	option = { # For MON, headtaking offer rejected, retain headtaking
-		name = balkfm.351.a
-		default_option = yes
-		add_modifier = {
-			name = modifier_balkfm_retained_headtaking
-			months = normal_modifier_time
-		}
-		remove_global_variable = balkfm_headtaking_rejected
-	}
-	
-	option = { # For MON, headtaking offer rejected, abolish unilaterally
-		name = balkfm.351.b
-		remove_modifier = modifier_balkfm_practicing_headtaking
-		add_modifier = {
-			name = modifier_balkfm_unilaterally_abolished_headtaking
-			months = long_modifier_time
-		}
-		remove_global_variable = balkfm_headtaking_rejected
-	}
-	
-	option = { # For MON, headtaking offer accepted
-		name = balkfm.351.c
-		remove_modifier = modifier_balkfm_practicing_headtaking
-		add_modifier = {
-			name = modifier_balkfm_abolished_headtaking
-			months = normal_modifier_time
-		}
-		remove_global_variable = balkfm_headtaking_accepted
-	}
-
+balkfm.351 = {
+	orphan = yes
 }
 
 balkfm.352 = { # Montenegro Offers Ransom
@@ -5299,6 +5195,15 @@ balkfm.352 = { # Montenegro Offers Ransom
 	}
 	
 	immediate = {
+		c:MON ?= {
+			save_scope_as = montenegro_scope
+		}
+		random_character_in_void = {
+			limit = {
+				has_variable = balkfm_captive_event_target
+			}
+			save_scope_as = balkfm_captive_scope
+		}
 	}
 	
 	option = { # Post Bail
@@ -5316,11 +5221,6 @@ balkfm.352 = { # Montenegro Offers Ransom
 		set_global_variable = balkfm_ransom_accepted
 		ai_chance = {
 			base = 8
-			modifier = {
-				trigger = {
-				}
-				add = 0
-			}
 		}
 	}
 	
@@ -5339,11 +5239,6 @@ balkfm.352 = { # Montenegro Offers Ransom
 		set_global_variable = balkfm_ransom_refused
 		ai_chance = {
 			base = 2
-			modifier = {
-				trigger = {
-				}
-				add = 0
-			}
 		}
 	}
 	
@@ -5355,6 +5250,7 @@ balkfm.352 = { # Montenegro Offers Ransom
 			}
 		}
 	}
+	
 }
 
 balkfm.353 = { # Ottoman Reply to Ransom
@@ -5414,6 +5310,9 @@ balkfm.353 = { # Ottoman Reply to Ransom
 				has_variable = balkfm_captive_event_target
 			}
 			save_scope_as = balkfm_captive_scope
+		}
+		c:TUR = {
+			save_scope_as = ottoman_scope
 		}
 	}
 	
@@ -5542,7 +5441,7 @@ balkfm.355 = { # Montenegrin Tribe Rebels (Fired From TUR Scope)
 	dlc = dlc_grefm
 	
 	trigger = {
-		global_var:balkfm_border_influence_var >= 800
+		global_var:balkfm_karadag_var >= 800
 	}
 	
 	cooldown = {
@@ -5645,7 +5544,10 @@ balkfm.356 = { # Tribe Evades Taxation/Requests Aid
 	}
 	
 	cancellation_trigger = {
-		has_global_variable = balkfm_border_conflict_resolved
+		NOR = {
+			has_journal_entry = je_balkfm_mon_black_mountain
+			has_journal_entry = je_balkfm_tur_karadag
+		}
 	}
 	
 	cooldown = {
@@ -5659,9 +5561,17 @@ balkfm.356 = { # Tribe Evades Taxation/Requests Aid
 		c:TUR = {
 			save_scope_as = ottoman_scope
 		}
+		s:STATE_MONTENEGRO = {
+			random_scope_state = {
+				limit = {
+					owner = root
+				}
+				save_scope_as = montenegro_state_scope
+			}
+		}
 	}
 	
-	## Montenegro Taxation Options
+	## Yoshi Commits Tax Fraud
 	
 	option = { # Throw Yoshi in Jail
 		name = balkfm.356.1
@@ -5863,15 +5773,15 @@ balkfm.358 = { # Montenegro Gains Ground
 	}
 	
 	immediate = {
-		balkfm_mon_determine_next_province_effect = yes
+		balkfm_mon_next_province_effect = yes
 	}
 	
 	option = {
 		name = balkfm.358.a
 		default_option = yes
-		balkfm_mon_claim_next_province_effect = yes
+		balkfm_claim_province_effect = yes
 		c:TUR = {
-			balkfm_tur_determine_next_province_effect = yes
+			balkfm_tur_next_province_effect = yes
 			post_notification = notification_balkfm_montenegro_advance
 		}
 	}
@@ -5907,15 +5817,15 @@ balkfm.359 = { # Ottomans Gain Ground
 	}
 	
 	immediate = {
-		balkfm_tur_determine_next_province_effect = yes
+		balkfm_tur_next_province_effect = yes
 	}
 	
 	option = {
 		name = balkfm.359.a
 		default_option = yes
-		balkfm_tur_claim_next_province_effect = yes
+		balkfm_claim_province_effect = yes
 		c:MON = {
-			balkfm_mon_determine_next_province_effect = yes
+			balkfm_mon_next_province_effect = yes
 			post_notification = notification_balkfm_ottoman_advance
 		}
 	}
@@ -5935,12 +5845,173 @@ balkfm.362 = { # OPEN
 	orphan = yes
 }
 
-balkfm.363 = { # OPEN
-	orphan = yes
+balkfm.363 = { # Negociations on Headtaking (TUR)
+	type = country_event
+	placement = root
+	
+	title = balkfm.363.t
+	desc = balkfm.363.d
+	flavor = balkfm.363.f
+	
+	event_image = {
+		video = "asia_politician_parliament_motion"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by balkfm_renounce_headtaking_button
+	}
+	
+	immediate = {
+		c:MON = {
+			save_scope_as = montenegro_scope
+		}
+	}	
+	
+	option = { # For TUR, reject headtaking offer
+		name = balkfm.363.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_retained_headtaking
+			months = long_modifier_time
+		}
+		add_radicals = {
+			culture = cu:serb
+			value = medium_radicals
+		}
+		set_global_variable = balkfm_headtaking_rejected
+		c:MON = {
+			trigger_event = {
+				id = balkfm.364 # Negociations On Headtaking
+			}
+		}
+	}
+	
+	option = { # For TUR, accept headtaking offer
+		name = balkfm.363.b
+		add_modifier = {
+			name = modifier_balkfm_abolished_headtaking
+			months = normal_modifier_time
+		}
+		add_loyalists = {
+			culture = cu:serb
+			value = small_radicals
+		}
+		add_radicals = {
+			strata = rich
+			culture = cu:turkish
+			value = small_radicals
+		}
+		set_global_variable = balkfm_headtaking_accepted
+		c:MON = {
+			trigger_event = {
+				id = balkfm.364 # Negociations On Headtaking
+			}
+		}
+	}
+	
 }
 
-balkfm.364 = { # OPEN
-	orphan = yes
+balkfm.364 = { # Negociations on Headtaking (MON)
+	type = country_event
+	placement = scope:balkfm_headtaking_country_scope
+	
+	title = balkfm.364.t
+	desc = {
+		triggered_desc = {
+			desc = balkfm.364.d1
+			trigger = {
+				has_global_variable = balkfm_headtaking_rejected
+			}
+		}
+		triggered_desc = {
+			desc = balkfm.364.d2
+			trigger = {
+				has_global_variable = balkfm_headtaking_accepted
+			}
+		}
+	}
+	flavor = balkfm.364.f
+	
+	gui_window = event_window_1char_tabloid
+
+	left_icon = scope:balkfm_headtaking_event_scope
+	
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by balkfm_renounce_headtaking_button
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				c:TUR = this
+			}
+			c:MON = {
+				save_scope_as = balkfm_headtaking_country_scope
+				ruler = {
+					save_scope_as = balkfm_headtaking_ruler_scope
+				}
+			}
+		}
+		if = {
+			limit = {
+				c:MON = this
+			}
+			c:TUR = {
+				save_scope_as = balkfm_headtaking_country_scope
+				ruler = {
+					save_scope_as = balkfm_headtaking_ruler_scope
+				}
+			}
+		}
+	}
+	
+	option = { # For MON, headtaking offer rejected, retain headtaking
+		name = balkfm.364.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_retained_headtaking
+			months = normal_modifier_time
+		}
+		remove_global_variable = balkfm_headtaking_rejected
+	}
+	
+	option = { # For MON, headtaking offer rejected, abolish unilaterally
+		name = balkfm.364.b
+		remove_modifier = modifier_balkfm_practicing_headtaking
+		add_modifier = {
+			name = modifier_balkfm_unilaterally_abolished_headtaking
+			months = long_modifier_time
+		}
+		remove_global_variable = balkfm_headtaking_rejected
+	}
+	
+	option = { # For MON, headtaking offer accepted
+		name = balkfm.364.c
+		remove_modifier = modifier_balkfm_practicing_headtaking
+		add_modifier = {
+			name = modifier_balkfm_abolished_headtaking
+			months = normal_modifier_time
+		}
+		remove_global_variable = balkfm_headtaking_accepted
+	}
+
 }
 
 balkfm.365 = { # Negociations Over Cattaro
@@ -8344,7 +8415,7 @@ balkfm.504 = { # Russia Demands Subservience
 	trigger = {
 		NOT = { has_variable = balkfm_bulgaria_consitution_4 }
 		var:balkfm_coup_var <= 60 #
-		exists = c:ERUM
+		exists = c:BUL_RUM
 	}
 	
 	immediate = {
@@ -8354,7 +8425,7 @@ balkfm.504 = { # Russia Demands Subservience
 				save_scope_as = russia_ruler_scope
 			}
 		}
-		c:ERUM = {
+		c:BUL_RUM = {
 			save_scope_as = rumelia_scope
 		}
 		set_variable = balkfm_bulgaria_consitution_4
@@ -8368,7 +8439,7 @@ balkfm.504 = { # Russia Demands Subservience
 			value = 25
 		}
 		change_relations = {
-			country = c:ERUM
+			country = c:BUL_RUM
 			value = -50
 		}
 	}
@@ -8380,7 +8451,7 @@ balkfm.504 = { # Russia Demands Subservience
 			value = -25
 		}
 		change_relations = {
-			country = c:ERUM
+			country = c:BUL_RUM
 			value = 25
 		}
 	}
@@ -9263,7 +9334,7 @@ balkfm.520 = { # An Elected Prince
 	option = { # Alexander Bogoridi, former Governor-General of Rumelia
 		name = balkfm.520.3
 		trigger = {
-			c:ERUM ?= {
+			c:BUL_RUM ?= {
 				is_subject_of = root
 			}
 			exists = scope:balkfm_bogoridi_scope
@@ -11636,7 +11707,7 @@ balkfm.578 = { # Eastern Rumelia Rebels!
 				c:TUR ?= this
 			}
 			create_country = {
-				tag = ERUM
+				tag = BUL_RUM
 				origin = this
 				state = s:STATE_NORTHERN_THRACE.region_state:TUR
 			}
@@ -11645,7 +11716,7 @@ balkfm.578 = { # Eastern Rumelia Rebels!
 					is_country_type = recognized
 				}
 				create_diplomatic_pact = {
-					country = c:ERUM
+					country = c:BUL_RUM
 					type = puppet
 				}
 			}
@@ -11654,12 +11725,12 @@ balkfm.578 = { # Eastern Rumelia Rebels!
 					is_country_type = unrecognized
 				}
 				create_diplomatic_pact = {
-					country = c:ERUM
+					country = c:BUL_RUM
 					type = vassal
 				}
 			}
 		}
-		c:ERUM ?= {
+		c:BUL_RUM ?= {
 			save_scope_as = rumelia_scope
 		}
 		c:TUR ?= {
@@ -11677,7 +11748,7 @@ balkfm.578 = { # Eastern Rumelia Rebels!
 			c:TUR != this
 		}
 		change_relations = {
-			country = c:ERUM
+			country = c:BUL_RUM
 			value = 50
 		}
 	}
@@ -11697,7 +11768,7 @@ balkfm.578 = { # Eastern Rumelia Rebels!
 			add_war_goal = {
 				holder = root
 				type = conquer_state
-				target_state = s:STATE_NORTHERN_THRACE.region_state:ERUM
+				target_state = s:STATE_NORTHERN_THRACE.region_state:BUL_RUM
 			}
 		}
 		hidden_effect = {
@@ -11737,7 +11808,7 @@ balkfm.578 = { # Eastern Rumelia Rebels!
 			value = medium_radicals
 		}
 		add_modifier = {
-			name = modifier_eqfm_caved_to_separatists
+			name = modifier_turkfm_caved_to_separatists
 			months = normal_modifier_time
 		}
 		c:BUL = {
@@ -11866,7 +11937,7 @@ balkfm.581 = { # The Tophane Agreement
 		capital = {
 			save_scope_as = bulgaria_capital_scope
 		}
-		c:ERUM = {
+		c:BUL_RUM = {
 			save_scope_as = rumelia_scope
 		}
 		set_variable = balkfm_annex_rumelia_taken
@@ -11942,7 +12013,7 @@ balkfm.582 = { # An Independent Bulgaria
 			culture = cu:bulgarian
 			value = large_radicals
 		}
-		annex = c:ERUM
+		annex = c:BUL_RUM
 		make_independent = yes
 		create_bidirectional_truce = {
 			country = c:TUR
@@ -12236,7 +12307,7 @@ balkfm.585 = { # change tag to TSAR; branches for pan-slavia or byzfm
 	
 	option = { # Remain Just Bulgaria
 		name = balkfm.585.e
-		change_tag = TSAR
+		change_tag = BUL_TSR
 		custom_tooltip = {
 			text = balkfm_weaksauce_tt
 			hidden_effect = {
@@ -12537,7 +12608,7 @@ balkfm.597 = { # A United Bulgaria
 			culture = cu:bulgarian
 			value = large_radicals
 		}
-		annex = c:ERUM
+		annex = c:BUL_RUM
 	}
 
 }
@@ -12564,20 +12635,22 @@ balkfm.598 = { # The Bulgarian State
 	dlc = dlc_grefm
 	
 	trigger = {
-		NOT = { has_global_variable = balkfm_bulgaria_tag_switch_accepted }
-		has_global_variable = eqfm_berlin_congress_completed
-		NOT = { has_global_variable = balkfm_bulgaria_tag_switch_technical }
-		NOT = { has_variable = balkfm_bulgaria_tag_switch_offered }
+		has_global_variable = balkfm_bulgaria_congress_var
+		NOR = {
+			has_global_variable = turkfm_congress_var
+			has_global_variable = balkfm_bulgarian_switch_var
+			has_variable = balkfm_bulgarian_switch_offer
+		}
 		is_player = yes
-		has_diplomatic_relevance = c:BUL
 		c:BUL ?= {
 			is_ai = yes
 		}
+		has_diplomatic_relevance = c:BUL
 	}
 	
 	immediate = {
-		set_global_variable = balkfm_bulgaria_tag_switch_technical # this is in case we have multiple players
-		set_variable = balkfm_bulgaria_tag_switch_offered
+		set_global_variable = balkfm_bulgarian_switch_var # in case this is an MP game
+		set_variable = balkfm_bulgarian_switch_offer
 		c:BUL = {
 			save_scope_as = bulgaria_scope
 			ruler = {
@@ -12589,11 +12662,15 @@ balkfm.598 = { # The Bulgarian State
 	option = { # Do Nothing
 		name = balkfm.598.a
 		default_option = yes
-		remove_global_variable = balkfm_bulgaria_tag_switch_technical
+		custom_tooltip = {
+			text = turkfm_nothing_happens
+			remove_global_variable = balkfm_bulgarian_switch_var
+		}
 	}
 	
 	option = { # Play as BUL
 		name = balkfm.598.b
+		play_as = c:BUL
 		hidden_effect = {
 			if = {
 				limit = {
@@ -12607,9 +12684,14 @@ balkfm.598 = { # The Bulgarian State
 				}
 			}
 		}
-		set_global_variable = balkfm_bulgaria_tag_switch_accepted
-		remove_global_variable = balkfm_bulgaria_tag_switch_technical
-		play_as = c:BUL
+		remove_global_variable = balkfm_bulgaria_congress_var
+		remove_global_variable = balkfm_bulgarian_switch_var
+		every_country = {
+			limit = {
+				has_variable = balkfm_bulgarian_switch_offer
+			}
+			remove_variable = balkfm_bulgarian_switch_offer
+		}
 	}
 
 }
@@ -14709,7 +14791,7 @@ balkfm.661 = { # A Royal Estate
 		default_option = yes
 		scope:wallachia_state_scope = {
 			create_building = {
-				building = "building_castelul_peles"
+				building = "gbbf_building_castelul_peles"
 				level = 1
 			}
 		}
@@ -15450,7 +15532,7 @@ balkfm.686 = { # Romanian Agitation in State (ROM)
 		name = balkfm.686.a
 		default_option = yes
 		create_incident = {
-			country = scope:balkfm_agitation_owner_scope
+			country = scope:austria_scope
 			value = 10
 		}
 		show_as_tooltip = {
@@ -16434,3 +16516,36 @@ balkfm.981 = { # Restoration of the Triune Kingdom
 	}
 
 }
+
+########################################
+
+#### Vanilla Event Window Variants ####
+# event_window_default
+# event_window_1char_tabloid
+# event_window_1char_propaganda
+# event_window_1char_lord_kitchener
+# event_window_2char
+# event_window_2char_halloween
+# event_window_1char_tabloid_halloween
+# event_window_big_icon_center
+
+#### CMF Character Window Variants ####
+# event_window_1char_adventure
+# event_window_2char_adventure
+# event_window_2char_duel
+# event_window_highlande
+
+#### CMF Superevent Window Variants ####
+# event_window_superevent_newspaper
+# event_window_superevent_newspaper_full
+# event_window_superevent_classic
+# event_window_superevent_classic_full
+# event_window_superevent_modern
+# event_window_superevent_modern_full
+# event_window_superevent_crisis
+
+#### CMF Special Window Variants ####
+# event_window_special
+# event_window_ethics
+
+########################################

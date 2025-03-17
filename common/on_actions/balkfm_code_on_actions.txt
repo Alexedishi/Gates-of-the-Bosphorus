@@ -7,18 +7,31 @@ on_monthly_pulse_country = { # There's a lot of tiny on_actions specified here t
 		grefm_monthly_pulse_1
 		grefm_monthly_pulse_2
 #		grefm_monthly_pulse_3
-#		turkfm_monthly_pulse
+		turkfm_monthly_pulse
 		balkfm_monthly_pulse
-#		yug_flavor_pulse
-		mon_flavor_pulse
-		ser_flavor_pulse
-		bul_flavor_pulse
-		rom_flavor_pulse
-#		bos_flavor_pulse
-#		alb_flavor_pulse
-#		cro_flavor_pulse
-#		slo_flavor_pulse
+		yug_monthly_pulse
+		mon_monthly_pulse
+		ser_monthly_pulse
+		bul_monthly_pulse
+		rom_monthly_pulse
+#		bos_monthly_pulse
+#		alb_monthly_pulse
+#		cro_monthly_pulse
+#		slo_monthly_pulse
 		eocfm_monthly_pulse
+		
+	}
+}
+
+on_country_released_as_independent = {
+	on_actions = {
+		balkfm_country_release_1
+	}
+}
+
+on_country_released_as_own_subject = {
+	on_actions = {
+		balkfm_country_release_2
 	}
 }
 
@@ -26,42 +39,19 @@ on_monthly_pulse_country = { # There's a lot of tiny on_actions specified here t
 
 balkfm_monthly_pulse = { # These events are monitored from all scopes
 	events = {
-		grefm.599 # Reassigns the Revolt Journals
+		turkfm.309 # Adds the Eastern Question JE
+		turkfm.919 # Adds the Piracy JE
 		balkfm.020 # Places Yugoslav Secession Variable
 		balkfm.082 # Ali Pasha Ascendant
-		balkfm.208 # Yugoslavism Fizzles Out
-		balkfm.214# Yugoslavist Uprising in State
+		balkfm.214 # Yugoslavist Uprising in State
 		balkfm.484 # May Assembly
 		balkfm.598 # The Bulgarian State
-		eqfm.009 # Adds je_eqfm_sub as appropriate
-	}
-	effect = {
-		if = {
-			limit = {
-				NOT = {
-					is_target_in_global_variable_list = {
-						name = custom_button_list_flag
-						target = flag:eocfm_sidebar_button_sgui
-					}
-				}
-			}
-			add_to_global_variable_list = {
-				name = custom_button_list_flag
-				target = flag:eocfm_sidebar_button_sgui
-			}
-			remove_list_global_variable = {
-				name = custom_button_list
-				target = ideology:eocfm_sidebar_button_sgui
-			}
-		}
 	}
 }
 
-############
-
 grefm_monthly_pulse_1 = {
 	trigger = {
-		country_has_primary_culture = cu:hellene
+		country_has_primary_culture = cu:greek
 	}
 	events = {
 		grefm.005 # The Bavarocracy Abolished
@@ -78,7 +68,8 @@ grefm_monthly_pulse_1 = {
 		grefm.202 # The Greek Capital
 		grefm.270 # The Lands of Thessaly
 		grefm.290 # The Fate of the Turks
-		grefm.832 # Chariot Race Technical Event
+		grefm.830 # Chariot Race Technical Event
+		grefm.831 # Chariot Racing Re-established
 		grefm.838 # The Combustion Engine Takes the Hippodrome!
 		grefm.901 # non-GRE claims
 	}
@@ -96,6 +87,9 @@ grefm_monthly_pulse_1 = {
 		25 = grefm.292 # Greek Expansion in X
 		10 = grefm.902 # Don Pacifico Affair
 	}
+	effect = {
+		turkfm_hellenic_separatism_effect = yes
+	}
 }
 
 grefm_monthly_pulse_2 = {
@@ -106,6 +100,8 @@ grefm_monthly_pulse_2 = {
 		grefm.114 # Merchantile Rivalry
 		grefm.280 # The Legacy of Romanía
 		grefm.290 # The Fate of the Turks
+		grefm.830 # Chariot Race Technical Event
+		grefm.831 # Chariot Racing Re-established
 		grefm.838 # The Combustion Engine Takes the Hippodrome!
 	}
 	random_events = {
@@ -121,12 +117,46 @@ grefm_monthly_pulse_3 = {
 		country_has_primary_culture = cu:urum
 	}
 	events = {
+		grefm.830 # Chariot Race Technical Event
+		grefm.831 # Chariot Racing Re-established
+		grefm.838 # The Combustion Engine Takes the Hippodrome!
 	}
 	random_events = {
 	}
 }
 
-mon_flavor_pulse = {
+turkfm_monthly_pulse = {
+	trigger = {
+		country_has_primary_culture = cu:turkish
+	}
+	events = {
+		turkfm.204 # Adds je_turkfm_separatism_main
+	}
+	random_events = {
+	}
+}
+
+yug_monthly_pulse = {
+	trigger = {
+		OR = {
+			country_has_primary_culture = cu:serb
+			country_has_primary_culture = cu:bulgarian
+			country_has_primary_culture = cu:bosniak
+			country_has_primary_culture = cu:croat
+			country_has_primary_culture = cu:slovene
+		}
+	}
+	events = {
+		balkfm.208 # Yugoslavism Fizzles Out
+	}
+	random_events = {
+	}
+	effect = {
+		turkfm_yugoslav_separatism_effect = yes
+	}
+}
+	
+mon_monthly_pulse = {
 	trigger = {
 		OR = {
 			c:MON ?= this
@@ -144,13 +174,15 @@ mon_flavor_pulse = {
 		 20 = balkfm.307 # An Intractable Illness
 		 20 = balkfm.308 # The Passing of the Bishop
 	}
+	effect = {
+	}
 }
 
-ser_flavor_pulse = {
+ser_monthly_pulse = {
 	trigger = {
 		OR = {
 			c:SER ?= this
-			c:SRPS ?= this
+			c:SER_SRP ?= this
 		}
 	}
 	events = {
@@ -160,13 +192,13 @@ ser_flavor_pulse = {
 	random_events = {
 		100 = 0
 	}
+	effect = {
+	}
 }
 
-bul_flavor_pulse = {
+bul_monthly_pulse = {
 	trigger = {
-		OR = {
-			country_has_primary_culture = cu:bulgarian
-		}
+		country_has_primary_culture = cu:bulgarian
 	}
 	events = {
 		balkfm.530 # The University of Sofia
@@ -174,19 +206,73 @@ bul_flavor_pulse = {
 	random_events = {
 		100 = 0
 	}
+	effect = {
+	}
 }
 
-rom_flavor_pulse = {
+rom_monthly_pulse = {
 	trigger = {
-		OR = {
-			country_has_primary_culture = cu:romanian
-		}
+		country_has_primary_culture = cu:romanian
 	}
 	events = {
 		balkfm.660 # The Academy of Romania
 	}
 	random_events = {
 		100 = 0
+	}
+	effect = {
+	}
+}
+
+bos_monthly_pulse = {
+	trigger = {
+		country_has_primary_culture = cu:bosniak
+	}
+	events = {
+	}
+	random_events = {
+		100 = 0
+	}
+	effect = {
+	}
+}
+
+alb_monthly_pulse = {
+	trigger = {
+		country_has_primary_culture = cu:albanian
+	}
+	events = {
+	}
+	random_events = {
+		100 = 0
+	}
+	effect = {
+	}
+}
+
+cro_monthly_pulse = {
+	trigger = {
+		country_has_primary_culture = cu:croat
+	}
+	events = {
+	}
+	random_events = {
+		100 = 0
+	}
+	effect = {
+	}
+}
+
+slo_monthly_pulse = {
+	trigger = {
+		country_has_primary_culture = cu:slovene
+	}
+	events = {
+	}
+	random_events = {
+		100 = 0
+	}
+	effect = {
 	}
 }
 
@@ -244,6 +330,24 @@ eocfm_monthly_pulse = {
 				add = 1
 			}
 		}
+		if = { # Adds the Orthodox button to the community sidebar
+			limit = {
+				NOT = {
+					is_target_in_global_variable_list = {
+						name = custom_button_list_flag
+						target = flag:eocfm_sidebar_button_sgui
+					}
+				}
+			}
+			add_to_global_variable_list = {
+				name = custom_button_list_flag
+				target = flag:eocfm_sidebar_button_sgui
+			}
+			remove_list_global_variable = {
+				name = custom_button_list
+				target = ideology:eocfm_sidebar_button_sgui
+			}
+		}
 	}
 }
 
@@ -277,21 +381,7 @@ eocfm_schism_monthly_pulse = {
 
 ############
 
-#These on_actions are specifically to catch Bulgaria and create it as BUL & ERUM if possible
-
-on_country_released_as_independent = {
-	on_actions = {
-		balkfm_release_pulse_1
-	}
-}
-
-on_country_released_as_own_subject = {
-	on_actions = {
-		balkfm_release_pulse_2
-	}
-}
-
-balkfm_release_pulse_1 = { # BUL keeps ERUM if fully independent
+balkfm_country_release_1 = { # BUL keeps BUL_RUM if fully independent
 	effect = {
 		if = {
 			limit = {
@@ -309,7 +399,7 @@ balkfm_release_pulse_1 = { # BUL keeps ERUM if fully independent
 	}
 }
 
-balkfm_release_pulse_2 = { # Splits BUL and ERUM if BUL is released as a subject
+balkfm_country_release_2 = { # Splits BUL and BUL_RUM if BUL is released as a subject
 	effect = {
 		if = {
 			limit = {
@@ -330,7 +420,7 @@ balkfm_release_pulse_2 = { # Splits BUL and ERUM if BUL is released as a subject
 					}
 				}
 				create_country = {
-					tag = ERUM
+					tag = BUL_RUM
 					origin = this
 					state = s:STATE_NORTHERN_THRACE.region_state:TUR
 					on_created = {
@@ -338,7 +428,7 @@ balkfm_release_pulse_2 = { # Splits BUL and ERUM if BUL is released as a subject
 				}
 				c:TUR ?= {
 					create_diplomatic_pact = {
-						country = c:ERUM
+						country = c:BUL_RUM
 						type = puppet
 					}
 				}
@@ -350,7 +440,7 @@ balkfm_release_pulse_2 = { # Splits BUL and ERUM if BUL is released as a subject
 					}
 				}
 				create_country = {
-					tag = ERUM
+					tag = BUL_RUM
 					origin = this
 					state = s:STATE_NORTHERN_THRACE.region_state:BUL
 					on_created = {
@@ -358,7 +448,7 @@ balkfm_release_pulse_2 = { # Splits BUL and ERUM if BUL is released as a subject
 				}
 				c:TUR ?= {
 					create_diplomatic_pact = {
-						country = c:ERUM
+						country = c:BUL_RUM
 						type = puppet
 					}
 				}
@@ -371,20 +461,20 @@ balkfm_release_pulse_2 = { # Splits BUL and ERUM if BUL is released as a subject
 
 on_secession_start = {
 	on_actions = {
-		eqfm_secession_start
+		turkfm_secession_start
 	}
 }
 
-eqfm_secession_start = {
+turkfm_secession_start = {
 	effect = {
 		if = {
 			limit = {
-				has_journal_entry = je_eqfm_main
+				has_journal_entry = je_turkfm_separatism_main
 				scope:target = {
 					balkfm_balkans_native_trigger = yes
 				}
 			}
-			eqfm_secession_start_effect = yes
+			turkfm_secession_start_effect = yes
 		}
 	}		
 }
@@ -393,14 +483,48 @@ eqfm_secession_start = {
 
 on_wargoal_enforced = {
 	on_actions = {
+		turkfm_wargoal_enforced_1
+		turkfm_wargoal_enforced_2
 		eocfm_wargoal_enforced_1
 		eocfm_wargoal_enforced_2
-		eqfm_crisis_wargoal_enforced
-#		eqfm_thunderdome_wargoal_enforced
 	}
 }
 
-# These on_actions changes the Crusade target's state religion or penalize the Crusade initiator if they lose. The crusade variables are set by the Crusade DP. This is very janky, I agree.
+turkfm_wargoal_enforced_1 = { # From TUR, in the case of Ottoman victory
+	trigger = {
+		has_global_variable = turkfm_crisis_launched
+		has_variable = turkfm_crisis_target
+		scope:target = {
+			has_variable = turkfm_crisis_leader
+		}
+	}
+	effect = {
+		remove_global_variable = turkfm_crisis_launched
+		every_country = {
+			limit = {
+				turkfm_crisis_participant_trigger = yes
+			}
+			trigger_event = {
+				id = turkfm.328 # The Porte Triumphant
+			}
+		}
+		turkfm_force_stable_effect = yes # Skip the Congress, transition to Stable
+	}
+}
+
+turkfm_wargoal_enforced_2 = { # From Crisis initiator, in the case of Ottoman defeat
+	trigger = {
+		has_global_variable = turkfm_crisis_launched
+		has_variable = turkfm_crisis_leader
+		scope:target = {
+			has_variable = turkfm_crisis_target
+		}
+	}
+	effect = {
+		remove_global_variable = turkfm_crisis_launched
+		turkfm_crisis_armistice_effect = yes
+	}
+}
 
 eocfm_wargoal_enforced_1 = { # From the initiator, in the case of crusade success
 	trigger = {
@@ -426,7 +550,7 @@ eocfm_wargoal_enforced_1 = { # From the initiator, in the case of crusade succes
 eocfm_wargoal_enforced_2 = { # From the target, in the case of crusade failure
 	trigger = {
 		has_variable = eocfm_crusade_target
-		any_country = { # scope:initiator and scope:actor aren't available here, pdx pls
+		scope:target = {
 			has_variable = eocfm_crusade_initiator
 		}
 	}
@@ -440,59 +564,6 @@ eocfm_wargoal_enforced_2 = { # From the target, in the case of crusade failure
 				id = eocfm.132 # Failed Crusade
 			}
 			eocfm_crusade_cleanup_effect = yes
-		}
-	}
-}
-
-# These on_actions trigger after the Great Eastern Crisis ideally. DPs are janky enough that these could get effed by concurrent wars but it's what we have.
-
-eqfm_crisis_wargoal_enforced = {
-	trigger = {
-		has_global_variable = eqfm_crisis_happened
-		OR = {
-			has_variable = eqfm_crisis_target
-			has_variable = eqfm_crisis_initiator
-		}
-	}
-	effect = {
-		if = {
-			limit = {
-				has_variable = eqfm_crisis_initiator
-				NOT = { has_global_variable = eqfm_berlin_congress_var }
-			}
-			every_country = {
-				limit = {
-					has_variable = eqfm_crisis_offered
-					NOT = { has_variable = eqfm_congress_offered }
-				}
-				trigger_event = {
-					id = eqfm.119 # The Treaty of San Stefano
-				}
-			}
-			if = {
-				limit = {
-					NOT = { has_global_variable = eqfm_berlin_congress_var }
-				}
-				set_global_variable = {
-					name = eqfm_berlin_congress_var
-					value = 0
-				}
-			}
-		}
-		if = {
-			limit = {
-				has_variable = eqfm_crisis_target
-				NOT = { has_variable = eqfm_congress_offered }
-			}
-			every_country = {
-				limit = {
-					has_variable = eqfm_crisis_offered
-				}
-				trigger_event = {
-					id = eqfm.118 # The Porte Triumphant
-				}
-			}
-			set_global_variable = eqfm_porte_triumphant_var
 		}
 	}
 }

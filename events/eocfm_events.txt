@@ -1,18 +1,11 @@
 ﻿##################################
 # EASTERN ORTHODOX FLAVOR EVENTS #
 ##################################
-# Events contained here pertain to content directly relating to the Eastern Orthodoxy. 
-# For the most part, these are triggered by eocfm_monthly_pulse or the eocfm_main gui.
-# A few very niche events have hooks to this module, but it is standalone for the most part.
 
-####################
-
-# For Greece content, see the "grefm" module
-# For Byzantium content, see the "byzfm" module
+# For Greek content, see the "grefm" module
+# For Turkish content, see the "turkfm" module
 # For Balkan Nations content, see the "balkfm" module
-# For Ottoman/Turkish content, see the "turkfm" module
 # For Orthodox Church content, see the "eocfm" module
-# For Eastern Question content, see the "eqfm" module
 
 ####################
 
@@ -217,6 +210,7 @@ eocfm.001 = { # The Bishops of the East (Generic)
 		name = eocfm.001.a
 		default_option = yes
 		eocfm_update_seat_bonus_effect = yes
+		custom_tooltip = turkfm_no_effects
 	}
 	
 }
@@ -267,6 +261,7 @@ eocfm.003 = { # Greek Holy Synod
 		name = eocfm.003.a
 		default_option = yes
 		eocfm_update_seat_bonus_effect = yes
+		custom_tooltip = turkfm_no_effects
 	}
 
 }
@@ -316,6 +311,7 @@ eocfm.004 = { # Most Holy Synod (RUS)
 			add = 100
 		}
 		eocfm_update_seat_bonus_effect = yes
+		custom_tooltip = turkfm_no_effects
 	}
 
 }
@@ -576,11 +572,13 @@ eocfm.020 = { # Commissioning an Icon
 	desc = eocfm.020.d
 	flavor = eocfm.020.f
 	
+	gui_window = event_window_ethics
+	
 	event_image = {
 		video = "southamerica_christianity"
 	}
 	
-	icon = "gfx/interface/icons/event_icons/event_icon.dds"
+	icon = "gfx/interface/icons/event_icons/event_iconostasis.dds"
 	
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
@@ -592,194 +590,85 @@ eocfm.020 = { # Commissioning an Icon
 		# triggered by eocfm_commission_icon_button
 	}
 	
-	cancellation_trigger = {
-		OR = {
-			eocfm_has_icon_trigger = yes
-			NOR = {
-				has_variable = icon_page_1
-				has_variable = icon_page_2
-				has_variable = icon_page_3
-			}
-		}
-	}
-	
 	immediate = {
 		ig:ig_devout = {
 			save_scope_as = devout_scope
 		}
 	}
 	
-	## PAGE 1 ##
-	
 	option = {
 		name = eocfm.020.1
-		trigger = {
-			has_variable = icon_page_1
+		default_option = yes
+		custom_tooltip = eocfm.020.1.tt
+		if = {
+			limit = {
+				eocfm_has_icon_trigger = no
+			}
+			custom_tooltip = turkfm_no_effects
 		}
-		add_modifier = {
-			name = modifier_eocfm_icon_christ_pantocrator
-			months = long_modifier_time
+		else = {
+			eocfm_remove_icon_modifiers_effect = yes
 		}
-		remove_variable = icon_page_1
 	}
-
+	
 	option = {
 		name = eocfm.020.2
-		trigger = {
-			has_variable = icon_page_1
-		}
-		add_modifier = {
-			name = modifier_eocfm_icon_eleusa
-			months = long_modifier_time
-		}
-		remove_variable = icon_page_1
+		custom_tooltip = eocfm.020.2.tt
+		eocfm_remove_icon_modifiers_effect = yes
+		add_modifier = modifier_eocfm_icon_christ_pantocrator
 	}
-
+	
 	option = {
 		name = eocfm.020.3
-		trigger = {
-			has_variable = icon_page_1
-		}
-		add_modifier = {
-			name = modifier_eocfm_icon_john_climacus
-			months = long_modifier_time
-		}
-		remove_variable = icon_page_1
+		custom_tooltip = eocfm.020.3.tt
+		eocfm_remove_icon_modifiers_effect = yes
+		add_modifier = modifier_eocfm_icon_eleusa
 	}
 	
-	option = { # Show Page 2
-		name = eocfm.020.a
-		trigger = {
-			has_variable = icon_page_1
-		}
-		custom_tooltip = eocfm.020.tt
-		remove_variable = icon_page_1
-		set_variable = icon_page_2
-		hidden_effect = {
-			trigger_event = {
-				id = eocfm.020
-				popup = yes
-			}
-		}
-	}
-	
-	## PAGE 2 ##
-
 	option = {
 		name = eocfm.020.4
-		trigger = {
-			has_variable = icon_page_2
-		}
-		add_modifier = {
-			name = modifier_eocfm_icon_michael_archistrategos
-			months = long_modifier_time
-		}
-		remove_variable = icon_page_2
+		custom_tooltip = eocfm.020.4.tt
+		eocfm_remove_icon_modifiers_effect = yes
+		add_modifier = modifier_eocfm_icon_john_climacus
 	}
-
+	
 	option = {
 		name = eocfm.020.5
-		trigger = {
-			has_variable = icon_page_2
-		}
-		add_modifier = {
-			name = modifier_eocfm_icon_nikolaos_wonderworker
-			months = long_modifier_time
-		}
-		remove_variable = icon_page_2
+		custom_tooltip = eocfm.020.5.tt
+		eocfm_remove_icon_modifiers_effect = yes
+		add_modifier = modifier_eocfm_icon_michael_archistrategos
 	}
-
+	
 	option = {
 		name = eocfm.020.6
-		trigger = {
-			has_variable = icon_page_2
-		}
-		add_modifier = {
-			name = modifier_eocfm_icon_gregory_nazianzus
-			months = long_modifier_time
-		}
-		remove_variable = icon_page_2
-	}
-
-	option = { # Show Page 3
-		name = eocfm.020.a
-		trigger = {
-			has_variable = icon_page_2
-		}
-		custom_tooltip = eocfm.020.tt
-		remove_variable = icon_page_2
-		set_variable = icon_page_3
-		hidden_effect = {
-			trigger_event = {
-				id = eocfm.020
-				popup = yes
-			}
-		}
+		custom_tooltip = eocfm.020.6.tt
+		eocfm_remove_icon_modifiers_effect = yes
+		add_modifier = modifier_eocfm_icon_nikolaos_wonderworker
 	}
 	
-	## PAGE 3 ##
-
 	option = {
 		name = eocfm.020.7
-		trigger = {
-			has_variable = icon_page_3
-		}
-		add_modifier = {
-			name = modifier_eocfm_icon_paul_of_thebes
-			months = long_modifier_time
-		}
-		remove_variable = icon_page_3
+		custom_tooltip = eocfm.020.7.tt
+		eocfm_remove_icon_modifiers_effect = yes
+		add_modifier = modifier_eocfm_icon_gregory_nazianzus
 	}
-
+	
 	option = {
 		name = eocfm.020.8
-		trigger = {
-			has_variable = icon_page_3
-		}
-		add_modifier = {
-			name = modifier_eocfm_icon_issac_the_syrian
-			months = long_modifier_time
-		}
-		remove_variable = icon_page_3
+		custom_tooltip = eocfm.020.8.tt
+		eocfm_remove_icon_modifiers_effect = yes
+		add_modifier = modifier_eocfm_icon_paul_of_thebes
 	}
-
-
+	
 	option = {
 		name = eocfm.020.9
-		trigger = {
-			has_variable = icon_page_3
-		}
-		add_modifier = {
-			name = modifier_eocfm_icon_basil_megas
-			months = long_modifier_time
-		}
-		remove_variable = icon_page_3
+		custom_tooltip = eocfm.020.9.tt
+		eocfm_remove_icon_modifiers_effect = yes
+		add_modifier = modifier_eocfm_icon_issac_the_syrian
 	}
 	
-	option = { # Show Page 1
-		name = eocfm.020.a
-		trigger = {
-			has_variable = icon_page_3
-		}
-		custom_tooltip = eocfm.020.tt
-		remove_variable = icon_page_3
-		set_variable = icon_page_1
-		hidden_effect = {
-			trigger_event = {
-				id = eocfm.020
-				popup = yes
-			}
-		}
-	}
-	
-	## CANCEL OPTION ##
-
-	option = {
-		name = eocfm.020.b
-		default_option = yes
-		remove_variable = icon_page_1
-		remove_variable = icon_page_2
-		remove_variable = icon_page_3		
+	after = {
+		remove_variable = eocfm_icon_var
 	}
 	
 }
@@ -4443,7 +4332,7 @@ eocfm.184 = { # Liturgical Language (Debate Event)
 		NOR = {
 			has_variable = eocfm_language_disputed
 			has_variable = eocfm_schism_event_cooldown_var
-			country_has_primary_culture = cu:hellene
+			country_has_primary_culture = cu:greek
 		}
 		has_technology_researched = mass_communication
 	}
@@ -4475,7 +4364,7 @@ eocfm.184 = { # Liturgical Language (Debate Event)
 			value = medium_radicals
 		}
 		add_radicals = {
-			culture = cu:hellene
+			culture = cu:greek
 			value = medium_radicals
 		}
 		custom_tooltip = {
@@ -4494,7 +4383,7 @@ eocfm.184 = { # Liturgical Language (Debate Event)
 			months = very_long_modifier_time
 		}
 		add_loyalists = {
-			culture = cu:hellene
+			culture = cu:greek
 			value = medium_radicals
 		}
 		add_radicals = {
@@ -4554,7 +4443,7 @@ eocfm.185 = { # Ecclesiatic Purges (Advance Event)
 		default_option = yes
 		add_modifier = modifier_eocfm_purged_ecclesiarchy
 		add_radicals = {
-			culture = cu:hellene
+			culture = cu:greek
 			value = medium_radicals
 		}
 		create_incident = {
@@ -4965,7 +4854,7 @@ eocfm.300 = { # The Partiarchate Rises
 	desc = eocfm.300.d
 	flavor = eocfm.300.f
 
-	gui_window = event_window_superevent_classic
+	gui_window = event_window_superevent
 
 	event_image = {
 		video = "votp_monarch_holding_court"
@@ -5020,7 +4909,7 @@ eocfm.301 = { # The Metropolitan Lands
 		video = "byzfm_georgios_averof"
 	}
 	
-	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+	icon = "gfx/interface/icons/event_icons/event_crozier.dds"
 
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
@@ -5146,7 +5035,7 @@ eocfm.302 = { # The Orthodox Realms
 
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
-	icon = "gfx/interface/icons/event_icons/event_russkie.dds"
+	icon = "gfx/interface/icons/event_icons/event_crozier.dds"
 
 	duration = 3
 	
@@ -5165,7 +5054,7 @@ eocfm.302 = { # The Orthodox Realms
 	option = {
 		name = eocfm.302.a
 		default_option = yes
-		change_tag = ODXY
+		change_tag = EOC_ODX
 		add_modifier = {
 			name = modifier_grefm_imperial_glory
 		}
@@ -5245,7 +5134,7 @@ eocfm.303 = { # The Capture of the Great Mosque
 			religion = rel:shiite
 		}
 		scope:hedjaz_state = {
-			remove_building = building_masjid_al_haram
+			remove_building = gbbf_building_masjid_al_haram
 			set_devastation = 90
 		}
 		if = {
@@ -5270,7 +5159,7 @@ eocfm.303 = { # The Capture of the Great Mosque
 			religion = rel:shiite
 		}
 		scope:hedjaz_state = {
-			remove_building = building_masjid_al_haram
+			remove_building = gbbf_building_masjid_al_haram
 			set_devastation = 10
 		}
 		change_infamy = 10
@@ -5634,16 +5523,37 @@ eocfm.309 = { # The Supreme Pontiff of the Universal Church
 
 #### HIDDEN EVENTS ####
 
-eocfm.900 = { # OPEN
-	type = country_event
-	placement = root
-	hidden = yes
-	
-	trigger = {
-	}
-	
-	immediate = {
-	}
-	
-	orphan = yes
-}
+
+
+########################################
+
+#### Vanilla Event Window Variants ####
+# event_window_default
+# event_window_1char_tabloid
+# event_window_1char_propaganda
+# event_window_1char_lord_kitchener
+# event_window_2char
+# event_window_2char_halloween
+# event_window_1char_tabloid_halloween
+# event_window_big_icon_center
+
+#### CMF Character Window Variants ####
+# event_window_1char_adventure
+# event_window_2char_adventure
+# event_window_2char_duel
+# event_window_highlande
+
+#### CMF Superevent Window Variants ####
+# event_window_superevent_newspaper
+# event_window_superevent_newspaper_full
+# event_window_superevent_classic
+# event_window_superevent_classic_full
+# event_window_superevent_modern
+# event_window_superevent_modern_full
+# event_window_superevent_crisis
+
+#### CMF Special Window Variants ####
+# event_window_special
+# event_window_ethics
+
+########################################

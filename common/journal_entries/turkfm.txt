@@ -1,11 +1,39 @@
-﻿########################
-# THE EASTERN QUESTION #
-########################
+﻿##########################
+# TURKFM JOURNAL ENTRIES #
+##########################
+
+# Content contained here pertains to the Ottoman Empire / Turkish State and associated states
+
+####################
+
+# For Greek content, see the "grefm" module
+# For Turkish content, see the "turkfm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Orthodox Church content, see the "eocfm" module
+
+####################
+
+####  TABLE OF CONTENTS  ####
+
+# TURK0 - THE LAST STRUGGLE OF THE OTTOMAN EMPIRE
+# TURK1 - THE REORDERING OF THE EMPIRE
+# TURK2 - THE RISE OF NATIONALISM
+# TURK3 - THE EASTERN QUESTION
+# TURK4 - OTTOMAN NATIONAL REVIVALS
+# TURK5 - TURKISH HISTORICAL FLAVOR
+# TURK6 - TURKISH NATIONALISM
+# TURK7 - OPEN
+# TURK8 - OPEN
+# TURK9 - OPEN
+
+####################
+
+#######################################################
+##  #TURK0  THE LAST STRUGGLE OF THE OTTOMAN EMPIRE  ##
+#######################################################
 
 je_turkfm_sick_man_main = {
-	# This is a temporary replacement because the default journal SUCKS. FIGHT ME
-	
-	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
 	
 	group = je_group_turkfm_sick_man
 	
@@ -18,22 +46,122 @@ je_turkfm_sick_man_main = {
 		modifier_turkfm_sick_man
 	}
 	
+	scripted_progress_bar = turkfm_sick_main_progress_bar
+	
 	complete = {
-		scope:journal_entry = {
-			is_goal_complete = yes
+		country_rank >= rank_value:great_power
+		custom_tooltip = {
+			text = turkfm_controls_anatolia_tt
+			hidden_trigger = {
+				has_variable = turkfm_controls_anatolia
+			}
+		}
+		calc_true_if = {
+			amount >= 3
+			custom_tooltip = {
+				text = turkfm_controls_balkans_tt
+				hidden_trigger = {
+					has_variable = turkfm_controls_balkans
+				}
+			}
+			custom_tooltip = {
+				text = turkfm_controls_arabia_tt
+				hidden_trigger = {
+					has_variable = turkfm_controls_arabia
+				}
+			}
+			custom_tooltip = {
+				text = turkfm_controls_nile_tt
+				hidden_trigger = {
+					has_variable = turkfm_controls_nile
+				}
+			}
+			custom_tooltip = {
+				text = turkfm_controls_danubia_tt
+				hidden_trigger = {
+					has_variable = turkfm_controls_danubia
+				}
+			}
+			custom_tooltip = {
+				text = turkfm_controls_caucasus_tt
+				hidden_trigger = {
+					has_variable = turkfm_controls_caucasus
+				}
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_separatism_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_separatism_complete
+			}
 		}
 	}
 	
 	on_complete = {
 		trigger_event = {
-			id = sick_man.2
+			id = turkfm.009 # The Healthy Man of Europe
+		}
+		set_global_variable = turkfm_sick_man_complete
+	}
+
+	fail = {
+		custom_tooltip = {
+			text = turkfm_lost_balkans_tt
+			hidden_trigger = {
+				NOT = {
+					has_variable = turkfm_controls_balkans
+				}
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_lost_anatolia_tt
+			hidden_trigger = {
+				NOT = {
+					has_variable = turkfm_controls_anatolia
+				}
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_lost_arabia_tt
+			hidden_trigger = {
+				NOT = {
+					has_variable = turkfm_controls_arabia
+				}
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_lost_nile_tt
+			hidden_trigger = {
+				NOT = {
+					has_variable = turkfm_controls_nile
+				}
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_lost_danubia_tt
+			hidden_trigger = {
+				NOT = {
+					has_variable = turkfm_controls_danubia
+				}
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_lost_caucasus_tt
+			hidden_trigger = {
+				NOT = {
+					has_variable = turkfm_controls_caucasus
+				}
+			}
 		}
 	}
 
-	timeout = 14600
-
-	on_timeout = {
-		remove_modifier = sick_man_of_europe
+	on_fail = {
 		trigger_event = {
 			id = turkfm.008 # The Dead Man of Europe
 		}
@@ -44,36 +172,205 @@ je_turkfm_sick_man_main = {
 			}
 			custom_tooltip = sick_man_of_europe_lose_power_bloc
 		}
+		set_global_variable = turkfm_sick_man_complete
 	}
 	
-	current_value = {
-		value = var:sick_man_var
+	on_weekly_pulse = {
+		events = {
+			turkfm.005 # Region Lost
+			turkfm.006 # Region Secured
+		}
+		effect = {
+			turkfm_calculate_sick_man_effect = yes
+		}
+	}
+	
+	on_monthly_pulse = {
+		events = {
+			turkfm.018 # A Consuming Sickness
+		}
 	}
 
-	goal_add_value = {
-		add = 4
-	}
-
-	progressbar = yes
-
-	weight = 10000
+	weight = 5000
 	
 }
 
-je_turkfm_eastern_question = {
-	icon = "gfx/interface/icons/event_icons/event_fez.dds"
-	
+je_sick_man_syria = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
 	group = je_group_turkfm_sick_man
+
+	complete = {
+		owns_entire_state_region = STATE_ALEPPO
+		owns_entire_state_region = STATE_SYRIA
+		owns_entire_state_region = STATE_LEBANON
+		owns_entire_state_region = STATE_PALESTINE
+		owns_entire_state_region = STATE_TRANSJORDAN
+		owns_entire_state_region = STATE_ADANA
+	}
+
+	modifiers_while_active = {
+	}
+
+	on_complete = {
+		add_journal_entry = {
+			type = je_sick_man_egypt
+		}
+		s:STATE_SINAI = {
+			add_claim = ROOT
+		}
+		s:STATE_UPPER_EGYPT = {
+			add_claim = ROOT
+		}
+		s:STATE_MIDDLE_EGYPT = {
+			add_claim = ROOT
+		}
+		s:STATE_LOWER_EGYPT = {
+			add_claim = ROOT
+		}
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_sick_man_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_sick_man_complete
+			}
+		}
+	}
+
+	on_weekly_pulse = {
+		events = {
+			egyptian_crisis_events.1
+		}
+	}
+
+	transferable = no
+
+	weight = 4500
+	
+}
+
+je_sick_man_egypt = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	group = je_group_turkfm_sick_man
+
+	complete = {
+		OR = {
+			AND = {
+				exists = c:EGY
+				c:EGY = {
+					is_subject_of = ROOT
+				}
+				country_or_subject_owns_entire_state_region = STATE_SINAI
+				country_or_subject_owns_entire_state_region = STATE_UPPER_EGYPT
+				country_or_subject_owns_entire_state_region = STATE_MIDDLE_EGYPT
+				country_or_subject_owns_entire_state_region = STATE_LOWER_EGYPT
+			}
+			AND = {
+				owns_entire_state_region = STATE_SINAI
+				owns_entire_state_region = STATE_UPPER_EGYPT
+				owns_entire_state_region = STATE_MIDDLE_EGYPT
+				owns_entire_state_region = STATE_LOWER_EGYPT
+			}
+		}
+	}
+
+	on_complete = {
+		
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_sick_man_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_sick_man_complete
+			}
+		}
+	}
+
+	weight = 4500
+	
+}
+
+je_turkfm_sick_man_crete = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	group = je_group_turkfm_sick_man
+
+	complete = {
+		OR = {
+			owns_entire_state_region = STATE_CRETE
+			c:CRE ?= {
+				is_subject_of = root
+			}
+		}
+	}
+
+	on_complete = {
+		
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_sick_man_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_sick_man_complete
+			}
+		}
+	}
+
+	weight = 4500
+	
+}
+
+je_turkfm_sick_man_caucasus = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	group = je_group_turkfm_sick_man
+
+	complete = {
+		owns_entire_state_region = STATE_KARS
+		owns_entire_state_region = STATE_ARMENIA
+		owns_entire_state_region = STATE_GREATER_CAUCASUS
+		owns_entire_state_region = STATE_ELIZAVETPOL
+		owns_entire_state_region = STATE_AZERBAIJAN
+	}
+
+	on_complete = {
+		
+	}
+	
+	fail = {
+		NOT = {
+			any_scope_state = {
+				region = sr:region_caucasus
+			}
+		}
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_sick_man_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_sick_man_complete
+			}
+		}
+	}
+
+	weight = 4500
+	
 }
 
 ############################################
-# THE REORGANIZATION OF THE OTTOMAN EMPIRE #
+##  #TURK1  THE REORDERING OF THE EMPIRE  ##
 ############################################
 
-je_turkfm_tanzimat = {
+je_turkfm_tanzimat_main = {
 	icon = "gfx/interface/icons/event_icons/event_fez.dds"
 	
-	group = je_group_turkfm_sick_man
+	group = je_group_turkfm_tanzimat
 	
 	should_be_pinned_by_default = yes
 	
@@ -81,8 +378,1621 @@ je_turkfm_tanzimat = {
 	}
 	
 	modifiers_while_active = {
-		
+		modifier_turkfm_decentralized_administration
 	}
+	
+	scripted_progress_bar = turkfm_tanzimat_progress_bar
+	
+	scripted_button = turkfm_start_tanzimat_button
+	
+	complete = {
+		custom_tooltip = {
+			text = je_turkfm_tanzimat_main_complete
+			hidden_trigger = {
+				var:turkfm_tanzimat_var >= 1000
+			}
+		}
+	}
+	
+	on_complete = {
+		trigger_event = {
+			id = turkfm.109 # The Ottoman Motherland
+		}
+	}
+	
+	fail = {
+		custom_tooltip = {
+			text = je_turkfm_tanzimat_main_fail
+			hidden_trigger = {
+				var:turkfm_tanzimat_var <= 0
+			}
+		}
+	}
+	
+	on_fail = {
+		show_as_tooltip = {
+			trigger_event = {
+				id = turkfm.108 # The Eternal Caliphate
+			}
+		}
+		if = {
+			limit = {
+#				has_variable = turkfm_1913_coup_happened
+				always = no # TODO remove when young turks ready
+			}
+			trigger_event = {
+				id = turkfm.107 # The Three Pashas
+			}
+		}
+		else = {
+			trigger_event = {
+				id = turkfm.108 # The Eternal Caliphate
+			}
+		}
+	}
+	
+	on_weekly_pulse = {
+		effect = {
+			set_variable = {
+				name = turkfm_tanzimat_progress_var
+				value = turkfm_tanzimat_progress_value
+			}
+		}
+	}
+	
+	on_monthly_pulse = {
+		random_events = {
+			chance_of_no_event = 95
+			5 = turkfm.102 # The Men of the Tanzimat
+		}
+		effect = {
+			change_variable = {
+				name = turkfm_tanzimat_var
+				add = var:turkfm_tanzimat_progress_var
+			}
+			clamp_global_variable = {
+				name = turkfm_tanzimat_var
+				max = 1000
+				min = 0
+			}
+			je:je_turkfm_tanzimat_main = {
+				set_bar_progress = {
+					name = turkfm_tanzimat_progress_bar
+					value = var:turkfm_tanzimat_var
+				}
+			}
+		}
+	}
+	
+	weight = 4000
 
 }
 
+je_turkfm_tanzimat_argiculture = {
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+	
+	group = je_group_turkfm_tanzimat
+	
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_global_variable = turkfm_tanzimat_complete
+		}
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_started_tt
+			has_global_variable = turkfm_tanzimat_started
+		}
+		has_modifier = modifier_turkfm_feudal_argiculture
+	}
+	
+	complete = {
+		NOR = {
+			has_law = law_type:law_traditionalism
+			has_law = law_type:law_agrarianism
+		}
+		NOR = {
+			has_law = law_type:law_serfdom
+			has_law = law_type:law_tenant_farmers
+		}
+		any_scope_building = {
+			is_building_type = building_wheat_farm
+			NOT = {
+				has_active_production_method = pm_simple_farming
+			}
+			level >= 10
+			weekly_profit > 5
+			occupancy >= 0.9
+		}
+	}
+	
+	on_complete = {
+		trigger_event = {
+			id = turkfm.110 # Modernized Agriculture
+		}
+		show_as_tooltip = {
+			turkfm_advance_ottomanism1_effect = yes
+			turkfm_complete_reform_effect = yes
+		}
+	}
+	
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+	}
+	
+	weight = 3500
+}
+
+je_turkfm_tanzimat_army = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	
+	group = je_group_turkfm_tanzimat
+	
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_global_variable = turkfm_tanzimat_complete
+		}
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_started_tt
+			has_global_variable = turkfm_tanzimat_started
+		}
+		has_modifier = modifier_turkfm_cizye_tax
+	}
+	
+	complete = {
+		army_size >= 100
+		has_technology_researched = napoleonic_warfare
+		any_scope_building = {
+			filter = {
+				is_building_type = building_barracks
+			}			
+			NOR = {
+				building_has_goods_shortage = yes
+				has_active_production_method = pm_no_organization
+			}
+			percent = 1
+		}
+		NOT = {
+			any_military_formation = {
+				filter = {
+					is_army = yes
+				}
+				any_combat_unit = {
+					has_unit_type = unit_type:combat_unit_type_irregular_infantry
+				}
+				percent >= 0.25
+			}
+		}
+	}
+	
+	on_complete = {
+		trigger_event = {
+			id = turkfm.111 # A Formidable Army
+		}
+		show_as_tooltip = {
+			turkfm_advance_ottomanism1_effect = yes
+			turkfm_complete_reform_effect = yes
+		}
+	}
+	
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+	}
+	
+	weight = 3500
+}
+
+je_turkfm_tanzimat_bureaucracy = {
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	
+	group = je_group_turkfm_tanzimat
+	
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_global_variable = turkfm_tanzimat_complete
+		}
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_started_tt
+			has_global_variable = turkfm_tanzimat_started
+		}
+		has_modifier = modifier_turkfm_outmoded_bureaucracy
+	}
+	
+	complete = {
+		NOT = {
+			has_law = law_type:law_hereditary_bureaucrats
+		}
+		any_scope_building = {
+			is_building_type = building_university
+			NOR = {
+				has_active_production_method = pm_simple_organization
+				has_active_production_method = pm_religious_bureaucrats
+			}
+			occupancy > 0.9
+			level >= 5
+		}
+		any_scope_building = {
+			filter = {
+				is_building_type = building_government_administration
+			}
+			count = all
+			NOR = {
+				has_active_production_method = pm_simple_organization
+				has_active_production_method = pm_religious_bureaucrats
+			}
+			occupancy >= 0.9
+		}
+		bureaucracy >= 0 
+		approaching_bureaucracy_shortage = no
+	}
+	
+	on_complete = {
+		trigger_event = {
+			id = turkfm.112 # Stately Governance
+		}
+		show_as_tooltip = {
+			turkfm_advance_ottomanism1_effect = yes
+			turkfm_complete_reform_effect = yes
+			ig:ig_intelligentsia = {
+				remove_ideology = turkfm_ideology_scribalistic
+				remove_ideology = ideology_moralist
+				add_ideology = ideology_anti_clerical
+			}
+		}
+	}
+	
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+	}
+	
+	weight = 3500
+}
+
+je_turkfm_tanzimat_economy = {
+	icon = "gfx/interface/icons/event_icons/event_trade.dds"
+	
+	group = je_group_turkfm_tanzimat
+	
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_global_variable = turkfm_tanzimat_complete
+		}
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_started_tt
+			has_global_variable = turkfm_tanzimat_started
+		}
+		has_modifier = modifier_turkfm_stagnant_economy
+	}
+	
+	complete = {
+		NOR = { 
+			has_law = law_type:law_traditionalism
+			has_law = law_type:law_land_based_taxation
+			has_law = law_type:law_consumption_based_taxation
+			has_law = law_type:law_isolationism
+		}
+		in_default = no
+		any_scope_state = {
+			is_incorporated = yes
+			has_building = building_urban_center
+			percent >= 0.75
+		}
+	}
+	
+	on_complete = {
+		trigger_event = {
+			id = turkfm.113 # Revitalizing the Economy
+		}
+		show_as_tooltip = {
+			turkfm_advance_ottomanism1_effect = yes
+			turkfm_complete_reform_effect = yes
+		}
+	}
+	
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+	}
+	
+	weight = 3500
+}
+
+je_turkfm_tanzimat_education = {
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	
+	group = je_group_turkfm_tanzimat
+	
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_global_variable = turkfm_tanzimat_complete
+		}
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_started_tt
+			has_global_variable = turkfm_tanzimat_started
+		}
+		has_modifier = modifier_turkfm_illiterate_populace
+	}
+	
+	complete = {
+		any_scope_building = {
+			is_building_type = building_university
+			occupancy > 0.9
+			level >= 5
+		}
+		any_scope_building = {
+			filter = {
+				is_building_type = building_university
+			}
+			count = all
+			NOT = {
+				has_active_production_method = pm_religious_academia
+			}
+			occupancy >= 0.9
+		}
+		institution_investment_level = {
+			institution = institution_schools
+			value >= 3
+		}
+		literacy_rate > 0.30
+	}
+	
+	on_complete = {
+		trigger_event = {
+			id = turkfm.114 # An Educated Populace
+		}
+		show_as_tooltip = {
+			turkfm_advance_ottomanism1_effect = yes
+			turkfm_complete_reform_effect = yes
+		}
+	}
+	
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+	}
+	
+	weight = 3500
+}
+
+je_turkfm_tanzimat_millet_reform = {
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	
+	group = je_group_turkfm_tanzimat
+	
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_global_variable = turkfm_tanzimat_complete
+		}
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_started_tt
+			has_global_variable = turkfm_tanzimat_started
+		}
+		has_technology_researched = egalitarianism
+	}
+	
+	complete = {
+		NOR = {
+			has_law = law_type:law_turkfm_religious_autonomy
+			has_law = law_type:law_turkfm_nominal_equality
+		}
+		institution_investment_level = {
+			institution = institution_millet_system
+			value <= 3
+		}
+	}
+	
+	on_complete = {
+		trigger_event = {
+			id = turkfm.115 # Equality Before the Law
+		}
+		show_as_tooltip = {
+			turkfm_advance_ottomanism1_effect = yes
+			turkfm_complete_reform_effect = yes
+		}
+	}
+	
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+	}
+	
+	weight = 3500
+}
+
+je_turkfm_tanzimat_security = {
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	
+	group = je_group_turkfm_tanzimat
+	
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_global_variable = turkfm_tanzimat_complete
+		}
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_started_tt
+			has_global_variable = turkfm_tanzimat_started
+		}
+		has_modifier = modifier_turkfm_insecure_countryside
+	}
+	
+	complete = {
+		NOR = {
+			has_law = law_type:law_no_police
+			has_law = law_type:law_local_police
+		}
+		institution_investment_level = {
+			institution = institution_police
+			value >= 3
+		}
+		NOT = {
+			any_scope_state = {
+				turmoil > 0.20
+			}
+		}
+	}
+	
+	on_complete = {
+		trigger_event = {
+			id = turkfm.116 # Countrysides Secured
+		}
+		show_as_tooltip = {
+			turkfm_advance_ottomanism1_effect = yes
+			turkfm_complete_reform_effect = yes
+		}
+	}
+	
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+	}
+	
+	weight = 3500
+}
+
+je_turkfm_tanzimat_slavery = {
+	icon = "gfx/interface/icons/event_icons/event_trade.dds"
+	
+	group = je_group_turkfm_tanzimat
+	
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_global_variable = turkfm_tanzimat_complete
+		}
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_started_tt
+			has_global_variable = turkfm_tanzimat_started
+		}
+		NOT = {
+			has_law = law_type:law_slavery_banned
+		}
+	}
+	
+	complete = {
+		has_law = law_type:law_slavery_banned
+	}
+	
+	on_complete = {
+		trigger_event = {
+			id = turkfm.117 # Slavery Abolished
+		}
+		show_as_tooltip = {
+			turkfm_advance_ottomanism1_effect = yes
+			turkfm_complete_reform_effect = yes
+		}
+	}
+	
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+	}
+	
+	weight = 3500
+	
+}
+
+#######################################################
+##  #TURK2  THE RISE OF NATIONALISM  Events 100-199  ##
+#######################################################
+
+je_turkfm_separatism_main = { # This is assigned to TUR
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	
+	group = je_group_turkfm_separatism
+	
+	should_be_pinned_by_default = yes
+	
+	immediate = {
+		turkfm_tension_start_effect = yes
+	}
+	
+	modifiers_while_active = {
+		modifier_turkfm_separatist_tensions
+	}
+	
+	scripted_progress_bar = turkfm_tension_progress_bar
+	
+	complete = {
+		custom_tooltip = {
+			text = je_turkfm_separatism_main_complete
+			cultural_acceptance_base = {
+				target = cu:greek
+				value >= acceptance_status_5
+			}
+			cultural_acceptance_base = {
+				target = cu:rhomaios
+				value >= acceptance_status_5
+			}
+			cultural_acceptance_base = {
+				target = cu:serb
+				value >= acceptance_status_5
+			}
+			cultural_acceptance_base = {
+				target = cu:bulgarian
+				value >= acceptance_status_5
+			}
+			cultural_acceptance_base = {
+				target = cu:bosniak
+				value >= acceptance_status_5
+			}
+			cultural_acceptance_base = {
+				target = cu:albanian
+				value >= acceptance_status_5
+			}
+			cultural_acceptance_base = {
+				target = cu:croat
+				value >= acceptance_status_5
+			}
+			cultural_acceptance_base = {
+				target = cu:slovene
+				value >= acceptance_status_5
+			}
+		}
+		any_scope_state = {
+			region = sr:region_balkans
+		}
+	}
+	
+	on_complete = {
+		set_global_variable = turkfm_separatism_complete
+		turkm_cleanup_tension_main_effect = yes
+		trigger_event = {
+			id = turkfm.209 # Dominion Over Rumelia
+		}
+	}
+	
+	fail = {
+		sr:region_balkans = {
+			any_scope_state = {
+				count = all
+				owner = {
+					NOT = {
+						country_has_primary_culture = cu:turkish
+					}
+				}
+			}
+		}
+	}
+	
+	on_fail = {
+		set_global_variable = turkfm_separatism_complete
+		turkm_cleanup_tension_main_effect = yes
+		trigger_event = {
+			id = turkfm.208 # Rumelia Lost
+		}
+	}
+	
+	on_weekly_pulse = {
+		effect = {
+			turkfm_calculate_tension_effect = yes
+			turkfm_update_tension_progressbar_effect = yes
+			turkfm_check_modifiers_effect = yes
+			turkfm_crisis_weekly_effect = yes
+		}
+	}
+	
+	on_monthly_pulse = {
+		events = {
+			turkfm.201 # The Rise of Nationalism
+			turkfm.202 # Nationalist Movements Intensify
+			turkfm.203 # To the Colors!
+			turkfm.205 # Riots Break Out in State
+			turkfm.290 # The X Hellenes Revolt
+#			turkfm.292 # The X Rhomaios Revolt
+#			turkfm.294 # The X Yugoslavs Revolt
+			turkfm.322 # Rebel Country Takes Up Arms!
+#			turkfm.323 # Subject Country Rebels!
+			turkfm.326 # Balkan Crisis Superevent
+			turkfm.330 # Congress System Monitor [TECH]
+		}
+		random_events = {
+			5 = turkfm.250 # Fortress in State Beseiged
+			5 = turkfm.251 # Crowds Burn Administrative Palace
+			5 = turkfm.252 # IG Sides with Minorities
+			5 = turkfm.253 # Ulema Mobilizes the Faithful
+			5 = turkfm.254 # Armed Forces Requests Intervention
+#			5 = turkfm.255 # 
+#			5 = turkfm.256 # 
+			5 = turkfm.257 # Rioting Worsens in State
+		}
+		random_events = {
+			chance_of_no_event = 75
+			
+			# Stable Phase
+			5 = turkfm.210 # Extortionate Taxation in State
+			5 = turkfm.211 # Plague Outbreak in State
+			5 = turkfm.212 # Ecumenical Patriarch Demands Protections
+			5 = turkfm.213 # The Language of Paperwork
+			5 = turkfm.214 # Food Shortages in State
+			5 = turkfm.215 # Peasants March in State
+			5 = turkfm.216 # Local Bey Exceeds Authority
+			5 = turkfm.217 # Church Services Disrupted
+			5 = turkfm.218 # Villages Request Schools
+			5 = turkfm.219 # Revivalist Publications
+			
+			# Unrest Phase
+			5 = turkfm.220 # Storefronts Ransacked
+			5 = turkfm.221 # Minority Rejects Classification
+			5 = turkfm.222 # Shipping Merchants Held Up
+			5 = turkfm.223 # Crowds Gather in City Hub
+			5 = turkfm.224 # Language Bans in State
+			5 = turkfm.225 # Gun-Runners Intercepted (Greek)
+			5 = turkfm.226 # Gun-Runners Intercepted (Yugoslav)
+			5 = turkfm.227 # Piracy in State
+			5 = turkfm.228 # Villagers Displaced in State
+			5 = turkfm.229 # Brigands Cross the Border
+			
+			# Hosility Phase
+			5 = turkfm.230 # Churches Burned in State
+			5 = turkfm.231 # Popular Speaker Lynched in State
+			5 = turkfm.232 # Brigandage in State
+			5 = turkfm.233 # Port Burned in State
+			5 = turkfm.234 # Blood Libel
+			5 = turkfm.235 # Administrative Offices Ransacked
+			5 = turkfm.236 # Military Column Attacked
+			5 = turkfm.237 # Muslim Militia Organizes in State
+			5 = turkfm.238 # Local Garrison Fires into Crowd
+			5 = turkfm.239 # Railways Bombed in State
+			
+			# Deconfliction Phase
+			5 = turkfm.240 # Dragoman Reduces Tensions
+			5 = turkfm.241 # Inter-faith Dialogue
+			5 = turkfm.243 # Spy Ring Busted
+#			5 = turkfm.244 # 
+#			5 = turkfm.245 # 
+#			5 = turkfm.246 # 
+#			5 = turkfm.247 # 
+#			5 = turkfm.248 # 
+		}
+		effect = {
+			turkfm_advance_tension_effect = yes
+			turkfm_check_phase_effect = yes
+		}
+	}
+	
+	status_desc = {
+		triggered_desc = {
+			desc = turkfm_tension_status
+			trigger = {
+				always = yes
+			}
+		}
+		triggered_desc = {
+			desc = turkfm_tension_crisis_status
+			trigger = {
+				has_global_variable = turkfm_crisis_var
+			}
+		}
+		triggered_desc = {
+			desc = turkfm_tension_congress_status
+			trigger = {
+				has_global_variable = turkfm_congress_var
+			}
+		}
+	}
+	
+	weight = 3000
+	
+}
+
+je_turkfm_separatism_riots = {
+	icon = "gfx/interface/icons/event_icons/bicorne_hat.dds"
+	
+	group = je_group_turkfm_separatism
+	
+	should_be_pinned_by_default = yes
+	
+	immediate = {
+	}
+	
+	complete = {
+		NOT = {
+			any_scope_state = {
+				has_modifier = modifier_turkfm_race_riots
+			}
+		}
+	}
+	
+	on_complete = { # Set variables for deescalation and call turkfm_check_phase_effect
+		custom_tooltip = {
+			text = turkfm_add_very_large_deescalation_tt
+			hidden_effect = {
+				change_global_variable = {
+					name = turkfm_deescalation_var
+					add = 100
+				}
+			}
+		}
+		turkfm_check_phase_effect = yes
+		every_scope_state = {
+			limit = {
+				has_modifier = modifier_turkfm_race_riots
+			}
+			remove_modifier = modifier_turkfm_race_riots
+		}
+		remove_variable = turkfm_riot_var
+		remove_variable = turkfm_riot_state_1_var
+		remove_variable = turkfm_riot_state_2_var
+		remove_variable = turkfm_riot_state_3_var
+		remove_variable = turkfm_riot_state_1_progress_var
+		remove_variable = turkfm_riot_state_2_progress_var
+		remove_variable = turkfm_riot_state_3_progress_var
+		set_variable = {
+			name = turkfm_riot_current_tally_var
+			value = 0
+		}
+	}
+	
+	invalid = {
+		custom_tooltip = {
+			text = je_turkfm_separatism_riots_invalid
+			OR = {
+				NOT = {
+					has_global_variable = turkfm_separatism_phase_var
+				}
+				global_var:turkfm_separatism_phase_var != 3 # Hostility
+			}
+		}
+	}
+	
+	on_invalid = {
+		every_scope_state = {
+			limit = {
+				has_modifier = modifier_turkfm_race_riots
+			}
+			remove_modifier = modifier_turkfm_race_riots
+		}
+		remove_variable = turkfm_riot_var
+		remove_variable = turkfm_riot_state_1_var
+		remove_variable = turkfm_riot_state_2_var
+		remove_variable = turkfm_riot_state_3_var
+		remove_variable = turkfm_riot_state_1_progress_var
+		remove_variable = turkfm_riot_state_2_progress_var
+		remove_variable = turkfm_riot_state_3_progress_var
+		set_variable = {
+			name = turkfm_riot_current_tally_var
+			value = 0
+		}
+	}
+	
+	on_weekly_pulse = {
+		events = {
+			turkfm.206 # Balkan Country Rebellion
+			turkfm.207 # Riots in State Suppressed
+		}
+		effect = {
+			turkfm_update_riot_variables_effect = yes
+			change_variable = {
+				name = turkfm_riot_var
+				add = turkfm_riot_progress_value
+			}
+			clamp_variable = {
+				name = turkfm_riot_var
+				max = 200
+				min = 0
+			}
+		}
+	}
+	
+	current_value = {
+		value = var:turkfm_riot_var
+	}
+
+	goal_add_value = {
+		value = 200
+	}
+
+	progressbar = yes
+	
+	weight = 1000
+	
+}
+
+je_turkfm_eastern_question = {
+	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
+	
+	group = je_group_turkfm_eastern_question
+	
+	should_be_pinned_by_default = yes
+	
+	immediate = {
+		set_variable = turkfm_eqfm_started
+	}
+	
+	scripted_progress_bar = turkfm_tension_progress_bar
+	
+	scripted_button = turkfm_greek_gunrunners_button
+	scripted_button = turkfm_epirus_provoke_button
+	scripted_button = turkfm_macedonia_provoke_button
+	scripted_button = turkfm_skopia_provoke_button
+	scripted_button = turkfm_smyrna_provoke_button
+	scripted_button = turkfm_cyprus_provoke_button
+	scripted_button = turkfm_crete_provoke_button
+	
+	scripted_button = turkfm_crisis_defender_button
+	scripted_button = turkfm_crisis_attacker_button
+	
+	complete = {
+		custom_tooltip = {
+			text = turkfm_separatism_completed_third_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_separatism_complete
+			}
+		}
+	}
+	
+	on_complete = {
+	}
+	
+	fail = {
+		OR = {
+			NOT = {
+				exists = c:TUR
+			}
+			NOT = {
+				has_diplomatic_relevance = c:TUR
+			}
+			custom_tooltip = {
+				text = turkfm_sick_man_completed_third_tt
+				hidden_trigger = {
+					has_global_variable = turkfm_sick_man_complete
+				}
+			}
+			
+		}
+	}
+	
+	on_fail = {
+	}
+	
+	invalid = {
+		hidden_trigger = {
+			country_has_primary_culture = cu:turkish
+			any_scope_state = {
+				region = sr:region_balkans
+			}
+		}
+	}
+	
+	on_invalid = {
+		hidden_effect = {
+			trigger_event = {
+				id = turkfm.204 # Adds je_turkfm_separatism_main
+			}
+		}
+	}
+	
+	on_weekly_pulse = {
+		effect = {
+			turkfm_update_tension_progressbar_effect = yes
+		}
+	}
+	
+	on_monthly_pulse = {
+		random_events = [
+			200 = 0
+			5 = turkfm.312 # Diplomat Offers Mediation
+			100 = turkfm.324 # A Chance at Deconfliction
+		}
+	}
+	
+	status_desc = {
+		triggered_desc = {
+			desc = turkfm_tension_status
+			trigger = {
+				always = yes
+			}
+		}
+		triggered_desc = {
+			desc = turkfm_tension_crisis_status
+			trigger = {
+				has_global_variable = turkfm_crisis_var
+			}
+		}
+	}
+	
+	weight = 1000
+	
+}
+
+je_turkfm_international_congress = {
+	icon = "gfx/interface/icons/event_icons/event_congress.dds"
+	
+	group = je_group_turkfm_eastern_question
+	
+	should_be_pinned_by_default = yes
+	
+	immediate = {
+	}
+	
+	complete = {
+		custom_tooltip = je_turkfm_international_congress_complete
+	}
+	
+	on_complete = {
+	}
+	
+	invalid = {
+	}
+	
+	on_invalid = {
+	}
+	
+	weight = 1000
+	
+}
+
+
+########################################
+##  TURK4  TURKISH HISTORICAL FLAVOR  ##
+########################################
+
+# //OPEN
+
+
+#########################################
+##  #TURK5  TURKISH HISTORICAL FLAVOR  ##
+#########################################
+
+# //OPEN
+
+
+##########################################
+##  #TURK6  TURKISH NATIONALISM  Events ##
+##########################################
+
+# //OPEN
+
+
+###################
+##  #TURK7 OPEN  ##
+###################
+
+# //OPEN
+
+
+###################
+##  #TURK8 OPEN  ##
+###################
+
+# //OPEN
+
+
+################################################
+##  #TURK9  CONTENT NOT ELSEWHERE CLASSIFIED  ##
+################################################
+
+
+je_turkfm_pirates_of_the_adriatic = {
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+	
+	group = je_group_turkfm_sick_man
+	
+	should_be_pinned_by_default = yes
+	
+	immediate = {
+		if = {
+			limit = {
+				NOT = {
+					has_global_variable = turkfm_pirates_var
+				}
+			}
+			set_global_variable = {
+				name = turkfm_pirates_var
+				value = 0
+			}
+		}
+	}
+	
+	scripted_progress_bar = turkfm_jack_sparrow_progress_bar
+	
+#	scripted_button = turkfm_sanction_privateers_button
+#	scripted_button = turkfm_curtail_privateers_button
+	scripted_button = turkfm_hire_retired_pirates_button
+#	scripted_button = turkfm_suppress_slavers_button
+
+	scripted_button = turkfm_deploy_expedition_button
+	scripted_button = turkfm_recall_expedition_button
+	
+	complete = {
+		custom_tooltip = {
+			text = je_turkfm_pirates_of_the_adriatic_complete_tt
+			has_global_variable = turkfm_jack_sparrow_whacked
+		}
+	}
+	
+	on_complete = {
+		turkfm_cleanup_piracy_effect = yes
+		show_as_tooltip = {
+			turkfm_advance_ottomanism1_effect = yes
+		}
+	}
+	
+	fail = {
+		trigger_if = {
+			limit = {
+				OR = {
+					country_rank < rank_value:great_power
+					c:TUR ?= this
+				}
+			}
+			any_scope_state = {
+				count = all
+				NOT = {
+					custom_tooltip = {
+						text = balkfm_state_is_adriatic_tt
+						state_is_adriatic = yes
+					}
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				country_rank >= rank_value:great_power
+				NOT = {
+					c:TUR ?= this
+				}
+			}
+			has_diplomatic_relevance = c:TUR
+		}
+	}
+	
+	on_fail = {
+		turkfm_cleanup_piracy_effect = yes
+	}
+	
+	on_weekly_pulse = {
+		effect = {
+			turkfm_jack_sparrow_effect = yes
+		}
+		events = {
+			turkfm.903 # Cutler Beckett Withdraws from the Adriatic
+			turkfm.904 # Cutler Beckett Has Died!
+		}
+	}
+	
+	on_monthly_pulse = {
+		events = {
+			turkfm.906 # Pirate Hideout Located
+			turkfm.907 # Pirate Fleet Destroyed
+		}
+		random_events = { # Chase Events
+			1 = turkfm.905 # Beckett & Sparrow Duel
+			5 = turkfm.931 # Man Overboard!
+			5 = turkfm.932 # The Pillagers' Wake
+#			5 = turkfm.933 # 
+			5 = turkfm.934 # Without a Trace
+			5 = turkfm.935 # Bearing Down
+			5 = turkfm.936 # Cut and Run
+			5 = turkfm.937 # Action Along the Coast
+			5 = turkfm.938 # Naval Duel on the High Seas!
+		}
+		random_events = { # Expedition Events
+			chance_of_no_event = 75
+			5 = turkfm.920 # Local Informants
+			5 = turkfm.921 # A Suspicious Inlet
+#			5 = turkfm.922 # 
+			5 = turkfm.923 # Spoiled Provisions
+			5 = turkfm.924 # Circular Bearing
+			5 = turkfm.925 # Windstorms in the Adriatic
+			5 = turkfm.926 # Foul Waters
+			5 = turkfm.927 # Scouts Pick Up Leads
+			5 = turkfm.928 # Emergency Repairs
+			5 = turkfm.929 # Port of Call
+			5 = turkfm.930 # Pirates Spotted!
+		}
+		random_events = { # General Piracy Events
+			chance_of_no_event = 90
+			5 = turkfm.910 # Coastal Village Raided!
+			5 = turkfm.911 # Merchant Vessels Raided!
+			5 = turkfm.912 # Nobleman Held Hostage
+			5 = turkfm.913 # A Pirate's Booty
+			5 = turkfm.914 # Diplomatic Communiques Intercepted
+			5 = turkfm.915 # Slavers Intercepted
+		}
+	}
+	
+	on_yearly_pulse = {
+		effect = {
+			if = {
+				limit = {
+					var:turkfm_expedition_var ?= 1
+				}
+				change_variable = {
+					name = turkfm_expedition_progress_var
+					add = 1
+				}
+				post_notification = notification_turkfm_piracy_yearly_progress
+			}
+		}
+	}
+	
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = turkfm_cutler_beckett_expedition
+				trigger = {
+					has_variable = turkfm_cutler_beckett_var
+					exists = var:turkfm_cutler_beckett_var
+				}
+			}
+			triggered_desc = {
+				desc = turkfm_jack_sparrow_scared
+				trigger = {
+					has_global_variable = turkfm_pirates_var
+					global_var:turkfm_pirates_var >= 4
+					exists = var:turkfm_jack_sparrow_var
+				}
+			}
+			triggered_desc = {
+				desc = turkfm_jack_sparrow_cautious
+				trigger = {
+					has_global_variable = turkfm_pirates_var
+					global_var:turkfm_pirates_var >= 2
+					exists = var:turkfm_jack_sparrow_var
+				}
+			}
+			triggered_desc = {
+				desc = turkfm_jack_sparrow_cocky
+				trigger = {
+					has_global_variable = turkfm_pirates_var
+					global_var:turkfm_pirates_var >= 0
+					exists = var:turkfm_jack_sparrow_var
+				}
+			}
+		}
+	}
+	
+	weight = 1000
+	
+}
+
+####################
+# EGYPTIAN CONTENT #
+####################
+
+## //we'll get there
+
+##################
+# LIBYAN CONTENT #
+##################
+
+je_turkfm_tri_centralization = {
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	
+	group = je_group_turkfm_libya
+	
+	should_be_pinned_by_default = yes
+	
+	immediate = {
+	}
+	
+	modifiers_while_active = {
+		modifier_turkfm_informal_administration
+	}
+	
+	complete = {
+		NOR = {
+			has_law = law_type:law_hereditary_bureaucrats
+			has_law = law_type:law_peasant_levies
+			has_law = law_type:law_no_police
+		}
+		any_scope_building = {
+			is_building_type = building_university
+			occupancy > 0.9
+		}
+		any_scope_building = {
+			is_building_type = building_government_administration
+			NOT = {
+				has_active_production_method = pm_simple_organization
+			}
+			occupancy >= 0.9
+		}
+		bureaucracy >= 0 
+		approaching_bureaucracy_shortage = no
+		ig:ig_intelligentsia = {
+			is_marginal = no
+		}
+		OR = {
+			owns_entire_state_region = STATE_LIBYAN_DESERT
+			NOT = {
+				has_state_in_state_region = STATE_LIBYAN_DESERT
+			}
+		}
+	}
+	
+	on_complete = {
+		trigger_event = {
+			id = turkfm.1101
+		}
+	}
+
+	weight = 4000
+	
+}
+
+je_turkfm_tri_libyan_desert = {
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	
+	group = je_group_turkfm_libya
+	
+	should_be_pinned_by_default = yes
+	
+	is_shown_when_inactive = {
+		c:TRI ?= this
+		NOT = {
+			owns_entire_state_region = STATE_LIBYAN_DESERT
+		}
+	}
+	
+	possible = {
+		has_technology_researched = colonization
+	}
+	
+	immediate = {
+	}
+	
+	complete = {
+		owns_entire_state_region = STATE_TRIPOLI
+		owns_entire_state_region = STATE_LIBYA
+		owns_entire_state_region = STATE_LIBYAN_DESERT
+	}
+	
+	on_complete = {
+		trigger_event = {
+			id = turkfm.1107 # The Libyan Deserts
+		}
+	}
+	
+	fail = {
+		NOR = {
+			has_state_in_state_region = STATE_TRIPOLI
+			has_state_in_state_region = STATE_LIBYA
+			has_state_in_state_region = STATE_LIBYAN_DESERT
+		}
+	}
+
+	weight = 500
+	
+}
+
+je_turkfm_tri_senusiyya = {
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	
+	group = je_group_turkfm_libya
+	
+	should_be_pinned_by_default = yes
+	
+	is_shown_when_inactive = {
+		c:TRI ?= this
+		NOR = {
+			has_variable = turkfm_embraced_senussi
+			has_variable = turkfm_swept_senussi
+			owns_entire_state_region = STATE_LIBYAN_DESERT
+		}
+	}
+	
+	possible = {
+		has_technology_researched = romanticism
+		has_technology_researched = empiricism
+	}
+	
+	immediate = {
+		trigger_event = {
+			id = turkfm.1110 # The Senussi Order
+		}
+	}
+	
+	scripted_button = turkfm_embrace_senussi_button
+	scripted_button = turkfm_sweep_desert_button
+	scripted_button = turkfm_supress_senusiyya_button
+	scripted_button = turkfm_armed_delegation_button
+	
+	complete = {
+		custom_tooltip = {
+			text = je_turkfm_tri_senusiyya_complete
+			OR = {
+				has_variable = turkfm_embraced_senussi
+				has_variable = turkfm_swept_senussi
+			}
+		}
+	}
+	
+	on_complete = {
+		custom_tooltip = {
+			text = je_turkfm_tri_senusiyya_on_complete_1
+			if = {
+				limit = {
+					has_variable = turkfm_embraced_senussi
+				}
+				trigger_event = {
+					id = turkfm.1109 # The Senussi of Libya
+				}
+			}
+		}
+		custom_tooltip = {
+			text = je_turkfm_tri_senusiyya_on_complete_2
+			if = {
+				limit = {
+					has_variable = turkfm_swept_senussi
+				}
+				trigger_event = {
+					id = turkfm.1108 # The Senusiyya Extinguished
+				}
+			}
+		}
+		turkfm_cleanup_senussi_effect = yes
+	}
+	
+	fail = {
+		OR = {
+			has_law = law_type:law_total_separation
+			has_law = law_type:law_state_atheism
+		}
+	}
+	
+	on_fail = {
+		turkfm_cleanup_senussi_effect = yes
+	}
+	
+	on_weekly_pulse = {
+		effect = {
+			turkfm_update_senussi_effect = yes
+			remove_modifier = modifier_turkfm_senusiyya_movement
+			add_modifier = {
+				name = modifier_turkfm_senusiyya_movement
+				multiplier = turkfm_senussi_modifier_value
+			}
+		}
+	}
+	
+	on_monthly_pulse = {
+		events = {
+			turkfm.1111 # The Grand Senussi
+			turkfm.1114 # Senusiyya Takes Root in State
+			turkfm.1115 # Senusiyya Expunged from State
+		}
+		random_events = {
+			chance_of_no_event = 90
+			5 = turkfm.1112 # Senussi Withdraws to the Desert
+		}
+		effect = {
+			change_variable = {
+				name = turkfm_senussi_var
+				add = var:turkfm_senussi_progress_var
+			}
+			clamp_variable = {
+				name = turkfm_senussi_var
+				max = 100
+				min = 0
+			}
+		}
+	}
+	
+	current_value = {
+		value = var:turkfm_senussi_var
+	}
+
+	goal_add_value = {
+		value = 100
+	}
+	
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_turkfm_tri_senusiyya_status_0
+				trigger = {
+					has_variable = turkfm_senussi_location_var
+					var:turkfm_senussi_location_var = 0
+				}
+			}
+			triggered_desc = {
+				desc = je_turkfm_tri_senusiyya_status_1
+				trigger = {
+					has_variable = turkfm_senussi_location_var
+					var:turkfm_senussi_location_var = 1
+				}
+			}
+			triggered_desc = {
+				desc = je_turkfm_tri_senusiyya_status_2
+				trigger = {
+					has_variable = turkfm_senussi_location_var
+					var:turkfm_senussi_location_var = 2
+				}
+			}
+			triggered_desc = {
+				desc = je_turkfm_tri_senusiyya_status_3
+				trigger = {
+					has_variable = turkfm_senussi_location_var
+					var:turkfm_senussi_location_var = 3
+				}
+			}
+			triggered_desc = {
+				desc = je_turkfm_tri_senusiyya_status_4
+				trigger = {
+					has_variable = turkfm_senussi_location_var
+					var:turkfm_senussi_location_var = 4
+				}
+			}
+		}
+	}
+
+	weight = 1000
+	
+}
+
+####################
+# TUNISIAN CONTENT #
+####################
+
+je_turkfm_tun_modernization = {
+	icon = "gfx/interface/icons/event_icons/event_tunis.dds"
+	
+	group = je_group_turkfm_tunis
+	
+	should_be_pinned_by_default = yes
+	
+	immediate = {
+	}
+	
+	modifiers_while_active = {
+		modifier_turkfm_tribal_administration
+	}
+	
+	scripted_button = turkfm_visit_france_button
+	
+	complete = {
+		OR = {
+			AND = {
+				NOR = {
+					has_law = law_type:law_hereditary_bureaucrats
+					has_law = law_type:law_consumption_based_taxation
+					has_law = law_type:law_land_based_taxation
+				}
+				any_scope_building = {
+					is_building_type = building_university
+					NOR = {
+						has_active_production_method = pm_simple_organization
+						has_active_production_method = pm_religious_bureaucrats
+					}
+					occupancy > 0.9
+					level >= 5
+				}
+				any_scope_building = {
+					OR = {
+						is_building_type = gbbf_building_mohamedia_palace
+						is_building_type = building_government_administration
+					}
+					NOR = {
+						has_active_production_method = pm_simple_organization
+						has_active_production_method = pm_religious_bureaucrats
+					}
+					occupancy >= 0.9
+				}
+				bureaucracy >= 0 
+				approaching_bureaucracy_shortage = no
+			}
+			is_country_type = recognized
+		}
+	}
+	
+	on_complete = {
+		trigger_event = {
+			id = turkfm.1209 # The Tunisian Fundamental Pact
+		}
+		if = {
+			limit = {
+				has_journal_entry = je_earn_recognition
+			}
+			custom_tooltip = turkfm_recognition_gain_50
+		}
+		set_variable = turkfm_tun_modernization_completed
+	}
+	
+	timeout = 10950 # 30 years
+	
+	on_timeout = {
+		trigger_event = {
+			id = turkfm.1208 # A Stagnant State
+		}
+		set_variable = turkfm_tun_modernization_completed
+	}
+	
+	invalid = {
+		has_variable = turkfm_tun_modernization_completed
+	}
+	
+	on_monthly_pulse = {
+		random_events = {
+			chance_of_no_event = 90
+			5 = turkfm.1201 # An Amibitous Bey
+		}
+	}
+
+	weight = 100
+	
+}

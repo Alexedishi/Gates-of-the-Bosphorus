@@ -1,0 +1,1315 @@
+﻿#### SICK MAN VALUES ####
+
+turkfm_sick_man_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = turkfm_controls_balkans
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_controls_anatolia
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_controls_arabia
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_controls_nile
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_controls_danubia
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_controls_caucasus
+		}
+		add = 1
+	}
+}
+
+#### TANZIMAT VALUES ####
+
+turkfm_tanzimat_progress_value = {
+	value = 0
+	# This value is weighted to lean towards the Islamist side. Idealized loss is approx. -1.6 per month for a failure in mid-1877. This is balanced to -2 per month at game start for playability.	
+	
+	## Ottomanism Sources ##
+	add = {
+		value = {
+			every_interest_group = {
+				limit = {
+					OR = {
+						law_stance = {
+							law = law_type:law_landed_voting
+							value > neutral
+						}
+						law_stance = {
+							law = law_type:law_wealth_voting
+							value > neutral
+						}
+						law_stance = {
+							law = law_type:law_census_voting
+							value > neutral
+						}
+						law_stance = {
+							law = law_type:law_universal_suffrage
+							value > neutral
+						}
+					}
+				}
+				add = ig_clout
+			}
+			round_to = 0.01
+		}
+		desc = turkfm_value_from_ottomanists
+	}
+	add = {
+		value = {
+			every_scope_building = {
+				limit = {
+					is_building_type = building_government_administration
+					has_active_production_method = pm_secular_bureaucrats
+				}
+				add = 0.1
+			}
+		}
+		desc = turkfm_value_from_secular_bureaucrats
+	}
+	add = {
+		value = {
+			every_scope_building = {
+				limit = {
+					is_building_type = building_university
+					has_active_production_method = pm_secular_academia
+				}
+				add = 0.1
+			}
+		}
+		desc = turkfm_value_from_secular_academia
+	}
+	add = {
+		value = {
+			add = government_legitimacy
+			divide = 100
+			round_to = 0.01
+		}
+		desc = turkfm_value_from_legitimacy
+	}
+	
+	## Islamism Sources ##
+	subtract = {
+		value = {
+			every_interest_group = {
+				limit = {
+					law_stance = {
+						law = law_type:law_state_religion
+						value > neutral
+					}
+					NOR = {
+						law_stance = {
+							law = law_type:law_landed_voting
+							value > neutral
+						}
+						law_stance = {
+							law = law_type:law_wealth_voting
+							value > neutral
+						}
+						law_stance = {
+							law = law_type:law_census_voting
+							value > neutral
+						}
+						law_stance = {
+							law = law_type:law_universal_suffrage
+							value > neutral
+						}
+					}
+				}
+				add = ig_clout
+			}
+			round_to = 0.01
+		}
+		desc = turkfm_value_from_islamism
+	}
+	subtract = {
+		value = {
+			every_scope_building = {
+				limit = {
+					is_building_type = building_government_administration
+					has_active_production_method = pm_religious_bureaucrats
+				}
+				add = 0.1
+			}
+		}
+		desc = turkfm_value_from_religious_bureaucrats
+	}
+	subtract = {
+		value = {
+			every_scope_building = {
+				limit = {
+					is_building_type = building_university
+					has_active_production_method = pm_religious_academia
+				}
+				add = 0.1
+			}
+		}
+		desc = turkfm_value_from_religious_academia
+	}
+}
+
+
+#### SEPARATISM VALUES ####
+
+turkfm_riot_counter_value = {
+	value = 0
+	add = {
+		value = {
+			every_scope_state = {
+				limit = {
+					has_modifier = modifier_turkfm_race_riots
+				}
+				add = 1
+			}
+		}
+		desc = turkfm_value_from_riots
+	}
+}
+
+turkfm_riot_potential_value = {
+	value = 0
+	add = {
+		value = 1
+		desc = turkfm_value_from_base
+	}
+	if = {
+		limit = {
+			has_technology_researched = nationalism
+		}
+		add = {
+			value = 1
+			desc = turkfm_value_from_nationalism
+		}
+	}
+	if = {
+		limit = {
+			has_technology_researched = pan-nationalism
+		}
+		add = {
+			value = 1
+			desc = turkfm_value_from_pan_nationalism
+		}
+	}
+}
+
+turkfm_riot_progress_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = turkfm_riot_state_1_progress_var
+		}
+		add = {
+			value = var:turkfm_riot_state_1_progress_var
+			desc = turkfm_value_from_riot_state_1
+		}
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_riot_state_2_progress_var
+		}
+		add = {
+			value = var:turkfm_riot_state_2_progress_var
+			desc = turkfm_value_from_riot_state_2
+		}
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_riot_state_3_progress_var
+		}
+		add = {
+			value = var:turkfm_riot_state_3_progress_var
+			desc = turkfm_value_from_riot_state_3
+		}
+	}
+	if = {
+		limit = {
+			has_technology_researched = political_agitation
+		}
+		multiply = {
+			value = 2
+			desc = turkfm_value_from_political_agitation
+		}
+	}
+}
+
+turkfm_riot_1_progress_value = {
+	value = 0
+	scope:turkfm_riot_state_1_scope = {
+		every_scope_pop = {
+			limit = {
+				OR = {
+					has_pop_religion = orthodox
+					has_pop_religion = jewish
+				}
+			}
+			add = pop_radical_fraction
+		}
+		divide = {
+			every_scope_pop = {
+				limit = {
+					OR = {
+						has_pop_religion = orthodox
+						has_pop_religion = jewish
+					}
+				}
+				add = 1
+			}
+			min = 1
+		}
+	}
+	round_to = 0.01
+}
+
+turkfm_riot_2_progress_value = {
+	value = 0
+	scope:turkfm_riot_state_2_scope = {
+		every_scope_pop = {
+			limit = {
+				OR = {
+					has_pop_religion = orthodox
+					has_pop_religion = jewish
+				}
+			}
+			add = pop_radical_fraction
+		}
+		divide = {
+			every_scope_pop = {
+				limit = {
+					OR = {
+						has_pop_religion = orthodox
+						has_pop_religion = jewish
+					}
+				}
+				add = 1
+			}
+			min = 1
+		}
+	}
+	round_to = 0.01
+}
+
+turkfm_riot_3_progress_value = {
+	value = 0
+	scope:turkfm_riot_state_3_scope = {
+		every_scope_pop = {
+			limit = {
+				OR = {
+					has_pop_religion = orthodox
+					has_pop_religion = jewish
+				}
+			}
+			add = pop_radical_fraction
+		}
+		divide = {
+			every_scope_pop = {
+				limit = {
+					OR = {
+						has_pop_religion = orthodox
+						has_pop_religion = jewish
+					}
+				}
+				add = 1
+			}
+			min = 1
+		}
+	}
+	round_to = 0.01
+}
+
+turkfm_escalation_progress_value = {
+	value = 0
+	add = {
+		value = 1
+		desc = turkfm_value_from_base
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_nationalism_wave_happened
+		}
+		add = {
+			value = 3
+			desc = turkfm_value_from_nationalism
+		}
+	}
+	if = {
+		limit = {
+			government_legitimacy < 70
+		}
+		add = {
+			value = {
+				add = government_legitimacy
+				subtract = 70
+				multiply = -1
+				max = 3
+				min = 0
+				round_to = 0.01
+			}
+			desc = turkfm_value_from_low_legitimacy
+		}
+	}
+	add = {
+		value = turkfm_radicals_summary_value
+		desc = turkfm_value_from_balkan_radicals
+	}
+	add = {
+		value = {
+			every_country = {
+				limit = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_accelerate_tensions
+					}
+				}
+			}
+			add = 2
+		}
+		desc = turkfm_value_from_accelerating_tensions
+	}
+	subtract = {
+		value = {
+			every_country = {
+				limit = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_decelerate_tensions
+					}
+				}
+			}
+			add = 1
+		}
+		desc = turkfm_value_from_decelerating_tensions
+	}
+	if = {
+		limit = {
+			turkfm_can_escalate_tension_trigger = no
+		}
+		multiply = 0
+	}
+}
+
+turkfm_deescalation_progress_value = {
+	value = 0
+	add = {
+		value = 1
+		desc = turkfm_value_from_base
+	}
+	if = {
+		limit = {
+			government_legitimacy > 70
+		}
+		add = {
+			value = {
+				add = government_legitimacy
+				subtract = 70
+				max = 3
+				min = 0
+				round_to = 0.01
+			}
+			desc = turkfm_value_from_high_legitimacy
+		}
+	}
+	add = {
+		value = turkfm_loyalists_summary_value
+		desc = turkfm_value_from_balkan_loyalists
+	}
+	add = {
+		value = {
+			every_country = {
+				limit = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_decelerate_tensions
+					}
+				}
+			}
+			add = 2
+		}
+		desc = turkfm_value_from_decelerating_tensions
+	}
+	subtract = {
+		value = {
+			every_country = {
+				limit = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_accelerate_tensions
+					}
+				}
+			}
+			add = 1
+		}
+		desc = turkfm_value_from_accelerating_tensions
+	}
+	if = {
+		limit = {
+			turkfm_can_deescalate_tension_trigger = no
+		}
+		multiply = 0
+	}
+}
+
+turkfm_loyalists_summary_value = {
+	value = 0
+	c:TUR = {
+		add = {
+			value = turkfm_greek_loyalists_value
+			desc = turkfm_value_from_greek_loyalists
+		}
+		add = {
+			value = var:turkfm_serb_loyalists_var
+			desc = turkfm_value_from_serb_loyalists
+		}
+		add = {
+			value = var:turkfm_bulgarian_loyalists_var
+			desc = turkfm_value_from_bulgarian_loyalists
+		}
+		add = {
+			value = var:turkfm_romanian_loyalists_var
+			desc = turkfm_value_from_romanian_loyalists
+		}
+		add = {
+			value = var:turkfm_bosniak_loyalists_var
+			desc = turkfm_value_from_bosniak_loyalists
+		}
+		add = {
+			value = var:turkfm_albanian_loyalists_var
+			desc = turkfm_value_from_albanian_loyalists
+		}
+		add = {
+			value = var:turkfm_croat_loyalists_var
+			desc = turkfm_value_from_croat_loyalists
+		}
+		add = {
+			value = var:turkfm_slovene_loyalists_var
+			desc = turkfm_value_from_slovene_loyalists
+		}
+	}
+	round_to = 0.01
+}
+
+turkfm_radicals_summary_value = {
+	value = 0
+	c:TUR = {
+		add = {
+			value = turkfm_greek_radicals_value
+			desc = turkfm_value_from_greek_radicals
+		}
+		add = {
+			value = var:turkfm_serb_radicals_var
+			desc = turkfm_value_from_serb_radicals
+		}
+		add = {
+			value = var:turkfm_bulgarian_radicals_var
+			desc = turkfm_value_from_bulgarian_radicals
+		}
+		add = {
+			value = var:turkfm_romanian_radicals_var
+			desc = turkfm_value_from_romanian_radicals
+		}
+		add = {
+			value = var:turkfm_bosniak_radicals_var
+			desc = turkfm_value_from_bosniak_radicals
+		}
+		add = {
+			value = var:turkfm_albanian_radicals_var
+			desc = turkfm_value_from_albanian_radicals
+		}
+		add = {
+			value = var:turkfm_croat_radicals_var
+			desc = turkfm_value_from_croat_radicals
+		}
+		add = {
+			value = var:turkfm_slovene_radicals_var
+			desc = turkfm_value_from_slovene_radicals
+		}
+	}
+	round_to = 0.01
+}
+
+turkfm_greek_radicals_value = {
+	value = 0
+	add = var:turkfm_hellene_radicals_var
+	add = var:turkfm_rhomaios_radicals_var
+	divide = 2
+}
+
+turkfm_greek_loyalists_value = {
+	value = 0
+	add = var:turkfm_hellene_loyalists_var
+	add = var:turkfm_rhomaios_loyalists_var
+	divide = 2
+}
+
+turkfm_hellene_loyalists_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = greek
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = greek
+			}
+			add = pop_loyalist_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = greek
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = greek
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_rhomaios_loyalists_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = rhomaios
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = rhomaios
+			}
+			add = pop_loyalist_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = rhomaios
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = rhomaios
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_serb_loyalists_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = serb
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = serb
+			}
+			add = pop_loyalist_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = serb
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = serb
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_bulgarian_loyalists_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = bulgarian
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = bulgarian
+			}
+			add = pop_loyalist_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = bulgarian
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = bulgarian
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_romanian_loyalists_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = romanian
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = romanian
+			}
+			add = pop_loyalist_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = romanian
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = romanian
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_bosniak_loyalists_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = bosniak
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = bosniak
+			}
+			add = pop_loyalist_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = bosniak
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = bosniak
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_albanian_loyalists_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = albanian
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = albanian
+			}
+			add = pop_loyalist_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = albanian
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = albanian
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_croat_loyalists_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = croat
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = croat
+			}
+			add = pop_loyalist_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = croat
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = croat
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_slovene_loyalists_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = slovene
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = slovene
+			}
+			add = pop_loyalist_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = slovene
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = slovene
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_hellene_radicals_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = greek
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = greek
+			}
+			add = pop_radical_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = greek
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = greek
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_rhomaios_radicals_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = rhomaios
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = rhomaios
+			}
+			add = pop_radical_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = rhomaios
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = rhomaios
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_serb_radicals_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = serb
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = serb
+			}
+			add = pop_radical_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = serb
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = serb
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_bulgarian_radicals_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = bulgarian
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = bulgarian
+			}
+			add = pop_radical_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = bulgarian
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = bulgarian
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_romanian_radicals_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = romanian
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = romanian
+			}
+			add = pop_radical_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = romanian
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = romanian
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_bosniak_radicals_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = bosniak
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = bosniak
+			}
+			add = pop_radical_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = bosniak
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = bosniak
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_albanian_radicals_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = albanian
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = albanian
+			}
+			add = pop_radical_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = albanian
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = albanian
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_croat_radicals_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = croat
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = croat
+			}
+			add = pop_radical_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = croat
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = croat
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_slovene_radicals_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			region = sr:region_balkans
+			any_scope_pop = {
+				has_pop_culture = slovene
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = slovene
+			}
+			add = pop_radical_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_pop = {
+					has_pop_culture = slovene
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = slovene
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_crisis_progress_value = {
+	value = 0
+	add = {
+		value = 1
+		desc = turkfm_value_from_base
+	}
+}
+
+#### LIBYA VALUES ####
+
+turkfm_senussi_progress_value = {
+	value = 0
+	add = {
+		value = {
+			every_character_in_void = {
+				limit = {
+					turkfm_is_senussi_trigger = yes
+				}
+				add = popularity
+			}
+			divide = 100
+			round_to = 0.01
+		}
+		desc = turkfm_value_from_senussi_popularity
+	}
+	add = {
+		value = var:turkfm_senussi_control_var
+		desc = turkfm_value_from_senussi_control
+	}
+	add = {
+		value = {
+			every_scope_state = {
+				limit = {
+					has_modifier = modifier_turkfm_senussi_stronghold
+				}
+				add = 1
+			}
+		}
+		desc = turkfm_value_from_strongholds
+	}
+	save_temporary_value_as = senussi_souces
+	if = {
+		limit = {
+			has_technology_researched = nationalism
+		}
+		add = {
+			value = {
+				add = scope:senussi_souces
+				multiply = 0.1
+				round_to = 0.01
+			}
+			desc = turkfm_value_from_nationalism_bonus
+		}
+	}
+	subtract = {
+		value = var:turkfm_desert_control_var
+		desc = turkfm_value_from_desert_control
+	}
+	subtract = {
+		value = {
+			ig:ig_devout = {
+				add = ig_clout
+			}
+			round_to = 0.01
+		}
+		desc = turkfm_value_from_devout_clout
+	}
+}
+
+turkfm_senussi_modifier_value = { # prevents the multiplier from being excessively fiddly
+	value = 0
+	add = var:turkfm_senussi_var
+	round_to = 1
+}
+
+turkfm_desert_control_value = {
+	value = 0
+	add = {
+		value = {
+			s:STATE_LIBYAN_DESERT = {
+				region_state:TRI = {
+					add = num_provinces
+				}
+			}
+		}
+	}
+	divide = 282
+	round_to = 0.01
+}
+
+turkfm_senussi_control_value = {
+	value = 0
+	add = {
+		value = {
+			s:STATE_LIBYAN_DESERT = {
+				region_state:LIB_KUF = {
+					add = num_provinces
+				}
+			}
+		}
+	}
+	divide = 282
+	round_to = 0.01
+}

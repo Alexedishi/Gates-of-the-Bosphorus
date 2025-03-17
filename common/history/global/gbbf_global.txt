@@ -1,0 +1,758 @@
+﻿GLOBAL = {
+### State Trait Setup ###
+	s:STATE_EASTERN_THRACE = {
+		add_state_trait = balkfm_state_trait_golden_horn
+	}
+	s:STATE_MONTENEGRO = {
+		add_state_trait = balkfm_state_trait_black_mountain
+	}
+	
+	
+### Homeland Setup
+	s:STATE_IONIAN_ISLANDS = {
+		add_homeland = cu:romaniote
+	}
+	s:STATE_KONYA = {
+		add_homeland = cu:rhomaios
+	}
+	s:STATE_ANKARA = {
+		add_homeland = cu:rhomaios
+	}
+	s:STATE_ADANA = {
+		add_homeland = cu:rhomaios
+	}
+	s:STATE_KASTAMONU = {
+		add_homeland = cu:rhomaios
+	}
+	s:STATE_DIYARBAKIR = {
+		add_homeland = cu:rhomaios
+	}
+	s:STATE_TRABZON = {
+		add_homeland = cu:rhomaios
+	}
+	s:STATE_ERZURUM = {
+		add_homeland = cu:rhomaios
+	}
+#	s:STATE_TRANSJORDAN = {
+#		add_homeland = cu:rhomaios
+#	}
+#	s:STATE_PALESTINE = {
+#		add_homeland = cu:rhomaios
+#	}
+#	s:STATE_LEBANON = {
+#		add_homeland = cu:rhomaios
+#	}
+#	s:STATE_SYRIA = {
+#		add_homeland = cu:rhomaios
+#	}
+#	s:STATE_ALEPPO = {
+#		add_homeland = cu:rhomaios
+#	}
+#	s:STATE_UPPER_EGYPT = {
+#		add_homeland = cu:rhomaios
+#	}
+	s:STATE_CRIMEA = {
+		add_homeland = cu:urum
+	}
+	
+	
+### Country Creation
+	create_country = {
+		tag = GBBF_CAP
+		origin = c:ATB
+		province = p:x5C9007
+	}
+	create_country = {
+		tag = GBBF_SIL
+		origin = c:ATB
+		province = p:xF423DB
+	}
+	create_country = {
+		tag = GBBF_THE
+		origin = c:ATB
+		province = p:x63A92C
+	}
+	create_country = {
+		tag = GBBF_TRB
+		origin = c:ATB
+		province = p:x2C4A4D
+	}
+	
+	create_country = {
+		tag = GRE_SAM
+		origin = c:TUR
+		province = p:xC56452
+		on_created = {
+			grefm_setup_samos_effect = yes
+		}
+	}
+	
+	create_country = {
+		tag = LIB_KUF
+		origin = c:TRI
+		state = s:STATE_LIBYAN_DESERT.region_state:TRI
+	}
+	s:STATE_LIBYAN_DESERT = {
+		set_owner_of_provinces = {
+			country = C:TRI
+			provinces = {
+				xAFD438
+				x229F5B
+				xACA5B1
+				xA17BD6
+				x0CA694
+			}
+		}
+		set_owner_of_provinces = {
+			country = C:TBI
+			provinces = {
+				x180269
+				x148330
+				x39A829
+				xC5601C
+#				x29E247
+				xFAB14C
+				x2129BE
+				x8C8E28
+				xBCDCC0
+#				xCF807F
+				xA5C57A
+				x8F71C6
+				x148330
+				x372EB1
+				xC75D31
+				x4EF9F0
+				xC88B2A
+				x1A8994
+				xEBD8DF
+				xAD746A
+				xA79085
+				x73B161
+				xF1D2C1
+			}
+		}
+	}
+	s:STATE_TRIPOLI = {
+		set_owner_of_provinces = {
+			country = c:TBI
+			provinces = {
+				x8C63E2	
+				x4508B3
+			}
+		}
+		set_owner_of_provinces = {
+			country = c:LIB_KUF
+			provinces = {
+				x1F8886
+				x1F3EAA
+				x8207BC
+			}
+		}
+	}
+	
+	
+### State Name Assignment
+	s:STATE_LIBYAN_DESERT = {
+		region_state:TRI = {
+			set_state_name = STATE_LIBYA_arabic
+		}
+		region_state:LIB_KUF = {
+			set_state_name = STATE_LIBYA_arabic
+		}
+		region_state:TBI = {
+			set_state_name = STATE_LIBYA_arabic
+		}
+	}
+	
+	
+### State Claims
+	s:STATE_CRETE = {
+		add_claim = c:GRE
+	}
+	s:STATE_CRETE = {
+		add_claim = c:TUR
+	}
+	s:STATE_LIBYAN_DESERT = {
+		add_claim = c:TRI
+	}
+	s:STATE_TRIPOLI = {
+		add_claim = c:TRI
+	}
+	
+	
+### Culture Setup
+	every_state = {
+		limit = {
+			state_is_demotic_greek = yes
+		}
+		grefm_setup_hellene_pops_effect = yes
+	}
+	s:STATE_CRIMEA = {
+		every_scope_state = {
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = greek
+				}
+				change_pop_culture = {
+					target = cu:urum
+					value = 1
+				}
+			}
+		}
+	}
+	every_state = {
+		limit = {
+			state_is_demotic_greek = no
+		}
+		grefm_setup_rhomaios_pops_effect = yes
+	}
+	
+	every_state = {
+		limit = {
+			state_is_demotic_greek = yes
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = sephardic
+			}
+			change_pop_culture = {
+				target = cu:romaniote
+				value = 1
+			}
+		}
+	}
+	
+	c:GRE = {
+		every_scope_pop = {
+			limit = {
+				is_pop_type = aristocrats
+			}
+			change_pop_culture = {
+				target = cu:south_german
+				value = 0.05
+			}
+			change_pop_religion = {
+				target = rel:catholic
+				value = 0.05
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				is_pop_type = officers
+			}
+			change_pop_culture = {
+				target = cu:south_german
+				value = 1
+			}
+			change_pop_religion = {
+				target = rel:catholic
+				value = 1
+			}
+		}
+	}
+	
+	c:ION = {
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = sephardic
+			}
+			change_pop_culture = {
+				target = cu:romaniote
+				value = 1
+			}
+		}
+	}
+	c:TRI = {
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = teda
+			}
+			move_pop = s:STATE_LIBYAN_DESERT.region_state:TBI
+		}
+	}
+	c:LIB_KUF = {
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = teda
+			}
+			move_pop = s:STATE_LIBYAN_DESERT.region_state:TBI
+		}
+	}
+	c:TBI = {
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = bedouin
+			}
+			move_pop = s:STATE_LIBYAN_DESERT.region_state:LIB_KUF
+		}
+	}
+	
+### Global Variable Setup
+	set_global_variable = {
+		name = eocfm_council_var
+		value = 0
+	}
+	set_global_variable = {
+		name = eocfm_crusade_counter
+		value = 0
+	}
+	set_global_variable = {
+		name = eocfm_deposition_counter
+		value = 0
+	}
+	
+### Diplomacy Setup
+	c:GRE = {
+		set_secret_goal = {
+			country = c:GRE_SAM
+			secret_goal = befriend
+		}
+		set_secret_goal = {
+			country = c:ION
+			secret_goal = befriend
+		}
+	}
+	
+	c:ION = {
+		set_secret_goal = {
+			country = c:GRE_SAM
+			secret_goal = befriend
+		}
+		set_secret_goal = {
+			country = c:GRE
+			secret_goal = befriend
+		}
+	}
+	
+	c:GRE_SAM = {
+		set_secret_goal = {
+			country = c:ION
+			secret_goal = befriend
+		}
+		set_secret_goal = {
+			country = c:GRE
+			secret_goal = befriend
+		}
+	}
+	
+	c:TUR = {
+		create_diplomatic_pact = {
+			country = c:GRE_SAM
+			type = protectorate
+		}
+		set_secret_goal = { # This should help to avoid getting bullied at game start
+			country = c:GRE_SAM
+			secret_goal = befriend
+		}
+		set_secret_goal = {
+			country = c:GRE
+			secret_goal = antagonize
+		}
+		create_bidirectional_truce = {
+			country = c:TRI
+			months = 48
+		}
+	}
+	
+	c:GBR ?= {
+		create_diplomatic_pact = {
+			country = c:GRE
+			type = guarantee_independence
+		}
+		set_secret_goal = {
+			country = c:GRE
+			secret_goal = befriend
+		}
+	}
+	c:FRA ?= {
+		create_diplomatic_pact = {
+			country = c:GRE
+			type = guarantee_independence
+		}
+		set_secret_goal = {
+			country = c:GRE
+			secret_goal = befriend
+		}
+		set_secret_goal = {
+			country = c:TUN
+			secret_goal = befriend
+		}
+	}
+	c:RUS ?= {
+		create_diplomatic_pact = {
+			country = c:GRE
+			type = guarantee_independence
+		}
+		set_secret_goal = {
+			country = c:GRE
+			secret_goal = befriend
+		}
+	}
+	
+	c:AUS ?= {
+		add_journal_entry = {
+			type = je_balkfm_cro_croation_question
+		}
+		trigger_event = {
+			id = balkfm.900 # Illyrian Sentiment
+			days = { 15 45 }
+		}
+		create_character = {
+			template = template_balkfm_draskovic_janko
+			on_created = {
+				place_character_in_void = 260 # died in 1856
+			}
+		}
+	}
+	
+### Lobbies Setup
+	c:SER = {
+		create_political_lobby= {
+			type = lobby_pro_country
+			target = c:AUS
+			add_interest_group = ig:ig_intelligentsia
+			add_interest_group = ig:ig_petty_bourgeoisie
+		}
+	}
+	
+### Specific Country Setups
+	c:GRE = {
+		grefm_initialize_bavarocracy_variables_effect = yes
+		add_journal_entry = {
+			type = je_grefm_bavarocracy_main
+		}
+		trigger_event = {
+			id = grefm.001 # The Regency Council
+		}
+		set_variable = {
+			name = grefm_bavarocracy_var
+			value = 2000
+		}
+		balkfm_set_up_ottoman_legacies_effect = yes
+		add_modifier = modifier_grefm_armansperg_regency
+		add_modifier = modifier_eocfm_reformed_synod
+		add_modifier = modifier_eocfm_dissolved_monasteries
+		set_variable = grefm_bavarocracy
+		set_variable = eocfm_dissolved_monasteries
+		set_variable = grefm_mainland_claims_added
+		set_variable = eocfm_ruler_conversion_considered
+		create_character = {
+			template = template_grefm_mavrokordatos_alexandros
+			on_created = {
+				set_variable = grefm_phanariot
+				add_character_role = agitator
+			}
+		}
+		create_character = {
+			template = template_grefm_kanaris_konstantinos
+			on_created = {
+				add_character_role = agitator
+			}
+		}
+		create_character = {
+			template = template_grefm_gennaios_kolokotronis
+			on_created = {
+				add_character_role = agitator
+			}
+		}
+	}
+	
+	c:ION = {
+		add_journal_entry = {
+			type = je_grefm_ion_xenocracy
+		}
+		add_journal_entry = {
+			type = je_grefm_ion_venetian_legacy
+		}
+		add_journal_entry = {
+			type = je_grefm_ion_poverty
+		}
+		trigger_event = {
+			id = grefm.400 # The Republic of the Seven Islands
+		}
+	}
+	
+	c:GRE_SAM = {
+		grefm_initialize_samos_variables_effect = yes
+		add_journal_entry = {
+			type = je_grefm_samos_main
+		}
+		trigger_event = {
+			id = grefm.500 # Samos Defiant
+		}
+		balkfm_set_up_ottoman_legacies_effect = yes
+	}
+	
+	C:BYZ_TRB ?= {
+		trigger_event = {
+			id = grefm.550 # The Pontic Greeks
+		}
+		balkfm_set_up_ottoman_legacies_effect = yes
+	}
+	
+	C:BYZ_CAP ?= {
+		trigger_event = {
+			id = grefm.560 # The Greeks of the Highlands
+		}
+		balkfm_set_up_ottoman_legacies_effect = yes
+	}
+	
+	C:GRA_THE ?= {
+		trigger_event = {
+			id = grefm.570 # The Urums of Little Theodoro
+		}
+		balkfm_set_up_ottoman_legacies_effect = yes
+	}
+	
+	c:TUR = {
+		turkfm_setup_turkey_effect = yes
+		
+		# The Sick Man of Europe
+		add_journal_entry = {
+			type = je_turkfm_sick_man_main
+		}
+		turkfm_initialize_sick_man = yes
+		
+		# The Reorganization of the State
+		add_journal_entry = {
+			type = je_turkfm_tanzimat_main
+		}
+		turkfm_initialize_tanzimat_effect = yes
+		
+		# The Rise of Nationalism
+		turkfm_initialize_tension_effect = yes
+		add_journal_entry = {
+			type = je_turkfm_separatism_main
+		}
+		
+		# The Lands of the Black Mountain
+		balkfm_initialize_karadag_effect = yes
+		add_journal_entry = {
+			type = je_balkfm_tur_karadag
+		}
+		
+		# Millet System Setup
+		set_institution_investment_level = {
+			institution = institution_millet_system
+			level = 5
+		}
+		set_variable = {
+			name = turkfm_millet_system_var
+			value = 1
+		}
+		
+		add_journal_entry = {
+			type = je_turkfm_pirates_of_the_adriatic
+		}
+		
+		# Starting Conditions
+		trigger_event = {
+			id = turkfm.001 # The Sick Man of Europe
+		}
+		add_modifier = {
+			name = modifier_turkfm_imperial_aspiriations
+			months = normal_modifier_time
+		}
+		set_variable = eocfm_controls_constantinople
+		set_variable = eocfm_controls_antioch
+	}
+	
+	c:EGY ?= {
+		set_variable = eocfm_controls_alexandria
+		set_variable = eocfm_controls_jerusalem
+	}
+	
+	c:TRI ?= {
+		turkfm_setup_libya_effect = yes
+		add_journal_entry = {
+			type = je_turkfm_tri_centralization
+		}
+		trigger_event = {
+			id = turkfm.1100 # On the Margins of the Empire
+		}
+		turkfm_initialize_senussi_effect = yes
+	}
+	
+	c:TUN ?= {
+		turkfm_setup_tunis_effect = yes
+		add_journal_entry = {
+			type = je_turkfm_tun_modernization
+		}
+		trigger_event = {
+			id = turkfm.1200 # Between Seas and Sands
+		}
+		balkfm_set_up_ottoman_legacies_effect = yes
+	}
+	
+	c:MON = {
+		balkfm_set_up_montenegro_effect = yes
+		trigger_event = {
+			id = balkfm.300 # A Feudal Relic
+		}
+		add_journal_entry = {
+			type = je_balkfm_mon_prince_bishopric
+		}
+		balkfm_initialize_black_mountain_effect = yes
+		add_journal_entry = {
+			type = je_balkfm_mon_black_mountain
+		}
+		add_modifier = modifier_balkfm_practicing_headtaking
+	}
+	
+	c:SER = {
+		balkfm_set_up_serbia_effect = yes
+		balkfm_initialize_dynasty_variables_effect = yes
+		trigger_event = {
+			id = balkfm.400 # Mileta's Rebellion
+		}
+		add_journal_entry = {
+			type = je_balkfm_ser_monarchism
+		}
+		change_variable = {
+			name = balkfm_obrenovic_support_var
+			add = 400
+		}
+		change_variable = {
+			name = balkfm_karadordevic_support_var
+			add = 50
+		}
+		change_variable = {
+			name = balkfm_leading_dynasty_var
+			add = 400
+		}
+		balkfm_set_up_ottoman_legacies_effect = yes
+	}
+	
+	c:MOL ?= {
+		set_variable = {
+			name = balkfm_ottoman_legacy_var
+			value = 0
+		}
+		set_variable = {
+			name = balkfm_regulamentul_var
+			value = 5
+		}
+		set_variable = {
+			name = balkfm_hospodar_election_counter
+			value = 0
+		}
+		add_journal_entry = {
+			type = je_balkfm_rom_regulamentul_organic
+		}
+		trigger_event = {
+			id = balkfm.600 # The Lands of Stephen the Great
+		}
+		balkfm_set_up_ottoman_legacies_effect = yes
+	}
+	
+	c:WAL ?= {
+		set_variable = {
+			name = balkfm_ottoman_legacy_var
+			value = 0
+		}
+		set_variable = {
+			name = balkfm_regulamentul_var
+			value = 5
+		}
+		set_variable = {
+			name = balkfm_hospodar_election_counter
+			value = 0
+		}
+		add_journal_entry = {
+			type = je_balkfm_rom_regulamentul_organic
+		}
+		trigger_event = {
+			id = balkfm.610 # The Land Beyond the Snowy Mountains
+		}
+		balkfm_set_up_ottoman_legacies_effect = yes
+	}
+	
+	c:RUS ?= {
+		add_modifier = modifier_eocfm_reformed_synod
+		set_variable = eocfm_is_autocephalous
+		set_variable = eocfm_controls_moscow
+	}
+	
+	c:PAP ?= {
+		set_variable = eocfm_controls_rome
+	}
+	
+	every_country = {
+		limit = {
+			has_diplomatic_relevance = c:TUR
+			NOR = {
+				has_journal_entry = je_turkfm_separatism_main
+				has_journal_entry = je_turkfm_eastern_question
+			}
+		}
+		add_journal_entry = {
+			type = je_turkfm_eastern_question
+		}
+		trigger_event = {
+			id = turkfm.300 # The Eastern Question
+			days = 1
+		}
+	}
+	
+### EOCFM Setup
+	every_country = {
+		limit = {
+			country_has_state_religion = rel:orthodox
+		}
+		eocfm_initialize_patriarchs_effect = yes # Creates the Patriarchs and yeets them into the void
+	}
+	if = { # Adds the Orthodox button to the community sidebar
+		limit = {
+			NOT = {
+				is_target_in_global_variable_list = {
+					name = custom_button_list_flag
+					target = flag:eocfm_sidebar_button_sgui
+				}
+			}
+		}
+		add_to_global_variable_list = {
+			name = custom_button_list_flag
+			target = flag:eocfm_sidebar_button_sgui
+		}
+		remove_list_global_variable = {
+			name = custom_button_list
+			target = ideology:eocfm_sidebar_button_sgui
+		}
+	}
+	every_country = {
+		limit = {
+			country_has_state_religion = rel:orthodox
+		}
+		if = {
+			limit = {
+				c:GRE ?= this
+			}
+			trigger_event = {
+				id = eocfm.003 # Greek Holy Synod (GRE)
+			}
+		}
+		else_if = {
+			limit = {
+				c:RUS ?= this
+			}
+			trigger_event = {
+				id = eocfm.004 # Most Holy Synod (RUS)
+			}
+		}
+		else = {
+			trigger_event = {
+				id = eocfm.001 # The Bishops of the East
+			}
+		}
+	}
+	
+
+### Final Cleanup
+	c:ALK = { # Cleans up any remaining alt-history tags
+		trigger_event = {
+			id = grefm.900
+			days = 1
+		}
+	}
+
+}

@@ -2,15 +2,6 @@
 # GENERAL SETUP #
 #################
 
-eocfm_window_visible_sgui = {
-	scope = country
-	
-	is_shown = {
-		has_variable = eocfm_window_is_active_var
-		var:eocfm_window_is_active_var > 0
-	}
-}
-
 eocfm_sidebar_button_sgui = {
 	scope = country
 	
@@ -122,33 +113,30 @@ eocfm_commission_icon_sgui = {
 	}
 	
 	is_valid = {
-		has_technology_researched = romanticism
 		custom_tooltip = {
-			text = eocfm_need_200_tt
+			text = eocmf_is_selecting_icon_NOT_tt
 			hidden_trigger = {
-				eocfm_caesaropapism_capacity_value >= 200
+				NOT = {
+					has_variable = eocfm_icon_var
+				}
 			}
 		}
-		custom_tooltip = {
-			text = eocfm_commission_icon_tt1
-			hidden_trigger = {
+		trigger_if = {
+			limit = {
 				eocfm_has_icon_trigger = no
 			}
-		}
-		custom_tooltip = {
-			text = eocfm_commission_icon_tt2
-			hidden_trigger = {
-				NOR = {
-					has_variable = icon_page_1
-					has_variable = icon_page_2
-					has_variable = icon_page_3
+			has_technology_researched = romanticism
+			custom_tooltip = {
+				text = eocfm_need_200_tt
+				hidden_trigger = {
+					eocfm_caesaropapism_capacity_value >= 200
 				}
 			}
 		}
 	}
 	
 	effect = {
-		set_variable = icon_page_1
+		set_variable = eocfm_icon_var
 		trigger_event = {
 			id = eocfm.020 # Commissioning an Icon
 			popup = yes

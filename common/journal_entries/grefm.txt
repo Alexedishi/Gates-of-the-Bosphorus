@@ -901,7 +901,7 @@ je_grefm_greek_nationalism = {
 	
 	is_shown_when_inactive = {
 		OR = {
-			country_has_primary_culture = cu:hellene
+			country_has_primary_culture = cu:greek
 			country_has_primary_culture = cu:rhomaios
 		}
 	}
@@ -991,7 +991,7 @@ je_grefm_national_language = {
 	
 	is_shown_when_inactive = {
 		OR = {
-			country_has_primary_culture = cu:hellene
+			country_has_primary_culture = cu:greek
 			country_has_primary_culture = cu:rhomaios
 		}
 	}
@@ -1043,7 +1043,7 @@ je_grefm_archaeology = {
 	
 	is_shown_when_inactive = { ##TODO MGR Compatch
 		OR = {
-			country_has_primary_culture = cu:hellene
+			country_has_primary_culture = cu:greek
 			country_has_primary_culture = cu:rhomaios
 		}
 	}
@@ -1172,7 +1172,7 @@ je_grefm_megali_idea = {
 	should_be_pinned_by_default = yes
 
 	is_shown_when_inactive = {
-		country_has_primary_culture = cu:hellene
+		country_has_primary_culture = cu:greek
 		NOR = { 
 			has_global_variable = has_formed_byz
 			has_global_variable = grefm_megali_idea_complete
@@ -1229,8 +1229,8 @@ je_grefm_megali_idea = {
 			hidden_trigger = {
 				OR = {
 					exists = c:BYZ
-					exists = c:HEMP
-					exists = c:GRE_EMU
+					exists = c:GRE_HEL
+					exists = c:BYZ_EMU
 				}
 			}
 		}
@@ -1313,8 +1313,8 @@ je_grefm_scions_of_rhomania = {
 			hidden_trigger = {
 				OR = {
 					exists = c:BYZ
-					exists = c:HEMP
-					exists = c:GRE_EMU
+					exists = c:GRE_HEL
+					exists = c:BYZ_EMU
 				}
 			}
 		}
@@ -1446,8 +1446,8 @@ je_grefm_last_of_the_romans = {
 			hidden_trigger = {
 				OR = {
 					exists = c:BYZ
-					exists = c:HEMP
-					exists = c:GRE_EMU
+					exists = c:GRE_HEL
+					exists = c:BYZ_EMU
 				}
 			}
 		}
@@ -1472,14 +1472,14 @@ je_grefm_greater_greece = {
 
 	is_shown_when_inactive = {
 		OR = {
-			country_has_primary_culture = cu:hellene
+			country_has_primary_culture = cu:greek
 			country_has_primary_culture = cu:rhomaios
 			country_has_primary_culture = cu:rhomaios
 		}
 		NOR = {
-			c:HEMP ?= this
+			c:GRE_HEL ?= this
 			c:BYZ ?= this
-			c:ODXY ?= this
+			c:EOC_ODX ?= this
 		}
 	}
 	
@@ -1574,7 +1574,7 @@ je_grefm_revenge_of_the_greeks = {
 		custom_tooltip = {
 			text = je_grefm_revenge_of_the_greeks_tt
 			hidden_trigger = {
-				c:HEMP ?= this
+				c:GRE_HEL ?= this
 			}
 		}
 	}
@@ -1775,7 +1775,7 @@ je_grefm_black_sea = {
 	group = je_group_grefm_hellenic_empire
 	
 	is_shown_when_inactive = {
-		c:HEMP ?= this
+		c:GRE_HEL ?= this
 	}
 	
 	possible = {
@@ -1839,7 +1839,7 @@ je_grefm_magna_graecia = {
 	group = je_group_grefm_hellenic_empire
 
 	is_shown_when_inactive = {
-		c:HEMP ?= this
+		c:GRE_HEL ?= this
 	}
 	
 	immediate = {
@@ -2080,190 +2080,6 @@ je_grefm_alexandria_susiana = {
 
 }
 
-####################
-# GREEK SEPARATISM #
-####################
-
-je_grefm_greek_separatism_main = {
-	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
-	
-	group = je_group_grefm_nationalism
-	
-	should_be_pinned_by_default = yes
-	
-	is_shown_when_inactive = {
-		country_has_primary_culture = cu:hellene
-	}
-	
-	possible = {
-		has_journal_entry = je_grefm_megali_idea
-		is_subject = no
-	}
-	
-	immediate = {
-		if = {
-			limit = {
-				NOT = {
-					has_variable = grefm_separatism_received
-				}
-			}
-			trigger_event = {
-				id = grefm.590 # Greek Separatism
-			}
-			set_variable = grefm_separatism_received
-		}
-		else = {
-			post_notification = notitification_grefm_separatism_received
-		}
-	}
-	
-	scripted_button = grefm_epirus_support_button
-	scripted_button = grefm_epirus_provoke_button
-	
-	scripted_button = grefm_macedonia_support_button
-	scripted_button = grefm_macedonia_provoke_button
-	
-	scripted_button = grefm_skopia_support_button
-	scripted_button = grefm_skopia_provoke_button
-	
-	scripted_button = grefm_smyrna_support_button
-	scripted_button = grefm_smyrna_provoke_button	
-	
-	scripted_button = grefm_cyprus_support_button
-	scripted_button = grefm_cyprus_provoke_button
-	
-	scripted_button = grefm_crete_support_button
-	scripted_button = grefm_crete_provoke_button
-	
-	complete = {
-		owns_entire_state_region = STATE_ALBANIA
-		owns_entire_state_region = STATE_MACEDONIA
-		owns_entire_state_region = STATE_SKOPIA
-		owns_entire_state_region = STATE_AYDIN
-		owns_entire_state_region = STATE_CRETE
-		owns_entire_state_region = STATE_CYPRUS
-	}
-	
-	on_complete = {
-		hidden_effect = {
-			grefm_clean_up_separatism_effect = yes
-		}
-	}
-	
-	invalid = {
-		hidden_trigger = {
-			has_variable = grefm_weaksauce
-		}
-	}
-	
-	on_invalid = {
-		hidden_effect = {
-			grefm_clean_up_separatism_effect = yes
-		}
-	}
-	
-	on_weekly_pulse = {
-		effect = {
-			grefm_calculate_separatism_variables_effect = yes
-			grefm_check_separatism_modifiers_effect = yes
-		}
-	}
-	
-	on_monthly_pulse = {
-		effect = {
-			grefm_monthly_greek_separatism_effect = yes
-		}
-	}
-	
-	status_desc = {
-		triggered_desc = {
-			desc = je_grefm_greek_separatism_crete_tt
-			trigger = {
-				NOT = {
-					owns_entire_state_region = STATE_CRETE
-				}
-			}
-		}
-	}
-	
-	weight = 1000 # will fall in behind je_grefm_greater_greece
-	
-}
-
-je_grefm_greek_separatism_sub = {
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-	
-	group = je_group_grefm_nationalism
-	
-	should_be_pinned_by_default = yes
-	
-	immediate = {
-		if = {
-			limit = {
-				NOT = {
-					has_variable = grefm_separatism_received
-				}
-			}
-			trigger_event = {
-				id = grefm.590 # Greek Separatism
-			}
-			set_variable = grefm_separatism_received
-		}
-		else = {
-			post_notification = notitification_grefm_separatism_received
-		}
-	}
-	
-	complete = {
-		cultural_acceptance_base = {
-			target = cu:hellene
-			value >= acceptance_status_5
-		}
-	}
-	
-	fail = {
-		NOR = {
-			owns_entire_state_region = STATE_ALBANIA
-			owns_entire_state_region = STATE_MACEDONIA
-			owns_entire_state_region = STATE_SKOPIA
-			owns_entire_state_region = STATE_AYDIN
-			owns_entire_state_region = STATE_CRETE
-			owns_entire_state_region = STATE_CYPRUS
-		}
-	}
-	
-	on_monthly_pulse = {
-		events = {
-			grefm.594 # The Makedonijan Revolt (TUR/EGY)
-			grefm.595 # The Epirote Revolt (TUR/EGY)
-			grefm.596 # The Cypriot Revolt (TUR/EGY)
-			grefm.597 # The Macedonian Revolt (TUR/EGY)
-			grefm.598 # The Smyrna Revolt (TUR/EGY)
-			grefm.528 # Crete Seeks Greater Autonomy
-			grefm.529 # Crete Revolts Again (TUR/EGY)
-		}
-	}
-	
-	status_desc = {
-		triggered_desc = {
-			desc = je_grefm_greek_separatism_crete_tt
-			trigger = {
-				OR = {
-					AND = {
-						has_state_in_state_region = STATE_CRETE
-					}
-					c:CRE ?= {
-						is_subject_of = root
-					}
-				}
-			}
-		}
-	}
-	
-	weight = 100
-	
-}
-
 
 ################
 # OTHER FLAVOR #
@@ -2277,7 +2093,7 @@ je_grefm_the_womens_journal = {
 	should_be_pinned_by_default = yes
 	
 	is_shown_when_inactive = {
-		country_has_primary_culture = cu:hellene
+		country_has_primary_culture = cu:greek
 		owns_entire_state_region = STATE_ATTICA
 		has_technology_researched = egalitarianism
 	}
@@ -2487,7 +2303,7 @@ je_grefm_ion_xenocracy = {
 					has_active_production_method = pm_switch_boards
 				}
 			}
-			bureaucracy > 0
+			bureaucracy < 0
 			approaching_bureaucracy_shortage = no
 		}
 		institution_investment_level = {
@@ -2923,8 +2739,8 @@ je_grefm_constantinople = { # 14 Regions of Constantinople
 		owns_entire_state_region = STATE_EASTERN_THRACE
 		capital = {
 			state_region = s:STATE_EASTERN_THRACE
-			has_building = building_hippodrome
-			has_building = building_mega_palation
+			has_building = gbbf_building_hippodrome
+			has_building = gbbf_building_mega_palation
 			total_urbanization >= 2000
 			any_scope_building = {
 				is_building_type = building_government_administration
@@ -3147,7 +2963,7 @@ je_grefm_purple_pheonix = {
 	is_shown_when_inactive = {
 		nottomans_country_has_greek_culture_trigger = yes
 		NOR = {
-			c:HEMP ?= this
+			c:GRE_HEL ?= this
 			has_variable = grefm_weaksauce
 		}
 	}
@@ -3592,7 +3408,7 @@ je_grefm_aus_megali_idea = {
 	
 	is_shown_when_inactive = {
 		anzfp_is_active = yes
-		c:AUS ?= this
+		c:AST ?= this
 	}
 	
 	possible = {
@@ -3638,7 +3454,7 @@ je_grefm_aus_megali_idea = {
 	}
 	
 	on_complete = {
-		change_tag = GRE_EMU
+		change_tag = BYZ_EMU
 		trigger_event = {
 			id = grefm.891 # The Empire from Down Under
 		}
@@ -3651,8 +3467,8 @@ je_grefm_aus_megali_idea = {
 			hidden_trigger = {
 				OR = {
 					exists = c:BYZ
-					exists = c:HEMP
-					exists = c:GRE_EMU
+					exists = c:GRE_HEL
+					exists = c:BYZ_EMU
 				}
 			}
 		}
