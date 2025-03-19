@@ -288,18 +288,7 @@
 	}
 	
 ### Global Variable Setup
-	set_global_variable = {
-		name = eocfm_council_var
-		value = 0
-	}
-	set_global_variable = {
-		name = eocfm_crusade_counter
-		value = 0
-	}
-	set_global_variable = {
-		name = eocfm_deposition_counter
-		value = 0
-	}
+# //
 	
 ### Diplomacy Setup
 	c:GRE = {
@@ -430,12 +419,8 @@
 		}
 		balkfm_set_up_ottoman_legacies_effect = yes
 		add_modifier = modifier_grefm_armansperg_regency
-		add_modifier = modifier_eocfm_reformed_synod
-		add_modifier = modifier_eocfm_dissolved_monasteries
 		set_variable = grefm_bavarocracy
-		set_variable = eocfm_dissolved_monasteries
 		set_variable = grefm_mainland_claims_added
-		set_variable = eocfm_ruler_conversion_considered
 		create_character = {
 			template = template_grefm_mavrokordatos_alexandros
 			on_created = {
@@ -553,13 +538,9 @@
 			name = modifier_turkfm_imperial_aspiriations
 			months = normal_modifier_time
 		}
-		set_variable = eocfm_controls_constantinople
-		set_variable = eocfm_controls_antioch
 	}
 	
 	c:EGY ?= {
-		set_variable = eocfm_controls_alexandria
-		set_variable = eocfm_controls_jerusalem
 	}
 	
 	c:TRI ?= {
@@ -667,16 +648,6 @@
 		balkfm_set_up_ottoman_legacies_effect = yes
 	}
 	
-	c:RUS ?= {
-		add_modifier = modifier_eocfm_reformed_synod
-		set_variable = eocfm_is_autocephalous
-		set_variable = eocfm_controls_moscow
-	}
-	
-	c:PAP ?= {
-		set_variable = eocfm_controls_rome
-	}
-	
 	every_country = {
 		limit = {
 			has_diplomatic_relevance = c:TUR
@@ -693,59 +664,6 @@
 			days = 1
 		}
 	}
-	
-### EOCFM Setup
-	every_country = {
-		limit = {
-			country_has_state_religion = rel:orthodox
-		}
-		eocfm_initialize_patriarchs_effect = yes # Creates the Patriarchs and yeets them into the void
-	}
-	if = { # Adds the Orthodox button to the community sidebar
-		limit = {
-			NOT = {
-				is_target_in_global_variable_list = {
-					name = custom_button_list_flag
-					target = flag:eocfm_sidebar_button_sgui
-				}
-			}
-		}
-		add_to_global_variable_list = {
-			name = custom_button_list_flag
-			target = flag:eocfm_sidebar_button_sgui
-		}
-		remove_list_global_variable = {
-			name = custom_button_list
-			target = ideology:eocfm_sidebar_button_sgui
-		}
-	}
-	every_country = {
-		limit = {
-			country_has_state_religion = rel:orthodox
-		}
-		if = {
-			limit = {
-				c:GRE ?= this
-			}
-			trigger_event = {
-				id = eocfm.003 # Greek Holy Synod (GRE)
-			}
-		}
-		else_if = {
-			limit = {
-				c:RUS ?= this
-			}
-			trigger_event = {
-				id = eocfm.004 # Most Holy Synod (RUS)
-			}
-		}
-		else = {
-			trigger_event = {
-				id = eocfm.001 # The Bishops of the East
-			}
-		}
-	}
-	
 
 ### Final Cleanup
 	c:ALK = { # Cleans up any remaining alt-history tags
