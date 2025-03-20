@@ -1634,3 +1634,119 @@ balkfm_protochronism_progress_value = {
 	}
 	round_to = 0.01
 }
+
+#### EOCFM OVERWRITE
+# eocfm_schism_progress_value is overwritten since Silistra-specific content is not present in standalone eocfm
+
+eocfm_schism_progress_value = {
+	value = 0
+	
+	## Silitra Sources ##
+	if = {
+		limit = {
+			has_journal_entry = je_balkfm_bul_bulgarian_exarchate
+		}
+		add = {
+			value = 2
+			desc = eocfm_value_from_base
+		}
+	}
+	if = {	
+		limit = {
+			c:TUR_SIL ?= this
+		}
+		add = {
+			value = balkfm_intelligentsia_devout_value
+			desc = balkfm_bul_from_devout_influence
+		}
+	}
+	if = {	
+		limit = {
+			c:TUR_SIL ?= this
+		}
+		add = {
+			value = balkfm_ottoman_relations_value
+			desc = balkfm_bul_from_ottoman_relations
+		}
+	}	
+	
+	## Sources ##
+	if = {
+		limit = {
+			has_modifier = modifier_eocfm_schismatic
+		}
+		add = {
+			value = 2
+			desc = eocfm_value_from_base
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_eocfm_ignored_dissent
+		}
+		add = {
+			value = 1
+			desc = eocfm_value_from_ignoring_dissent
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_eocfm_purged_ecclesiarchy
+		}
+		add = {
+			value = 1
+			desc = eocfm_value_from_purged_ecclesiarchy
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_eocfm_fast_tracking_bishops
+		}
+		add = {
+			value = 1
+			desc = eocfm_value_from_fast_tracking_bishops
+		}
+	}
+	
+	## Penalities ##
+	if = {
+		limit = {
+			has_modifier = modifier_eocfm_conceded_to_traditionalists
+		}
+		subtract = {
+			value = 1
+			desc = eocfm_value_from_conceded_to_traditionalists
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_eocfm_retained_ecclesiarchy
+		}
+		subtract = {
+			value = 1
+			desc = eocfm_value_from_retained_ecclesiarchy
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_eocfm_monk_smackdown_tolerated
+		}
+		subtract = {
+			value = 1
+			desc = eocfm_value_from_monk_smackdown
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_eocfm_agitator_delay
+		}
+		subtract = {
+			value = 1
+			desc = eocfm_value_from_agitator_delay
+		}
+	}
+	
+	round = 1
+	min = 1
+	max = 10
+}
