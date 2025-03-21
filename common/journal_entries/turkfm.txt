@@ -1493,31 +1493,25 @@ je_turkfm_pirates_of_the_adriatic = {
 	}
 	
 	fail = {
-		trigger_if = {
-			limit = {
-				OR = {
-					country_rank < rank_value:great_power
-					c:TUR ?= this
-				}
-			}
-			any_scope_state = {
-				count = all
-				NOT = {
-					custom_tooltip = {
-						text = balkfm_state_is_adriatic_tt
-						state_is_adriatic = yes
+		NOR = {
+			trigger_if = {
+				limit = {
+					NOT = {
+						c:TUR ?= this
 					}
 				}
+				has_diplomatic_relevance = c:TUR
 			}
-		}
-		trigger_if = {
-			limit = {
-				country_rank >= rank_value:great_power
-				NOT = {
-					c:TUR ?= this
+			any_scope_state = {
+				state_is_adriatic = yes
+				is_coastal = yes
+			}
+			any_trade_route = {
+				OR = {
+					exporter.owner = c:TUR
+					importer.owner = c:TUR
 				}
 			}
-			has_diplomatic_relevance = c:TUR
 		}
 	}
 	
