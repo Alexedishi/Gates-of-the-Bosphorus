@@ -958,9 +958,9 @@ je_turkfm_tanzimat_slavery = {
 	
 }
 
-#######################################################
-##  #TURK2  THE RISE OF NATIONALISM  Events 100-199  ##
-#######################################################
+#######################################
+##  #TURK2  THE RISE OF NATIONALISM  ##
+#######################################
 
 je_turkfm_separatism_main = { # This is assigned to TUR
 	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
@@ -1275,6 +1275,10 @@ je_turkfm_separatism_riots = {
 	
 }
 
+####################################
+##  #TURK3  THE EASTERN QUESTION  ##
+####################################
+
 je_turkfm_eastern_question = {
 	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
 	
@@ -1410,9 +1414,9 @@ je_turkfm_international_congress = {
 }
 
 
-########################################
-##  TURK4  TURKISH HISTORICAL FLAVOR  ##
-########################################
+#######################################
+##  TURK4  TTOMAN NATIONAL REVIVALS  ##
+#######################################
 
 # //OPEN
 
@@ -1424,9 +1428,9 @@ je_turkfm_international_congress = {
 # //OPEN
 
 
-##########################################
-##  #TURK6  TURKISH NATIONALISM  Events ##
-##########################################
+###################################
+##  #TURK6  TURKISH NATIONALISM  ##
+###################################
 
 # //OPEN
 
@@ -1438,16 +1442,129 @@ je_turkfm_international_congress = {
 # //OPEN
 
 
-###################
-##  #TURK8 OPEN  ##
-###################
+##########################################
+##  #TURK8  TURKISH EXPEDITIONS BLOCK I  ##
+##########################################
 
-# //OPEN
+je_turkfm_karadag = {
+	icon = "gfx/interface/icons/event_icons/event_montenegro.dds"
+	
+	group = je_group_turkfm_sick_man
+	
+	should_be_pinned_by_default = yes
+	
+	immediate = {
+		add_modifier = modifier_balkfm_practicing_headtaking
+	}
+	
+	scripted_progress_bar = turkfm_karadag_progress_bar
+	
+	# General Buttons
+	scripted_button = balkfm_reinforce_border_button
+	scripted_button = balkfm_border_raid_button
+	
+	# Montenegro Buttons
+	scripted_button = balkfm_renounce_headtaking_button
+	scripted_button = balkfm_negociate_kotor_button	
+	
+	complete = {
+		owns_entire_state_region = STATE_MONTENEGRO
+	}
+	
+	on_complete = {
+		if = {
+			limit = {
+				c:TUR ?= this
+			}
+			trigger_event = {
+				id = turkfm.807 # The Black Mountain Subdued
+			}
+		}
+		else_if = {
+			limit = {
+				c:MON ?= this
+			}
+			trigger_event = {
+				id = turkfm.809 # The Lands of Montenegro
+			}
+		}
+	}
+	
+	fail = {
+		NOT = {
+			has_state_in_state_region = STATE_MONTENEGRO
+		}
+	}
+	
+	on_fail = {
+		if = {
+			limit = {
+				c:TUR ?= this
+			}
+			trigger_event = {
+				id = turkfm.806 # The Black Mountain Lost
+			}
+		}
+		else_if = {
+			limit = {
+				c:MON ?= this
+			}
+			trigger_event = {
+				id = turkfm.808 # International Indifference
+			}
+		}
+	}
+	
+	on_weekly_pulse = {
+		turkfm_update_karadag_variables_effect = yes
+	}
+	
+	on_monthly_pulse = {
+		events = {
+			turkfm.804 # Ottomans Gain Ground
+			turkfm.805 # Montenegro Gains Ground
+			turkfm.812 # //Withdraws from Montenegro
+			turkfm.813 # //Has Died!
+			turkfm.830 # Village Conflict Monitor [TECH]
+		}
+		random_events = {
+			chance_of_no_event = 75
+			 5 = turkfm.820 # Local Informants
+			 5 = turkfm.821 # Bear Sighted
+			10 = turkfm.822 # A Circular Expedition
+			20 = turkfm.823 # Snow on the Ground
+			 5 = turkfm.824 # Balkan Hospitality
+			 5 = turkfm.825 # Expedition Beset by Plague!
+			10 = turkfm.826 # Tax Evasion
+			 1 = turkfm.827 # Village Ransaked
+			10 = turkfm.828 # Successful Scouting
+			10 = turkfm.829 # Village Skirmish Escalates
+		}
+		effect = {
+			change_global_variable = {
+				name = turkfm_karadag_var
+				add = global_var:turkfm_karadag_mon_progress
+				subtract = global_var:turkfm_karadag_tur_progress
+			}
+			clamp_global_variable = {
+				name = balkfm_karadag_var
+				max = 100
+				min = 0
+			}
+			turkfm_karadag_progressbar_effect = yes
+		}
+	}
+	
+	status_desc = {
+	}
+	
+	weight = 1000
+	
+}
 
-
-################################################
-##  #TURK9  CONTENT NOT ELSEWHERE CLASSIFIED  ##
-################################################
+############################################
+##  #TURK9  TURKISH EXPEDITIONS BLOCK II  ##
+############################################
 
 
 je_turkfm_pirates_of_the_adriatic = {
