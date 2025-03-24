@@ -3834,6 +3834,21 @@ turkfm_remove_large_progress_effect = {
 	}
 }
 
+turkfm_cancel_expedition_effect = {
+	every_scope_character = {
+		limit = {
+			has_modifier = modifier_turkfm_leading_expedition
+		}
+		remove_modifier = modifier_turkfm_leading_expedition
+	}
+	remove_modifier = modifier_turkfm_deployed_expedition
+	add_modifier = {
+		name = modifier_turkfm_cancelled_expedition
+		months = short_modifier_time
+	}
+	
+}
+
 turkfm_clear_expedition_effect = {
 	remove_variable = turkfm_expedition_var
 	remove_variable = turkfm_expedition_progress_var
@@ -3841,7 +3856,7 @@ turkfm_clear_expedition_effect = {
 }
 
 
-#### Karadag Expedition Scripted Effects
+#### Karadag Border Conflict Scripted Effects
 
 turkfm_initialize_karadag_effect = {
 	set_global_variable = {
@@ -4211,38 +4226,42 @@ turkfm_claim_province_effect = {
 }
 
 turkfm_karadag_progressbar_effect = {
-	je:je_turkfm_karadag = {
+	if = {
+		limit = {
+			c:TUR ?= this
+		}
+		je:je_turkfm_karadag = {
 			set_bar_progress = {
 				name = turkfm_karadag_progress_bar
 				value = global_var:turkfm_karadag_var
 			}
 		}
-	}
-}
-
-balkfm_incursion_scopes_effect = {
-	# Montenegrin Incursion
-	if = {
-		limit = {
-			global_var:balkfm_border_incursion_var = 1
-		}
-		c:MON = {
-			save_scope_as = balkfm_border_attacker_scope
-		}
-		c:TUR = {
-			save_scope_as = balkfm_border_defender_scope
+		c:MON ?= {
+			je:je_turkfm_karadag = {
+				set_bar_progress = {
+					name = turkfm_karadag_progress_bar
+					value = global_var:turkfm_karadag_var
+				}
+			}
 		}
 	}
-	# Ottoman Incursion
 	else_if = {
 		limit = {
-			global_var:balkfm_border_incursion_var = 2
+			c:MON ?= this
 		}
-		c:MON = {
-			save_scope_as = balkfm_border_defender_scope
+		je:je_turkfm_karadag = {
+			set_bar_progress = {
+				name = turkfm_karadag_progress_bar
+				value = global_var:turkfm_karadag_var
+			}
 		}
-		c:TUR = {
-			save_scope_as = balkfm_border_attacker_scope
+		c:TUR ?= {
+			je:je_turkfm_karadag = {
+				set_bar_progress = {
+					name = turkfm_karadag_progress_bar
+					value = global_var:turkfm_karadag_var
+				}
+			}
 		}
 	}
 }
@@ -4371,6 +4390,113 @@ turkfm_cleanup_karadag_effect = {
 				type = je_balkfm_black_mountain
 			}
 		}
+	}
+}
+
+#### Karadag Expedition Scripted Effects
+
+turkfm_karadag_scopes_effect = {
+	if = {
+		limit = {
+			c:TUR ?= {
+				var:turkfm_expedition_var ?= 0
+			}
+		}
+		c:TUR ?= {
+			save_scope_as = turkfm_karadag_attacker_scope
+			random_scope_character = {
+				limit = {
+					has_modifier = modifier_turkfm_leading_expedition
+				}
+				save_scope_as = turkfm_expedition_leader_scope
+			}
+		}
+		c:MON ?= {
+			save_scope_as = turkfm_karadag_defender_scope
+		}
+	}
+	else_if = {
+		limit = {
+			c:MON ?= {
+				var:turkfm_expedition_var ?= 0
+			}
+		}
+		c:MON ?= {
+			save_scope_as = turkfm_karadag_attacker_scope
+			random_scope_character = {
+				limit = {
+					has_modifier = modifier_turkfm_leading_expedition
+				}
+				save_scope_as = turkfm_expedition_leader_scope
+			}
+		}
+		c:TUR ?= {
+			save_scope_as = turkfm_karadag_defender_scope
+		}
+	}
+}
+
+turkfm_start_karadag_expedition_effect = {
+	remove_variable = turkfm_expedition_transit_var
+	set_variable = {
+		name = turkfm_expedition_var
+		value = 0 # Montenegrin Expedition
+	}
+	set_variable = {
+		name = turkfm_expedition_progress_var
+		value = 0
+	}
+	set_variable = {
+		name = turkfm_expedition_peril_var
+		value = 0
+	}
+}
+
+turkfm_fail_karadag_expedition_effect = {
+	every_scope_character = {
+		limit = {
+			has_modifier = modifier_turkfm_leading_expedition
+		}
+		remove_modifier = modifier_turkfm_leading_expedition
+		add_modifier = {
+			name = modifier_turkfm_failed_expedition
+			months = long_modifier_time
+		}
+	}
+	remove_modifier = modifier_turkfm_deployed_expedition
+	turkfm_karadag_regress_effect = yes
+}
+
+turkfm_complete_karadag_expedition_effect = {
+	every_scope_character = {
+		limit = {
+			has_modifier = modifier_turkfm_leading_expedition
+		}
+		remove_modifier = modifier_turkfm_leading_expedition
+		add_modifier = {
+			name = modifier_turkfm_completed_expedition
+			months = long_modifier_time
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_turkfm_failed_expedition
+			}
+			remove_modifier = modifier_turkfm_failed_expedition
+		}
+	}
+	remove_modifier = modifier_turkfm_deployed_expedition
+	custom_tooltip = {
+		text = turkfm_karadag_gain_250
+		change_global_variable = {
+			name = turkfm_karadag_var
+			add = 250
+		}
+		clamp_global_variable = {
+			name = turkfm_karadag_var
+			max = 500
+			min = 0
+		}
+		turkfm_karadag_progressbar_effect = yes
 	}
 }
 
@@ -4550,21 +4676,6 @@ turkfm_start_piracy_expedition_effect = {
 		name = turkfm_expedition_peril_var
 		value = 0
 	}
-}
-
-turkfm_cancel_piracy_expedition_effect = {
-	every_scope_character = {
-		limit = {
-			has_modifier = modifier_turkfm_leading_expedition
-		}
-		remove_modifier = modifier_turkfm_leading_expedition
-	}
-	remove_modifier = modifier_turkfm_deployed_expedition
-	add_modifier = {
-		name = modifier_turkfm_cancelled_expedition
-		months = short_modifier_time
-	}
-	
 }
 
 turkfm_fail_piracy_expedition_effect = {
