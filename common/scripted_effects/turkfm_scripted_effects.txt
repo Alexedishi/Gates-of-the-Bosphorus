@@ -2,8 +2,37 @@
 # TURKFM SCRIPTED EFFECTS #
 ###########################
 
-#### GLOBAL SETUP EFFECTS ####
+# Content contained here pertains to the Ottoman Empire / Turkish State and associated states
 
+####################
+
+# For Greek content, see the "grefm" module
+# For Turkish content, see the "turkfm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Orthodox Church content, see the "eocfm" module
+
+####################
+
+####  TABLE OF CONTENTS  ####
+
+# TURK0 - THE LAST STRUGGLE OF THE OTTOMAN EMPIRE
+# TURK1 - THE REORDERING OF THE EMPIRE
+# TURK2 - THE RISE OF NATIONALISM
+# TURK3 - THE EASTERN QUESTION
+# TURK4 - OTTOMAN NATIONAL REVIVALS
+# TURK5 - TURKISH HISTORICAL FLAVOR
+# TURK6 - TURKISH NATIONALISM
+# TURK7 - OPEN
+# TURK8 - TURKISH EXPEDITIONS BLOCK I
+# TURK9 - TURKISH EXPEDITIONS BLOCK II
+# TURK10 - EGYPTIAN FLAVOR CONTENT
+# TURK11 - LIBYAN FLAVOR CONTENT
+# TURK12 - TUNISIAN FLAVOR CONTENT
+
+####################
+
+
+#### General Setup Effects
 turkfm_setup_turkey_effect = {
 	ig:ig_landowners = {
 		add_ruling_interest_group = yes
@@ -67,7 +96,12 @@ turkfm_setup_libya_effect = {
 turkfm_setup_tunis_effect = {
 }
 
-#### SICK MAN EFFECTS ####
+
+######################################################
+##  TURK0  THE LAST STRUGGLE OF THE OTTOMAN EMPIRE  ##
+######################################################
+
+#### Sick Man of Europe Scripted Effects
 
 turkfm_initialize_sick_man = {
 	set_variable = {
@@ -156,8 +190,11 @@ turkfm_validate_sick_man_effect = {
 	}
 }
 
-#### TANZIMAT EFFECTS ####
+###########################################
+##  TURK1  THE REORDERING OF THE EMPIRE  ##
+###########################################
 
+#### Tanzimat Scripted Effects
 turkfm_initialize_tanzimat_effect = {
 	set_variable = {
 		name = turkfm_tanzimat_var
@@ -539,8 +576,12 @@ turkfm_religious_autonomy_enact_effect = {
 	}
 }
 
-#### RISE OF NATIONALISM EFFECTS ####
 
+######################################
+##  TURK2  THE RISE OF NATIONALISM  ##
+######################################
+
+#### Nationalism/Separatism Scripted Effects
 turkfm_initialize_tension_effect = {
 	set_global_variable = {
 		name = turkfm_separatism_phase_var
@@ -3121,8 +3162,12 @@ turkm_cleanup_tension_main_effect = {
 	remove_variable = turkfm_tension_event_cooldown_var
 }
 
-#### NATIONALISM CRISIS EFFECTS ####
 
+##################################
+##  TURK3  THE EASTERN QUESTION ##
+##################################
+
+#### Eastern Question Scripted Effects
 turkfm_initialize_crisis_effect = {
 	set_global_variable = {
 		name = turkfm_riot_counter_var
@@ -3578,169 +3623,35 @@ turkfm_cleanup_congress_effect = {
 	}
 }
 
-#### ALBANIAN PIRACY EFFECTS ####
+########################################
+##  TURK4  OTTOMAN NATIONAL REVIVALS  ##
+########################################
 
-turkfm_awaken_jack_sparrow_effect = {
-	create_character = {
-		template = template_turkfm_jack_sparrow
-		first_name = Rafil
-		last_name = Bey
-		on_created = {
-			place_character_in_void = 300
-		}
-	}
-	random_character_in_void = {
-		limit = {
-			has_template = template_turkfm_jack_sparrow
-		}
-		save_scope_as = turkfm_jack_sparrow_scope
-	}
-	set_variable = {
-		name = turkfm_jack_sparrow_var
-		value = scope:turkfm_jack_sparrow_scope
-	}
-	je:je_turkfm_pirates_of_the_adriatic = {
-		add_to_variable_list = {
-			name = com_journal_characters
-			target = scope:turkfm_jack_sparrow_scope
-		}
-	}
-}
 
-turkfm_jack_sparrow_effect = {
-	## Step 1, Check for pirate leader
-	if = {
-		limit = {
-			any_character_in_void = {
-				has_template = template_turkfm_jack_sparrow
-			}
-			
-		}
-		random_character_in_void = {
-			limit = {
-				has_template = template_turkfm_jack_sparrow
-			}
-			save_scope_as = turkfm_jack_sparrow_scope
-		}
-	}
-	else = {
-		create_character = {
-			template = template_turkfm_jack_sparrow
-			on_created = {
-				place_character_in_void = 300
-			}
-		}
-		random_character_in_void = {
-			limit = {
-				has_template = template_turkfm_jack_sparrow
-			}
-			save_scope_as = turkfm_jack_sparrow_scope
-		}
-		every_country = {
-			limit = {
-				has_journal_entry = je_turkfm_pirates_of_the_adriatic
-			}
-			post_notification = notification_turkfm_jack_sparrow_reincarnated
-		}
-	}
-	set_variable = {
-		name = turkfm_jack_sparrow_var
-		value = scope:turkfm_jack_sparrow_scope
-	}
-	
-	## Step 2, Check for ongoing expedition
-	if = {
-		limit = {
-			any_scope_character = {
-				has_modifier = modifier_turkfm_leading_expedition
-			}
-		}
-		random_scope_character = {
-			limit = {
-				has_modifier = modifier_turkfm_leading_expedition
-			}
-			save_scope_as = turkfm_cutler_beckett_scope
-		}
-	}
-	if = {
-		limit = {
-			exists = scope:turkfm_cutler_beckett_scope
-		}
-		set_variable = {
-			name = turkfm_cutler_beckett_var
-			value = scope:turkfm_cutler_beckett_scope
-		}
-	}
-	else = {
-		remove_variable = turkfm_cutler_beckett_var
-	}
-	
-	## Step 3, Update Lists and progress bars
-	je:je_turkfm_pirates_of_the_adriatic = {
-		set_bar_progress = {
-			name = turkfm_jack_sparrow_progress_bar
-			value = global_var:turkfm_pirates_var
-		}
-		clear_variable_list = com_journal_characters
-		add_to_variable_list = {
-			name = com_journal_characters
-			target = scope:turkfm_jack_sparrow_scope
-		}
-		if = {
-			limit = {
-				exists = scope:turkfm_cutler_beckett_scope
-			}
-			add_to_variable_list = {
-				name = com_journal_characters
-				target = scope:turkfm_cutler_beckett_scope
-			}
-		}
-	}
-}
 
-turkfm_piracy_scopes_effect = {
-	random_character_in_void = {
-		limit = {
-			has_template = template_turkfm_jack_sparrow
-		}
-		save_scope_as = turkfm_jack_sparrow_scope
-	}
-	random_scope_character = {
-		limit = {
-			has_modifier = modifier_turkfm_leading_expedition
-		}
-		save_scope_as = turkfm_cutler_beckett_scope
-	}
-}
+########################################
+##  TURK5  TURKISH HISTORICAL FLAVOR  ##
+########################################
 
-turkfm_cleanup_piracy_effect = {
-	every_scope_character = {
-		limit = {
-			has_modifier = modifier_turkfm_leading_expedition
-		}
-		remove_modifier = modifier_turkfm_leading_expedition
-		add_modifier = {
-			name = modifier_turkfm_failed_expedition
-			months = long_modifier_time
-		}
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_turkfm_deployed_expedition
-		}
-		remove_modifier = modifier_turkfm_deployed_expedition
-	}
-	remove_variable = turkfm_jack_sparrow_var
-	remove_variable = turkfm_cutler_beckett_var
-	remove_variable = turkfm_expedition_transit_var
-	remove_variable = turkfm_expedition_progress_var
-	remove_variable = turkfm_expedition_peril_var
-}
 
-#### EXPEDITION EFFECTS ####
 
-## General Expedition Effects
+##################################
+##  TURK6  TURKISH NATIONALISM  ##
+##################################
 
+
+
+###################
+##  TURK7  OPEN  ##
+###################
+
+
+
+##########################################
+##  TURK8  TURKISH EXPEDITIONS BLOCK I  ##
+##########################################
+
+#### General Expedition Scripted Effects
 turkfm_add_small_peril_effect = {
 	custom_tooltip = {
 		text = turkfm_peril_plus_1
@@ -3929,7 +3840,701 @@ turkfm_clear_expedition_effect = {
 	remove_variable = turkfm_expedition_peril_var
 }
 
-## Piracy Expedition Effects
+
+#### Karadag Expedition Scripted Effects
+
+turkfm_initialize_karadag_effect = {
+	set_global_variable = {
+		name = turkfm_karadag_var
+		value = 250
+	}
+	set_global_variable = {
+		name = turkfm_karadag_tur_var
+		value = 0
+	}
+	set_global_variable = {
+		name = turkfm_karadag_mon_var
+		value = 0
+	}
+	c:TUR = {
+		set_variable = {
+			name = turkfm_next_province_var
+			value = 1
+		}
+		set_variable = {
+			name = turkfm_provinces_var
+			value = 3
+		}
+		set_variable = {
+			name = turkfm_mon_provinces_var
+			value = 1
+		}
+	}
+	c:MON = {
+		set_variable = {
+			name = turkfm_next_province_var
+			value = 2
+		}
+		set_variable = {
+			name = turkfm_provinces_var
+			value = 3
+		}
+		set_variable = {
+			name = turkfm_mon_provinces_var
+			value = 1
+		}
+	}
+}
+
+turkfm_update_karadag_variables_effect ={
+	if = {
+		limit = {
+			c:TUR ?= this
+		}
+		set_global_variable = {
+			name = turkfm_karadag_tur_var
+			value = turkfm_karadag_tur_value
+		}
+		set_variable = {
+			name = turkfm_provinces_var
+			value = turkfm_provinces_value
+		}
+	}
+	if = {
+		limit = {
+			c:MON ?= this
+		}
+		set_global_variable = {
+			name = turkfm_karadag_mon_var
+			value = turkfm_karadag_mon_value
+		}
+		set_variable = {
+			name = turkfm_provinces_var
+			value = turkfm_provinces_value
+		}
+	}
+}
+
+turkfm_next_province_effect = {
+	if = {
+		limit = {
+			c:MON ?= this
+		}
+		# This is gross, but the province iterator doesn't interate (and would probably be less efficient than this scripting)
+		if = {
+			limit = {
+				p:x8C6292 = { # Cetinje
+					AND = {
+						owner != c:MON
+						owner = c:TUR
+					}
+				}
+			}
+			set_variable = {
+				name = turkfm_next_province_var
+				value = 1 # Cetinje
+			}
+		}
+		else_if = {
+			limit = {
+				p:x8C6292 = { # Cetinje
+					owner = c:MON
+				}
+				p:xF5F6C2 = { # Niksic
+					AND = {
+						owner != c:MON
+						owner = c:TUR
+					}
+				}
+			}
+			set_variable = {
+				name = turkfm_next_province_var
+				value = 2 # Niksic
+			}
+		}
+		else_if = {
+			limit = {
+				p:x8C6292 = { # Cetinje
+					owner = c:MON
+				}
+				p:xF5F6C2 = { # Niksic
+					owner = c:MON
+				}
+				p:x446E84 = { # Podgorica
+					AND = {
+						owner != c:MON
+						owner = c:TUR
+					}
+				}
+			}
+			set_variable = {
+				name = turkfm_next_province_var
+				value = 3 # Podgorica
+			}
+		}
+		else_if = {
+			limit = {
+				p:x8C6292 = { # Cetinje
+					owner = c:MON
+				}
+				p:xF5F6C2 = { # Niksic
+					owner = c:MON
+				}
+				p:x446E84 = { # Podgorica
+					owner = c:MON
+				}
+				p:xA12F82 = { # Pljevla
+					AND = {
+						owner != c:MON
+						owner = c:TUR
+					}
+				}
+			}
+			set_variable = {
+				name = turkfm_next_province_var
+				value = 4 # Pljevla
+			}
+		}
+		else_if = {
+			limit = {
+				p:x8C6292 = { # Cetinje
+					owner = c:MON
+				}
+				p:xF5F6C2 = { # Niksic
+					owner = c:MON
+				}
+				p:x446E84 = { # Podgorica
+					owner = c:MON
+				}
+				p:xA12F82 = { # Pljevla
+					owner = c:MON
+				}
+				p:x90A0E0 = { # Kotor
+					AND = {
+						owner != c:MON
+						owner = c:TUR
+					}
+				}
+			}
+			set_variable = {
+				name = turkfm_next_province_var
+				value = 5 # Kotor
+			}
+		}
+		else = {
+			set_variable = {
+				name = turkfm_next_province_var
+				value = 0
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			c:TUR ?= this
+		}
+		# Still gross, but in somewhat reverse order
+		if = {
+			limit = {
+				p:xA12F82 = { # Pljevla
+					AND = {
+						owner != c:TUR
+						owner = c:MON
+					}
+				}
+			}
+			set_variable = {
+				name = turkfm_next_province_var
+				value = 4 # Pljevla
+			}
+		}
+		else_if = {
+			limit = {
+				p:xA12F82 = { # Pljevla
+					owner = c:TUR
+				}
+				p:x446E84 = { # Podgorica
+					AND = {
+						owner != c:TUR
+						owner = c:MON
+					}
+				}
+			}
+			set_variable = {
+				name = turkfm_next_province_var
+				value = 3 # Podgorica
+			}
+		}
+		else_if = {
+			limit = {
+				p:xA12F82 = { # Pljevla
+					owner = c:TUR
+				}
+				p:x446E84 = { # Podgorica
+					owner = c:TUR
+				}
+				p:xF5F6C2 = { # Niksic
+					AND = {
+						owner != c:TUR
+						owner = c:MON
+					}
+				}
+			}
+			set_variable = {
+				name = turkfm_next_province_var
+				value = 2 # Niksic
+			}
+		}
+		else_if = {
+			limit = {
+				p:xA12F82 = { # Pljevla
+					owner = c:TUR
+				}
+				p:x446E84 = { # Podgorica
+					owner = c:TUR
+				}
+				p:xF5F6C2 = { # Niksic
+					owner = c:TUR
+				}
+				p:x8C6292 = { # Cetinje
+					AND = {
+						owner != c:TUR
+						owner = c:MON
+					}
+				}
+			}
+			set_variable = {
+				name = turkfm_next_province_var
+				value = 1 # Cetinje
+			}
+		}
+		else_if = {
+			limit = {
+				p:xA12F82 = { # Pljevla
+					owner = c:TUR
+				}
+				p:x446E84 = { # Podgorica
+					owner = c:TUR
+				}
+				p:xF5F6C2 = { # Niksic
+					owner = c:TUR
+				}
+				p:x8C6292 = { # Cetinje
+					owner = c:TUR
+				}
+				p:x90A0E0 = { # Kotor
+					AND = {
+						owner != c:TUR
+						owner = c:MON
+					}
+				}
+			}
+			set_variable = {
+				name = turkfm_next_province_var
+				value = 5 # Kotor
+			}
+		}
+		else = {
+			set_variable = {
+				name = turkfm_next_province_var
+				value = 0
+			}
+		}
+	}
+}
+
+turkfm_claim_province_effect = {
+	if = {
+		limit = {
+			var:turkfm_next_province_var = 1
+		}
+		s:STATE_MONTENEGRO = {
+			set_owner_of_provinces = {
+				country = root
+				provinces = {
+					x8C6292 # Cetinje
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			global_var:turkfm_next_province_var = 2
+		}
+		s:STATE_MONTENEGRO = {
+			set_owner_of_provinces = {
+				country = root
+				provinces = {
+					xF5F6C2 # Niksic
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			global_var:turkfm_next_province_var = 3
+		}
+		s:STATE_MONTENEGRO = {
+			set_owner_of_provinces = {
+				country = root
+				provinces = {
+					x446E84 # Podgorica
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			global_var:turkfm_next_province_var = 4
+		}
+		s:STATE_MONTENEGRO = {
+			set_owner_of_provinces = {
+				country = root
+				provinces = {
+					xA12F82 # Pljevla
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			global_var:turkfm_next_province_var = 5
+		}
+		s:STATE_MONTENEGRO = {
+			set_owner_of_provinces = {
+				country = root
+				provinces = {
+					x90A0E0 # Kotor
+				}
+			}
+		}
+	}
+}
+
+turkfm_karadag_progressbar_effect = {
+	je:je_turkfm_karadag = {
+			set_bar_progress = {
+				name = turkfm_karadag_progress_bar
+				value = global_var:turkfm_karadag_var
+			}
+		}
+	}
+}
+
+balkfm_incursion_scopes_effect = {
+	# Montenegrin Incursion
+	if = {
+		limit = {
+			global_var:balkfm_border_incursion_var = 1
+		}
+		c:MON = {
+			save_scope_as = balkfm_border_attacker_scope
+		}
+		c:TUR = {
+			save_scope_as = balkfm_border_defender_scope
+		}
+	}
+	# Ottoman Incursion
+	else_if = {
+		limit = {
+			global_var:balkfm_border_incursion_var = 2
+		}
+		c:MON = {
+			save_scope_as = balkfm_border_defender_scope
+		}
+		c:TUR = {
+			save_scope_as = balkfm_border_attacker_scope
+		}
+	}
+}
+
+turkfm_generate_captive_effect = {
+	random_list = {
+		5 = { # Bosnian Noble
+			trigger = {
+				c:TUR = {
+					has_state_in_state_region = STATE_BOSNIA
+				}
+			}
+			create_character = {
+				template = template_balkfm_captive_bosnian
+			}
+		}
+		5 = { # Albanian Noble
+			trigger = {
+				c:TUR = {
+					has_state_in_state_region = STATE_ALBANIA
+				}
+			}
+			create_character = {
+				template = template_balkfm_captive_albanian
+			}
+		}
+		5 = { # Serbian Noble
+			trigger = {
+				c:TUR = {
+					has_state_in_state_region = STATE_SOUTHERN_SERBIA
+				}
+			}
+			create_character = {
+				template = template_balkfm_captive_serbian
+			}
+		}
+	}
+}
+
+turkfm_karadag_advance_effect = {
+	if = {
+		limit = {
+			c:MON ?= this
+		}
+		custom_tooltip = turkfm_karadag_gain_50
+		change_global_variable = {
+			name = turkfm_karadag_var
+			add = 50
+		}
+		clamp_global_variable = {
+			name = turkfm_karadag_var
+			max = 500
+			min = 0
+		}
+		turkfm_karadag_progressbar_effect = yes
+	}
+	if = {
+		limit = {
+			c:TUR ?= this
+		}
+		custom_tooltip = turkfm_karadag_gain_50
+		change_global_variable = {
+			name = turkfm_karadag_var
+			subtract = 50
+		}
+		clamp_global_variable = {
+			name = turkfm_karadag_var
+			max = 1000
+			min = 0
+		}
+		turkfm_karadag_progressbar_effect = yes
+	}
+}
+
+turkfm_karadag_regress_effect = {
+	if = {
+		limit = {
+			c:MON ?= this
+		}
+		custom_tooltip = turkfm_karadag_lose_50
+		change_global_variable = {
+			name = turkfm_karadag_var
+			subtract = 50
+		}
+		clamp_global_variable = {
+			name = turkfm_karadag_var
+			max = 500
+			min = 0
+		}
+		turkfm_karadag_progressbar_effect = yes
+	}
+	if = {
+		limit = {
+			c:TUR ?= this
+		}
+		custom_tooltip = turkfm_karadag_lose_50
+		change_global_variable = {
+			name = turkfm_karadag_var
+			add = 50
+		}
+		clamp_global_variable = {
+			name = turkfm_karadag_var
+			max = 500
+			min = 0
+		}
+		turkfm_karadag_progressbar_effect = yes
+	}
+}
+
+turkfm_cleanup_karadag_effect = {
+	remove_global_variable = turkfm_karadag_var
+	remove_global_variable = turkfm_karadag_tur_var
+	remove_global_variable = turkfm_karadag_mon_var
+	remove_variable = turkfm_next_province_var
+	remove_variable = turkfm_provinces_var
+	hidden_effect = {
+		remove_modifier = modifier_turkfm_practicing_headtaking
+		if = {
+			limit = {
+				c:MON ?= this
+				NOT = {
+					owns_entire_state_region = STATE_MONTENEGRO
+				}
+			}
+			add_journal_entry = {
+				type = je_balkfm_black_mountain
+			}
+		}
+	}
+}
+
+###########################################
+##  TURK9  TURKISH EXPEDITIONS BLOCK II  ##
+###########################################
+
+#### Adriatic Expedition Scripted Effects
+turkfm_awaken_jack_sparrow_effect = {
+	create_character = {
+		template = template_turkfm_jack_sparrow
+		first_name = Rafil
+		last_name = Bey
+		on_created = {
+			place_character_in_void = 300
+		}
+	}
+	random_character_in_void = {
+		limit = {
+			has_template = template_turkfm_jack_sparrow
+		}
+		save_scope_as = turkfm_jack_sparrow_scope
+	}
+	set_variable = {
+		name = turkfm_jack_sparrow_var
+		value = scope:turkfm_jack_sparrow_scope
+	}
+	je:je_turkfm_pirates_of_the_adriatic = {
+		add_to_variable_list = {
+			name = com_journal_characters
+			target = scope:turkfm_jack_sparrow_scope
+		}
+	}
+}
+
+turkfm_jack_sparrow_effect = {
+	## Step 1, Check for pirate leader
+	if = {
+		limit = {
+			any_character_in_void = {
+				has_template = template_turkfm_jack_sparrow
+			}
+			
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_turkfm_jack_sparrow
+			}
+			save_scope_as = turkfm_jack_sparrow_scope
+		}
+	}
+	else = {
+		create_character = {
+			template = template_turkfm_jack_sparrow
+			on_created = {
+				place_character_in_void = 300
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_turkfm_jack_sparrow
+			}
+			save_scope_as = turkfm_jack_sparrow_scope
+		}
+		every_country = {
+			limit = {
+				has_journal_entry = je_turkfm_pirates_of_the_adriatic
+			}
+			post_notification = notification_turkfm_jack_sparrow_reincarnated
+		}
+	}
+	set_variable = {
+		name = turkfm_jack_sparrow_var
+		value = scope:turkfm_jack_sparrow_scope
+	}
+	
+	## Step 2, Check for ongoing expedition
+	if = {
+		limit = {
+			any_scope_character = {
+				has_modifier = modifier_turkfm_leading_expedition
+			}
+		}
+		random_scope_character = {
+			limit = {
+				has_modifier = modifier_turkfm_leading_expedition
+			}
+			save_scope_as = turkfm_cutler_beckett_scope
+		}
+	}
+	if = {
+		limit = {
+			exists = scope:turkfm_cutler_beckett_scope
+		}
+		set_variable = {
+			name = turkfm_cutler_beckett_var
+			value = scope:turkfm_cutler_beckett_scope
+		}
+	}
+	else = {
+		remove_variable = turkfm_cutler_beckett_var
+	}
+	
+	## Step 3, Update Lists and progress bars
+	je:je_turkfm_pirates_of_the_adriatic = {
+		set_bar_progress = {
+			name = turkfm_jack_sparrow_progress_bar
+			value = global_var:turkfm_pirates_var
+		}
+		clear_variable_list = com_journal_characters
+		add_to_variable_list = {
+			name = com_journal_characters
+			target = scope:turkfm_jack_sparrow_scope
+		}
+		if = {
+			limit = {
+				exists = scope:turkfm_cutler_beckett_scope
+			}
+			add_to_variable_list = {
+				name = com_journal_characters
+				target = scope:turkfm_cutler_beckett_scope
+			}
+		}
+	}
+}
+
+turkfm_piracy_scopes_effect = {
+	random_character_in_void = {
+		limit = {
+			has_template = template_turkfm_jack_sparrow
+		}
+		save_scope_as = turkfm_jack_sparrow_scope
+	}
+	random_scope_character = {
+		limit = {
+			has_modifier = modifier_turkfm_leading_expedition
+		}
+		save_scope_as = turkfm_cutler_beckett_scope
+	}
+}
+
+turkfm_cleanup_piracy_effect = {
+	every_scope_character = {
+		limit = {
+			has_modifier = modifier_turkfm_leading_expedition
+		}
+		remove_modifier = modifier_turkfm_leading_expedition
+		add_modifier = {
+			name = modifier_turkfm_failed_expedition
+			months = long_modifier_time
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_turkfm_deployed_expedition
+		}
+		remove_modifier = modifier_turkfm_deployed_expedition
+	}
+	remove_variable = turkfm_jack_sparrow_var
+	remove_variable = turkfm_cutler_beckett_var
+	remove_variable = turkfm_expedition_transit_var
+	remove_variable = turkfm_expedition_progress_var
+	remove_variable = turkfm_expedition_peril_var
+}
 
 turkfm_start_piracy_expedition_effect = {
 	remove_variable = turkfm_expedition_transit_var
@@ -4016,8 +4621,18 @@ turkfm_complete_piracy_expedition_effect = {
 	set_variable = turkfm_completed_pirate_expedition
 }
 
-## Libya Effects ##
 
+######################################
+#  TURK10  EGYPTIAN FLAVOR CONTENT  ##
+######################################
+
+
+
+#####################################
+##  TURK11  LIBYAN FLAVOR CONTENT  ##
+#####################################
+
+#### Libya Scripted Effects
 turkfm_initialize_senussi_effect = {
 	set_variable = {
 		name = turkfm_senussi_var
@@ -4299,3 +4914,10 @@ turkfm_cleanup_senussi_effect = {
 	remove_variable = turkfm_senussi_outcome_var
 	remove_variable = turkfm_intimidated_sensussi
 }
+
+
+#######################################
+##  TURK12  TUNISIAN FLAVOR CONTENT  ##
+#######################################
+
+
