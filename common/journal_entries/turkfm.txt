@@ -1454,21 +1454,37 @@ je_turkfm_karadag = {
 	should_be_pinned_by_default = yes
 	
 	immediate = {
-		add_modifier = modifier_balkfm_practicing_headtaking
+		add_modifier = modifier_turkfm_practicing_headtaking
 	}
 	
 	scripted_progress_bar = turkfm_karadag_progress_bar
 	
 	# General Buttons
-	scripted_button = balkfm_reinforce_border_button
-	scripted_button = balkfm_border_raid_button
-	
+	scripted_button = turkfm_border_raid_button
+	scripted_button = turkfm_reinforce_border_button
+
 	# Montenegro Buttons
-	scripted_button = balkfm_renounce_headtaking_button
-	scripted_button = balkfm_negociate_kotor_button	
+	scripted_button = turkfm_renounce_headtaking_button
+	scripted_button = turkfm_negociate_kotor_button	
 	
 	complete = {
-		owns_entire_state_region = STATE_MONTENEGRO
+		trigger_if = {
+			limit = {
+				c:TUR ?= this
+			}
+			c:MON ?= {
+				NOT = {
+					has_state_in_state_region = STATE_MONTENEGRO
+				}
+			}
+		}
+		trigger_else = {
+			c:TUR ?= {
+				NOT = {
+					has_state_in_state_region = STATE_MONTENEGRO
+				}
+			}
+		}
 	}
 	
 	on_complete = {
@@ -1488,6 +1504,7 @@ je_turkfm_karadag = {
 				id = turkfm.809 # The Lands of Montenegro
 			}
 		}
+		turkfm_cleanup_karadag_effect = yes
 	}
 	
 	fail = {
@@ -1513,6 +1530,18 @@ je_turkfm_karadag = {
 				id = turkfm.808 # International Indifference
 			}
 		}
+		turkfm_cleanup_karadag_effect = yes
+	}
+	
+	invalid = {
+		NOR = {
+			exists = c:TUR
+			exists = c:MON
+		}
+	}
+	
+	on_invalid = {
+		turkfm_cleanup_karadag_effect = yes
 	}
 	
 	on_weekly_pulse = {
@@ -1521,11 +1550,21 @@ je_turkfm_karadag = {
 	
 	on_monthly_pulse = {
 		events = {
-			turkfm.804 # Ottomans Gain Ground
-			turkfm.805 # Montenegro Gains Ground
+			turkfm.804 # Montenegrin Lands Gained
 			turkfm.812 # //Withdraws from Montenegro
 			turkfm.813 # //Has Died!
-			turkfm.830 # Village Conflict Monitor [TECH]
+			turkfm.820 # Border Conflict Monitor [TECH]
+		}
+		random_events = {
+			 5 = turkfm.831 # Steady Grind
+			 5 = turkfm.832 # Village Outskirts Burned
+			 5 = turkfm.833 # Village Families Massacred
+			 5 = turkfm.834 # Ottoman Noble Captured
+			 5 = turkfm.835 # Montenegrin Folk Hero Killed
+			 5 = turkfm.836 # Sudden Breakthrough
+			 5 = turkfm.837 # Rations Running Low
+			 5 = turkfm.838 # Mountain Village Defended
+			 5 = turkfm.839 # Mountain Village Captured
 		}
 		random_events = {
 			chance_of_no_event = 75
@@ -1538,7 +1577,8 @@ je_turkfm_karadag = {
 			10 = turkfm.826 # Tax Evasion
 			 1 = turkfm.827 # Village Ransaked
 			10 = turkfm.828 # Successful Scouting
-			10 = turkfm.829 # Village Skirmish Escalates
+#			10 = turkfm.829 # 
+			10 = turkfm.830 # Village Skirmish Escalates
 		}
 		effect = {
 			change_global_variable = {
@@ -1547,7 +1587,7 @@ je_turkfm_karadag = {
 				subtract = global_var:turkfm_karadag_tur_progress
 			}
 			clamp_global_variable = {
-				name = balkfm_karadag_var
+				name = turkfm_karadag_var
 				max = 100
 				min = 0
 			}
