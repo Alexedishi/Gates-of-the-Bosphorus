@@ -1,5 +1,40 @@
-﻿#### SICK MAN VALUES ####
+﻿###########################
+# TURKFM SCRIPT VALUES #
+###########################
 
+# Content contained here pertains to the Ottoman Empire / Turkish State and associated states
+
+####################
+
+# For Greek content, see the "grefm" module
+# For Turkish content, see the "turkfm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Orthodox Church content, see the "eocfm" module
+
+####################
+
+####  TABLE OF CONTENTS  ####
+
+# TURK0 - THE SICK MAN OF EUROPE
+# TURK1 - THE REORDERING OF THE EMPIRE
+# TURK2 - THE RISE OF NATIONALISM
+# TURK3 - THE EASTERN QUESTION
+# TURK4 - OTTOMAN NATIONAL REVIVALS
+# TURK5 - TURKISH HISTORICAL FLAVOR
+# TURK6 - TURKISH NATIONALISM
+# TURK7 - OPEN
+# TURK8 - TURKISH EXPEDITIONS BLOCK I
+# TURK9 - TURKISH EXPEDITIONS BLOCK II
+# TURK10 - EGYPTIAN FLAVOR CONTENT
+# TURK11 - LIBYAN FLAVOR CONTENT
+# TURK12 - TUNISIAN FLAVOR CONTENT
+
+
+####################################
+#  TURK0  THE SICK MAN OF EUROPE  ##
+####################################
+
+# Sick Man Values
 turkfm_sick_man_value = {
 	value = 0
 	if = {
@@ -40,8 +75,12 @@ turkfm_sick_man_value = {
 	}
 }
 
-#### TANZIMAT VALUES ####
 
+##########################################
+#  TURK1  THE REORDERING OF THE EMPIRE  ##
+##########################################
+
+# Tanzimat Values
 turkfm_tanzimat_progress_value = {
 	value = 0
 	# This value is weighted to lean towards the Islamist side. Idealized loss is approx. -1.6 per month for a failure in mid-1877. This is balanced to -2 per month at game start for playability.	
@@ -169,9 +208,11 @@ turkfm_tanzimat_progress_value = {
 	}
 }
 
+#####################################
+#  TURK2  THE RISE OF NATIONALISM  ##
+#####################################
 
-#### SEPARATISM VALUES ####
-
+# Separatism Values
 turkfm_riot_counter_value = {
 	value = 0
 	add = {
@@ -1209,6 +1250,12 @@ turkfm_slovene_radicals_value = {
 	round_to = 0.01
 }
 
+
+##################################
+#  TURK3  THE EASTERN QUESTION  ##
+##################################
+
+# Crisis Values
 turkfm_crisis_progress_value = {
 	value = 0
 	add = {
@@ -1217,8 +1264,335 @@ turkfm_crisis_progress_value = {
 	}
 }
 
-#### LIBYA VALUES ####
 
+########################################
+##  TURK4  OTTOMAN NATIONAL REVIVALS  ##
+########################################
+
+
+
+########################################
+##  TURK5  TURKISH HISTORICAL FLAVOR  ##
+########################################
+
+
+
+##################################
+##  TURK6  TURKISH NATIONALISM  ##
+##################################
+
+
+
+###################
+##  TURK7  OPEN  ##
+###################
+
+
+
+##########################################
+##  TURK8  TURKISH EXPEDITIONS BLOCK I  ##
+##########################################
+
+# Karadag Expedition Values
+turkfm_karadag_progress_value = {
+	value = 0
+	subtract global_var:turkfm_karadag_tur_var
+	add = global_var:turkfm_karadag_mon_var
+	round_to = 0.01
+}
+
+turkfm_provinces_value = {
+	value = 0
+	if = {
+		limit = {
+			p:x8C6292 = {
+				owner = root
+			}
+		}
+		add = {
+			desc = balkfm_mon_value_from_cetinje
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			p:xF5F6C2 = {
+				owner = root
+			}
+		}
+		add = {
+			desc = balkfm_mon_value_from_niksic
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			p:x446E84 = {
+				owner = root
+			}
+		}
+		add = {
+			desc = balkfm_mon_value_from_podgorica
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			p:xA12F82 = {
+				owner = root
+			}
+		}
+		add = {
+			desc = balkfm_mon_value_from_pljevlja
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			p:x90A0E0 = {
+				owner = root
+			}
+		}
+		add = {
+			desc = balkfm_mon_value_from_kotor
+			value = 1
+		}
+	}
+}
+
+turkfm_karadag_tur_value = {
+	value = 0
+	
+	#Sources
+	if = {
+		limit = {
+			NOT = {
+				has_journal_entry = je_turkfm_sick_man_main
+			}
+		}
+		add = {
+			desc = turkfm_value_from_sick_man
+			value = 4
+		}
+	}
+	else_if = {
+		limit = {
+			has_variable = turkfm_sick_man_var
+		}
+		add = {
+			desc = turkfm_value_from_sick_man
+			value = var:turkfm_sick_man_var
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_journal_entry = je_turkfm_tanzimat_main
+			}
+		}
+		add = {
+			desc = turkfm_value_from_tanzimat
+			value = 5
+		}
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_tanzimat_completion_var
+		}
+		add = {
+			desc = turkfm_value_from_tanzimat
+			value = {
+				add = var:turkfm_tanzimat_completion_var
+				max = 5
+			}
+		}
+	}
+	
+	#Penalities
+	if = {
+		limit = {
+			has_journal_entry = je_sick_man_main
+		}
+		subtract = {
+			desc = turkfm_value_from_sick_man_open
+			value = 4
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_balkfm_accepted_ransom
+		}
+		subtract = {
+			desc = turkfm_value_from_ransoming_nobles
+			value = 1
+		}
+	}
+}
+
+turkfm_karadag_mon_value = {
+	value = 0
+	
+	# Sources
+	add = {
+		desc = balkfm_value_from_bishopric_journals
+		value = {
+			if = {
+				limit = {
+					has_variable = balkfm_mon_soc_completed
+				}
+				add = 1
+			}
+			if = {
+				limit = {
+					has_variable = balkfm_mon_gov_completed
+				}
+				add = 1
+			}
+			if = {
+				limit = {
+					has_variable = balkfm_mon_mil_completed
+				}
+				add = 1
+			}
+		}
+	}
+	add = {
+		desc = balkfm_value_from_capital_infrastructure
+		value = {
+			add = root.capital.relative_infrastructure
+			divide = 10
+			max = 10 # to prevent abuse
+		}
+	}
+	add = {
+		desc = balkfm_value_from_standing_army
+		value = {
+			add = root.army_power_projection
+			divide = 10
+			max = 100 # lol
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_balkfm_ransomed_noble
+		}
+		add = {
+			desc = balkfm_value_from_ransoming_nobles
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_balkfm_executed_noble
+		}
+		add = {
+			desc = balkfm_value_from_beheading_noble
+			value = 2
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_balkfm_skulduggery
+		}
+		add = {
+			desc = balkfm_value_from_skulduggery
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			any_country = {
+				OR = {
+					has_diplomatic_pact = {
+						who = root
+						type = alliance
+					}
+					has_diplomatic_pact = {
+						who = root
+						type = defensive_pact
+					}
+				}
+				has_diplomatic_pact = {
+					who = c:TUR
+					type = rivalry
+				}
+			}
+		}
+		add = {
+			desc = balkfm_value_from_diplomatic_pacts
+			value = 5
+		}
+	}
+	if = {
+		limit = {
+			is_in_power_bloc = yes
+			power_bloc = {
+				power_bloc_leader = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = rivalry
+					}
+				}
+			}
+		}
+		add = {
+			desc = balkfm_value_from_power_bloc
+			value = 5
+		}
+	}
+	
+	#Penalities
+	if = {
+		limit = {
+			has_modifier = modifier_balkfm_tolerated_abuses
+		}
+		subtract = {
+			desc = balkfm_value_from_tolerating_abuses
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_balkfm_display_of_poverty
+		}
+		subtract = {
+			desc = balkfm_value_from_poverty_display
+			value = 1
+		}
+	}
+}
+
+turkfm_captured_nobles_value = {
+	value = 0
+	every_character_in_void = {
+		limit = {
+			OR = {
+				has_template = template_balkfm_captive_bosnian
+				has_template = template_balkfm_captive_albanian
+				has_template = template_balkfm_captive_serbian
+			}
+		}
+		add = 1
+	}
+}
+
+###########################################
+##  TURK9  TURKISH EXPEDITIONS BLOCK II  ##
+###########################################
+
+
+
+######################################
+#  TURK10  EGYPTIAN FLAVOR CONTENT  ##
+######################################
+
+
+
+#####################################
+##  TURK11  LIBYAN FLAVOR CONTENT  ##
+#####################################
+
+# Senussi Movement Values
 turkfm_senussi_progress_value = {
 	value = 0
 	add = {
@@ -1313,3 +1687,12 @@ turkfm_senussi_control_value = {
 	divide = 282
 	round_to = 0.01
 }
+
+
+#######################################
+##  TURK12  TUNISIAN FLAVOR CONTENT  ##
+#######################################
+
+
+
+########################################
