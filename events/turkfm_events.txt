@@ -315,20 +315,20 @@ namespace = turkfm
 #	825 - ++Expedition Beset by Plague!
 #	826 - ++Tax Evasion
 #	827 - ++Successful Scouting
-#	828 - ##
+#	828 - ##Rations Running Low
 #	829 - ##
 
 #830-839 - Karadag Skirmish Events
-#	830 - ##Village Skirmish Escalates
-#	831 - ##Steady Grind
-#	832 - ##Village Outskirts Burned
-#	833 - ##Village Families Massacred
-#	834 - ##Ottoman Noble Captured
-#	835 - ##Montenegrin Folk Hero Killed
+#	830 - ++Village Skirmish Escalates
+#	831 - ++Steady Grind
+#	832 - ++Village Outskirts Burned
+#	833 - ++Village Families Massacred
+#	834 - ++Ottoman Noble Captured
+#	835 - ++Montenegrin Folk Hero Killed
 #	836 - ##Sudden Breakthrough
-#	837 - ##Rations Running Low
-#	838 - ##Mountain Village Defended
-#	839 - ##Mountain Village Captured
+#	837 - ##Pitched Battle
+#	838 - ##
+#	839 - ##
 
 
 ##  #TURK9  TURKISH EXPEDITIONS BLOCK II  Events 900-999  ##
@@ -9916,7 +9916,7 @@ turkfm.800 = { # The Battle of Grahovo
 	flavor = turkfm.800.f
 	
 	event_image = {
-		video = "media_alias"
+		video = "southamerica_war_civilians"
 	}
 	
 	icon = "gfx/interface/icons/event_icons/event_skull.dds"
@@ -10656,7 +10656,7 @@ turkfm.811 = { # Raiding Party Arrives in the Hinterlands
 
 }
 
-turkfm.812 = { # Raiding Party Withdraws from the Adriatic
+turkfm.812 = { # Raiding Party Withdraws from the Hinterlands
 	type = country_event
 	placement = root
 	
@@ -11087,8 +11087,10 @@ turkfm.816 = { # Ottoman Reply to Ransom
 				has_variable = turkfm_ransom_accepted
 			}
 		}
-		scope:turkfm_captive_scope = {
-			kill_character = yes
+		show_as_tooltip = {
+			scope:turkfm_captive_scope = {
+				kill_character = yes
+			}
 		}
 		create_incident = {
 			country = c:TUR
@@ -11339,7 +11341,7 @@ turkfm.820 = { # Local Informants
 	
 }
 
-turkfm.821 = { # Bear Sighted
+turkfm.821 = { # Wolf Sighted
 	type = country_event
 	placement = root
 	
@@ -11358,6 +11360,7 @@ turkfm.821 = { # Bear Sighted
 	icon = "gfx/interface/icons/event_icons/event_map.dds"
 	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
 	
 	duration = 3
 	
@@ -11436,6 +11439,7 @@ turkfm.822 = { # A Circular Expedition
 	icon = "gfx/interface/icons/event_icons/event_map.dds"
 	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
 	
 	duration = 3
 	
@@ -11513,6 +11517,7 @@ turkfm.823 = { # Snow on the Ground
 	icon = "gfx/interface/icons/event_icons/event_skull.dds"
 	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
 	
 	duration = 3
 	
@@ -11576,6 +11581,7 @@ turkfm.824 = { # Balkan Hospitality
 	icon = "gfx/interface/icons/event_icons/event_map.dds"
 	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
 	
 	duration = 3
 	
@@ -11644,6 +11650,7 @@ turkfm.825 = { # Expedition Beset by Plague!
 	icon = "gfx/interface/icons/event_icons/event_map.dds"
 	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
 	
 	duration = 3
 	
@@ -11713,6 +11720,7 @@ turkfm.826 = { # Yoshi Commits Tax Fraud
 	icon = "gfx/interface/icons/event_icons/event_trade.dds"
 	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
 	
 	duration = 3
 	
@@ -11784,6 +11792,7 @@ turkfm.827 = { # Successful Scouting
 	icon = "gfx/interface/icons/event_icons/event_map.dds"
 	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
 	
 	duration = 3
 	
@@ -11861,7 +11870,8 @@ turkfm.830 = { # Village Skirmish Escalates!
 	
 	trigger = {
 		turkfm_has_karadag_expedition_trigger = yes
-		NOT = {
+		NOR = {
+			has_variable = turkfm_village_skirmish_var
 			has_variable = turkfm_expedition_cooldown_var
 		}
 		var:turkfm_expedition_progress_var > 2
@@ -11883,26 +11893,381 @@ turkfm.830 = { # Village Skirmish Escalates!
 	}
 	
 	option = {
-		name = turkfm.930.a
+		name = turkfm.830.a
 		default_option = yes
 		set_variable = turkfm_village_skirmish_var
 	}
 
 }
 
+turkfm.831 = { # Steady Grind
+	type = country_event
+	placement = root
+	
+	title = turkfm.831.t
+	desc = turkfm.831.d
+	flavor = turkfm.831.f
+	
+	gui_window = event_window_1char_adventure
+	
+	left_icon = scope:turkfm_expedition_leader_scope
+	
+	event_image = {
+		video = "middleeast_battlefield_trenches"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 1
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		has_variable = turkfm_village_skirmish_var
+	}
+	
+	cancellation_trigger = {
+		NOR = {
+			has_journal_entry = je_turkfm_karadag
+			has_variable = turkfm_village_skirmish_var
+		}
+	}
+	
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 10
+		}
+		turkfm_karadag_scopes_effect = yes
+	}
+	
+	option = {
+		name = turkfm.831.a
+		default_option = yes
+		turkfm_add_small_progress_effect = yes
+	}
+	
+	option = {
+		name = turkfm.831.b
+		turkfm_add_medium_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+	}
+	
+}
 
+turkfm.832 = { # Village Outskirts Burned
+	type = country_event
+	placement = root
+	
+	title = turkfm.832.t
+	desc = turkfm.832.d
+	flavor = turkfm.832.f
+	
+	gui_window = event_window_1char_adventure
+	
+	left_icon = scope:turkfm_expedition_leader_scope
+	
+	event_image = {
+		video = "southamerica_war_civilians"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 1
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		has_variable = turkfm_village_skirmish_var
+	}
+	
+	cancellation_trigger = {
+		NOR = {
+			has_journal_entry = je_turkfm_karadag
+			has_variable = turkfm_village_skirmish_var
+		}
+	}
+	
+	cooldown = {
+		months = 3
+	}
+	
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 10
+		}
+		turkfm_karadag_scopes_effect = yes
+	}
+	
+	option = {
+		name = turkfm.832.a
+		default_option = yes
+		turkfm_add_small_progress_effect = yes
+	}
+	
+	option = {
+		name = turkfm.832.b
+		turkfm_add_small_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+	}
+	
+}
 
+turkfm.833 = { # Village Families Massacred
+	type = country_event
+	placement = root
+	
+	title = turkfm.833.t
+	desc = turkfm.833.d
+	flavor = turkfm.833.f
+	
+	gui_window = event_window_1char_adventure
+	
+	left_icon = scope:turkfm_expedition_leader_scope
+	
+	event_image = {
+		video = "southamerica_war_civilians"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 1
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		has_variable = turkfm_village_skirmish_var
+	}
+	
+	cancellation_trigger = {
+		NOR = {
+			has_journal_entry = je_turkfm_karadag
+			has_variable = turkfm_village_skirmish_var
+		}
+	}
+	
+	cooldown = {
+		months = 6
+	}
+	
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 10
+		}
+		turkfm_karadag_scopes_effect = yes
+	}
+	
+	option = {
+		name = turkfm.832.a
+		default_option = yes
+		turkfm_add_medium_peril_effect = yes
+	}
+	
+	option = {
+		name = turkfm.832.b
+		turkfm_remove_small_progress_effect = yes
+	}
+	
+}
 
+turkfm.834 = { # Ottoman Noble Captured
+	type = country_event
+	placement = root
+	
+	title = turkfm.834.t
+	desc = turkfm.834.d
+	flavor = turkfm.834.f
+	
+	gui_window = event_window_2char_discussion
+	
+	left_icon = scope:turkfm_expedition_leader_scope
+	right_icon = scope:turkfm_captive_scope
+	
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_mountain_road.dds"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+	
+	duration = 1
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		has_variable = turkfm_village_skirmish_var
+		turkfm_captured_nobles_value < 3
+	}
+	
+	cancellation_trigger = {
+		NOR = {
+			has_journal_entry = je_turkfm_karadag
+			has_variable = turkfm_village_skirmish_var
+		}
+	}
+	
+	cooldown = {
+		years = 2
+	}
+	
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 10
+		}
+		turkfm_karadag_scopes_effect = yes
+		turkfm_generate_captive_effect = yes
+		random_character_in_void = {
+			limit = {
+				has_variable = turkfm_captive_var
+			}
+			save_scope_as = turkfm_captive_scope
+		}
+	}
+	
+	option = { # Let Them Go
+		name = balkfm.346.a
+		default_option = yes
+		scope:turkfm_captive_scope = {
+			free_character_from_void = yes
+		}
+		c:TUR = {
+			post_notification = notification_balkfm_noble_released
+		}
+		add_radicals = {
+			value = small_radicals
+		}
+		turkfm_add_small_peril_effect = yes
+		turkfm_karadag_regress_effect = yes
+	}
+	
+	option = { # Lock them up
+		name = balkfm.346.b
+		scope:turkfm_captive_scope = {
+			remove_variable = turkfm_captive_var
+		}
+		create_incident = {
+			country = c:TUR
+			value = 5
+		}
+		c:TUR = {
+			post_notification = notification_balkfm_noble_captured
+		}
+		turkfm_karadag_advance_effect = yes
+	}
+	
+	option = { # Off With Their Head!
+		name = balkfm.346.b
+		scope:turkfm_captive_scope = {
+			remove_variable = turkfm_captive_var
+			set_variable = turkfm_captive_event_target
+		}
+		show_as_tooltip = {
+			scope:turkfm_captive_scope = {
+				kill_character = yes
+			}
+		}
+		create_incident = {
+			country = c:TUR
+			value = 10
+		}
+		add_modifier = {
+			name = modifier_balkfm_executed_noble
+			months = normal_modifier_time
+		}
+		c:TUR = {
+			trigger_event = {
+				id = turkfm.817 # Ottoman Noble Beheaded
+				days { 5 15 }
+			}
+		}
+		turkfm_karadag_advance_effect = yes
+		turkfm_add_medium_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+	}
+	
+}
 
-#	831 - ##Steady Grind
-#	832 - ##Village Outskirts Burned
-#	833 - ##Village Families Massacred
-#	834 - ##Ottoman Noble Captured
-#	835 - ##Montenegrin Folk Hero Killed
+turkfm.835 = { # Montenegrin Folk Hero Killed
+	type = country_event
+	placement = root
+	
+	title = turkfm.835.t
+	desc = turkfm.835.d
+	flavor = turkfm.835.f
+	
+	event_image = {
+		video = "southamerica_war_civilians"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 1
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		has_variable = turkfm_village_skirmish_var
+		turkfm_captured_nobles_value < 3
+	}
+	
+	cancellation_trigger = {
+		NOR = {
+			has_journal_entry = je_turkfm_karadag
+			has_variable = turkfm_village_skirmish_var
+		}
+	}
+	
+	cooldown = {
+		years = 2
+	}
+	
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 10
+		}
+		turkfm_karadag_scopes_effect = yes
+		scope:turkfm_karadag_defender_scope = {
+			post_notification = notification_turkfm_folk_hero_killed
+		}
+	}
+	
+	option = {
+		name = turkfm.835.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_folk_hero_killed
+			months = short_modifier_time
+		}
+		turkfm_remove_small_progress_effect = yes
+		turkfm_add_medium_peril_effect = yes
+	}
+	
+}
+
 #	836 - ##Sudden Breakthrough
-#	837 - ##Rations Running Low
-#	838 - ##Mountain Village Defended
-#	839 - ##Mountain Village Captured
+
+
+#	837 - ##Pitched Battle
+
+
+#	838 - ##
+
+
+#	839 - ##
 
 ############################################################
 ##  #TURK9  TURKISH EXPEDITIONS BLOCK II  Events 900-999  ##
@@ -11910,31 +12275,36 @@ turkfm.830 = { # Village Skirmish Escalates!
 
 #### PIRATES OF THE ADRIATIC EVENTS ####
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#  @@@@@                                        @@@@@     
-# @@@@@@@                                      @@@@@@@
-# @@@@@@@           @@@@@@@@@@@@@@@            @@@@@@@
-#  @@@@@@@@       @@@@@@@@@@@@@@@@@@@        @@@@@@@@
-#      @@@@@     @@@@@@@@@@@@@@@@@@@@@     @@@@@
-#        @@@@@  @@@@@@@@@@@@@@@@@@@@@@@  @@@@@
-#          @@  @@@@@@@@@@@@@@@@@@@@@@@@@  @@
-#             @@@@@@@    @@@@@@    @@@@@@
-#             @@@@@@      @@@@      @@@@@
-#             @@@@@@      @@@@      @@@@@
-#              @@@@@@    @@@@@@    @@@@@
-#               @@@@@@@@@@@  @@@@@@@@@@
-#                @@@@@@@@@@  @@@@@@@@@
-#            @@   @@@@@@@@@@@@@@@@@   @@
-#            @@@@  @@@@ @ @ @ @ @@@@  @@@@
-#           @@@@@   @@@ @ @ @ @ @@@   @@@@@
-#         @@@@@      @@@@@@@@@@@@@      @@@@@
-#       @@@@          @@@@@@@@@@@          @@@@
-#    @@@@@              @@@@@@@              @@@@@
-#   @@@@@@@                                 @@@@@@@
-#    @@@@@                                   @@@@@
 #
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+##
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\
+#                                                       (
+#  @@@@@                                        @@@@@    )
+# @@@@@@@                                      @@@@@@@  (
+# @@@@@@@           @@@@@@@@@@@@@@@            @@@@@@@   )
+#  @@@@@@@@       @@@@@@@@@@@@@@@@@@@        @@@@@@@@   (
+#      @@@@@     @@@@@@@@@@@@@@@@@@@@@     @@@@@         )
+#        @@@@@  @@@@@@@@@@@@@@@@@@@@@@@  @@@@@          (
+#          @@  @@@@@@@@@@@@@@@@@@@@@@@@@  @@             )
+#             @@@@@@@    @@@@@@    @@@@@@               (
+#             @@@@@@      @@@@      @@@@@                )
+#             @@@@@@      @@@@      @@@@@               (
+#              @@@@@@    @@@@@@    @@@@@                 )
+#               @@@@@@@@@@@  @@@@@@@@@@                 (
+#                @@@@@@@@@@  @@@@@@@@@                   )
+#            @@   @@@@@@@@@@@@@@@@@   @@                (
+#            @@@@  @@@@ @ @ @ @ @@@@  @@@@               )
+#           @@@@@   @@@ @ @ @ @ @@@   @@@@@             (
+#         @@@@@      @@@@@@@@@@@@@      @@@@@            )
+#       @@@@          @@@@@@@@@@@          @@@@         (
+#    @@@@@              @@@@@@@              @@@@@       )
+#   @@@@@@@                                 @@@@@@@     (
+#    @@@@@                                   @@@@@       )
+#                                                       (
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
+#
+#
+#
 # If you should ever find yourself in Albania, be sure to visit the cave of Haxhi Ali, the famed Albanian pirate. Seriously, it's a stop on tours out of Vlore. Whether or not it has any actual relation to the guy is, well, up to interpretation.
 
 turkfm.900 = { # The Pirates of the Adriatic
