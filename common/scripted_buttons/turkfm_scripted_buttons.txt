@@ -928,6 +928,125 @@ turkfm_karadag_expedition_button = {
 	}
 }
 
+turkfm_ransom_captives_button = {
+	name = "turkfm_ransom_captives_button"
+	desc = "turkfm_ransom_captives_button_desc"
+	
+	visible = {
+		c:MON ?= this
+	}
+	
+	selected = {
+		has_variable = turkfm_ransom_var
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = turkfm_has_captive_nobles
+			hidden_trigger = {
+				turkfm_captured_nobles_value > 0
+			}
+		}
+	}
+	
+	effect = {
+		trigger_event = {
+			id = turkfm.814 # The Gaols of Centinje
+		}
+		set_variable = turkfm_ransom_var
+	}
+	
+	ai_chance = {
+		base = 0
+		modifier = {
+			trigger = {}
+			add = 0
+		}
+	}
+}
+
+turkfm_renounce_headtaking_button = {
+	name = "turkfm_renounce_headtaking_button"
+	desc = "turkfm_renounce_headtaking_button_desc"
+	
+	visible = {
+		c:MON ?= this
+		has_modifier = modifier_turkfm_practicing_headtaking
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = turkfm_ransom_captives_possible
+			hidden_trigger = {
+				NOT = {
+					has_variable = turkfm_negociated_headtaking
+				}
+			}
+		}
+	}
+	
+	effect = {
+		c:TUR = {
+			trigger_event = {
+				id = turkfm.801 # Negociations on Headtaking (TUR)
+				days = { 7 14 }
+			}
+		}
+		custom_tooltip = turkfm_renounce_headtaking_effect
+		set_variable = {
+			name = turkfm_negociated_headtaking
+			years = 10
+		}
+	}
+	
+	ai_chance = {
+		base = 0
+		modifier = {
+			trigger = {}
+			add = 0
+		}
+	}
+}
+
+turkfm_negociate_kotor_button = {
+	name = "turkfm_negociate_kotor_button"
+	desc = "turkfm_negociate_kotor_button_desc"
+	
+	visible = {
+		c:MON ?= this
+		NOT = {
+			has_variable = turkfm_negociated_kotor
+		}
+		c:AUS ?= {
+			has_state_in_state_region = STATE_MONTENEGRO
+		}
+	}
+	
+	possible = {
+		OR = {
+			is_subject_of = c:AUS
+			is_in_same_power_bloc = c:AUS
+			has_diplomatic_pact = { 
+				who = c:AUS 
+				type = alliance
+			}
+		}
+		c:AUS = {
+			relations:root >= relations_threshold:amicable
+		}
+	}
+	
+	effect = {
+		trigger_event = {
+			id = turkfm.803 # Negociations Over Cattaro
+		}
+		set_variable = turkfm_negociated_kotor
+	}
+	
+	ai_chance = {
+		base = 100
+	}
+}
 
 ###########################################
 ##  TURK9  TURKISH EXPEDITIONS BLOCK II  ##
