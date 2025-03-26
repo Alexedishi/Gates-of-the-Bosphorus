@@ -392,9 +392,8 @@ namespace = turkfm
 #1100-1109 - The Centralization of Tripolitania
 #	1100 - On the Margins of the Empire
 #	1101 - ##
-#	1107 - The Libyan Deserts
-#	1108 - ##Senusiyya Extinguished
-#	1109 - ##House Senussi of Libya
+#	1108 - The Libyan Deserts
+#	1109 - ##A Centralized State
 
 #1110-1119 - The Senusiyya Movement
 #	1110 - The Senussi Order
@@ -403,6 +402,10 @@ namespace = turkfm
 #	1113 - Armed Diplomacy
 #	1114 - Senusiyya Takes Root in State
 #	1115 - Senusiyya Expunged from State
+#	1116 - ##The State-within-a-State
+#	1117 - ##
+#	1118 - ##Senusiyya Extinguished
+#	1119 - ##House Senussi of Libya
 
 
 ##  TURK12  TUNISIAN FLAVOR CONTENT  Events 1200-1299  ##
@@ -11922,17 +11925,21 @@ turkfm.830 = { # Village Skirmish Escalates!
 	}
 	
 	immediate = {
+		set_variable = turkfm_village_skirmish_var
 		set_variable = {
 			name = turkfm_expedition_cooldown_var
 			days = 45
 		}
 		turkfm_karadag_scopes_effect = yes
+		scope:turkfm_karadag_defender_scope = {
+			post_notification = notification_turkfm_village_skirmish
+		}
 	}
 	
 	option = {
 		name = turkfm.830.a
 		default_option = yes
-		set_variable = turkfm_village_skirmish_var
+		custom_tooltip = turkfm_no_effects
 	}
 
 }
@@ -15031,47 +15038,13 @@ turkfm.1100 = { # On the Margins of the Empire
 
 }
 
-turkfm.1101 = { # 
-	type = country_event
-	placement = root
-	
-	title = turkfm.1101.t
-	desc = turkfm.1101.d
-	flavor = turkfm.1101.f
-	
-	event_image = {
-		video = "unspecific_ruler_speaking_to_people"
-	}
-	
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		# triggered by je_turkfm_tri_centralization
-	}
-	
-	immediate = {
-	}
-	
-	option = {
-		name = turkfm.1101.a
-		default_option = yes
-	}
-	
-}
-
-turkfm.1107 = { # The Libyan Deserts
+turkfm.1108 = { # The Libyan Deserts
 	type = country_event
 	placement = scope:turkfm_desert_scope
 	
-	title = turkfm.1107.t
-	desc = turkfm.1107.d
-	flavor = turkfm.1107.f
+	title = turkfm.1108.t
+	desc = turkfm.1108.d
+	flavor = turkfm.1108.f
 	
 	event_image = {
 		video = "africa_desert_expedition"
@@ -15098,7 +15071,7 @@ turkfm.1107 = { # The Libyan Deserts
 	}
 	
 	option = {
-		name = turkfm.1107.a
+		name = turkfm.1108.a
 		default_option = yes
 		scope:turkfm_desert_scope = {
 			add_modifier = {
@@ -15110,41 +15083,7 @@ turkfm.1107 = { # The Libyan Deserts
 
 }
 
-turkfm.1108 = { # The Senusiyya Extinguished
-	type = country_event
-	placement = root
-	
-	title = turkfm.1108.t
-	desc = turkfm.1108.d
-	flavor = turkfm.1108.f
-	
-	event_image = {
-		video = "votp_hostile_court"
-	}
-	
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		# triggered by je_turkfm_tri_senusiyya
-	}
-	
-	immediate = {
-	}
-	
-	option = {
-		name = turkfm.1108.a
-		default_option = yes
-	}
-	
-}
-
-turkfm.1109 = { # The Senussi of Libya
+turkfm.1109 = { # A Centralized State
 	type = country_event
 	placement = root
 	
@@ -15153,7 +15092,7 @@ turkfm.1109 = { # The Senussi of Libya
 	flavor = turkfm.1109.f
 	
 	event_image = {
-		video = "middleeast_islam"
+		video = "unspecific_ruler_speaking_to_people"
 	}
 	
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
@@ -15165,7 +15104,7 @@ turkfm.1109 = { # The Senussi of Libya
 	dlc = dlc_grefm
 	
 	trigger = {
-		# triggered by je_turkfm_tri_senusiyya
+		# triggered by je_turkfm_tri_centralization
 	}
 	
 	immediate = {
@@ -15562,6 +15501,74 @@ turkfm.1115 = { # Senusiyya Expunged from State
 				add = 20
 			}
 		}
+	}
+	
+}
+
+turkfm.1118 = { # The Senusiyya Extinguished
+	type = country_event
+	placement = root
+	
+	title = turkfm.1118.t
+	desc = turkfm.1118.d
+	flavor = turkfm.1118.f
+	
+	event_image = {
+		video = "votp_hostile_court"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by je_turkfm_tri_senusiyya
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = turkfm.1118.a
+		default_option = yes
+	}
+	
+}
+
+turkfm.1119 = { # The Senussi of Libya
+	type = country_event
+	placement = root
+	
+	title = turkfm.1119.t
+	desc = turkfm.1119.d
+	flavor = turkfm.1119.f
+	
+	event_image = {
+		video = "middleeast_islam"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by je_turkfm_tri_senusiyya
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = turkfm.1119.a
+		default_option = yes
 	}
 	
 }
