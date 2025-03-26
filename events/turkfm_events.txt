@@ -404,8 +404,8 @@ namespace = turkfm
 #	1115 - Senusiyya Expunged from State
 #	1116 - ##The State-within-a-State
 #	1117 - ##
-#	1118 - ##Senusiyya Extinguished
-#	1119 - ##House Senussi of Libya
+#	1118 - Senusiyya Extinguished
+#	1119 - House Senussi of Libya
 
 
 ##  TURK12  TUNISIAN FLAVOR CONTENT  Events 1200-1299  ##
@@ -15111,7 +15111,7 @@ turkfm.1108 = { # The Libyan Deserts
 		default_option = yes
 		scope:turkfm_desert_scope = {
 			add_modifier = {
-				name = modifier_turkfm_centralized_authority
+				name = modifier_turkfm_tamed_wilderness
 				months = long_modifier_time
 			}
 		}
@@ -15149,6 +15149,13 @@ turkfm.1109 = { # A Centralized State
 	option = {
 		name = turkfm.1109.a
 		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_centralized_authority
+			months = long_modifier_time
+		}
+		add_loyalists = {
+			value = medium_radicals
+		}
 	}
 	
 }
@@ -15385,19 +15392,27 @@ turkfm.1114 = { # Senusiyya Takes Root in State
 	dlc = dlc_grefm
 	
 	trigger = {
-		var:turkfm_senussi_var >= 70
-		NOT = {
-			has_modifier = modifier_turkfm_desert_raids
-		}
-		any_scope_state = {
-			OR = {
-				state_region = s:STATE_LIBYA
-				state_region = s:STATE_LIBYAN_DESERT
-				state_region = s:STATE_TRIPOLI
+		trigger_if = {
+			limit = {
+				has_journal_entry = je_turkfm_tri_senusiyya
 			}
+			var:turkfm_senussi_var >= 70
 			NOT = {
-				has_modifier = modifier_turkfm_senussi_stronghold
+				has_modifier = modifier_turkfm_desert_raids
 			}
+			any_scope_state = {
+				OR = {
+					state_region = s:STATE_LIBYA
+					state_region = s:STATE_LIBYAN_DESERT
+					state_region = s:STATE_TRIPOLI
+				}
+				NOT = {
+					has_modifier = modifier_turkfm_senussi_stronghold
+				}
+			}
+		}
+		trigger_else = {
+			always = no
 		}
 	}
 	
@@ -15487,16 +15502,26 @@ turkfm.1115 = { # Senusiyya Expunged from State
 	dlc = dlc_grefm
 	
 	trigger = {
-		var:turkfm_senussi_var < 30
-		has_modifier = modifier_turkfm_desert_raids
-		any_scope_state = {
-			OR = {
-				state_region = s:STATE_LIBYA
-				state_region = s:STATE_LIBYAN_DESERT
-				state_region = s:STATE_TRIPOLI
+		trigger_if = {
+			limit = {
+				has_journal_entry = je_turkfm_tri_senusiyya
 			}
-			has_modifier = modifier_turkfm_senussi_stronghold
-			is_largest_state_in_region = yes
+			var:turkfm_senussi_var < 30
+			has_modifier = modifier_turkfm_desert_raids
+			any_scope_state = {
+				OR = {
+					state_region = s:STATE_LIBYA
+					state_region = s:STATE_LIBYAN_DESERT
+					state_region = s:STATE_TRIPOLI
+				}
+				has_modifier = modifier_turkfm_senussi_stronghold
+				is_largest_state_in_region = yes
+			}
+		}
+		trigger_else = {
+			any_scope_state = {
+				turkfm_senussi_geography_trigger = yes
+			}
 		}
 	}
 	
@@ -15541,6 +15566,43 @@ turkfm.1115 = { # Senusiyya Expunged from State
 	
 }
 
+turkfm.1116 = { # OPEN
+	orphan = yes
+}
+
+turkfm.1117 = { # 
+	type = country_event
+	placement = root
+	
+	title = turkfm.1117.t
+	desc = turkfm.1117.d
+	flavor = turkfm.1117.f
+	
+	event_image = {
+		video = "middleeast_islam"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = turkfm.1117.a
+		default_option = yes
+	}
+	
+}
+
 turkfm.1118 = { # The Senusiyya Extinguished
 	type = country_event
 	placement = root
@@ -15571,6 +15633,14 @@ turkfm.1118 = { # The Senusiyya Extinguished
 	option = {
 		name = turkfm.1118.a
 		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_senusiyya_extinguished
+			months = long_modifier_time
+		}
+		add_radicals = {
+			culture = bedouin
+			value = large_radicals
+		}
 	}
 	
 }
@@ -15605,6 +15675,14 @@ turkfm.1119 = { # The Senussi of Libya
 	option = {
 		name = turkfm.1119.a
 		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_senusiyya_embraced
+			months = long_modifier_time
+		}
+		add_loyalists = {
+			culture = bedouin
+			value = large_radicals
+		}
 	}
 	
 }
