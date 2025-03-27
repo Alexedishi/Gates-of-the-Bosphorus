@@ -1595,6 +1595,8 @@ turkfm_captured_nobles_value = {
 # Senussi Movement Values
 turkfm_senussi_progress_value = {
 	value = 0
+	
+	# Sources
 	add = {
 		value = {
 			every_character_in_void = {
@@ -1608,9 +1610,14 @@ turkfm_senussi_progress_value = {
 		}
 		desc = turkfm_value_from_senussi_popularity
 	}
-	add = {
-		value = var:turkfm_senussi_control_var
-		desc = turkfm_value_from_senussi_control
+	if = {
+		limit = {
+			has_variable = turkfm_senussi_control_var
+		}
+		add = {
+			value = var:turkfm_senussi_control_var
+			desc = turkfm_value_from_senussi_control
+		}
 	}
 	add = {
 		value = {
@@ -1637,9 +1644,14 @@ turkfm_senussi_progress_value = {
 			desc = turkfm_value_from_nationalism_bonus
 		}
 	}
-	subtract = {
-		value = var:turkfm_desert_control_var
-		desc = turkfm_value_from_desert_control
+	if = {
+		limit = {
+			has_variable = turkfm_desert_control_var
+		}
+		subtract = {
+			value = var:turkfm_desert_control_var
+			desc = turkfm_value_from_desert_control
+		}
 	}
 	subtract = {
 		value = {
@@ -1687,58 +1699,6 @@ turkfm_senussi_control_value = {
 	divide = 282
 	round_to = 0.01
 }
-
-turkfm_senussi_alt_progress_value = {
-	value = 0
-	add = {
-		value = {
-			every_character_in_void = {
-				limit = {
-					turkfm_is_senussi_trigger = yes
-				}
-				add = popularity
-			}
-			divide = 100
-			round_to = 0.01
-		}
-		desc = turkfm_value_from_senussi_popularity
-	}
-	add = {
-		value = {
-			every_scope_state = {
-				limit = {
-					has_modifier = modifier_turkfm_senussi_stronghold
-				}
-				add = 1
-			}
-		}
-		desc = turkfm_value_from_strongholds
-	}
-	save_temporary_value_as = senussi_souces
-	if = {
-		limit = {
-			has_technology_researched = nationalism
-		}
-		add = {
-			value = {
-				add = scope:senussi_souces
-				multiply = 0.1
-				round_to = 0.01
-			}
-			desc = turkfm_value_from_nationalism_bonus
-		}
-	}
-	subtract = {
-		value = {
-			ig:ig_devout = {
-				add = ig_clout
-			}
-			round_to = 0.01
-		}
-		desc = turkfm_value_from_devout_clout
-	}
-}
-
 
 #######################################
 ##  TURK12  TUNISIAN FLAVOR CONTENT  ##
