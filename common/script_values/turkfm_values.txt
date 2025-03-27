@@ -1688,6 +1688,57 @@ turkfm_senussi_control_value = {
 	round_to = 0.01
 }
 
+turkfm_senussi_alt_progress_value = {
+	value = 0
+	add = {
+		value = {
+			every_character_in_void = {
+				limit = {
+					turkfm_is_senussi_trigger = yes
+				}
+				add = popularity
+			}
+			divide = 100
+			round_to = 0.01
+		}
+		desc = turkfm_value_from_senussi_popularity
+	}
+	add = {
+		value = {
+			every_scope_state = {
+				limit = {
+					has_modifier = modifier_turkfm_senussi_stronghold
+				}
+				add = 1
+			}
+		}
+		desc = turkfm_value_from_strongholds
+	}
+	save_temporary_value_as = senussi_souces
+	if = {
+		limit = {
+			has_technology_researched = nationalism
+		}
+		add = {
+			value = {
+				add = scope:senussi_souces
+				multiply = 0.1
+				round_to = 0.01
+			}
+			desc = turkfm_value_from_nationalism_bonus
+		}
+	}
+	subtract = {
+		value = {
+			ig:ig_devout = {
+				add = ig_clout
+			}
+			round_to = 0.01
+		}
+		desc = turkfm_value_from_devout_clout
+	}
+}
+
 
 #######################################
 ##  TURK12  TUNISIAN FLAVOR CONTENT  ##

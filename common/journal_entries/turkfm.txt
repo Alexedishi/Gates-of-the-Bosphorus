@@ -1661,7 +1661,7 @@ je_turkfm_pirates_of_the_adriatic = {
 				has_diplomatic_relevance = c:TUR
 			}
 			any_scope_state = {
-				state_is_adriatic = yes
+				gbbf_adriatic_geography_trigger = yes
 				is_coastal = yes
 			}
 			any_trade_route = {
@@ -1942,7 +1942,7 @@ je_turkfm_tri_senusiyya = {
 					has_variable = turkfm_embraced_senussi
 				}
 				trigger_event = {
-					id = turkfm.1109 # The Senussi of Libya
+					id = turkfm.1119 # House Senussi of Libya
 				}
 			}
 		}
@@ -1953,7 +1953,7 @@ je_turkfm_tri_senusiyya = {
 					has_variable = turkfm_swept_senussi
 				}
 				trigger_event = {
-					id = turkfm.1108 # The Senusiyya Extinguished
+					id = turkfm.1118 # The Senusiyya Extinguished
 				}
 			}
 		}
@@ -1973,7 +1973,7 @@ je_turkfm_tri_senusiyya = {
 	
 	on_weekly_pulse = {
 		effect = {
-			turkfm_update_senussi_effect = yes
+			turkfm_senussi_weekly_effect = yes
 			remove_modifier = modifier_turkfm_senusiyya_movement
 			add_modifier = {
 				name = modifier_turkfm_senusiyya_movement
@@ -2001,6 +2001,36 @@ je_turkfm_tri_senusiyya = {
 				name = turkfm_senussi_var
 				max = 100
 				min = 0
+			}
+			if = {
+				limit = {
+					var:turkfm_senussi_var >= 100
+					any_country ={
+						is_adjacent_to_country = root
+						country_has_state_religion = rel:sunni
+						any_scope_state = {
+							gbbf_senussi_geography_trigger = yes
+							NOT = {
+								has_modifier = modifier_turkfm_senussi_stronghold
+							}
+						}
+					}
+				}
+				random_country = {
+					limit = {
+						is_adjacent_to_country = root
+						country_has_state_religion = rel:sunni
+						any_scope_state = {
+							gbbf_senussi_geography_trigger = yes
+							NOT = {
+								has_modifier = modifier_turkfm_senussi_stronghold
+							}
+						}
+					}
+					trigger_event = {
+						id = turkfm.1116 # Senusiyya Arrives in Country
+					}
+				}
 			}
 		}
 	}
@@ -2056,6 +2086,104 @@ je_turkfm_tri_senusiyya = {
 	weight = 1000
 	
 }
+
+je_turkfm_tri_senusiyya_sub = {
+	group = je_group_turkfm_libya
+	
+	should_be_pinned_by_default = yes
+	
+	scripted_button = turkfm_embrace_senussi_button
+	scripted_button = turkfm_sweep_desert_button
+	scripted_button = turkfm_supress_senusiyya_button
+	
+	complete = {
+		custom_tooltip = {
+			text = je_turkfm_tri_senusiyya_complete
+			OR = {
+				has_variable = turkfm_embraced_senussi
+				has_variable = turkfm_swept_senussi
+			}
+		}
+	}
+	
+	on_complete = {
+		custom_tooltip = {
+			text = je_turkfm_tri_senusiyya_on_complete_1
+			if = {
+				limit = {
+					has_variable = turkfm_embraced_senussi
+				}
+				trigger_event = {
+					id = turkfm.1119 # House Senussi of Libya
+				}
+			}
+		}
+		custom_tooltip = {
+			text = je_turkfm_tri_senusiyya_on_complete_2
+			if = {
+				limit = {
+					has_variable = turkfm_swept_senussi
+				}
+				trigger_event = {
+					id = turkfm.1118 # The Senusiyya Extinguished
+				}
+			}
+		}
+		turkfm_cleanup_senussi_effect = yes
+	}
+	
+	fail = {
+		OR = {
+			has_law = law_type:law_total_separation
+			has_law = law_type:law_state_atheism
+		}
+	}
+	
+	on_fail = {
+		turkfm_cleanup_senussi_effect = yes
+	}
+	
+	on_weekly_pulse = {
+		effect = {
+			turkfm_check_senussi_effect = yes
+			remove_modifier = modifier_turkfm_senusiyya_movement
+			add_modifier = {
+				name = modifier_turkfm_senusiyya_movement
+				multiplier = turkfm_senussi_modifier_value
+			}
+		}
+	}
+	
+	on_monthly_pulse = {
+		events = {
+			turkfm.1114 # Senusiyya Takes Root in State
+			turkfm.1115 # Senusiyya Expunged from State
+		}
+		effect = {
+			change_variable = {
+				name = turkfm_senussi_var
+				add = var:turkfm_senussi_progress_var
+			}
+			clamp_variable = {
+				name = turkfm_senussi_var
+				max = 100
+				min = 0
+			}
+		}
+	}
+	
+	current_value = {
+		value = var:turkfm_senussi_var
+	}
+
+	goal_add_value = {
+		value = 100
+	}
+	
+	weight = 1000
+	
+}
+	
 
 ####################
 # TUNISIAN CONTENT #
