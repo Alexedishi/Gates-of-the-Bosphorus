@@ -4770,22 +4770,45 @@ turkfm_initialize_senussi_effect = {
 		name = turkfm_senussi_control_var
 		value = 0
 	}
+	set_variable = {
+		name = turkfm_senussi_bedouin_var
+		value = 0
+	}
 }
 
 turkfm_senussi_arrival_effect = {
-	set_variable = {
-		name = turkfm_senussi_var
-		value = 0
-	}
-	set_variable = {
-		name = turkfm_senussi_progress_var
-		value = 0
-	}
+	turkfm_senussi_weekly_effect = yes
 	turkfm_check_senussi_effect = yes
+	random_scope_state = {
+		limit = {
+			gbbf_senussi_geography_trigger = yes
+		}
+		add_modifier = {
+			name = modifier_turkfm_senussi_stronghold
+		}
+		save_scope_as = turkfm_senussi_state_scope
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_senussi_has_landed
+		}
+		add_journal_entry = {
+			type = je_turkfm_senusiyya_sub
+		}
+		post_notification = notification_turkfm_senussi_arrival
+	}
+	else = {
+		add_journal_entry = {
+			type = je_turkfm_senusiyya_sub
+		}
+		trigger_event = {
+			id = turkfm.1110 # The Senussi Order
+		}
+	}
 }
 
 turkfm_senussi_weekly_effect = {
-	## Step 1, Check for Libyan Desert Involvment
+	## Step 1, Check for Libyan Desert & Bedouin Involvment
 	if = {
 		limit = {
 			has_state_in_state_region = STATE_LIBYAN_DESERT
@@ -4811,6 +4834,20 @@ turkfm_senussi_weekly_effect = {
 	}
 	else = {
 		remove_variable = turkfm_senussi_control_var
+	}
+	if = {
+		limit = {
+			any_scope_pop = {
+				has_pop_culture = bedouin
+			}
+		}
+		set_variable = {
+			name = turkfm_senussi_bedouin_var
+			value = turkfm_senussi_bedouin_value
+		}
+	}
+	else = {
+		remove_variable = turkfm_senussi_bedouin_var
 	}
 	
 	## Step 2, Set Progress Variable
