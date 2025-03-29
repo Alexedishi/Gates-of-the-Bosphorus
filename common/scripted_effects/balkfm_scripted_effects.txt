@@ -578,6 +578,22 @@ balkfm_set_up_ottoman_legacies_effect = {
 	}
 }
 
+balkfm_initialize_revivalism_effect = {
+	set_variable = {
+		name = balkfm_revivalism_var
+		value = 0
+	}
+	if = {
+		limit = {
+			c:TUR_SIL ?= this
+		}
+		set_variable = {
+			name = eocfm_schism_var # Silistra isn't Orthodox so the on_actions won't trigger this
+			value = 0
+		}
+	}
+}
+
 balkfm_add_nationalism_progress_effect = {
 	if = {
 		limit = {
@@ -612,6 +628,18 @@ balkfm_add_nationalism_progress_effect = {
 			technology = pan-nationalism
 		}
 	}
+}
+
+balkfm_cleanup_revivalism_effect = {
+	remove_variable = balkfm_revivalism_requested_var
+	remove_variable = balkfm_revivalism_supported_var
+	remove_variable = balkfm_revivalism_var
+	
+	remove_variable = balkfm_nis_insurgency_happened
+	remove_variable = balkfm_bulgarian_question_happened
+	remove_variable = balkfm_constantinople_newspaper_published
+	remove_variable = balkfm_golden_lion_tickled
+	remove_variable = balkfm_legion_formed
 }
 
 #########################################
@@ -1432,6 +1460,23 @@ balkfm_cleanup_dynasty_variables_effect = {
 #  BALK5  BULGARIA SCRIPTED EFFECTS  ##
 #######################################
 
+balkfm_setup_silistra_effect = {
+	create_character = {
+		template = template_balkfm_miladinov_dimitar
+	}
+	balkfm_set_up_ottoman_legacies_effect = yes
+	c:TUR  = {
+		create_diplomatic_pact = {
+			country = c:TUR_SIL
+			type = puppet
+		}
+		set_secret_goal = {
+			secret_goal = protect
+			country = c:TUR_SIL
+		}
+	}
+}
+
 balkfm_create_bulgaria = { # creates BUL, used for the Great Eastern Crisis
 	if = {
 		limit = {
@@ -1679,46 +1724,7 @@ balkfm_rumelian_ruler_rotation_effect = {
 	}
 }
 
-balkfm_setup_silistra_effect = {
-	create_character = {
-		template = template_balkfm_miladinov_dimitar
-	}
-	set_variable = {
-		name = balkfm_revivalism_var
-		value = 0
-	}
-	set_variable = {
-		name = eocfm_schism_var # Silistra isn't Orthodox so the on_actions won't trigger this
-		value = 0
-	}
-	trigger_event = {
-		id = balkfm.550 # The Bulgarian Millet
-	}
-	add_journal_entry = {
-		type = je_balkfm_bul_silistra
-	}
-	balkfm_set_up_ottoman_legacies_effect = yes
-	c:TUR  = {
-		create_diplomatic_pact = {
-			country = c:TUR_SIL
-			type = puppet
-		}
-		set_secret_goal = {
-			secret_goal = protect
-			country = c:TUR_SIL
-		}
-	}
-}
-
-balkfm_become_bulgaria_effect = {
-	if = {
-		limit = {
-			NOT = {
-				c:BUL ?= this
-			}
-		}
-		change_tag = BUL
-	}
+balkfm_bulgarian_politicians_effect = {
 	hidden_effect = {
 		heir ?= {
 			kill_character = yes # just some housekeeping
@@ -1742,21 +1748,6 @@ balkfm_become_bulgaria_effect = {
 	}
 	remove_variable = balkfm_golden_lion_tickled
 }
-
-balkfm_clean_up_silistra_variables_effect = {
-	remove_variable = balkfm_nis_insurgency_happened
-	remove_variable = balkfm_bulgarian_question_happened
-	remove_variable = balkfm_constantinople_newspaper_published
-	remove_variable = balkfm_golden_lion_tickled
-	remove_variable = balkfm_legion_formed
-}
-
-balkfm_clean_up_revivalism_variables_effect = {
-	remove_variable = balkfm_revivalism_requested_var
-	remove_variable = balkfm_revivalism_supported_var
-	remove_variable = balkfm_revivalism_var
-}
-
 
 #######################################
 #  BALK6  ROMANIAN SCRIPTED EFFECTS  ##
@@ -2178,6 +2169,15 @@ balkfm_cleanup_1866_variables_effect = {
 #  BALK7  BOSNIA SCRIPTED EFFECTS  ##
 #####################################
 
+balkfm_setup_hersek_effect = {
+	create_character = {
+		template = template_balkfm_rizvanbegovic_ali
+	}
+	create_character = {
+		template = template_balkfm_rizvanbegovic_mehmed
+	}
+}
+
 balkfm_hersek_scopes_effect = {
 	c:TUR_BOS ?= {
 		ruler = {
@@ -2190,6 +2190,19 @@ balkfm_hersek_scopes_effect = {
 		}
 		save_scope_as = smail_aga_scope
 	}
+	if = {
+		limit = {
+			NOT = {
+				exists = scope:smail_aga_scope
+			}
+		}
+		create_character = {
+			template = template_balkfm_cengic_smail
+			on_created = {
+				place_character_in_void = 500
+			}
+		}
+	}	
 }
 
 
@@ -2197,6 +2210,12 @@ balkfm_hersek_scopes_effect = {
 #  BALK8  ALBANIA SCRIPTED EFFECTS  ##
 ######################################
 
+turkfm_setup_yanya_effect = {
+	create_character = {
+		template = template_balkfm_hamdi_mahmood
+	}
+	balkfm_set_up_ottoman_legacies_effect = yes
+}
 
 
 ######################################
