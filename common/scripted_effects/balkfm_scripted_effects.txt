@@ -574,6 +574,17 @@ balkfm_set_up_ottoman_legacies_effect = {
 				type = je_balkfm_social_reform
 			}
 		}
+		else_if = {
+			limit = {
+				country_has_primary_culture = cu:bosniak
+			}
+			add_journal_entry = {
+				type = je_balkfm_state_reform
+			}
+			add_journal_entry = {
+				type = je_balkfm_economic_reform
+			}
+		}
 		set_variable = balkfm_ottoman_legacies_started
 	}
 }
@@ -2180,7 +2191,14 @@ balkfm_setup_hersek_effect = {
 }
 
 balkfm_hersek_scopes_effect = {
+	c:TUR ?= {
+		save_scope_as = ottoman_scope
+		ruler = {
+			save_scope_as = sultan_scope
+		}
+	}
 	c:TUR_BOS ?= {
+		save_scope_as = hersek_scope
 		ruler = {
 			save_scope_as = ali_pasha_scope
 		}
@@ -2188,8 +2206,8 @@ balkfm_hersek_scopes_effect = {
 			limit = {
 				has_template = template_balkfm_cengic_smail
 			}
+			save_scope_as = smail_aga_scope
 		}
-		save_scope_as = smail_aga_scope
 	}
 	if = {
 		limit = {
@@ -2197,13 +2215,38 @@ balkfm_hersek_scopes_effect = {
 				exists = scope:smail_aga_scope
 			}
 		}
-		create_character = {
-			template = template_balkfm_cengic_smail
-			on_created = {
-				place_character_in_void = 500
+		random_character_in_void = {
+			limit = {
+				has_template = template_balkfm_cengic_smail
+			}
+			save_scope_as = smail_aga_scope
+		}
+		if = {
+			limit = {
+				NOT = {
+					exists = scope:smail_aga_scope
+				}
+			}
+			create_character = {
+				template = template_balkfm_cengic_smail
+				on_created = {
+					place_character_in_void = 500
+				}
+			}
+			random_character_in_void = {
+				limit = {
+					has_template = template_balkfm_cengic_smail
+				}
+				save_scope_as = smail_aga_scope
 			}
 		}
-	}	
+	}
+	c:MON ?= {
+		save_scope_as = montenegro_scope
+		ruler = {
+			save_scope_as = chad_vladika_petar_the_based_scope
+		}
+	}
 }
 
 

@@ -1,5 +1,5 @@
 ﻿###########################
-# BALKFM CONTENT_TEMPLATE #
+# BALKFM JOURNAL ENTRIES #
 ###########################
 
 # Content contained here pertains to the non-Turkish, non-Greek peoples and states of the Balkans
@@ -15,22 +15,22 @@
 
 ####  TABLE OF CONTENTS  ####
 
-# BALK0 - NON-SPECIFIC & TECHNICAL CONTENT_TEMPLATE
-# BALK1 - GENERAL BALKANS CONTENT_TEMPLATE
-# BALK2 - YUGOSLAVIA CONTENT_TEMPLATE
-# BALK3 - MONTENEGRO CONTENT_TEMPLATE
-# BALK4 - SERBIA CONTENT_TEMPLATE
-# BALK5 - BULGARIA CONTENT_TEMPLATE
-# BALK6 - ROMANIAN CONTENT_TEMPLATE
-# BALK7 - BOSNIA CONTENT_TEMPLATE
-# BALK8 - ALBANIA CONTENT_TEMPLATE
-# BALK9 - CROATIA CONTENT_TEMPLATE
-# BALK10 - SLOVENIA CONTENT_TEMPLATE
+# BALK0 - TECHNICAL JOURNAL ENTRIES
+# BALK1 - GENERAL BALKANS JOURNAL ENTRIES
+# BALK2 - YUGOSLAVIA JOURNAL ENTRIES
+# BALK3 - MONTENEGRO JOURNAL ENTRIES
+# BALK4 - SERBIA JOURNAL ENTRIES
+# BALK5 - BULGARIA JOURNAL ENTRIES
+# BALK6 - ROMANIAN JOURNAL ENTRIES
+# BALK7 - BOSNIA JOURNAL ENTRIES
+# BALK8 - ALBANIA JOURNAL ENTRIES
+# BALK9 - CROATIA JOURNAL ENTRIES
+# BALK10 - SLOVENIA JOURNAL ENTRIES
 
 
-#######################################################
-#  BALK0  NON-SPECIFIC & TECHNICAL CONTENT_TEMPLATE  ##
-#######################################################
+#######################################
+#  BALK0  TECHNICAL JOURNAL ENTRIES  ##
+#######################################
 
 je_balkfm_test_journal = {
 	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
@@ -55,9 +55,9 @@ je_balkfm_test_journal = {
 	
 }
 
-##############################################
-#  BALK1  GENERAL BALKANS CONTENT_TEMPLATE  ##
-##############################################
+#############################################
+#  BALK1  GENERAL BALKANS JOURNAL ENTRIES  ##
+#############################################
 
 #### OTTOMAN LEGACY JOURNALS
 
@@ -605,9 +605,9 @@ je_balkfm_bul_bulgarian_exarchate = {
 	
 }
 
-#########################################
-#  BALK2  YUGOSLAVIA CONTENT_TEMPLATE  ##
-#########################################
+########################################
+#  BALK2  YUGOSLAVIA JOURNAL ENTRIES  ##
+########################################
 
 je_balkfm_nacertanije = {
 	icon = "gfx/interface/icons/event_icons/event_flag_yug.dds"
@@ -780,7 +780,7 @@ je_balkfm_nacertanije = {
 
 
 #########################################
-#  BALK3  MONTENEGRO CONTENT_TEMPLATE  ##
+#  BALK3  MONTENEGRO JOURNAL ENTRIES  ##
 #########################################
 
 je_balkfm_mon_prince_bishopric = {
@@ -1017,9 +1017,9 @@ je_balkfm_mon_nationalism = {
 }
 
 
-#####################################
-#  BALK4  SERBIA CONTENT_TEMPLATE  ##
-#####################################
+####################################
+#  BALK4  SERBIA JOURNAL ENTRIES  ##
+####################################
 
 je_balkfm_ser_monarchism = {
 	icon = "gfx/interface/icons/event_icons/event_serbia_major1.dds"
@@ -1310,9 +1310,9 @@ je_balkfm_ser_greater_serbia = {
 }
 
 
-#######################################
-#  BALK5  BULGARIA CONTENT_TEMPLATE  ##
-#######################################
+######################################
+#  BALK5  BULGARIA JOURNAL ENTRIES  ##
+######################################
 
 #### BULGARIAN MONARCHISM
 
@@ -2001,9 +2001,9 @@ je_balkfm_bul_two_bulgarias = {
 }
 
 
-#######################################
-#  BALK6  ROMANIAN CONTENT_TEMPLATE  ##
-#######################################
+######################################
+#  BALK6  ROMANIAN JOURNAL ENTRIES  ##
+######################################
 
 je_balkfm_rom_regulamentul_organic = {
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
@@ -3023,21 +3023,169 @@ je_balkfm_peles_castle = {
 }
 
 
+####################################
+#  BALK7  BOSNIA JOURNAL ENTRIES  ##
+####################################
+
+je_balkfm_bos_tanzimat = {
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	
+	group = je_group_balkfm_bosnia
+	
+	should_be_pinned_by_default = yes
+	
+	immediate = {
+		trigger_event = {
+			id = balkfm.792 # The Reordering Begins
+		}
+	}
+	
+	complete = {
+		custom_tooltip = {
+			text = balkfm_legacies_3
+			balkfm_ottoman_legacy_value >= 3
+		}
+	}
+	
+	on_complete = {
+	}
+	
+	fail = {
+	}
+	
+	on_fail = {
+	}
+	
+	weight = 1000
+	
+}
+
+je_balkfm_bos_ali_pasha = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	
+	group = je_group_balkfm_bosnia
+	
+	should_be_pinned_by_default = yes
+	
+	modifiers_while_active = {
+		modifier_turkfm_ali_pasha
+	}
+	
+	complete = {
+		is_subject = no
+	}
+	
+	on_complete = {
+		trigger_event = {
+			id = balkfm.799 # House Rizvanbegović of Bosnia
+		}
+		hidden_effect = {
+			c:TUR ?= {
+				trigger_event = {
+					id = balkfm.796 # Ali Pasha Ascendant
+				}
+			}
+			c:MON ?= {
+				trigger_event = {
+					id = balkfm.796 # Ali Pasha Ascendant
+				}
+			}
+		}
+	}
+	
+	fail = {
+		OR = {
+			custom_tooltip = {
+				text = je_balkfm_bos_ali_pasha_fail
+				ruler = {
+					NOT = {
+						has_template = template_balkfm_rizvanbegovic_ali
+					}
+				}
+			}
+			is_subject_type = subject_type_puppet
+			is_subject_type = subject_type_vassal
+		}
+	}
+	
+	on_fail = {
+		custom_tooltip = {
+			text = je_balkfm_bos_ali_pasha_on_fail
+			if = {
+				limit = {
+					OR = {
+						is_subject_type = subject_type_puppet
+						is_subject_type = subject_type_vassal
+					}
+				}
+				trigger_event = {
+					id = balkfm.793 # Ali Pasha's Demise
+				}
+				c:TUR ?= {
+					trigger_event = {
+						id = balkfm.793 # Ali Pasha's Demise
+					}
+				}
+				c:MON ?= {
+					trigger_event = {
+						id = balkfm.793 # Ali Pasha's Demise
+					}
+				}
+			}
+			else = {
+				trigger_event = {
+					id = balkfm.798 # Failed Amibitions
+				}
+			}
+		}
+		set_global_variable = balkfm_ali_pasha_waxed
+	}
+	
+	weight = 500
+	
+}
+
+je_balkfm_bos_karadag = {
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	
+	group = je_group_balkfm_bosnia
+	
+	should_be_pinned_by_default = yes
+	
+#	scripted_button = balkfm_abandon_karadag_button
+	
+	complete = {
+		owns_entire_state_region = STATE_MONTENEGRO
+	}
+	
+	on_complete = {
+		trigger_event = {
+			id = balkfm.792 # The Lands of Montenegro
+		}
+		remove_variable = balkfm_abandoned_karadag
+	}
+	
+	fail = {
+		has_variable = balkfm_abandoned_karadag
+	}
+	
+	on_fail = {
+		remove_variable = balkfm_abandoned_karadag
+	}
+	
+	weight = 500
+	
+}
+
 #####################################
-#  BALK7  BOSNIA CONTENT_TEMPLATE  ##
+#  BALK8  ALBANIA JOURNAL ENTRIES  ##
 #####################################
 
 
 
-######################################
-#  BALK8  ALBANIA CONTENT_TEMPLATE  ##
-######################################
-
-
-
-######################################
-#  BALK9  CROATIA CONTENT_TEMPLATE  ##
-######################################
+#####################################
+#  BALK9  CROATIA JOURNAL ENTRIES  ##
+#####################################
 
 je_balkfm_cro_croation_question = {
 	icon = "gfx/interface/icons/event_icons/event_croatia.dds"
@@ -3190,9 +3338,9 @@ je_balkfm_cro_triune_restoration = {
 }
 
 
-########################################
-#  BALK10  SLOVENIA CONTENT_TEMPLATE  ##
-########################################
+#######################################
+#  BALK10  SLOVENIA JOURNAL ENTRIES  ##
+#######################################
 
 
 

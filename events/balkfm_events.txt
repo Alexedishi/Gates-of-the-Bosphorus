@@ -44,8 +44,7 @@ namespace = balkfm
 
 #080-089 - Technical Events (Out-of-Scope Country Interactions)
 #	080 - Skirmishes with Montenegro
-#	081 - The Schemes of Ali Pasha
-#	082 - Ali Pasha Ascendant
+
 #	083 - The Romanian Declaration of Union
 #	084 - The South Bessarabian Retrocession
 
@@ -155,16 +154,16 @@ namespace = balkfm
 #	320 - //The Kingdom of Montenegro
 
 #330-339 - The Wrath of Ali Pasha Events
-#	330 - The Battle of Grahovo
+#	330 - A Demand for Haraç
 #	331 - Negociations at Humac
 #	332 - Knives in the Dark
 #	333 - A Local Collaborator
-#	334 - The Trap Sprung
+#	334 - The Demise of Smaïl-aga
 #	335 - Unintended Consequences
 #	336 - Duplicitous Diplomacy
-#	337 - The Arrogance of Samïl-aga
-#	338 - The Arrogance of Ali Pasha
-#	339 - Ali Pasha's Demise
+#	337 - //
+#	338 - //
+#	339 - //
 
 #340-349 - OPEN
 #	340 - ##
@@ -222,9 +221,6 @@ namespace = balkfm
 #	484 - May Assembly
 #	485 - The Vojvodina Uprising
 #	486 - The Serbian Voivodship
-
-#490-499 - Miscellaneous & Technical Events
-#	490 - Disruptive Influence
 
 
 ##  #BALK5  BULGARIA FLAVOR  Events 500-599  ##
@@ -400,11 +396,34 @@ namespace = balkfm
 #700-799 - OPEN
 #	700 - ##The Small Land of the Serbs
 
+#790-799 - Eyalet of Hersek Events
+#	790 - ##Tribal Conflicts
+#	791 - >>##The Schemes of Ali Pasha (TUR)
+#	792 - ##The Reordering Begins
+#	793 - 
+#	794 - 
+#	490>>795 - Disruptive Influence
+#	796 - >>Ali Pasha's Demise
+#	797 - ##The Lands of Montenegro
+#	798 - ##Failed Amibitions
+#	799 - ##House Rizvanbegović of Bosnia
 
 ##  #BALK8  ALBANIA FLAVOR  Events 800-899  ##
 
 #800-899 - OPEN
 #	800 - ##The Children of the Eagles
+
+#890-899 - Eyalet of Yanya Events
+#	890 - 
+#	891 - 
+#	892 - 
+#	893 - 
+#	894 - 
+#	895 - 
+#	896 - 
+#	897 - 
+#	898 - 
+#	899 - 
 
 
 ##  #BALK9  CROATIA EVENTS  Events  900-999  ##
@@ -527,380 +546,7 @@ balkfm.020 = { # Places Yugoslav Secession Variable
 	
 }
 
-#### HIDDEN TECHNICAL EVENTS (REBEL PASHA SPAWNS)
-
-balkfm.030 = { # Creates Hersek with Smaïl-aga at the Helm; this is evaluated from MON scope
-	type = country_event
-	placement = root
-	hidden = yes
-	
-	trigger = { 
-		has_modifier = modifier_balkfm_tolerated_abuses
-		NOR = { 
-			has_global_variable = balkfm_smail_aga_rebelled
-			exists = c:TUR_BOS
-		}
-		any_character_in_void = {
-			has_template = template_balkfm_cengic_smail
-		}
-		c:TUR ?= {
-			owns_entire_state_region = STATE_BOSNIA
-			has_journal_entry = je_sick_man_main # serves as a time limit
-		}
-	}
-
-	immediate = {
-		set_global_variable = balkfm_smail_aga_rebelled
-		random_character_in_void = {	
-			limit = {
-				has_template = template_balkfm_cengic_smail
-			}
-			save_scope_as = balkfm_smail_aga_scope
-		}
-		create_country = { # Hersek with Bosnia
-			tag = TUR_BOS
-			origin = c:TUR
-			province = p:xD021A0
-			province = p:x23D67C
-			province = p:x51A0A0
-			province = p:x19AF6A
-			province = p:xAC2DD3
-			province = p:x5F13FD
-			province = p:x1121E0
-			province = p:x9021E0
-		}
-		c:TUR_BOS = {
-			if = {
-				limit = {
-					exists = scope:balkfm_smail_aga_scope
-				}
-				scope:balkfm_smail_aga_scope = {
-					free_character_from_void = yes
-					set_character_as_ruler = yes
-				}
-			}
-			else = {
-				create_character = {
-					template = template_balkfm_cengic_smail
-				}
-				random_character_in_void = {
-					limit = {
-						has_template = template_balkfm_cengic_smail
-					}
-					free_character_from_void = yes
-					set_character_as_ruler = yes
-					save_scope_as = balkfm_smail_aga_scope
-				}
-			}
-		}
-		s:STATE_BOSNIA = {
-			random_scope_state = {
-				save_scope_as = bosnia_state_scope
-			}
-		}
-		c:TUR = {
-			trigger_event = {
-				id = balkfm.337 # The Arrogance of Samïl-aga
-			}
-		}
-		c:MON = {
-			trigger_event = {
-				id = balkfm.337 # The Arrogance of Samïl-aga
-			}
-			remove_modifier = modifier_balkfm_tolerated_abuses
-		}
-		every_country = {
-			limit = {
-				has_journal_entry = je_turkfm_eastern_question
-			}
-			post_notification = notification_balkfm_hersek_smail
-		}
-	}
-	
-}
-
-balkfm.031 = { # Creates Hersek with Ali Pasha at the Helm
-	type = country_event
-	placement = root
-	hidden = yes
-	
-	trigger = { # this is evaluated from MON scope
-		has_global_variable = balkfm_ali_pasha_greenlight
-		NOT = { 
-			exists = c:TUR_BOS
-		}
-		any_character_in_void = {
-			has_template = template_balkfm_rizvanbegovic_ali
-		}
-		c:TUR ?= {
-			owns_entire_state_region = STATE_BOSNIA
-			has_journal_entry = je_sick_man_main # serves as a time limit
-		}
-	}
-
-	immediate = {
-		random_character_in_void = {
-			limit = {
-				has_template = template_balkfm_rizvanbegovic_ali
-			}
-			save_scope_as = balkfm_ali_pasha_scope
-		}
-		create_country = { # Hersek using Bosnia
-			tag = TUR_BOS
-			origin = c:TUR
-			province = p:xD021A0
-			province = p:x23D67C
-			province = p:x51A0A0
-			province = p:x19AF6A
-			province = p:xAC2DD3
-			province = p:x5F13FD
-			province = p:x1121E0
-			province = p:x9021E0
-		}
-		c:TUR_BOS = {
-			if = {
-				limit = {
-					exists = scope:balkfm_ali_pasha_scope
-				}
-				scope:balkfm_ali_pasha_scope = {
-					free_character_from_void = yes
-					set_character_as_ruler = yes
-				}
-			}
-			else = {
-				create_character = {
-					template = template_balkfm_rizvanbegovic_ali
-				}
-				random_character_in_void = {
-					limit = {
-						has_template = template_balkfm_rizvanbegovic_ali
-					}
-					free_character_from_void = yes
-					set_character_as_ruler = yes
-					save_scope_as = balkfm_ali_pasha_scope
-				}
-			}
-			random_scope_character = {
-				limit = {
-					has_template = template_balkfm_rizvanbegovic_ali
-				}
-				save_scope_as = balkfm_ali_pasha_scope
-			}
-		}
-		s:STATE_BOSNIA = {
-			random_scope_state = {
-				save_scope_as = bosnia_state_scope
-			}
-		}
-		c:TUR = {
-			trigger_event = {
-				id = balkfm.338 # The Arrogance of Ali Pasha
-			}
-		}
-		c:MON = {
-			trigger_event = {
-				id = balkfm.338 # The Arrogance of Ali Pasha
-			}
-		}
-		remove_global_variable = balkfm_ali_pasha_greenlight
-		every_country = {
-			limit = {
-				has_journal_entry = je_turkfm_eastern_question
-			}
-			post_notification = notification_balkfm_hersek_ali
-		}
-	}
-	
-}
-
 #### TECHNICAL EVENTS (TUR INTERACTIONS) ####
-
-balkfm.080 = { # Skirmishes with Montenegro
-	type = country_event
-	placement = root
-	
-	title = balkfm.080.t
-	desc = balkfm.080.d
-	flavor = balkfm.080.f
-	
-	event_image = {
-		video = "europenorthamerica_before_the_battle"
-	}
-	
-	icon = "gfx/interface/icons/event_icons/event_military.dds"
-	
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-	}
-	
-	immediate = {
-		s:STATE_BOSNIA = {
-			random_scope_state = {
-				save_scope_as = bosnia_state_scope
-			}
-		}
-		s:STATE_MONTENEGRO = {
-			random_scope_state = {
-				save_scope_as = montenegro_state_scope
-			}
-		}
-		s:STATE_ALBANIA = {
-			random_scope_state = {
-				save_scope_as = albania_state_scope
-			}
-		}
-		c:MON = {
-			save_scope_as = montenegro_scope
-		}
-	}
-	
-	option = {
-		name = balkfm.080.a
-		default_option = yes
-	}
-
-}
-
-balkfm.081 = { # The Schemes of Ali Pasha
-	type = country_event
-	placement = root
-	
-	title = balkfm.081.t
-	desc = balkfm.081.d
-	flavor = balkfm.081.f
-	
-	event_image = {
-		video = "ep1_clandestine_meeting"
-	}
-	
-	icon = "gfx/interface/icons/event_icons/event_skull.dds"
-	
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-	}
-	
-	immediate = {
-		create_character = {
-			template = template_turkfm_lutfi_omer
-		}
-		random_character_in_void = {
-			limit = {
-				has_template = template_balkfm_rizvanbegovic_ali
-			}
-			save_scope_as = ali_pasha_scope
-		}
-		random_character_in_void = {
-			limit = {
-				has_template = template_turkfm_lutfi_omer
-			}
-			save_scope_as = omer_pasha_scope
-		}
-	}
-	
-	option = { # Clip Him
-		name = balkfm.081.a
-		default_option = yes
-		custom_tooltip = balkfm.081.tt1
-		hidden_effect = {
-			c:MON = {
-				trigger_event = {
-					id = balkfm.339 # Ali Pasha's Demise
-				}
-			}
-		}
-	}
-	
-	option = { # Whats the worst that can happen?
-		name = balkfm.081.b
-		ruler = {
-			add_modifier = {
-				name = modifier_balkfm_impotent_ruler
-				months = long_modifier_time
-			}
-		}
-		custom_tooltip = balkfm.081.tt2
-		set_global_variable = balkfm_ali_pasha_greenlight
-	}
-	
-}
-
-balkfm.082 = { # Ali Pasha Ascendant
-	type = country_event
-	placement = root
-	
-	title = balkfm.082.t
-	desc = balkfm.082.d
-	flavor = balkfm.082.f
-	
-	event_image = {
-		video = "votp_monarch_holding_court"
-	}
-	
-	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
-	
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		ruler = {
-			has_template = template_balkfm_rizvanbegovic_ali
-		}
-		NOR = {
-			is_diplomatic_play_committed_participant = no
-			is_at_war = no
-			is_subject_of = c:TUR
-			is_in_same_power_bloc = c:TUR
-		}
-	}
-	
-	immediate = {
-		s:STATE_BOSNIA = {
-			random_scope_state = {
-				save_scope_as = bosnia_state_scope
-			}
-		}
-		c:TUR_BOS = {
-			save_scope_as = hersek_scope
-		}
-	}
-	
-	option = {
-		name = balkfm.082.a
-		default_option = yes
-		add_modifier = {
-			name = modifier_turkfm_weathered_the_storm
-			months = normal_modifier_time
-		}
-		every_country = {
-			limit = {
-				capital = {
-					state_region = {
-						region = sr:region_balkans
-					}
-				}
-			}
-			post_notification = notification_balkfm_ali_pasha_ascendant
-		}
-		set_secret_goal = { # Here he comes boys
-			country = c:MON
-			secret_goal = conquer
-		}
-	}
-
-}
 
 balkfm.083 = { # The Romanian Declaration of Union; this event has been imported from vanilla; minor adjustments for balkfm variables
 	type = country_event
@@ -3545,6 +3191,9 @@ balkfm.300 = { # A Feudal Relic
 			name = balkfm_mon_illness_var
 			years = { 12 14 } # Petar got 13 years, this provides a random range
 		}
+		trigger_event = {
+			id = balkfm.330 # A Demand for Haraç
+			days = { 30 60 }
 	}
 	
 	option = {
@@ -4291,8 +3940,72 @@ balkfm.320 = { # The Kingdom of Montenegro
 
 ## THE WRATH OF ALI PASHA ##
 
-balkfm.330 = { # OPEN
-	orphan = yes
+balkfm.330 = { # A Demand for Haraç
+	type = country_event
+	placement = root
+	
+	title = balkfm.330.t
+	desc = balkfm.330.d
+	flavor = balkfm.330.f
+	
+	event_image = {
+		video = "rp1_social_banditry"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by balkfm.300
+	}
+	
+	immediate = {
+		balkfm_hersek_scopes_effect = yes
+	}
+	
+	option = { # Fuck the IRS
+		name = balkfm.330.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_evaded_taxes
+			months = long_modifier_time
+		}
+		hidden_effect = {
+			c:TUR_BOS = {
+				trigger_event = {
+					id = balkfm.790 # Tribal Conflicts
+					days = { 15 45 }
+				}
+			}
+		}
+	}
+	
+	option = { # Pay Taxes Like the Beta You Are
+		name = balkfm.330.b
+		c:TUR_BOS = {
+			create_diplomatic_pact = {
+				country = c:MON
+				type = tributary
+			}
+		}
+		add_modifier = {
+			name = modifier_balkfm_submission
+			months = long_modifier_time
+		}
+		hidden_effect = {
+			c:TUR_BOS = {
+				trigger_event = {
+					id = balkfm.790 # Tribal Conflicts
+					days = { 15 45 }
+				}
+			}
+		}
+	}
 }
 
 balkfm.331 = { # Negociations At Humac
@@ -4316,7 +4029,7 @@ balkfm.331 = { # Negociations At Humac
 	dlc = dlc_grefm
 	
 	trigger = {
-		# triggered by balkfm.330
+		# triggered by balkfm.790
 	}
 	
 	immediate = {
@@ -4332,15 +4045,11 @@ balkfm.331 = { # Negociations At Humac
 	option = { # be chill
 		name = balkfm.331.a
 		default_option = yes
+		trigger = {
+			c:MON ?= this
+		}
 		create_character = {
 			template = template_balkfm_dakovic_jakov
-		}
-		hidden_effect = {
-			c:TUR = {
-				trigger_event = {
-					id = balkfm.080 # Skirmishes with Montenegro
-				}
-			}
 		}
 		turkfm_karadag_regress_effect = yes
 		set_global_variable = balkfm_humac_happened
@@ -4352,9 +4061,11 @@ balkfm.331 = { # Negociations At Humac
 	option = { # get clapped
 		name = balkfm.331.b
 		trigger = {
+			c:MON ?= this
 			c:TUR ?= {
 				has_state_in_state_region = STATE_MONTENEGRO
 			}
+			is_ai = yes
 		}
         create_diplomatic_play = {
 			name = dp_petars_last_stand
@@ -4366,6 +4077,16 @@ balkfm.331 = { # Negociations At Humac
 		ai_chance = {
 			base = 1 # MON really shouldn't go full Rambo
 		}
+	}
+	
+	option = {
+		name = balkfm.331.c
+		trigger = {
+			NOT = {
+				c:MON ?= this
+			}
+		}
+		custom_tooltip = turkfm_no_effects
 	}
 
 }
@@ -4391,7 +4112,7 @@ balkfm.332 = { # Knives in the Dark
 	dlc = dlc_grefm
 	
 	trigger = {
-		has_global_variable = balkfm_stabby_stabby # set by balkfm.490 (Disruptive Influence)
+		has_global_variable = balkfm_stabby_stabby # set by balkfm.795 (Disruptive Influence)
 	}
 	
 	immediate = {
@@ -4427,8 +4148,6 @@ balkfm.332 = { # Knives in the Dark
 	}
 
 }
-
-
 
 balkfm.333 = { # A Local Collaborator
 	type = country_event
@@ -4478,6 +4197,18 @@ balkfm.333 = { # A Local Collaborator
 				id = balkfm.334 # The Demise of Smaïl-aga
 				days = 150
 			}
+			c:TUR_BOS ?= {
+				trigger_event = {
+					id = balkfm.334 # The Demise of Smaïl-aga
+					days = 150
+				}
+			}
+			c:TUR ?= {
+				trigger_event = {
+					id = balkfm.791 # The Schemes of Ali Pasha
+					days = 150
+				}
+			}
 		}
 	}
 
@@ -4509,18 +4240,15 @@ balkfm.334 = { # The Demise of Smaïl-aga
 	
 	immediate = {
 		balkfm_hersek_scopes_effect = yes
-		
-	}	
+	}
 	
-	option = {
+	option = { # For Montenegro
 		name = balkfm.334.a
 		default_option = yes
-		scope:smail_aga_scope = {
-			show_as_tooltip = {
-				kill_character = yes
-			}
-			set_variable = turkfm_captive_event_target
+		trigger = {
+			c:MON ?= this
 		}
+		turkfm_karadag_advance_effect = yes
 		if = {
 			limit = {
 				NOT = {
@@ -4532,33 +4260,28 @@ balkfm.334 = { # The Demise of Smaïl-aga
 				months = normal_modifier_time
 			}
 		}
-		create_incident = {
-			country = c:TUR
-			value = 5
-		}
-		c:TUR = {
-			trigger_event = {
-				id = turkfm.817 # Ottoman Noble Beheaded
-			}
-		}
 		add_loyalists = {
 			strata = poor
 			value = small_radicals
 		}
-		turkfm_karadag_advance_effect = yes
-
-	}
-	
-	after = {
-		trigger_event = {
-			id = balkfm.335 # Unintended Consequences
-			days = 200
+		hidden_effect = {
+			trigger_event = {
+				id = balkfm.335 # Unintended Consequences
+				days = 200
+			}
 		}
 		c:SER ?= {
 			post_notification = notification_balkfm_smail_aga_iced
 		}
 	}
-
+		
+	option = { # For Hersek
+		name = balkfm.335.b
+		scope:smail_aga_scope = {
+			kill_character = yes
+		}
+	}
+	
 }
 
 balkfm.335 = { # Unintended Consequences
@@ -4582,6 +4305,7 @@ balkfm.335 = { # Unintended Consequences
 	dlc = dlc_grefm
 	
 	trigger = {
+		# triggered by balkfm.334
 	}
 	
 	immediate = {
@@ -4592,7 +4316,7 @@ balkfm.335 = { # Unintended Consequences
 		c:AUS = {
 			save_scope_as = austria_scope
 		}
-	}	
+	}
 	
 	option = { # negociate
 		name = balkfm.335.a
@@ -4646,12 +4370,7 @@ balkfm.336 = { # Duplicitous Diplomacy
 	}
 	
 	immediate = {
-		random_character_in_void = {
-			limit = {
-				has_template = template_balkfm_rizvanbegovic_ali
-			}
-			save_scope_as = ali_pasha_scope
-		}
+		balkfm_hersek_scopes_effect = yes
 		ruler = {
 			save_scope_as = njegos_scope
 		}
@@ -4664,254 +4383,6 @@ balkfm.336 = { # Duplicitous Diplomacy
 			name = modifier_balkfm_display_of_poverty
 			months = short_modifier_time
 		}
-		hidden_effect = {
-			c:TUR = {
-				trigger_event = {
-					id = balkfm.081 # The Schemes of Ali Pasha
-					days = 120
-				}
-			}
-		}
-	}
-
-}
-
-balkfm.337 = { # The Arrogance of Smaïl-aga
-	type = country_event
-	placement = root
-	
-	title = balkfm.337.t
-	desc = balkfm.337.d
-	flavor = balkfm.337.f
-	
-	event_image = {
-		video = "europenorthamerica_before_the_battle"
-	}
-	
-	icon = "gfx/interface/icons/event_icons/event_military.dds"
-	
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		# triggered by balkfm.030
-	}
-	
-	cancellation_trigger = {
-		NOT = {
-			exists = c:TUR_BOS
-		}
-	}
-	
-	immediate = {
-		c:TUR = {
-			save_scope_as = ottoman_scope
-		}
-		c:TUR_BOS = {
-			save_scope_as = hersek_scope
-		}
-	}
-	
-	option = {
-		name = balkfm.337.a # crush his ass
-		default_option = yes
-		trigger = {
-			this = c:TUR
-		}
-		create_diplomatic_play = {
-			name = balkfm_pasha_rebellion
-			target_country = c:TUR_BOS
-			type = dp_secession
-		}
-		hidden_effect = {
-			random_diplomatic_play = {
-				limit = {
-					c:TUR = {
-						is_diplomatic_play_initiator = yes
-					}
-					c:TUR_BOS = {
-						is_diplomatic_play_target = yes
-					}
-				}
-				add_diplomatic_play_war_support = { target = c:TUR value = 100 }
-				add_diplomatic_play_war_support = { target = c:TUR_BOS value = 100 }
-				add_war_goal = {
-					holder = c:TUR
-					type = conquer_state
-					target_state = scope:bosnia_state_scope
-				}
-			}
-		}
-		ai_chance = {
-			base = 99
-		}
-	}
-	
-	option = {
-		name = balkfm.337.b # let him go (lol wat)
-		trigger = {
-			this = c:TUR
-		}
-		add_modifier = {
-			name = modifier_balkfm_chickenshit
-			months = long_modifier_time
-		}
-		ai_chance = {
-			base = 1
-		}
-	}
-	
-	option = {
-		name = balkfm.337.c
-		trigger = {
-			this = c:MON
-		}
-		show_as_tooltip = {
-			remove_modifier = modifier_balkfm_tolerated_abuses
-		}
-	}
-
-}
-
-balkfm.338 = { # The Arrogance of Ali Pasha
-	type = country_event
-	placement = root
-	
-	title = balkfm.338.t
-	desc = balkfm.338.d
-	flavor = balkfm.338.f
-	
-	event_image = {
-		video = "europenorthamerica_before_the_battle"
-	}
-	
-	icon = "gfx/interface/icons/event_icons/event_military.dds"
-	
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		# triggered by balkfm.031
-	}
-	
-	cancellation_trigger = {
-		NOT = {
-			exists = c:TUR_BOS
-		}
-	}
-	
-	immediate = {
-		c:TUR = {
-			save_scope_as = ottoman_scope
-		}
-		c:TUR_BOS = {
-			save_scope_as = hersek_scope
-		}
-	}
-	
-	option = {
-		name = balkfm.338.a
-		default_option = yes
-		trigger = {
-			this = c:TUR
-		}
-		create_diplomatic_play = {
-			name = balkfm_pasha_rebellion
-			target_country = c:TUR_BOS
-			type = dp_secession
-		}
-		hidden_effect = {
-			random_diplomatic_play = {
-				limit = {
-					c:TUR = {
-						is_diplomatic_play_initiator = yes
-					}
-					c:TUR_BOS = { 
-						is_diplomatic_play_target = yes
-					}
-				}
-				add_diplomatic_play_war_support = { target = c:TUR value = 100 }
-				add_diplomatic_play_war_support = { target = c:TUR_BOS value = 100 }
-				add_war_goal = {
-					holder = c:TUR
-					type = conquer_state
-					target_state = scope:bosnia_state_scope
-				}
-			}
-		}
-		ai_chance = {
-			base = 99
-		}
-	}
-	
-	option = {
-		name = balkfm.338.b # let him go (lol wat)
-		trigger = {
-			this = c:TUR
-		}
-		add_modifier = {
-			name = modifier_balkfm_chickenshit
-			months = long_modifier_time
-		}
-		ai_chance = {
-			base = 1
-		}
-	}
-	
-	option = {
-		name = balkfm.338.c
-		trigger = {
-			this = c:MON
-		}
-	}
-
-}
-
-balkfm.339 = { # Ali Pasha's Demise
-	type = country_event
-	placement = root
-	
-	title = balkfm.339.t
-	desc = balkfm.339.d
-	flavor = balkfm.339.f
-	
-	event_image = {
-		video = "votp_hostile_court"
-	}
-	
-	icon = "gfx/interface/icons/event_icons/event_scales.dds"
-	
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		# triggered by balkfm.081
-	}
-	
-	immediate = {
-		balkfm_hersek_scopes_effect = yes
-		c:TUR = {
-			save_scope_as = ottoman_scope
-		}
-	}
-	
-	option = {
-		name = balkfm.339.a
-		default_option = yes
-		scope:ali_pasha_scope = {
-			kill_character = yes
-		}
-		turkfm_karadag_advance_effect = yes
-		set_global_variable = balkfm_ali_pasha_waxed
 	}
 
 }
@@ -6636,86 +6107,6 @@ balkfm.486 = { # The Serbian Voivodship
 
 }
 
-#### MISCELLANEOUS & TECHNICAL EVENTS ####
-
-balkfm.490 = { # Disruptive Influence
-	type = country_event
-	placement = root
-	
-	title = balkfm.490.t
-	desc = balkfm.490.d
-	flavor = balkfm.490.f
-	
-	event_image = {
-		video = "southamerica_aristocrats"
-	}
-	
-	icon = "gfx/interface/icons/event_icons/event_skull.dds"
-	
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		has_global_variable = balkfm_humac_happened # set by balkfm.331 (Negociations at Humac)
-		exists = c:MON
-	}
-	
-	immediate = {
-		remove_global_variable = balkfm_humac_happened
-		balkfm_hersek_scopes_effect = yes
-		c:MON = {
-			save_scope_as = montenegro_scope
-			ruler = {
-				save_scope_as = montenegro_ruler_scope
-			}
-		}
-		s:STATE_NORTHERN_SERBIA = {
-			random_scope_state = {
-				save_scope_as = northern_serbia_state_scope
-			}
-		}
-	}
-	
-	option = { # stir the pot
-		name = balkfm.490.a
-		default_option = yes
-		change_relations = {
-			country = c:MON
-			value = 20
-		}
-		set_global_variable = balkfm_stabby_stabby # triggers balkfm.332 (Knives in the Dark)
-		ai_chance = {
-			base = 10
-			modifier = {
-				trigger = {
-					c:MON ?= {
-						relations:root < relations_threshold:neutral
-					}
-				}
-				add = -10
-			}
-		}
-	}
-	
-	option = { # do nothing
-		name = balkfm.490.b
-		ai_chance = {
-			base = 0
-			modifier = {
-				trigger = {
-					c:MON ?= {
-						relations:root < relations_threshold:neutral
-					}
-				}
-				add = 10
-			}
-		}
-	}
-
-}
 
 #################################################
 ## #BALK5	BULGARIA FLAVOR		Events 500-599 ##
@@ -13840,6 +13231,514 @@ balkfm.691 = { # Romanian Provocation in Transylvania (AUS)
 #################################################
 ## #BALK7	BOSNIA FLAVOR		Events 700-799 ##
 #################################################
+
+####
+
+balkfm.700 = { # The Small Land of the Serbs
+	type = country_event
+	placement = root
+	
+	title = balkfm.700.t
+	desc = balkfm.700.d
+	flavor = balkfm.700.f
+	
+	event_image = {
+		video = "rp1_brazilian_city"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by balkfm.129
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = balkfm.700.a
+		default_option = yes
+	}
+	
+}
+
+
+#### EYALET OF HERSEK EVENTS ####
+
+balkfm.790 = { # Tribal Conflicts
+	type = country_event
+	placement = root
+	
+	title = balkfm.790.t
+	desc = {
+		triggered_desc = {
+			desc = balkfm.790.d1
+			trigger = {
+				c:MON ?= {
+					NOT = {
+						is_subject_of = root
+					}
+				}
+			}
+		}
+		triggered_desc = {
+			desc = balkfm.790.d2
+			trigger = {
+				c:MON ?= {
+					is_subject_of = root
+				}
+			}
+		}
+	}
+	flavor = balkfm.790.f
+	
+	event_image = {
+		video = "europenorthamerica_before_the_battle"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by balkfm.330
+	}
+	
+	immediate = {
+		balkfm_hersek_scopes_effect = yes
+		c:MON = {
+			save_scope_as = montenegro_scope
+		}
+	}
+	
+	option = { # 
+		name = balkfm.790.a
+		default_option = yes
+		trigger = {
+			c:MON ?= {
+				NOT = {
+					is_subject_of = root
+				}
+			}
+		}
+		hidden_effect = {
+			trigger_event = {
+				id = turkfm.800 # The Battle of Grahovo
+				days = 180
+			}
+			trigger_event = {
+				id = balkfm.331 # Negociations At Humac
+				days = 240 # should be early 1937
+			}
+			c:TUR = {
+				trigger_event = {
+					id = turkfm.800 # The Battle of Grahovo
+					days = 180
+				}
+			}
+			c:MON = {
+				trigger_event = {
+					id = turkfm.800 # The Battle of Grahovo
+					days = 180
+				}
+				trigger_event = {
+					id = balkfm.331 # Negociations At Humac
+					days = 240 # should be early 1937
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = balkfm.791.b
+		trigger = {
+			c:MON ?= {
+				is_subject_of = root
+			}
+		}
+		add_modifier = {
+			name = modifier_turkfm_forced_submission
+			months = normal_modifier_time
+		}
+	}
+	
+}
+
+balkfm.791 = { # The Schemes of Ali Pasha
+	type = country_event
+	placement = scope:hersek_scope
+	
+	title = balkfm.791.t
+	desc = balkfm.791.d
+	flavor = balkfm.791.f
+	
+	event_image = {
+		video = "ep1_clandestine_meeting"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		triggered by balkfm.333
+	}
+	
+	immediate = {
+		balkfm_hersek_scopes_effect = yes
+	}
+	
+	option = { # Clip Him
+		name = balkfm.791.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_turkfm_sick_man_bosnia
+		}
+	}
+	
+	option = { # Whats the worst that can happen?
+		name = balkfm.791.b
+		ruler = {
+			add_modifier = {
+				name = modifier_balkfm_impotent_ruler
+				months = long_modifier_time
+			}
+		}
+	}
+	
+}
+
+balkfm.792 = { # The Reordering Begins
+	type = country_event
+	placement = root
+	
+	title = balkfm.792.t
+	desc = balkfm.792.d
+	flavor = balkfm.792.f
+	
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		NOT = {
+			has_variable = balkfm_tanizmat_considered
+		}
+		has_global_variable = turkfm_tanzimat_started
+	}
+	
+	immediate = {
+		set_variable = balkfm_tanizmat_considered
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+	}
+	
+	option = {
+		name = balkfm.792.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_balkfm_bos_tanzimat
+		}
+		change_relations = {
+			country = c:TUR
+			value = 25
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_relations_level_increased
+			target = c:TUR
+		}
+		c:TUR = {
+			set_secret_goal = {
+				country = root
+				secret_goal = protect
+			}
+		}
+	}
+	
+	option = {
+		name = balkfm.792.b
+		change_relations = {
+			country = c:TUR
+			value = -25
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_diplomatic_incident
+			target = c:TUR
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_relations_level_decreased
+			target = c:TUR
+		}
+	}
+	
+}
+
+balkfm.795 = { # Disruptive Influence
+	type = country_event
+	placement = root
+	
+	title = balkfm.795.t
+	desc = balkfm.795.d
+	flavor = balkfm.795.f
+	
+	event_image = {
+		video = "southamerica_aristocrats"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		has_global_variable = balkfm_humac_happened
+	}
+	
+	immediate = {
+		remove_global_variable = balkfm_humac_happened
+		balkfm_hersek_scopes_effect = yes
+		c:MON = {
+			save_scope_as = montenegro_scope
+			ruler = {
+				save_scope_as = montenegro_ruler_scope
+			}
+		}
+		s:STATE_NORTHERN_SERBIA = {
+			random_scope_state = {
+				save_scope_as = northern_serbia_state_scope
+			}
+		}
+	}
+	
+	option = { # stir the pot
+		name = balkfm.795.a
+		default_option = yes
+		change_relations = {
+			country = c:MON
+			value = 20
+		}
+		set_global_variable = balkfm_stabby_stabby # triggers balkfm.332 (Knives in the Dark)
+		ai_chance = {
+			base = 10
+			modifier = {
+				trigger = {
+					c:MON ?= {
+						relations:root < relations_threshold:neutral
+					}
+				}
+				add = -10
+			}
+		}
+	}
+	
+	option = { # do nothing
+		name = balkfm.795.b
+		ai_chance = {
+			base = 0
+			modifier = {
+				trigger = {
+					c:MON ?= {
+						relations:root < relations_threshold:neutral
+					}
+				}
+				add = 10
+			}
+		}
+	}
+
+}
+
+balkfm.796 = { # Ali Pasha's Demise
+	type = country_event
+	placement = scope:hersek_scope
+	
+	title = balkfm.796.t
+	desc = balkfm.796.d
+	flavor = balkfm.796.f
+	
+	event_image = {
+		video = "votp_hostile_court"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by je_balkfm_bos_ali_pasha
+	}
+	
+	immediate = {
+		balkfm_hersek_scopes_effect = yes
+	}
+	
+	option = { # Ottoman Option
+		name = balkfm.796.a
+		default_option = yes
+		trigger = {
+			c:TUR ?= this
+		}
+		scope:ali_pasha_scope = {
+			kill_character = yes
+		}
+	}
+	
+	option = {
+		name = balkfm.796.b
+		trigger = {
+			c:TUR_BOS ?= this
+		}
+		
+	}
+	
+	option = {
+		name = balkfm.796.c
+		trigger = {
+			c:MON ?= this
+		}
+		
+	}
+	
+}
+
+balkfm.797 = { # The Lands of Montenegro
+	type = country_event
+	placement = root
+	
+	title = balkfm.797.t
+	desc = balkfm.797.d
+	flavor = balkfm.797.f
+	
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by je_balkfm_bos_karadag
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = balkfm.797.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_secured_region
+			months = long_modifier_time
+		}
+		add_loyalists = {
+			value = large_radicals
+		}
+	}
+	
+}
+
+balkfm.798 = { # Failed Amibitions
+	type = country_event
+	placement = root
+	
+	title = balkfm.798.t
+	desc = balkfm.798.d
+	flavor = balkfm.798.f
+	
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_temp.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by je_balkfm_bos_ali_pasha
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = balkfm.798.a
+		default_option = yes
+	}
+	
+}
+
+balkfm.799 = { # House Rizvanbegović of Bosnia
+	type = country_event
+	placement = root
+	
+	title = balkfm.799.t
+	desc = balkfm.799.d
+	flavor = balkfm.799.f
+	
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_temp.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by je_balkfm_bos_ali_pasha
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = balkfm.799.a
+		default_option = yes
+	}
+	
+}
 
 
 #################################################
