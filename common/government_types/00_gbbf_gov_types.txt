@@ -123,90 +123,6 @@ gov_byzantine_empire = {
 ###################################
 #  #GBBF7 OTTOMAN SUBJECT SYSTEM  #
 ###################################
-# This is meant to be a dynamic system allowing for promotion and demotion within the Ottoman System; I'll be adding more mechanics in the future
-
-gov_sultanate = {
-	transfer_of_power = hereditary
-	
-	male_ruler = "RULER_TITLE_SULTAN"
-	female_ruler = "" # Empty on purpose
-
-	male_heir = "RULER_TITLE_IMPERIAL_PRINCE"
-	female_heir = "" # Empty on purpose
-	
-	possible = {
-		has_law = law_type:law_monarchy
-		has_law = law_type:law_state_religion
-		OR = {
-			AND = {
-				c:TUR ?= ROOT
-				NOT = { has_global_variable = turkfm_sultanate_dissolved }
-			}
-			c:MOR ?= ROOT
-			c:OMA ?= ROOT
-			c:JOH ?= ROOT
-			c:BRU ?= ROOT
-			c:ACE ?= ROOT
-			c:BLG ?= ROOT
-			c:YEM ?= ROOT
-			c:ZAN ?= ROOT
-			c:SEL ?= ROOT
-			c:PRK ?= ROOT
-			c:SUL ?= ROOT
-			c:SAK ?= ROOT
-			c:YOG ?= ROOT
-			c:TID ?= ROOT
-			c:BNJ ?= ROOT
-			c:STG ?= ROOT
-			c:SMB ?= ROOT
-			c:PON ?= ROOT
-			c:JMB ?= ROOT
-			c:KTI ?= ROOT
-			c:BTN ?= ROOT
-			c:MGD ?= ROOT
-			c:MAH ?= ROOT
-			c:LAH ?= ROOT
-			c:KAT ?= ROOT
-			c:GLD ?= ROOT
-			c:MJT ?= ROOT
-			c:WSG ?= ROOT
-			c:ISQ ?= ROOT
-			c:DFR ?= ROOT
-			c:TUG ?= ROOT
-			c:AIT ?= ROOT
-			c:ALD ?= ROOT
-		}
-	}
-
-	on_government_type_change = {
-		change_to_hereditary = yes
-	}
-	on_post_government_type_change = {
-		post_change_to_hereditary = yes
-	}
-}
-
-gov_khedive = {
-	transfer_of_power = hereditary
-	
-	male_ruler = "RULER_TITLE_KHEDIVE"
-	female_ruler = "" # Empty on purpose
-
-	male_heir = "RULER_TITLE_PRINCE"
-	female_heir = "" # Empty on purpose
-	
-	possible = {
-		has_law = law_type:law_monarchy
-		c:EGY ?= ROOT
-	}
-
-	on_government_type_change = {
-		change_to_hereditary = yes
-	}
-	on_post_government_type_change = {
-		post_change_to_hereditary = yes
-	}
-}
 
 gov_eyalet = {
 	transfer_of_power = hereditary
@@ -219,7 +135,7 @@ gov_eyalet = {
 	
 	possible = {
 		has_law = law_type:law_monarchy
-		top_overlord ?= {
+		overlord ?= {
 			c:TUR ?= this
 		}
 		OR = {
@@ -247,7 +163,7 @@ gov_vilayet = {
 	
 	possible = {
 		has_law = law_type:law_monarchy
-		top_overlord ?= {
+		overlord ?= {
 			c:TUR ?= this
 		}
 		OR = {
@@ -275,9 +191,13 @@ gov_bey = {
 	
 	possible = {
 		has_law = law_type:law_monarchy
+		gbbf_is_muslim_trigger = yes
+		overlord ?= {
+			c:TUR ?= this
+		}
 		OR = {
-			AND = { exists = c:TUN c:TUN = ROOT }
-			AND = { exists = c:CON c:CON = ROOT }
+			is_subject_type = subject_type_protectorate
+			is_subject_type = subject_type_vassal
 		}
 	}
 
@@ -288,27 +208,3 @@ gov_bey = {
 		post_change_to_hereditary = yes
 	}
 }
-
-gov_sharif = {
-	transfer_of_power = hereditary
-	
-	male_ruler = "RULER_TITLE_SHARIF"
-	female_ruler = "" # Empty on purpose
-
-	male_heir = "" # Empty on purpose
-	female_heir = "" # Empty on purpose
-	
-	possible = {
-		has_law = law_type:law_monarchy
-		exists = c:HDJ
-		c:HDJ = ROOT
-	}
-
-	on_government_type_change = {
-		change_to_hereditary = yes
-	}
-	on_post_government_type_change = {
-		post_change_to_hereditary = yes
-	}
-}
-
