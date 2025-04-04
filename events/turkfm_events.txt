@@ -14244,8 +14244,90 @@ turkfm.921 = { # A Suspicious Inlet
 	
 }
 
-turkfm.922 = { # 
-	orphan = yes
+turkfm.922 = { # The Runaway
+	type = country_event
+	placement = root
+	
+	title = turkfm.922.t
+	desc = turkfm.922.d
+	flavor = turkfm.922.f
+	
+	gui_window = event_window_2char_discussion
+	
+	left_icon = scope:turkfm_runaway_pirate_scope
+	right_icon = scope:turkfm_jack_sparrow_scope
+	
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_open_ocean.dds"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		turkfm_has_adriatic_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+			has_variable = turkfm_runaway_pirate_var
+		}
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+	
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_piracy_scopes_effect = yes
+		create_character = {
+			age = 30
+			culture = cu:albanian
+			religion = rel:orthodox
+			interest_group = ig_armed_forces
+			ideology = ideology_moderate
+			traits = {
+				trait_turkfm_corsair
+				basic_naval_commander
+			}
+			on_created = {
+				set_variable = turkfm_runaway_var
+				place_character_in_void = 12
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_variable = turkfm_runaway_var
+			}
+			save_scope_as = turkfm_runaway_pirate_scope
+		}
+	}
+	
+	option = { # Hire the Pirate
+		name = turkfm.922.a
+		default_option = yes
+		scope:turkfm_runaway_pirate_scope = {
+			add_character_role = admiral
+			hidden_effect = {
+				free_character_from_void = yes
+			}
+		}
+	}
+	
+	option = { # Send Him to the Bottom
+		name = turkfm.922.b
+		add_radicals = {
+			pop_type = servicemen
+			value = small_radicals
+		}
+	}
 }
 
 turkfm.923 = { # Spoiled Provisions
