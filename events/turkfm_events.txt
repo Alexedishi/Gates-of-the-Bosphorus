@@ -324,15 +324,15 @@ namespace = turkfm
 #	913 - A Pirate's Booty
 #	914 - Diplomatic Communiques Intercepted
 #	915 - Slavers Intercepted
-#	916 - 
-#	917 - 
-#	918 - 
+#	916 - ##Greener Pastures
+#	917 - ##The [Goods] Smugglers
+#	918 - The Peasant's Pirate
 #	919 - Adds the Piracy JE [TECH]
 
 #920-929 - Priates of the Adriatic Expedition Events
 #	920 - Local Informants
-#	921 - ##A Suspicious Inlet
-#	922 - 
+#	921 - A Suspicious Inlet
+#	922 - ##The Runaway
 #	923 - Spoiled Provisions
 #	924 - Circular Bearing
 #	925 - Windstorms in the Adriatic
@@ -344,7 +344,7 @@ namespace = turkfm
 #930-939 - Priates of the Adriatic Chase Events
 #	930 - Pirates Spotted!
 #	931 - Man Overboard!
-#	932 - ##The Pillagers' Wake
+#	932 - The Pillagers' Wake
 #	933 - 
 #	934 - Without a Trace
 #	935 - Bearing Down
@@ -12371,6 +12371,10 @@ turkfm.900 = { # The Pirates of the Adriatic
 	desc = turkfm.900.d
 	flavor = turkfm.900.f
 	
+	gui_window = event_window_1char_adventure
+	
+	left_icon = scope:turkfm_jack_sparrow_scope
+	
 	event_image = {
 		video = "unspecific_naval_battle"
 	}
@@ -13080,6 +13084,10 @@ turkfm.910 = { # Coastal Village Raided!
 	desc = turkfm.910.d
 	flavor = turkfm.910.f
 	
+	gui_window = event_window_1char_adventure
+	
+	left_icon = scope:turkfm_jack_sparrow_scope
+	
 	event_image = {
 		video = "southamerica_war_civilians"
 	}
@@ -13359,8 +13367,12 @@ turkfm.913 = { # A Pirate's Booty
 	desc = turkfm.913.d
 	flavor = turkfm.913.f
 	
+	gui_window = event_window_1char_adventure
+	
+	left_icon = scope:turkfm_piracy_character_scope
+	
 	event_image = {
-		video = "rp1_social_banditry"
+		video = "votp_gunboat_diplomacy"
 	}
 	
 	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
@@ -13381,6 +13393,9 @@ turkfm.913 = { # A Pirate's Booty
 				current_hq ?= p:xEFA0C0.naval_hq # BALKANS HQ
 				current_hq ?= p:xB040A0.naval_hq # ITALY HQ
 			}
+		}
+		any_scope_character = {
+			has_role = admiral
 		}
 	}
 	
@@ -13412,6 +13427,12 @@ turkfm.913 = { # A Pirate's Booty
 				gbbf_adriatic_geography_trigger = yes
 			}
 			save_scope_as = turkfm_piracy_state_scope
+		}
+		random_scope_character = {
+			limit = {
+				has_role = admiral
+			}
+			save_scope_as = turkfm_piracy_character_scope
 		}
 	}
 	
@@ -13445,6 +13466,10 @@ turkfm.914 = { # Diplomatic Communiques Intercepted
 	title = turkfm.914.t
 	desc = turkfm.914.d
 	flavor = turkfm.914.f
+	
+	gui_window = event_window_1char_adventure
+	
+	left_icon = scope:turkfm_jack_sparrow_scope
 	
 	event_image = {
 		video = "ep1_octopus"
@@ -13764,6 +13789,10 @@ turkfm.920 = { # Local Informants
 	title = turkfm.920.t
 	desc = turkfm.920.d
 	flavor = turkfm.920.f
+	
+	gui_window = event_window_1char_adventure
+	
+	left_icon = scope:turkfm_cutler_beckett_scope
 	
 	event_image = {
 		video = "votp_conspiring"
@@ -14915,9 +14944,107 @@ turkfm.938 = { # Beckett & Sparrow Duel
 					name = turkfm_maelstrom_var
 					value = 1 # Jack Wins
 				}
+				if = {
+					limit = {	
+						scope:turkfm_cutler_beckett_scope = {
+							has_trait = cautious
+						}
+					}
+					add = 5
+				}
+				if = {
+					limit = {	
+						scope:turkfm_cutler_beckett_scope = {
+							has_trait = reserved
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {	
+						scope:turkfm_cutler_beckett_scope = {
+							has_trait = hedonist
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {	
+						scope:turkfm_cutler_beckett_scope = {
+							has_trait = shellshocked
+						}
+					}
+					add = 50
+				}
+			}
+			5 = {
 				set_global_variable = {
 					name = turkfm_maelstrom_var
 					value = 2 # Cutler Wins
+				}
+				if = {
+					limit = {	
+						scope:turkfm_cutler_beckett_scope = {
+							has_trait = basic_naval_commander
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {	
+						scope:turkfm_cutler_beckett_scope = {
+							has_trait = experienced_naval_commander
+						}
+					}
+					add = 25
+				}
+				if = {
+					limit = {	
+						scope:turkfm_cutler_beckett_scope = {
+							has_trait = expert_naval_commander
+						}
+					}
+					add = 100
+				}
+				if = {
+					limit = {	
+						scope:turkfm_cutler_beckett_scope = {
+							has_trait = convoy_raider_commander
+						}
+					}
+					add = 5
+				}
+				if = {
+					limit = {	
+						scope:turkfm_cutler_beckett_scope = {
+							has_trait = experienced_convoy_raider
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {	
+						scope:turkfm_cutler_beckett_scope = {
+							has_trait = expert_convoy_raider
+						}
+					}
+					add = 25
+				}
+				if = {
+					limit = {	
+						scope:turkfm_cutler_beckett_scope = {
+							has_trait = brave
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {	
+						scope:turkfm_cutler_beckett_scope = {
+							has_trait = ruthless
+						}
+					}
+					add = 10
 				}
 			}
 		}
@@ -15112,6 +15239,9 @@ turkfm.1100 = { # On the Margins of the Empire
 	option = {
 		name = turkfm.1100.a
 		default_option = yes
+		show_as_tooltip = {
+			add_modifier = modifier_turkfm_informal_administration
+		}
 	}
 
 }
