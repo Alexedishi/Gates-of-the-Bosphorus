@@ -324,8 +324,8 @@ namespace = turkfm
 #	913 - A Pirate's Booty
 #	914 - Diplomatic Communiques Intercepted
 #	915 - Slavers Intercepted
-#	916 - ##Greener Pastures
-#	917 - ##The [Goods] Smugglers
+#	916 - Greener Pastures
+#	917 - The [Goods] Smugglers
 #	918 - The Peasant's Pirate
 #	919 - Adds the Piracy JE [TECH]
 
@@ -13096,20 +13096,21 @@ turkfm.910 = { # Coastal Village Raided!
 	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
-	duration = 2
+	duration = 3
 	
 	dlc = dlc_grefm
 	
 	trigger = {
 		NOT = {
-			has_variable = turkfm_expedition_cooldown_var
+			has_variable = turkfm_piracy_cooldown_var
 		}
 		OR = {
 			turkfm_has_adriatic_expedition_trigger = yes
 			any_scope_state = {
 				gbbf_adriatic_geography_trigger = yes
-				NOT = {
+				NOR = {
 					has_modifier = modifier_turkfm_coasts_raided
+					has_modifier = modifier_turkfm_pirate_nursing_home
 				}
 			}
 		}
@@ -13125,8 +13126,8 @@ turkfm.910 = { # Coastal Village Raided!
 	
 	immediate = {
 		set_variable = {
-			name = turkfm_expedition_cooldown_var
-			days = 45
+			name = turkfm_piracy_cooldown_var
+			months = 6
 		}
 		turkfm_piracy_scopes_effect = yes
 		if = {
@@ -13231,13 +13232,13 @@ turkfm.911 = { # Merchant Vessels Raided!
 	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
-	duration = 2
+	duration = 3
 	
 	dlc = dlc_grefm
 	
 	trigger = {
 		NOR = {
-			has_variable = turkfm_expedition_cooldown_var
+			has_variable = turkfm_piracy_cooldown_var
 			has_modifier = modifier_turkfm_merchants_raided
 		}
 	}
@@ -13248,8 +13249,8 @@ turkfm.911 = { # Merchant Vessels Raided!
 	
 	immediate = {
 		set_variable = {
-			name = turkfm_expedition_cooldown_var
-			days = 45
+			name = turkfm_piracy_cooldown_var
+			months = 6
 		}
 		turkfm_piracy_scopes_effect = yes
 	}
@@ -13281,13 +13282,13 @@ turkfm.912 = { # Nobleman Held Hostage
 	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
-	duration = 2
+	duration = 3
 	
 	dlc = dlc_grefm
 	
 	trigger = {
 		NOT = {
-			has_variable = turkfm_expedition_cooldown_var
+			has_variable = turkfm_piracy_cooldown_var
 		}
 	}
 	
@@ -13301,8 +13302,8 @@ turkfm.912 = { # Nobleman Held Hostage
 	
 	immediate = {
 		set_variable = {
-			name = turkfm_expedition_cooldown_var
-			days = 45
+			name = turkfm_piracy_cooldown_var
+			months = 6
 		}
 		turkfm_piracy_scopes_effect = yes
 		random_state = {
@@ -13379,13 +13380,13 @@ turkfm.913 = { # A Pirate's Booty
 	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
-	duration = 2
+	duration = 3
 	
 	dlc = dlc_grefm
 	
 	trigger = {
 		NOT = {
-			has_variable = turkfm_expedition_cooldown_var
+			has_variable = turkfm_piracy_cooldown_var
 		}
 		any_military_formation = {
 			is_fleet = yes
@@ -13409,8 +13410,8 @@ turkfm.913 = { # A Pirate's Booty
 	
 	immediate = {
 		set_variable = {
-			name = turkfm_expedition_cooldown_var
-			days = 45
+			name = turkfm_piracy_cooldown_var
+			months = 6
 		}
 		turkfm_piracy_scopes_effect = yes
 		random_country = {
@@ -13485,7 +13486,7 @@ turkfm.914 = { # Diplomatic Communiques Intercepted
 	
 	trigger = {
 		NOT = {
-			has_variable = turkfm_expedition_cooldown_var
+			has_variable = turkfm_piracy_cooldown_var
 		}
 	}
 	
@@ -13499,8 +13500,8 @@ turkfm.914 = { # Diplomatic Communiques Intercepted
 	
 	immediate = {
 		set_variable = {
-			name = turkfm_expedition_cooldown_var
-			days = 45
+			name = turkfm_piracy_cooldown_var
+			months = 6
 		}
 		turkfm_piracy_scopes_effect = yes
 		random_country = {
@@ -13565,7 +13566,7 @@ turkfm.915 = { # Slavers Intercepted
 	
 	trigger = {
 		NOT = {
-			has_variable = turkfm_expedition_cooldown_var
+			has_variable = turkfm_piracy_cooldown_var
 		}
 		c:TUR ?= {
 			NOT = {
@@ -13600,8 +13601,8 @@ turkfm.915 = { # Slavers Intercepted
 	
 	immediate = {
 		set_variable = {
-			name = turkfm_expedition_cooldown_var
-			days = 45
+			name = turkfm_piracy_cooldown_var
+			months = 6
 		}
 		turkfm_piracy_scopes_effect = yes
 		c:TUR = {
@@ -13721,6 +13722,331 @@ turkfm.915 = { # Slavers Intercepted
 		create_diplomatic_catalyst = {
 			type = catalyst_diplomatic_incident
 			target = scope:turkfm_piracy_country_scope
+		}
+	}
+
+}
+
+turkfm.916 = { # Greener Pastures
+	type = country_event
+	placement = root
+	
+	title = turkfm.916.t
+	desc = turkfm.916.d
+	flavor = turkfm.916.f
+	
+	event_image = {
+		video = "rp1_brazilian_city"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		NOT = {
+			has_variable = turkfm_piracy_cooldown_var
+		}
+		any_scope_state = {
+			gbbf_adriatic_geography_trigger = yes
+			is_coastal = yes
+		}
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+	
+	cooldown = {
+		years = 10
+	}
+	
+	immediate = {
+		set_variable = {
+			name = turkfm_piracy_cooldown_var
+			months = 6
+		}
+		turkfm_piracy_scopes_effect = yes
+		random_scope_state = {
+			limit = {
+				gbbf_adriatic_geography_trigger = yes
+				is_coastal = yes
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+	}
+	
+	option = {
+		name = turkfm.916.a
+		default_option = yes
+		scope:turkfm_piracy_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_pirate_nursing_home
+				months = long_modifier_time
+			}
+			
+		}
+	}
+
+}
+
+turkfm.917 = { # The Goods Smugglers
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+	
+	title = turkfm.917.t
+	desc = turkfm.917.d
+	flavor = turkfm.917.f
+	
+	event_image = {
+		video = "votp_gunboat_diplomacy"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_trade.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		NOT = {
+			has_variable = turkfm_piracy_cooldown_var
+		}
+		religion = {
+			OR = {
+				has_religious_taboo = liquor
+				has_religious_taboo = wine
+				has_religious_taboo = coffee
+				has_religious_taboo = tea
+				has_religious_taboo = meat
+			}
+		}
+		any_scope_state = {
+			gbbf_adriatic_geography_trigger = yes
+			is_coastal = yes
+			NOR = {
+				has_modifier = modifier_turkfm_seizing_contraband
+				has_modifier = modifier_turkfm_smuggling_hub
+				has_modifier = modifier_turkfm_social_support
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+		set_variable = {
+			name = turkfm_piracy_cooldown_var
+			months = 6
+		}
+		turkfm_piracy_scopes_effect = yes
+		random_scope_state = {
+			limit = {
+				gbbf_adriatic_geography_trigger = yes
+				is_coastal = yes
+				NOR = {
+					has_modifier = modifier_turkfm_seizing_contraband
+					has_modifier = modifier_turkfm_smuggling_hub
+					has_modifier = modifier_turkfm_social_support
+				}
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+		if = {
+			limit = {
+				religion = {
+					has_religious_taboo = liquor
+				}
+			}
+			g:liquor = {
+				save_scope_as = turkfm_piracy_goods_scope
+			}
+		}
+		else_if = {
+			limit = {
+				religion = {
+					has_religious_taboo = wine
+				}
+			}
+			g:wine = {
+				save_scope_as = turkfm_piracy_goods_scope
+			}
+		}
+		else_if = {
+			limit = {
+				religion = {
+					has_religious_taboo = coffee
+				}
+			}
+			g:coffee = {
+				save_scope_as = turkfm_piracy_goods_scope
+			}
+		}
+		else_if = {
+			limit = {
+				religion = {
+					has_religious_taboo = tea
+				}
+			}
+			g:tea = {
+				save_scope_as = turkfm_piracy_goods_scope
+			}
+		}
+		else = {
+			g:meat = {
+				save_scope_as = turkfm_piracy_goods_scope
+			}
+		}
+	}
+	
+	option = { # Arrest them
+		name = turkfm.917.a
+		default_option = yes
+		scope:turkfm_piracy_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_seizing_contraband
+				months = normal_modifier_time
+			}
+			add_radicals_in_state = {
+				strata = poor
+				value = small_radicals
+			}
+		}
+	}
+	
+	option = { # Idk stupid poors
+		name = turkfm.917.b
+		scope:turkfm_piracy_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_smuggling_hub
+				months = normal_modifier_time
+			}
+		}
+	}
+	
+	option = { # Social security option
+		name = turkfm.917.c
+		trigger = {
+			has_institution = institution_social_security
+		}
+		highlighted_option = yes
+		show_as_unavailable = {
+			always = yes
+		}
+		scope:turkfm_piracy_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_social_support
+				months = normal_modifier_time
+			}
+			add_loyalists_in_state = {
+				strata = poor
+				value = medium_radicals
+			}
+		}
+	}
+
+}
+
+turkfm.918 = { # The Peasant's Pirate
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+	
+	title = turkfm.918.t
+	desc = turkfm.918.d
+	flavor = turkfm.918.f
+	
+	gui_window = event_window_1char_adventure
+	
+	left_icon = scope:turkfm_jack_sparrow_scope
+	
+	event_image = {
+		video = "rp1_social_banditry"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		NOT = {
+			has_variable = turkfm_piracy_cooldown_var
+		}
+		any_scope_state = {
+			gbbf_adriatic_geography_trigger = yes
+			is_coastal = yes
+		}
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+	
+	cooldown = {
+		years = 20
+	}
+	
+	immediate = {
+		set_variable = {
+			name = turkfm_piracy_cooldown_var
+			months = 6
+		}
+		turkfm_piracy_scopes_effect = yes
+	}
+	
+	option = { # Tolerate it
+		name = turkfm.918.a
+		default_option = yes
+		scope:turkfm_piracy_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_generous_pirate
+				months = normal_modifier_time
+			}
+			add_radicals_in_state = {
+				strata = rich
+				value = medium_radicals
+			}
+		}
+		add_modifier = {
+			name = modifier_turkfm_ignored_theft
+			months = normal_modifier_time
+		}
+	}
+	
+	option = { # Confiscate it
+		name = turkfm.918.b
+		scope:turkfm_piracy_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_generosity_confiscated
+				months = normal_modifier_time
+			}
+			add_radicals_in_state = {
+				strata = poor
+				value = medium_radicals
+			}
+			add_loyalists_in_state = {
+				strata = rich
+				value = medium_radicals
+			}
+		}
+		add_modifier = {
+			name = modifier_turkfm_handled_theft
+			months = normal_modifier_time
 		}
 	}
 
