@@ -7787,70 +7787,33 @@ turkfm.280 = { # Ottoman Humiliation Monitor Event
 	hidden = yes
 	
 	trigger = {
-		OR = {
-			AND = {
-				has_diplomatic_pact = {
-					who = c:TUR
-					type = humiliation
-				}
-				NOT = {
-					has_variable = turkfm_humiliation_tracker
-				}
-			}
-			AND = {
-				has_variable = turkfm_humiliation_tracker
-				NOT = {
-					has_diplomatic_pact = {
-						who = c:TUR
-						type = humiliation
-					}
-				}
-			}
+		turkfm_calculate_tension_effect = yes
+		NOT = {
+			has_variable = turkfm_humiliation_tracker
+		}
+		has_diplomatic_pact = {
+			who = c:TUR
+			type = humiliation
 		}
 	}
 
 	immediate = {
-		if = {
+		set_variable = {
+			name = turkfm_humiliation_tracker
+			years = 4
+		}
+		change_global_variable = {
+			name = turkfm_escalation_var
+			add = 25
+		}
+		every_country = {
 			limit = {
-				has_variable = turkfm_humiliation_tracker
-				NOT = {
-					has_diplomatic_pact = {
-						who = c:TUR
-						type = humiliation
-					}
-				}
+				turkfm_balkans_party_trigger = yes
 			}
-			remove_variable = turkfm_humiliation_tracker
-		}	
-		else_if = {
-			limit = {
-				has_diplomatic_pact = {
-					who = c:TUR
-					type = humiliation
-				}
-				NOT = {
-					has_variable = turkfm_humiliation_tracker
-				}
-			}
-			set_variable = turkfm_humiliation_tracker
-			if = {
-				limit = {
-					turkfm_can_escalate_tension_trigger = yes
-				}
-				change_global_variable = {
-					name = turkfm_escalation_var
-					add = 10
-				}
-				every_country = {
-					limit = {
-						turkfm_balkans_party_trigger = yes
-					}
-					post_notification = notification_turkfm_humiliation_enforced
-				}
-				c:TUR ?= {
-					turkfm_check_phase_effect = yes # This MUST fire from TUR scope
-				}
-			}
+			post_notification = notification_turkfm_humiliation_enforced
+		}
+		c:TUR ?= {
+			turkfm_check_phase_effect = yes # This MUST fire from TUR scope
 		}
 	}
 	
@@ -7861,70 +7824,33 @@ turkfm.281 = { # Ottoman Rivalry Monitor Event
 	hidden = yes
 	
 	trigger = {
-		OR = {
-			AND = {
-				has_diplomatic_pact = {
-					who = c:TUR
-					type = rivalry
-				}
-				NOT = {
-					has_variable = turkfm_rivalry_tracker
-				}
-			}
-			AND = {
-				has_variable = turkfm_rivalry_tracker
-				NOT = {
-					has_diplomatic_pact = {
-						who = c:TUR
-						type = rivalry
-					}
-				}
-			}
+		turkfm_can_escalate_tension_trigger = yes
+		NOT = {
+			has_variable = turkfm_rivalry_tracker
+		}
+		has_diplomatic_pact = {
+			who = c:TUR
+			type = rivalry
 		}
 	}
 
 	immediate = {
-		if = {
+		set_variable = {
+			name = turkfm_rivalry_tracker
+			years = 4
+		}
+		change_global_variable = {
+			name = turkfm_escalation_var
+			add = 25
+		}
+		every_country = {
 			limit = {
-				has_variable = turkfm_rivalry_tracker
-				NOT = {
-					has_diplomatic_pact = {
-						who = c:TUR
-						type = rivalry
-					}
-				}
+				turkfm_balkans_party_trigger = yes
 			}
-			remove_variable = turkfm_rivalry_tracker
-		}	
-		else_if = {
-			limit = {
-				has_diplomatic_pact = {
-					who = c:TUR
-					type = rivalry
-				}
-				NOT = {
-					has_variable = turkfm_rivalry_tracker
-				}
-			}
-			set_variable = turkfm_rivalry_tracker
-			if = {
-				limit = {
-					turkfm_can_escalate_tension_trigger = yes
-				}
-				change_global_variable = {
-					name = turkfm_escalation_var
-					add = 10
-				}
-				every_country = {
-					limit = {
-						turkfm_balkans_party_trigger = yes
-					}
-					post_notification = notification_turkfm_rivalry_declared
-				}
-				c:TUR ?= {
-					turkfm_check_phase_effect = yes # This MUST fire from TUR scope
-				}
-			}
+			post_notification = notification_turkfm_rivalry_declared
+		}
+		c:TUR ?= {
+			turkfm_check_phase_effect = yes # This MUST fire from TUR scope
 		}
 	}
 	
@@ -7935,70 +7861,33 @@ turkfm.282 = { # Ottoman Alliance Monitor Event
 	hidden = yes
 	
 	trigger = {
-		OR = {
-			AND = {
-				has_diplomatic_pact = {
-					who = c:TUR
-					type = alliance
-				}
-				NOT = {
-					has_variable = turkfm_alliance_tracker
-				}
-			}
-			AND = {
-				has_variable = turkfm_alliance_tracker
-				NOT = {
-					has_diplomatic_pact = {
-						who = c:TUR
-						type = alliance
-					}
-				}
-			}
+		turkfm_can_deescalate_tension_trigger = yes
+		NOT = {
+			has_variable = turkfm_alliance_tracker
+		}
+		has_diplomatic_pact = {
+			who = c:TUR
+			type = alliance
 		}
 	}
 
 	immediate = {
-		if = {
+		set_variable = {
+			name = turkfm_alliance_tracker
+			years = 4
+		}
+		change_global_variable = {
+			name = turkfm_deescalation_var
+			add = 25
+		}
+		every_country = {
 			limit = {
-				has_variable = turkfm_alliance_tracker
-				NOT = {
-					has_diplomatic_pact = {
-						who = c:TUR
-						type = alliance
-					}
-				}
+				turkfm_balkans_party_trigger = yes
 			}
-			remove_variable = turkfm_alliance_tracker
-		}	
-		else_if = {
-			limit = {
-				has_diplomatic_pact = {
-					who = c:TUR
-					type = alliance
-				}
-				NOT = {
-					has_variable = turkfm_alliance_tracker
-				}
-			}
-			set_variable = turkfm_alliance_tracker
-			if = {
-				limit = {
-					turkfm_can_deescalate_tension_trigger = yes
-				}
-				change_global_variable = {
-					name = turkfm_deescalation_var
-					add = 10
-				}
-				every_country = {
-					limit = {
-						turkfm_balkans_party_trigger = yes
-					}
-					post_notification = notification_turkfm_alliance_formed
-				}
-				c:TUR ?= {
-					turkfm_check_phase_effect = yes # This MUST fire from TUR scope
-				}
-			}
+			post_notification = notification_turkfm_alliance_formed
+		}
+		c:TUR ?= {
+			turkfm_check_phase_effect = yes # This MUST fire from TUR scope
 		}
 	}
 	
