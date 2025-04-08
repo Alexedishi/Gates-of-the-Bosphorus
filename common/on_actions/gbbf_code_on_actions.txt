@@ -415,7 +415,6 @@ balkfm_country_release_2 = { # Splits BUL and BUL_RUM if BUL is released as a su
 ##########################################################################
 
 #### SECESSION ON ACTIONS
-
 on_secession_start = {
 	on_actions = {
 		turkfm_secession_start
@@ -438,16 +437,208 @@ turkfm_secession_start = {
 
 ##########################################################################
 
-#### WARGOAL ON ACTIONS
+#### DIPLOMAT EXPLUSION ON ACTIONS
+# Root = Diplomatic Action
+# scope:target = the country whose diplomats were expelled
+# scope:initiator = the country doing the expelling
 
-on_wargoal_enforced = {
+on_diplomats_expelled = {
 	on_actions = {
-		turkfm_wargoal_enforced_1
-		turkfm_wargoal_enforced_2
+		turkfm_tension_diplomats_expelled
 	}
 }
 
-turkfm_wargoal_enforced_1 = { # From TUR, in the case of Ottoman victory
+turkfm_tension_diplomats_expelled = {
+	trigger = {
+		turkfm_can_escalate_tension_trigger = yes
+		scope:target = {
+			c:TUR ?= this
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				scope:initiator = {
+					country_rank < rank_value:great_power
+				}
+			}
+			change_global_variable = {
+				name = turkfm_escalation_var
+				add = 3
+			}
+			c:TUR ?= {
+				turkfm_check_phase_effect = yes # This MUST fire from TUR scope
+			}
+			every_country = {
+				limit = {
+					turkfm_balkans_party_trigger = yes
+				}
+				post_notification = notification_turkfm_diplomats_expelled_1
+			}
+		}
+		else_if = {
+			limit = {
+				scope:initiator = {
+					country_rank >= rank_value:great_power
+				}
+			}
+			change_global_variable = {
+				name = turkfm_escalation_var
+				add = 10
+			}
+			every_country = {
+				limit = {
+					turkfm_balkans_party_trigger = yes
+				}
+				post_notification = notification_turkfm_diplomats_expelled_2
+			}
+			c:TUR ?= {
+				turkfm_check_phase_effect = yes # This MUST fire from TUR scope
+			}
+		}
+	}
+}
+
+
+##########################################################################
+
+#### AUTONOMY CHANGE ON ACTIONS
+on_diplomatic_action_overlord_decrease_autonomy = {
+	on_actions = {
+		turkfm_tension_decrease_autonomy
+	}
+}
+
+on_diplomatic_action_overlord_increase_autonomy = {
+	on_actions = {
+		turkfm_tension_increase_autonomy
+	}
+}
+
+turkfm_tension_decrease_autonomy = {
+	trigger = {
+		turkfm_can_escalate_tension_trigger = yes
+		scope:initiator = {
+			c:TUR ?= this
+		}
+		scope:target = {
+			balkfm_balkans_native_trigger = yes
+		}
+	}
+	effect = {
+		change_global_variable = {
+			name = turkfm_deescalation_var
+			add = 10
+		}
+		every_country = {
+			limit = {
+				turkfm_balkans_party_trigger = yes
+			}
+			post_notification = notification_turkfm_autonomy_decreased
+		}
+		c:TUR ?= {
+			turkfm_check_phase_effect = yes # This MUST fire from TUR scope
+		}
+	}
+}
+
+turkfm_tension_increase_autonomy = {
+	trigger = {
+		turkfm_can_deescalate_tension_trigger = yes
+		scope:initiator = {
+			c:TUR ?= this
+		}
+		scope:target = {
+			balkfm_balkans_native_trigger = yes
+		}
+	}
+	effect = {
+		change_global_variable = {
+			name = turkfm_escalation_var
+			add = 10
+		}
+		every_country = {
+			limit = {
+				turkfm_balkans_party_trigger = yes
+			}
+			post_notification = notification_turkfm_autonomy_increased
+		}
+		c:TUR ?= {
+			turkfm_check_phase_effect = yes # This MUST fire from TUR scope
+		}
+	}
+}
+
+
+##########################################################################
+
+#### WARGOAL ON ACTIONS
+# Root = Country
+# scope:target = the country the wargoal was enforced against
+# scope:diplomatic_play = the relevant diplomatic play
+# scope:wargoal_impact = the impact of the wargoal enforced
+
+on_wargoal_enforced = {
+	on_actions = {
+		turkfm_tension_wargoal_enforced_1
+		turkfm_tension_wargoal_enforced_2
+		turkfm_crisis_wargoal_defender
+		turkfm_crisis_wargoal_attacker
+	}
+}
+
+turkfm_tension_wargoal_enforced_1 = {
+	trigger = {
+		turkfm_can_escalate_tension_trigger = yes
+		scope:target = {
+			c:TUR ?= this
+		}
+	}
+	effect = {
+		change_global_variable = {
+			name = turkfm_escalation_var
+			add = 3
+		}
+		c:TUR ?= {
+			turkfm_check_phase_effect = yes # This MUST fire from TUR scope
+		}
+		every_country = {
+			limit = {
+				turkfm_balkans_party_trigger = yes
+			}
+			post_notification = notification_turkfm_wargoal_enforced_1
+		}
+	}
+}
+
+turkfm_tension_wargoal_enforced_1 = {
+	trigger = {
+		turkfm_can_deescalate_tension_trigger = yes
+		scope:initiator = {
+			c:TUR ?= this
+		
+		scope:target = {
+			country_rank >= rank_value:great_power
+		}
+	}
+	effect = {
+		change_global_variable = {
+			name = turkfm_deescalation_var
+			add = 5
+		}
+		c:TUR ?= {
+			turkfm_check_phase_effect = yes # This MUST fire from TUR scope
+		}
+		every_country = {
+			limit = {
+				turkfm_balkans_party_trigger = yes
+			}
+			post_notification = notification_turkfm_wargoal_enforced_2
+		}
+	}
+}
+
+turkfm_crisis_wargoal_defender = { # From TUR, in the case of Ottoman victory
 	trigger = {
 		has_global_variable = turkfm_crisis_launched
 		has_variable = turkfm_crisis_target
@@ -469,7 +660,7 @@ turkfm_wargoal_enforced_1 = { # From TUR, in the case of Ottoman victory
 	}
 }
 
-turkfm_wargoal_enforced_2 = { # From Crisis initiator, in the case of Ottoman defeat
+turkfm_crisis_wargoal_attacker = { # From Crisis initiator, in the case of Ottoman defeat
 	trigger = {
 		has_global_variable = turkfm_crisis_launched
 		has_variable = turkfm_crisis_leader

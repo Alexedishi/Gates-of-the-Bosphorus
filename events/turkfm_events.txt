@@ -167,6 +167,11 @@ namespace = turkfm
 #	258 - Massacre in State
 #	259 - Crowds Dispersed in State
 
+#280-280 - Tension Technical Events
+#	280 - Ottoman Humiliation Monitor Event
+#	281 - Ottoman Rivalry Monitor Event
+#	282 - Ottoman Alliance Monitor Event
+
 #290-299 - Tension Separatism Events
 #	290 - Hellenes Revolt in State
 #	291 - Hellene Revolt Provoked
@@ -7774,6 +7779,231 @@ turkfm.259 = { # Crowds Dispersed in State
 	}
 
 }
+
+#### TENSION TECHNICAL EVENTS ####
+
+turkfm.280 = { # Ottoman Humiliation Monitor Event
+	type = country_event
+	hidden = yes
+	
+	trigger = {
+		OR = {
+			AND = {
+				has_diplomatic_pact = {
+					who = c:TUR
+					type = humiliation
+				}
+				NOT = {
+					has_variable = turkfm_humiliation_tracker
+				}
+			}
+			AND = {
+				has_variable = turkfm_humiliation_tracker
+				NOT = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = humiliation
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				has_variable = turkfm_humiliation_tracker
+				NOT = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = humiliation
+					}
+				}
+			}
+			remove_variable = turkfm_humiliation_tracker
+		}	
+		else_if = {
+			limit = {
+				has_diplomatic_pact = {
+					who = c:TUR
+					type = humiliation
+				}
+				NOT = {
+					has_variable = turkfm_humiliation_tracker
+				}
+			}
+			set_variable = turkfm_humiliation_tracker
+			if = {
+				limit = {
+					turkfm_can_escalate_tension_trigger = yes
+				}
+				change_global_variable = {
+					name = turkfm_escalation_var
+					add = 10
+				}
+				every_country = {
+					limit = {
+						turkfm_balkans_party_trigger = yes
+					}
+					post_notification = notification_turkfm_humiliation_enforced
+				}
+				c:TUR ?= {
+					turkfm_check_phase_effect = yes # This MUST fire from TUR scope
+				}
+			}
+		}
+	}
+	
+}
+
+turkfm.281 = { # Ottoman Rivalry Monitor Event
+	type = country_event
+	hidden = yes
+	
+	trigger = {
+		OR = {
+			AND = {
+				has_diplomatic_pact = {
+					who = c:TUR
+					type = rivalry
+				}
+				NOT = {
+					has_variable = turkfm_rivalry_tracker
+				}
+			}
+			AND = {
+				has_variable = turkfm_rivalry_tracker
+				NOT = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = rivalry
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				has_variable = turkfm_rivalry_tracker
+				NOT = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = rivalry
+					}
+				}
+			}
+			remove_variable = turkfm_rivalry_tracker
+		}	
+		else_if = {
+			limit = {
+				has_diplomatic_pact = {
+					who = c:TUR
+					type = rivalry
+				}
+				NOT = {
+					has_variable = turkfm_rivalry_tracker
+				}
+			}
+			set_variable = turkfm_rivalry_tracker
+			if = {
+				limit = {
+					turkfm_can_escalate_tension_trigger = yes
+				}
+				change_global_variable = {
+					name = turkfm_escalation_var
+					add = 10
+				}
+				every_country = {
+					limit = {
+						turkfm_balkans_party_trigger = yes
+					}
+					post_notification = notification_turkfm_rivalry_declared
+				}
+				c:TUR ?= {
+					turkfm_check_phase_effect = yes # This MUST fire from TUR scope
+				}
+			}
+		}
+	}
+	
+}
+
+turkfm.282 = { # Ottoman Rivalry Monitor Event
+	type = country_event
+	hidden = yes
+	
+	trigger = {
+		OR = {
+			AND = {
+				has_diplomatic_pact = {
+					who = c:TUR
+					type = alliance
+				}
+				NOT = {
+					has_variable = turkfm_alliance_tracker
+				}
+			}
+			AND = {
+				has_variable = turkfm_alliance_tracker
+				NOT = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = alliance
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				has_variable = turkfm_alliance_tracker
+				NOT = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = alliance
+					}
+				}
+			}
+			remove_variable = turkfm_alliance_tracker
+		}	
+		else_if = {
+			limit = {
+				has_diplomatic_pact = {
+					who = c:TUR
+					type = alliance
+				}
+				NOT = {
+					has_variable = turkfm_alliance_tracker
+				}
+			}
+			set_variable = turkfm_alliance_tracker
+			if = {
+				limit = {
+					turkfm_can_deescalate_tension_trigger = yes
+				}
+				change_global_variable = {
+					name = turkfm_deescalation_var
+					add = 10
+				}
+				every_country = {
+					limit = {
+						turkfm_balkans_party_trigger = yes
+					}
+					post_notification = notification_turkfm_alliance_formed
+				}
+				c:TUR ?= {
+					turkfm_check_phase_effect = yes # This MUST fire from TUR scope
+				}
+			}
+		}
+	}
+	
+}
+
 
 #### TENSION SEPARATISM EVENTS ####
 
