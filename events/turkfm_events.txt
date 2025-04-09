@@ -91,7 +91,7 @@ namespace = turkfm
 #	119 - 
 
 #120-129 - Imperial Challenger Events
-#	120 - ##The Sultan in Mostar
+#	120 - The Sultan in Mostar
 #	121 - ##Ali Pasha Captured
 
 
@@ -1907,6 +1907,150 @@ turkfm.117 = { # Slavery Abolished
 		}
 		turkfm_advance_ottomanism1_effect = yes
 		turkfm_complete_reform_effect = yes
+	}
+	
+}
+
+
+#### IMPERIAL CHALLENGER EVENTS
+
+turkfm.120 = { # The Sultan in Mostar
+	type = country_event
+	placement = root
+	
+	title = turkfm.120.t
+	desc = turkfm.120.d
+	flavor = turkfm.120.f
+	
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by balkfm.333
+	}
+	
+	immediate = {
+		c:TUR_BOS ?= {
+			save_scope_as = hersek_scope
+		}
+	}
+	
+	option = {
+		name = turkfm.120.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_turkfm_sick_man_bosnia
+		}
+		show_as_tooltip = {
+			add_modifier = modifier_turkfm_imperial_challenger
+		}
+	}
+
+}
+
+turkfm.121 = { # Ali Pasha Detained
+	type = country_event
+	placement = root
+	
+	title = turkfm.121.t
+	desc = turkfm.121.d
+	flavor = turkfm.121.f
+	
+	event_image = {
+		video = "votp_hostile_court"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by turkfm_arrest_ali_pasha_button
+	}
+	
+	cancellation_trigger = {
+		c:TUR_BOS ?= {
+			OR = {
+				NOT = {
+					is_subject_of = root
+				}
+				ruler = {
+					NOT = {
+						has_template = template_balkfm_rizvanbegovic_ali
+					}
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		c:TUR_BOS ?= {
+			save_scope_as = hersek_scope
+		}
+		if = {
+			limit = {
+				any_scope_character = {
+					has_template = template_turkfm_lutfi_omer
+				}
+			}
+			random_scope_character = {
+				limit = {
+					has_template = template_turkfm_lutfi_omer
+				}
+				save_scope_as = omer_pasha_scope
+				set_variable = turkfm_omer_pasha_var
+			}
+		}
+		else = {
+			random_scope_character = {
+				limit = {
+					has_role = general
+				}
+				save_scope_as = omer_pasha_scope
+				set_variable = turkfm_omer_pasha_var
+			}
+		}
+	}
+	
+	option = { # Clip Him
+		name = turkfm.121.a
+		default_option = yes
+		c:TUR_BOS ?= {
+			set_variable = turkfm_ali_pasha_waxed
+			show_as_tooltip = {
+				ruler = {
+					kill_character = yes
+				}
+			}
+		hidden_effect = {
+			c:TUR_BOS ?= {
+				trigger_event = {
+					id = balkfm.796 # Ali Pasha's Demise
+				}
+			}
+			c:MON ?= {
+				trigger_event = {
+					id = balkfm.796 # Ali Pasha's Demise
+				}
+			}
+		}
+	}
+	
+	option = { #
+		name = turkfm.121.b
 	}
 	
 }

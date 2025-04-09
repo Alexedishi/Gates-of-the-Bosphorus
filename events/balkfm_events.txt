@@ -397,16 +397,16 @@ namespace = balkfm
 #	700 - ##The Small Land of the Serbs
 
 #790-799 - Eyalet of Hersek Events
-#	790 - ##Tribal Conflicts
-#	791 - ##The Schemes of Ali Pasha (TUR)
-#	792 - ##The Reordering Begins
+#	790 - Tribal Conflicts
+#	791 - 
+#	792 - The Reordering Begins
 #	793 - ##The Tyranny of Omer Pasha
 #	794 - ##Vukalović's Uprising
 #	795 - Disruptive Influence
-#	796 - >>Ali Pasha's Demise
-#	797 - ##The Lands of Montenegro
-#	798 - ##Failed Amibitions
-#	799 - ##House Rizvanbegović of Bosnia
+#	796 - Ali Pasha's Demise
+#	797 - The Lands of Montenegro
+#	798 - Failed Amibitions
+#	799 - House Rizvanbegović of Bosnia
 
 
 ##  #BALK8  ALBANIA FLAVOR  Events 800-899  ##
@@ -4239,7 +4239,7 @@ balkfm.333 = { # A Local Collaborator
 			}
 			c:TUR ?= {
 				trigger_event = {
-					id = balkfm.791 # The Schemes of Ali Pasha
+					id = turkfm.120 # The Sultan in Mostar
 					days = 150
 				}
 			}
@@ -13395,7 +13395,7 @@ balkfm.790 = { # Tribal Conflicts
 	}
 	
 	option = {
-		name = balkfm.791.b
+		name = balkfm.790.b
 		trigger = {
 			c:MON ?= {
 				is_subject_of = root
@@ -13410,51 +13410,7 @@ balkfm.790 = { # Tribal Conflicts
 }
 
 balkfm.791 = { # The Schemes of Ali Pasha
-	type = country_event
-	placement = scope:hersek_scope
-	
-	title = balkfm.791.t
-	desc = balkfm.791.d
-	flavor = balkfm.791.f
-	
-	event_image = {
-		video = "ep1_clandestine_meeting"
-	}
-	
-	icon = "gfx/interface/icons/event_icons/event_skull.dds"
-	
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		# triggered by balkfm.333
-	}
-	
-	immediate = {
-		balkfm_hersek_scopes_effect = yes
-	}
-	
-	option = { # Clip Him
-		name = balkfm.791.a
-		default_option = yes
-		add_journal_entry = {
-			type = je_turkfm_sick_man_bosnia
-		}
-	}
-	
-	option = { # Whats the worst that can happen?
-		name = balkfm.791.b
-		ruler = {
-			add_modifier = {
-				name = modifier_balkfm_impotent_ruler
-				months = long_modifier_time
-			}
-		}
-	}
-	
+	orphan = yes
 }
 
 balkfm.792 = { # The Reordering Begins
@@ -13613,8 +13569,46 @@ balkfm.796 = { # Ali Pasha's Demise
 	type = country_event
 	placement = scope:hersek_scope
 	
-	title = balkfm.796.t
-	desc = balkfm.796.d
+	title = {
+		triggered_desc = {
+			desc = balkfm.796.t1
+			trigger = {
+				c:TUR_BOS ?= {
+					has_variable = turkfm_ali_pasha_waxed
+				}
+			}
+		}
+		triggered_desc = {
+			desc = balkfm.796.t2
+			trigger = {
+				c:TUR_BOS ?= {
+					NOT = {
+						has_variable = turkfm_ali_pasha_waxed
+					}
+				}
+			}
+		}
+	}
+	desc = {
+		triggered_desc = {
+			desc = balkfm.796.d1
+			trigger = {
+				c:TUR_BOS ?= {
+					has_variable = turkfm_ali_pasha_waxed
+				}
+			}
+		}
+		triggered_desc = {
+			desc = balkfm.796.d2
+			trigger = {
+				c:TUR_BOS ?= {
+					NOT = {
+						has_variable = turkfm_ali_pasha_waxed
+					}
+				}
+			}
+		}
+	}
 	flavor = balkfm.796.f
 	
 	event_image = {
@@ -13630,18 +13624,25 @@ balkfm.796 = { # Ali Pasha's Demise
 	dlc = dlc_grefm
 	
 	trigger = {
-		# triggered by je_balkfm_bos_ali_pasha
+		# triggered by turkfm.121
 	}
 	
 	immediate = {
 		balkfm_hersek_scopes_effect = yes
+		c:TUR ?= {
+			random_scope_character = {
+				limit = {
+					has_variable = turkfm_omer_pasha_var
+				}
+				save_scope_as = omer_pasha_scope
+			}
+		}
 	}
 	
-	option = { # Ottoman Option
+	option = {
 		name = balkfm.796.a
-		default_option = yes
 		trigger = {
-			c:TUR ?= this
+			c:TUR_BOS ?= this
 		}
 		scope:ali_pasha_scope = {
 			kill_character = yes
@@ -13651,17 +13652,9 @@ balkfm.796 = { # Ali Pasha's Demise
 	option = {
 		name = balkfm.796.b
 		trigger = {
-			c:TUR_BOS ?= this
-		}
-		
-	}
-	
-	option = {
-		name = balkfm.796.c
-		trigger = {
 			c:MON ?= this
 		}
-		
+		custom_tooltip = balkfm_ali_pasha_waxed
 	}
 	
 }
