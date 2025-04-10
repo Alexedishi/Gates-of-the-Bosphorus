@@ -1,17 +1,17 @@
-﻿####################################
-# GREECE, BYZANTIUM, & THE BALKANS #
-####################################
+﻿##########################
+# GATES OF THE BOSPHORUS #
+##########################
 Mod Version: 3.0
 Game Version: 1.8.X
 
-By: Alexedishi
+Mod Author: Alexedishi
 
 NOTE: This mod is dependent on the Community Mod Framework to work correctly!
 Community Mod Framework: https://steamcommunity.com/sharedfiles/filedetails/?id=3385002128
 
 ####################
 
-This mod is broadly divided into four "modules" and can be identified by their prefixes:
+This mod is broadly divided into four "modules" which can be identified by their prefixes:
 grefm_: Contains content for Greece, Byzantium, and other Hellene, Rhomaios, and Urum countries
 turkfm_: Contains content for the Ottoman Empire
 balkfm_: Contains content for the Southern Slav, Romanian, and Albanian countries
@@ -24,7 +24,11 @@ byzfm_: Once contained content for Byzantium; has been merged with grefm
 bulfm_: Once contained content for Bulgaria; has been merged with balkfm
 eqfm_: Once contained content for the Eastern Question; has been merged with turkfm
 
-**Note: Arab flavor is OUT OF SCOPE for this mod
+**Notes: 
+-Arab & Iranian flavor are OUT OF SCOPE for this mod
+-The current mod acronym is GotB; my common prefix is gbbf and will not change
+-The CMF trigger uses the older grefm acronym; this will not change
+-The ##STUB comments are for my development purposes if you happen to see them
 
 ####################
 
@@ -32,7 +36,7 @@ eqfm_: Once contained content for the Eastern Question; has been merged with tur
 
 Ever noticed that despite being called "the powder keg of Europe", nothing really happens in the Balkans most games?
 
-That's what lead led me to create what's now Greece, Byzantium, & the Balkans Flavor. This mod aims to add historical and pseudo-historical flavor to the nations of the Balkans and Anatolia, along with some alt-history content for Byzantium. The Balkans during this time frame were a mess both internally and externally and this mod strives to bring this struggle to live in Victoria 3. This mod adds several hundred events, dozens of journal entries, decisions, new monuments, and several historical characters to Greece and several Balkan states along with new event chains, dynamic names, and journal entries for Byzantium.
+That's what lead led me to create what's now Gates of the Bosphorus (formerly Greece, Byzantium, & the Balkans Flavor). This mod aims to add historical and pseudo-historical flavor to the nations of the Balkans and Anatolia, along with some alt-history content for Byzantium. The Balkans during this time frame were a mess both internally and externally and this mod strives to bring this struggle to live in Victoria 3. This mod adds several hundred events, dozens of journal entries, decisions, new monuments, and several historical characters to Greece and several Balkan states along with new event chains, dynamic names, and journal entries for Byzantium.
 
 Content for Greece:
 The Regency Council: A short event chain showcasing Armansperg's interference in 1836
@@ -107,12 +111,13 @@ A struggle-like journal featuring the Russo-Ottoman fight over the Caucasus.
 ####################
 
 Works Cited:
+Last Updated: 05.01.2024
 
 Greek History:
 1. Clogg, Richard (1979). A Short History of Modern Greece
 2. Clogg, Richard (2002). A Concise History of Greece
 3. Finlay, George (1877). A history of Greece, from its conquest by the Romans to the present time, B.C. 146 to A.D. 1864, Vol 7
-4.Gallant, Thomas (2016). Modern Greece: A Political and Social History from the War of Independence to the Present
+4. Gallant, Thomas (2016). Modern Greece: A Political and Social History from the War of Independence to the Present
 5. Gennadios, Ioannes (1870). Notes on the Recent Murders by Brigands in Greece
 6. Kairophylas, Kostas (1915). Eleftherios Venizelos, His Life and Work
 7. Christmas, Walter (1914). King George of Greece
