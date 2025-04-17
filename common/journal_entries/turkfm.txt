@@ -1126,16 +1126,6 @@ je_turkfm_separatism_main = { # This is assigned to TUR
 			turkfm.330 # Congress System Monitor [TECH]
 		}
 		random_events = {
-			5 = turkfm.250 # Fortress in State Beseiged
-			5 = turkfm.251 # Crowds Burn Administrative Palace
-			5 = turkfm.252 # IG Sides with Minorities
-			5 = turkfm.253 # Ulema Mobilizes the Faithful
-			5 = turkfm.254 # Armed Forces Requests Intervention
-#			5 = turkfm.255 # 
-#			5 = turkfm.256 # 
-			5 = turkfm.257 # Rioting Worsens in State
-		}
-		random_events = {
 			chance_of_no_event = 75
 			
 			# Stable Phase
@@ -1223,7 +1213,14 @@ je_turkfm_separatism_riots = {
 	should_be_pinned_by_default = yes
 	
 	immediate = {
+		set_variable = {
+			name = turkfm_riot_var
+			value = 100
+		}
+		turkfm_update_riot_variables_effect = yes
 	}
+	
+	scripted_progress_bar = turkfm_riot_progress_bar
 	
 	complete = {
 		NOT = {
@@ -1311,18 +1308,27 @@ je_turkfm_separatism_riots = {
 				max = 200
 				min = 0
 			}
+			je:je_turkfm_separatism_riots = {
+				set_bar_progress = {
+					value = owner.var:turkfm_riot_var
+					name = turkfm_riot_progress_bar
+				}
+			}
 		}
 	}
 	
-	current_value = {
-		value = var:turkfm_riot_var
+	on_monthly_pulse = {
+		random_events = {
+			5 = turkfm.250 # Fortress in State Beseiged
+			5 = turkfm.251 # Crowds Burn Administrative Palace
+			5 = turkfm.252 # IG Sides with Minorities
+			5 = turkfm.253 # Ulema Mobilizes the Faithful
+			5 = turkfm.254 # Armed Forces Requests Intervention
+#			5 = turkfm.255 # 
+#			5 = turkfm.256 # 
+			5 = turkfm.257 # Rioting Worsens in State
+		}
 	}
-
-	goal_add_value = {
-		value = 200
-	}
-
-	progressbar = yes
 	
 	weight = 1000
 	
@@ -1805,11 +1811,18 @@ je_turkfm_pirates_of_the_adriatic = {
 				gbbf_adriatic_geography_trigger = yes
 				is_coastal = yes
 			}
-			market = {
-				owner = {
-					any_scope_state = {
-						gbbf_adriatic_geography_trigger = yes
-						is_coastal = yes
+			trigger_if = {
+				limit = {
+					market = {
+						owner != root
+					}
+				}
+				market = {
+					owner = {
+						any_scope_state = {
+							gbbf_adriatic_geography_trigger = yes
+							is_coastal = yes
+						}
 					}
 				}
 			}

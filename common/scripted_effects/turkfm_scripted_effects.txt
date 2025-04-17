@@ -1187,6 +1187,62 @@ turkfm_force_stable_effect = {
 	}
 }
 
+turkfm_force_unrest_effect = {
+	set_global_variable = {
+		name = turkfm_separatism_phase_var
+		value = 2 # Unrest
+	}
+	every_country = {
+		limit = {
+			turkfm_balkans_party_trigger = yes
+		}
+		post_notification = notification_turkfm_transition_unrest
+	}
+	set_global_variable = {
+		name = turkfm_separatism_transition_var
+		value = 0
+	}
+	set_global_variable = {
+		name = turkfm_escalation_var
+		value = 0
+	}
+	set_global_variable = {
+		name = turkfm_deescalation_var
+		value = 0
+	}
+	c:TUR ?= {
+		turkfm_check_modifiers_effect = yes
+	}
+}
+
+turkfm_force_hostility_effect = {
+	set_global_variable = {
+		name = turkfm_separatism_phase_var
+		value = 3 # Hostility
+	}
+	every_country = {
+		limit = {
+			turkfm_balkans_party_trigger = yes
+		}
+		post_notification = notification_turkfm_transition_hostility
+	}
+	set_global_variable = {
+		name = turkfm_separatism_transition_var
+		value = 0
+	}
+	set_global_variable = {
+		name = turkfm_escalation_var
+		value = 0
+	}
+	set_global_variable = {
+		name = turkfm_deescalation_var
+		value = 0
+	}
+	c:TUR ?= {
+		turkfm_check_modifiers_effect = yes
+	}
+}
+
 turkfm_force_deconfliction_effect = {
 	set_global_variable = {
 		name = turkfm_separatism_phase_var
@@ -1197,6 +1253,34 @@ turkfm_force_deconfliction_effect = {
 			turkfm_balkans_party_trigger = yes
 		}
 		post_notification = notification_turkfm_transition_deconfliction
+	}
+	set_global_variable = {
+		name = turkfm_separatism_transition_var
+		value = 0
+	}
+	set_global_variable = {
+		name = turkfm_escalation_var
+		value = 0
+	}
+	set_global_variable = {
+		name = turkfm_deescalation_var
+		value = 0
+	}
+	c:TUR ?= {
+		turkfm_check_modifiers_effect = yes
+	}
+}
+
+turkfm_force_crisis_effect = {
+	set_global_variable = {
+		name = turkfm_separatism_phase_var
+		value = 5 # Crisis
+	}
+	every_country = {
+		limit = {
+			turkfm_balkans_party_trigger = yes
+		}
+		post_notification = notification_turkfm_transition_crisis
 	}
 	set_global_variable = {
 		name = turkfm_separatism_transition_var
@@ -2580,39 +2664,54 @@ turkfm_update_riot_variables_effect = {
 			value = turkfm_riot_1_progress_value
 		}
 	}
-	random_scope_state = {
+	if = {
 		limit = {
-			has_modifier = modifier_turkfm_race_riots
-			NOT = {
-				scope:turkfm_riot_state_1_scope ?= this
+			exists = scope:turkfm_riot_state_1_scope
+		}
+		random_scope_state = {
+			limit = {
+				has_modifier = modifier_turkfm_race_riots
+				NOT = {
+					scope:turkfm_riot_state_1_scope ?= this
+				}
 			}
-		}
-		save_scope_as = turkfm_riot_state_2_scope
-		set_variable = {
-			name = turkfm_riot_state_2_var
-			value = scope:turkfm_riot_state_2_scope
-		}
-		set_variable = {
-			name = turkfm_riot_state_2_progress_var
-			value = turkfm_riot_2_progress_value
-		}
-	}
-	random_scope_state = {
-		limit = {
-			has_modifier = modifier_turkfm_race_riots
-			NOR = {
-				scope:turkfm_riot_state_1_scope ?= this
-				scope:turkfm_riot_state_2_scope ?= this
+			save_scope_as = turkfm_riot_state_2_scope
+			if = {
+				limit = {
+					exists = scope:turkfm_riot_state_2_scope
+				}
+				set_variable = {
+					name = turkfm_riot_state_2_var
+					value = scope:turkfm_riot_state_2_scope
+				}
+				set_variable = {
+					name = turkfm_riot_state_2_progress_var
+					value = turkfm_riot_2_progress_value
+				}
+				random_scope_state = {
+					limit = {
+						has_modifier = modifier_turkfm_race_riots
+						NOR = {
+							scope:turkfm_riot_state_1_scope ?= this
+							scope:turkfm_riot_state_2_scope ?= this
+						}
+					}
+					save_scope_as = turkfm_riot_state_3_scope
+					if = {
+						limit = {
+							exists = scope:turkfm_riot_state_2_scope
+						}
+						set_variable = {
+							name = turkfm_riot_state_3_var
+							value = scope:turkfm_riot_state_3_scope
+						}
+						set_variable = {
+							name = turkfm_riot_state_3_progress_var
+							value = turkfm_riot_3_progress_value
+						}
+					}
+				}
 			}
-		}
-		save_scope_as = turkfm_riot_state_3_scope
-		set_variable = {
-			name = turkfm_riot_state_3_var
-			value = scope:turkfm_riot_state_3_scope
-		}
-		set_variable = {
-			name = turkfm_riot_state_3_progress_var
-			value = turkfm_riot_3_progress_value
 		}
 	}
 }
@@ -3171,6 +3270,14 @@ turkm_cleanup_tension_main_effect = {
 	remove_variable = turkfm_croat_radicals_var
 	remove_variable = turkfm_slovene_radicals_var
 	remove_variable = turkfm_tension_event_cooldown_var
+	
+	hidden_effect = {
+		remove_modifier = modifier_turkfm_stable_phase
+		remove_modifier = modifier_turkfm_unrest_phase
+		remove_modifier = modifier_turkfm_hosility_phase
+		remove_modifier = modifier_turkfm_deconfliction_phase
+		remove_modifier = modifier_turkfm_crisis_phase
+	}
 }
 
 
