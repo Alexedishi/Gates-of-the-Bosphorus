@@ -21,15 +21,15 @@ namespace = eocfm
 ##  #EOC0  LOCAL ORTHODOX FLAVOR  Events  001-099  ##
 
 #001-009 - EOCFM Opener Events
-#	001 - The Bishops of the East (Orthodox Generic)
-#	002 - ##The Mother Church of the East (BYZ)
-#	003 - Greek Holy Synod (GRE)
-#	004 - Most Holy Synod (RUS)
-#	005 - ##The Ancient Churches of the Orient (Oriental Orthodox Generic)
-#	006 - ##The Churches in Isolation (ETH)
-#	007 - ##
-#	008 - ##
-#	009 - ##The Ecumene Amongst the Barbarians (BYZ_ELY)
+#	001 - The Greek Holy Synod (GRE)
+#	002 - The Most Holy Synod (RUS)
+#	003 - ##The Church in Isolation (ETH)
+#	004 - ##The Ecumene Amongst the Barbarians (BYZ_ELY)
+#	005 - ##The Patriarch of the Bird's Hill
+#	006 - 
+#	007 - 
+#	008 - ##The Churches of the Orient (Oriental Orthodox Generic)
+#	009 - ##The Bishops of the East (Orthodox Generic)
 
 #010-019 - Minor Flavor Events
 #	010 - Ecumenical Reform
@@ -55,6 +55,9 @@ namespace = eocfm
 #040-049 - Decree Events
 #	040 - Priestly Excesses
 #	041 - The Widow's Mite
+
+#050-059 - Veneration Events
+#	050 - Venerating a Saint
 
 #090-099 - Local Orthodox Technical Events
 # 090 - OPEN
@@ -180,13 +183,155 @@ namespace = eocfm
 
 #### NATIONAL SYNOD EVENTS ####
 
-eocfm.001 = { # The Bishops of the East (Generic)
+eocfm.001 = { # Greek Holy Synod
 	type = country_event
 	placement = root
 	
-	title = eocfm.001.t
-	desc = eocfm.001.d
-	flavor = eocfm.001.f
+	title =  eocfm.001.t
+	desc =  eocfm.001.d
+	flavor =  eocfm.001.f
+	
+	event_image = {
+		video = "southamerica_christianity"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
+	
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		NOT = {
+			has_variable = eocfm_starter_var
+		}
+		OR = {
+			c:GRE ?= this
+			c:BYZ ?= this
+		}
+	}
+	
+	immediate = {
+		ig:ig_devout = {
+			leader = {
+				save_scope_as = devout_leader_scope
+			}
+		}
+		eocfm_initialize_metropolis_effect = yes
+		set_variable = eocfm_starter_var
+	}	
+	
+ 	option = {
+		name = eocfm.001.a
+		default_option = yes
+		custom_tooltip = eocfm_no_effects
+	}
+
+}
+
+eocfm.002 = { # Most Holy Synod (RUS)
+	type = country_event
+	placement = root
+	
+	title =  eocfm.002.t
+	desc =  eocfm.002.d
+	flavor =  eocfm.002.f
+	
+	event_image = {
+		video = "southamerica_christianity"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
+	
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		NOT = {
+			has_variable = eocfm_starter_var
+		}
+		c:RUS ?= this
+	}
+	
+	immediate = {
+		ig:ig_devout = {
+			leader = {
+				save_scope_as = devout_leader_scope
+			}
+		}
+		eocfm_initialize_metropolis_effect = yes
+		set_variable = eocfm_starter_var
+	}	
+	
+ 	option = {
+		name = eocfm.002.a
+		default_option = yes
+		change_variable = {
+			name = eocfm_moscow_relations_var
+			add = 100
+		}
+		custom_tooltip = eocfm_no_effects
+	}
+
+}
+
+eocfm.008 = { # The Bishops of the East (Generic)
+	type = country_event
+	placement = root
+	
+	title = eocfm.008.t
+	desc = eocfm.008.d
+	flavor = eocfm.008.f
+	
+	event_image = {
+		video = "southamerica_christianity"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
+
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		country_has_state_religion = rel:oriental_orthodox
+		NOT = { 
+			has_variable = eocfm_starter_var
+		}
+	}
+	
+	immediate = {
+		ig:ig_devout = {
+			leader = {
+				save_scope_as = devout_leader_scope
+			}
+		}
+		eocfm_initialize_metropolis_effect = yes
+		set_variable = eocfm_starter_var
+	}
+
+	option = {
+		name = eocfm.008.a
+		default_option = yes
+		custom_tooltip = eocfm_no_effects
+	}
+	
+}
+
+eocfm.009 = { # The Bishops of the East (Generic)
+	type = country_event
+	placement = root
+	
+	title = eocfm.009.t
+	desc = eocfm.009.d
+	flavor = eocfm.009.f
 	
 	event_image = {
 		video = "southamerica_christianity"
@@ -213,115 +358,16 @@ eocfm.001 = { # The Bishops of the East (Generic)
 				save_scope_as = devout_leader_scope
 			}
 		}
-		eocfm_initialize_patriarchs_relations_effect = yes
+		eocfm_initialize_metropolis_effect = yes
 		set_variable = eocfm_starter_var
 	}
 
 	option = {
-		name = eocfm.001.a
+		name = eocfm.009.a
 		default_option = yes
 		custom_tooltip = eocfm_no_effects
 	}
 	
-}
-
-eocfm.002 = { # The Millet-i Rûm
-	orphan = yes
-}
-
-eocfm.003 = { # Greek Holy Synod
-	type = country_event
-	placement = root
-	
-	title =  eocfm.003.t
-	desc =  eocfm.003.d
-	flavor =  eocfm.003.f
-	
-	event_image = {
-		video = "southamerica_christianity"
-	}
-	
-	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
-	
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		c:GRE ?= this
-		NOT = {
-			has_variable = eocfm_starter_var
-		}
-		
-	}
-	
-	immediate = {
-		ig:ig_devout = {
-			leader = {
-				save_scope_as = devout_leader_scope
-			}
-		}
-		eocfm_initialize_patriarchs_relations_effect = yes
-		set_variable = eocfm_starter_var
-	}	
-	
- 	option = {
-		name = eocfm.003.a
-		default_option = yes
-		custom_tooltip = eocfm_no_effects
-	}
-
-}
-
-eocfm.004 = { # Most Holy Synod (RUS)
-	type = country_event
-	placement = root
-	
-	title =  eocfm.004.t
-	desc =  eocfm.004.d
-	flavor =  eocfm.004.f
-	
-	event_image = {
-		video = "southamerica_christianity"
-	}
-	
-	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
-	
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		c:RUS ?= this
-		NOT = {
-			has_variable = eocfm_starter_var
-		}
-	}
-	
-	immediate = {
-		ig:ig_devout = {
-			leader = {
-				save_scope_as = devout_leader_scope
-			}
-		}
-		eocfm_initialize_patriarchs_relations_effect = yes
-		set_variable = eocfm_starter_var
-	}	
-	
- 	option = {
-		name = eocfm.004.a
-		default_option = yes
-		change_variable = {
-			name = eocfm_moscow_relations_var
-			add = 100
-		}
-		custom_tooltip = eocfm_no_effects
-	}
-
 }
 
 #### MINOR FLAVOR EVENTS ####

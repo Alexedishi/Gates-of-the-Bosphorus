@@ -20,36 +20,10 @@ eocfm_gui_toogle_effect = {
 	eocfm_update_patriarch_variables_effect = yes
 	eocfm_update_seat_controllers_effect = yes
 	eocfm_check_relations_variables_effect = yes
+	eocfm_update_rite_modifiers_effect = yes
 }
 
 #### SETUP EFFECTS ####
-
-eocfm_initialize_patriarchs_relations_effect = {
-	set_variable = {
-		name = eocfm_rome_relations_var
-		value = 0
-	}
-	set_variable = {
-		name = eocfm_constantinople_relations_var
-		value = 0
-	}
-	set_variable = {
-		name = eocfm_antioch_relations_var
-		value = 0
-	}
-	set_variable = {
-		name = eocfm_jerusalem_relations_var
-		value = 0
-	}
-	set_variable = {
-		name = eocfm_alexandria_relations_var
-		value = 0
-	}
-	set_variable = {
-		name = eocfm_moscow_relations_var
-		value = 0
-	}
-}
 
 eocfm_initialize_patriarchs_effect = {
 	if = {
@@ -167,6 +141,52 @@ eocfm_initialize_patriarchs_effect = {
 			}
 		}
 	}
+}
+
+eocfm_initialize_metropolis_effect = {
+	# First Initialize Liturgical Rites
+	if = {
+		limit = {
+			country_has_state_religion = rel:orthodox
+		}
+		set_variable = {
+			name = eocfm_liturgical_rite_var
+			value = 1 # Byzantine
+		}
+	}
+	else = { # TODO Add unique rites functionality
+		set_variable = {
+			name = eocfm_liturgical_rite_var
+			value = 3 # Coptic
+		}
+	}
+	
+	# Second, Set Relations Variables
+	set_variable = {
+		name = eocfm_rome_relations_var
+		value = 0
+	}
+	set_variable = {
+		name = eocfm_constantinople_relations_var
+		value = 0
+	}
+	set_variable = {
+		name = eocfm_antioch_relations_var
+		value = 0
+	}
+	set_variable = {
+		name = eocfm_jerusalem_relations_var
+		value = 0
+	}
+	set_variable = {
+		name = eocfm_alexandria_relations_var
+		value = 0
+	}
+	set_variable = {
+		name = eocfm_moscow_relations_var
+		value = 0
+	}
+	
 }
 
 #### SCOPE AND CHARACTER UPKEEP EFFECTS ####
@@ -1139,11 +1159,186 @@ eocfm_update_approval_bonus_effect = {
 
 #### CAESAROPAPISM BONUS/MALUS EFFECT ####
 
-eocfm_update_caesaropapism_bonus_effect = {
-	remove_modifier = modifier_eocfm_base
-	add_modifier = {
-		name = modifier_eocfm_base
-		multiplier = eocfm_caesaropapism_multiplier_value
+eocfm_update_rite_modifiers_effect = {
+	hidden_effect = {
+		remove_modifier = modifier_eocfm_byzantine_rite
+		remove_modifier = modifier_eocfm_roman_rite
+		remove_modifier = modifier_eocfm_alexandrian_rite
+		remove_modifier = modifier_eocfm_syriac_rite
+		remove_modifier = modifier_eocfm_armenian_rite
+	}
+	if = {
+		limit =	{
+			var:eocfm_liturgical_rite_var ?= 1 # Byzantine
+		}
+		add_modifier = {
+			name = modifier_eocfm_byzantine_rite
+			multiplier = eocfm_caesaropapism_multiplier_value
+		}
+	}
+	else_if = {
+		limit =	{
+			var:eocfm_liturgical_rite_var ?= 2 # Roman
+		}
+		add_modifier = {
+			name = modifier_eocfm_roman_rite
+			multiplier = eocfm_caesaropapism_multiplier_value
+		}
+	}
+	else_if = {
+		limit =	{
+			var:eocfm_liturgical_rite_var ?= 3 # Coptic
+		}
+		add_modifier = {
+			name = modifier_eocfm_alexandrian_rite
+			multiplier = eocfm_caesaropapism_multiplier_value
+		}
+	}
+	else_if = {
+		limit =	{
+			var:eocfm_liturgical_rite_var ?= 4 # Armenian
+		}
+		add_modifier = {
+			name = modifier_eocfm_armenian_rite
+			multiplier = eocfm_caesaropapism_multiplier_value
+		}
+	}
+	else_if = {
+		limit =	{
+			var:eocfm_liturgical_rite_var ?= 5 # Syriac
+		}
+		add_modifier = {
+			name = modifier_eocfm_syriac_rite
+			multiplier = eocfm_caesaropapism_multiplier_value
+		}
+	}
+	else_if = {
+		limit =	{
+			var:eocfm_liturgical_rite_var ?= 6 # Elysian Orthodox
+		}
+		add_modifier = {
+			name = modifier_eocfm_elysian_rite
+			multiplier = eocfm_caesaropapism_multiplier_value
+		}
+	}
+}
+
+eocfm_change_rite_effect = {
+	# First show old modifier removal
+	if = {
+		limit = {
+			has_modifier = modifier_eocfm_roman_rite
+		}
+		remove_modifier = modifier_eocfm_roman_rite
+		
+	}
+	else_if = {
+		limit = {
+			has_modifier = modifier_eocfm_byzantine_rite
+		}
+		remove_modifier = modifier_eocfm_byzantine_rite
+		
+	}
+	else_if = {
+		limit = {
+			has_modifier = modifier_eocfm_alexandrian_rite
+		}
+		remove_modifier = modifier_eocfm_alexandrian_rite
+		
+	}
+	else_if = {
+		limit = {
+			has_modifier = modifier_eocfm_syriac_rite
+		}
+		remove_modifier = modifier_eocfm_syriac_rite
+		
+	}
+	else_if = {
+		limit = {
+			has_modifier = modifier_eocfm_armenian_rite
+		}
+		remove_modifier = modifier_eocfm_armenian_rite
+		
+	}
+	
+	# Next Show New Modifier Addition & Update Variable
+	if = {
+		limit =	{
+			var:eocfm_adoption_rite_var ?= 1 # Byzantine
+		}
+		add_modifier = {
+			name = modifier_eocfm_byzantine_rite
+			multiplier = eocfm_caesaropapism_multiplier_value
+		}
+		set_variable = {
+			name = eocfm_liturgical_rite_var
+			value = 1 # Byzantine
+		}
+	}
+	else_if = {
+		limit =	{
+			var:eocfm_adoption_rite_var ?= 2 # Roman
+		}
+		add_modifier = {
+			name = modifier_eocfm_roman_rite
+			multiplier = eocfm_caesaropapism_multiplier_value
+		}
+		set_variable = {
+			name = eocfm_liturgical_rite_var
+			value = 2 # Roman
+		}
+	}
+	else_if = {
+		limit =	{
+			var:eocfm_adoption_rite_var ?= 3 # Coptic
+		}
+		add_modifier = {
+			name = modifier_eocfm_alexandrian_rite
+			multiplier = eocfm_caesaropapism_multiplier_value
+		}
+		set_variable = {
+			name = eocfm_liturgical_rite_var
+			value = 3 # Coptic
+		}
+	}
+	else_if = {
+		limit =	{
+			var:eocfm_adoption_rite_var ?= 4 # Armenian
+		}
+		add_modifier = {
+			name = modifier_eocfm_armenian_rite
+			multiplier = eocfm_caesaropapism_multiplier_value
+		}
+		set_variable = {
+			name = eocfm_liturgical_rite_var
+			value = 4 # Armenian
+		}
+	}
+	else_if = {
+		limit =	{
+			var:eocfm_adoption_rite_var ?= 5 # Syriac
+		}
+		add_modifier = {
+			name = modifier_eocfm_syriac_rite
+			multiplier = eocfm_caesaropapism_multiplier_value
+		}
+		set_variable = {
+			name = eocfm_liturgical_rite_var
+			value = 5 # Syriac
+		}
+	}
+	else_if = {
+		limit =	{
+			var:eocfm_adoption_rite_var ?= 6 # Elysian Orthodox
+		}
+		add_modifier = {
+			name = modifier_eocfm_elysian_rite
+			multiplier = eocfm_caesaropapism_multiplier_value
+		}
+		set_variable = {
+			name = eocfm_liturgical_rite_var
+			value = 6 # Syriac
+		}
 	}
 }
 
@@ -1992,6 +2187,39 @@ eocfm_moscow_replace_effect = {
 }
 
 #### CLEANUP EFFECTS ####
+
+eocfm_remove_rite_modifiers_effect = {
+	if = {
+		limit = {
+			has_modifier = modifier_eocfm_roman_rite
+		}
+		remove_modifier = modifier_eocfm_roman_rite
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_eocfm_byzantine_rite
+		}
+		remove_modifier = modifier_eocfm_byzantine_rite
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_eocfm_alexandrian_rite
+		}
+		remove_modifier = modifier_eocfm_alexandrian_rite
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_eocfm_syriac_rite
+		}
+		remove_modifier = modifier_eocfm_syriac_rite
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_eocfm_armenian_rite
+		}
+		remove_modifier = modifier_eocfm_armenian_rite
+	}
+}
 
 eocfm_remove_all_modifiers_effect = {
 	remove_modifier ?= modifier_eocfm_hosting_council
