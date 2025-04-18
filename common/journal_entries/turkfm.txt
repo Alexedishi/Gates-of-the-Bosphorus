@@ -1217,30 +1217,41 @@ je_turkfm_separatism_riots = {
 			name = turkfm_riot_var
 			value = 100
 		}
+		set_variable = {
+			name = turkfm_riot_progress_var
+			value = 0
+		}
 		turkfm_update_riot_variables_effect = yes
+		je:je_turkfm_separatism_riots = {
+			set_bar_progress = {
+				value = owner.var:turkfm_riot_var
+				name = turkfm_riot_progress_bar
+			}
+		}
 	}
 	
 	scripted_progress_bar = turkfm_riot_progress_bar
 	
 	complete = {
-		NOT = {
+		NOR = {
 			any_scope_state = {
 				has_modifier = modifier_turkfm_race_riots
+			}
+			custom_tooltip = {
+				text = je_turkfm_separatism_riots_complete
+				any_country = {
+					is_diplomatic_play_enemy_of = root
+					has_modifier = modifier_turkfm_nationalist_uprising
+				}
+			}
+			hidden_trigger = {
+				has_variable = turkfm_riot_technical_var
 			}
 		}
 	}
 	
 	on_complete = { # Set variables for deescalation and call turkfm_check_phase_effect
-		custom_tooltip = {
-			text = turkfm_add_very_large_deescalation_tt
-			hidden_effect = {
-				change_global_variable = {
-					name = turkfm_deescalation_var
-					add = 100
-				}
-			}
-		}
-		turkfm_check_phase_effect = yes
+		turkfm_add_extremely_large_deescalation = yes
 		every_scope_state = {
 			limit = {
 				has_modifier = modifier_turkfm_race_riots
@@ -1248,6 +1259,7 @@ je_turkfm_separatism_riots = {
 			remove_modifier = modifier_turkfm_race_riots
 		}
 		remove_variable = turkfm_riot_var
+		remove_variable = turkfm_riot_progress_var
 		remove_variable = turkfm_riot_state_1_var
 		remove_variable = turkfm_riot_state_2_var
 		remove_variable = turkfm_riot_state_3_var
@@ -1301,7 +1313,7 @@ je_turkfm_separatism_riots = {
 			turkfm_update_riot_variables_effect = yes
 			change_variable = {
 				name = turkfm_riot_var
-				add = turkfm_riot_progress_value
+				add = var:turkfm_riot_progress_var
 			}
 			clamp_variable = {
 				name = turkfm_riot_var

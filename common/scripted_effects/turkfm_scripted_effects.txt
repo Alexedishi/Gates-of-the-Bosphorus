@@ -1393,7 +1393,7 @@ turkfm_add_small_escalation_effect = {
 			}
 			clamp_variable = {
 				name = turkfm_riot_var
-				max = 100
+				max = 200
 				min = 0
 			}
 		}
@@ -1430,7 +1430,7 @@ turkfm_add_medium_escalation_effect = {
 			}
 			clamp_variable = {
 				name = turkfm_riot_var
-				max = 100
+				max = 200
 				min = 0
 			}
 		}
@@ -1467,7 +1467,7 @@ turkfm_add_large_escalation_effect = {
 			}
 			clamp_variable = {
 				name = turkfm_riot_var
-				max = 100
+				max = 200
 				min = 0
 			}
 		}
@@ -1504,7 +1504,7 @@ turkfm_add_very_large_escalation_effect = {
 			}
 			clamp_variable = {
 				name = turkfm_riot_var
-				max = 100
+				max = 200
 				min = 0
 			}
 		}
@@ -1527,6 +1527,7 @@ turkfm_add_very_large_escalation_effect = {
 		}
 	}
 }
+
 
 turkfm_increase_deescalation_effect = {
 	if = {
@@ -1556,7 +1557,7 @@ turkfm_add_small_deescalation_effect = {
 			}
 			clamp_variable = {
 				name = turkfm_riot_var
-				max = 100
+				max = 200
 				min = 0
 			}
 		}
@@ -1593,7 +1594,7 @@ turkfm_add_medium_deescalation_effect = {
 			}
 			clamp_variable = {
 				name = turkfm_riot_var
-				max = 100
+				max = 200
 				min = 0
 			}
 		}
@@ -1630,7 +1631,7 @@ turkfm_add_large_deescalation_effect = {
 			}
 			clamp_variable = {
 				name = turkfm_riot_var
-				max = 100
+				max = 200
 				min = 0
 			}
 		}
@@ -1667,7 +1668,7 @@ turkfm_add_very_large_deescalation_effect = {
 			}
 			clamp_variable = {
 				name = turkfm_riot_var
-				max = 100
+				max = 200
 				min = 0
 			}
 		}
@@ -1684,6 +1685,24 @@ turkfm_add_very_large_deescalation_effect = {
 						name = turkfm_deescalation_var
 						add = 100
 					}
+				}
+			}
+			turkfm_check_phase_effect = yes
+		}
+	}
+}
+
+turkfm_add_extremely_large_deescalation = {
+	if = {
+		limit = {
+			turkfm_can_deescalate_tension_trigger = yes
+		}
+		c:TUR = {
+			custom_tooltip = {
+				text = turkfm_add_extremely_large_deescalation_tt
+				change_global_variable = {
+					name = turkfm_deescalation_var
+					add = 250
 				}
 			}
 			turkfm_check_phase_effect = yes
@@ -2655,14 +2674,14 @@ turkfm_update_riot_variables_effect = {
 			has_modifier = modifier_turkfm_race_riots
 		}
 		save_scope_as = turkfm_riot_state_1_scope
-		set_variable = {
-			name = turkfm_riot_state_1_var
-			value = scope:turkfm_riot_state_1_scope
-		}
-		set_variable = {
-			name = turkfm_riot_state_1_progress_var
-			value = turkfm_riot_1_progress_value
-		}
+	}
+	set_variable = {
+		name = turkfm_riot_state_1_var
+		value = scope:turkfm_riot_state_1_scope
+	}
+	set_variable = {
+		name = turkfm_riot_state_1_progress_var
+		value = turkfm_riot_1_progress_value
 	}
 	if = {
 		limit = {
@@ -2676,43 +2695,47 @@ turkfm_update_riot_variables_effect = {
 				}
 			}
 			save_scope_as = turkfm_riot_state_2_scope
+		}
+		if = {
+			limit = {
+				exists = scope:turkfm_riot_state_2_scope
+			}
+			set_variable = {
+				name = turkfm_riot_state_2_var
+				value = scope:turkfm_riot_state_2_scope
+			}
+			set_variable = {
+				name = turkfm_riot_state_2_progress_var
+				value = turkfm_riot_2_progress_value
+			}
+			random_scope_state = {
+				limit = {
+					has_modifier = modifier_turkfm_race_riots
+					NOR = {
+						scope:turkfm_riot_state_1_scope ?= this
+						scope:turkfm_riot_state_2_scope ?= this
+					}
+				}
+				save_scope_as = turkfm_riot_state_3_scope
+			}
 			if = {
 				limit = {
 					exists = scope:turkfm_riot_state_2_scope
 				}
 				set_variable = {
-					name = turkfm_riot_state_2_var
-					value = scope:turkfm_riot_state_2_scope
+					name = turkfm_riot_state_3_var
+					value = scope:turkfm_riot_state_3_scope
 				}
 				set_variable = {
-					name = turkfm_riot_state_2_progress_var
-					value = turkfm_riot_2_progress_value
-				}
-				random_scope_state = {
-					limit = {
-						has_modifier = modifier_turkfm_race_riots
-						NOR = {
-							scope:turkfm_riot_state_1_scope ?= this
-							scope:turkfm_riot_state_2_scope ?= this
-						}
-					}
-					save_scope_as = turkfm_riot_state_3_scope
-					if = {
-						limit = {
-							exists = scope:turkfm_riot_state_2_scope
-						}
-						set_variable = {
-							name = turkfm_riot_state_3_var
-							value = scope:turkfm_riot_state_3_scope
-						}
-						set_variable = {
-							name = turkfm_riot_state_3_progress_var
-							value = turkfm_riot_3_progress_value
-						}
-					}
+					name = turkfm_riot_state_3_progress_var
+					value = turkfm_riot_3_progress_value
 				}
 			}
 		}
+	}
+	set_variable = {
+		name = turkfm_riot_progress_var
+		value = turkfm_riot_progress_value
 	}
 }
 
