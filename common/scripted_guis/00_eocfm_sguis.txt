@@ -402,12 +402,7 @@ eocfm_declare_autocephaly_sgui = {
 	
 	is_valid = {
 		is_subject = no
-		custom_tooltip = {
-			text = eocfm_need_500_caesaropapism
-			hidden_trigger = {
-				eocfm_caesaropapism_capacity_value >= 500
-			}
-		}
+		eocfm_has_500_caesaropapism_trigger = yes
 		NOR = {
 			has_law = law_type:law_theocracy
 			has_modifier = modifier_eocfm_autocephaly_abandoned
@@ -463,24 +458,9 @@ eocfm_convoke_council_sgui = {
 	is_valid = {
 		is_subject = no
 		is_at_war = no
-		custom_tooltip = {
-			text = eocfm_controls_any_seat
-			hidden_trigger = {
-				eocfm_controls_any_seat_trigger = yes
-			}
-		}
-		custom_tooltip = {
-			text = eocfm_need_1000_caesaropapism
-			hidden_trigger = {
-				eocfm_caesaropapism_capacity_value >= 1000
-			}
-		}
-		custom_tooltip = {
-			text = eocfm_is_autocephalous
-			hidden_trigger = {
-				has_variable = eocfm_is_autocephalous
-			}
-		}
+		eocfm_controls_any_seat_trigger = yes
+		eocfm_has_1000_caesaropapism_trigger = yes
+		eocfm_is_autocephalous_trigger = yes
 		custom_tooltip = {
 			text = eocfm_council_counter_below_4
 			hidden_trigger = {
@@ -537,12 +517,7 @@ eocfm_secure_tetrarchy_sgui = {
 	}
 	
 	is_valid = {
-		custom_tooltip = {
-			text = eocfm_controls_and_owns_tetrarchy
-			hidden_trigger = {
-				eocfm_controls_and_owns_tetrarchy_trigger = yes
-			}
-		}
+		eocfm_controls_and_owns_tetrarchy_trigger = yes
 	}
 	
 	effect = {
@@ -567,12 +542,7 @@ eocfm_secure_pentarchy_sgui = {
 	}
 	
 	is_valid = {
-		custom_tooltip = {
-			text = eocfm_controls_and_owns_pentarchy
-			hidden_trigger = {
-				eocfm_controls_and_owns_pentarchy_trigger = yes
-			}
-		}
+		eocfm_controls_and_owns_pentarchy_trigger = yes
 	}
 	
 	effect = {
@@ -594,32 +564,18 @@ eocfm_mend_schism_sgui = {
 	}
 	
 	is_valid = {
-		custom_tooltip = {
-			text = eocfm_need_1000_caesaropapism
-			hidden_trigger = {
-				eocfm_caesaropapism_capacity_value >= 1000
-			}
-		}
-		custom_tooltip = {
-			text = eocfm_controls_and_owns_pentarchy
-			hidden_trigger = {
-				eocfm_controls_and_owns_pentarchy_trigger = yes
-			}
-		}
+		eocfm_has_1000_caesaropapism_trigger = yes
+		eocfm_controls_and_owns_pentarchy_trigger = yes
 		custom_tooltip = {
 			text = eocfm_mending_started_NOT
-			hidden_trigger = {
-				NOT = {
-					has_global_variable = eocfm_mending_started
-				}
+			NOT = {
+				has_global_variable = eocfm_mending_started
 			}
 		}
-		custom_tooltip = {
+		custom_tooltip = {	
 			text = eocfm_mending_completed_NOT
-			hidden_trigger = {
-				NOT = {
-					has_global_variable = eocfm_schism_mended
-				}
+			NOT = {
+				has_global_variable = eocfm_schism_mended
 			}
 		}
 	}
@@ -681,12 +637,7 @@ eocfm_seek_mandate_sgui = {
 				eocfm_has_mandate_trigger = no
 			}
 		}
-		custom_tooltip = {
-			text = eocfm_need_500_caesaropapism
-			hidden_trigger = {
-				eocfm_caesaropapism_capacity_value >= 500
-			}
-		}
+		eocfm_has_500_caesaropapism_trigger = yes
 		custom_tooltip = {
 			text = eocfm_has_ecumenical_patriarch_approval
 			hidden_trigger = {
@@ -718,7 +669,12 @@ eocfm_seek_mandate_sgui = {
 	}
 }
 
-eocfm_demand_deposition_sgui = {
+#####################
+# SEAT INTERACTIONS #
+#####################
+
+## Constantinople Special Interactions
+eocfm_assert_constantinople_sgui = {
 	scope = country
 	
 	is_shown = {
@@ -726,86 +682,52 @@ eocfm_demand_deposition_sgui = {
 	}
 	
 	is_valid = {
-		trigger_if = {
-			limit = {
-				NOT = {
-					has_variable = eocfm_controls_constantinople
-				}
-				any_country = {
-					has_variable = eocfm_controls_constantinople
-				}
-			}
-			custom_tooltip = {
-				text = eocfm_constantinople_controller_relations_cordial
-				hidden_trigger = {
-					any_country = {
-						has_variable = eocfm_controls_constantinople
-						relations:root >= relations_threshold:cordial
-					}
-				}
-			}
-		}
-		trigger_if = {
-			limit = {
-				NOT = {
-					has_variable = eocfm_controls_constantinople
-				}
-			}
-			custom_tooltip = {
-				text = eocfm_has_junior_patriarch_approval
-				hidden_trigger = {
-					eocfm_has_junior_patriarch_approval_trigger = yes
-				}
-			}
-		}
+		eocfm_is_NOT_autocephalous_trigger = yes
 		custom_tooltip = {
-			text = eocfm_patriarch_deposed_cooldown
+			text = eocfm_controls_constantinople_NOT
 			hidden_trigger = {
 				NOT = {
-					has_global_variable = eocfm_patriarch_deposed_var
+					has_variable = eocfm_controls_constantinople
 				}
 			}
 		}
-		trigger_if = { # Can't depose them if no one controls them.
-			limit = {
-				NOT = {
-					any_country = {
-						has_variable = eocfm_controls_constantinople
-					}
-				}
-			}
-			custom_tooltip = {
-				text = eocfm_needs_controller
-				hidden_trigger = {
-					any_country = {
-						has_variable = eocfm_controls_constantinople
-					}
-				}
-			}
-		}
-		hidden_trigger = {
-			NOT = {
-				has_variable = eocfm_controls_constantinople ##TODO Remove once Ecumencial Partiarch event expansion is implemented
-			}
-		}
+		owns_entire_state_region = STATE_EASTERN_THRACE
 	}
 	
 	effect = {
-		random_country = {
-			limit = {
-				has_variable = eocfm_controls_constantinople
-			}
-			trigger_event = {
-				id = eocfm.167 # Country Requests Deposition
-			}
+		trigger_event = {
+			id = eocfm.148 # Supremacy Asserted Over Constantinopole
+			popup = yes
 		}
-		set_variable = eocfm_requested_deposition
 	}
 }
 
-#####################
-# SEAT INTERACTIONS #
-#####################
+eocfm_seize_constantinople_sgui = {
+	scope = country
+	
+	is_shown = {
+		always = no
+	}
+	
+	is_valid = {
+		custom_tooltip = {
+			text = eocfm_controls_constantinople_NOT
+			hidden_trigger = {
+				NOT = {
+					has_variable = eocfm_controls_constantinople
+				}
+			}
+		}
+		owns_entire_state_region = STATE_EASTERN_THRACE
+	}
+	
+	effect = {
+		trigger_event = {
+			id = eocfm.149 # Country Seizes Constantinopole
+			popup = yes
+		}
+	}
+}
 
 ## Constantinople
 eocfm_integrate_constantinople_sgui = {
@@ -818,26 +740,9 @@ eocfm_integrate_constantinople_sgui = {
 	}
 	
 	is_valid = {
-		custom_tooltip = {
-			text = eocfm_need_500_caesaropapism
-			hidden_trigger = {
-				eocfm_caesaropapism_capacity_value >= 500
-			}
-		}	
-		custom_tooltip = {
-			text = eocfm_is_autocephalous
-			hidden_trigger = {
-				has_variable = eocfm_is_autocephalous
-			}
-		}
-		custom_tooltip = {
-			text = eocfm_integrating_seat_NOT
-			hidden_trigger = {
-				NOT = {
-					has_variable = eocfm_integration_var
-				}
-			}
-		}
+		eocfm_is_autocephalous_trigger = yes
+		eocfm_has_500_caesaropapism_trigger	= yes
+		eocfm_NOT_integrating_seat_trigger = yes
 		custom_tooltip = {
 			text = eocfm_controls_constantinople_NOT
 			hidden_trigger = {
@@ -888,12 +793,7 @@ eocfm_start_sway_constantinople_sgui = {
 	}
 	
 	is_valid = {
-		custom_tooltip = {
-			text = eocfm_need_200_caesaropapism
-			hidden_trigger = {
-				eocfm_caesaropapism_capacity_value >= 200
-			}
-		}
+		eocfm_has_200_caesaropapism_trigger = yes
 		influence > 100
 	}
 	
@@ -929,26 +829,9 @@ eocfm_integrate_antioch_sgui = {
 	}
 	
 	is_valid = {
-		custom_tooltip = {
-			text = eocfm_need_500_caesaropapism
-			hidden_trigger = {
-				eocfm_caesaropapism_capacity_value >= 500
-			}
-		}	
-		custom_tooltip = {
-			text = eocfm_is_autocephalous
-			hidden_trigger = {
-				has_variable = eocfm_is_autocephalous
-			}
-		}
-		custom_tooltip = {
-			text = eocfm_integrating_seat_NOT
-			hidden_trigger = {
-				NOT = {
-					has_variable = eocfm_integration_var
-				}
-			}
-		}
+		eocfm_is_autocephalous_trigger = yes
+		eocfm_has_500_caesaropapism_trigger	= yes
+		eocfm_NOT_integrating_seat_trigger = yes
 		custom_tooltip = {
 			text = eocfm_controls_antioch_NOT
 			hidden_trigger = {
@@ -991,12 +874,7 @@ eocfm_start_sway_antioch_sgui = {
 	}
 	
 	is_valid = {
-		custom_tooltip = {
-			text = eocfm_need_200_caesaropapism
-			hidden_trigger = {
-				eocfm_caesaropapism_capacity_value >= 200
-			}
-		}
+		eocfm_has_200_caesaropapism_trigger = yes
 		influence > 100
 	}
 	
@@ -1032,26 +910,9 @@ eocfm_integrate_jerusalem_sgui = {
 	}
 	
 	is_valid = {
-		custom_tooltip = {
-			text = eocfm_need_500_caesaropapism
-			hidden_trigger = {
-				eocfm_caesaropapism_capacity_value >= 500
-			}
-		}	
-		custom_tooltip = {
-			text = eocfm_is_autocephalous
-			hidden_trigger = {
-				has_variable = eocfm_is_autocephalous
-			}
-		}
-		custom_tooltip = {
-			text = eocfm_integrating_seat_NOT
-			hidden_trigger = {
-				NOT = {
-					has_variable = eocfm_integration_var
-				}
-			}
-		}
+		eocfm_is_autocephalous_trigger = yes
+		eocfm_has_500_caesaropapism_trigger	= yes
+		eocfm_NOT_integrating_seat_trigger = yes
 		custom_tooltip = {
 			text = eocfm_controls_jerusalem_NOT
 			hidden_trigger = {
@@ -1094,12 +955,7 @@ eocfm_start_sway_jerusalem_sgui = {
 	}
 	
 	is_valid = {
-		custom_tooltip = {
-			text = eocfm_need_200_caesaropapism
-			hidden_trigger = {
-				eocfm_caesaropapism_capacity_value >= 200
-			}
-		}
+		eocfm_has_200_caesaropapism_trigger	= yes
 		influence > 100
 	}
 	
@@ -1135,26 +991,9 @@ eocfm_integrate_alexandria_sgui = {
 	}
 	
 	is_valid = {
-		custom_tooltip = {
-			text = eocfm_need_500_caesaropapism
-			hidden_trigger = {
-				eocfm_caesaropapism_capacity_value >= 500
-			}
-		}
-		custom_tooltip = {
-			text = eocfm_is_autocephalous
-			hidden_trigger = {
-				has_variable = eocfm_is_autocephalous
-			}
-		}
-		custom_tooltip = {
-			text = eocfm_integrating_seat_NOT
-			hidden_trigger = {
-				NOT = {
-					has_variable = eocfm_integration_var
-				}
-			}
-		}
+		eocfm_is_autocephalous_trigger = yes
+		eocfm_has_500_caesaropapism_trigger	= yes
+		eocfm_NOT_integrating_seat_trigger = yes
 		custom_tooltip = {
 			text = eocfm_controls_alexandria_NOT
 			hidden_trigger = {
@@ -1197,12 +1036,7 @@ eocfm_start_sway_alexandria_sgui = {
 	}
 	
 	is_valid = {
-		custom_tooltip = {
-			text = eocfm_need_200_caesaropapism
-			hidden_trigger = {
-				eocfm_caesaropapism_capacity_value >= 200
-			}
-		}
+		eocfm_has_200_caesaropapism_trigger = yes
 		influence > 100
 	}
 	
@@ -1238,26 +1072,9 @@ eocfm_integrate_moscow_sgui = {
 	}
 	
 	is_valid = {
-		custom_tooltip = {
-			text = eocfm_need_500_caesaropapism
-			hidden_trigger = {
-				eocfm_caesaropapism_capacity_value >= 500
-			}
-		}	
-		custom_tooltip = {
-			text = eocfm_is_autocephalous
-			hidden_trigger = {
-				has_variable = eocfm_is_autocephalous
-			}
-		}
-		custom_tooltip = {
-			text = eocfm_integrating_seat_NOT
-			hidden_trigger = {
-				NOT = {
-					has_variable = eocfm_integration_var
-				}
-			}
-		}
+		eocfm_is_autocephalous_trigger = yes
+		eocfm_has_500_caesaropapism_trigger	= yes
+		eocfm_NOT_integrating_seat_trigger = yes
 		custom_tooltip = {
 			text = eocfm_controls_moscow_NOT
 			hidden_trigger = {
@@ -1300,12 +1117,7 @@ eocfm_start_sway_moscow_sgui = {
 	}
 	
 	is_valid = {
-		custom_tooltip = {
-			text = eocfm_need_200_caesaropapism
-			hidden_trigger = {
-				eocfm_caesaropapism_capacity_value >= 200
-			}
-		}
+		eocfm_has_200_caesaropapism_trigger = yes
 		influence > 100
 	}
 	
@@ -1341,26 +1153,9 @@ eocfm_integrate_rome_sgui = {
 	}
 	
 	is_valid = {
-		custom_tooltip = {
-			text = eocfm_need_500_caesaropapism
-			hidden_trigger = {
-				eocfm_caesaropapism_capacity_value >= 500
-			}
-		}	
-		custom_tooltip = {
-			text = eocfm_is_autocephalous
-			hidden_trigger = {
-				has_variable = eocfm_is_autocephalous
-			}
-		}
-		custom_tooltip = {
-			text = eocfm_integrating_seat_NOT
-			hidden_trigger = {
-				NOT = {
-					has_variable = eocfm_integration_var
-				}
-			}
-		}
+		eocfm_is_autocephalous_trigger = yes
+		eocfm_has_500_caesaropapism_trigger	= yes
+		eocfm_NOT_integrating_seat_trigger = yes
 		custom_tooltip = {
 			text = eocfm_controls_rome_NOT
 			hidden_trigger = {
@@ -1418,12 +1213,7 @@ eocfm_start_sway_rome_sgui = {
 	}
 	
 	is_valid = {
-		custom_tooltip = {
-			text = eocfm_need_200_caesaropapism
-			hidden_trigger = {
-				eocfm_caesaropapism_capacity_value >= 200
-			}
-		}
+		eocfm_has_200_caesaropapism_trigger = yes
 		custom_tooltip = {
 			text = eocfm_rome_reclaimed
 			hidden_trigger = {

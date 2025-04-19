@@ -106,6 +106,8 @@ namespace = eocfm
 #140-149 - Partiarchal Seat Integration Events
 #	140 - Seat Integration Disputed (Part 1)
 #	141 - Seat Integration Disputed (Part 2)
+#	148 - Supremacy Asserted Over Constantinopole
+#	149 - Country Seizes Constantinopole
 
 #150-159 - Patriarchal Seat Sway Events
 #	150 - Ecumenical Financing
@@ -3414,6 +3416,163 @@ eocfm.141 = { # Seat Integration Disputed (Part 2)
 	}
 }
 
+eocfm.148 = { # Supremacy Asserted Over Constantinopole
+	type = country_event
+	placement = root
+	
+	title = eocfm.148.t
+	desc = eocfm.148.d
+	flavor = eocfm.148.f
+	
+	event_image = {
+		video = "ep1_transfer_of_authority"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by eocfm_assert_constantinople_sgui
+	}
+	
+	immediate = {
+		eocfm_update_patriarch_variables_effect = yes
+		set_variable = eocfm_constantinople_assert_var
+		random_country = {
+			limit = {
+				has_variable = eocfm_controls_constantinople
+			}
+			save_scope_as = eocfm_controller_scope
+		}
+		every_country = {
+			limit = {
+				OR = {
+					eocfm_is_eastern_christian_trigger = yes
+					has_variable = eocfm_controls_constantinople
+				}
+				NOT = {
+					has_variable = eocfm_constantinople_assert_var
+				}
+			}
+			random_country = {
+				limit = {
+					has_variable = eocfm_constantinople_assert_var
+				}
+				save_scope_as = eocfm_usurper_scope
+			}
+			post_notification = notification_eocfm_constantinople_usurped
+		}
+		scope:eocfm_controller_scope ?= {
+			remove_variable = eocfm_controls_constantinople
+		}
+		set_variable = eocfm_controls_constantinople
+		set_variable = eocfm_is_autocephalous
+		remove_variable = eocfm_constantinople_assert_var
+		remove_variable = eocfm_schism_var
+	}
+	
+	option = {
+		name = eocfm.148.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_eocfm_autocephaly_granted
+			months = long_modifier_time
+		}
+		custom_tooltip = eocfm_usurped_constantinople
+		scope:eocfm_controller_scope ?= {
+			change_relations = {
+				country = root
+				value = -30
+			}
+		}
+	}
+	
+}
+
+eocfm.149 = { # Country Seizes Constantinopole
+	type = country_event
+	placement = root
+	
+	title = eocfm.149.t
+	desc = eocfm.149.d
+	flavor = eocfm.149.f
+	
+	event_image = {
+		video = "ep1_transfer_of_authority"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by Country Seizes Constantinopole
+	}
+	
+	immediate = {
+		eocfm_update_patriarch_variables_effect = yes
+		set_variable = eocfm_constantinople_assert_var
+		random_country = {
+			limit = {
+				has_variable = eocfm_controls_constantinople
+			}
+			save_scope_as = eocfm_controller_scope
+		}
+		every_country = {
+			limit = {
+				NOT = {
+					has_variable = eocfm_constantinople_assert_var
+				}
+				OR = {
+					eocfm_is_eastern_christian_trigger = yes
+					has_variable = eocfm_controls_constantinople
+				}
+			}
+			random_country = {
+				limit = {
+					has_variable = eocfm_constantinople_assert_var
+				}
+				save_scope_as = eocfm_usurper_scope
+			}
+			post_notification = notification_eocfm_constantinople_usurped
+		}
+		scope:eocfm_controller_scope ?= {
+			remove_variable = eocfm_controls_constantinople
+		}
+		if = {
+			limit = {
+				has_variable = eocfm_constantinople_assert_var
+			}
+			eocfm_remove_intregration_variables_effect = yes
+		}
+		set_variable = eocfm_controls_constantinople
+		set_variable = eocfm_is_autocephalous
+		remove_variable = eocfm_constantinople_assert_var
+	}
+	
+	option = {
+		name = eocfm.149.a
+		default_option = yes
+		custom_tooltip = eocfm_usurped_constantinople
+		scope:eocfm_controller_scope ?= {
+			change_relations = {
+				country = root
+				value = -30
+			}
+		}
+	}
+	
+}
+
 #### PATRIARCHAL SEAT SWAY EVENTS ####
 
 eocfm.150 = { # Ecumenical Financing
@@ -3827,6 +3986,8 @@ eocfm.167 = { # Country Demands Deposition
 			days = 1825
 		}
 	}
+	
+	orphan = yes
 
 }
 
@@ -5562,6 +5723,10 @@ eocfm.900 = { # The Partiarch's Variable Dumpster Fire
 	}
 	
 	immediate = {
+		set_variable = eocfm_adoption_rite_var
+		set_variable = eocfm_patriarch_deposed_var
+		set_variable = eocfm_requested_deposition
+		
 		remove_variable = eocfm_devout_leader_var
 		remove_variable = eocfm_rome_patriarch_var
 		remove_variable = eocfm_constantinople_patriarch_var
