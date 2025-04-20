@@ -25,6 +25,22 @@ eocfm_gui_toogle_effect = {
 
 #### SETUP EFFECTS ####
 
+eocfm_specific_country_setups_effect = {
+# Override this effect for mod-specific starting setups
+# This is done this way to avoid having to integrate dummy country definitions into eocfm
+# Unless you are making a TC or alt-history mod, probably leave this untouched
+	c:GRE ?= {
+		add_modifier = modifier_eocfm_reformed_synod
+		add_modifier = modifier_eocfm_dissolved_monasteries
+		set_variable = eocfm_dissolved_monasteries
+		set_variable = eocfm_ruler_conversion_considered
+	}
+	c:RUS ?= {
+		add_modifier = modifier_eocfm_reformed_synod
+		set_variable = eocfm_is_autocephalous
+	}
+}
+
 eocfm_initialize_patriarchs_effect = {
 	if = {
 		limit = {
@@ -147,17 +163,86 @@ eocfm_initialize_metropolis_effect = {
 	# First Initialize Liturgical Rites
 	if = {
 		limit = {
-			country_has_state_religion = rel:orthodox
+			eocfm_is_eastern_orthodox_trigger = yes
 		}
+		if = {
+			limit = {
+				eocfm_is_rus_orthodox_trigger = yes
+			}
+			set_variable = {
+				name = eocfm_liturgical_rite_var
+				value = 6 # Russian
+			}
+		}
+		else = {
+			set_variable = {
+				name = eocfm_liturgical_rite_var
+				value = 1 # Byzantine
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			eocfm_is_oriental_orthodox_trigger = yes
+		}
+		if = {
+			limit = {
+				always = no # TODO set up Syriac Rites
+			}
+			set_variable = {
+				name = eocfm_liturgical_rite_var
+				value = 5 # Syriac
+			}
+		}
+		else_if = {
+			limit = {
+				eocfm_is_oriental_armenian_trigger = yes
+			}
+			set_variable = {
+				name = eocfm_liturgical_rite_var
+				value = 4 # Armenian
+			}
+		}
+		else = {
+			set_variable = {
+				name = eocfm_liturgical_rite_var
+				value = 3 # Coptic
+			}
+		}
+	}
+	else_if = { # Safety option incase a Catholic tag gets passed
+		limit = {
+			eocfm_is_roman_catholic_trigger = yes
+		}
+		set_variable = {
+			name = eocfm_liturgical_rite_var
+			value = 2 # Roman
+		}
+	}
+	else_if = { # Basileia Romaion Rites
+		limit = {
+			eocfm_is_elysian_orthodox_trigger = yes
+		}
+		if = {
+			limit = {
+				eocfm_is_mixtec_orthodox_trigger = yes
+			}
+			set_variable = {
+				name = eocfm_liturgical_rite_var
+				value = 102 # Mixtec
+			}
+		}
+		else = {
+			set_variable = {
+				name = eocfm_liturgical_rite_var
+				value = 101 # Elysian
+			}
+		}
+	}
+	else = {
 		set_variable = {
 			name = eocfm_liturgical_rite_var
 			value = 1 # Byzantine
-		}
-	}
-	else = { # TODO Add unique rites functionality
-		set_variable = {
-			name = eocfm_liturgical_rite_var
-			value = 3 # Coptic
 		}
 	}
 	
@@ -186,7 +271,19 @@ eocfm_initialize_metropolis_effect = {
 		name = eocfm_moscow_relations_var
 		value = 0
 	}
-	
+	if = {
+		limit = {
+			basileia_is_active = yes
+		}
+		set_variable = {
+			name = eocfm_elysium_relations_var
+			value = 0
+		}
+		set_variable = {
+			name = eocfm_tututepec_relations_var
+			value = 0
+		}
+	}
 }
 
 #### SCOPE AND CHARACTER UPKEEP EFFECTS ####
@@ -898,6 +995,33 @@ eocfm_check_relations_variables_effect = {
 			name = eocfm_moscow_relations_var
 			value = 0
 		}
+	}
+	if = {
+		limit = {
+			basileia_is_active = yes
+		}
+		if  = {
+			limit = {
+				NOT = {
+					has_variable = eocfm_elysium_relations_var
+				}
+			}
+			set_variable = {
+				name = eocfm_elysium_relations_var
+				value = 0
+			}
+		}
+		if  = {
+			limit = {
+				NOT = {
+					has_variable = eocfm_tututepec_relations_var
+				}
+			}
+			set_variable = {
+				name = eocfm_tututepec_relations_var
+				value = 0
+			}
+		}
 	}	
 }
 
@@ -1214,10 +1338,28 @@ eocfm_update_rite_modifiers_effect = {
 	}
 	else_if = {
 		limit =	{
-			var:eocfm_liturgical_rite_var ?= 6 # Elysian Orthodox
+			var:eocfm_liturgical_rite_var ?= 6 # Russian
+		}
+		add_modifier = {
+			name = modifier_eocfm_russian_rite
+			multiplier = eocfm_caesaropapism_multiplier_value
+		}
+	}
+	else_if = {
+		limit =	{
+			var:eocfm_liturgical_rite_var ?= 101 # Elysian
 		}
 		add_modifier = {
 			name = modifier_eocfm_elysian_rite
+			multiplier = eocfm_caesaropapism_multiplier_value
+		}
+	}
+	else_if = {
+		limit =	{
+			var:eocfm_liturgical_rite_var ?= 102 # Mixtec
+		}
+		add_modifier = {
+			name = modifier_eocfm_mixtec_rite
 			multiplier = eocfm_caesaropapism_multiplier_value
 		}
 	}
@@ -1329,7 +1471,20 @@ eocfm_change_rite_effect = {
 	}
 	else_if = {
 		limit =	{
-			var:eocfm_adoption_rite_var ?= 6 # Elysian Orthodox
+			var:eocfm_adoption_rite_var ?= 6 # Russian
+		}
+		add_modifier = {
+			name = modifier_eocfm_russian_rite
+			multiplier = eocfm_caesaropapism_multiplier_value
+		}
+		set_variable = {
+			name = eocfm_liturgical_rite_var
+			value = 6 # Russian
+		}
+	}
+	else_if = {
+		limit =	{
+			var:eocfm_adoption_rite_var ?= 101 # Elysian
 		}
 		add_modifier = {
 			name = modifier_eocfm_elysian_rite
@@ -1337,7 +1492,20 @@ eocfm_change_rite_effect = {
 		}
 		set_variable = {
 			name = eocfm_liturgical_rite_var
-			value = 6 # Syriac
+			value = 101 # Elysian
+		}
+	}
+	else_if = {
+		limit =	{
+			var:eocfm_adoption_rite_var ?= 102 # Mixtec
+		}
+		add_modifier = {
+			name = modifier_eocfm_mixtec_rite
+			multiplier = eocfm_caesaropapism_multiplier_value
+		}
+		set_variable = {
+			name = eocfm_liturgical_rite_var
+			value = 102 # Mixtec
 		}
 	}
 }
