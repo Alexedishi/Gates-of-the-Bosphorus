@@ -15,7 +15,7 @@ This mod is broadly divided into four "modules" which can be identified by their
 grefm_: Contains content for Greece, Byzantium, and other Hellene, Rhomaios, and Urum countries
 turkfm_: Contains content for the Ottoman Empire
 balkfm_: Contains content for the Southern Slav, Romanian, and Albanian countries
-eocfm_: Contains content for the Eastern Orthodox Church
+eocfm_: Contains content for the Eastern Orthodox Church (superceded by Kingdom of God)
 
 Common files shared by all modules are prefixed with gbbf_
 
@@ -28,7 +28,7 @@ eqfm_: Once contained content for the Eastern Question; has been merged with tur
 -Arab & Iranian flavor are OUT OF SCOPE for this mod
 -The current mod acronym is GotB; my common prefix is gbbf and will not change
 -The CMF trigger uses the older grefm acronym; this will not change
--The ##STUB comments are for my development purposes if you happen to see them
+-The ##STUB comments are for my purposes if you happen to see them; I will not explain if asked
 
 ####################
 
