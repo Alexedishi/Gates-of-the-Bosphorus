@@ -202,8 +202,8 @@ namespace = grefm
 ##  #GRE3  THE REVENGE OF THE GREEKS  Events  300-399  ##
 
 #300-309 - Hellenistic Empire Restoration Events
-#	300 - The Revenge of the Greeks
-#	301 - The Legacy of Alexander
+#	300 - The Vergina Sun Rises
+#	301 - The Revenge of the Greeks
 #	302 - The Shores of Phoenicia
 #	303 - The Lands of Arianōn
 #	304 - The Graveyard of Empires
@@ -3501,7 +3501,6 @@ grefm.046 = { # the goudi coup
 				type = law_type:law_parliamentary_republic
 			}
 		}
-		default_option = yes
 		scope:coup_ig = {
 			hidden_effect = {
 				if = {
@@ -4610,9 +4609,7 @@ grefm.110 = { # The Decline of the Heptanese School
 
 }
 
-grefm.111 = { # OPEN; used to enable Lake Kopais decision
-	orphan = yes
-}
+# grefm.111
 
 grefm.112 = { # lake kopais drained
 	type = country_event
@@ -6729,9 +6726,7 @@ grefm.161 = { # The Don Pacifico Affair
 
 
 #### GREEK PIRACY EVENTS ####
-grefm.170 = { # The Pirates of the Aegean
-	orphan = yes
-}
+# grefm.170
 
 
 #### GREEK ORTHODOX CHURCH EVENTS ####
@@ -7213,17 +7208,11 @@ grefm.202 = { # option to switch capital to Constantinople
 
 }
 
-grefm.203 = {
-	orphan = yes
-}
+# grefm.203
 
-grefm.204 = {
-	orphan = yes
-}
+# grefm.204
 
-grefm.205 = {
-	orphan = yes
-}
+# grefm.205
 
 grefm.206 = { # The Language Question
 	type = country_event
@@ -7980,6 +7969,212 @@ grefm.274 = { # A Greek Domain
 
 }
 
+grefm.275 = { # The New Greece Rises
+	type = country_event
+	placement = ROOT
+
+	title = grefm.275.t
+	desc = grefm.275.d
+	flavor = grefm.275.f
+
+	gui_window = event_window_widescreen_classic
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/votp_monarch_holding_court.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/epitaph_of_seikilos"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_purple_pheonix
+	}
+
+	immediate = {
+		random_scope_building = {
+			limit = {
+				is_building_type = building_hagia_sophia
+			}
+			save_scope_as = hagia_sofia_scope
+		}
+		save_scope_as = formation_country
+		every_country = {
+			limit = {
+				has_diplomatic_relevance = ROOT
+			}
+			post_notification = unification_notification_byz
+		}
+	}
+
+	option = {
+		name = grefm.275.a
+		default_option = yes
+		trigger_event = {
+			id = grefm.276 # Across the Hellespont
+			days = 30
+		}
+		add_modifier = {
+			name = modifier_grefm_rebirth
+			months = very_long_modifier_time
+		}
+	}
+
+}
+
+grefm.276 = { # Across the Hellespont
+	type = country_event
+
+	title = grefm.276.t
+	desc = grefm.276.d
+	flavor = grefm.276.f
+
+	event_image = {
+		video = "byzfm_georgios_averof"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by grefm.300
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm.276.a
+		default_option = yes
+		set_capital = STATE_EASTERN_THRACE
+		every_state_region = {
+			limit = {
+				OR = {
+					region = sr:region_anatolia
+					region = sr:region_balkans
+				}
+				any_scope_state = {
+					NOT = { owner = ROOT }
+					NOT = { has_claim_by = ROOT }
+				}
+			}
+			add_claim = ROOT
+		}
+	}
+
+}
+
+grefm.277 = { # The Wonders of the Nile
+	type = country_event
+
+	title = grefm.277.t
+	desc = grefm.277.d
+	flavor = grefm.277.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = { # triggered by grefm.277
+	}
+
+	immediate = {
+		capital = {
+			save_scope_as = byzantium_capital_state
+		}
+	}
+
+	option = { # reclaim the east
+		name = grefm.277.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_grefm_wonders_of_the_nile
+		}
+		grefm_add_levant_claims_effect = yes
+	}
+
+	option = { # nah bro, shits for the birds
+		name = grefm.277.b
+		change_infamy = -20
+		scope:byzantium_capital_state = {
+			add_modifier = {
+				name = modifier_grefm_capital_assimiliation_boost
+				months = normal_modifier_time
+			}
+			add_modifier = {
+				name = modifier_grefm_heartland_reclaimed
+				months = normal_modifier_time
+			}
+		}
+		custom_tooltip = {
+			text = grefm_weaksauce_tt
+			hidden_effect = {
+				set_variable = grefm_weaksauce
+			}
+		}
+	}
+
+}
+
+grefm.278 = { # The Greek Realm
+	type = country_event
+
+	title = grefm.278.t
+	desc = grefm.278.d
+	flavor = grefm.278.f
+
+	event_image = {
+		video = "europenorthamerica_before_the_battle"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# Triggered by JE
+	}
+
+	option = {
+		name = grefm.278.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_imperial_glory
+		}
+		s:STATE_EASTERN_THRACE = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_the_queen_of_cities
+					months = long_modifier_time
+				}
+			}
+		}
+	}
+
+}
+
 #### RHOMANIAN REVANCHISM EVENTS ####
 grefm.280 = { # The Lands of the Rhomaios
 	type = country_event
@@ -8560,7 +8755,7 @@ grefm.292 = { # Greek Expansion in X
 
 #### REVENGE OF THE GREEKS EVENTS ####
 
-grefm.300 = { # Resurrection of the Byzantine Empire
+grefm.300 = { # The Vergina Sun Rises
 	type = country_event
 	placement = ROOT
 
@@ -8577,9 +8772,7 @@ grefm.300 = { # Resurrection of the Byzantine Empire
 	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
 	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	on_opened_soundeffect = "event:/epitaph_of_seikilos"
-
-	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+	on_opened_soundeffect = "event:/gbbf_thourios"
 
 	duration = 3
 	
@@ -11296,9 +11489,7 @@ grefm.807 = { # Central Italy Secured
 
 }
 
-grefm.808 = { # open
-	orphan = yes
-}
+# grefm.808 # open
 
 grefm.809 = { # Renovatio Imperii Romanorum
 	type = country_event
@@ -11379,9 +11570,7 @@ grefm.809 = { # Renovatio Imperii Romanorum
 
 #### GENERAL BYZANTINE EVENTS ####
 
-grefm.810 = { # OPEN
-	orphan = yes
-}
+# grefm.810
 
 #### BYZANTINE MONUMENT EVENTS ####
 
