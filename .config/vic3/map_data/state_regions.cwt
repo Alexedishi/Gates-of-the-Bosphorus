@@ -1,0 +1,135 @@
+types = {
+    ## unique = yes
+    type[state_region] = {
+        path = "game/map_data/state_regions"
+        file_extension = .txt
+
+        # Water-only states won't have arable land, and land states always should
+        subtype[land] = {
+            arable_land = int
+        }
+        # Coastal states always have a naval_exit_id
+        subtype[coastal] = {
+            naval_exit_id = int
+        }
+        ## only_if_not = { land coastal }
+        subtype[water] = {}
+
+        localisation = {
+            name = "$"
+        }
+    }
+}
+
+state_region = {
+    ### State's numerical ID
+    id = int
+
+    ## cardinality = 0..1
+    ### List of impassable provinces, each with double quotes, also listed in provinces block
+    impassable = {
+        ## cardinality = 1..1
+        enum[provinces]
+    }
+
+    ## cardinality = 0..1
+    ### Which type of subsistence building is used
+    subsistence_building = <building>
+
+    ### List of provinces, each with double quotes
+    provinces = {
+        ## cardinality = 1..inf
+        enum[provinces]
+    }
+
+    ## cardinality = 0..1
+    ### List of prime provinces, each with double quotes, also listed in provinces block
+    prime_land = {
+        ## cardinality = 0..inf
+        enum[provinces]
+    }
+
+    ## cardinality = 0..1
+    ### List of impassable provinces, each with double quotes, also listed in provinces block
+    impassable = {
+        ## cardinality = 1..inf
+        enum[provinces]
+    }
+
+    ## cardinality = 0..1
+    ### State traits, each with double quotes
+    traits = {
+        ## cardinality = 0..inf
+        <state_trait>
+    }
+
+    ## cardinality = 0..1
+    ### City hub province
+    city = enum[provinces]
+
+    ## cardinality = 0..1
+    ### Farm hub province
+    farm = enum[provinces]
+
+    ## cardinality = 0..1
+    ### Wood hub province
+    wood = enum[provinces]
+
+    ## cardinality = 0..1
+    ### Mine hub province
+    mine = enum[provinces]
+
+    ## cardinality = 0..1
+    ### Arable land
+    arable_land = int
+
+    ## cardinality = 0..1
+    ### Farm/plantation types, each with double quotes
+    arable_resources = {
+        ## cardinality = ~1..inf
+        <building_group>
+    }
+
+    ### Non-farm resource buildings, each with double quotes
+    ## cardinality = ~0..1
+    capped_resources = {
+        ## cardinality = ~1..inf
+        <building_group> = int
+    }
+
+    ## cardinality = 0..inf
+    ### Undiscovered resources, one block per type
+    resource = {
+        type = <building_group>
+
+        ## cardinality = 0..1
+        ### For resources which can "deplete"
+        depleted_type = <building_group>
+
+        ## cardinality = ~0..1
+        undiscovered_amount = int
+
+        ## cardinality = 0..1
+        ### For resources which are partially discovered at start
+        discovered_amount = int
+    }
+
+    ## cardinality = 0..1
+    ### Port hub province
+    port = enum[provinces]
+
+    ## cardinality = 0..1
+    ### Which sea province adjoins, matches the ID of a water state
+    naval_exit_id = int
+}
+
+enums = {
+    complex_enum[provinces] = {
+        path = "game/map_data/state_regions"
+		name = {
+            provinces = {
+                enum_name
+            }
+		}
+    }
+}

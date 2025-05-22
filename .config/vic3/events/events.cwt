@@ -1,0 +1,216 @@
+types = {
+	## graph_related_types = { on_action }
+	type[event] = {
+		path = "game/events"
+		file_extension = .txt
+
+        ## group = event_attribute
+		subtype[hidden] = {
+			hidden = yes
+		}
+
+		## group = event_type
+		subtype[scopeless] = {
+			## cardinality = 0..0
+			type = scalar
+		}
+		## group = event_type
+		## push_scope = country
+		## display_name = Country event
+		subtype[country] = {
+			## cardinality = 1..1
+			type = country_event
+		}
+		## group = event_type
+		## push_scope = state
+		## display_name = State event
+		subtype[state] = {
+			## cardinality = 1..1
+			type = state_event
+		}
+		## group = event_type
+		## push_scope = character
+		## display_name = Character event
+		subtype[character] = {
+			## cardinality = 1..1
+			type = character_event
+		}
+
+		localisation = {
+			subtype[!hidden] = {
+				title = title
+				desc = desc
+			}
+		}
+		images = {
+			subtype[!hidden] = {
+				## primary
+				## optional
+				picture = picture # <sprite>, can be triggered or/and multiple
+			}
+		}
+	}
+}
+
+event = {
+	## cardinality = 0..1
+	type = enum[event_types]
+
+	## cardinality = 0..1
+	placement = scope[state]
+	## cardinality = 0..1
+	placement = scope[province]
+	## cardinality = 0..1
+	placement = ROOT
+
+	## cardinality = 0..1
+	# scope = enum[event_scope_types]
+
+	## cardinality = 0..1
+    dlc = <dlc>
+
+    ## cardinality = 0..1
+	hidden = bool
+
+	## cardinality = 0..1
+	duration = int
+
+	## cardinality = 0..1
+	cooldown = {
+		enum[duration] = int
+		enum[duration] = { int int }
+	}
+
+	subtype[hidden] = {
+		# So that things don't yell at you if you make an event hidden for a lil while
+		## cardinality = 0..1
+		title = localisation
+		## cardinality = 0..1
+		event_image = {
+			## cardinality = 0..1
+			video = <media_alias>
+			## cardinality = 0..1
+			texture = filepath
+		}
+		## cardinality = 0..1
+		desc = localisation
+		## cardinality = 0..1
+		desc = single_alias_right[complex_desc]
+		## cardinality = 0..1
+		flavor = localisation
+		## cardinality = 0..1
+		flavor = single_alias_right[complex_desc]
+	}
+
+	subtype[!hidden] = {
+		title = localisation
+		title = single_alias_right[complex_desc]
+		## cardinality = 0..1
+		event_image = {
+			## cardinality = 0..1
+			video = <media_alias>
+			## cardinality = 0..1
+			texture = filepath
+			## cardinality = 0..1
+			trigger = single_alias_right[trigger_clause]
+			## cardinality = 0..1
+			on_created_soundeffect = enum[sound_effects]
+			## cardinality = 0..1
+			on_opened_soundeffect = enum[sound_effects]
+		}
+		desc = localisation
+		desc = single_alias_right[complex_desc]
+		flavor = localisation
+		flavor = single_alias_right[complex_desc]
+	}
+
+	## cardinality = 0..inf
+	immediate = single_alias_right[effect_clause]
+
+	## cardinality = 0..1
+	on_created_soundeffect = enum[sound_effects]
+	## cardinality = 0..1
+	on_opened_soundeffect = enum[sound_effects]
+	## cardinality = 0..1
+	icon = filepath
+	## cardinality = 0..1
+	left_icon = scope_field
+	## cardinality = 0..1
+	right_icon = scope_field
+	## cardinality = 0..1
+	center_icon = scope_field
+	## cardinality = 0..1
+	minor_left_icon = scope_field
+	## cardinality = 0..1
+	minor_right_icon = scope_field
+	## cardinality = 0..1
+	left_icon = filepath
+	## cardinality = 0..1
+	right_icon = filepath
+	## cardinality = 0..1
+	center_icon = filepath
+	## cardinality = 0..1
+	minor_left_icon = filepath
+	## cardinality = 0..1
+	minor_right_icon = filepath
+	## cardinality = 0..1
+	gui_window = scalar
+
+	## cardinality = 0..1
+	orphan = bool
+
+	## cardinality = 0..inf
+	trigger = single_alias_right[trigger_clause]
+
+	## cardinality = 0..1
+	cancellation_trigger = single_alias_right[trigger_clause]
+
+	## cardinality = 0..inf
+	option = {
+		## cardinality = 0..1
+		name = localisation
+
+		## cardinality = 0..1
+		show_as_unavailable = single_alias_right[trigger_clause]
+
+		## cardinality = 0..1
+		default_option = bool
+
+		## cardinality = 0..inf
+		alias_name[effect] = alias_match_left[effect]
+
+		## cardinality = 0..1
+		trigger = single_alias_right[trigger_clause]
+
+		## cardinality = 0..1
+		highlighted_option = bool
+
+		## cardinality = 0..1
+		ai_chance = single_alias_right[formula]
+	}
+
+	## cardinality = 0..inf
+	after = single_alias_right[effect_clause]
+
+}
+
+enums = {
+	enum[event_types] = {
+		country_event
+		state_event
+		character_event
+	}
+}
+
+single_alias[event_portrait] = {
+	character = scope[character]
+	## cardinality = 0..1
+	animation = <portrait_animation>
+	## cardinality = 0..inf
+	triggered_animation = {
+		trigger = single_alias_right[trigger_clause]
+		animation = <portrait_animation>
+	}
+	animation = <animation>
+}
+

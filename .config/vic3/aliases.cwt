@@ -1,0 +1,109 @@
+# Single aliases
+
+single_alias[trigger_clause] = {
+    alias_name[trigger] = alias_match_left[trigger]
+}
+
+single_alias[effect_clause] = {
+    alias_name[effect] = alias_match_left[effect]
+}
+
+single_alias[complex_desc] = {
+    ## cardinality = 0..inf
+    desc = localisation
+    ## cardinality = 0..inf
+    triggered_desc = single_alias_right[triggered_desc]
+
+    ## cardinality = 0..inf
+    random_valid = {
+        ## cardinality = 1..inf
+        triggered_desc = single_alias_right[triggered_desc]
+        ## cardinality = 0..inf
+        desc = localisation
+    }
+
+    ## cardinality = 0..inf
+    first_valid = {
+        ## cardinality = 1..inf
+        triggered_desc = single_alias_right[triggered_desc]
+        # This should probably be recursive, but referencing an alias in itself causes a parser crash.
+        ## cardinality = 0..inf
+        desc = localisation
+    }
+}
+
+single_alias[triggered_desc] = {
+    desc = localisation
+    # We can omit the trigger. Common as the 'else' block in a first_valid block.
+    ## cardinality = 0..inf
+    trigger = {
+        ## cardinality = 0..inf
+        alias_name[trigger] = alias_match_left[trigger]
+    }
+}
+
+single_alias[duration_clause] = {
+    enum[duration] = int_value_field
+    enum[duration] == <script_value>
+    enum[duration] == <static_value>
+}
+
+single_alias[scaled_modifier] = {
+    ## cardinality = 0..1
+    scale = int_value_field
+    ## push_scope = character
+    alias_name[modifier] = alias_match_left[modifier]
+}
+
+single_alias[added_modifier] = {
+    modifier = <modifier_container>
+    ## cardinality = 0..1
+    enum[duration] = int
+}
+
+single_alias[on_action] = {
+    ## cardinality = 0..1
+    effect = single_alias_right[effect_clause]
+
+	## cardinality = 0..1
+	random_events = {
+        ## cardinality = 0..1
+        chance_of_no_event = int
+
+		## cardinality = 0..inf
+		int = <event>
+
+		## cardinality = 0..inf
+		int = 0
+	}
+
+    ## cardinality = 0..1
+	events = {
+		## cardinality = 0..inf
+		<event>
+	}
+
+    ## cardinality  = 0..1
+    on_actions = {
+        ## cardinality = 0..inf
+        <on_action>
+    }
+}
+
+single_alias[modifier_clause] = {
+    ## cardinality = 0..inf
+    <modifier_type> = value_field
+    ## cardinality = 0..inf
+    <modifier_type> = bool
+    # procedurally generated modifier types
+    ## cardinality = 0..inf
+    building_employment_<pop_type>_add = value_field
+    ## cardinality = 0..inf
+    building_employment_<pop_type>_mult = value_field
+
+    # PLACEHOLDER - anything, just to prevent errors. Add more modifier types if needed
+    ## cardinality = 0..inf
+    scalar = value_field
+    ## cardinality = 0..inf
+    scalar = bool
+}
