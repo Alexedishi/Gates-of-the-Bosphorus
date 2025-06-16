@@ -469,10 +469,10 @@ je_balkfm_revival = {
 			balkfm.121 # The National Question
 			balkfm.122 # The National Revival
 			balkfm.131 # Tsarigradski Vestnik
-			balkfm.136 # The Bulgarian Legion
+#			balkfm.136 # The Bulgarian Legion
 		}
 		random_events = {
-			200 = 0
+			chance_of_no_event = 95
 			5 = balkfm.130 # Insurgency in Niš
 #			5 = balkfm.137 # The Legion Strikes Again!
 		}
@@ -480,6 +480,17 @@ je_balkfm_revival = {
 			change_variable = {
 				name = balkfm_revivalism_var
 				add = var:balkfm_revivalism_progress_var
+			}
+			clamp_variable = {
+				name = balkfm_revivalism_var
+				max = 1000
+				min = 0
+			}
+			if = {
+				limit = {
+					has_journal_entry = je_earn_recognition
+				}
+				balkfm_boost_recognition_effect = yes
 			}
 		}
 	}
@@ -498,7 +509,7 @@ je_balkfm_revival = {
 		triggered_desc = {
 			desc = je_balkfm_revival_status
 			trigger = {
-				has_technology_researched = nationalism
+				has_journal_entry = je_earn_recognition
 			}
 		}
 	}
