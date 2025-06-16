@@ -34,15 +34,21 @@
 	possible = {
 		country_rank >= rank_value:great_power
 		NOT = {
-			has_diplomatic_pact = {
-				who = scope:target_country
-				type = alliance
+			any_scope_treaty = {
+				binds = root
+				binds = scope:target_country
+				any_scope_article = {
+					has_type = alliance
+				}
 			}
-		}	
+		}
 		NOT = {
-			has_diplomatic_pact = {
-				who = scope:target_country
-				type = defensive_pact
+			any_scope_treaty = {
+				binds = root
+				binds = scope:target_country
+				any_scope_article = {
+					has_type = defensive_pact
+				}
 			}
 		}
 	}
@@ -55,7 +61,7 @@
 		show_in_outliner = yes
 		
 		relations_progress_per_day = -1 # At -100, -1 relations
-		relations_improvement_min = -20
+		relations_improvement_min = -25
 		
 		second_modifier = {
 			country_pact_leverage_generation_mult = -0.5
@@ -282,7 +288,7 @@ turkfm_decelerate_tensions = {
 		show_in_outliner = yes
 		
 		relations_progress_per_day = 1
-		relations_improvement_min = 20
+		relations_improvement_max = 25
 		
 		second_modifier = {
 			country_pact_leverage_generation_add = 100
@@ -389,10 +395,13 @@ turkfm_decelerate_tensions = {
 						}						
 					}
 					scope:target_country = {
-						has_diplomatic_pact = {
-							who = root
-							type = alliance
-						}										
+						any_scope_treaty = {
+							binds = root
+							binds = scope:target_country
+							any_scope_article = {
+								has_type = alliance
+							}
+						}
 					}					
 				}
 				has_secret_goal = {
