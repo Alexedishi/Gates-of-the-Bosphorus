@@ -1,8 +1,33 @@
+# = From Base Game
+# Panel Constants
+@panel_width_minus_10 = 530
+@panel_width_minus_30 = 510
+@panel_width = 540
+@panel_width_half = 270
+@panel_width_plus_10 = 550
+@panel_width_plus_14 = 554
+@panel_width_plus_14_half = 277
+@panel_width_plus_20 = 560
+@panel_width_plus_30 = 570
+@panel_width_plus_70 = 610
+
 widget = {
 	name = "eocfm_main_window"
 	size { 100% 100% }
 	layer = layer_ingame_menu
 	visible = "[GetMetaPlayer.GetPlayedOrObservedCountry.IsValid]"
+	
+	# This opens the GUI if an alert variable is set
+	widget = {
+		visible = "[GetVariableSystem.HasValue('com_alert_action', Localize('gg_eocfm_faith_action'))]"
+		enabled = "[GetMetaPlayer.GetPlayedOrObservedCountry.IsValid]"
+		state = {
+			name = _show
+			on_finish = "[GetScriptedGui('eocfm_sidebar_button_sgui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			on_finish = "[GetVariableSystem.Set('com_open_window', 'eocfm_sidebar_button_sgui')]"
+			on_finish = "[GetVariableSystem.Clear('com_alert_action')]"
+		}
+	}
 	
 	widget = {
 		parentanchor = top|hcenter
@@ -22,7 +47,10 @@ widget = {
 			start_sound = {
 				soundeffect = "snapshot:/Dynamic/mute_vfx_war_100"
 			}
-			on_finish = "[GetVariableSystem.Set('com_fullscreen', 'com_fullscreen')]" 
+			on_finish = "[GetVariableSystem.Set('com_fullscreen', 'com_fullscreen')]"
+			# Close open panel before showing this one
+			on_start = "[InformationPanelBar.ClosePanel]"
+			on_start = "[MapListPanelManager.CloseCurrentPanel]"
 		}
 
 		state = {
