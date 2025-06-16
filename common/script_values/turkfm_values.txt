@@ -654,21 +654,6 @@ turkfm_deescalation_progress_value = {
 		}
 		desc = turkfm_value_from_accelerating_tensions
 	}
-	add = {
-		value = {
-			every_country = {
-				limit = {
-					is_subject_of = c:TUR
-					has_diplomatic_pact = {
-						who = c:TUR
-						type = bankroll
-					}
-				}
-			}
-			add = 1
-		}
-		desc = turkfm_value_from_bankrolling_subjects
-	}
 	if = {
 		limit = {
 			turkfm_can_deescalate_tension_trigger = no
@@ -1669,14 +1654,21 @@ turkfm_karadag_mon_value = {
 	if = {
 		limit = {
 			any_country = {
+				c:TUR != this
 				OR = {
-					has_diplomatic_pact = {
-						who = root
-						type = alliance
+					any_scope_treaty = {
+						binds = this
+						binds = c:TUR
+						any_scope_article = {
+							has_type = alliance
+						}
 					}
-					has_diplomatic_pact = {
-						who = root
-						type = defensive_pact
+					any_scope_treaty = {
+						binds = this
+						binds = c:TUR
+						any_scope_article = {
+							has_type = defensive_pact
+						}
 					}
 				}
 				has_diplomatic_pact = {
