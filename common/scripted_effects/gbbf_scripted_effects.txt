@@ -6,24 +6,6 @@
 
 ############################
 
-gbbf_game_start_effect = {
-	c:GBBF_ALB ?= {
-		gbbf_play_albania_effect = yes
-	}
-	c:GBBF_CAP ?= {
-		gbbf_play_cappadocia_effect = yes
-	}
-	c:GBBF_SIL ?= {
-		gbbf_play_silistra_effect = yes
-	}
-	c:GBBF_THE ?= {
-		gbbf_play_theodoro_effect = yes
-	}
-	c:GBBF_TRB ?= {
-		gbbf_play_trabzon_effect = yes
-	}
-}
-
 gbbf_play_albania_effect = {
 	if = {
 		limit = {
@@ -42,6 +24,7 @@ gbbf_play_albania_effect = {
 			province = p:x80D060
 			on_created = {
 				turkfm_setup_yanya_effect = yes
+				balkfm_initialize_revivalism_effect = yes
 			}
 		}
 		play_as = c:TUR_YAN
@@ -82,6 +65,10 @@ gbbf_play_cappadocia_effect = {
 			province = p:x5E4B3A
 			on_created = {
 				grefm_setup_cappadocia_effect = yes
+				trigger_event = {
+					id = grefm.560 # The Greeks of the Highlands
+				}
+				balkfm_set_up_ottoman_legacies_effect = yes
 			}
 		}
 		play_as = c:BYZ_CAP
@@ -104,6 +91,7 @@ gbbf_play_silistra_effect = {
 			state = s:STATE_DOBRUDJA.region_state:TUR
 			on_created = {
 				balkfm_setup_silistra_effect = yes
+				balkfm_initialize_revivalism_effect = yes
 			}
 		}
 		play_as = c:TUR_SIL
@@ -127,6 +115,20 @@ gbbf_play_theodoro_effect = {
 			province = p:x706060
 			on_created = {
 				grefm_setup_theodoro_effect = yes
+				trigger_event = {
+					id = grefm.570 # The Urums of Little Theodoro
+				}
+				balkfm_set_up_ottoman_legacies_effect = yes
+			}
+		}
+		s:STATE_CRIMEA = {
+			region_state:RUS = {
+				every_scope_pop = {
+					limit = {
+						has_pop_culture = urum
+					}
+					move_pop = s:STATE_CRIMEA.region_state:GRA_THE
+				}
 			}
 		}
 		play_as = c:GRA_THE
@@ -148,6 +150,10 @@ gbbf_play_trabzon_effect = {
 			state = s:STATE_TRABZON.region_state:TUR
 			on_created = {
 				grefm_setup_trabzon_effect = yes
+				trigger_event = {
+					id = grefm.550 # The Pontic Greeks
+				}
+				balkfm_set_up_ottoman_legacies_effect = yes
 			}
 		}
 		play_as = c:BYZ_TRB
