@@ -78,6 +78,61 @@ balkfm_ottoman_legacy_value = {
 	}		
 }
 
+balkfm_revivalism_progress_value = {
+	value = 0
+	add = {
+		value = root.literacy_rate
+		desc = balkfm_value_from_literacy
+	}
+	add = {
+		value = balkfm_intelligentsia_influence_value
+		desc = balkfm_bul_from_intelligentsia_influence
+	}
+	if = {
+		limit = {
+			has_variable = eocfm_is_autocephalous
+		}
+		add = {
+			value = 1
+			desc = balkfm_bul_from_exarchate
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				is_subject_type = subject_type_puppet
+				is_subject_type = subject_type_vassal
+			}
+		}
+		add = {
+			value = 1
+			desc = balkfm_value_from_puppet_vassal
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				is_subject_type = subject_type_protectorate
+				is_subject_type = subject_type_tributary
+			}
+		}
+		add = {
+			value = 2
+			desc = balkfm_value_from_protectorate_tributary
+		}
+	}
+	round = 0.01
+}
+
+balkfm_revivalism_recognition_value = {
+	value = 0
+	add = var:balkfm_revivalism_var
+	multiply = 0.01
+	round = 0.01
+	max = 10
+	min = 0
+}
+
 ## MONTENEGRO VALUES ##
 # //
 
@@ -731,7 +786,7 @@ balkfm_battenburg_support_value = {
 		}
 	}
 	
-	round = 1
+	round = 0.01
 	min = 0
 	max = 10
 	
@@ -833,70 +888,6 @@ balkfm_stambolovism_value = {
 	max = 5
 	min = 0
 	
-}
-
-balkfm_revivalism_progress_value = {
-	value = 0
-	add = {
-		value = root.literacy_rate
-		desc = balkfm_value_from_literacy
-	}
-	add = {
-		value = balkfm_intelligentsia_influence_value
-		desc = balkfm_bul_from_intelligentsia_influence
-	}
-	if = {
-		limit = {
-			has_variable = eocfm_is_autocephalous
-		}
-		add = {
-			value = 10
-			desc = balkfm_bul_from_exarchate
-		}
-	}
-	if = {
-		limit = {
-			OR = {
-				is_subject_type = subject_type_puppet
-				is_subject_type = subject_type_vassal
-			}
-		}
-		add = {
-			value = 2
-			desc = balkfm_value_from_puppet_vassal
-		}	
-	}
-	if = {
-		limit = {
-			is_subject_type = subject_type_dominion
-		}
-		add = {	
-			value = 5
-			desc = balkfm_value_from_dominion
-		}
-	}
-	if = {
-		limit = {
-			OR = {
-				is_subject_type = subject_type_protectorate
-				is_subject_type = subject_type_tributary
-			}
-		}
-		add = {
-			value = 10
-			desc = balkfm_value_from_protectorate_tributary
-		}
-	}
-	round = 0.01
-}
-
-balkfm_revivalism_recognition_value = {
-	value = 0
-	add = var:balkfm_revivalism_var
-	multiply = 0.01
-	round = 1
-	max = 10
-	min = 0
 }
 
 balkfm_intelligentsia_influence_value = {

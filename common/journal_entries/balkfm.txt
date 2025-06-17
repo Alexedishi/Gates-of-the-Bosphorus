@@ -413,6 +413,14 @@ je_balkfm_revival = {
 	should_be_pinned_by_default = yes
 	
 	immediate = {
+		set_variable = {
+			name = balkfm_revivalism_progress_var
+			value = balkfm_revivalism_progress_value
+		}
+		set_variable = {
+			name = balkfm_revivalism_recognition_var
+			value = balkfm_revivalism_recognition_value
+		}
 	}
 	
 	scripted_button = balkfm_revivalist_support_button
@@ -461,6 +469,10 @@ je_balkfm_revival = {
 				name = balkfm_revivalism_progress_var
 				value = balkfm_revivalism_progress_value
 			}
+			set_variable = {
+				name = balkfm_revivalism_recognition_var
+				value = balkfm_revivalism_recognition_value
+			}
 		}
 	}
 	
@@ -490,7 +502,12 @@ je_balkfm_revival = {
 				limit = {
 					has_journal_entry = je_earn_recognition
 				}
-				balkfm_boost_recognition_effect = yes
+				je:je_earn_recognition = {
+					add_progress = {
+						name = earn_recognition_progress_bar
+						value = root.var:balkfm_revivalism_recognition_var
+					}
+				}
 			}
 		}
 	}
@@ -1348,8 +1365,19 @@ je_balkfm_bul_battenburg_monarchy = {
 		ruler = {
 			save_scope_as = balkfm_alex_scope
 		}
+		set_variable = {
+			name = balkfm_battenburg_support_var
+			value = balkfm_battenburg_support_value
+		}
+		set_variable = {
+			name = balkfm_coup_var
+			value = 120
+		}
 	}
-	
+
+	scripted_progress_bar = balkfm_battenburg_legitimacy_progressbar
+	scripted_progress_bar = balkfm_battenburg_support_progressbar
+
 	complete = { # Battenburgs stay in power
 		has_law = law_type:law_monarchy
 		AND = {
@@ -1406,19 +1434,25 @@ je_balkfm_bul_battenburg_monarchy = {
 		set_variable = balkfm_alex_yeeted
 	}
 	
-	current_value = {
-		value = balkfm_battenburg_support_value
-	}
-
-	goal_add_value = {
-		add = 10
-	}
-
-	progressbar = yes
-	
 	on_weekly_pulse = {
 		events = {
 			balkfm.509 # The August Coup
+		}
+		effect = {
+			set_variable = {
+				name = balkfm_battenburg_support_var
+				value = balkfm_battenburg_support_value
+			}
+			je:je_balkfm_bul_battenburg_monarchy = {
+				set_bar_progress = {
+					name = balkfm_battenburg_legitimacy_progressbar
+					value = root.var:balkfm_coup_var
+				}
+				set_bar_progress = {
+					name = balkfm_battenburg_support_progressbar
+					value = root.var:balkfm_battenburg_support_var
+				}
+			}
 		}
 	}
 	
@@ -1426,12 +1460,17 @@ je_balkfm_bul_battenburg_monarchy = {
 		effect = {
 			change_variable = {
 				name = balkfm_coup_var
-				subtract = 1 # yes this will go below zero for a few months idc
+				subtract = 1
+			}
+			clamp_variable = {
+				name = balkfm_coup_var
+				max = 120
+				min = 0
 			}
 		}
 		events = {
 			balkfm.501 # Democratic Obstructions
-			balkfm.502 # Dissident Publishings	
+			balkfm.502 # Dissident Publishing
 			balkfm.503 # Tsarist Influence
 			balkfm.504 # Russia Demands Subservience
 		}
