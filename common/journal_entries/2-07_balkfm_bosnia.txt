@@ -1,0 +1,122 @@
+﻿je_balkfm_bos_tanzimat = {
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+
+	group = je_group_balkfm_bosnia
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+		trigger_event = {
+			id = balkfm.792 # The Reordering Begins
+		}
+	}
+
+	complete = {
+		custom_tooltip = {
+			text = balkfm_legacies_3
+			balkfm_ottoman_legacy_value >= 3
+		}
+	}
+
+	on_complete = {
+	}
+
+	fail = {
+	}
+
+	on_fail = {
+	}
+
+	weight = 1000
+
+}
+
+je_balkfm_bos_ali_pasha = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	group = je_group_balkfm_bosnia
+
+	should_be_pinned_by_default = yes
+
+	modifiers_while_active = {
+		modifier_balkfm_ali_pasha
+	}
+
+	complete = {
+		is_subject = no
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.799 # House Rizvanbegović of Bosnia
+		}
+		hidden_effect = {
+			c:TUR ?= {
+				trigger_event = {
+					id = balkfm.796 # Ali Pasha Ascendant
+				}
+			}
+			c:MON ?= {
+				trigger_event = {
+					id = balkfm.796 # Ali Pasha Ascendant
+				}
+			}
+		}
+		set_global_variable = balkfm_ali_pasha_waxed
+	}
+
+	fail = {
+		custom_tooltip = {
+			text = je_balkfm_bos_ali_pasha_fail
+			ruler = {
+				NOT = {
+					has_template = template_balkfm_rizvanbegovic_ali
+				}
+			}
+		}
+	}
+
+	on_fail = {
+		trigger_event = {
+			id = balkfm.798 # Failed Amibitions
+		}
+		set_global_variable = balkfm_ali_pasha_waxed
+	}
+
+	weight = 500
+
+}
+
+je_balkfm_bos_karadag = {
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+
+	group = je_group_balkfm_bosnia
+
+	should_be_pinned_by_default = yes
+
+	scripted_button = balkfm_abandon_karadag_button
+
+	complete = {
+		owns_entire_state_region = STATE_MONTENEGRO
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.797 # The Lands of Montenegro
+		}
+		remove_variable = balkfm_abandoned_karadag
+	}
+
+	fail = {
+		hidden_trigger = {
+			has_variable = balkfm_abandoned_karadag
+		}
+	}
+
+	on_fail = {
+		remove_variable = balkfm_abandoned_karadag
+	}
+
+	weight = 500
+
+}

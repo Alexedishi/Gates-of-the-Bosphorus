@@ -1,0 +1,341 @@
+﻿je_balkfm_tax_reform = {
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+
+	group = je_group_balkfm_legacies
+
+	immediate = {
+	}
+
+	modifiers_while_active = {
+		modifier_balkfm_timar
+	}
+
+	complete = {
+		OR = {
+			has_law = law_type:law_per_capita_based_taxation
+			has_law = law_type:law_proportional_taxation
+			has_law = law_type:law_graduated_taxation
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.101 # Tax Reform Complete
+		}
+		set_variable = balkfm_tax_reform_complete
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable = balkfm_tax_reform_complete
+		}
+	}
+
+	on_invalid = {
+	}
+
+	weight = 100
+
+}
+
+je_balkfm_land_reform = {
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+
+	group = je_group_balkfm_legacies
+
+	immediate = {
+	}
+
+	modifiers_while_active = {
+		modifier_balkfm_outdated_argiculture
+	}
+
+	complete = {
+		NOR = {
+			has_law = law_type:law_traditionalism
+			has_law = law_type:law_agrarianism
+		}
+		NOR = {
+			has_law = law_type:law_serfdom
+			has_law = law_type:law_tenant_farmers
+		}
+		any_scope_building = {
+			is_building_type = building_wheat_farm
+			NOT = {
+				has_active_production_method = pm_simple_farming
+			}
+			level >= 5
+			weekly_profit > 5
+			occupancy >= 0.9
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.102 # Land Reform Complete
+		}
+		set_variable = balkfm_land_reform_complete
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable = balkfm_land_reform_complete
+		}
+	}
+
+	on_invalid = {
+	}
+
+	weight = 100
+
+}
+
+je_balkfm_civic_reform = {
+	icon = "gfx/interface/icons/event_icons/event_election.dds"
+
+	group = je_group_balkfm_legacies
+
+	immediate = {
+	}
+
+	modifiers_while_active = {
+		modifier_balkfm_poor_administration
+	}
+
+	complete = {
+		trigger_if = {
+			limit = {
+				has_modifier = modifier_grefm_armansperg_regency
+			}
+			custom_tooltip = {
+				text = grefm_regency_discharged_tt
+				hidden_trigger = {
+					NOT = {
+						has_modifier = modifier_grefm_armansperg_regency
+					}
+				}
+			}
+		}
+		NOT = {
+			has_law = law_type:law_hereditary_bureaucrats
+		}
+		ig:ig_intelligentsia = {
+			is_marginal = no
+		}
+		ig:ig_landowners = {
+			is_powerful = no
+			is_insurrectionary = no
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.103 # Civic Reform Complete
+		}
+		set_variable = balkfm_civic_reform_complete
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable = balkfm_civic_reform_complete
+		}
+	}
+
+	on_invalid = {
+	}
+
+	weight = 100
+
+}
+
+je_balkfm_brigandage = {
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+
+	group = je_group_balkfm_legacies
+
+	immediate = {
+	}
+
+	modifiers_while_active = {
+		modifier_balkfm_insecure_countryside
+	}
+
+	complete = {
+		NOR = {
+			has_law = law_type:law_no_police
+			has_law = law_type:law_local_police
+		}
+		institution_investment_level = {
+			institution = institution_police
+			value >= 3
+		}
+		any_scope_state = {
+			filter = {
+				OR = {
+					region = sr:region_balkans
+					region = sr:region_danubia
+				}
+			}
+			count = all
+			turmoil < 0.20
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.104 # Brigandage Complete
+		}
+		set_variable = balkfm_brigandage_complete
+	}
+
+	invalid = {
+		OR = {
+			hidden_trigger = {
+				has_variable = balkfm_brigandage_complete
+			}
+			NOT = {
+				any_scope_state = {
+					OR = {
+						region = sr:region_balkans
+						region = sr:region_danubia
+					}
+				}
+			}
+		}
+	}
+
+	on_invalid = {
+		hidden_effect = {
+			every_scope_state = {
+				limit = {
+					has_modifier = modifier_balkfm_brigandage
+				}
+				remove_modifier = modifier_balkfm_brigandage
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		random_events = {
+			chance_of_no_event = 95
+			5 = balkfm.110 # The Brigands Raid Again!
+			#			5 = balkfm.111 # Blood Feud Escalates
+		}
+	}
+
+	weight = 100
+
+}
+
+je_balkfm_state_reform = {
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	group = je_group_balkfm_legacies
+
+	immediate = {
+	}
+
+	complete = {
+		NOR = {
+			has_law = law_type:law_hereditary_bureaucrats
+			has_law = law_type:law_peasant_levies
+		}
+		any_scope_building = {
+			is_building_type = building_government_administration
+			NOT = {
+				has_active_production_method = pm_simple_farming
+			}
+			level >= 2
+			occupancy >= 0.9
+		}
+		bureaucracy >= 0
+		approaching_bureaucracy_shortage = no
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.105 # State Reform Complete
+		}
+		set_variable = balkfm_state_reform_complete
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable = balkfm_state_reform_complete
+		}
+	}
+
+	weight = 500
+
+}
+
+je_balkfm_economic_reform = {
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+
+	group = je_group_balkfm_legacies
+
+	immediate = {
+	}
+
+	complete = {
+		NOR = {
+			has_law = law_type:law_traditionalism
+			has_law = law_type:law_land_based_taxation
+			has_law = law_type:law_consumption_based_taxation
+			has_law = law_type:law_isolationism
+		}
+		in_default = no
+		any_scope_state = {
+			is_incorporated = yes
+			has_building = building_urban_center
+			percent >= 0.75
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.106 # Economic Reform Complete
+		}
+		set_variable = balkfm_economic_reform_complete
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable = balkfm_economic_reform_complete
+		}
+	}
+
+	weight = 500
+
+}
+
+je_balkfm_social_reform = {
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	group = je_group_balkfm_legacies
+
+	immediate = {
+	}
+
+	complete = {
+		NOT = { has_law = law_type:law_serfdom }
+		has_law = law_type:law_slavery_banned
+		NOT = { has_law = law_type:law_no_schools }
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.107 # Social Reform Complete
+		}
+		set_variable = balkfm_social_reform_complete
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable = balkfm_social_reform_complete
+		}
+	}
+
+	weight = 500
+
+}

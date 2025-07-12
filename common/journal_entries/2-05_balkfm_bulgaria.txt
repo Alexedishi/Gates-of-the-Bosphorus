@@ -1,0 +1,807 @@
+﻿je_balkfm_bul_battenburg_monarchy = {
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	group = je_group_balkfm_bulgaria
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+		ruler = {
+			save_scope_as = balkfm_alex_scope
+		}
+		set_variable = {
+			name = balkfm_battenburg_support_var
+			value = balkfm_battenburg_support_value
+		}
+		set_variable = {
+			name = balkfm_coup_var
+			value = 120
+		}
+	}
+
+	scripted_progress_bar = balkfm_battenburg_legitimacy_progressbar
+	scripted_progress_bar = balkfm_battenburg_support_progressbar
+
+	complete = { # Battenburgs stay in power
+		has_law = law_type:law_monarchy
+		AND = {
+			custom_tooltip = {
+				text = battenburg_monarchy_success_tt1
+				hidden_trigger = {
+					balkfm_battenburg_support_value > 5
+				}
+			}
+			custom_tooltip = {
+				text = battenburg_monarchy_success_tt2
+				hidden_trigger = {
+					has_variable = balkfm_alex_yeeted
+				}
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.508 # Mandate Secured
+		}
+	}
+
+	fail = { # Battenburgs get the boot
+		has_law = law_type:law_monarchy
+		AND = {
+			custom_tooltip = {
+				text = battenburg_monarchy_fail_tt1
+				hidden_trigger = {
+					balkfm_battenburg_support_value <= 5
+				}
+			}
+			custom_tooltip = {
+				text = battenburg_monarchy_fail_tt2
+				hidden_trigger = {
+					has_variable = balkfm_alex_yeeted
+				}
+			}
+		}
+	}
+
+	on_fail = {
+		trigger_event = {
+			id = balkfm.520 # An Elected Prince
+		}
+	}
+
+	invalid = { # 404 monarch not found
+		NOT = { has_law = law_type:law_monarchy }
+	}
+
+	on_invalid = {
+		set_variable = balkfm_alex_yeeted
+	}
+
+	on_weekly_pulse = {
+		events = {
+			balkfm.509 # The August Coup
+		}
+		effect = {
+			set_variable = {
+				name = balkfm_battenburg_support_var
+				value = balkfm_battenburg_support_value
+			}
+			je:je_balkfm_bul_battenburg_monarchy = {
+				set_bar_progress = {
+					name = balkfm_battenburg_legitimacy_progressbar
+					value = root.var:balkfm_coup_var
+				}
+				set_bar_progress = {
+					name = balkfm_battenburg_support_progressbar
+					value = root.var:balkfm_battenburg_support_var
+				}
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			change_variable = {
+				name = balkfm_coup_var
+				subtract = 1
+			}
+			clamp_variable = {
+				name = balkfm_coup_var
+				max = 120
+				min = 0
+			}
+		}
+		events = {
+			balkfm.501 # Democratic Obstructions
+			balkfm.502 # Dissident Publishing
+			balkfm.503 # Tsarist Influence
+			balkfm.504 # Russia Demands Subservience
+		}
+	}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = balkfm_coup_warning_1
+				trigger = {
+					var:balkfm_coup_var > 60
+				}
+			}
+			triggered_desc = {
+				desc = balkfm_coup_warning_2
+				trigger = {
+					var:balkfm_coup_var > 30
+				}
+			}
+			triggered_desc = {
+				desc = balkfm_coup_warning_3
+				trigger = {
+					var:balkfm_coup_var > 15
+				}
+			}
+			triggered_desc = {
+				desc = balkfm_coup_warning_4
+				trigger = {
+					var:balkfm_coup_var <= 15
+				}
+			}
+		}
+	}
+
+	weight = 2000
+
+}
+
+je_balkfm_bul_russian_influence = {
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	group = je_group_balkfm_bulgaria
+
+	should_be_pinned_by_default = yes
+
+	complete = {
+		custom_tooltip = {
+			text = je_balkfm_bul_royal_influence_status
+			hidden_trigger = {
+				has_variable = balkfm_royal_tour_complete
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.506 # The Sobolev Regency
+		}
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable = balkfm_alex_yeeted
+		}
+	}
+
+	weight = 500
+
+}
+
+je_balkfm_bul_railways = {
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+
+	group = je_group_balkfm_bulgaria
+
+	complete = {
+		any_scope_building = {
+			is_building_type = building_railway
+			building_has_goods_shortage = no
+		}
+		any_scope_building = {
+			has_active_production_method = pm_public_trams
+			building_has_goods_shortage = no
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.514 # The Bulgarian Railways
+		}
+		custom_tooltip = balkfm_countercoup_add_1
+		set_variable = balkfm_railways_built
+	}
+
+	invalid = {
+		NOT = { owns_entire_state_region = STATE_BULGARIA }
+	}
+
+	scripted_button = balkfm_purchase_rail_button
+
+	weight = 200
+
+}
+
+je_balkfm_bul_stambolovism = {
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	group = je_group_balkfm_bulgaria
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+		set_variable = {
+			name = balkfm_stambolovism_var
+			value = 0
+		}
+	}
+
+	modifiers_while_active = {
+		modifier_balkfm_unrecognized_monarch
+	}
+
+	complete = {
+		scope:journal_entry = {
+			is_goal_complete = yes
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.531 # Royal Recognition
+		}
+		balkfm_remove_stambolovism_variables_effect = yes
+	}
+
+	fail = {
+		custom_tooltip = {
+			text = je_balkfm_bul_stambolovism_fail
+			hidden_trigger = {
+				ruler = {
+					NOR = {
+						has_template = template_balkfm_sakskoburggotski_ferdinand
+						has_template = template_balkfm_dadiani_nikoloz
+						has_template = template_balkfm_bogoridi_alexander
+					}
+				}
+			}
+		}
+	}
+
+	on_fail = {
+		balkfm_remove_stambolovism_variables_effect = yes
+	}
+
+	invalid = {
+		NOR = {
+			has_law = law_type:law_monarchy
+			is_subject = yes
+		}
+	}
+
+	on_invalid = {
+		balkfm_remove_stambolovism_variables_effect = yes
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			set_variable = {
+				name = balkfm_stambolovism_var
+				value = balkfm_stambolovism_value
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {
+			balkfm.528 # The House of Bulgaria
+		}
+		random_events = {
+			200 = 0
+			5 = balkfm.526 # The Panista Plot
+			5 = balkfm.527 # Funerary Politics
+			10 = balkfm.563 # An Orthodox Heir
+		}
+	}
+
+	current_value = {
+		value = var:balkfm_stambolovism_var
+	}
+
+	goal_add_value = {
+		value = 5
+	}
+
+	progressbar = yes
+
+	weight = 100
+
+}
+
+je_balkfm_bul_military_modernization = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	group = je_group_balkfm_bulgaria
+
+	immediate = {
+	}
+
+	complete = {
+		any_military_formation = {
+			any_combat_unit = {
+				count >= 50
+				OR = {
+					has_unit_type = unit_type:combat_unit_type_trench_infantry
+					has_unit_type = unit_type:combat_unit_type_squad_infantry
+					has_unit_type = unit_type:combat_unit_type_mechanized_infantry
+					has_unit_type = unit_type:combat_unit_type_shrapnel_artillery
+					has_unit_type = unit_type:combat_unit_type_siege_artillery
+					has_unit_type = unit_type:combat_unit_type_heavy_tank
+				}
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.525 # The Bulgarian Army
+		}
+	}
+
+	weight = 100
+
+}
+
+#### BULGARIAN IRREDENTISM
+
+je_balkfm_bul_liberation_of_bulgaria = {
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	group = je_group_balkfm_bulgaria
+
+	should_be_pinned_by_default = yes
+
+	is_shown_when_inactive = {
+		c:BUL ?= this
+		NOR = {
+			#			has_global_variable = eqfm_crisis_var ## TODO update these variables when the new EQ is added
+			#			has_global_variable = eqfm_berlin_congress_var
+			has_variable = balkfm_bulgarian_liberation
+			has_variable = balkfm_golden_lion_tickled
+		}
+		owns_entire_state_region = STATE_BULGARIA
+		NOT = { owns_entire_state_region = STATE_NORTHERN_THRACE }
+	}
+
+	possible = {
+		has_technology_researched = nationalism
+	}
+
+	immediate = {
+		set_variable = balkfm_bulgarian_liberation
+		trigger_event = {
+			id = balkfm.580 # Dreams of the Tsardom
+		}
+	}
+
+	complete = {
+		is_subject = no
+		owns_entire_state_region = STATE_BULGARIA
+		owns_entire_state_region = STATE_NORTHERN_THRACE
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.583 # Bulgarian Irredentism
+		}
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable = balkfm_weaksauce
+		}
+	}
+
+	scripted_button = balkfm_agitate_rumelia_button # balkfm.577
+	scripted_button = balkfm_uplift_rumelia_button # balkfm.578
+	scripted_button = balkfm_annex_rumelia_button # balkfm.581
+	scripted_button = balkfm_declare_tsardom_button # balkfm.582
+
+	weight = 1000
+
+}
+
+je_balkfm_bul_greater_bulgaria = {
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	group = je_group_balkfm_bulgaria
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+	}
+
+	complete = {
+		is_subject = no
+		owns_entire_state_region = STATE_BULGARIA
+		owns_entire_state_region = STATE_NORTHERN_THRACE
+		owns_entire_state_region = STATE_WESTERN_THRACE
+		owns_entire_state_region = STATE_SKOPIA
+		owns_entire_state_region = STATE_MACEDONIA
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.584 # The Tsardom of Bulgaria
+		}
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable = balkfm_weaksauce
+		}
+	}
+
+	weight = 500
+
+}
+
+je_balkfm_bul_greater_bulgaria_alternate = {
+	# NOTE: there is a corner case where BUL can spawn with both STATE_BULGARIA and STATE_NORTHERN_THRACE, AND the on_actions won't catch it
+	# The variable balkfm_bulgarian_liberation combined with the owns_entire_state_region triggers will activate the correct journal entry
+	# balkfm.583 can be triggered by either journal, but will add je_balkfm_bul_greater_bulgaria if balkfm_bulgarian_liberation is present
+	# Yes, this is jank and I don't like it either
+
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	group = je_group_balkfm_bulgaria
+
+	should_be_pinned_by_default = yes
+
+	is_shown_when_inactive = {
+		c:BUL ?= this
+		NOR = {
+			#			has_global_variable = eqfm_crisis_var
+			#			has_global_variable = eqfm_berlin_congress_var
+			has_variable = balkfm_bulgarian_liberation
+			has_variable = balkfm_golden_lion_tickled # this is to block this journal in the event that the player is coming in from TUR_SIL
+		}
+		owns_entire_state_region = STATE_BULGARIA
+		owns_entire_state_region = STATE_NORTHERN_THRACE
+	}
+
+	possible = {
+		has_technology_researched = nationalism
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				NOT = { has_variable = balkfm_bulgarian_liberation }
+			}
+			set_variable = balkfm_bulgarian_liberation
+			trigger_event = {
+				id = balkfm.583 # Bulgarian Irredentism
+			}
+		}
+	}
+
+	complete = {
+		is_subject = no
+		owns_entire_state_region = STATE_BULGARIA
+		owns_entire_state_region = STATE_NORTHERN_THRACE
+		owns_entire_state_region = STATE_WESTERN_THRACE
+		owns_entire_state_region = STATE_SKOPIA
+		owns_entire_state_region = STATE_MACEDONIA
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.584 # The Tsardom of Bulgaria
+		}
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable = balkfm_weaksauce
+		}
+	}
+
+	weight = 500
+
+}
+
+je_balkfm_bul_tsardom = {
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	group = je_group_balkfm_bulgaria
+
+	should_be_pinned_by_default = yes
+
+	complete = {
+		owns_entire_state_region = STATE_BULGARIA
+		owns_entire_state_region = STATE_NORTHERN_THRACE
+		owns_entire_state_region = STATE_WESTERN_THRACE
+		owns_entire_state_region = STATE_SKOPIA
+		owns_entire_state_region = STATE_MACEDONIA
+		owns_entire_state_region = STATE_DOBRUDJA
+		owns_entire_state_region = STATE_NORTHERN_SERBIA
+		owns_entire_state_region = STATE_SOUTHERN_SERBIA
+		owns_entire_state_region = STATE_ALBANIA
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.585 # The Future of Bulgaria
+		}
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable = balkfm_weaksauce
+		}
+	}
+
+	weight = 500
+
+}
+
+je_balkfm_bul_empire = {
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	group = je_group_balkfm_bulgaria
+
+	should_be_pinned_by_default = yes
+
+	complete = {
+		custom_tooltip = {
+			text = je_balkfm_bul_empire_tt
+			hidden_trigger = {
+				c:BUL_TSR ?= this
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.586 # The Bulgarian Empire
+		}
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable = balkfm_weaksauce
+		}
+	}
+
+	weight = 500
+}
+
+#### BULGARIAN IMPERIAL AMBITIONS
+
+je_balkfm_bul_old_bulgaria = {
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+
+	group = je_group_balkfm_bulgaria
+
+	should_be_pinned_by_default = yes
+
+	is_shown_when_inactive = {
+		c:BUL_TSR ?= this
+	}
+
+	possible = {
+		has_technology_researched = pan-nationalism
+	}
+
+	immediate = {
+		trigger_event = {
+			id = balkfm.590 # Memories of the Steppe
+		}
+	}
+
+	complete = {
+		owns_entire_state_region = STATE_CRIMEA
+		owns_entire_state_region = STATE_CHERSON
+		owns_entire_state_region = STATE_TAURIDA
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.591 # Old Great Bulgaria
+		}
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable = balkfm_weaksauce
+		}
+	}
+
+	weight = 500
+
+}
+
+#### EASTERN RUMELIA CONTENT
+
+je_balkfm_bul_two_bulgarias = {
+	icon = "gfx/interface/icons/event_icons/event_rumelia.dds"
+
+	group = je_group_balkfm_bulgaria
+
+	should_be_pinned_by_default = yes
+
+	is_shown_when_inactive = {
+		c:BUL_RUM ?= this
+		is_subject_of = c:TUR
+	}
+
+	possible = {
+		has_technology_researched = nationalism
+	}
+
+	immediate = {
+		set_variable = {
+			name = balkfm_governor_counter
+			value = 0
+		}
+		set_variable = {
+			name = balkfm_erum_governor_var
+			value = 60
+		}
+		trigger_event = {
+			id = balkfm.570 # The Two Bulgarias
+		}
+	}
+
+	scripted_button = balkfm_bulgarian_union_button
+
+	complete = {
+		owns_entire_state_region = STATE_NORTHERN_THRACE
+		custom_tooltip = {
+			text = je_balkfm_bul_two_bulgarias
+			hidden_trigger = {
+				exists = c:BUL
+				is_subject_of = c:BUL
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.579 # Union with Bulgaria
+		}
+	}
+
+	fail = {
+		NOT = {
+			exists = c:BUL
+		}
+	}
+
+	on_fail = {
+	}
+
+	on_monthly_pulse = {
+		events = {
+			balkfm.571 # New Governor-General Appointed
+		}
+		effect = {
+			change_variable = {
+				name = balkfm_erum_governor_var
+				subtract = 1
+			}
+		}
+	}
+
+	status_desc = {
+		triggered_desc = {
+			desc = je_balkfm_bul_two_bulgarias_status
+			trigger = {
+				has_variable = balkfm_erum_governor_var
+			}
+		}
+	}
+
+	weight = 100
+
+}
+
+je_balkfm_bul_bulgarian_exarchate = {
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	group = je_group_balkfm_bulgaria
+
+	should_be_pinned_by_default = yes
+
+	is_shown_when_inactive = {
+		c:TUR_SIL ?= this
+	}
+
+	possible = {
+		has_technology_researched = romanticism
+	}
+
+	immediate = {
+		trigger_event = {
+			id = balkfm.564 # Liturgical Language
+		}
+		set_variable = {
+			name = eocfm_schism_var
+			value = 0
+		}
+	}
+
+	modifiers_while_active = {
+		modifier_balkfm_schismatic_efforts
+	}
+
+	complete = {
+		custom_tooltip = {
+			text = je_balkfm_bul_bulgarian_exarchate_complete_tt
+			hidden_trigger = {
+				scope:journal_entry = { is_goal_complete = yes }
+			}
+		}
+		has_technology_researched = nationalism
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.569 # The Exarchate of Bulgaria
+		}
+	}
+
+	invalid = {
+		country_has_state_religion = rel:orthodox
+	}
+
+	on_invalid = {
+		clamp_variable = {
+			name = eocfm_schism_var
+			max = 100
+			min = 0
+		}
+	}
+
+	on_monthly_pulse = { # This is a replica of eocfm_schism_monthly_pulse
+		random_events = {
+			chance_of_no_event = 90
+			10 = eocfm.0120 # Traditionalists March in Capital (Stall Event)
+			10 = eocfm.0121 # A Church for the Nation (Progress Event)
+			10 = eocfm.0122 # Minority Adherents Seek Protections (Debate Event)
+			10 = eocfm.0123 # Patriarch Denounces Schism (Stall Event)
+			10 = eocfm.0124 # Liturgical Language (Debate Event)
+			10 = eocfm.0125 # Ecclesiatic Purges (Advance Event)
+			10 = eocfm.0126 # Promoting Local Bishops (Advance Event)
+			10 = eocfm.0127 # Monastic Brawls (Stall Event)
+			10 = eocfm.0128 # Agitator Condemns Schism (Stall Event)
+			10 = eocfm.0129 # Prominent Priest Assassinated (Stall Event)
+		}
+		effect = {
+			change_variable = {
+				name = eocfm_schism_var
+				add = eocfm_schism_progress_value
+			}
+		}
+	}
+
+	current_value = {
+		value = var:eocfm_schism_var
+	}
+
+	goal_add_value = {
+		value = 400
+	}
+
+	progressbar = yes
+
+	status_desc = {
+		triggered_desc = {
+			desc = je_balkfm_bul_bulgarian_exarchate_status
+			trigger = {
+				has_technology_researched = romanticism
+			}
+		}
+	}
+
+	weight = 500
+
+}

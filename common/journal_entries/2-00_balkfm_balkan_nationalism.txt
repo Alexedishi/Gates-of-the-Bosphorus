@@ -1,0 +1,129 @@
+﻿je_balkfm_revival = {
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+
+	group = je_group_balkfm_national_revival
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+		set_variable = {
+			name = balkfm_revivalism_progress_var
+			value = balkfm_revivalism_progress_value
+		}
+		set_variable = {
+			name = balkfm_revivalism_recognition_var
+			value = balkfm_revivalism_recognition_value
+		}
+	}
+
+	scripted_button = balkfm_revivalist_support_button
+
+	modifiers_while_active = {
+		#		modifier_balkfm_national_revival
+	}
+
+	complete = {
+		has_law = law_type:law_monarchy
+		OR = {
+			is_subject = no
+			is_subject_type = subject_type_protectorate
+			is_subject_type = subject_type_tributary
+		}
+		trigger_if = {
+			limit = {
+				is_subject = no
+			}
+			country_rank >= rank_value:minor_power
+		}
+		trigger_if = {
+			limit = {
+				country_has_state_religion = rel:orthodox
+			}
+			custom_tooltip = {
+				text = eocfm_is_autocephalous
+				hidden_trigger = {
+					has_variable = eocfm_is_autocephalous
+				}
+			}
+		}
+		is_country_type = recognized
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.129 # The Birth of a National State
+		}
+		balkfm_cleanup_revivalism_effect = yes
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			set_variable = {
+				name = balkfm_revivalism_progress_var
+				value = balkfm_revivalism_progress_value
+			}
+			set_variable = {
+				name = balkfm_revivalism_recognition_var
+				value = balkfm_revivalism_recognition_value
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {
+			balkfm.121 # The National Question
+			balkfm.122 # The National Revival
+			balkfm.131 # Tsarigradski Vestnik
+			#			balkfm.136 # The Bulgarian Legion
+		}
+		random_events = {
+			chance_of_no_event = 95
+			5 = balkfm.130 # Insurgency in Niš
+			#			5 = balkfm.137 # The Legion Strikes Again!
+		}
+		effect = {
+			change_variable = {
+				name = balkfm_revivalism_var
+				add = var:balkfm_revivalism_progress_var
+			}
+			clamp_variable = {
+				name = balkfm_revivalism_var
+				max = 1000
+				min = 0
+			}
+			if = {
+				limit = {
+					has_journal_entry = je_earn_recognition
+				}
+				je:je_earn_recognition = {
+					add_progress = {
+						name = earn_recognition_progress_bar
+						value = root.var:balkfm_revivalism_recognition_var
+					}
+				}
+			}
+		}
+	}
+
+	current_value = {
+		value = var:balkfm_revivalism_var
+	}
+
+	goal_add_value = {
+		value = 1000
+	}
+
+	progressbar = yes
+
+	status_desc = {
+		triggered_desc = {
+			desc = je_balkfm_revival_status
+			trigger = {
+				has_journal_entry = je_earn_recognition
+			}
+		}
+	}
+
+	weight = 1000
+
+}

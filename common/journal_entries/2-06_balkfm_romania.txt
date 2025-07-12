@@ -1,0 +1,1016 @@
+﻿je_balkfm_rom_regulamentul_organic = {
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	group = je_group_balkfm_romania
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+	}
+
+	complete = {
+		custom_tooltip = {
+			text = je_rom_regulamentul_organic_tt
+			hidden_trigger = {
+				var:balkfm_ottoman_legacy_var >= 4
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.626 # The Death of Feudalism
+		}
+		if = {
+			limit = {
+				ruler = {
+					NOR = {
+						has_ideology = ideology:ideology_radical
+						has_ideology = ideology:ideology_social_democrat
+						has_ideology = ideology:ideology_kogalnitchanism
+					}
+				}
+				NOT = { has_variable = balkfm_1848_succeeded }
+			}
+			hidden_effect = {
+				trigger_event = {
+					id = balkfm.627 # Absolutist Aspirations
+					days = 120
+				}
+			}
+		}
+	}
+
+	fail = {
+		OR = {
+			custom_tooltip = {
+				text = balkfm_has_formed_rom_tt
+				hidden_trigger = {
+					c:ROM ?= this
+				}
+			}
+			custom_tooltip = {
+				text = balkfm_not_turkish_subject_tt
+				hidden_trigger = {
+					NOT = {
+						is_subject_of = c:TUR
+					}
+				}
+			}
+		}
+	}
+
+	on_fail = {
+		if = {
+			limit = {
+				ruler = {
+					NOR = {
+						has_ideology = ideology:ideology_radical
+						has_ideology = ideology:ideology_social_democrat
+						has_ideology = ideology:ideology_kogalnitchanism
+					}
+				}
+				NOT = { has_variable = balkfm_1848_succeeded }
+			}
+			show_as_tooltip = {
+				trigger_event = {
+					id = balkfm.627 # Absolutist Aspirations
+				}
+			}
+			hidden_effect = {
+				trigger_event = {
+					id = balkfm.627 # Absolutist Aspirations
+					days = 120
+				}
+			}
+		}
+		set_variable = balkfm_regulamentul_completed
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable =  balkfm_regulamentul_completed
+		}
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			set_variable = {
+				name = balkfm_ottoman_legacy_var
+				value = balkfm_ottoman_legacy_value
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {
+			balkfm.601 # The Petition-Proclamation
+			balkfm.611 # Proclamation of Islaz
+			balkfm.624 # Electing a Hospodar (MOL)
+			balkfm.625 # Electing a Hospodar (WAL)
+		}
+	}
+
+	on_yearly_pulse = {
+		effect = {
+			if = {
+				limit = {
+					has_law = law_type:law_monarchy
+					NOT = { has_variable = balkfm_1848_rom_var }
+				}
+				change_variable = {
+					name = balkfm_regulamentul_var
+					subtract = 1
+				}
+			}
+			else = {
+				set_variable = {
+					name = balkfm_regulamentul_var
+					value = 7
+				}
+			}
+		}
+	}
+
+	current_value = {
+		value = var:balkfm_ottoman_legacy_var
+	}
+
+	goal_add_value = {
+		value = 4
+	}
+
+	progressbar = yes
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_balkfm_rom_regulamentul_election_tt4
+				trigger = {
+					has_variable = balkfm_1848_rom_var
+				}
+			}
+			triggered_desc = {
+				desc = je_balkfm_rom_regulamentul_election_tt1
+				trigger = {
+					var:balkfm_regulamentul_var > 1
+				}
+			}
+			triggered_desc = {
+				desc = je_balkfm_rom_regulamentul_election_tt2
+				trigger = {
+					var:balkfm_regulamentul_var = 1
+				}
+			}
+			triggered_desc = {
+				desc = je_balkfm_rom_regulamentul_election_tt3
+				trigger = {
+					var:balkfm_regulamentul_var < 1
+				}
+			}
+		}
+	}
+
+	weight = 2000
+
+}
+
+je_balkfm_rom_1848 = {
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+
+	group = je_group_balkfm_romania
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+		set_variable = {
+			name = balkfm_1848_rom_var
+			value = 0
+		}
+		set_variable = {
+			name = balkfm_1848_progress_var
+			value = 0
+		}
+	}
+
+	modifiers_while_active = {
+	}
+
+	scripted_button = balkfm_mol_intervention_button
+	scripted_button = balkfm_wal_intervention_button
+
+	complete = {
+		custom_tooltip = {
+			text = balkfm_1848_rom_success_tt
+			hidden_trigger = {
+				var:balkfm_1848_rom_var >= 200
+			}
+		}
+	}
+
+	on_complete = {
+		if = {
+			limit = {
+				c:MOL ?= this
+			}
+			trigger_event = {
+				id = balkfm.604 # The Convention of Balta Liman
+			}
+		}
+		if = {
+			limit = {
+				c:WAL ?= this
+			}
+			trigger_event = {
+				id = balkfm.614 # The Convention of Balta Liman
+			}
+		}
+		balkfm_cleanup_1848_variables_effect = yes
+	}
+
+	fail = {
+		custom_tooltip = {
+			text = balkfm_1848_rom_fail_tt
+			hidden_trigger = {
+				var:balkfm_1848_rom_var <= 0
+			}
+		}
+	}
+
+	on_fail = {
+		if = {
+			limit = {
+				c:MOL ?= this
+			}
+			trigger_event = {
+				id = balkfm.603 # Kogălniceanu's Revolution
+			}
+		}
+		if = {
+			limit = {
+				c:WAL ?= this
+			}
+			trigger_event = {
+				id = balkfm.613 # The Sword of the Revolution
+			}
+		}
+		balkfm_cleanup_1848_variables_effect = yes
+	}
+
+	timeout = 730
+
+	on_timeout = {
+		if = {
+			limit = {
+				c:MOL ?= this
+			}
+			trigger_event = {
+				id = balkfm.605 # Constitutional Stalemate
+			}
+		}
+		if = {
+			limit = {
+				c:WAL ?= this
+			}
+			trigger_event = {
+				id = balkfm.615 # Constitutional Stalemate
+			}
+		}
+		balkfm_cleanup_1848_variables_effect = yes
+	}
+
+	invalid = {
+		has_variable = balkfm_regulamentul_completed
+	}
+
+	on_invalid = {
+		balkfm_cleanup_1848_variables_effect = yes
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			set_variable = {
+				name = balkfm_1848_progress_var
+				value = balkfm_1848_progress_value
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			change_variable = {
+				name = balkfm_1848_rom_var
+				add = var:balkfm_1848_progress_var
+			}
+			clamp_variable = {
+				name = balkfm_1848_rom_var
+				max = 200
+				min = 0
+			}
+		}
+	}
+
+	status_desc = {
+		triggered_desc = {
+			desc = je_balkfm_rom_1848_status
+			trigger = {
+				always = yes
+			}
+		}
+	}
+
+	weight = 500
+
+}
+
+je_balkfm_rom_statutul_dezvoltator = {
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	group = je_group_balkfm_romania
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+		set_variable = {
+			name = balkfm_dezvoltator_progress_var
+			value = balkfm_dezvoltator_progress_value
+		}
+	}
+
+	complete = {
+		# Technically, Cuza's goal was to establish authoritarian rule, but with broad voting rights for the peasantry. This is cannot be represented by Victoria 3's current systems, hence the strange completion requirements
+		# TODO I've actually done more research here... this is really more complicated than I made it sound. Unfortunately, research in non-English language sources is slower than I would like; this has been tagged for a rework in the docket once I have more sources
+		has_law = law_type:law_monarchy
+		OR = {
+			has_law = law_type:law_autocracy
+			has_law = law_type:law_oligarchy
+		}
+		OR = {
+			has_law = law_type:law_traditionalism
+			has_law = law_type:law_agrarianism
+		}
+		NOR = {
+			has_law = law_type:law_serfdom
+			has_law = law_type:law_tenant_farmers
+		}
+		scope:journal_entry = { is_goal_complete = yes }
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.628 # Mandate Secured
+		}
+		balkfm_cleanup_dezvoltator_variables_effect = yes
+	}
+
+	timeout = 1825 # You have five years. Cuza had less.
+
+	on_timeout = {
+		trigger_event = {
+			id = balkfm.629 # A Monstrous Coalition
+		}
+		balkfm_cleanup_dezvoltator_variables_effect = yes
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable = balkfm_dezvoltator_completed
+		}
+	}
+
+	on_invalid = {
+		balkfm_cleanup_dezvoltator_variables_effect = yes
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			set_variable = {
+				name = balkfm_dezvoltator_progress_var
+				value = balkfm_dezvoltator_progress_value
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			change_variable = {
+				name = balkfm_dezvoltator_var
+				add = var:balkfm_dezvoltator_progress_var
+			}
+			clamp_variable = {
+				name = balkfm_dezvoltator_var
+				max = 200
+				min = 0
+			}
+		}
+	}
+
+	current_value = {
+		value = root.var:balkfm_dezvoltator_var
+	}
+
+	goal_add_value = {
+		value = 200
+	}
+
+	progressbar = yes
+
+	weight = 1000
+
+}
+
+je_balkfm_rom_1866_1 = {
+	icon = "gfx/interface/icons/event_icons/event_romania.dds"
+
+	group = je_group_balkfm_romania
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+	}
+
+	modifiers_while_active = {
+		modifier_balkfm_democratic_intent
+	}
+
+	complete = {
+		OR = {
+			has_law = law_type:law_wealth_voting
+			has_law = law_type:law_census_voting
+			has_law = law_type:law_universal_suffrage
+		}
+		OR = {
+			has_law = law_type:law_freedom_of_conscience
+			has_law = law_type:law_total_separation
+		}
+		OR = {
+			has_law = law_type:law_right_of_assembly
+			has_law = law_type:law_protected_speech
+		}
+		OR = {
+			has_law = law_type:law_commercialized_agriculture
+			has_law = law_type:law_homesteading
+		}
+	}
+
+	on_complete = {
+		add_modifier = {
+			name = modifier_balkfm_democratic_constitution
+			days = long_modifier_time
+		}
+	}
+
+	timeout = 3560 # you have 10 years
+
+	on_timeout = {
+		add_modifier = {
+			name = modifier_balkfm_absent_reforms
+			days = long_modifier_time
+		}
+	}
+
+	invalid = {
+		NOT = { has_law = law_type:law_monarchy }
+	}
+
+	weight = 100
+
+}
+
+je_balkfm_rom_1866_2 = {
+	icon = "gfx/interface/icons/event_icons/event_romania.dds"
+
+	group = je_group_balkfm_romania
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+	}
+
+	modifiers_while_active = {
+		modifier_balkfm_absolutist_intent
+	}
+
+	fail = {
+		custom_tooltip = {
+			text = je_balkfm_rom_1866_fail
+			hidden_trigger = {
+				var:balkfm_1866_var <= 0
+			}
+		}
+		hidden_trigger = {
+			NOT = { has_variable = balkfm_1866_technical }
+		}
+	}
+
+	on_fail = {
+		if = {
+			limit = {
+				any_scope_character = {
+					has_template = template_balkfm_candiano_alexandru
+				}
+			}
+			trigger_event = {
+				id = balkfm.647 # The Republic of Romania
+			}
+		}
+		else = {
+			trigger_event = {
+				id = balkfm.645 # The Candiano Republic
+			}
+		}
+		balkfm_cleanup_1866_variables_effect = yes
+	}
+
+	timeout = 1780 # You just gotta make it five years
+
+	on_timeout = {
+		trigger_event = {
+			id = balkfm.646 # Monarchism Secured
+		}
+		balkfm_cleanup_1866_variables_effect = yes
+	}
+
+	invalid = {
+		OR = {
+			NOT = { has_law = law_type:law_monarchy }
+			has_modifier = modifier_balkfm_ploiesti_succeeded
+		}
+	}
+
+	on_invalid = {
+		balkfm_cleanup_1866_variables_effect = yes
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			set_variable = {
+				name = balkfm_1866_progress_var
+				value = balkfm_1866_progress_value
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {
+			balkfm.642 # A Conspiracy in Ploiești
+		}
+		effect = {
+			change_variable = {
+				name = balkfm_1866_var
+				add = var:balkfm_1866_progress_var
+			}
+			clamp_variable = {
+				name = balkfm_1866_var
+				max = 100
+				min = 0
+			}
+		}
+	}
+
+	current_value = {
+		value = var:balkfm_1866_var
+	}
+
+	goal_add_value = {
+		value = 100
+	}
+
+	progressbar = yes
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_balkfm_rom_constitution_1
+				trigger = {
+					var:balkfm_1866_var >= 60
+				}
+			}
+			triggered_desc = {
+				desc = je_balkfm_rom_constitution_2
+				trigger = {
+					var:balkfm_1866_var >= 30
+				}
+			}
+			triggered_desc = {
+				desc = je_balkfm_rom_constitution_3
+				trigger = {
+					var:balkfm_1866_var < 30
+				}
+			}
+		}
+	}
+
+	weight = 100
+
+}
+
+je_balkfm_rom_nationalism = {
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	group = je_group_balkfm_romanian_nationalism
+
+	should_be_pinned_by_default = yes
+
+	is_shown_when_inactive = {
+		NOT = { has_variable = balkfm_romanian_nationalism_started }
+		country_has_primary_culture = cu:romanian
+	}
+
+	possible = {
+		has_technology_researched = nationalism
+		custom_tooltip = {
+			text = balkfm_has_formed_rom_tt
+			hidden_trigger = {
+				c:ROM ?= this
+			}
+		}
+	}
+
+	immediate = {
+		trigger_event = {
+			id = balkfm.670 # Forms Without Substance
+		}
+		balkfm_initialize_protochronism_effect = yes
+	}
+
+	scripted_button = balkfm_support_junimism_button
+	scripted_button = balkfm_support_dacianism_button
+
+	complete = {
+		OR = {
+			has_law = law_type:law_public_schools
+			has_law = law_type:law_private_schools
+		}
+		institution_investment_level = {
+			institution = institution_schools
+			value >= 3
+		}
+		literacy_rate >= 0.50
+		custom_tooltip = {
+			text = je_balkfm_rom_nationalism_complete_tt
+			hidden_trigger = {
+				has_journal_entry = je_balkfm_rom_nationalism
+				var:balkfm_junimism_var != var:balkfm_dacianism_var
+				OR = {
+					var:balkfm_junimism_var >= 50
+					var:balkfm_dacianism_var >= 50
+				}
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.672 # A Romanian Identity
+		}
+		balkfm_cleanup_protochronism_effect = yes
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			set_variable = {
+				name = balkfm_junimism_progress_var
+				value = balkfm_junimism_progress_value
+			}
+			set_variable = {
+				name = balkfm_dacianism_progress_var
+				value = balkfm_dacianism_progress_value
+			}
+			set_variable = {
+				name = balkfm_protochronism_progress_var
+				value = balkfm_protochronism_progress_value
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			change_variable = {
+				name = balkfm_junimism_var
+				add = var:balkfm_junimism_progress_var
+			}
+			change_variable = {
+				name = balkfm_dacianism_var
+				add = var:balkfm_dacianism_progress_var
+			}
+			clamp_variable = {
+				name = balkfm_junimism_var
+				max = 100
+				min = 0
+			}
+			clamp_variable = {
+				name = balkfm_dacianism_var
+				max = 100
+				min = 0
+			}
+		}
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable = balkfm_rom_nationalism_complete
+		}
+	}
+
+	on_invalid = {
+		balkfm_cleanup_protochronism_effect = yes
+	}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_balkfm_rom_nationalism_junimism_tt
+				trigger = {
+					has_journal_entry = je_balkfm_rom_nationalism
+					var:balkfm_junimism_var > var:balkfm_dacianism_var
+				}
+			}
+			triggered_desc = {
+				desc = je_balkfm_rom_nationalism_dacianism_tt
+				trigger = {
+					has_journal_entry = je_balkfm_rom_nationalism
+					var:balkfm_junimism_var < var:balkfm_dacianism_var
+				}
+			}
+			triggered_desc = {
+				desc = je_balkfm_rom_nationalism_tie_tt
+				trigger = {
+					has_journal_entry = je_balkfm_rom_nationalism
+					var:balkfm_junimism_var = var:balkfm_dacianism_var
+				}
+			}
+		}
+	}
+
+	weight = 500
+
+}
+
+je_balkfm_rom_united_principalities = { # this journal integrates all vanilla unification content into one journal entry
+	icon = "gfx/interface/icons/event_icons/event_romania.dds"
+
+	group = je_group_balkfm_romanian_nationalism
+
+	should_be_pinned_by_default = yes
+
+	is_shown_when_inactive = {
+		country_has_primary_culture = cu:romanian
+	}
+
+	possible = {
+		has_technology_researched = nationalism
+		NOT = {
+			any_overlord_or_above ?= { # Can't unite the principalities if you're already the lesser in a pact with another Romanian state
+				country_has_primary_culture = cu:romanian
+			}
+		}
+	}
+
+	immediate = {
+	}
+
+	scripted_button = balkfm_unite_principalities_button
+	scripted_button = balkfm_all_for_one_button
+	scripted_button = balkfm_bessarabian_retrocession_button
+	scripted_button = balkfm_marea_unire_button
+
+	complete = {
+		custom_tooltip = {
+			text = balkfm_has_formed_rom_tt
+			hidden_trigger = {
+				c:ROM ?= this
+			}
+		}
+	}
+
+	on_complete = {
+	}
+
+	fail = {
+		OR = {
+			custom_tooltip = {
+				text = balkfm_no_other_romanians_tt
+				hidden_trigger = {
+					NOT = {
+						any_country = {
+							NOT = { this = ROOT }
+							country_has_primary_culture = cu:romanian
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				text = balkfm_rom_formed_tt
+				hidden_trigger = {
+					AND = {
+						exists = c:ROM
+						NOT = { c:ROM ?= this }
+					}
+				}
+			}
+			custom_tooltip = {
+				text = balkfm_rom_lost_union_tt
+				hidden_trigger = {
+					any_country = {
+						AND = {
+							has_variable = romania_union_partner
+							NOT = { is_subject_of = ROOT }
+						}
+					}
+				}
+			}
+		}
+	}
+
+	on_fail = {
+		hidden_effect = {
+			remove_variable = ROM_united_principality
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			if = {
+				limit = {
+					has_variable = romanian_union_var
+				}
+				change_variable = {
+					name = romanian_union_var
+					add = 1
+				}
+				clamp_variable = {
+					name = romanian_union_var
+					min = 0
+					max = 120
+				}
+			}
+		}
+	}
+
+	# timeout = 0 # no timeout. Romania is eternal. -- this comment stays. Toți în unu.
+
+	weight = 1000
+
+}
+
+je_balkfm_rom_greater_romania = {
+	icon = "gfx/interface/icons/event_icons/event_romania.dds"
+
+	group = je_group_balkfm_romanian_nationalism
+
+	should_be_pinned_by_default = yes
+
+	is_shown_when_inactive = {
+		c:ROM ?= this
+	}
+
+	possible = {
+		has_technology_researched = nationalism
+		custom_tooltip = {
+			text = je_balkfm_rom_greater_romania_possible_tt
+			hidden_trigger = {
+				any_scope_state = {
+					state_region = {
+						is_homeland = cu:romanian
+					}
+					count >= 3
+				}
+			}
+		}
+	}
+
+	immediate = {
+		trigger_event = {
+			id = balkfm.688 # The Greater Romanian Lands
+		}
+	}
+
+	scripted_button = balkfm_trs_agitate_button
+	scripted_button = balkfm_trs_provoke_button
+	scripted_button = balkfm_bessarabian_retrocession_button
+	scripted_button = balkfm_marea_unire_button
+
+	complete = {
+		is_subject = no
+		calc_true_if = {
+			amount >= 6
+			owns_entire_state_region = STATE_BANAT
+			owns_entire_state_region = STATE_BESSARABIA
+			owns_entire_state_region = STATE_BEKES
+			owns_entire_state_region = STATE_MOLDAVIA
+			owns_entire_state_region = STATE_NORTHERN_TRANSYLVANIA
+			owns_entire_state_region = STATE_SOUTHERN_TRANSYLVANIA
+			owns_entire_state_region = STATE_WALLACHIA
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.689 # The Reunification of Romania
+		}
+	}
+
+	weight = 1000
+
+}
+
+je_balkfm_peles_castle = {
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+
+	group = je_group_balkfm_romania
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+		balkfm_calculate_construction_effect = yes
+	}
+
+	scripted_button = balkfm_construction_0_button
+	scripted_button = balkfm_construction_1_button
+	scripted_button = balkfm_construction_2_button
+	scripted_button = balkfm_construction_3_button
+
+	complete = {
+		scope:journal_entry = { is_goal_complete = yes }
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm.661 # A Royal Estate
+		}
+		balkfm_clean_up_construction_effect = yes
+	}
+
+	fail = {
+		NOR = {
+			owns_entire_state_region = STATE_WALLACHIA
+			has_law = law_type:law_monarchy
+		}
+	}
+
+	on_fail = {
+		balkfm_clean_up_construction_effect = yes
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			balkfm_calculate_construction_effect = yes
+			balkfm_push_construction_effect = yes
+		}
+	}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_balkfm_construction_4
+				trigger = {
+					scope:journal_entry = {
+						is_goal_complete = yes
+					}
+				}
+			}
+			triggered_desc = {
+				desc = je_balkfm_construction_0
+				trigger = {
+					NOR = {
+						has_modifier = modifier_balkfm_construction_1
+						has_modifier = modifier_balkfm_construction_2
+						has_modifier = modifier_balkfm_construction_3
+					}
+				}
+			}
+			triggered_desc = {
+				desc = je_balkfm_construction_3
+				trigger = {
+					has_modifier = modifier_balkfm_construction_3
+				}
+			}
+			triggered_desc = {
+				desc = je_balkfm_construction_2
+				trigger = {
+					has_modifier = modifier_balkfm_construction_2
+				}
+			}
+			triggered_desc = {
+				desc = je_balkfm_construction_1
+				trigger = {
+					has_modifier = modifier_balkfm_construction_1
+				}
+			}
+		}
+	}
+
+	current_value = {
+		value = var:balkfm_construction_var
+	}
+
+	goal_add_value = {
+		value = 2500 # Monument construction cost
+	}
+
+	progressbar = yes
+
+	weight = 100
+
+}
