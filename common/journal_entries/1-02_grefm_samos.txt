@@ -1,0 +1,186 @@
+﻿je_grefm_samos_main = {
+	icon = "gfx/interface/icons/event_icons/event_samos.dds"
+
+	group = je_group_grefm_samos
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+	}
+
+	modifiers_while_active = {
+		modifier_grefm_submission
+	}
+
+	complete = {
+		OR = {
+			is_subject = no
+			trigger_if = {
+				limit = {
+					exists = c:GRE
+				}
+				is_subject_of = c:GRE
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = grefm.508 # Samos Liberated
+		}
+	}
+
+	fail = {
+		OR = {
+			is_subject_type = subject_type_puppet
+			is_subject_type = subject_type_vassal
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {
+			grefm.505 # New Ruler Appointed
+			grefm.506 # Prince of Samos Deposed
+		}
+		effect = {
+			if = {
+				limit = {
+					NOT = {
+						has_variable = grefm_stefanos_var
+					}
+					has_law = law_type:law_monarchy
+				}
+				change_variable = {
+					name = grefm_samos_support_var
+					add = grefm_samos_support_value
+				}
+				change_variable = {
+					name = grefm_samos_ruler_duration_var
+					subtract = 1
+				}
+			}
+			if = {
+				limit = {
+					has_variable = grefm_stefanos_var
+					NOT = {
+						has_law = law_type:law_monarchy
+					}
+				}
+				remove_variable = grefm_stefanos_var
+			}
+		}
+	}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_grefm_samos_main_status_1
+				trigger = {
+					has_variable = grefm_stefanos_var
+					has_law = law_type:law_monarchy
+				}
+			}
+			triggered_desc = {
+				desc = je_grefm_samos_main_status_2
+				trigger = {
+					NOT = {
+						has_variable = grefm_stefanos_var
+						has_law = law_type:law_monarchy
+					}
+				}
+			}
+		}
+	}
+
+	weight = 1000
+
+}
+
+je_grefm_samos_organic_law = {
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+
+	group = je_group_grefm_samos
+
+	should_be_pinned_by_default = yes
+
+	modifiers_while_active = {
+		modifier_grefm_westernized_thought
+		modifier_grefm_hegemonic_ruler
+	}
+
+	complete = {
+		has_law = law_type:law_monarchy
+		OR = {
+			has_law = law_type:law_appointed_bureaucrats
+			has_law = law_type:law_elected_bureaucrats
+		}
+		OR = {
+			has_law = law_type:law_wealth_voting
+			has_law = law_type:law_census_voting
+			has_law = law_type:law_universal_suffrage
+		}
+		NOR = {
+			has_law = law_type:law_consumption_based_taxation
+			has_law = law_type:law_land_based_taxation
+			has_law = law_type:law_censorship
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = grefm.502 # The Organic Charter
+		}
+		remove_variable = grefm_stefanos_var
+	}
+
+	fail = {
+		has_law = law_type:law_monarchy
+		has_law = law_type:law_autocracy
+		has_law = law_type:law_hereditary_bureaucrats
+		has_law = law_type:law_consumption_based_taxation
+	}
+
+	on_fail = {
+		trigger_event = {
+			id = grefm.503 # The Tyranny of Lord Stefanos
+		}
+	}
+
+	timeout = 4745 # You get 13 years, just like Stefanos did
+
+	on_timeout = {
+		trigger_event = {
+			id = grefm.504 # Stefanos Desposed
+		}
+		remove_variable = grefm_stefanos_var
+	}
+
+	invalid = {
+		NOR = {
+			has_law = law_type:law_monarchy
+			trigger_if = {
+				limit = {
+					exists = c:TUR
+				}
+				is_subject_of = c:TUR
+			}
+			custom_tooltip = {
+				text = je_grefm_stefanos_tt
+				hidden_trigger = {
+					ruler = {
+						NOT = {
+							has_template = template_grefm_bogoridi_stefan
+						}
+					}
+				}
+			}
+		}
+	}
+
+	on_invalid = {
+		remove_variable = grefm_stefanos_var
+	}
+
+	weight = 500
+
+}
