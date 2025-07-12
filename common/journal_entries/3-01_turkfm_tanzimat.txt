@@ -1,0 +1,593 @@
+﻿je_turkfm_tanzimat_main = {
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+
+	group = je_group_turkfm_tanzimat
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+	}
+
+	modifiers_while_active = {
+		modifier_turkfm_decentralized_administration
+	}
+
+	scripted_progress_bar = turkfm_tanzimat_progress_bar
+
+	scripted_button = turkfm_start_tanzimat_button
+
+	complete = {
+		custom_tooltip = {
+			text = je_turkfm_tanzimat_main_complete
+			hidden_trigger = {
+				var:turkfm_tanzimat_var >= 1000
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = turkfm.109 # The Ottoman Motherland
+		}
+	}
+
+	fail = {
+		custom_tooltip = {
+			text = je_turkfm_tanzimat_main_fail
+			hidden_trigger = {
+				var:turkfm_tanzimat_var <= 0
+			}
+		}
+	}
+
+	on_fail = {
+		show_as_tooltip = {
+			trigger_event = {
+				id = turkfm.108 # The Eternal Caliphate
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					#				has_variable = turkfm_1913_coup_happened
+					always = no # TODO remove when young turks ready
+				}
+				trigger_event = {
+					id = turkfm.107 # The Three Pashas
+				}
+			}
+			else = {
+				trigger_event = {
+					id = turkfm.108 # The Eternal Caliphate
+				}
+			}
+		}
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			set_variable = {
+				name = turkfm_tanzimat_progress_var
+				value = turkfm_tanzimat_progress_value
+			}
+			set_variable = {
+				name = turkfm_tanzimat_tilt_var
+				value = turkfm_tanzimat_tilt_value
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		random_events = {
+			chance_of_no_event = 95
+			5 = turkfm.102 # The Men of the Tanzimat
+		}
+		effect = {
+			change_variable = {
+				name = turkfm_tanzimat_var
+				add = var:turkfm_tanzimat_progress_var
+			}
+			clamp_variable = {
+				name = turkfm_tanzimat_var
+				max = 1000
+				min = 0
+			}
+			je:je_turkfm_tanzimat_main = {
+				set_bar_progress = {
+					name = turkfm_tanzimat_progress_bar
+					value = owner.var:turkfm_tanzimat_var
+				}
+			}
+		}
+	}
+
+	weight = 4000
+
+}
+
+je_turkfm_tanzimat_argiculture = {
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+
+	group = je_group_turkfm_tanzimat
+
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_global_variable = turkfm_tanzimat_complete
+		}
+	}
+
+	possible = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_started_tt
+			has_global_variable = turkfm_tanzimat_started
+		}
+		has_modifier = modifier_turkfm_feudal_argiculture
+	}
+
+	complete = {
+		NOR = {
+			has_law = law_type:law_traditionalism
+			has_law = law_type:law_agrarianism
+		}
+		NOR = {
+			has_law = law_type:law_serfdom
+			has_law = law_type:law_tenant_farmers
+		}
+		any_scope_building = {
+			is_building_type = building_wheat_farm
+			NOT = {
+				has_active_production_method = pm_simple_farming
+			}
+			level >= 10
+			weekly_profit > 5
+			occupancy >= 0.9
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = turkfm.110 # Modernized Agriculture
+		}
+		show_as_tooltip = {
+			turkfm_advance_ottomanism1_effect = yes
+			turkfm_complete_reform_effect = yes
+		}
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+	}
+
+	weight = 3500
+}
+
+je_turkfm_tanzimat_army = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	group = je_group_turkfm_tanzimat
+
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_global_variable = turkfm_tanzimat_complete
+		}
+	}
+
+	possible = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_started_tt
+			has_global_variable = turkfm_tanzimat_started
+		}
+		has_modifier = modifier_turkfm_cizye_tax
+	}
+
+	complete = {
+		army_size >= 100
+		has_technology_researched = napoleonic_warfare
+		any_scope_building = {
+			filter = {
+				is_building_type = building_barracks
+			}
+			NOR = {
+				building_has_goods_shortage = yes
+				has_active_production_method = pm_no_organization
+			}
+			percent = 1
+		}
+		NOT = {
+			any_military_formation = {
+				filter = {
+					is_army = yes
+				}
+				any_combat_unit = {
+					has_unit_type = unit_type:combat_unit_type_irregular_infantry
+				}
+				percent >= 0.25
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = turkfm.111 # A Formidable Army
+		}
+		show_as_tooltip = {
+			turkfm_advance_ottomanism1_effect = yes
+			turkfm_complete_reform_effect = yes
+		}
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+	}
+
+	weight = 3500
+}
+
+je_turkfm_tanzimat_bureaucracy = {
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+
+	group = je_group_turkfm_tanzimat
+
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_global_variable = turkfm_tanzimat_complete
+		}
+	}
+
+	possible = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_started_tt
+			has_global_variable = turkfm_tanzimat_started
+		}
+		has_modifier = modifier_turkfm_outmoded_bureaucracy
+	}
+
+	complete = {
+		NOT = {
+			has_law = law_type:law_hereditary_bureaucrats
+		}
+		any_scope_building = {
+			is_building_type = building_university
+			NOR = {
+				has_active_production_method = pm_simple_organization
+				has_active_production_method = pm_religious_bureaucrats
+			}
+			occupancy > 0.9
+			level >= 5
+		}
+		any_scope_building = {
+			filter = {
+				is_building_type = building_government_administration
+			}
+			count = all
+			NOR = {
+				has_active_production_method = pm_simple_organization
+				has_active_production_method = pm_religious_bureaucrats
+			}
+			occupancy >= 0.9
+		}
+		bureaucracy >= 0
+		approaching_bureaucracy_shortage = no
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = turkfm.112 # Stately Governance
+		}
+		show_as_tooltip = {
+			turkfm_advance_ottomanism1_effect = yes
+			turkfm_complete_reform_effect = yes
+			ig:ig_intelligentsia = {
+				remove_ideology = turkfm_ideology_scribalistic
+				remove_ideology = ideology_moralist
+				add_ideology = ideology_anti_clerical
+			}
+		}
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+	}
+
+	weight = 3500
+}
+
+je_turkfm_tanzimat_economy = {
+	icon = "gfx/interface/icons/event_icons/event_trade.dds"
+
+	group = je_group_turkfm_tanzimat
+
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_global_variable = turkfm_tanzimat_complete
+		}
+	}
+
+	possible = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_started_tt
+			has_global_variable = turkfm_tanzimat_started
+		}
+		has_modifier = modifier_turkfm_stagnant_economy
+	}
+
+	complete = {
+		NOR = {
+			has_law = law_type:law_traditionalism
+			has_law = law_type:law_land_based_taxation
+			has_law = law_type:law_consumption_based_taxation
+			has_law = law_type:law_isolationism
+		}
+		in_default = no
+		any_scope_state = {
+			is_incorporated = yes
+			has_building = building_urban_center
+			percent >= 0.75
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = turkfm.113 # Revitalizing the Economy
+		}
+		show_as_tooltip = {
+			turkfm_advance_ottomanism1_effect = yes
+			turkfm_complete_reform_effect = yes
+		}
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+	}
+
+	weight = 3500
+}
+
+je_turkfm_tanzimat_education = {
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	group = je_group_turkfm_tanzimat
+
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_global_variable = turkfm_tanzimat_complete
+		}
+	}
+
+	possible = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_started_tt
+			has_global_variable = turkfm_tanzimat_started
+		}
+		has_modifier = modifier_turkfm_illiterate_populace
+	}
+
+	complete = {
+		any_scope_building = {
+			is_building_type = building_university
+			occupancy > 0.9
+			level >= 5
+		}
+		any_scope_building = {
+			filter = {
+				is_building_type = building_university
+			}
+			count = all
+			NOT = {
+				has_active_production_method = pm_religious_academia
+			}
+			occupancy >= 0.9
+		}
+		institution_investment_level = {
+			institution = institution_schools
+			value >= 3
+		}
+		literacy_rate > 0.30
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = turkfm.114 # An Educated Populace
+		}
+		show_as_tooltip = {
+			turkfm_advance_ottomanism1_effect = yes
+			turkfm_complete_reform_effect = yes
+		}
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+	}
+
+	weight = 3500
+}
+
+je_turkfm_tanzimat_millet_reform = {
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+
+	group = je_group_turkfm_tanzimat
+
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_global_variable = turkfm_tanzimat_complete
+		}
+	}
+
+	possible = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_started_tt
+			has_global_variable = turkfm_tanzimat_started
+		}
+		has_technology_researched = egalitarianism
+	}
+
+	complete = {
+		NOR = {
+			has_law = law_type:law_turkfm_religious_autonomy
+			has_law = law_type:law_turkfm_nominal_equality
+		}
+		institution_investment_level = {
+			institution = institution_millet_system
+			value <= 3
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = turkfm.115 # Equality Before the Law
+		}
+		show_as_tooltip = {
+			#			turkfm_advance_ottomanism1_effect = yes
+			turkfm_complete_reform_effect = yes
+		}
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+	}
+
+	weight = 3500
+}
+
+je_turkfm_tanzimat_security = {
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+
+	group = je_group_turkfm_tanzimat
+
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_global_variable = turkfm_tanzimat_complete
+		}
+	}
+
+	possible = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_started_tt
+			has_global_variable = turkfm_tanzimat_started
+		}
+		has_modifier = modifier_turkfm_insecure_countryside
+	}
+
+	complete = {
+		NOR = {
+			has_law = law_type:law_no_police
+			has_law = law_type:law_local_police
+		}
+		institution_investment_level = {
+			institution = institution_police
+			value >= 3
+		}
+		NOT = {
+			any_scope_state = {
+				turmoil > 0.20
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = turkfm.116 # Countrysides Secured
+		}
+		show_as_tooltip = {
+			turkfm_advance_ottomanism1_effect = yes
+			turkfm_complete_reform_effect = yes
+		}
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+	}
+
+	weight = 3500
+}
+
+je_turkfm_tanzimat_slavery = {
+	icon = "gfx/interface/icons/event_icons/event_trade.dds"
+
+	group = je_group_turkfm_tanzimat
+
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_global_variable = turkfm_tanzimat_complete
+		}
+	}
+
+	possible = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_started_tt
+			has_global_variable = turkfm_tanzimat_started
+		}
+		NOT = {
+			has_law = law_type:law_slavery_banned
+		}
+	}
+
+	complete = {
+		has_law = law_type:law_slavery_banned
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = turkfm.117 # Slavery Abolished
+		}
+		show_as_tooltip = {
+			turkfm_advance_ottomanism1_effect = yes
+			turkfm_complete_reform_effect = yes
+		}
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+	}
+
+	weight = 3500
+
+}

@@ -1,0 +1,375 @@
+﻿je_turkfm_sick_man_main = {
+	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
+
+	group = je_group_turkfm_sick_man
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+	}
+
+	modifiers_while_active = {
+		modifier_turkfm_sick_man
+	}
+
+	scripted_progress_bar = turkfm_sick_main_progress_bar
+
+	complete = {
+		country_rank >= rank_value:great_power
+		custom_tooltip = {
+			text = turkfm_controls_anatolia_tt
+			hidden_trigger = {
+				has_variable = turkfm_controls_anatolia
+			}
+		}
+		calc_true_if = {
+			amount >= 3
+			custom_tooltip = {
+				text = turkfm_controls_balkans_tt
+				hidden_trigger = {
+					has_variable = turkfm_controls_balkans
+				}
+			}
+			custom_tooltip = {
+				text = turkfm_controls_arabia_tt
+				hidden_trigger = {
+					has_variable = turkfm_controls_arabia
+				}
+			}
+			custom_tooltip = {
+				text = turkfm_controls_nile_tt
+				hidden_trigger = {
+					has_variable = turkfm_controls_nile
+				}
+			}
+			custom_tooltip = {
+				text = turkfm_controls_danubia_tt
+				hidden_trigger = {
+					has_variable = turkfm_controls_danubia
+				}
+			}
+			custom_tooltip = {
+				text = turkfm_controls_caucasus_tt
+				hidden_trigger = {
+					has_variable = turkfm_controls_caucasus
+				}
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_tanzimat_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_tanzimat_complete
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_separatism_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_separatism_complete
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = turkfm.009 # The Healthy Man of Europe
+		}
+		set_global_variable = turkfm_sick_man_complete
+	}
+
+	fail = {
+		country_rank < rank_value:great_power
+		custom_tooltip = {
+			text = turkfm_lost_balkans_tt
+			hidden_trigger = {
+				NOT = {
+					has_variable = turkfm_controls_balkans
+				}
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_lost_anatolia_tt
+			hidden_trigger = {
+				NOT = {
+					has_variable = turkfm_controls_anatolia
+				}
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_lost_arabia_tt
+			hidden_trigger = {
+				NOT = {
+					has_variable = turkfm_controls_arabia
+				}
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_lost_nile_tt
+			hidden_trigger = {
+				NOT = {
+					has_variable = turkfm_controls_nile
+				}
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_lost_danubia_tt
+			hidden_trigger = {
+				NOT = {
+					has_variable = turkfm_controls_danubia
+				}
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_lost_caucasus_tt
+			hidden_trigger = {
+				NOT = {
+					has_variable = turkfm_controls_caucasus
+				}
+			}
+		}
+	}
+
+	on_fail = {
+		trigger_event = {
+			id = turkfm.008 # The Dead Man of Europe
+		}
+		if = {
+			limit = {
+				is_in_power_bloc = yes
+				is_power_bloc_leader = yes
+			}
+			custom_tooltip = sick_man_of_europe_lose_power_bloc
+		}
+		set_global_variable = turkfm_sick_man_complete
+	}
+
+	on_weekly_pulse = {
+		events = {
+			turkfm.005 # Region Lost
+			turkfm.006 # Region Secured
+		}
+		effect = {
+			turkfm_calculate_sick_man_effect = yes
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {
+			turkfm.018 # A Consuming Sickness
+		}
+	}
+
+	weight = 5000
+
+}
+
+je_sick_man_syria = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	group = je_group_turkfm_sick_man
+
+	complete = {
+		owns_entire_state_region = STATE_ALEPPO
+		owns_entire_state_region = STATE_SYRIA
+		owns_entire_state_region = STATE_LEBANON
+		owns_entire_state_region = STATE_PALESTINE
+		owns_entire_state_region = STATE_TRANSJORDAN
+		owns_entire_state_region = STATE_ADANA
+	}
+
+	modifiers_while_active = {
+	}
+
+	on_complete = {
+		add_journal_entry = {
+			type = je_sick_man_egypt
+		}
+		s:STATE_SINAI = {
+			add_claim = ROOT
+		}
+		s:STATE_UPPER_EGYPT = {
+			add_claim = ROOT
+		}
+		s:STATE_MIDDLE_EGYPT = {
+			add_claim = ROOT
+		}
+		s:STATE_LOWER_EGYPT = {
+			add_claim = ROOT
+		}
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_sick_man_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_sick_man_complete
+			}
+		}
+	}
+
+	on_weekly_pulse = {
+		events = {
+			egyptian_crisis_events.1
+		}
+	}
+
+	transferable = no
+
+	weight = 4230
+
+}
+
+je_sick_man_egypt = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	group = je_group_turkfm_sick_man
+
+	complete = {
+		OR = {
+			AND = {
+				exists = c:EGY
+				c:EGY = {
+					is_subject_of = ROOT
+				}
+				country_or_subject_owns_entire_state_region = STATE_SINAI
+				country_or_subject_owns_entire_state_region = STATE_UPPER_EGYPT
+				country_or_subject_owns_entire_state_region = STATE_MIDDLE_EGYPT
+				country_or_subject_owns_entire_state_region = STATE_LOWER_EGYPT
+			}
+			AND = {
+				owns_entire_state_region = STATE_SINAI
+				owns_entire_state_region = STATE_UPPER_EGYPT
+				owns_entire_state_region = STATE_MIDDLE_EGYPT
+				owns_entire_state_region = STATE_LOWER_EGYPT
+			}
+		}
+	}
+
+	on_complete = {
+
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_sick_man_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_sick_man_complete
+			}
+		}
+	}
+
+	weight = 4500
+
+}
+
+je_turkfm_sick_man_crete = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	group = je_group_turkfm_sick_man
+
+	complete = {
+		OR = {
+			owns_entire_state_region = STATE_CRETE
+			c:CRE ?= {
+				is_subject_of = root
+			}
+		}
+	}
+
+	on_complete = {
+
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_sick_man_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_sick_man_complete
+			}
+		}
+	}
+
+	weight = 4230
+
+}
+
+je_turkfm_sick_man_caucasus = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	group = je_group_turkfm_sick_man
+
+	complete = {
+		owns_entire_state_region = STATE_KARS
+		owns_entire_state_region = STATE_ARMENIA
+		owns_entire_state_region = STATE_GREATER_CAUCASUS
+		owns_entire_state_region = STATE_ELIZAVETPOL
+		owns_entire_state_region = STATE_AZERBAIJAN
+	}
+
+	on_complete = {
+
+	}
+
+	fail = {
+		NOT = {
+			any_scope_state = {
+				region = sr:region_caucasus
+			}
+		}
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_sick_man_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_sick_man_complete
+			}
+		}
+	}
+
+	weight = 4255
+
+}
+
+je_turkfm_sick_man_bosnia = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	group = je_group_turkfm_sick_man
+
+	modifiers_while_active = {
+		modifier_turkfm_imperial_challenger
+	}
+
+	scripted_button = turkfm_arrest_ali_pasha_button
+
+	complete = {
+		owns_entire_state_region = STATE_BOSNIA
+	}
+
+	on_complete = {
+	}
+
+	fail = {
+		OR = {
+			NOT = {
+				has_state_in_state_region = STATE_BOSNIA
+			}
+			c:TUR_BOS ?= {
+				NOT = {
+					is_subject_of = root
+				}
+			}
+		}
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = turkfm_sick_man_completed_tt
+			hidden_trigger = {
+				has_global_variable = turkfm_sick_man_complete
+			}
+		}
+	}
+
+	weight = 4250
+
+}
