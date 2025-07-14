@@ -15,50 +15,926 @@ namespace = grefm_byzantium
 
 # The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
 
-#810-819 - General Byzantine Events
-#	810 - ##
+#001-009 - General Byzantine Events
+#	001 - ##
 
-#820-829 - Monument Events
-#	820 - The 14 Regions of Constantinople
-#	821 - Imperial Palace Ruins Identified
-#	822 - The Great Palace of Constantinople
-#	823 - The Hippodrome of Constantinople
-#	824 - Notitia Urbis Constantinopolitanae
-#	829 - ##The Imperial Library [MGR]
+#010-019 - Monument Events
+#	010 - The 14 Regions of Constantinople
+#	011 - Imperial Palace Ruins Identified
+#	012 - The Great Palace of Constantinople
+#	013 - The Hippodrome of Constantinople
+#	014 - Notitia Urbis Constantinopolitanae
+#	019 - ##The Imperial Library [MGR]
 
-#830-839 - Chariot Racing Events
-#	830 - Chariot Racing Technical Event [TECH]
-#	831 - Chariot Racing Re-established
-#	832 - ##
-#	833 - A Day at the Races
-#	834 - Inconclusive Race Results
-#	835 - Sporting Riot
-#	836 - Ruler Attempts to Join Race
-#	837 - Team Caught Cheating
-#	838 - The Combustion Engine Takes the Hippodrome!
-
-#840-849 - OPEN
-#	840 - OPEN
-
-#850-859 - OPEN
-#	850 - OPEN
-
-#860-869 - OPEN
-#	860 - OPEN
-
-#870-879 - OPEN
-#	870 - OPEN
-
-#880-889 - OPEN
-#	880 - OPEN
-
-#890-899 - The Holy Byzantine Emu Empire Events
-#	890 - The Emu has Landed
-#	891 - The Empire from Down Under
-#	892 - The Emu of the East
-#	893 - The Holy Byzantine Emu Empire
+#020-029 - Chariot Racing Events
+#	020 - Chariot Racing Technical Event [TECH]
+#	021 - Chariot Racing Re-established
+#	022 - ##
+#	023 - A Day at the Races
+#	024 - Inconclusive Race Results
+#	025 - Sporting Riot
+#	026 - Ruler Attempts to Join Race
+#	027 - Team Caught Cheating
+#	028 - The Combustion Engine Takes the Hippodrome!
 
 ####################
 
+#### BYZANTINE MONUMENT EVENTS ####
+grefm_byzantium.010 = { # The 14 Regions of Constantinople
+	type = country_event
+	placement = scope:eastern_thrace_state_scope
 
+	title = grefm_byzantium.010.t
+	desc = grefm_byzantium.010.d
+	flavor = grefm_byzantium.010.f
 
+	event_image = {
+		video = "byzfm_ruins"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_constantinople
+	}
+
+	immediate = {
+		s:STATE_EASTERN_THRACE = {
+			random_scope_state = {
+				save_scope_as = eastern_thrace_state_scope
+			}
+		}
+	}
+
+	option = {
+		name = grefm_byzantium.010.a
+		default_option = yes
+		scope:eastern_thrace_state_scope = {
+			add_modifier = {
+				name = modifier_grefm_imperial_industry
+				days = long_modifier_time
+			}
+		}
+	}
+}
+
+grefm_byzantium.011 = { # Imperial Palace Ruins Identified
+	type = country_event
+
+	title = grefm_byzantium.011.t
+	desc = grefm_byzantium.011.d
+	flavor = grefm_byzantium.011.f
+
+	placement = scope:eastern_thrace_state_scope
+
+	event_image = {
+		video = "middleeast_engineer_blueprint"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_mega_palation_survey
+	}
+
+	immediate = {
+		s:STATE_EASTERN_THRACE = {
+			random_scope_state = {
+				save_scope_as = eastern_thrace_state_scope
+			}
+		}
+	}
+
+	option = {
+		name = grefm_byzantium.011.a
+		default_option = yes
+		scope:eastern_thrace_state_scope = {
+			add_loyalists_in_state = {
+				culture = cu:greek
+				value = medium_radicals
+			}
+		}
+		set_variable = grefm_mega_palation_surveyed
+	}
+
+}
+
+grefm_byzantium.012 = { # Great Palace of Constantinople
+	type = country_event
+
+	title = grefm_byzantium.012.t
+	desc = grefm_byzantium.012.d
+	flavor = grefm_byzantium.012.f
+
+	placement = scope:eastern_thrace_state_scope
+
+	event_image = {
+		video = "unspecific_world_fair"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = { has_variable = grefm_mega_palation_complete }
+		s:STATE_EASTERN_THRACE = {
+			has_building = gbbf_building_mega_palation
+		}
+	}
+
+	immediate = {
+		s:STATE_EASTERN_THRACE = {
+			random_scope_state = {
+				save_scope_as = eastern_thrace_state_scope
+			}
+		}
+	}
+
+	option = {
+		name = grefm_byzantium.012.a
+		default_option = yes
+		custom_tooltip = grefm_byzantium.012.tt
+		hidden_effect = {
+			grefm_excavation_completion_effect = yes
+		}
+		set_variable = grefm_mega_palation_complete
+	}
+}
+
+grefm_byzantium.013 = { # The Hippodrome of Constantinople
+	type = country_event
+
+	title = grefm_byzantium.013.t
+	desc = grefm_byzantium.013.d
+	flavor = grefm_byzantium.013.f
+
+	placement = scope:eastern_thrace_state_scope
+
+	event_image = {
+		video = "byzfm_ruins"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = { has_variable = grefm_hippodrome_complete }
+		s:STATE_EASTERN_THRACE = {
+			has_building = gbbf_building_hippodrome
+		}
+	}
+
+	immediate = {
+		s:STATE_EASTERN_THRACE = {
+			random_scope_state = {
+				save_scope_as = eastern_thrace_state_scope
+			}
+		}
+	}
+
+	option = {
+		name = grefm_byzantium.013.a
+		default_option = yes
+		custom_tooltip = grefm_byzantium.013.tt
+		hidden_effect = {
+			grefm_excavation_completion_effect = yes
+		}
+		set_variable = grefm_hippodrome_complete
+	}
+
+}
+
+grefm_byzantium.014 = { # Notitia Urbis Constantinopolitanae
+	type = country_event
+
+	title = grefm_byzantium.014.t
+	desc = grefm_byzantium.014.d
+	flavor = grefm_byzantium.014.f
+
+	placement = scope:eastern_thrace_state_scope
+
+	event_image = {
+		video = "byzfm_chariot_race"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered bu je_grefm_constantinople
+	}
+
+	immediate = {
+		s:STATE_EASTERN_THRACE = {
+			random_scope_state = {
+				save_scope_as = eastern_thrace_state_scope
+			}
+		}
+	}
+
+	option = {
+		name = grefm_byzantium.014.a
+		default_option = yes
+		scope:eastern_thrace_state_scope = {
+			add_modifier = {
+				name = modifier_grefm_jewel_of_the_east
+				days = very_long_modifier_time
+			}
+		}
+	}
+
+}
+
+#### CHARIOT RACING EVENTS ####
+grefm_byzantium.020 = { # Chariot Racing Technical Event
+	type = country_event
+	placement = root
+	hidden = yes
+
+	trigger = {
+		has_variable = grefm_chariot_racing_revived
+		month = 7
+		OR = {
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_original_roster
+				}
+			}
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_expanded_roster
+				}
+			}
+		}
+	}
+
+	cancellation_trigger = {
+		NOR = {
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_original_roster
+				}
+			}
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_expanded_roster
+				}
+			}
+		}
+	}
+
+	cooldown = {
+		months = 40
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				any_scope_state = {
+					is_production_method_active = {
+						building_type = gbbf_building_hippodrome
+						production_method = pm_gbbf_original_roster
+					}
+				}
+			}
+			random_list = {
+				40 = {
+					set_variable = grefm_chariot_reds
+					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+				}
+				40 = {
+					set_variable = grefm_chariot_whites
+					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+				}
+				40 = {
+					set_variable = grefm_chariot_greens
+					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+				}
+				40 = {
+					set_variable = grefm_chariot_blues
+					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+				}
+				1 = {
+					trigger_event = { id = grefm_byzantium.024 } # Inconclusive Race Results
+				}
+				1 = {
+					trigger_event = { id = grefm_byzantium.025 } # Sporting Riot
+				}
+				1 = {
+					trigger_event = { id = grefm_byzantium.026 } # Ruler Attempts to Join Race
+				}
+				1 = {
+					trigger_event = { id = grefm_byzantium.027 } # Team Caught Cheating
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				any_scope_state = {
+					is_production_method_active = {
+						building_type = gbbf_building_hippodrome
+						production_method = pm_gbbf_expanded_roster
+					}
+				}
+			}
+			random_list = {
+				25 = {
+					set_variable = grefm_chariot_reds
+					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+				}
+				25 = {
+					set_variable = grefm_chariot_whites
+					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+				}
+				25 = {
+					set_variable = grefm_chariot_greens
+					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+				}
+				25 = {
+					set_variable = grefm_chariot_blues
+					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+				}
+				25 = {
+					set_variable = grefm_chariot_purples
+					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+				}
+				25 = {
+					set_variable = grefm_chariot_golds
+					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+				}
+				1 = {
+					trigger_event = { id = grefm_byzantium.024 } # Inconclusive Race Results
+				}
+				1 = {
+					trigger_event = { id = grefm_byzantium.025 } # Sporting Riot
+				}
+				1 = {
+					trigger_event = { id = grefm_byzantium.026 } # Ruler Attempts to Join Race
+				}
+				1 = {
+					trigger_event = { id = grefm_byzantium.027 } # Team Caught Cheating
+				}
+			}
+		}
+	}
+
+}
+
+grefm_byzantium.021 = { # Chariot Racing Re-established
+	type = country_event
+
+	title = grefm_byzantium.021.t
+	desc = grefm_byzantium.021.d
+	flavor = grefm_byzantium.021.f
+
+	placement = scope:byzantium_capital_state
+
+	event_image = {
+		video = "byzfm_chariot_race"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = grefm_chariot_racing_revived
+		}
+		OR = {
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_original_roster
+				}
+			}
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_expanded_roster
+				}
+			}
+		}
+	}
+
+	cooldown = {
+		months = 6
+	}
+
+	immediate = {
+		s:STATE_EASTERN_THRACE = {
+			random_scope_state = {
+				save_scope_as = byzantium_capital_state
+			}
+		}
+	}
+
+	option = {
+		name = grefm_byzantium.021.a
+		custom_tooltip = {
+			text = chariot_racing_enabled_tt
+			set_variable = grefm_chariot_racing_revived
+		}
+		scope:byzantium_capital_state = {
+			add_loyalists_in_state = {
+				value = small_radicals
+			}
+		}
+	}
+}
+
+# grefm_byzantium.022
+
+grefm_byzantium.023 = { # A Day at the Races
+	type = country_event
+
+	title = grefm_byzantium.023.t
+	desc = grefm_byzantium.023.d
+	flavor = grefm_byzantium.023.f
+
+	placement = scope:byzantium_capital_state
+
+	event_image = {
+		video = "byzfm_chariot_race"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by grefm_byzantium.020
+	}
+
+	immediate = {
+		s:STATE_EASTERN_THRACE = {
+			random_scope_state = {
+				save_scope_as = byzantium_capital_state
+			}
+		}
+		if = {
+			limit = {
+				has_variable = grefm_chariot_reds
+			}
+			ig:ig_industrialists = {
+				save_scope_as = grefm_chariot_winner_scope
+			}
+		}
+		if = {
+			limit = {
+				has_variable = grefm_chariot_whites
+			}
+			ig:ig_intelligentsia = {
+				save_scope_as = grefm_chariot_winner_scope
+			}
+		}
+		if = {
+			limit = {
+				has_variable = grefm_chariot_greens
+			}
+			ig:ig_rural_folk = {
+				save_scope_as = grefm_chariot_winner_scope
+			}
+		}
+		if = {
+			limit = {
+				has_variable = grefm_chariot_blues
+			}
+			ig:ig_petty_bourgeoisie = {
+				save_scope_as = grefm_chariot_winner_scope
+			}
+		}
+		if = {
+			limit = {
+				has_variable = grefm_chariot_purples
+			}
+			ig:ig_landowners = {
+				save_scope_as = grefm_chariot_winner_scope
+			}
+		}
+		if = {
+			limit = {
+				has_variable = grefm_chariot_golds
+			}
+			ig:ig_trade_unions = {
+				save_scope_as = grefm_chariot_winner_scope
+			}
+		}
+	}
+
+	option = {
+		name = grefm_byzantium.023.a
+		default_option = yes
+		scope:byzantium_capital_state = {
+			add_modifier = {
+				name = modifier_grefm_held_chariot_races
+				months = 48
+			}
+		}
+		scope:grefm_chariot_winner_scope = {
+			add_modifier = {
+				name = modifier_grefm_ig_won_races
+				months = 48
+			}
+		}
+		grefm_cleanup_quadrennial_race_effect = yes
+	}
+
+}
+
+grefm_byzantium.024 = { # Inconclusive Race Results
+	type = country_event
+
+	title = grefm_byzantium.024.t
+	desc = grefm_byzantium.024.d
+	flavor = grefm_byzantium.024.f
+
+	placement = scope:byzantium_capital_state
+
+	event_image = {
+		video = "byzfm_chariot_race"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by grefm_byzantium.020
+	}
+
+	immediate = {
+		s:STATE_EASTERN_THRACE = {
+			random_scope_state = {
+				save_scope_as = byzantium_capital_state
+			}
+		}
+	}
+
+	option = { # hold the second round
+		name = grefm_byzantium.024.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_tiebreaker_race
+			months = 12
+		}
+		custom_tooltip = {
+			text = grefm_call_races_tt
+			hidden_effect = {
+				trigger_event = {
+					id = grefm_byzantium.020 # Chariot Racing Technical Event
+					days = 15
+				}
+			}
+		}
+	}
+
+	option = { # we'll call it a draw
+		name = grefm_byzantium.024.b
+		scope:byzantium_capital_state = {
+			add_modifier = {
+				name = modifier_grefm_refused_diversum
+				months = 24
+			}
+		}
+	}
+
+}
+
+grefm_byzantium.025 = { # Sporting Riot
+	type = country_event
+
+	title = grefm_byzantium.025.t
+	desc = grefm_byzantium.025.d
+	flavor = grefm_byzantium.025.f
+
+	placement = scope:byzantium_capital_state
+
+	event_image = {
+		video = "byzfm_chariot_race"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by grefm_byzantium.020
+	}
+
+	immediate = {
+		s:STATE_EASTERN_THRACE = {
+			random_scope_state = {
+				save_scope_as = byzantium_capital_state
+			}
+		}
+	}
+
+	option = { # Cancel the Whole Thing
+		name = grefm_byzantium.025.b
+		default_option = yes
+		scope:byzantium_capital_state = {
+			add_devastation = 10
+			add_modifier = {
+				name = modifier_grefm_cancelled_races
+				months = 24
+			}
+		}
+	}
+
+}
+
+grefm_byzantium.026 = { # Ruler Tries to Join in the Races
+	type = country_event
+
+	title = grefm_byzantium.026.t
+	desc = grefm_byzantium.026.d
+	flavor = grefm_byzantium.026.f
+
+	placement = scope:byzantium_capital_state
+
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by grefm_byzantium.020
+	}
+
+	immediate = {
+		s:STATE_EASTERN_THRACE = {
+			random_scope_state = {
+				save_scope_as = byzantium_capital_state
+			}
+		}
+		ruler = {
+			save_scope_as = byzfm_ruler_scope
+		}
+	}
+
+	option = { # let him join in
+		name = grefm_byzantium.026.a
+		default_option = yes
+		scope:byzfm_ruler_scope = {
+			add_modifier = {
+				name = modifier_grefm_redneck_emperor
+				days = normal_modifier_time
+			}
+		}
+		custom_tooltip = {
+			text = grefm_call_races_tt
+			hidden_effect = {
+				trigger_event = {
+					id = grefm_byzantium.020 # Chariot Racing Technical Event
+					days = 15
+				}
+			}
+		}
+	}
+
+	option = { # bro thats like, really redneck...
+		name = grefm_byzantium.026.b
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_legitmacy_boost
+			days = normal_modifier_time
+		}
+		custom_tooltip = {
+			text = grefm_call_races_tt
+			hidden_effect = {
+				trigger_event = {
+					id = grefm_byzantium.020 # Chariot Racing Technical Event
+					days = 15
+				}
+			}
+		}
+	}
+
+}
+
+grefm_byzantium.027 = { # team gets caught cheating
+	type = country_event
+
+	title = grefm_byzantium.027.t
+	desc = grefm_byzantium.027.d
+	flavor = grefm_byzantium.027.f
+
+	placement = scope:byzantium_capital_state
+
+	event_image = {
+		video = "votp_conspiring"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by grefm_byzantium.020
+	}
+
+	immediate = {
+		s:STATE_EASTERN_THRACE = {
+			random_scope_state = {
+				save_scope_as = byzantium_capital_state
+			}
+		}
+		ruler = {
+			save_scope_as = byzfm_ruler_scope
+		}
+	}
+
+	option = { # root out the corruption
+		name = grefm_byzantium.027.a
+		default_option = yes
+		scope:byzantium_capital_state = {
+			add_modifier = {
+				name = modifier_grefm_cancelled_races
+				months = 24
+			}
+		}
+	}
+
+	option = { # let them race
+		name = grefm_byzantium.027.b
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_ignored_corruption
+			days = normal_modifier_time
+		}
+		custom_tooltip = {
+			text = grefm_call_races_tt
+			hidden_effect = {
+				trigger_event = {
+					id = grefm_byzantium.020 # Chariot Racing Technical Event
+					days = 15
+				}
+			}
+		}
+	}
+
+}
+
+grefm_byzantium.028 = { # The Combustion Engine Takes the Hippodrome!
+	type = country_event
+	placement = root
+
+	title = grefm_byzantium.028.t
+	desc = grefm_byzantium.028.d
+	flavor = grefm_byzantium.028.f
+
+	event_image = {
+		video = "byzfm_drag_race"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = { has_variable = grefm_drag_racing_considered }
+		OR = {
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_original_roster
+				}
+			}
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_expanded_roster
+				}
+			}
+		}
+		any_scope_state = {
+			OR = {
+				is_production_method_active = {
+					building_type = building_automotive_industry
+					production_method = pm_automobile_production
+				}
+				is_production_method_active = {
+					building_type = building_automotive_industry
+					production_method = pm_mass_automobile_production
+				}
+			}
+		}
+	}
+
+	cancellation_trigger = {
+		NOR = {
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_original_roster
+				}
+			}
+			any_scope_state = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_expanded_roster
+				}
+			}
+		}
+	}
+
+	immediate = {
+		set_variable = grefm_drag_racing_considered
+	}
+
+	option = {
+		name = grefm_byzantium.028.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_sanctioned_motorsport
+		}
+		add_loyalists = {
+			strata = lower
+			value = small_radicals
+		}
+		add_radicals = {
+			pop_type = academics
+			value = medium_radicals
+		}
+	}
+
+	option = {
+		name = grefm_byzantium.028.b
+		add_modifier = {
+			name = modifier_grefm_rejected_motorsport
+			days = normal_modifier_time
+		}
+		add_loyalists = {
+			strata = upper
+			value = medium_radicals
+		}
+		add_radicals = {
+			strata = lower
+			value = small_radicals
+		}
+	}
+
+}
