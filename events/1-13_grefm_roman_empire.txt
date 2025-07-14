@@ -16,17 +16,585 @@ namespace = grefm_roman_empire
 # The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
 
 
-#800-809 - Purple Phoenix Events
-#	800 - The Phoenix Rises (Path Event)
-#	801 - Nova Roma Constantinopolitana
-#	802 - The Rome of the East
-#	803 - The Basileia Rhōmaiōn
-#	804 - Dalmatia Reclaimed
-#	805 - Lombardia Reclaimed
-#	806 - Magna Graecia Reclaimed
-#	807 - Exarchate of Ravenna Reclaimed
-#	808 - ##
-#	809 - Renovatio Imperii Romanorum
+#000-009 - Purple Phoenix Events
+#	001 - The Phoenix Rises (Path Event)
+#	002 - Nova Roma Constantinopolitana
+#	003 - The Rome of the East
+#	004 - The Basileia Rhōmaiōn
+#	005 - Dalmatia Reclaimed
+#	006 - Lombardia Reclaimed
+#	007 - Magna Graecia Reclaimed
+#	008 - Exarchate of Ravenna Reclaimed
+#	009 - Renovatio Imperii Romanorum
 
 ####################
 
+## Purple Phoenix Events ##
+grefm_roman_empire.001 = { # The Purple Phoenix
+	type = country_event
+	placement = root
+
+	title = grefm_roman_empire.001.t
+	desc = grefm_roman_empire.001.d
+	flavor = grefm_roman_empire.001.f
+
+	gui_window = event_window_widescreen_classic
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/votp_monarch_holding_court.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/ti_ipermajo_kontakion"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_purple_phoenix
+	}
+
+	immediate = {
+		random_scope_building = {
+			limit = {
+				is_building_type = building_hagia_sophia
+			}
+			save_scope_as = hagia_sofia_scope
+		}
+		save_scope_as = formation_country
+		every_country = {
+			limit = {
+				has_diplomatic_relevance = ROOT
+			}
+			post_notification = unification_notification_byz
+		}
+	}
+
+	option = {
+		name = grefm_roman_empire.001.a
+		default_option = yes
+		trigger_event = {
+			id = grefm_roman_empire.002 # Nova Roma Constantinopolitana
+			days = 30
+		}
+		add_modifier = {
+			name = modifier_grefm_rebirth
+			days = very_long_modifier_time
+		}
+		if = {
+			limit = {
+				NOT = {
+					country_has_primary_culture = cu:rhomaios
+				}
+			}
+			add_primary_culture = cu:rhomaios
+		}
+	}
+
+}
+
+grefm_roman_empire.002 = { # Nova Roma Constantinopolitana
+	type = country_event
+	placement = root
+
+	title = grefm_roman_empire.002.t
+	desc = grefm_roman_empire.002.d
+	flavor = grefm_roman_empire.002.f
+
+	event_image = {
+		video = "byzfm_georgios_averof"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by grefm_roman_empire.001
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_roman_empire.002.a
+		default_option = yes
+		set_capital = STATE_EASTERN_THRACE
+		every_state_region = {
+			limit = {
+				OR = {
+					region = sr:region_anatolia
+					region = sr:region_balkans
+				}
+				any_scope_state = {
+					NOT = { owner = ROOT }
+					NOT = { has_claim_by = ROOT }
+				}
+			}
+			add_claim = ROOT
+		}
+	}
+
+}
+
+grefm_roman_empire.003 = { # The Rome of the East
+	type = country_event
+
+	title = grefm_roman_empire.003.t
+	desc = grefm_roman_empire.003.d
+	flavor = grefm_roman_empire.003.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_purple_pheonix
+	}
+
+	immediate = {
+	}
+
+	option = { # reclaim the east
+		name = grefm_roman_empire.003.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_grefm_rome_of_the_east
+		}
+		grefm_add_levant_claims_effect = yes
+	}
+
+	option = { # nah bro, shits for the birds
+		name = grefm_roman_empire.003.b
+		change_infamy = -20
+		capital = {
+			add_modifier = {
+				name = modifier_grefm_capital_assimiliation_boost
+				days = long_modifier_time
+			}
+			add_modifier = {
+				name = modifier_grefm_heartland_reclaimed
+				days = normal_modifier_time
+			}
+		}
+		custom_tooltip = {
+			text = grefm_weaksauce_tt
+			hidden_effect = {
+				set_variable = grefm_weaksauce
+			}
+		}
+	}
+
+}
+
+grefm_roman_empire.004 = { # The Basileia Rhōmaiōn
+	type = country_event
+
+	title = grefm_roman_empire.004.t
+	desc = grefm_roman_empire.004.d
+	flavor = grefm_roman_empire.004.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_rome_of_the_east
+	}
+
+	immediate = {
+	}
+
+	option = { # We Finna Spank the Pope
+		name = grefm_roman_empire.004.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_rhomania_restored
+			days = very_long_modifier_time
+		}
+		add_journal_entry = {
+			type = je_grefm_renovatio_imperii_romanorum
+		}
+		add_journal_entry = {
+			type = je_grefm_renovatio_imperii_romanorum_dalmatia
+		}
+		add_journal_entry = {
+			type = je_grefm_renovatio_imperii_romanorum_northern_italy
+		}
+		add_journal_entry = {
+			type = je_grefm_renovatio_imperii_romanorum_southern_italy
+		}
+		add_journal_entry = {
+			type = je_grefm_renovatio_imperii_romanorum_central_italy
+		}
+	}
+
+}
+
+grefm_roman_empire.005 = { # Dalmatia Secured
+	type = country_event
+
+	title = grefm_roman_empire.005.t
+	desc = grefm_roman_empire.005.d
+	flavor = grefm_roman_empire.005.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	placement = ROOT
+
+	trigger = {
+		# Triggered by JE
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_roman_empire.005.a
+		default_option = yes
+		s:STATE_VENETIA = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+		s:STATE_ISTRIA = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+		s:STATE_CROATIA = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+		s:STATE_DALMATIA = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+	}
+
+}
+
+grefm_roman_empire.006 = { # Northern Italy Secured
+	type = country_event
+
+	title = grefm_roman_empire.006.t
+	desc = grefm_roman_empire.006.d
+	flavor = grefm_roman_empire.006.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	placement = ROOT
+
+	trigger = {
+		# Triggered by JE
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_roman_empire.006.a
+		default_option = yes
+		s:STATE_SAVOY = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+		s:STATE_LOMBARDY = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+		s:STATE_PIEDMONT = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+		s:STATE_SOUTH_TYROL = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+	}
+
+}
+
+grefm_roman_empire.007 = { # Southern Italy Secured
+	type = country_event
+
+	title = grefm_roman_empire.007.t
+	desc = grefm_roman_empire.007.d
+	flavor = grefm_roman_empire.007.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	placement = ROOT
+
+	trigger = {
+		# Triggered by JE
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_roman_empire.007.a
+		default_option = yes
+		s:STATE_ABRUZZO = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+		s:STATE_APULIA = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+		s:STATE_CALABRIA = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+		s:STATE_CAMPANIA = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+	}
+
+}
+
+grefm_roman_empire.008 = { # Central Italy Secured
+	type = country_event
+
+	title = grefm_roman_empire.008.t
+	desc = grefm_roman_empire.008.d
+	flavor = grefm_roman_empire.008.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	placement = ROOT
+
+	trigger = {
+		# Triggered by JE
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_roman_empire.008.a
+		default_option = yes
+		s:STATE_EMILIA = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+		s:STATE_ROMAGNA = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+		s:STATE_TUSCANY = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+		s:STATE_UMBRIA = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+	}
+
+}
+
+grefm_roman_empire.009 = { # Renovatio Imperii Romanorum
+	type = country_event
+
+	title = grefm_roman_empire.009.t
+	desc = grefm_roman_empire.009.d
+	flavor = grefm_roman_empire.009.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	placement = ROOT
+
+	trigger = {
+		# Triggered by JE
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_roman_empire.009.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_imperial_glory
+		}
+		set_capital = STATE_LAZIO
+		s:STATE_LAZIO = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_the_eternal_city
+					days = long_modifier_time
+				}
+			}
+		}
+		s:STATE_LAZIO = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+	}
+
+	option = {
+		name = grefm_roman_empire.009.b
+		add_modifier = {
+			name = modifier_grefm_imperial_glory
+		}
+		s:STATE_EASTERN_THRACE = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_the_queen_of_cities
+					days = long_modifier_time
+				}
+			}
+		}
+		s:STATE_LAZIO = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_reintegrated_province
+					days = long_modifier_time
+				}
+			}
+		}
+	}
+}
