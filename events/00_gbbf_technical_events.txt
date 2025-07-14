@@ -15,10 +15,107 @@ namespace = gbbf_technical
 
 # The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
 
-#900-909 - Hidden Events
-#	900 - Rhomaios Country Player Check
-#	901 - Adds Mainland Greece claims to non-GRE Greek nations
-#	902 - Reassigns Revolt Journals
+#000-009 - Hidden Events
+#	000 - //
+#	001 - Adds Mainland Greece claims to non-GRE Greek nations
+#	002 - Reassigns Revolt Journals
 
 ####################
 
+gbbf_technical.001 = { # adds claims to greek countries if they go independent
+	type = country_event
+	placement = root
+	hidden = yes
+
+	trigger = {
+		country_has_primary_culture = cu:greek
+		NOT = { has_variable = grefm_mainland_claims_added }
+		is_subject = no
+		NOR = {
+			exists = c:GRE
+			exists = c:GRE_HEL
+			exists = c:BYZ
+		}
+	}
+
+	immediate = {
+		set_variable = grefm_mainland_claims_added
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_ATTICA
+					owns_entire_state_region = STATE_ATTICA
+				}
+			}
+			s:STATE_ATTICA = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_PELOPONNESE
+					owns_entire_state_region = STATE_PELOPONNESE
+				}
+			}
+			s:STATE_PELOPONNESE = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_WEST_AEGEAN_ISLANDS
+					owns_entire_state_region = STATE_WEST_AEGEAN_ISLANDS
+				}
+			}
+			s:STATE_WEST_AEGEAN_ISLANDS = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_THESSALIA
+					owns_entire_state_region = STATE_THESSALIA
+				}
+			}
+			s:STATE_THESSALIA = {
+				add_claim = ROOT
+			}
+		}
+		post_notification = notification_grefm_claims_added
+	}
+
+}
+
+gbbf_technical.002 = { # hidden event triggering the Don Pacifico Affair
+	type = country_event
+	placement = root
+	hidden = yes
+
+	trigger = {
+		has_variable = grefm_don_pacifico_var
+		has_diplomatic_relevance = c:POR
+		has_diplomatic_relevance = c:GBR
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				AND = {
+					exists = c:GRE
+					exists = c:GBR
+					exists = c:POR
+				}
+			}
+			c:POR = {
+				trigger_event = {
+					id = grefm_greece.161 # The Don Pacifico Affair
+				}
+			}
+		}
+		remove_variable = grefm_don_pacifico_var
+	}
+
+}
