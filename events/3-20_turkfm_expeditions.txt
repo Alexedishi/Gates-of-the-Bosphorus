@@ -1,1 +1,5793 @@
-﻿namespace = turkfm_expeditions
+﻿## TURKFM EXPEDITION EVENTS ##
+
+# For Greek content, see the "grefm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Turkish content, see the "turkfm" module
+# For Orthodox Church content, see the "eocfm" module
+
+####################
+
+namespace = turkfm_expeditions
+
+####################
+
+####	TABLE OF CONTENTS	####	#TOC
+
+# The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
+
+## EXPEDITION I: THE BLACK MOUNTAIN ##
+
+#000-009 - Karadag Narrative Events
+#	001 - The Battle of Grahovo
+#	002 - //
+#	003 - //
+#	004 - Montenegrin Lands Gained
+#	005 - Montenegrin Lands Lost
+#	006 - The Black Mountain Lost
+#	007 - The Black Mountain Subdued
+#	008 - International Indifference
+#	009 - The Lands of Montenegro
+
+#010-019 - Karadag Mechanical Events
+#	010 - Reclaiming the Hinterlands
+#	011 - Raiding Party Arrives in Montenegro
+#	012 - Raiding Party Withdraws from Montenegro
+#	013 - Raiding Party Leader Has Died!
+#	014 - The Gaols of Centinje
+#	015 - Montenegro Offers Ransom
+#	016 - Ottoman Reply to Ransom
+#	017 - Ottoman Noble Beheaded
+#	018 - Country Crosses the Border
+#	019 - Border Incursion Repelled
+
+#020-029 - Karadag Expedition Events
+#	020 - Local Informants
+#	021 - Bear Sighted
+#	022 - A Circular Expedition
+#	023 - Snow on the Ground
+#	024 - Balkan Hospitality
+#	025 - Expedition Beset by Plague!
+#	026 - Tax Evasion
+#	027 - Successful Scouting
+#	028 - ##Rations Running Low
+#	029 -
+
+#030-039 - Karadag Skirmish Events
+#	030 - Village Skirmish Escalates
+#	031 - Steady Grind
+#	032 - Village Outskirts Burned
+#	033 - Village Families Massacred
+#	034 - Ottoman Noble Captured
+#	035 - Montenegrin Folk Hero Killed
+#	036 - ##Sudden Breakthrough
+#	037 - ##Pitched Battle
+#	038 -
+#	039 -
+
+#040-049 - Karadag Decision Events
+#	041 - Negotiations on Headtaking (TUR)
+#	042 - Negotiations on Headtaking (MON)
+#	043 - Negotiations Over Cattaro
+
+
+## EXPEDITION II: THE PIRATES OF THE ADRIATIC ##
+
+#100-109 - Pirates of the Adriatic Narrative Events
+#	100 - The Pirates of the Adriatic
+#	101 - Pacifying the Adriatic
+#	102 - Cutler Beckett Arrives in the Adriatic
+#	103 - Cutler Beckett Withdraws from the Adriatic
+#	104 - Cutler Beckett Has Died!
+#	105 - Treating with Corsairs
+#	106 - Pirate Hideout Located
+#	107 - Pirate Fleet Destroyed
+#	108 - Jack Sparrow Clapped in Irons!
+#	109 - Jack Sparrow Whacked
+
+#110-119 - Pirates of the Adriatic Piracy Events
+#	110 - Coastal Village Raided!
+#	111 - Merchant Vessels Raided!
+#	112 - Nobleman Held Hostage
+#	113 - A Pirate's Booty
+#	114 - Diplomatic Communiques Intercepted
+#	115 - Slavers Intercepted
+#	116 - Greener Pastures
+#	117 - The [Goods] Smugglers
+#	118 - The Peasant's Pirate
+#	119 - Adds the Piracy JE [TECH]
+
+#120-129 - Pirates of the Adriatic Expedition Events
+#	120 - Local Informants
+#	121 - A Suspicious Inlet
+#	122 - The Runaway
+#	123 - Spoiled Provisions
+#	124 - Circular Bearing
+#	125 - Windstorms in the Adriatic
+#	126 - Foul Waters
+#	127 - Scouts Pick Up Leads
+#	128 - Emergency Repairs
+#	129 - Port of Call
+
+#130-139 - Pirates of the Adriatic Chase Events
+#	130 - Pirates Spotted!
+#	131 - Man Overboard!
+#	132 - The Pillagers' Wake
+#	133 -
+#	134 - Without a Trace
+#	135 - Bearing Down
+#	136 - Cut and Run
+#	137 - Action Along the Coast
+#	138 - Naval Duel on the High Seas!
+#	139 - Naval Duel Outcome
+
+####################
+
+######################################
+## EXPEDITION I: THE BLACK MOUNTAIN ##
+######################################
+
+## Karadag Narrative Events ##
+turkfm_expeditions.001 = { # The Battle of Grahovo
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.001.t
+	desc = turkfm_expeditions.001.d
+	flavor = turkfm_expeditions.001.f
+
+	event_image = {
+		video = "southamerica_war_civilians"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered from GLOBAL
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		c:MON = {
+			save_scope_as = montenegro_scope
+		}
+		balkfm_hersek_scopes_effect = yes
+	}
+
+	option = { # For Montenegro
+		name = turkfm_expeditions.001.a
+		default_option = yes
+		trigger = {
+			NOR = {
+				c:TUR ?= this
+				c:TUR_BOS ?= this
+			}
+		}
+		add_journal_entry = {
+			type = je_turkfm_black_mountain
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.001.a
+		default_option = yes
+		trigger = {
+			c:TUR ?= this
+		}
+		add_journal_entry = {
+			type = je_turkfm_black_mountain
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.001.c
+		trigger = {
+			c:TUR_BOS ?= this
+		}
+		add_journal_entry = {
+			type = je_balkfm_bos_karadag
+		}
+		s:STATE_MONTENEGRO = {
+			add_claim = ROOT
+		}
+	}
+
+}
+
+turkfm_expeditions.004 = { # Montenegrin Lands Gained
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.004.t
+	desc = turkfm_expeditions.004.d
+	flavor = turkfm_expeditions.004.f
+
+	event_image = {
+		video = "europenorthamerica_gold_prospectors"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		trigger_if = {
+			limit = {
+				c:TUR ?= this
+			}
+			global_var:turkfm_karadag_var <= 0
+		}
+		trigger_else_if = {
+			limit = {
+				c:MON ?= this
+			}
+			global_var:turkfm_karadag_var >= 500
+		}
+	}
+
+	immediate = {
+		turkfm_next_province_effect = yes
+		turkfm_claim_province_effect = yes
+		if = {
+			limit = {
+				c:TUR ?= this
+			}
+			c:MON ?= {
+				trigger_event = {
+					id = turkfm_expeditions.005 # Montenegrin Lands Lost
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				c:MON ?= this
+			}
+			c:TUR ?= {
+				trigger_event = {
+					id = turkfm_expeditions.005 # Montenegrin Lands Lost
+				}
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.004.a
+		default_option = yes
+		custom_tooltip = {
+			text = turkfm_province_gained
+			turkfm_next_province_effect = yes
+		}
+	}
+
+}
+
+turkfm_expeditions.005 = { # Montenegrin Lands Lost
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.005.t
+	desc = turkfm_expeditions.005.d
+	flavor = turkfm_expeditions.005.f
+
+	event_image = {
+		video = "middleeast_battlefield_trenches"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_expeditions.004
+	}
+
+	immediate = {
+		turkfm_next_province_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.004.a
+		default_option = yes
+		custom_tooltip = {
+			text = turkfm_province_lost
+			turkfm_next_province_effect = yes
+		}
+	}
+
+}
+
+turkfm_expeditions.006 = { # The Black Mountain Lost
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.006.t
+	desc = turkfm_expeditions.006.d
+	flavor = turkfm_expeditions.006.f
+
+	event_image = {
+		video = "ep1_transfer_of_authority"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_turkfm_karadag
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = turkfm_expeditions.006.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_lost_karadag
+			days = long_modifier_time
+		}
+	}
+
+}
+
+turkfm_expeditions.007 = { # The Black Mountain Subdued
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.007.t
+	desc = turkfm_expeditions.007.d
+	flavor = turkfm_expeditions.007.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_turkfm_karadag
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = turkfm_expeditions.007.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_reclaimed_karadag
+			days = long_modifier_time
+		}
+	}
+
+}
+
+turkfm_expeditions.008 = { # International Indifference
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.008.t
+	desc = turkfm_expeditions.008.d
+	flavor = turkfm_expeditions.008.f
+
+	event_image = {
+		video = "southamerica_aristocrats"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_turkfm_karadag
+	}
+
+	immediate = {
+	}
+
+	option = { # take it on the chin
+		name = turkfm_expeditions.008.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_submission
+			days = long_modifier_time
+		}
+	}
+
+}
+
+turkfm_expeditions.009 = { # The Lands of Montenegro
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.009.t
+	desc = turkfm_expeditions.009.d
+	flavor = turkfm_expeditions.009.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_turkfm_karadag
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = turkfm_expeditions.009.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_reclaimed_lovcen
+			days = long_modifier_time
+		}
+	}
+
+}
+
+## Karadag Mechanical Events ##
+turkfm_expeditions.010 = { # Reclaiming the Hinterlands
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.010.t
+	desc = turkfm_expeditions.010.d
+	flavor = turkfm_expeditions.010.f
+
+	event_image = {
+		video = "africa_construction_colony"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_border_raid_button
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_karadag
+		}
+	}
+
+	immediate = {
+		random_scope_character = {
+			limit = {
+				is_busy = no
+				has_role = general
+				is_ruler = no
+			}
+			save_scope_as = expedition_leader_1
+		}
+		if = {
+			limit = {
+				any_scope_character = {
+					is_busy = no
+					is_ruler = no
+					has_role = general
+					OR = {
+						has_trait = surveyor
+						has_trait = mountain_commander
+						has_trait = basic_offensive_planner
+						has_trait = experienced_offensive_planner
+						has_trait = expert_offensive_planner
+					}
+					NOT = {
+						scope:expedition_leader_1 ?= this
+					}
+				}
+			}
+			random_scope_character = {
+				limit = {
+					is_busy = no
+					is_ruler = no
+					has_role = general
+					OR = {
+						has_trait = surveyor
+						has_trait = mountain_commander
+						has_trait = basic_offensive_planner
+						has_trait = experienced_offensive_planner
+						has_trait = expert_offensive_planner
+					}
+					NOT = {
+						scope:expedition_leader_1 ?= this
+					}
+				}
+				save_scope_as = expedition_leader_2
+			}
+		}
+		else = {
+			random_scope_character = {
+				limit = {
+					is_busy = no
+					is_ruler = no
+					has_role = general
+					NOT = {
+						scope:expedition_leader_1 ?= this
+					}
+				}
+				save_scope_as = expedition_leader_2
+			}
+		}
+		random_scope_character = {
+			limit = {
+				is_busy = no
+				is_ruler = no
+				has_role = general
+				NOR = {
+					scope:expedition_leader_1 ?= this
+					scope:expedition_leader_2 ?= this
+				}
+			}
+			save_scope_as = expedition_leader_3
+		}
+		random_scope_character = {
+			limit = {
+				is_busy = no
+				is_ruler = no
+				has_role = general
+				NOR = {
+					scope:expedition_leader_1 ?= this
+					scope:expedition_leader_2 ?= this
+					scope:expedition_leader_3 ?= this
+				}
+			}
+			save_scope_as = expedition_leader_4
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.010.a
+		default_option = yes
+		trigger = {
+			exists = scope:expedition_leader_1
+		}
+		scope:expedition_leader_1 ?= {
+			set_character_busy_and_immortal = yes
+			add_modifier = modifier_turkfm_leading_expedition
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.010.b
+		trigger = {
+			exists = scope:expedition_leader_2
+		}
+		scope:expedition_leader_2 ?= {
+			set_character_busy_and_immortal = yes
+			add_modifier = modifier_turkfm_leading_expedition
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.010.c
+		trigger = {
+			exists = scope:expedition_leader_3
+		}
+		scope:expedition_leader_3 ?= {
+			set_character_busy_and_immortal = yes
+			add_modifier = modifier_turkfm_leading_expedition
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.010.e
+		trigger = {
+			exists = scope:expedition_leader_4
+		}
+		scope:expedition_leader_4 ?= {
+			set_character_busy_and_immortal = yes
+			add_modifier = modifier_turkfm_leading_expedition
+		}
+	}
+
+	after = {
+		trigger_event = {
+			id = turkfm_expeditions.011 # Raiding Party Arrives in the Hinterlands
+			days = { 15 45 }
+		}
+		set_variable = turkfm_expedition_transit_var
+	}
+
+}
+
+turkfm_expeditions.011 = { # Raiding Party Arrives in the Hinterlands
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.011.t
+	desc = turkfm_expeditions.011.d
+	flavor = turkfm_expeditions.011.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_raid_leader_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_forest_day.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_expeditions.010
+	}
+
+	cancellation_trigger = {
+		owns_entire_state_region = STATE_MONTENEGRO
+	}
+
+	immediate = {
+		turkfm_karadag_scopes_effect = yes
+		turkfm_start_karadag_expedition_effect = yes
+		scope:turkfm_karadag_defender_scope = {
+			trigger_event = {
+				id = turkfm_expeditions.018 # Country Crosses the Border
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.011.a
+		default_option = yes
+		custom_tooltip = turkfm_no_effects
+	}
+
+}
+
+turkfm_expeditions.012 = { # Raiding Party Withdraws from the Hinterlands
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.012.t
+	desc = turkfm_expeditions.012.d
+	flavor = turkfm_expeditions.012.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_raid_leader_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_forest_day.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_opened_soundeffect = "event:/SFX/Events/unspecific/iceberg_in_the_antartica"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = turkfm_expedition_progress_var
+		var:turkfm_expedition_progress_var < 8
+		var:turkfm_expedition_peril_var >= 8
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	immediate = {
+		turkfm_piracy_scopes_effect = yes
+		turkfm_clear_expedition_effect = yes
+		scope:turkfm_karadag_defender_scope = {
+			trigger_event = {
+				id = turkfm_expeditions.019 # Border Incursion Repelled
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.012.a
+		default_option = yes
+		turkfm_fail_karadag_expedition_effect = yes
+	}
+
+}
+
+turkfm_expeditions.013 = { # Raiding Party Leader Has Died!
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.013.t
+	desc = turkfm_expeditions.013.d
+	flavor = turkfm_expeditions.013.f
+
+	event_image = {
+		video = "ep1_printing_press"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = turkfm_raid_leader_var
+		NOR = {
+			has_variable = turkfm_expedition_cooldown_var
+			exists = var:turkfm_raid_leader_var
+		}
+		var:turkfm_expedition_progress_var < 8
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_karadag
+		}
+	}
+
+	immediate = {
+		turkfm_karadag_scopes_effect = yes
+		turkfm_clear_expedition_effect = yes
+		scope:turkfm_karadag_defender_scope = {
+			trigger_event = {
+				id = turkfm_expeditions.019 # Border Incursion Repelled
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.013.a
+		default_option = yes
+		turkfm_fail_karadag_expedition_effect = yes
+	}
+
+}
+
+turkfm_expeditions.014 = { # The Gaols of Centinje
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.014.t
+	desc = turkfm_expeditions.014.d
+	flavor = turkfm_expeditions.014.f
+
+	event_image = {
+		video = "votp_prison"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_visit_gaol_button
+	}
+
+	immediate = {
+		random_character_in_void = {
+			limit = {
+				OR = {
+					has_template = template_balkfm_captive_bosnian
+					has_template = template_balkfm_captive_albanian
+					has_template = template_balkfm_captive_serbian
+				}
+			}
+			save_scope_as = turkfm_captive_1_scope
+		}
+		if = {
+			limit = {
+				exists = scope:turkfm_captive_1_scope
+			}
+			random_character_in_void = {
+				limit = {
+					OR = {
+						has_template = template_balkfm_captive_bosnian
+						has_template = template_balkfm_captive_albanian
+						has_template = template_balkfm_captive_serbian
+					}
+					scope:turkfm_captive_1_scope != this
+				}
+				save_scope_as = turkfm_captive_2_scope
+			}
+			if = {
+				limit = {
+					exists = scope:turkfm_captive_2_scope
+				}
+				random_character_in_void = {
+					limit = {
+						OR = {
+							has_template = template_balkfm_captive_bosnian
+							has_template = template_balkfm_captive_albanian
+							has_template = template_balkfm_captive_serbian
+						}
+						scope:turkfm_captive_1_scope != this
+						scope:turkfm_captive_2_scope != this
+					}
+					save_scope_as = turkfm_captive_3_scope
+				}
+				if = {
+					limit = {
+						exists = scope:turkfm_captive_3_scope
+					}
+					random_character_in_void = {
+						limit = {
+							OR = {
+								has_template = template_balkfm_captive_bosnian
+								has_template = template_balkfm_captive_albanian
+								has_template = template_balkfm_captive_serbian
+							}
+							scope:turkfm_captive_1_scope != this
+							scope:turkfm_captive_2_scope != this
+							scope:turkfm_captive_3_scope != this
+						}
+						save_scope_as = turkfm_captive_4_scope
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.014.1
+		trigger = {
+			exists = scope:turkfm_captive_1_scope
+		}
+		scope:turkfm_captive_1_scope = {
+			set_variable = turkfm_captive_event_target
+		}
+		c:TUR = {
+			trigger_event = {
+				id = turkfm_expeditions.015 # Montenegro Offers Ransom
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.014.2
+		trigger = {
+			exists = scope:turkfm_captive_2_scope
+		}
+		scope:turkfm_captive_2_scope = {
+			set_variable = turkfm_captive_event_target
+		}
+		c:TUR = {
+			trigger_event = {
+				id = turkfm_expeditions.015 # Montenegro Offers Ransom
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.014.3
+		trigger = {
+			exists = scope:turkfm_captive_3_scope
+		}
+		scope:turkfm_captive_3_scope = {
+			set_variable = turkfm_captive_event_target
+		}
+		c:TUR = {
+			trigger_event = {
+				id = turkfm_expeditions.015 # Montenegro Offers Ransom
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.014.4
+		trigger = {
+			exists = scope:turkfm_captive_4_scope
+		}
+		scope:turkfm_captive_4_scope = {
+			set_variable = turkfm_captive_event_target
+		}
+		c:TUR = {
+			trigger_event = {
+				id = turkfm_expeditions.015 # Montenegro Offers Ransom
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.014.a
+		default_option = yes
+		custom_tooltip = {
+			text = turkfm_nothing_happens
+			remove_variable = turkfm_ransom_var
+		}
+	}
+
+}
+
+turkfm_expeditions.015 = { # Montenegro Offers Ransom
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.015.t
+	desc = turkfm_expeditions.015.d
+	flavor = turkfm_expeditions.015.f
+
+	event_image = {
+		video = "asia_politician_parliament_motion"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_expeditions.014
+	}
+
+	immediate = {
+		c:MON ?= {
+			save_scope_as = montenegro_scope
+		}
+		random_character_in_void = {
+			limit = {
+				has_variable = turkfm_captive_event_target
+			}
+			save_scope_as = turkfm_captive_scope
+		}
+	}
+
+	option = { # Post Bail
+		name = turkfm_expeditions.015.a
+		default_option = yes
+		add_radicals = {
+			strata = lower
+			culture = cu:turkish
+			value = small_radicals
+		}
+		add_modifier = {
+			name = modifier_turkfm_accepted_ransom
+			days = short_modifier_time
+		}
+		c:MON = {
+			trigger_event = {
+				id = turkfm_expeditions.016 # Ottoman Noble Ransom Event
+				days = { 7 14 }
+			}
+			set_variable = turkfm_ransom_accepted
+		}
+		ai_chance = {
+			base = 8
+		}
+	}
+
+	option = { # Uhh, not our problem
+		name = turkfm_expeditions.015.b
+		add_radicals = {
+			strata = upper
+			culture = cu:turkish
+			value = medium_radicals
+		}
+		add_modifier = {
+			name = modifier_turkfm_refused_ransom
+			days = short_modifier_time
+
+		}
+		c:MON = {
+			trigger_event = {
+				id = turkfm_expeditions.016 # Ottoman Noble Ransom Event
+				days = { 7 14 }
+			}
+		}
+		ai_chance = {
+			base = 2
+		}
+	}
+
+}
+
+turkfm_expeditions.016 = { # Ottoman Reply to Ransom
+	type = country_event
+	placement = root
+
+	title = {
+		triggered_desc = {
+			desc = turkfm_expeditions.016.t1
+			trigger = {
+				has_variable = turkfm_ransom_accepted
+			}
+		}
+		triggered_desc = {
+			desc = turkfm_expeditions.016.t2
+			trigger = {
+				NOT = {
+					has_variable = turkfm_ransom_accepted
+				}
+			}
+		}
+	}
+	desc = {
+		triggered_desc = {
+			desc = turkfm_expeditions.016.d1
+			trigger = {
+				has_variable = turkfm_ransom_accepted
+			}
+		}
+		triggered_desc = {
+			desc = turkfm_expeditions.016.d2
+			trigger = {
+				NOT = {
+					has_variable = turkfm_ransom_accepted
+				}
+			}
+		}
+	}
+	flavor = turkfm_expeditions.016.f
+
+	gui_window = event_window_1char_tabloid
+
+	left_icon = scope:turkfm_captive_scope
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_expeditions.015
+	}
+
+	immediate = {
+		random_character_in_void = {
+			limit = {
+				has_variable = turkfm_captive_event_target
+			}
+			save_scope_as = turkfm_captive_scope
+		}
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+	}
+
+	option = {	# Ransom Accepted
+		name = turkfm_expeditions.016.b
+		default_option = yes
+		trigger = {
+			has_variable = turkfm_ransom_accepted
+		}
+		scope:turkfm_captive_scope = {
+			free_character_from_void = yes
+		}
+		add_modifier = {
+			name = modifier_turkfm_ransomed_noble
+			days = normal_modifier_time
+		}
+		remove_variable = turkfm_ransom_accepted
+	}
+
+	option = { # Accept the News
+		name = turkfm_expeditions.016.a
+		trigger = {
+			NOT = {
+				has_variable = turkfm_ransom_accepted
+			}
+		}
+		scope:turkfm_captive_scope = {
+			add_modifier = {
+				name = modifier_turkfm_rejected_hostage
+			}
+		}
+		add_modifier = {
+			name = modifier_turkfm_ransom_failed
+			days = short_modifier_time
+		}
+	}
+
+	option = { # Cool story bro, where's my sword
+		name = turkfm_expeditions.016.b
+		trigger = {
+			NOT = {
+				has_variable = turkfm_ransom_accepted
+			}
+		}
+		show_as_tooltip = {
+			scope:turkfm_captive_scope = {
+				kill_character = yes
+			}
+		}
+		create_incident = {
+			country = c:TUR
+			value = 10 # this is higher because you're just being vindictive here
+		}
+		add_modifier = {
+			name = modifier_turkfm_executed_noble
+			days = normal_modifier_time
+		}
+		c:TUR = {
+			trigger_event = {
+				id = turkfm_expeditions.017 # Ottoman Noble Beheaded
+				days = { 5 15 }
+			}
+		}
+	}
+
+}
+
+turkfm_expeditions.017 = { # Ottoman Noble Beheaded
+	type = country_event
+	placement = scope:montenegro_scope
+
+	title = turkfm_expeditions.017.t
+	desc = turkfm_expeditions.017.d
+	flavor = turkfm_expeditions.017.f
+
+	gui_window = event_window_1char_tabloid
+
+	left_icon = scope:turkfm_captive_scope
+
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_expeditions.016/834
+	}
+
+	immediate = {
+		random_character_in_void = {
+			limit = {
+				has_variable = turkfm_captive_event_target
+			}
+			save_scope_as = turkfm_captive_scope
+		}
+		c:MON = {
+			save_scope_as = montenegro_scope
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.017.a
+		default_option = yes
+		scope:turkfm_captive_scope = {
+			kill_character = yes
+		}
+		change_relations = {
+			country = c:MON
+			value = -25
+		}
+	}
+
+}
+
+turkfm_expeditions.018 = { # Country Crosses the Border
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.018.t
+	desc = turkfm_expeditions.018.d
+	flavor = turkfm_expeditions.018.f
+
+	event_image = {
+		video = "ep1_ca_mountain_pass_military"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_start_karadag_expedition_effect
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_karadag
+		}
+	}
+
+	immediate = {
+		turkfm_karadag_scopes_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.018.a
+		default_option = yes
+		custom_tooltip = turkfm_no_effects
+	}
+
+}
+
+turkfm_expeditions.019 = { # Border Incursion Repelled
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.019.t
+	desc = turkfm_expeditions.019.d
+	flavor = turkfm_expeditions.019.f
+
+	event_image = {
+		video = "europenorthamerica_before_the_battle"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_expeditions.012/813
+	}
+
+	cancellation_trigger = {
+		NOt = {
+			has_journal_entry = je_turkfm_karadag
+		}
+	}
+
+	immediate = {
+		turkfm_karadag_scopes_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.019.a
+		default_option = yes
+		trigger = {
+			c:MON ?= this
+		}
+		add_modifier = {
+			name = modifier_turkfm_weathered_the_storm
+			days = short_modifier_time
+		}
+		show_as_tooltip = {
+			create_bidirectional_truce = {
+				country = c:TUR
+				months = 24
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.019.a
+		trigger = {
+			NOT = {
+				c:MON ?= this
+			}
+		}
+		s:STATE_MONTENEGRO = {
+			region_state:TUR = {
+				add_modifier = {
+					name = modifier_turkfm_secured_karadag_frontier
+					days = short_modifier_time
+				}
+			}
+		}
+		show_as_tooltip = {
+			create_bidirectional_truce = {
+				country = c:MON
+				months = 24
+			}
+		}
+	}
+
+}
+
+## Karadag Expedition Events ##
+turkfm_expeditions.020 = { # Local Informants
+	type = country_event
+	placement = scope:montenegro_scope
+
+	title = turkfm_expeditions.020.t
+	desc = turkfm_expeditions.020.d
+	flavor = turkfm_expeditions.020.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_forest_day.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_karadag_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_karadag
+		}
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_karadag_scopes_effect = yes
+	}
+
+	option = { # Take the Info
+		name = turkfm_expeditions.020.a
+		default_option = yes
+		turkfm_add_small_progress_effect = yes
+	}
+
+	option = { # Sweeten the Deal
+		name = turkfm_expeditions.020.b
+		turkfm_add_medium_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+	}
+
+}
+
+turkfm_expeditions.021 = { # Wolf Sighted
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.021.t
+	desc = turkfm_expeditions.021.d
+	flavor = turkfm_expeditions.021.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_forest_day.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_karadag_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_karadag
+		}
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_karadag_scopes_effect = yes
+	}
+
+	option = { # Just Ignore It
+		name = turkfm_expeditions.021.a
+		default_option = yes
+		turkfm_add_small_progress_effect = yes
+		random_list = {
+			5 = {
+				custom_tooltip = turkfm_nothing_happens
+			}
+			5 = {
+				turkfm_add_small_peril_effect = yes
+			}
+		}
+	}
+
+	option = { # Slow Down and Make Patrols
+		name = turkfm_expeditions.021.b
+		custom_tooltip = turkfm_nothing_happens
+	}
+
+	option = { # Tonight, We Eat Bear Flesh!
+		name = turkfm_expeditions.021.c
+		turkfm_add_medium_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+		scope:turkfm_expedition_leader_scope = {
+			add_modifier = {
+				name = modifier_turkfm_bear_slain
+				days = normal_modifier_time
+			}
+		}
+	}
+
+}
+
+turkfm_expeditions.022 = { # A Circular Expedition
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.022.t
+	desc = turkfm_expeditions.022.d
+	flavor = turkfm_expeditions.022.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_mountain_road.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_karadag_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_karadag
+		}
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_karadag_scopes_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.022.a
+		default_option = yes
+		turkfm_remove_medium_progress_effect = yes
+		turkfm_add_medium_peril_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.022.b
+		show_as_unavailable = {
+			scope:turkfm_expedition_leader_scope = {
+				OR = {
+					has_trait = surveyor
+					has_trait = mountain_commander
+				}
+			}
+		}
+		highlighted_option = yes
+		trigger = {
+			scope:turkfm_expedition_leader_scope = {
+				OR = {
+					has_trait = surveyor
+					has_trait = mountain_commander
+				}
+			}
+		}
+		turkfm_remove_small_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+	}
+
+}
+
+turkfm_expeditions.023 = { # Snow on the Ground
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.023.t
+	desc = turkfm_expeditions.023.d
+	flavor = turkfm_expeditions.023.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_mountain_blizzard.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_karadag_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+		OR = {
+			month = 12
+			month = 1
+			month = 2
+		}
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_karadag
+		}
+	}
+
+	cooldown = {
+		years = 2
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_karadag_scopes_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.023.a
+		default_option = yes
+		turkfm_add_medium_peril_effect = yes
+		turkfm_remove_small_progress_effect = yes
+	}
+
+}
+
+turkfm_expeditions.024 = { # Balkan Hospitality
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.024.t
+	desc = turkfm_expeditions.024.d
+	flavor = turkfm_expeditions.024.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_forest_day.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_karadag_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+		var:turkfm_expedition_peril_var > 3
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_karadag
+		}
+	}
+
+	cooldown = {
+		years = 2
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_karadag_scopes_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.024.a
+		default_option = yes
+		turkfm_remove_small_peril_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.024.b
+		turkfm_remove_medium_peril_effect = yes
+		add_modifier = {
+			name = modifier_turkfm_resupply_costs
+			days = short_modifier_time
+			multiplier = money_amount_multiplier_small
+		}
+	}
+
+}
+
+turkfm_expeditions.025 = { # Expedition Beset by Plague!
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.025.t
+	desc = turkfm_expeditions.025.d
+	flavor = turkfm_expeditions.025.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_mountain_road.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_karadag_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+		var:turkfm_expedition_progress_var > 3
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_karadag
+		}
+	}
+
+	cooldown = {
+		years = 3
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_karadag_scopes_effect = yes
+	}
+
+	option = { # Stop and Quarantine
+		name = turkfm_expeditions.025.a
+		default_option = yes
+		turkfm_add_small_peril_effect = yes
+		turkfm_remove_medium_progress_effect = yes
+	}
+
+	option = { # Keep Moving
+		name = turkfm_expeditions.025.b
+		turkfm_add_medium_peril_effect = yes
+		turkfm_add_small_progress_effect = yes
+	}
+
+}
+
+turkfm_expeditions.026 = { # Yoshi Commits Tax Fraud
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.026.t
+	desc = turkfm_expeditions.026.d
+	flavor = turkfm_expeditions.026.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_mountain_road.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_trade.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_karadag_expedition_trigger = yes
+		NOR = {
+			has_variable = turkfm_expedition_cooldown_var
+			has_variable = turkfm_yoshi_committed_tax_fraud
+		}
+		var:turkfm_expedition_progress_var > 3
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_karadag
+		}
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		set_variable = {
+			name = turkfm_yoshi_committed_tax_fraud
+			years = 3
+		}
+		turkfm_karadag_scopes_effect = yes
+	}
+
+	option = { # Throw Yoshi in Jail
+		name = turkfm_expeditions.026.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_yoshi_got_pinched
+			days = normal_modifier_time
+		}
+		turkfm_karadag_regress_effect = yes
+	}
+
+	option = { # Let Yoshi Commit Tax Fraud
+		name = turkfm_expeditions.026.b
+		add_modifier = {
+			name = modifier_turkfm_white_collar_crime
+			days = normal_modifier_time
+		}
+		turkfm_karadag_advance_effect = yes
+	}
+
+}
+
+turkfm_expeditions.027 = { # Successful Scouting
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.027.t
+	desc = turkfm_expeditions.027.d
+	flavor = turkfm_expeditions.027.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_mountain_road.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_karadag_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+		var:turkfm_expedition_progress_var > 3
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_karadag
+		}
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_karadag_scopes_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.027.a
+		default_option = yes
+		turkfm_add_medium_progress_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.027.b
+		turkfm_add_large_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+	}
+
+}
+
+## Karadag Skirmish Events ##
+turkfm_expeditions.030 = { # Village Skirmish Escalates!
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.030.t
+	desc = turkfm_expeditions.030.d
+	flavor = turkfm_expeditions.030.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_expedition_leader_scope
+
+	event_image = {
+		video = "middleeast_battlefield_trenches"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 1
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_karadag_expedition_trigger = yes
+		NOR = {
+			has_variable = turkfm_village_skirmish_var
+			has_variable = turkfm_expedition_cooldown_var
+		}
+		var:turkfm_expedition_progress_var > 2
+		var:turkfm_expedition_progress_var < 6
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_karadag
+		}
+	}
+
+	immediate = {
+		set_variable = turkfm_village_skirmish_var
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_karadag_scopes_effect = yes
+		scope:turkfm_karadag_defender_scope = {
+			post_notification = notification_turkfm_village_skirmish
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.030.a
+		default_option = yes
+		custom_tooltip = turkfm_no_effects
+	}
+
+}
+
+turkfm_expeditions.031 = { # Steady Grind
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.031.t
+	desc = turkfm_expeditions.031.d
+	flavor = turkfm_expeditions.031.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_expedition_leader_scope
+
+	event_image = {
+		video = "middleeast_battlefield_trenches"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 1
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = turkfm_village_skirmish_var
+	}
+
+	cancellation_trigger = {
+		NOR = {
+			has_journal_entry = je_turkfm_karadag
+			has_variable = turkfm_village_skirmish_var
+		}
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 10
+		}
+		turkfm_karadag_scopes_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.031.a
+		default_option = yes
+		turkfm_add_small_progress_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.031.b
+		turkfm_add_medium_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+	}
+
+}
+
+turkfm_expeditions.032 = { # Village Outskirts Burned
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.032.t
+	desc = turkfm_expeditions.032.d
+	flavor = turkfm_expeditions.032.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_expedition_leader_scope
+
+	event_image = {
+		video = "southamerica_war_civilians"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 1
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = turkfm_village_skirmish_var
+	}
+
+	cancellation_trigger = {
+		NOR = {
+			has_journal_entry = je_turkfm_karadag
+			has_variable = turkfm_village_skirmish_var
+		}
+	}
+
+	cooldown = {
+		months = 3
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 10
+		}
+		turkfm_karadag_scopes_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.032.a
+		default_option = yes
+		turkfm_add_small_progress_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.032.b
+		turkfm_add_small_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+	}
+
+}
+
+turkfm_expeditions.033 = { # Village Families Massacred
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.033.t
+	desc = turkfm_expeditions.033.d
+	flavor = turkfm_expeditions.033.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_expedition_leader_scope
+
+	event_image = {
+		video = "southamerica_war_civilians"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 1
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = turkfm_village_skirmish_var
+	}
+
+	cancellation_trigger = {
+		NOR = {
+			has_journal_entry = je_turkfm_karadag
+			has_variable = turkfm_village_skirmish_var
+		}
+	}
+
+	cooldown = {
+		months = 6
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 10
+		}
+		turkfm_karadag_scopes_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.032.a
+		default_option = yes
+		turkfm_add_medium_peril_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.032.b
+		turkfm_remove_small_progress_effect = yes
+	}
+
+}
+
+turkfm_expeditions.034 = { # Ottoman Noble Captured
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.034.t
+	desc = turkfm_expeditions.034.d
+	flavor = turkfm_expeditions.034.f
+
+	gui_window = event_window_2char_discussion
+
+	left_icon = scope:turkfm_expedition_leader_scope
+	right_icon = scope:turkfm_captive_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_mountain_road.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+
+	duration = 1
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = turkfm_village_skirmish_var
+		turkfm_captured_nobles_value < 3
+	}
+
+	cancellation_trigger = {
+		NOR = {
+			has_journal_entry = je_turkfm_karadag
+			has_variable = turkfm_village_skirmish_var
+		}
+	}
+
+	cooldown = {
+		years = 2
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 10
+		}
+		turkfm_karadag_scopes_effect = yes
+		turkfm_generate_captive_effect = yes
+		random_character_in_void = {
+			limit = {
+				has_variable = turkfm_captive_var
+			}
+			save_scope_as = turkfm_captive_scope
+		}
+	}
+
+	option = { # Let Them Go
+		name = turkfm_expeditions.034.a
+		default_option = yes
+		scope:turkfm_captive_scope = {
+			free_character_from_void = yes
+		}
+		c:TUR = {
+			post_notification = notification_turkfm_noble_released
+		}
+		add_radicals = {
+			value = small_radicals
+		}
+		turkfm_add_small_peril_effect = yes
+		turkfm_karadag_regress_effect = yes
+	}
+
+	option = { # Lock them up
+		name = turkfm_expeditions.034.b
+		scope:turkfm_captive_scope = {
+			remove_variable = turkfm_captive_var
+		}
+		create_incident = {
+			country = c:TUR
+			value = 5
+		}
+		c:TUR = {
+			post_notification = notification_turkfm_noble_captured
+		}
+		turkfm_karadag_advance_effect = yes
+	}
+
+	option = { # Off With Their Head!
+		name = turkfm_expeditions.034.c
+		scope:turkfm_captive_scope = {
+			remove_variable = turkfm_captive_var
+			set_variable = turkfm_captive_event_target
+		}
+		show_as_tooltip = {
+			scope:turkfm_captive_scope = {
+				kill_character = yes
+			}
+		}
+		create_incident = {
+			country = c:TUR
+			value = 10
+		}
+		add_modifier = {
+			name = modifier_turkfm_executed_noble
+			days = normal_modifier_time
+		}
+		c:TUR = {
+			trigger_event = {
+				id = turkfm_expeditions.017 # Ottoman Noble Beheaded
+				days = { 5 15 }
+			}
+		}
+		turkfm_karadag_advance_effect = yes
+		turkfm_add_medium_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+	}
+
+}
+
+turkfm_expeditions.035 = { # Montenegrin Folk Hero Killed
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.035.t
+	desc = turkfm_expeditions.035.d
+	flavor = turkfm_expeditions.035.f
+
+	event_image = {
+		video = "southamerica_war_civilians"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 1
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = turkfm_village_skirmish_var
+		turkfm_captured_nobles_value < 3
+	}
+
+	cancellation_trigger = {
+		NOR = {
+			has_journal_entry = je_turkfm_karadag
+			has_variable = turkfm_village_skirmish_var
+		}
+	}
+
+	cooldown = {
+		years = 2
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 10
+		}
+		turkfm_karadag_scopes_effect = yes
+		scope:turkfm_karadag_defender_scope = {
+			post_notification = notification_turkfm_folk_hero_killed
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.035.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_folk_hero_killed
+			days = short_modifier_time
+		}
+		turkfm_remove_small_progress_effect = yes
+		turkfm_add_medium_peril_effect = yes
+	}
+
+}
+
+## Karadag Decision Events ##
+turkfm_expeditions.040 = { # Negociations Over Cattaro
+	type = country_event
+	placement = scope:turkfm_cattaro_scope
+
+	title = turkfm_expeditions.040.t
+	desc = turkfm_expeditions.040.d
+	flavor = turkfm_expeditions.040.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_negociate_kotor_button
+	}
+
+	cancellation_trigger = {
+		NOR = {
+			is_subject_of = c:AUS
+			is_in_same_power_bloc = c:AUS
+			any_scope_treaty = {
+				binds = root
+				binds = c:AUS
+				any_scope_article = {
+					has_type = alliance
+				}
+			}
+		}
+	}
+
+	immediate = {
+		c:AUS = {
+			save_scope_as = austria_scope
+		}
+		s:STATE_MONTENEGRO = {
+			region_state:AUS = {
+				save_scope_as = turkfm_cattaro_scope
+			}
+
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.040.a
+		default_option = yes
+		c:AUS = {
+			every_scope_state = {
+				limit = {
+					state_region = s:STATE_MONTENEGRO
+				}
+				set_state_owner = root
+			}
+		}
+	}
+
+}
+
+turkfm_expeditions.041 = { # Negociations on Headtaking (TUR)
+	type = country_event
+	placement = scope:montenegro_scope
+
+	title = turkfm_expeditions.041.t
+	desc = turkfm_expeditions.041.d
+	flavor = turkfm_expeditions.041.f
+
+	event_image = {
+		video = "asia_politician_parliament_motion"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_renounce_headtaking_button
+	}
+
+	immediate = {
+		c:MON = {
+			save_scope_as = montenegro_scope
+		}
+	}
+
+	option = { # For TUR, reject headtaking offer
+		name = turkfm_expeditions.041.a
+		default_option = yes
+		turkfm_add_small_escalation_effect = yes
+		add_modifier = {
+			name = modifier_turkfm_retained_headtaking
+			days = long_modifier_time
+		}
+		c:MON = {
+			trigger_event = {
+				id = turkfm_expeditions.042 # Negociations On Headtaking
+			}
+			set_variable = turkfm_headtaking_rejected
+		}
+	}
+
+	option = { # For TUR, accept headtaking offer
+		name = turkfm_expeditions.041.b
+		turkfm_add_medium_deescalation_effect = yes
+		add_modifier = {
+			name = modifier_turkfm_abolished_headtaking
+			days = normal_modifier_time
+		}
+		c:MON = {
+			trigger_event = {
+				id = turkfm_expeditions.042 # Negociations On Headtaking
+			}
+		}
+	}
+
+}
+
+turkfm_expeditions.042 = { # Negociations on Headtaking (MON)
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.042.t
+	desc = {
+		triggered_desc = {
+			desc = turkfm_expeditions.042.d1
+			trigger = {
+				has_variable = turkfm_headtaking_rejected
+			}
+		}
+		triggered_desc = {
+			desc = turkfm_expeditions.042.d2
+			trigger = {
+				NOT = {
+					has_variable = turkfm_headtaking_rejected
+				}
+			}
+		}
+	}
+	flavor = turkfm_expeditions.042.f
+
+	gui_window = event_window_2char_discussion
+
+	left_icon = scope:turkfm_ruler_scope
+	right_icon = scope:ottoman_ruler_scope
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_expeditions.041
+	}
+
+	immediate = {
+		c:TUR ?= {
+			save_scope_as = ottoman_scope
+			ruler = {
+				save_scope_as = ottoman_ruler_scope
+			}
+		}
+		ruler = {
+			save_scope_as = turkfm_ruler_scope
+		}
+	}
+
+	option = { # For MON, headtaking offer rejected, retain headtaking
+		name = turkfm_expeditions.042.a
+		default_option = yes
+		trigger = {
+			has_variable = turkfm_headtaking_rejected
+		}
+		add_modifier = {
+			name = modifier_turkfm_retained_headtaking
+			days = normal_modifier_time
+		}
+	}
+
+	option = { # For MON, headtaking offer rejected, abolish unilaterally
+		name = turkfm_expeditions.042.b
+		trigger = {
+			has_variable = turkfm_headtaking_rejected
+		}
+		remove_modifier = modifier_turkfm_practicing_headtaking
+		add_modifier = {
+			name = modifier_turkfm_unilaterally_abolished_headtaking
+			days = long_modifier_time
+		}
+	}
+
+	option = { # For MON, headtaking offer accepted
+		name = turkfm_expeditions.042.c
+		trigger = {
+			NOT = {
+				has_variable = turkfm_headtaking_rejected
+			}
+		}
+		remove_modifier = modifier_turkfm_practicing_headtaking
+		add_modifier = {
+			name = modifier_turkfm_abolished_headtaking
+			days = normal_modifier_time
+		}
+	}
+
+	after = {
+		remove_variable = turkfm_headtaking_rejected
+	}
+
+}
+
+
+################################################
+## EXPEDITION II: THE PIRATES OF THE ADRIATIC ##
+################################################
+
+#
+##
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\
+#                                                       (
+#  @@@@@                                        @@@@@    )
+# @@@@@@@                                      @@@@@@@  (
+# @@@@@@@           @@@@@@@@@@@@@@@            @@@@@@@   )
+#  @@@@@@@@       @@@@@@@@@@@@@@@@@@@        @@@@@@@@   (
+#      @@@@@     @@@@@@@@@@@@@@@@@@@@@     @@@@@         )
+#        @@@@@  @@@@@@@@@@@@@@@@@@@@@@@  @@@@@          (
+#          @@  @@@@@@@@@@@@@@@@@@@@@@@@@  @@             )
+#             @@@@@@@    @@@@@@    @@@@@@               (
+#             @@@@@@      @@@@      @@@@@                )
+#             @@@@@@      @@@@      @@@@@               (
+#              @@@@@@    @@@@@@    @@@@@                 )
+#               @@@@@@@@@@@  @@@@@@@@@@                 (
+#                @@@@@@@@@@  @@@@@@@@@                   )
+#            @@   @@@@@@@@@@@@@@@@@   @@                (
+#            @@@@  @@@@ @ @ @ @ @@@@  @@@@               )
+#           @@@@@   @@@ @ @ @ @ @@@   @@@@@             (
+#         @@@@@      @@@@@@@@@@@@@      @@@@@            )
+#       @@@@          @@@@@@@@@@@          @@@@         (
+#    @@@@@              @@@@@@@              @@@@@       )
+#   @@@@@@@                                 @@@@@@@     (
+#    @@@@@                                   @@@@@       )
+#                                                       (
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
+#
+#
+#
+# If you should ever find yourself in Albania, be sure to visit the cave of Haxhi Ali, the famed Albanian pirate. Seriously, it's a stop on tours out of Vlore. Whether or not it has any actual relation to the guy is, well, up to interpretation.
+
+#### PIRATES OF THE ADRIATIC EVENTS ####
+turkfm_expeditions.100 = { # The Pirates of the Adriatic
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.100.t
+	desc = turkfm_expeditions.100.d
+	flavor = turkfm_expeditions.100.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_jack_sparrow_scope
+
+	event_image = {
+		video = "unspecific_naval_battle"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_sick_man.001 / turkfm_expeditions.119
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	immediate = {
+		turkfm_jack_sparrow_effect = yes
+		set_variable = turkfm_piracy_started
+	}
+
+	option = {
+		name = turkfm_expeditions.100.a
+		default_option = yes
+		custom_tooltip = turkfm_expeditions.100.tt
+	}
+
+}
+
+turkfm_expeditions.101 = { # Pacifying the Adriatic
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.101.t
+	desc = turkfm_expeditions.101.d
+	flavor = turkfm_expeditions.101.f
+
+	event_image = {
+		video = "africa_construction_colony"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_deploy_expedition_button
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	immediate = {
+		random_scope_character = {
+			limit = {
+				is_busy = no
+				has_role = admiral
+				is_ruler = no
+			}
+			save_scope_as = expedition_leader_1
+		}
+		if = {
+			limit = {
+				any_scope_character = {
+					is_busy = no
+					is_ruler = no
+					has_role = admiral
+					OR = {
+						has_trait = basic_naval_commander
+						has_trait = experienced_naval_commander
+						has_trait = expert_naval_commander
+						has_trait = convoy_raider_commander
+						has_trait = experienced_convoy_raider
+						has_trait = expert_convoy_raider
+					}
+					NOT = {
+						scope:expedition_leader_1 ?= this
+					}
+				}
+			}
+			random_scope_character = {
+				limit = {
+					is_busy = no
+					is_ruler = no
+					has_role = admiral
+					OR = {
+						has_trait = basic_naval_commander
+						has_trait = experienced_naval_commander
+						has_trait = expert_naval_commander
+						has_trait = convoy_raider_commander
+						has_trait = experienced_convoy_raider
+						has_trait = expert_convoy_raider
+					}
+					NOT = {
+						scope:expedition_leader_1 ?= this
+					}
+				}
+				save_scope_as = expedition_leader_2
+			}
+		}
+		else = {
+			random_scope_character = {
+				limit = {
+					is_busy = no
+					is_ruler = no
+					has_role = admiral
+					NOT = {
+						scope:expedition_leader_1 ?= this
+					}
+				}
+				save_scope_as = expedition_leader_2
+			}
+		}
+		random_scope_character = {
+			limit = {
+				is_busy = no
+				is_ruler = no
+				has_role = admiral
+				NOR = {
+					scope:expedition_leader_1 ?= this
+					scope:expedition_leader_2 ?= this
+				}
+			}
+			save_scope_as = expedition_leader_3
+		}
+		random_scope_character = {
+			limit = {
+				is_busy = no
+				is_ruler = no
+				has_role = admiral
+				NOR = {
+					scope:expedition_leader_1 ?= this
+					scope:expedition_leader_2 ?= this
+					scope:expedition_leader_3 ?= this
+				}
+			}
+			save_scope_as = expedition_leader_4
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.101.a
+		default_option = yes
+		trigger = {
+			exists = scope:expedition_leader_1
+		}
+		scope:expedition_leader_1 ?= {
+			set_character_busy_and_immortal = yes
+			add_modifier = modifier_turkfm_leading_expedition
+		}
+		turkfm_jack_sparrow_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.101.b
+		trigger = {
+			exists = scope:expedition_leader_2
+		}
+		scope:expedition_leader_2 ?= {
+			set_character_busy_and_immortal = yes
+			add_modifier = modifier_turkfm_leading_expedition
+		}
+		turkfm_jack_sparrow_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.101.c
+		trigger = {
+			exists = scope:expedition_leader_3
+		}
+		scope:expedition_leader_3 ?= {
+			set_character_busy_and_immortal = yes
+			add_modifier = modifier_turkfm_leading_expedition
+		}
+		turkfm_jack_sparrow_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.101.e
+		trigger = {
+			exists = scope:expedition_leader_4
+		}
+		scope:expedition_leader_4 ?= {
+			set_character_busy_and_immortal = yes
+			add_modifier = modifier_turkfm_leading_expedition
+		}
+		turkfm_jack_sparrow_effect = yes
+	}
+
+	after = {
+		trigger_event = {
+			id = turkfm_expeditions.102 # Cutler Beckett Arrives in the Adriatic
+			days = { 15 45 }
+		}
+		set_variable = turkfm_expedition_transit_var
+	}
+
+}
+
+turkfm_expeditions.102 = { # Cutler Beckett Arrives in the Adriatic
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.102.t
+	desc = turkfm_expeditions.102.d
+	flavor = turkfm_expeditions.102.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_open_ocean.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_expeditions.101
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	immediate = {
+		turkfm_piracy_scopes_effect = yes
+		turkfm_start_piracy_expedition_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.102.a
+		default_option = yes
+		custom_tooltip = turkfm_no_effects
+	}
+
+}
+
+turkfm_expeditions.103 = { # Cutler Beckett Withdraws from the Adriatic
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.103.t
+	desc = turkfm_expeditions.103.d
+	flavor = turkfm_expeditions.103.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_open_ocean.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_opened_soundeffect = "event:/SFX/Events/unspecific/iceberg_in_the_antartica"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = turkfm_expedition_progress_var
+		var:turkfm_expedition_progress_var < 8
+		var:turkfm_expedition_peril_var >= 8
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	immediate = {
+		turkfm_piracy_scopes_effect = yes
+		turkfm_clear_expedition_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.103.a
+		default_option = yes
+		turkfm_fail_piracy_expedition_effect = yes
+	}
+
+
+}
+
+turkfm_expeditions.104 = { # Cutler Beckett Has Died!
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.104.t
+	desc = turkfm_expeditions.104.d
+	flavor = turkfm_expeditions.104.f
+
+	event_image = {
+		video = "ep1_printing_press"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = turkfm_cutler_beckett_var
+		NOR = {
+			has_variable = turkfm_expedition_cooldown_var
+			exists = var:turkfm_cutler_beckett_var
+		}
+		var:turkfm_expedition_progress_var < 8
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	immediate = {
+		turkfm_piracy_scopes_effect = yes
+		turkfm_clear_expedition_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.104.a
+		default_option = yes
+		turkfm_fail_piracy_expedition_effect = yes
+	}
+
+}
+
+turkfm_expeditions.105 = { # Treating with Corsairs
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.105.t
+	desc = turkfm_expeditions.105.d
+	flavor = turkfm_expeditions.105.f
+
+	event_image = {
+		video = "votp_gunboat_diplomacy"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_hire_retired_pirates_button
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_pirates_of_the_adriatic
+		}
+	}
+
+	immediate = {
+		random_scope_state = {
+			limit = {
+				gbbf_adriatic_geography_trigger = yes
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+		create_character = {
+			template = template_turkfm_hector_barbossa
+			on_created = {
+				place_character_in_void = 12
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_turkfm_hector_barbossa
+			}
+			save_scope_as = turkfm_hector_barbossa_scope
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.105.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_hired_pirates
+			days = long_modifier_time
+			is_decaying = yes
+		}
+		add_modifier = {
+			name = modifier_turkfm_corsair_recruits
+			days = long_modifier_time
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.105.b
+		default_option = yes
+		scope:turkfm_hector_barbossa_scope = {
+			hidden_effect = {
+				free_character_from_void = yes
+			}
+			add_character_role = admiral
+		}
+		add_modifier = {
+			name = modifier_turkfm_hired_pirates
+			days = long_modifier_time
+			is_decaying = yes
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.105.c
+		custom_tooltip = {
+			text = turkfm_nothing_happens
+			scope:turkfm_hector_barbossa_scope = {
+				hidden_effect = {
+					free_character_from_void = yes
+				}
+			}
+		}
+	}
+
+	after = {
+		remove_variable = turkfm_selecting_recruits
+	}
+
+}
+
+turkfm_expeditions.106 = { # Pirate Hideout Located
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.106.t
+	desc = turkfm_expeditions.106.d
+	flavor = turkfm_expeditions.106.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		video = "ep1_redcoats"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_adriatic_expedition_trigger = yes
+		var:turkfm_expedition_progress_var >= 8
+		NOT = {
+			has_variable = turkfm_piracy_chase_var
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 120
+		}
+		turkfm_piracy_scopes_effect = yes
+		turkfm_clear_expedition_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.106.a
+		default_option = yes
+		turkfm_complete_piracy_expedition_effect = yes
+	}
+
+}
+
+turkfm_expeditions.107 = { # Pirate Fleet Destroyed
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.107.t
+	desc = turkfm_expeditions.107.d
+	flavor = turkfm_expeditions.107.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		video = "unspecific_naval_battle"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_adriatic_expedition_trigger = yes
+		var:turkfm_expedition_progress_var >= 8
+		has_variable = turkfm_piracy_chase_var
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 120
+		}
+		turkfm_piracy_scopes_effect = yes
+		turkfm_clear_expedition_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.107.a
+		default_option = yes
+		turkfm_complete_piracy_expedition_effect = yes
+	}
+
+}
+
+turkfm_expeditions.108 = { # Jack Sparrow Clapped in Irons!
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.108.t
+	desc = turkfm_expeditions.108.d
+	flavor = turkfm_expeditions.108.f
+
+	gui_window = event_window_2char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+	right_icon = scope:turkfm_jack_sparrow_scope
+
+	event_image = {
+		video = "votp_hostile_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_expeditions.107 via turkfm_complete_piracy_expedition_effect
+	}
+
+	immediate = {
+		turkfm_piracy_scopes_effect = yes
+		every_country = {
+			limit = {
+				has_journal_entry = je_turkfm_pirates_of_the_adriatic
+				NOT = {
+					has_variable = turkfm_jack_sparrow_captor
+				}
+			}
+			trigger_event = {
+				id = turkfm_expeditions.109 # Jack Sparrow Whacked
+			}
+		}
+		remove_variable = turkfm_jack_sparrow_captor
+		set_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	option = { # Throw Him in Jail
+		name = turkfm_expeditions.108.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_pacified_adriatic
+			days = long_modifier_time
+		}
+		scope:turkfm_jack_sparrow_scope = {
+			custom_tooltip = turkfm_thrown_in_jail_tt
+		}
+		turkfm_advance_ottomanism1_effect = yes
+	}
+
+	option = { # To the Gallows
+		name = turkfm_expeditions.108.b
+		add_modifier = {
+			name = modifier_turkfm_pacified_adriatic
+			days = long_modifier_time
+		}
+		scope:turkfm_jack_sparrow_scope = {
+			show_as_tooltip = {
+				kill_character = yes
+			}
+		}
+		turkfm_advance_ottomanism1_effect = yes
+	}
+
+	option = { # Give Him a Job
+		name = turkfm_expeditions.108.c
+		add_modifier = {
+			name = modifier_turkfm_pacified_adriatic
+			days = long_modifier_time
+		}
+		scope:turkfm_jack_sparrow_scope = {
+			add_character_role = admiral
+			hidden_effect = {
+				free_character_from_void = yes
+			}
+			remove_trait = reckless
+			add_trait = trait_turkfm_corsair
+		}
+		add_radicals = {
+			pop_type = officers
+			value = medium_radicals
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_modifier = modifier_turkfm_hired_pirates
+				}
+			}
+			add_modifier = {
+				name = modifier_turkfm_hired_pirates
+				days = normal_modifier_time
+			}
+		}
+		turkfm_advance_ottomanism1_effect = yes
+	}
+
+}
+
+turkfm_expeditions.109 = { # Jack Sparrow Whacked
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.109.t
+	desc = turkfm_expeditions.109.d
+	flavor = turkfm_expeditions.109.f
+
+	event_image = {
+		video = "votp_hostile_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_expeditions.108
+	}
+
+	immediate = {
+		turkfm_piracy_scopes_effect = yes
+		random_country = {
+			limit = {
+				has_variable = turkfm_jack_sparrow_captor
+			}
+			save_scope_as = turkfm_piracy_country_scope
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.109.a
+		default_option = yes
+		if = {
+			limit = {
+				has_variable = turkfm_completed_pirate_expedition
+			}
+			add_modifier = {
+				name = modifier_turkfm_pacified_adriatic
+				days = long_modifier_time
+			}
+		}
+		turkfm_advance_ottomanism1_effect = yes
+	}
+
+}
+
+#### PIRATES OF THE ADRIATIC PIRACY EVENTS ####
+turkfm_expeditions.110 = { # Coastal Village Raided!
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+
+	title = turkfm_expeditions.110.t
+	desc = turkfm_expeditions.110.d
+	flavor = turkfm_expeditions.110.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_jack_sparrow_scope
+
+	event_image = {
+		video = "southamerica_war_civilians"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = turkfm_piracy_cooldown_var
+		}
+		OR = {
+			turkfm_has_adriatic_expedition_trigger = yes
+			any_scope_state = {
+				gbbf_adriatic_geography_trigger = yes
+				NOR = {
+					has_modifier = modifier_turkfm_coasts_raided
+					has_modifier = modifier_turkfm_pirate_nursing_home
+				}
+			}
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		years = 3
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_piracy_cooldown_var
+			months = 6
+		}
+		turkfm_piracy_scopes_effect = yes
+		if = {
+			limit = {
+				turkfm_has_adriatic_expedition_trigger = yes
+			}
+			random_state = {
+				limit = {
+					gbbf_adriatic_geography_trigger = yes
+					NOT = {
+						has_modifier = modifier_turkfm_coasts_raided
+					}
+				}
+				save_scope_as = turkfm_piracy_state_scope
+			}
+		}
+		else = {
+			random_scope_state = {
+				limit = {
+					gbbf_adriatic_geography_trigger = yes
+					NOT = {
+						has_modifier = modifier_turkfm_coasts_raided
+					}
+				}
+				save_scope_as = turkfm_piracy_state_scope
+			}
+		}
+	}
+
+	option = { # Maybe they shouldn't live on the coast
+		name = turkfm_expeditions.110.a
+		default_option = yes
+		scope:turkfm_piracy_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_coasts_raided
+				days = short_modifier_time
+			}
+			add_radicals_in_state = {
+				strata = lower
+				value = small_radicals
+			}
+		}
+	}
+
+	option = { # Provide Relief
+		name = turkfm_expeditions.110.b
+		scope:turkfm_piracy_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_coasts_raided
+				days = short_modifier_time
+			}
+			add_modifier = {
+				name = modifier_turkfm_aid_distributed_state
+				days = short_modifier_time
+			}
+			add_loyalists_in_state = {
+				strata = lower
+				value = small_radicals
+			}
+		}
+		add_modifier = {
+			name = modifier_turkfm_aid_distributed_country
+			days = short_modifier_time
+		}
+	}
+
+	option = { # Distribute expedition supplies
+		name = turkfm_expeditions.110.c
+		highlighted_option = yes
+		trigger = {
+			turkfm_has_adriatic_expedition_trigger = yes
+		}
+		scope:turkfm_piracy_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_coasts_raided
+				days = short_modifier_time
+			}
+			add_modifier = {
+				name = modifier_turkfm_aid_distributed_state
+				days = short_modifier_time
+			}
+		}
+		turkfm_add_large_peril_effect = yes
+		turkfm_add_medium_progress_effect = yes
+	}
+
+}
+
+turkfm_expeditions.111 = { # Merchant Vessels Raided!
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.111.t
+	desc = turkfm_expeditions.111.d
+	flavor = turkfm_expeditions.111.f
+
+	event_image = {
+		video = "unspecific_naval_battle"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOR = {
+			has_variable = turkfm_piracy_cooldown_var
+			has_modifier = modifier_turkfm_merchants_raided
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_piracy_cooldown_var
+			months = 6
+		}
+		turkfm_piracy_scopes_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.111.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_merchants_raided
+			days = normal_modifier_time
+		}
+	}
+
+}
+
+turkfm_expeditions.112 = { # Nobleman Held Hostage
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+
+	title = turkfm_expeditions.112.t
+	desc = turkfm_expeditions.112.d
+	flavor = turkfm_expeditions.112.f
+
+	event_image = {
+		video = "middleeast_courtroom_upheaval"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = turkfm_piracy_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		years = 15
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_piracy_cooldown_var
+			months = 6
+		}
+		turkfm_piracy_scopes_effect = yes
+		random_state = {
+			limit = {
+				gbbf_adriatic_geography_trigger = yes
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+	}
+
+	option = { # Pay Ransom
+		name = turkfm_expeditions.112.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_paid_ransom
+			days = normal_modifier_time
+			multiplier = money_amount_multiplier_small
+		}
+		add_loyalists = {
+			pop_type = aristocrats
+			value = small_radicals
+		}
+	}
+
+	option = { # Nope
+		name = turkfm_expeditions.112.b
+		add_radicals = {
+			pop_type = aristocrats
+			value = medium_radicals
+		}
+		add_modifier = {
+			name = modifier_turkfm_abandoned_noble
+			days = long_modifier_time
+			is_decaying = yes
+		}
+	}
+
+	option = { # Send in the Expedition
+		name = turkfm_expeditions.112.c
+		highlighted_option = yes
+		trigger = {
+			turkfm_has_adriatic_expedition_trigger = yes
+		}
+		add_loyalists = {
+			pop_type = aristocrats
+			value = medium_radicals
+		}
+		add_loyalists = {
+			pop_type = officers
+			value = medium_radicals
+		}
+		turkfm_remove_small_progress_effect = yes
+	}
+
+}
+
+turkfm_expeditions.113 = { # A Pirate's Booty
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+
+	title = turkfm_expeditions.113.t
+	desc = turkfm_expeditions.113.d
+	flavor = turkfm_expeditions.113.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_piracy_character_scope
+
+	event_image = {
+		video = "votp_gunboat_diplomacy"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = turkfm_piracy_cooldown_var
+		}
+		any_military_formation = {
+			is_fleet = yes
+			OR = {
+				current_hq ?= p:xEFA0C0.naval_hq # BALKANS HQ
+				current_hq ?= p:xB040A0.naval_hq # ITALY HQ
+			}
+		}
+		any_scope_character = {
+			has_role = admiral
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		years = 10
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_piracy_cooldown_var
+			months = 6
+		}
+		turkfm_piracy_scopes_effect = yes
+		random_country = {
+			limit = {
+				has_journal_entry = je_turkfm_pirates_of_the_adriatic
+				NOT = {
+					this = ROOT
+				}
+			}
+			save_scope_as = turkfm_piracy_country_scope
+		}
+		random_state = {
+			limit = {
+				gbbf_adriatic_geography_trigger = yes
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+		random_scope_character = {
+			limit = {
+				has_role = admiral
+			}
+			save_scope_as = turkfm_piracy_character_scope
+		}
+	}
+
+	option = { # Return the Booty
+		name = turkfm_expeditions.113.a
+		default_option = yes
+		change_relations = {
+			country = scope:turkfm_piracy_country_scope
+			value = 15
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_relations_level_increased
+			target = scope:turkfm_piracy_country_scope
+		}
+	}
+
+	option = { # Keep It as Salvage
+		name = turkfm_expeditions.113.b
+		add_modifier = {
+			name = modifier_turkfm_found_booty
+			days = normal_modifier_time
+		}
+	}
+
+}
+
+turkfm_expeditions.114 = { # Diplomatic Communiques Intercepted
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.114.t
+	desc = turkfm_expeditions.114.d
+	flavor = turkfm_expeditions.114.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_jack_sparrow_scope
+
+	event_image = {
+		video = "ep1_octopus"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = turkfm_piracy_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		years = 10
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_piracy_cooldown_var
+			months = 6
+		}
+		turkfm_piracy_scopes_effect = yes
+		random_country = {
+			limit = {
+				has_journal_entry = je_turkfm_pirates_of_the_adriatic
+				NOT = {
+					this = ROOT
+				}
+			}
+			save_scope_as = turkfm_piracy_country_scope
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.114.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_paid_ransom
+			days = normal_modifier_time
+			multiplier = money_amount_multiplier_small
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.114.b
+		create_incident = {
+			country = scope:turkfm_piracy_country_scope
+			value = 10
+		}
+	}
+
+	option = { # Send in the Expedition
+		name = turkfm_expeditions.114.c
+		highlighted_option = yes
+		trigger = {
+			turkfm_has_adriatic_expedition_trigger = yes
+		}
+		turkfm_remove_small_progress_effect = yes
+	}
+
+}
+
+turkfm_expeditions.115 = { # Slavers Intercepted
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+
+	title = turkfm_expeditions.115.t
+	desc = turkfm_expeditions.115.d
+	flavor = turkfm_expeditions.115.f
+
+	event_image = {
+		video = "votp_gunboat_diplomacy"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = turkfm_piracy_cooldown_var
+		}
+		c:TUR ?= {
+			NOT = {
+				has_law = law_type:law_slavery_banned
+			}
+		}
+		any_country = {
+			c:TUR != this
+			has_journal_entry = je_turkfm_pirates_of_the_adriatic
+		}
+		any_scope_state = {
+			is_coastal = yes
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		years = 5
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_piracy_cooldown_var
+			months = 6
+		}
+		turkfm_piracy_scopes_effect = yes
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		random_country = {
+			limit = {
+				has_journal_entry = je_turkfm_pirates_of_the_adriatic
+				c:TUR != this
+			}
+			save_scope_as = turkfm_piracy_country_scope
+			random_primary_culture = {
+				save_scope_as = turkfm_piracy_culture_scope
+			}
+		}
+		random_scope_state = {
+			limit = {
+				is_coastal = yes
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+	}
+
+	option = { # Arrest the Slavers
+		name = turkfm_expeditions.115.a
+		default_option = yes
+		change_relations = {
+			country = c:TUR
+			value = -15
+		}
+		change_relations = {
+			country = scope:turkfm_piracy_country_scope
+			value = -15
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_diplomatic_incident
+			target = c:TUR
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_diplomatic_incident
+			target = scope:turkfm_piracy_country_scope
+		}
+	}
+
+	option = { # Leave Them Be
+		name = turkfm_expeditions.115.b
+		change_relations = {
+			country = c:TUR
+			value = 20
+		}
+		change_relations = {
+			country = scope:turkfm_piracy_country_scope
+			value = 20
+		}
+		every_interest_group = {
+			limit = {
+				law_stance = {
+					law = law_type:law_slavery_banned
+					value > 0
+				}
+			}
+			add_modifier = {
+				name = modifier_turkfm_tolerated_slavers
+				days = normal_modifier_time
+				is_decaying = yes
+			}
+		}
+	}
+
+	option = { # Demand Ransom
+		name = turkfm_expeditions.115.c
+		add_modifier = {
+			name = modifier_turkfm_haggled_pirates
+			days = normal_modifier_time
+			multiplier = money_amount_multiplier_very_small
+		}
+		change_relations = {
+			country = scope:turkfm_piracy_country_scope
+			value = -10
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_relations_level_decreased
+			target = scope:turkfm_piracy_country_scope
+		}
+	}
+
+	option = { # Shelter the Slaves
+		name = turkfm_expeditions.115.e
+		trigger = {
+			has_law = law_type:law_slavery_banned
+		}
+		highlighted_option = yes
+		show_as_unavailable = {
+			always = yes
+		}
+		change_relations = {
+			country = c:TUR
+			value = -30
+		}
+		change_relations = {
+			country = scope:turkfm_piracy_country_scope
+			value = -30
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_diplomatic_incident
+			target = c:TUR
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_diplomatic_incident
+			target = scope:turkfm_piracy_country_scope
+		}
+	}
+
+}
+
+turkfm_expeditions.116 = { # Greener Pastures
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.116.t
+	desc = turkfm_expeditions.116.d
+	flavor = turkfm_expeditions.116.f
+
+	event_image = {
+		video = "rp1_brazilian_city"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = turkfm_piracy_cooldown_var
+		}
+		any_scope_state = {
+			gbbf_adriatic_geography_trigger = yes
+			is_coastal = yes
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		years = 10
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_piracy_cooldown_var
+			months = 6
+		}
+		turkfm_piracy_scopes_effect = yes
+		random_scope_state = {
+			limit = {
+				gbbf_adriatic_geography_trigger = yes
+				is_coastal = yes
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.116.a
+		default_option = yes
+		scope:turkfm_piracy_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_pirate_nursing_home
+				days = long_modifier_time
+			}
+
+		}
+	}
+
+}
+
+turkfm_expeditions.117 = { # The Goods Smugglers
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+
+	title = turkfm_expeditions.117.t
+	desc = turkfm_expeditions.117.d
+	flavor = turkfm_expeditions.117.f
+
+	event_image = {
+		video = "votp_gunboat_diplomacy"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_trade.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = turkfm_piracy_cooldown_var
+		}
+		religion = {
+			OR = {
+				has_religious_taboo = liquor
+				has_religious_taboo = wine
+				has_religious_taboo = coffee
+				has_religious_taboo = tea
+				has_religious_taboo = meat
+			}
+		}
+		any_scope_state = {
+			is_coastal = yes
+			NOR = {
+				has_modifier = modifier_turkfm_seizing_contraband
+				has_modifier = modifier_turkfm_smuggling_hub
+				has_modifier = modifier_turkfm_social_support
+			}
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_piracy_cooldown_var
+			months = 6
+		}
+		turkfm_piracy_scopes_effect = yes
+		random_scope_state = {
+			limit = {
+				is_coastal = yes
+				NOR = {
+					has_modifier = modifier_turkfm_seizing_contraband
+					has_modifier = modifier_turkfm_smuggling_hub
+					has_modifier = modifier_turkfm_social_support
+				}
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+		if = {
+			limit = {
+				religion = {
+					has_religious_taboo = liquor
+				}
+			}
+			g:liquor = {
+				save_scope_as = turkfm_piracy_goods_scope
+			}
+		}
+		else_if = {
+			limit = {
+				religion = {
+					has_religious_taboo = wine
+				}
+			}
+			g:wine = {
+				save_scope_as = turkfm_piracy_goods_scope
+			}
+		}
+		else_if = {
+			limit = {
+				religion = {
+					has_religious_taboo = coffee
+				}
+			}
+			g:coffee = {
+				save_scope_as = turkfm_piracy_goods_scope
+			}
+		}
+		else_if = {
+			limit = {
+				religion = {
+					has_religious_taboo = tea
+				}
+			}
+			g:tea = {
+				save_scope_as = turkfm_piracy_goods_scope
+			}
+		}
+		else = {
+			g:meat = {
+				save_scope_as = turkfm_piracy_goods_scope
+			}
+		}
+	}
+
+	option = { # Arrest them
+		name = turkfm_expeditions.117.a
+		default_option = yes
+		scope:turkfm_piracy_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_seizing_contraband
+				days = normal_modifier_time
+			}
+			add_radicals_in_state = {
+				strata = lower
+				value = small_radicals
+			}
+		}
+	}
+
+	option = { # Idk stupid poors
+		name = turkfm_expeditions.117.b
+		scope:turkfm_piracy_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_smuggling_hub
+				days = normal_modifier_time
+			}
+		}
+	}
+
+	option = { # Social security option
+		name = turkfm_expeditions.117.c
+		trigger = {
+			has_institution = institution_social_security
+		}
+		highlighted_option = yes
+		show_as_unavailable = {
+			always = yes
+		}
+		scope:turkfm_piracy_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_social_support
+				days = normal_modifier_time
+			}
+			add_loyalists_in_state = {
+				strata = lower
+				value = medium_radicals
+			}
+		}
+	}
+
+}
+
+turkfm_expeditions.118 = { # The Peasant's Pirate
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+
+	title = turkfm_expeditions.118.t
+	desc = turkfm_expeditions.118.d
+	flavor = turkfm_expeditions.118.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_jack_sparrow_scope
+
+	event_image = {
+		video = "rp1_social_banditry"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = turkfm_piracy_cooldown_var
+		}
+		any_scope_state = {
+			gbbf_adriatic_geography_trigger = yes
+			is_coastal = yes
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		years = 20
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_piracy_cooldown_var
+			months = 6
+		}
+		turkfm_piracy_scopes_effect = yes
+		random_scope_state = {
+			limit = {
+				gbbf_adriatic_geography_trigger = yes
+				is_coastal = yes
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+	}
+
+	option = { # Tolerate it
+		name = turkfm_expeditions.118.a
+		default_option = yes
+		scope:turkfm_piracy_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_generous_pirate
+				days = normal_modifier_time
+			}
+			add_radicals_in_state = {
+				strata = upper
+				value = medium_radicals
+			}
+		}
+		add_modifier = {
+			name = modifier_turkfm_ignored_theft
+			days = normal_modifier_time
+		}
+	}
+
+	option = { # Confiscate it
+		name = turkfm_expeditions.118.b
+		scope:turkfm_piracy_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_generosity_confiscated
+				days = normal_modifier_time
+			}
+			add_radicals_in_state = {
+				strata = lower
+				value = medium_radicals
+			}
+			add_loyalists_in_state = {
+				strata = upper
+				value = medium_radicals
+			}
+		}
+		add_modifier = {
+			name = modifier_turkfm_handled_theft
+			days = normal_modifier_time
+		}
+	}
+
+}
+
+turkfm_expeditions.119 = { # Adds the Piracy JE
+	type = country_event
+	placement = root
+	hidden = yes
+
+	trigger = {
+		NOR = {
+			has_global_variable = turkfm_jack_sparrow_whacked
+			has_journal_entry = je_turkfm_pirates_of_the_adriatic
+		}
+		any_scope_state = {
+			gbbf_adriatic_geography_trigger = yes
+			is_coastal = yes
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				has_variable = turkfm_piracy_started
+			}
+			add_journal_entry = {
+				type = je_turkfm_pirates_of_the_adriatic
+			}
+		}
+		else = {
+			set_variable = turkfm_piracy_started
+			add_journal_entry = {
+				type = je_turkfm_pirates_of_the_adriatic
+			}
+			trigger_event = {
+				id = turkfm_expeditions.100 # The Pirates of the Adriatic
+			}
+		}
+	}
+
+}
+
+#### PIRATES OF THE ADRIATIC EXPEDITION EVENTS ####
+turkfm_expeditions.120 = { # Local Informants
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+
+	title = turkfm_expeditions.120.t
+	desc = turkfm_expeditions.120.d
+	flavor = turkfm_expeditions.120.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		video = "votp_conspiring"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_adriatic_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		months = 6
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_piracy_scopes_effect = yes
+		random_state = {
+			limit = {
+				gbbf_adriatic_geography_trigger = yes
+				is_coastal = yes
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+	}
+
+	option = { # Take the Info
+		name = turkfm_expeditions.120.a
+		default_option = yes
+		turkfm_add_small_progress_effect = yes
+	}
+
+	option = { # Sweeten the Deal
+		name = turkfm_expeditions.120.b
+		turkfm_add_medium_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+	}
+
+}
+
+turkfm_expeditions.121 = { # A Suspicious Inlet
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+
+	title = turkfm_expeditions.121.t
+	desc = turkfm_expeditions.121.d
+	flavor = turkfm_expeditions.121.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_coastal_village.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_adriatic_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		months = 6
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_piracy_scopes_effect = yes
+		random_state = {
+			limit = {
+				gbbf_adriatic_geography_trigger = yes
+				is_coastal = yes
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+	}
+
+	option = { # Do a Quick Check
+		name = turkfm_expeditions.121.a
+		default_option = yes
+		turkfm_add_small_progress_effect = yes
+		random_list = {
+			5 = {
+				custom_tooltip = turkfm_nothing_happens
+			}
+			5 = {
+				turkfm_add_small_peril_effect = yes
+			}
+		}
+	}
+
+	option = { # Leave Well Enough Alone
+		name = turkfm_expeditions.121.b
+		custom_tooltip = turkfm_nothing_happens
+	}
+
+	option = { # Do a detailed Search
+		name = turkfm_expeditions.121.c
+		turkfm_add_medium_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+	}
+
+}
+
+turkfm_expeditions.122 = { # The Runaway
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+
+	title = turkfm_expeditions.122.t
+	desc = turkfm_expeditions.122.d
+	flavor = turkfm_expeditions.122.f
+
+	gui_window = event_window_2char_discussion
+
+	left_icon = scope:turkfm_runaway_pirate_scope
+	right_icon = scope:turkfm_jack_sparrow_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_open_ocean.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_adriatic_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+			has_variable = turkfm_runaway_var
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_piracy_scopes_effect = yes
+		create_character = {
+			age = 30
+			culture = cu:albanian
+			religion = rel:orthodox
+			interest_group = ig_armed_forces
+			ideology = ideology_moderate
+			traits = {
+				trait_turkfm_corsair
+				basic_naval_commander
+			}
+			on_created = {
+				set_variable = turkfm_runaway_var
+				place_character_in_void = 12
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_variable = turkfm_runaway_var
+			}
+			save_scope_as = turkfm_runaway_pirate_scope
+		}
+		random_state = {
+			limit = {
+				gbbf_adriatic_geography_trigger = yes
+				is_coastal = yes
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+	}
+
+	option = { # Hire the Pirate
+		name = turkfm_expeditions.122.a
+		default_option = yes
+		scope:turkfm_runaway_pirate_scope = {
+			add_character_role = admiral
+			hidden_effect = {
+				free_character_from_void = yes
+			}
+		}
+	}
+
+	option = { # Send Him to the Bottom
+		name = turkfm_expeditions.122.b
+		add_radicals = {
+			pop_type = soldiers
+			value = small_radicals
+		}
+	}
+}
+
+turkfm_expeditions.123 = { # Spoiled Provisions
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+
+	title = turkfm_expeditions.123.t
+	desc = turkfm_expeditions.123.d
+	flavor = turkfm_expeditions.123.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_open_ocean.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_adriatic_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		months = 6
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_piracy_scopes_effect = yes
+		random_state = {
+			limit = {
+				gbbf_adriatic_geography_trigger = yes
+				is_coastal = yes
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.123.a
+		default_option = yes
+		turkfm_add_medium_peril_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.123.b
+		show_as_unavailable = {
+			scope:turkfm_cutler_beckett_scope = {
+				has_trait = resupply_commander
+			}
+		}
+		highlighted_option = yes
+		trigger = {
+			scope:turkfm_cutler_beckett_scope = {
+				has_trait = resupply_commander
+			}
+		}
+		turkfm_add_small_peril_effect = yes
+	}
+
+}
+
+turkfm_expeditions.124 = { # Circular Bearing
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+
+	title = turkfm_expeditions.124.t
+	desc = turkfm_expeditions.124.d
+	flavor = turkfm_expeditions.124.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_open_ocean.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_opened_soundeffect = "event:/SFX/Events/unspecific/arctic"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_adriatic_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		months = 6
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_piracy_scopes_effect = yes
+		random_state = {
+			limit = {
+				gbbf_adriatic_geography_trigger = yes
+				is_coastal = yes
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.124.a
+		default_option = yes
+		turkfm_remove_medium_progress_effect = yes
+		turkfm_add_medium_peril_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.124.b
+		show_as_unavailable = {
+			scope:turkfm_cutler_beckett_scope = {
+				OR = {
+					has_trait = basic_naval_commander
+					has_trait = experienced_naval_commander
+					has_trait = expert_naval_commander
+				}
+			}
+		}
+		highlighted_option = yes
+		trigger = {
+			scope:turkfm_cutler_beckett_scope = {
+				OR = {
+					has_trait = basic_naval_commander
+					has_trait = experienced_naval_commander
+					has_trait = expert_naval_commander
+				}
+			}
+		}
+		turkfm_remove_small_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+	}
+
+}
+
+turkfm_expeditions.125 = { # Windstorms in the Adriatic
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+
+	title = turkfm_expeditions.125.t
+	desc = turkfm_expeditions.125.d
+	flavor = turkfm_expeditions.125.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_open_ocean.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_opened_soundeffect = "event:/SFX/Events/unspecific/arctic"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_adriatic_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_piracy_scopes_effect = yes
+		random_state = {
+			limit = {
+				gbbf_adriatic_geography_trigger = yes
+				is_coastal = yes
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.125.a
+		default_option = yes
+		turkfm_add_medium_peril_effect = yes
+		turkfm_remove_small_progress_effect = yes
+	}
+
+}
+
+turkfm_expeditions.126 = { # Foul Waters
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+
+	title = turkfm_expeditions.126.t
+	desc = turkfm_expeditions.126.d
+	flavor = turkfm_expeditions.126.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_open_ocean.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_opened_soundeffect = "event:/SFX/Events/unspecific/iceberg_in_the_antartica"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_adriatic_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		months = 6
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_piracy_scopes_effect = yes
+		random_state = {
+			limit = {
+				gbbf_adriatic_geography_trigger = yes
+				is_coastal = yes
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.126.a
+		default_option = yes
+		turkfm_add_small_peril_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.126.b
+		turkfm_add_medium_peril_effect = yes
+		turkfm_add_small_progress_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.126.c
+		show_as_unavailable = {
+			scope:turkfm_cutler_beckett_scope = {
+				OR = {
+					has_trait = basic_naval_commander
+					has_trait = experienced_naval_commander
+					has_trait = expert_naval_commander
+				}
+			}
+		}
+		highlighted_option = yes
+		trigger = {
+			scope:turkfm_cutler_beckett_scope = {
+				OR = {
+					has_trait = basic_naval_commander
+					has_trait = experienced_naval_commander
+					has_trait = expert_naval_commander
+				}
+			}
+		}
+		turkfm_add_small_progress_effect = yes
+	}
+}
+
+turkfm_expeditions.127 = { # Scouts Pick Up Leads
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+
+	title = turkfm_expeditions.127.t
+	desc = turkfm_expeditions.127.d
+	flavor = turkfm_expeditions.127.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_open_ocean.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_adriatic_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		months = 6
+	}
+
+	immediate = {
+		turkfm_piracy_scopes_effect = yes
+		random_state = {
+			limit = {
+				gbbf_adriatic_geography_trigger = yes
+				is_coastal = yes
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.127.a
+		default_option = yes
+		turkfm_add_medium_progress_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.127.b
+		turkfm_add_large_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+	}
+
+}
+
+turkfm_expeditions.128 = { # Emergency Repairs
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+
+	title = turkfm_expeditions.128.t
+	desc = turkfm_expeditions.128.d
+	flavor = turkfm_expeditions.128.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_open_ocean.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_opened_soundeffect = "event:/SFX/Events/unspecific/iceberg_in_the_antartica"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_adriatic_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+		var:turkfm_expedition_peril_var > 3
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_piracy_scopes_effect = yes
+		random_state = {
+			limit = {
+				gbbf_adriatic_geography_trigger = yes
+				is_coastal = yes
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.128.a
+		default_option = yes
+		turkfm_remove_medium_progress_effect = yes
+		turkfm_remove_small_peril_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.128.b
+		turkfm_add_medium_peril_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.128.c
+		show_as_unavailable = {
+			scope:turkfm_cutler_beckett_scope = {
+				has_trait = engineer
+			}
+		}
+		highlighted_option = yes
+		trigger = {
+			scope:turkfm_cutler_beckett_scope = {
+				has_trait = engineer
+			}
+		}
+		turkfm_add_small_peril_effect = yes
+	}
+
+}
+
+turkfm_expeditions.129 = { # Port of Call
+	type = country_event
+	placement = scope:turkfm_piracy_state_scope
+
+	title = turkfm_expeditions.129.t
+	desc = turkfm_expeditions.129.d
+	flavor = turkfm_expeditions.129.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_coastal_village.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_adriatic_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_piracy_scopes_effect = yes
+		random_state = {
+			limit = {
+				gbbf_adriatic_geography_trigger = yes
+				is_coastal = yes
+			}
+			save_scope_as = turkfm_piracy_state_scope
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.129.a
+		default_option = yes
+		turkfm_remove_small_peril_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.129.b
+		turkfm_remove_medium_peril_effect = yes
+		add_modifier = {
+			name = modifier_turkfm_resupply_costs
+			days = short_modifier_time
+			multiplier = money_amount_multiplier_small
+		}
+	}
+
+}
+
+#### PIRATES OF THE ADRIATIC CHASE EVENTS ####
+turkfm_expeditions.130 = { # Pirates Spotted!
+	type = country_event
+	placement = p:x3BDCFA
+
+	title = turkfm_expeditions.130.t
+	desc = turkfm_expeditions.130.d
+	flavor = turkfm_expeditions.130.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		video = "votp_gunboat_diplomacy"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 1
+
+	dlc = dlc_grefm
+
+	trigger = {
+		turkfm_has_adriatic_expedition_trigger = yes
+		NOT = {
+			has_variable = turkfm_piracy_chase_var
+		}
+		var:turkfm_expedition_progress_var >= 2
+		var:turkfm_expedition_progress_var < 6
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	immediate = {
+		set_variable = turkfm_expedition_cooldown_var # locks out all other events until chase is completed
+		turkfm_piracy_scopes_effect = yes
+		set_variable = turkfm_piracy_chase_var
+	}
+
+	option = {
+		name = turkfm_expeditions.130.a
+		default_option = yes
+		custom_tooltip = turkfm_no_effects
+	}
+
+}
+
+turkfm_expeditions.131 = { # Man Overboard!
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.131.t
+	desc = turkfm_expeditions.131.d
+	flavor = turkfm_expeditions.131.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		video = "unspecific_whaling"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 1
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = turkfm_piracy_chase_var
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		months = 2 # to prevent duplicate events
+	}
+
+	immediate = {
+		turkfm_piracy_scopes_effect = yes
+	}
+
+	option = { # Slow Down
+		name = turkfm_expeditions.131.a
+		default_option = yes
+		turkfm_remove_small_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+		add_loyalists = {
+			pop_type = soldiers
+			value = medium_radicals
+		}
+		add_radicals = {
+			pop_type = officers
+			value = medium_radicals
+		}
+	}
+
+	option = { # Leave Him Behind
+		name = turkfm_expeditions.131.b
+		turkfm_add_medium_peril_effect = yes
+		add_radicals = {
+			pop_type = soldiers
+			value = medium_radicals
+		}
+		add_loyalists = {
+			pop_type = officers
+			value = medium_radicals
+		}
+	}
+
+}
+
+turkfm_expeditions.132 = { # The Pillagers' Wake
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.132.t
+	desc = turkfm_expeditions.132.d
+	flavor = turkfm_expeditions.132.f
+
+	event_image = {
+		video = "southamerica_war_civilians"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 1
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = turkfm_piracy_chase_var
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		months = 2 # to prevent duplicate events
+	}
+
+	immediate = {
+		turkfm_piracy_scopes_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.132.a
+		default_option = yes
+		turkfm_add_small_progress_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.132.b
+		turkfm_add_small_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+	}
+
+}
+
+turkfm_expeditions.133 = { # OPEN
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.133.t
+	desc = turkfm_expeditions.133.d
+	flavor = turkfm_expeditions.133.f
+
+	event_image = {
+		video = "unspecific_factory_closed"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 1
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = turkfm_piracy_chase_var
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		months = 2 # to prevent duplicate events
+	}
+
+	immediate = {
+		turkfm_piracy_scopes_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.133.a
+		default_option = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.133.b
+	}
+
+	orphan = yes
+
+}
+
+turkfm_expeditions.134 = { # Without a Trace
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.134.t
+	desc = turkfm_expeditions.134.d
+	flavor = turkfm_expeditions.134.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_open_ocean.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_opened_soundeffect = "event:/SFX/Events/unspecific/iceberg_in_the_antartica"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = turkfm_piracy_chase_var
+		var:turkfm_expedition_progress_var < 8
+		var:turkfm_expedition_peril_var < 8
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 90
+		}
+		turkfm_piracy_scopes_effect = yes
+		remove_variable = turkfm_piracy_chase_var
+	}
+
+	option = {
+		name = turkfm_expeditions.134.a
+		default_option = yes
+		turkfm_remove_small_progress_effect = yes
+	}
+
+}
+
+turkfm_expeditions.135 = { # Bearing Down
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.135.t
+	desc = turkfm_expeditions.135.d
+	flavor = turkfm_expeditions.135.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_open_ocean.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+
+	duration = 1
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = turkfm_piracy_chase_var
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		months = 2 # to prevent duplicate events
+	}
+
+	immediate = {
+		turkfm_piracy_scopes_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.135.a
+		default_option = yes
+		turkfm_add_small_progress_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.135.b
+		turkfm_add_medium_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+	}
+
+}
+
+turkfm_expeditions.136 = { # Cut and Run
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.136.t
+	desc = turkfm_expeditions.136.d
+	flavor = turkfm_expeditions.136.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_open_ocean.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_opened_soundeffect = "event:/SFX/Events/unspecific/naval_battle"
+
+	duration = 1
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = turkfm_piracy_chase_var
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	cooldown = {
+		months = 2 # to prevent duplicate events
+	}
+
+	immediate = {
+		turkfm_piracy_scopes_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.136.a
+		custom_tooltip = {
+			text = turkfm_pirates_lost
+			remove_variable = turkfm_piracy_chase_var
+		}
+		turkfm_remove_small_progress_effect = yes
+	}
+
+	option = {
+		name = turkfm_expeditions.136.b
+		default_option = yes
+		turkfm_add_medium_progress_effect = yes
+		turkfm_add_medium_peril_effect = yes
+	}
+
+}
+
+turkfm_expeditions.137 = { # Action Along the Coast
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.137.t
+	desc = turkfm_expeditions.137.d
+	flavor = turkfm_expeditions.137.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		video = "unspecific_naval_battle"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 1
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = turkfm_piracy_chase_var
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	immediate = {
+		turkfm_piracy_scopes_effect = yes
+		remove_variable = turkfm_piracy_chase_var
+	}
+
+	option = {
+		name = turkfm_expeditions.137.a
+		default_option = yes
+		turkfm_add_medium_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+	}
+
+}
+
+turkfm_expeditions.138 = { # Beckett & Sparrow Duel
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.138.t
+	desc = turkfm_expeditions.138.d
+	flavor = turkfm_expeditions.138.f
+
+	gui_window = event_window_highlander
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+	right_icon = scope:turkfm_jack_sparrow_scope
+
+	event_image = {
+		video = "unspecific_naval_battle"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = turkfm_piracy_chase_var
+		NOT = {
+			has_global_variable = turkfm_maelstrom_var
+		}
+		var:turkfm_expedition_progress_var >= 5
+		global_var:turkfm_pirates_var >= 3
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 90
+		}
+		set_global_variable = {
+			name = turkfm_maelstrom_var
+			value = 0
+		}
+		turkfm_piracy_scopes_effect = yes
+		remove_variable = turkfm_piracy_chase_var
+	}
+
+	option = {
+		name = turkfm_expeditions.138.a
+		default_option = yes
+		random_list = {
+			5 = {
+				set_global_variable = {
+					name = turkfm_maelstrom_var
+					value = 1 # Jack Wins
+				}
+				modifier = {
+					if = {
+						limit = {
+							scope:turkfm_cutler_beckett_scope = {
+								has_trait = cautious
+							}
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							scope:turkfm_cutler_beckett_scope = {
+								has_trait = reserved
+							}
+						}
+						add = 10
+					}
+					if = {
+						limit = {
+							scope:turkfm_cutler_beckett_scope = {
+								has_trait = hedonist
+							}
+						}
+						add = 10
+					}
+					if = {
+						limit = {
+							scope:turkfm_cutler_beckett_scope = {
+								has_trait = shellshocked
+							}
+						}
+						add = 50
+					}
+				}
+			}
+			5 = {
+				set_global_variable = {
+					name = turkfm_maelstrom_var
+					value = 2 # Cutler Wins
+				}
+				modifier = {
+					if = {
+						limit = {
+							scope:turkfm_cutler_beckett_scope = {
+								has_trait = basic_naval_commander
+							}
+						}
+						add = 10
+					}
+					if = {
+						limit = {
+							scope:turkfm_cutler_beckett_scope = {
+								has_trait = experienced_naval_commander
+							}
+						}
+						add = 25
+					}
+					if = {
+						limit = {
+							scope:turkfm_cutler_beckett_scope = {
+								has_trait = expert_naval_commander
+							}
+						}
+						add = 100
+					}
+					if = {
+						limit = {
+							scope:turkfm_cutler_beckett_scope = {
+								has_trait = convoy_raider_commander
+							}
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							scope:turkfm_cutler_beckett_scope = {
+								has_trait = experienced_convoy_raider
+							}
+						}
+						add = 10
+					}
+					if = {
+						limit = {
+							scope:turkfm_cutler_beckett_scope = {
+								has_trait = expert_convoy_raider
+							}
+						}
+						add = 25
+					}
+					if = {
+						limit = {
+							scope:turkfm_cutler_beckett_scope = {
+								has_trait = brave
+							}
+						}
+						add = 10
+					}
+					if = {
+						limit = {
+							scope:turkfm_cutler_beckett_scope = {
+								has_trait = ruthless
+							}
+						}
+						add = 10
+					}
+				}
+			}
+		}
+		trigger_event = {
+			id = turkfm_expeditions.139 # Naval Duel Outcome
+		}
+	}
+
+	option = {
+		name = turkfm_expeditions.138.b
+		turkfm_remove_large_progress_effect = yes
+		turkfm_add_small_peril_effect = yes
+	}
+
+}
+
+turkfm_expeditions.139 = { # Naval Duel Outcome
+	type = country_event
+	placement = root
+
+	title = turkfm_expeditions.139.t
+	desc = turkfm_expeditions.139.d
+	flavor = turkfm_expeditions.139.f
+
+	event_image = {
+		video = "unspecific_naval_battle"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 2
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_expeditions.138
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_jack_sparrow_whacked
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_expedition_cooldown_var
+			days = 45
+		}
+		turkfm_jack_sparrow_effect = yes
+		if = {
+			limit = {
+				global_var:turkfm_maelstrom_var = 1 # Jack Wins
+			}
+			random_character_in_void = {
+				limit = {
+					has_template = template_turkfm_jack_sparrow
+				}
+				save_scope_as = turkfm_duel_victor_scope
+			}
+			random_scope_character = {
+				limit = {
+					has_modifier = modifier_turkfm_leading_expedition
+				}
+				save_scope_as = turkfm_duel_loser_scope
+			}
+		}
+		else = {
+			random_character_in_void = {
+				limit = {
+					has_template = template_turkfm_jack_sparrow
+				}
+				save_scope_as = turkfm_duel_loser_scope
+			}
+			random_scope_character = {
+				limit = {
+					has_modifier = modifier_turkfm_leading_expedition
+				}
+				save_scope_as = turkfm_duel_victor_scope
+			}
+		}
+	}
+
+	option = { # Jack Wins
+		name = turkfm_expeditions.139.a
+		default_option = yes
+		trigger = {
+			global_var:turkfm_maelstrom_var = 1
+		}
+		scope:turkfm_cutler_beckett_scope = {
+			add_modifier = {
+				name = modifier_turkfm_lost_naval_duel
+				days = long_modifier_time
+			}
+		}
+		turkfm_remove_large_progress_effect = yes
+		turkfm_add_large_peril_effect = yes
+	}
+
+	option = { # Cutler Wins
+		name = turkfm_expeditions.139.b
+		trigger = {
+			global_var:turkfm_maelstrom_var = 2
+		}
+		scope:turkfm_cutler_beckett_scope = {
+			add_modifier = {
+				name = modifier_turkfm_won_naval_duel
+				days = long_modifier_time
+			}
+		}
+		turkfm_add_large_progress_effect = yes
+	}
+
+	after = {
+		remove_global_variable = turkfm_maelstrom_var
+	}
+
+}

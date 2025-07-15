@@ -1,1 +1,1607 @@
-﻿namespace = turkfm_eastern_question
+﻿## EASTERN QUESTION EVENTS ##
+
+# For Greek content, see the "grefm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Turkish content, see the "turkfm" module
+# For Orthodox Church content, see the "eocfm" module
+
+####################
+
+namespace = turkfm_eastern_question
+
+####################
+
+####	TABLE OF CONTENTS	####	#TOC
+
+# The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
+
+#001-009 - Eastern Question Narrative Events
+#	001 - The Eastern Question
+#	009 - Adds the Eastern Question JE [TECH]
+
+#010-019 - Eastern Question Balkan Tension Events
+#	010 - Brigands Raid Turkish Lands 
+#	011 - Gun-Runners Arrested
+#	012 - Diplomat Offers Mediation -> turkfm_separatism.132
+#	013 - ##Priest Murdered in State
+#	014 - ##Wali of State Exceeds Authority
+#	015 - 
+#	016 - 
+#	017 - 
+#	018 - ##Activists Call for Famine Relief
+# 	019 - ##Activists Denounce Riots
+
+#100-109 - Balkan Crisis Events
+#	100 - A Crisis in Rumelia <- Sets Variables and Starts Warmup Chain
+#	101 - A Crisis in Rumelia <- Notifies Other Countries of the Crisis Phase
+#	102 - Rebel Country Takes Up Arms! <- Grabs Riot State and creates Rebel tag
+#	103 - ##Subject Country Rebels!
+#	104 - A Chance at Deconfliction (Third Party Event)
+#	105 - A Chance at Deconfliction (Ottoman Event)
+#	106 - Balkan Crisis Superevent <- Creates DP
+#	107 - Balkan Crisis Superevent <- Participant Event
+#	108 - The Porte Triumphant (Ottoman Victory)
+#	109 - The Treaty of X (Ottoman Defeat)
+
+#200-209 - International Congress Events
+#	200 - Congress System Monitor [TECH]
+#	201 - The Congress of X
+#	202 - The Issue of X
+#	203 - ##The X Delegation
+#	204 - 
+#	205 - 
+#	206 - 
+#	207 - The Convention of X
+#	208 - ##Resolution on the X Matter
+#	209 - The Treaty of X
+
+####################
+
+## Eastern Question Narrative Events ##
+turkfm_eastern_question.001 = { # The Eastern Question
+	type = country_event
+	placement = root
+
+	title = turkfm_eastern_question.001.t
+	desc = turkfm_eastern_question.001.d
+	flavor = turkfm_eastern_question.001.f
+
+	gui_window = event_window_widescreen_newspaper
+
+	event_image = {
+		video = "turkfm_golden_horn"
+	}
+
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_eastern_question.009
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		set_variable = turkfm_eqfm_started
+	}
+
+	option = {
+		name = turkfm_eastern_question.001.a
+		default_option = yes
+		custom_tooltip = turkfm_no_effects
+	}
+
+}
+
+turkfm_eastern_question.009 = { # Adds the Eastern Question JE
+	type = country_event
+	placement = root
+	hidden = yes
+
+	trigger = {
+		exists = c:TUR
+		c:TUR ?= {
+			has_diplomatic_relevance = root
+			any_scope_state = {
+				region = sr:region_balkans
+			}
+		}
+		NOR = {
+			has_global_variable = turkfm_separatism_complete
+			has_journal_entry = je_turkfm_eastern_question
+			has_journal_entry = je_turkfm_separatism_main
+		}
+	}
+
+	cooldown = {
+		months = 3
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				has_variable = turkfm_eqfm_started
+			}
+			add_journal_entry = {
+				type = je_turkfm_eastern_question
+			}
+		}
+		else = {
+			set_variable = turkfm_eqfm_started
+			add_journal_entry = {
+				type = je_turkfm_eastern_question
+			}
+			trigger_event = {
+				id = turkfm_eastern_question.001 # The Eastern Question
+			}
+		}
+	}
+
+}
+
+## Eastern Question Balkan Tension Events ##
+turkfm_eastern_question.010 = { # Brigands Raid Turkish Lands
+	type = country_event
+	placement = scope:turkfm_brigandage_event_scope
+
+	title = turkfm_eastern_question.010.t
+	desc = turkfm_eastern_question.010.d
+	flavor = turkfm_eastern_question.010.f
+
+	event_image = {
+		video = "rp1_social_banditry"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_separatism.119
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_balkfm_brigandage
+		}
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+			random_scope_state = {
+				limit = {
+					has_variable = turkfm_brigandage_event_var
+				}
+				save_scope_as = turkfm_brigandage_event_scope
+				remove_variable = turkfm_brigandage_event_var
+			}
+		}
+		set_global_variable = {
+			name = turkfm_global_reference_var
+			value = money_amount_multiplier_small
+		}
+	}
+
+	option = { # Offer Compensation
+		name = turkfm_eastern_question.010.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_brigandage_reparations_negative
+			days = normal_modifier_time
+			multiplier = global_var:turkfm_global_reference_var
+		}
+		c:TUR = {
+			add_modifier = {
+				name = modifier_turkfm_brigandage_reparations_positive
+				days = normal_modifier_time
+				multiplier = global_var:turkfm_global_reference_var
+			}
+			post_notification = notification_turkfm_brigandage_reparations
+		}
+		change_relations = {
+			country = c:TUR
+			value = 15
+		}
+	}
+
+	option = { # Ignore the Complaint
+		name = turkfm_eastern_question.010.b
+		c:TUR = {
+			post_notification = notification_turkfm_brigandage_permitted
+		}
+		change_relations = {
+			country = c:TUR
+			value = -15
+		}
+	}
+
+	after = {
+		remove_global_variable = turkfm_global_reference_var
+	}
+
+}
+
+turkfm_eastern_question.011 = { # Gun-Runners Arrested
+	type = country_event
+	placement = scope:turkfm_tension_state_scope
+
+	title = turkfm_eastern_question.011.t
+	desc = turkfm_eastern_question.011.d
+	flavor = turkfm_eastern_question.011.f
+
+	event_image = {
+		video = "votp_hostile_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_separatism.115/226
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+			random_scope_state = {
+				limit = {
+					has_variable = turkfm_gunrunners_var
+				}
+				save_scope_as = turkfm_tension_state_scope
+				remove_variable = turkfm_gunrunners_var
+			}
+		}
+	}
+
+	option = { # Halt Support
+		name = turkfm_eastern_question.011.a
+		default_option = yes
+		if = {
+			limit = {
+				has_modifier = modifier_turkfm_supporting_gunrunners
+			}
+			remove_modifier = modifier_turkfm_supporting_gunrunners
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_balkfm_ottoman_gunrunners
+			}
+			remove_modifier = modifier_balkfm_ottoman_gunrunners
+		}
+		custom_tooltip = {
+			text = balkfm_ottoman_gunrunners_effect2
+			set_variable = {
+				name = balkfm_ottoman_gunrunners_lockout
+				years = 2
+			}
+		}
+		change_relations = {
+			country = c:TUR
+			value = 15
+		}
+		c:TUR = {
+			post_notification = notification_turkfm_gunrunners_halted
+		}
+	}
+
+	option = { # Continue Support
+		name = turkfm_eastern_question.011.b
+		create_incident = {
+			country = c:TUR
+			value = 10
+		}
+		change_relations = {
+			country = c:TUR
+			value = 15
+		}
+		c:TUR = {
+			post_notification = notification_turkfm_gunrunners_continued
+		}
+	}
+}
+
+turkfm_eastern_question.012 = { # Diplomat Offers Mediation
+	type = country_event
+	placement = scope:turkfm_tension_state_scope
+
+	title = turkfm_eastern_question.012.t
+	desc = turkfm_eastern_question.012.d
+	flavor = turkfm_eastern_question.012.f
+
+	event_image = {
+		video = "ep1_power_blocs"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		always = no # TODO enable when ready
+		OR = {
+			has_diplomatic_pact = {
+				who = c:TUR
+				type = increase_relations
+			}
+			has_diplomatic_pact = {
+				who = c:TUR
+				type = turkfm_decelerate_tensions
+			}
+		}
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			exists = c:TUR
+		}
+	}
+
+	cooldown = {
+		years = 5
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+			random_scope_state = {
+				limit = {
+					region = sr:region_balkans
+					NOT = {
+						has_modifier = modifier_turkfm_tensions_defused
+					}
+				}
+				save_scope_as = turkfm_tension_state_scope
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.012.a
+		default_option = yes
+		set_variable = turkfm_tension_third_party_var
+		c:TUR = {
+			trigger_event = {
+				id = turkfm_separatism.132 # Great Power Mediates Local Conflict
+			}
+		}
+		scope:turkfm_tension_state_scope = {
+			set_variable = turkfm_intervention_var
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.012.b
+		custom_tooltip = turkfm_nothing_happens
+	}
+
+}
+
+## Balkan Crisis Events ##
+turkfm_eastern_question.100 = { # A Crisis in Rumelia <- Sets Variables and Starts Warmup Chain
+	type = country_event
+	placement = root
+
+	title = turkfm_eastern_question.010.t
+	desc = turkfm_eastern_question.010.d
+	flavor = turkfm_eastern_question.010.f
+
+	event_image = {
+		video = "europenorthamerica_political_extremism"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_check_phase_effect during transition to crisis phase
+	}
+
+	cancellation_trigger = {
+		OR = {
+			NOT = {
+				has_global_variable = turkfm_separatism_phase_var
+			}
+			global_var:turkfm_separatism_phase_var != 5 # Crisis
+		}
+	}
+
+	immediate = {
+		turkfm_initialize_crisis_effect = yes
+		every_country = {
+			limit = {
+				has_journal_entry = je_turkfm_eastern_question
+			}
+			trigger_event = {
+				id = turkfm_eastern_question.101 # A Crisis in Rumelia (Notify Country of Crisis)
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.010.a
+		default_option = yes
+		custom_tooltip = turkfm_no_effects
+	}
+
+}
+
+turkfm_eastern_question.101 = { # A Crisis in Rumelia <- Notifies Other Countries of the Crisis Phase
+	type = country_event
+	placement = root
+
+	title = turkfm_eastern_question.101.t
+	desc = turkfm_eastern_question.101.d
+	flavor = turkfm_eastern_question.101.f
+
+	event_image = {
+		video = "europenorthamerica_political_extremism"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_eastern_question.100
+	}
+
+	cancellation_trigger = {
+		OR = {
+			NOT = {
+				has_global_variable = turkfm_separatism_phase_var
+			}
+			global_var:turkfm_separatism_phase_var != 5 # Crisis
+		}
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.101.a
+		default_option = yes
+		custom_tooltip = turkfm_no_effects
+	}
+
+}
+
+turkfm_eastern_question.102 = { # Rebel Country Takes Up Arms!
+	type = country_event
+	placement = root
+
+	title = turkfm_eastern_question.102.t
+	desc = turkfm_eastern_question.102.d
+	flavor = turkfm_eastern_question.102.f
+
+	event_image = {
+		video = "europenorthamerica_springtime_of_nations"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_global_variable = turkfm_crisis_var
+		global_var:turkfm_crisis_var >= 30
+		any_scope_state = {
+			has_modifier = modifier_turkfm_race_riots
+		}
+	}
+
+	cancellation_trigger = {
+		OR = {
+			NOT = {
+				has_global_variable = turkfm_separatism_phase_var
+			}
+			global_var:turkfm_separatism_phase_var != 5 # Crisis
+		}
+	}
+
+	cooldown = {
+		months = 3
+	}
+
+	immediate = {
+		turkfm_create_rebellion_effect = yes
+		random_country = {
+			limit = {
+				has_variable = turkfm_rebellion_tag_tracker
+			}
+			save_scope_as = turkfm_rebellion_scope
+			turkfm_set_rebellion_laws = yes
+		}
+		scope:turkfm_rebellion_scope = {
+			remove_variable = turkfm_rebellion_tag_tracker
+			set_variable = turkfm_crisis_attacker
+			set_variable = turkfm_crisis_upstart
+		}
+		every_country = {
+			limit = {
+				has_diplomatic_relevance = root
+			}
+			create_bidirectional_truce = {
+				country = scope:turkfm_rebellion_scope
+				months = 60
+			}
+		}
+		create_bidirectional_truce = {
+			country = scope:turkfm_rebellion_scope
+			months = 60
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.102.a
+		default_option = yes
+		custom_tooltip = turkfm_crisis_rebellion_tt
+	}
+
+}
+
+# turkfm_eastern_question.103
+
+turkfm_eastern_question.104 = { # A Chance at Deconfliction (Third Party Event)
+	type = country_event
+	placement = scope:ottoman_scope
+
+	title = turkfm_eastern_question.104.t
+	desc = turkfm_eastern_question.104.d
+	flavor = turkfm_eastern_question.104.f
+
+	event_image = {
+		video = "ep1_clandestine_meeting"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_global_variable = turkfm_crisis_var
+		country_rank >= rank_value:great_power
+		NOT = {
+			has_global_variable = turkfm_deconfliction_var
+		}
+		global_var:turkfm_crisis_var >= 30
+		global_var:turkfm_crisis_var < 90
+		turkfm_crisis_deconfliction_trigger = yes
+	}
+
+	cancellation_trigger = {
+		NOR = {
+			global_var:turkfm_separatism_phase_var != 5 # Crisis
+			has_global_variable = turkfm_separatism_phase_var
+			has_variable = turkfm_crisis_attacker
+		}
+	}
+
+	cooldown = {
+		years = 2
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+	}
+
+	option = { # Attempt Deconfliction
+		name = turkfm_eastern_question.104.a
+		default_option = yes
+		custom_tooltip = turkfm_eastern_question.104.a.tt
+		if = {
+			limit = {
+				c:GBR ?= this
+			}
+			set_global_variable = {
+				name = turkfm_deconfliction_var
+				value = 1
+			}
+		}
+		else_if = {
+			limit = {
+				c:FRA ?= this
+			}
+			set_global_variable = {
+				name = turkfm_deconfliction_var
+				value = 2
+			}
+		}
+		else_if = {
+			limit = {
+				c:RUS ?= this
+			}
+			set_global_variable = {
+				name = turkfm_deconfliction_var
+				value = 3
+			}
+		}
+		c:TUR = {
+			trigger_event = {
+				id = turkfm_eastern_question.105 # A Chance at Deconfliction (Ottoman Event)
+			}
+		}
+	}
+
+	option = { # Continue into the Fight
+		name = turkfm_eastern_question.104.b
+		custom_tooltip = turkfm_eastern_question.104.b.tt
+	}
+
+}
+
+turkfm_eastern_question.105 = { # A Chance at Deconfliction (Ottoman Event)
+	type = country_event
+	placement = scope:turkfm_deconfliction_scope
+
+	title = turkfm_eastern_question.105.t
+	desc = turkfm_eastern_question.105.d
+	flavor = turkfm_eastern_question.105.f
+
+	event_image = {
+		video = "ep1_clandestine_meeting"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_eastern_question.104
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = turkfm_deconfliction_var
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				global_var:turkfm_deconfliction_var = 1
+			}
+			c:GBR ?= {
+				save_scope_as = turkfm_deconfliction_scope
+			}
+		}
+		else_if = {
+			limit = {
+				global_var:turkfm_deconfliction_var = 2
+			}
+			c:FRA ?= {
+				save_scope_as = turkfm_deconfliction_scope
+			}
+		}
+		else_if = {
+			limit = {
+				global_var:turkfm_deconfliction_var = 3
+			}
+			c:RUS ?= {
+				save_scope_as = turkfm_deconfliction_scope
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.105.a
+		default_option = yes
+		custom_tooltip = {
+			text = turkfm_crisis_deconfliction_tt
+			scope:turkfm_deconfliction_scope = {
+				remove_variable = turkfm_crisis_attacker
+				set_variable = turkfm_crisis_deconflicted
+			}
+		}
+		change_relations = {
+			country = scope:turkfm_deconfliction_scope
+			value = 15
+		}
+		remove_global_variable = turkfm_deconfliction_var
+	}
+
+	option = {
+		name = turkfm_eastern_question.105.b
+		change_relations = {
+			country = scope:turkfm_deconfliction_scope
+			value = -15
+		}
+		remove_global_variable = turkfm_deconfliction_var
+	}
+
+}
+
+turkfm_eastern_question.106 = { # Balkan Crisis Superevent <- Creates DP
+	type = country_event
+	placement = root
+
+	title = turkfm_eastern_question.106.t
+	desc = turkfm_eastern_question.106.d
+	flavor = turkfm_eastern_question.106.f
+
+	event_image = {
+		video = "turkfm_balkan_crisis"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_global_variable = turkfm_crisis_var
+		global_var:turkfm_crisis_var >= 100
+	}
+
+	immediate = {
+		random_country = {
+			limit = {
+				has_variable = turkfm_crisis_leader
+			}
+			if = {
+				limit = {
+					has_truce_with = c:TUR
+				}
+				end_truce = c:TUR
+			}
+			save_scope_as = turkfm_crisis_leader_scope
+		}
+		scope:turkfm_crisis_leader_scope = {
+			create_diplomatic_play = {
+				type = dp_turkfm_crisis
+				target_country = c:TUR
+				war = yes
+			}
+		}
+		remove_global_variable = turkfm_crisis_var
+		remove_global_variable = turkfm_crisis_progress_var
+		set_global_variable = turkfm_crisis_launched
+		every_country = {
+			limit = {
+				OR = {
+					has_variable = turkfm_crisis_attacker
+					has_variable = turkfm_crisis_defender
+				}
+				has_truce_with = c:TUR
+			}
+			end_truce = c:TUR
+			trigger_event = {
+				id = turkfm_eastern_question.107 # Balkan Crisis Superevent <- Participant Event
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.106.a
+		default_option = yes
+	}
+
+}
+
+turkfm_eastern_question.107 = { # Balkan Crisis Superevent <- Participant Event
+	type = country_event
+	placement = root
+
+	title = turkfm_eastern_question.107.t
+	desc = turkfm_eastern_question.107.d
+	flavor = turkfm_eastern_question.107.f
+
+	event_image = {
+		video = "turkfm_balkan_crisis"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_eastern_question.106
+	}
+
+	immediate = {
+		random_diplomatic_play = {
+			limit = {
+				is_diplomatic_play_type = dp_turkfm_crisis
+			}
+			save_scope_as = turkfm_crisis_scope
+		}
+		if = {
+			limit = {
+				has_variable = turkfm_crisis_attacker
+				NOT = {
+					has_variable = turkfm_crisis_leader
+				}
+			}
+			scope:turkfm_crisis_scope = {
+				add_initiator_backers = { root }
+				add_diplomatic_play_war_support  = {
+					target = root
+					value = 100
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = turkfm_crisis_defender
+			}
+			scope:turkfm_crisis_scope = {
+				add_target_backers = { root }
+				add_diplomatic_play_war_support = {
+					target = root
+					value = 100
+				}
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.107.a
+		default_option = yes
+	}
+
+}
+
+turkfm_eastern_question.108 = { # The Porte Triumphant (Ottoman Victory)
+	type = country_event
+	placement = root
+
+	title = turkfm_eastern_question.108.t
+	desc = turkfm_eastern_question.108.d
+	flavor = turkfm_eastern_question.108.f
+
+	event_image = {
+		video = "ep1_power_blocs"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_wargoal_enforced_1
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+	}
+
+	option = { # For TUR
+		name = turkfm_eastern_question.108.a
+		default_option = yes
+		trigger = {
+			c:TUR = this
+		}
+		add_modifier = {
+			name = modifier_turkfm_won_crisis
+			days = normal_modifier_time
+		}
+		turkfm_cleanup_congress_effect = yes
+	}
+
+	option = { # For Defenders
+		name = turkfm_eastern_question.108.b
+		trigger = {
+			c:TUR != this
+			has_variable = turkfm_crisis_defender
+		}
+		add_modifier = {
+			name = modifier_turkfm_protected_balance
+			days = normal_modifier_time
+		}
+		turkfm_cleanup_congress_effect = yes
+	}
+
+	option = { # For Attackers
+		name = turkfm_eastern_question.108.b
+		trigger = {
+			c:TUR != this
+			has_variable = turkfm_crisis_attacker
+		}
+		custom_tooltip = {
+			text = turkfm_no_effects
+			turkfm_cleanup_congress_effect = yes
+		}
+	}
+
+	option = { # For Deconflicted/Non-Participants
+		name = turkfm_eastern_question.108.c
+		trigger = {
+			NOR = {
+				c:TUR = this
+				has_variable = turkfm_crisis_attacker
+				has_variable = turkfm_crisis_defender
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_no_effects
+			turkfm_cleanup_congress_effect = yes
+		}
+	}
+
+}
+
+turkfm_eastern_question.109 = { # The Treaty of X (Ottoman Defeat)
+	type = country_event
+	placement = scope:turkfm_armistice_host_scope
+
+	title = turkfm_eastern_question.109.t
+	desc = turkfm_eastern_question.109.d
+	flavor = turkfm_eastern_question.109.f
+
+	event_image = {
+		video = "ep1_power_blocs"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_wargoal_enforced_2
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		random_country = {
+			limit = {
+				has_variable = turkfm_armistice_host
+			}
+			save_scope_as = turkfm_armistice_host_scope
+		}
+		random_country = {
+			limit = {
+				has_variable = turkfm_congress_host
+			}
+			save_scope_as = turkfm_congress_host_scope
+		}
+		if = {
+			limit = {
+				NOT = {
+					exists = scope:turkfm_armistice_host_scope
+				}
+			}
+			scope:turkfm_congress_host_scope = {
+				save_scope_as = turkfm_armistice_host_scope
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.109.a
+		default_option = yes
+		trigger = {
+			c:TUR = this
+		}
+		add_modifier = {
+			name = modifier_turkfm_lost_crisis
+			days = normal_modifier_time
+		}
+		trigger_event = {
+			id = turkfm_eastern_question.201 # The Congress of X
+			days = 30
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.109.b
+		trigger = {
+			c:TUR != this
+		}
+		custom_tooltip = turkfm_congress_dispatch
+		trigger_event = {
+			id = turkfm_eastern_question.201 # The Congress of X
+			days = 30
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.109.c
+		trigger = {
+			c:TUR != this
+			has_variable = turkfm_crisis_deconflicted
+		}
+		custom_tooltip = {
+			text = turkfm_congress_refusal
+			remove_variable = turkfm_crisis_deconflicted
+		}
+	}
+
+}
+
+## International Congress Events ##
+turkfm_eastern_question.200 = { # Congress System Monitor
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		has_global_variable = turkfm_congress_var
+		NOT = {
+			has_global_variable = turkfm_congress_cooldown_var
+		}
+		any_country = {
+			OR = {
+				has_variable = turkfm_crisis_attacker
+				has_variable = turkfm_crisis_deconflicted
+			}
+		}
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_international_congress
+		}
+	}
+
+	immediate = {
+		every_country = {
+			limit = {
+				has_variable = turkfm_congress_issue_var
+			}
+			remove_variable = turkfm_congress_issue_var
+		}
+		random_country = {
+			limit = {
+				OR = {
+					has_variable = turkfm_crisis_attacker
+					has_variable = turkfm_crisis_deconflicted
+				}
+			}
+			save_scope_as = turkfm_congress_issue_scope
+			set_variable = turkfm_congress_issue_var
+		}
+		if = {
+			limit = {
+				exists = scope:turkfm_congress_issue_scope
+			}
+			set_global_variable = {
+				name = turkfm_congress_cooldown_var
+				days = 45
+			}
+			set_global_variable = {
+				name = turkfm_congress_vote_var
+				value = 0
+			}
+			if = {
+				limit = {
+					scope:turkfm_congress_issue_scope = {
+						has_variable = turkfm_crisis_attacker
+					}
+				}
+				every_country = {
+					limit = {
+						has_journal_entry = je_turkfm_international_congress
+					}
+					trigger_event = {
+						id = turkfm_eastern_question.202 # The Issue of X
+					}
+					trigger_event = {
+						id = turkfm_eastern_question.208 # Resolution on the X Matter
+						days = 45
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					scope:turkfm_congress_issue_scope = {
+						has_variable = turkfm_crisis_deconflicted
+					}
+				}
+				every_country = {
+					limit = {
+						has_journal_entry = je_turkfm_international_congress
+					}
+					trigger_event = {
+						id = turkfm_eastern_question.207 # The Convention of X
+					}
+				}
+			}
+		}
+		else = {
+			every_country = {
+				limit = {
+					has_journal_entry = je_turkfm_international_congress
+				}
+				trigger_event = {
+					id = turkfm_eastern_question.209 # The Treaty of X
+				}
+			}
+			turkfm_force_deconfliction_effect = yes
+		}
+	}
+
+}
+
+turkfm_eastern_question.201 = { # Congress of X
+	type = country_event
+	placement = scope:turkfm_congress_host_scope
+
+	title = turkfm_eastern_question.201.t
+	desc = turkfm_eastern_question.201.d
+	flavor = turkfm_eastern_question.201.f
+
+	event_image = {
+		video = "ep1_power_blocs"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_congress.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_eastern_question.109
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_international_congress
+		}
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		random_country = {
+			limit = {
+				has_variable = turkfm_congress_host
+			}
+			save_scope_as = turkfm_congress_host_scope
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.200.a
+		default_option = yes
+		custom_tooltip = turkfm_congress_in_session
+	}
+
+}
+
+turkfm_eastern_question.202 = { # The Issue of X
+	type = country_event
+	placement = scope:turkfm_congress_host_scope
+
+	title = turkfm_eastern_question.202.t
+	desc = turkfm_eastern_question.202.d
+	flavor = turkfm_eastern_question.202.f
+
+	event_image = {
+		video = "africa_leader_arguing"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_congress.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_eastern_question.200
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_international_congress
+		}
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		random_country = {
+			limit = {
+				has_variable = turkfm_congress_host
+			}
+			save_scope_as = turkfm_congress_host_scope
+		}
+		random_country = {
+			limit = {
+				has_variable = turkfm_congress_issue_var
+			}
+			save_scope_as = turkfm_congress_issue_scope
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.202.a
+		default_option = yes
+		trigger = {
+			NOT = {
+				has_diplomatic_pact = {
+					who = c:TUR
+					type = rivalry
+				}
+			}
+		}
+		highlighted_option = yes
+		show_as_unavailable = {
+			always = yes
+		}
+		custom_tooltip = turkfm_congress_support_tt
+		if = {
+			limit = {
+				country_rank >= rank_value:great_power
+			}
+			change_global_variable = {
+				name = turkfm_congress_vote_var
+				add = 3
+			}
+			custom_tooltip = turkfm_congress_support_3
+		}
+		else_if = {
+			limit = {
+				OR = {
+					country_rank = rank_value:major_power
+					country_rank = rank_value:unrecognized_major_power
+				}
+			}
+			change_global_variable = {
+				name = turkfm_congress_vote_var
+				add = 2
+			}
+			custom_tooltip = turkfm_congress_support_2
+		}
+		else_if = {
+			limit = {
+				country_rank <= rank_value:minor_power
+			}
+			change_global_variable = {
+				name = turkfm_congress_vote_var
+				add = 1
+			}
+			custom_tooltip = turkfm_congress_support_1
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.202.b
+		trigger = {
+			NOT = {
+				any_scope_treaty = {
+					binds = root
+					binds = c:TUR
+					any_scope_article = {
+						has_type = alliance
+					}
+				}
+			}
+		}
+		highlighted_option = yes
+		show_as_unavailable = {
+			always = yes
+		}
+		custom_tooltip = turkfm_congress_oppose_tt
+		if = {
+			limit = {
+				country_rank >= rank_value:great_power
+			}
+			change_global_variable = {
+				name = turkfm_congress_vote_var
+				subtract = 3
+			}
+			custom_tooltip = turkfm_congress_oppose_3
+		}
+		else_if = {
+			limit = {
+				OR = {
+					country_rank = rank_value:major_power
+					country_rank = rank_value:unrecognized_major_power
+				}
+			}
+			change_global_variable = {
+				name = turkfm_congress_vote_var
+				subtract = 2
+			}
+			custom_tooltip = turkfm_congress_oppose_2
+		}
+		else_if = {
+			limit = {
+				country_rank <= rank_value:minor_power
+			}
+			change_global_variable = {
+				name = turkfm_congress_vote_var
+				subtract = 1
+			}
+			custom_tooltip = turkfm_congress_oppose_1
+		}
+	}
+
+}
+
+turkfm_eastern_question.203 = { # The X Delegation
+	type = country_event
+	placement = scope:turkfm_congress_host_scope
+
+	title = turkfm_eastern_question.203.t
+	desc = turkfm_eastern_question.203.d
+	flavor = turkfm_eastern_question.203.f
+
+	event_image = {
+		video = "middleeast_courtroom_upheaval"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_congress.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_eastern_question.200
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_international_congress
+		}
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		random_country = {
+			limit = {
+				has_variable = turkfm_congress_host
+			}
+			save_scope_as = turkfm_congress_host_scope
+		}
+		random_country = {
+			limit = {
+				#				has_variable = turkfm_congress_delegation
+			}
+			save_scope_as = turkfm_congress_delegation_scope
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.203.a
+		default_option = yes
+	}
+
+	orphan = yes
+
+}
+
+turkfm_eastern_question.207 = { # The Convention of X
+	type = country_event
+	placement = root
+
+	title = turkfm_eastern_question.207.t
+	desc = turkfm_eastern_question.207.d
+	flavor = turkfm_eastern_question.207.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_congress.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_eastern_question.200
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_international_congress
+		}
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		random_country = {
+			limit = {
+				has_variable = turkfm_congress_host
+			}
+			save_scope_as = turkfm_congress_host_scope
+		}
+		random_country = {
+			limit = {
+				has_variable = turkfm_congress_issue_var
+			}
+			save_scope_as = turkfm_congress_issue_scope
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.207.a
+		default_option = yes
+		custom_tooltip = turkfm_no_effects
+	}
+
+}
+
+turkfm_eastern_question.208 = { # Resolution on the X Matter
+	type = country_event
+	placement = scope:turkfm_congress_host_scope
+
+	title = turkfm_eastern_question.208.t
+	desc = turkfm_eastern_question.208.d
+	flavor = turkfm_eastern_question.208.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_congress.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_eastern_question.200
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_international_congress
+		}
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		random_country = {
+			limit = {
+				has_variable = turkfm_congress_host
+			}
+			save_scope_as = turkfm_congress_host_scope
+		}
+		random_country = {
+			limit = {
+				has_variable = turkfm_congress_issue_var
+			}
+			save_scope_as = turkfm_congress_issue_scope
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.208.a
+		default_option = yes
+		if = {
+			limit = {
+				global_var:turkfm_congress_vote_var >= 0
+			}
+			custom_tooltip = turkfm_congress_issue_pass
+		}
+		else = {
+			custom_tooltip = turkfm_congress_issue_fail
+		}
+	}
+
+}
+
+turkfm_eastern_question.209 = { # The Treaty of X
+	type = country_event
+	placement = scope:turkfm_congress_host_scope
+
+	title = turkfm_eastern_question.209.t
+	desc = turkfm_eastern_question.209.d
+	flavor = turkfm_eastern_question.209.f
+
+	event_image = {
+		video = "ep1_power_blocs"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_congress.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_eastern_question.200
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_international_congress
+		}
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		random_country = {
+			limit = {
+				has_variable = turkfm_congress_host
+			}
+			save_scope_as = turkfm_congress_host_scope
+		}
+	}
+
+	option = {
+		name = turkfm_eastern_question.209.a
+		default_option = yes
+		custom_tooltip = turkfm_no_effects
+	}
+
+}
