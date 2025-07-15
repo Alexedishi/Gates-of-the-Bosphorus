@@ -1,1 +1,636 @@
-﻿namespace = balkfm_croatia
+﻿## CROATIA FLAVOR EVENTS ##
+
+# For Greek content, see the "grefm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Turkish content, see the "turkfm" module
+# For Orthodox Church content, see the "eocfm" module
+
+####################
+
+namespace = balkfm_croatia
+
+####################
+
+####	TABLE OF CONTENTS	####	#TOC
+
+# The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
+
+#200-209 - Croatian National Awakening Events
+#	200 - Illyrian Sentiment
+#	201 - An Austro-Slavic Proposal
+#	202 - Vienna Literary Agreement (Austrian Variant)
+#	203 - OPEN
+#	204 - OPEN
+#	205 - OPEN
+#	206 - OPEN
+#	207 - OPEN
+#	208 - OPEN
+#	209 - ##Croatian–Hungarian Settlement / Austro-Croatian Compromise
+
+#300-309 - Triune Kingdom Events
+#	300 - The Triune Dream
+#	301 - Restoration of the Triune Kingdom.0
+
+####################
+
+## Croatian National Awakening Events ##
+balkfm_croatia.200 = { # Illyrian Sentiment
+	type = country_event
+	placement = root
+
+	title = balkfm_croatia.200.t
+	desc = balkfm_croatia.200.d
+	flavor = balkfm_croatia.200.f
+
+	gui_window = event_window_1char_tabloid
+
+	left_icon = scope:balkfm_draskovic_scope
+
+	icon = "gfx/interface/icons/event_icons/event_croatia.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered from GLOBAL
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_balkfm_cro_croation_question
+		}
+	}
+
+	immediate = {
+		random_character_in_void = {
+			limit = {
+				has_template = template_balkfm_draskovic_janko
+			}
+			save_scope_as = balkfm_draskovic_scope
+		}
+		ig:ig_landowners = {
+			leader = {
+				save_scope_as = balkfm_metternich_scope
+			}
+		}
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+	}
+
+	option = {
+		name = balkfm_croatia.200.a
+		default_option = yes
+		every_scope_state = {
+			limit = {
+				state_region = {
+					is_homeland = cu:croat
+				}
+			}
+			add_modifier = modifier_balkfm_croatian_revivalism
+		}
+		add_radicals = {
+			culture = cu:croat
+			value = medium_radicals
+		}
+	}
+
+}
+
+balkfm_croatia.201 = { # An Austro-Slavic Proposal
+	type = country_event
+	placement = root
+
+	title = balkfm_croatia.201.t
+	desc = balkfm_croatia.201.d
+	flavor = balkfm_croatia.201.f
+
+	gui_window = event_window_1char_tabloid
+
+	left_icon = scope:balkfm_borovsky_scope
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = balkfm_austro_slavic_proposal_var
+		}
+		has_technology_researched = nationalism
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_balkfm_cro_croation_question
+		}
+	}
+
+	immediate = {
+		set_variable = balkfm_austro_slavic_proposal_var
+		create_character = {
+			template = template_balkfm_borovsky_karel
+			on_created = {
+				place_character_in_void = 12
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_balkfm_borovsky_karel
+			}
+			save_scope_as = balkfm_borovsky_scope
+		}
+	}
+
+	option = { # Support the Proposal
+		name = balkfm_croatia.201.a
+		default_option = yes
+		add_radicals = {
+			culture = cu:hungarian
+			value = medium_radicals
+		}
+		balkfm_happy_yugoslavs_effect = yes
+	}
+
+	option = { # Oppose the Proposal
+		name = balkfm_croatia.201.b
+		add_loyalists = {
+			culture = cu:hungarian
+			value = medium_radicals
+		}
+		balkfm_sad_yugoslavs_effect = yes
+	}
+
+}
+
+balkfm_croatia.202 = { # Vienna Literary Agreement (Austrian Variant)
+	type = country_event
+	placement = root
+
+	title = balkfm_croatia.202.t
+	desc = balkfm_croatia.202.d
+	flavor = balkfm_croatia.202.f
+
+	event_image = {
+		video = "middleeast_middleclass_cafe"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = balkfm_nerds_in_vienna
+		}
+		has_technology_researched = nationalism
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_balkfm_cro_croation_question
+		}
+	}
+
+	immediate = {
+		set_variable = balkfm_nerds_in_vienna
+	}
+
+	option = {
+		name = balkfm_croatia.202.a
+		default_option = yes
+		balkfm_sad_yugoslavs_effect = yes
+		every_country = {
+			limit = {
+				balkfm_has_yugoslav_culture_trigger = yes
+				NOT = {
+					has_technology_researched = nationalism
+				}
+			}
+			trigger_event = {
+				id = balkfm_yugoslavia.003 # Vienna Literary Agreement
+			}
+		}
+		custom_tooltip = balkfm_yugoslav_nationalism_boost_tt
+	}
+
+}
+
+balkfm_croatia.209 = { # Croatian–Hungarian Settlement / Austro-Croatian Compromise
+	type = country_event
+	placement = root
+
+	title = {
+		triggered_desc = {
+			desc = balkfm_croatia.209.t1
+			trigger = {
+				country_has_primary_culture = cu:hungarian
+			}
+		}
+		triggered_desc = {
+			desc = balkfm_croatia.209.t2
+			trigger = {
+				NOT = {
+					country_has_primary_culture = cu:hungarian
+				}
+			}
+		}
+	}
+	desc = {
+		triggered_desc = {
+			desc = balkfm_croatia.209.d1
+			trigger = {
+				country_has_primary_culture = cu:hungarian
+				NOT = {
+					has_variable = balkfm_croatian_question_failed
+				}
+			}
+		}
+		triggered_desc = {
+			desc = balkfm_croatia.209.d2
+			trigger = {
+				NOR = {
+					country_has_primary_culture = cu:hungarian
+					has_variable = balkfm_croatian_question_failed
+				}
+			}
+		}
+	}
+	flavor = {
+		triggered_desc = {
+			desc = balkfm_croatia.209.f1
+			trigger = {
+				NOT = {
+					has_variable = balkfm_croatian_question_failed
+				}
+			}
+		}
+		triggered_desc = {
+			desc = balkfm_croatia.209.f2
+			trigger = {
+				has_variable = balkfm_croatian_question_failed
+			}
+		}
+	}
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_croatia.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_balkfm_cro_croation_question
+	}
+
+	cancellation_trigger = {
+		NOR = {
+			any_scope_state = {
+				state_region = {
+					is_homeland = cu:croat
+				}
+			}
+			c:CRO ?= {
+				is_subject_of = ROOT
+			}
+		}
+	}
+
+	immediate = {
+		set_variable = balkfm_croatian_question_complete
+	}
+
+	## Croatian–Hungarian Settlement Options ##
+
+	option = { # Success Option
+		name = balkfm_croatia.209.a1
+		default_option = yes
+		trigger = {
+			country_has_primary_culture = cu:hungarian
+			NOR = {
+				has_variable = balkfm_croatian_question_failed
+				c:CRO ?= {
+					is_subject_of = ROOT
+				}
+			}
+		}
+		add_primary_culture = cu:croat
+		add_loyalists = {
+			culture = cu:croat
+			value = large_radicals
+		}
+	}
+
+	option = { # Success Option, if Croatia is a subject
+		name = balkfm_croatia.209.a2
+		default_option = yes
+		trigger = {
+			country_has_primary_culture = cu:hungarian
+			NOT = {
+				has_variable = balkfm_croatian_question_failed
+			}
+			c:CRO ?= {
+				is_subject_of = ROOT
+			}
+		}
+		c:CRO ?= {
+			add_modifier = {
+				name = modifier_balkfm_croatian_autonomy
+				days = long_modifier_time
+			}
+		}
+	}
+
+	option = { # Accept Compromise
+		name = balkfm_croatia.209.a3
+		trigger = {
+			country_has_primary_culture = cu:hungarian
+			has_variable = balkfm_croatian_question_failed
+		}
+		add_primary_culture = cu:croat
+		add_loyalists = {
+			culture = cu:croat
+			value = large_radicals
+		}
+		add_radicals = {
+			value = large_radicals
+			culture = cu:hungarian
+			pop_type = aristocrats
+		}
+		add_modifier = {
+			name = dual_monarchy_compromise
+			days = very_long_modifier_time
+		}
+	}
+
+	option = { # Reject Compromise
+		name = balkfm_croatia.209.a4
+		trigger = {
+			country_has_primary_culture = cu:hungarian
+			has_variable = balkfm_croatian_question_failed
+		}
+		add_radicals = {
+			value = very_large_radicals
+			culture = cu:croat
+		}
+		every_scope_state = {
+			limit = {
+				state_region = {
+					is_homeland = cu:croat
+				}
+			}
+			add_modifier = {
+				name = modifier_balkfm_croatian_compromise_rejected
+				days = long_modifier_time
+			}
+		}
+	}
+
+	## Austro-Croatian Compromise Options ##
+
+	option = { # Success Option
+		name = balkfm_croatia.209.b1
+		default_option = yes
+		trigger = {
+			NOR = {
+				country_has_primary_culture = cu:hungarian
+				has_variable = balkfm_croatian_question_failed
+				c:CRO ?= {
+					is_subject_of = ROOT
+				}
+			}
+		}
+		add_primary_culture = cu:croat
+		add_loyalists = {
+			culture = cu:croat
+			value = large_radicals
+		}
+		add_radicals = {
+			value = large_radicals
+			culture = cu:hungarian
+			pop_type = aristocrats
+		}
+	}
+
+	option = { # Success Option, if Croatia is a subject
+		name = balkfm_croatia.209.b2
+		default_option = yes
+		trigger = {
+			NOR = {
+				country_has_primary_culture = cu:hungarian
+				has_variable = balkfm_croatian_question_failed
+			}
+			c:CRO ?= {
+				is_subject_of = ROOT
+			}
+		}
+		c:CRO ?= {
+			add_modifier = {
+				name = modifier_balkfm_croatian_autonomy
+				days = long_modifier_time
+			}
+		}
+		add_radicals = {
+			value = large_radicals
+			culture = cu:hungarian
+			pop_type = aristocrats
+		}
+	}
+
+	option = { # Accept Compromise
+		name = balkfm_croatia.209.b3
+		trigger = {
+			NOT = {
+				country_has_primary_culture = cu:hungarian
+			}
+			has_variable = balkfm_croatian_question_failed
+		}
+		add_primary_culture = cu:croat
+		add_loyalists = {
+			culture = cu:croat
+			value = large_radicals
+		}
+		add_radicals = {
+			value = large_radicals
+			culture = cu:south_german
+			pop_type = aristocrats
+		}
+		add_radicals = {
+			value = large_radicals
+			culture = cu:hungarian
+			pop_type = aristocrats
+		}
+		add_modifier = {
+			name = dual_monarchy_compromise
+			days = very_long_modifier_time
+		}
+	}
+
+	option = { # Reject Compromise
+		name = balkfm_croatia.209.b4
+		trigger = {
+			NOT = {
+				country_has_primary_culture = cu:hungarian
+			}
+			has_variable = balkfm_croatian_question_failed
+		}
+		add_radicals = {
+			value = very_large_radicals
+			culture = cu:croat
+		}
+		add_loyalists = {
+			value = large_radicals
+			culture = cu:hungarian
+			pop_type = aristocrats
+		}
+		every_scope_state = {
+			limit = {
+				state_region = {
+					is_homeland = cu:croat
+				}
+			}
+			add_modifier = {
+				name = modifier_balkfm_croatian_compromise_rejected
+				days = long_modifier_time
+			}
+		}
+	}
+
+}
+
+## Triune Kingdom Events ##
+balkfm_croatia.300 = { # The Triune Dream
+	type = country_event
+	placement = root
+
+	title = balkfm_croatia.300.t
+	desc = balkfm_croatia.300.d
+	flavor = balkfm_croatia.300.f
+
+	event_image = {
+		video = "europenorthamerica_political_extremism"
+	}
+
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_balkfm_cro_triune_restoration
+	}
+
+	immediate = {
+		c:AUS = {
+			save_scope_as = austria_scope
+		}
+		c:SER = {
+			save_scope_as = serbia_scope
+		}
+	}
+
+	option = {
+		name = balkfm_croatia.300.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_balkfm_cro_triune_restoration
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_SLAVONIA
+					owns_entire_state_region = STATE_SLAVONIA
+				}
+			}
+			s:STATE_SLAVONIA = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_CROATIA
+					owns_entire_state_region = STATE_CROATIA
+				}
+			}
+			s:STATE_CROATIA = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_DALMATIA
+					owns_entire_state_region = STATE_DALMATIA
+				}
+			}
+			s:STATE_DALMATIA = {
+				add_claim = ROOT
+			}
+		}
+	}
+
+}
+
+balkfm_croatia.301 = { # Restoration of the Triune Kingdom
+	type = country_event
+	placement = root
+
+	title = balkfm_croatia.301.t
+	desc = balkfm_croatia.301.d
+	flavor = balkfm_croatia.301.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_croatia.301.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_triune_resurgence
+			days = long_modifier_time
+		}
+		add_loyalists = {
+			culture = cu:croat
+			value = medium_radicals
+		}
+	}
+
+}

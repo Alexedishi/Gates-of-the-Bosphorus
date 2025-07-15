@@ -16,13 +16,62 @@ namespace = gbbf_technical
 # The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
 
 #000-009 - Hidden Events
-#	000 - //
-#	001 - Adds Mainland Greece claims to non-GRE Greek nations
-#	002 - Reassigns Revolt Journals
+#	001 - The Unused Variable Dumpster Fire
+#	002 - Adds Mainland Greece claims to non-GRE Greek nations
+#	003 - Reassigns Revolt Journals
+
+#011-019 - Hidden Technical Events (Debug Country Spawns)
+#	011 - Absolute Balkanization
+#	012 - Turk-splosion
+
+#020-029 - Hidden Technical Events (Variable Placement)
+#	020 - Places Yugoslav Secession Variable
+
+#090-099 - Test Events
+#	090 - Test Event
+#	091 - Test Event
+#	092 - Crisis Test Event
+#	099 - GBBF Test Tag Spawn
 
 ####################
 
-gbbf_technical.001 = { # adds claims to greek countries if they go independent
+## Hidden Events ##
+gbbf_technical.001 = { # The Unused Variable Dumpster Fire
+	type = country_event
+	placement = root
+	hidden = yes
+
+	trigger = {
+		# DO NOT CALL THIS EVENT. This is here to shut up the error log.
+	}
+
+	immediate = {
+		remove_global_variable = has_formed_tsar
+		remove_variable = romania_subject
+		set_variable = romania_unification_in_motion
+		remove_variable = balkfm_1848_failed
+
+		set_variable = crisis_character_1
+		set_variable = crisis_character_2
+		set_variable = crisis_character_3
+		set_variable = crisis_character_4
+		set_variable = crisis_character_5
+		set_variable = crisis_character_6
+		remove_variable = crisis_character_1
+		remove_variable = crisis_character_2
+		remove_variable = crisis_character_3
+		remove_variable = crisis_character_4
+		remove_variable = crisis_character_5
+		remove_variable = crisis_character_6
+
+		fix_variable_error = { variable = eocfm_topbar_element_capacity }
+	}
+
+	orphan = yes
+
+}
+
+gbbf_technical.002 = { # adds claims to greek countries if they go independent
 	type = country_event
 	placement = root
 	hidden = yes
@@ -89,7 +138,7 @@ gbbf_technical.001 = { # adds claims to greek countries if they go independent
 
 }
 
-gbbf_technical.002 = { # hidden event triggering the Don Pacifico Affair
+gbbf_technical.003 = { # hidden event triggering the Don Pacifico Affair
 	type = country_event
 	placement = root
 	hidden = yes
@@ -117,5 +166,290 @@ gbbf_technical.002 = { # hidden event triggering the Don Pacifico Affair
 		}
 		remove_variable = grefm_don_pacifico_var
 	}
+
+}
+
+## Hidden Technical Events (Debug Country Spawns) ##
+gbbf_technical.010 = { # Absolute Balkanization
+	type = country_event
+	hidden = yes
+
+	trigger = {
+	}
+
+	immediate = {
+		balkfm_balkanize_effect = yes
+	}
+
+	orphan = yes
+
+}
+
+gbbf_technical.011 = { # Turk-splosion
+	type = country_event
+	hidden = yes
+
+	trigger = {
+	}
+
+	immediate = {
+		balkfm_turkboom_effect = yes
+	}
+
+	orphan = yes
+
+}
+
+## Hidden Technical Events (Variable Placement) ##
+gbbf_technical.020 = { # Places Yugoslav Secession Variable
+	type = country_event
+	placement = root
+	hidden = yes
+
+	trigger = {
+		is_secessionist = yes
+		balkfm_has_yugoslav_culture_trigger = yes
+		NOT = { has_variable = balkfm_breakaway_var }
+	}
+
+	immediate = {
+		set_variable = balkfm_breakaway_var
+	}
+
+}
+
+
+## Test Events ##
+gbbf_technical.090 = { # Test Event
+	type = country_event
+	placement = root
+
+	title = gbbf_technical.090.t
+	desc = gbbf_technical.090.d
+	flavor = gbbf_technical.090.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_cutler_beckett_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_open_ocean.dds"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+
+	on_opened_soundeffect = "event:/SFX/Events/unspecific/iceberg_in_the_antartica"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = left_icon
+		}
+		ruler = {
+			save_scope_as = right_icon
+		}
+	}
+
+	option = {
+		name = gbbf_technical.091.a
+		default_option = yes
+	}
+
+	option = {
+		name = gbbf_technical.091.b
+	}
+
+	option = {
+		name = gbbf_technical.091.c
+	}
+
+
+	option = {
+		name = gbbf_technical.091.e
+	}
+
+	orphan = yes
+
+}
+
+gbbf_technical.091 = { # Test Event
+	type = country_event
+	placement = root
+
+	title = gbbf_technical.091.t
+	desc = gbbf_technical.091.d
+	flavor = gbbf_technical.091.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = gbbf_technical.091.a
+		default_option = yes
+		create_diplomatic_pact = {
+			country = c:RUS
+			type = humiliation
+		}
+		create_bidirectional_truce = {
+			country = c:RUS
+			months = 48
+		}
+	}
+
+	option = {
+		name = gbbf_technical.091.b
+		create_bidirectional_truce = {
+			country = c:RUS
+			months = 48
+		}
+	}
+
+	option = {
+		name = gbbf_technical.091.c
+		custom_tooltip = gbbf_technical.091.tt
+	}
+
+
+	option = {
+		name = gbbf_technical.091.e
+		custom_tooltip = turkfm_no_effects
+	}
+
+	after = {
+	}
+
+	orphan = yes
+
+}
+
+gbbf_technical.092 = { # Crisis Test Event
+	type = country_event
+	placement = root
+
+	title = gbbf_technical.092.t
+	desc = gbbf_technical.092.d
+	flavor = gbbf_technical.092.f
+
+	gui_window = event_window_crisis
+
+	event_image = {
+		video = "turkfm_balkan_crisis"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		c:RUS = {
+			ruler = {
+				save_scope_as = crisis_scope_1
+			}
+		}
+		set_variable = {
+			name = crisis_character_1
+			value = scope:crisis_scope_1
+		}
+		c:AUS = {
+			ruler = {
+				save_scope_as = crisis_scope_2
+			}
+		}
+		set_variable = {
+			name = crisis_character_2
+			value = scope:crisis_scope_2
+		}
+		c:GRE = {
+			ruler = {
+				save_scope_as = crisis_scope_3
+			}
+		}
+		set_variable = {
+			name = crisis_character_3
+			value = scope:crisis_scope_3
+		}
+		c:EGY = {
+			ruler = {
+				save_scope_as = crisis_scope_4
+			}
+		}
+		set_variable = {
+			name = crisis_character_4
+			value = scope:crisis_scope_4
+		}
+		c:TUR = {
+			ruler = {
+				save_scope_as = crisis_scope_5
+			}
+		}
+		set_variable = {
+			name = crisis_character_5
+			value = scope:crisis_scope_5
+		}
+		c:TUN = {
+			ruler = {
+				save_scope_as = crisis_scope_6
+			}
+		}
+		set_variable = {
+			name = crisis_character_6
+			value = scope:crisis_scope_6
+		}
+	}
+
+	option = {
+		name = gbbf_technical.092.a
+		default_option = yes
+	}
+
+	orphan = yes
+
+}
+
+gbbf_technical.099 = { # GBBF Test Tag Spawn
+	type = country_event
+	hidden = yes
+
+	trigger = {
+	}
+
+	immediate = {
+		create_country = {
+			tag = GBBF
+			origin = root
+			province = p:x021374
+		}
+		play_as = c:GBBF
+	}
+
+	orphan = yes
 
 }

@@ -89,6 +89,8 @@ namespace = balkfm_romania
 #	720 - The Imperial Standard
 #	721 - The Queen of Cities
 
+#790-799 - Romanian Unification Support Events
+
 ####################
 
 ## Regulamentul Organic / Statutul Dezvoltator Events ##
@@ -3233,4 +3235,195 @@ balkfm_romania.721 = { # The Queen of Cities
 		}
 	}
 
+}
+
+## Romanian Unification Support Events ##
+balkfm_romania.790 = { # The Romanian Declaration of Union; this event has been imported from vanilla; minor adjustments for balkfm variables
+	type = country_event
+	placement = scope:romania_unifier_capital
+
+	title = balkfm_romania.790.t
+	desc = balkfm_romania.790.d
+	flavor = balkfm_romania.790.f
+
+	event_image = {
+		video = "europenorthamerica_political_extremism"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+
+	duration = 3
+
+	trigger = {
+	}
+
+	immediate = {
+		random_subject_or_below = {
+			limit = {
+				has_variable = ROM_united_principality # this is a vanilla variable; do not touch this unless you want to start messing with flags and country names
+			}
+			save_scope_as = romania_unifier
+			capital = {
+				save_scope_as = romania_unifier_capital
+			}
+		}
+	}
+
+	option = { # Be Nice
+		name = balkfm_romania.790.a
+		default_option = yes
+		ai_chance = {
+			base = 75
+		}
+		set_secret_goal = {
+			country = scope:romania_unifier
+			secret_goal = protect
+		}
+		change_relations = {
+			country = scope:romania_unifier
+			value = 20
+		}
+		scope:romania_unifier = {
+			change_relations = {
+				country = ROOT
+				value = 20
+			}
+		}
+	}
+
+	option = { # Fuggem
+		name = balkfm_romania.790.b
+		ai_chance = {
+			base = 25
+		}
+		set_secret_goal = {
+			country = scope:romania_unifier
+			secret_goal = antagonize
+		}
+		change_relations = {
+			country = scope:romania_unifier
+			value = -30
+		}
+		scope:romania_unifier = {
+			change_relations = {
+				country = ROOT
+				value = -30
+			}
+		}
+		every_scope_state = {
+			add_radicals_in_state = {
+				value = large_radicals
+				culture = cu:romanian
+			}
+		}
+	}
+}
+
+balkfm_romania.791 = { # The South Bessarabian Retrocession (romania.4 integrated into balkfm)
+	type = country_event
+	placement = ROOT
+	title = balkfm_romania.791.t
+	desc = balkfm_romania.791.d
+	flavor =  balkfm_romania.791.f
+
+	duration = 3
+
+	event_image = {
+		video = "southamerica_aristocrats"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+
+	trigger = {
+		# triggered by JE
+	}
+
+	immediate = {
+		random_scope_state = {
+			limit = {
+				state_region = s:STATE_BESSARABIA
+			}
+			save_scope_as = south_bessarabia_cession
+		}
+		random_country = {
+			limit = {
+				OR = {
+					has_variable = ROM_united_principality
+					AND = {
+						is_subject = yes
+						top_overlord ?= {
+							has_variable = ROM_united_principality
+						}
+					}
+				}
+			}
+			save_scope_as = romanian_bessarabia_receiver
+		}
+		set_variable = balkfm_bessarabia_owner
+	}
+
+	option = {
+		name = balkfm_romania.791.a
+		default_option = yes
+		s:STATE_BESSARABIA = {
+			set_owner_of_provinces = {
+				country = scope:romanian_bessarabia_receiver
+				provinces = { xB0E0A0 x6BF7B8 x712161 }
+			}
+		}
+		if = {
+			limit = {
+				p:x50F5CB = {
+					owner = ROOT
+				}
+			}
+			s:STATE_DOBRUDJA = {
+				set_owner_of_provinces = {
+					country = scope:romanian_bessarabia_receiver
+					provinces = { x50F5CB }
+				}
+			}
+		}
+		change_relations = {
+			country = scope:romanian_bessarabia_receiver
+			value = 25
+		}
+		scope:romanian_bessarabia_receiver = {
+			change_relations = {
+				country = ROOT
+				value = 25
+			}
+			trigger_event = {
+				id = balkfm_romania.702 # Retrocession Granted
+			}
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	option = {
+		name = balkfm_romania.791.b
+		change_relations = {
+			country = scope:romanian_bessarabia_receiver
+			value = -25
+		}
+		scope:romanian_bessarabia_receiver = {
+			change_relations = {
+				country = ROOT
+				value = -25
+			}
+			trigger_event = {
+				id = balkfm_romania.703 # Retrocession Denied
+			}
+
+		}
+		ai_chance = {
+			base = 0
+		}
+	}
 }
