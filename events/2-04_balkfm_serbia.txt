@@ -1,1 +1,1587 @@
-﻿namespace = balkfm_serbia
+﻿##  EVENTS ##
+
+# For Greek content, see the "grefm" module
+# For Turkish content, see the "turkfm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Orthodox Church content, see the "eocfm" module
+
+####################
+
+namespace = balkfm_serbia
+
+####################
+
+####	TABLE OF CONTENTS	####	#TOC
+
+# The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
+
+#000-009 - The Principality Era Events
+#	001 - Mileta's Rebellion
+#	002 - A Constitution Imposed
+#	003 - An Inexperienced Ruler
+#	004 - OPEN
+#	005 - OPEN
+#	006 - OPEN
+#	007 - Defenders of the Constitution
+#	008 - Absent Reform
+#	009 - Serbia Reforged
+
+#010-019 - Dynastic Rivalry Events
+#	010 - House Karađorđević Takes the Throne
+#	011 - House Obrenović Takes the Throne
+#	012 - Austria/Russia Requests Primacy
+#	013 - Plague Outbreak!
+#	014 - Abusive Garrison
+#	025 - OPEN
+#	026 - OPEN
+#	027 - OPEN
+#	018 - Cementing the Monarchy
+#	019 - Hereditary Monarchy Secured
+
+#020-029 - The Kingdom Era Events
+#	020 -  OPEN
+
+#200-209 - Serbian Nationalism
+#	200 - The Serbian Heartlands
+#	201 - Greater Serbia
+#	202 - The Serbian Empire
+#	203 - Society of Serbian Letters
+#	204 - May Assembly
+#	205 - The Vojvodina Uprising
+#	206 - The Serbian Voivodship
+
+####################
+
+balkfm_serbia.001 = { # Mileta's Rebellion
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.001.t
+	desc = balkfm_serbia.001.d
+	flavor = balkfm_serbia.001.f
+
+	event_image = {
+		video = "balkfm_serbia_intro"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered from GLOBAL
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		set_variable = balkfm_constitution_pending
+	}
+
+	option = {
+		name = balkfm_serbia.001.a
+		default_option = yes
+		show_as_tooltip = {
+			add_modifier = modifier_balkfm_dynastic_feud
+		}
+	}
+
+}
+
+balkfm_serbia.002 = { # A Constitution Imposed
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.002.t
+	desc = balkfm_serbia.002.d
+	flavor = balkfm_serbia.002.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = balkfm_constitution_pending
+		year = 1838
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = milos_scope
+		}
+		heir = {
+			save_scope_as = milan_scope
+		}
+		remove_variable = balkfm_constitution_pending
+
+	}
+
+	option = {
+		name = balkfm_serbia.002.a
+		default_option = yes
+		custom_tooltip = {
+			text = balkfm_serbia.002.tt
+			hidden_effect = {
+				scope:milos_scope = {
+					place_character_in_void = 150 # characters will expire after 15 years
+				}
+			}
+		}
+		scope:milan_scope = {
+			free_character_from_void = yes
+			set_character_as_ruler = yes # this feels pedantic, but he was technically Prince for 26 days
+		}
+		activate_law = law_type:law_wealth_voting
+		activate_law = law_type:law_tenant_farmers
+		activate_law = law_type:law_appointed_bureaucrats
+		balkfm_minor_dynasty_support_loss_effect = yes
+		trigger_event = {
+			id = balkfm_serbia.003 # An Inexperienced Ruler
+			days = 30
+		}
+		call_election = {
+			months = 1
+		}
+		set_variable = balkfm_milos_bailed_out
+	}
+
+}
+
+balkfm_serbia.003 = { # An Inexperienced Ruler
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.003.t
+	desc = balkfm_serbia.003.d
+	flavor = balkfm_serbia.003.f
+
+	event_image = {
+		video = "unspecific_politicians_arguing"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = { # triggered by JE
+	}
+
+	immediate = {
+		create_character = {
+			template = template_balkfm_obrenovic_mihailo
+			on_created = {
+				place_character_in_void = 12
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_balkfm_obrenovic_mihailo
+			}
+			save_scope_as = milhailo_scope
+		}
+		ruler = {
+			save_scope_as = milan_scope
+		}
+	}
+
+	option = {
+		name = balkfm_serbia.003.a
+		default_option = yes
+		scope:milan_scope = {
+			kill_character = yes
+		}
+		scope:milhailo_scope = {
+			free_character_from_void = yes
+			set_character_as_ruler = yes
+		}
+		balkfm_minor_dynasty_support_loss_effect = yes
+	}
+
+}
+
+balkfm_serbia.007 = { # Defenders of the Constitution
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.007.t
+	desc = balkfm_serbia.007.d
+	flavor = balkfm_serbia.007.f
+
+	event_image = {
+		video = "europenorthamerica_political_extremism"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = balkfm_milos_bailed_out
+		NOT = {
+			has_variable = balkfm_constitution_pending
+		}
+
+		var:balkfm_obrenovic_support_var < 50
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = mihailo_scope
+		}
+		if = {
+			limit = {
+				any_scope_character = {
+					has_template = template_balkfm_karadordevic_aleksander
+				}
+			}
+			random_scope_character = {
+				limit = {
+					has_template = template_balkfm_karadordevic_aleksander
+				}
+				save_scope_as = kaykay_scope
+			}
+		}
+		else = {
+			create_character = {
+				template = template_balkfm_karadordevic_aleksander
+				on_created = {
+					place_character_in_void = 12
+				}
+			}
+			random_character_in_void = {
+				limit = {
+					has_template = template_balkfm_karadordevic_aleksander
+				}
+				save_scope_as = kaykay_scope
+			}
+		}
+		remove_variable = balkfm_milos_bailed_out
+	}
+
+	option = {
+		name = balkfm_serbia.007.a
+		default_option = yes
+		custom_tooltip = {
+			text = balkfm_serbia.007.tt1
+			hidden_effect = {
+				scope:mihailo_scope = {
+					place_character_in_void = 150 # characters will expire after 15 years
+					set_variable = balkfm_obrenovic_tracker
+				}
+			}
+		}
+		scope:kaykay_scope = {
+			free_character_from_void = yes
+			set_character_as_ruler = yes
+		}
+		custom_tooltip = {
+			text = balkfm_obrenovic_wipeout
+			hidden_effect = {
+				set_variable = {
+					name = balkfm_obrenovic_support_var
+					value = 0
+				}
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_serbia.007.tt2
+			hidden_effect = {
+				set_variable = {
+					name = balkfm_karadordevic_support_var
+					value = 200
+				}
+			}
+		}
+		set_variable = {
+			name = balkfm_leading_dynasty_var
+			value = 200
+		}
+		add_journal_entry = {
+			type = je_balkfm_ser_defenders
+		}
+		add_journal_entry = {
+			type = je_balkfm_state_reform
+		}
+		create_character = {
+			template = template_balkfm_petronijevic_avram
+			on_created = {
+				add_character_role = agitator
+			}
+		}
+
+	}
+
+}
+
+balkfm_serbia.008 = { # Absent Reform
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.008.t
+	desc = balkfm_serbia.008.d
+	flavor = balkfm_serbia.008.f
+
+	event_image = {
+		video = "europenorthamerica_political_extremism"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_serbia.008.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_absent_reforms
+			days = normal_modifier_time
+		}
+		add_radicals = {
+			strata = middle
+			value = medium_radicals
+		}
+		add_radicals = {
+			strata = lower
+			value = medium_radicals
+		}
+		balkfm_minor_dynasty_support_loss_effect = yes
+	}
+
+}
+
+balkfm_serbia.009 = { # Serbia Reforged
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.009.t
+	desc = balkfm_serbia.009.d
+	flavor = balkfm_serbia.009.f
+
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_serbia.009.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_responsive_regime
+			days = normal_modifier_time
+		}
+		add_loyalists = {
+			value = small_radicals
+		}
+		balkfm_minor_dynasty_support_gain_effect = yes
+	}
+
+}
+
+#### DYNASTIC RIVALRY EVENTS ####
+
+balkfm_serbia.010 = { # House Karađorđević Takes the Throne
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.010.t
+	desc = balkfm_serbia.010.d
+	flavor = balkfm_serbia.010.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		var:balkfm_leading_dynasty_var < 1
+		balkfm_has_obrenovic_ruler_trigger = yes
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = balkfm_ruler_scope
+		}
+		heir = {
+			save_scope_as = balkfm_heir_scope
+		}
+		if = {
+			limit = {
+				any_character_in_void = {
+					has_variable = balkfm_karadordevic_tracker
+				}
+			}
+			random_character_in_void = {
+				limit = {
+					has_variable = balkfm_karadordevic_tracker
+				}
+				save_scope_as = balkfm_karadordevic_scope
+			}
+		}
+		else = {
+			create_character = {
+				template = template_balkfm_karadordevic_dynamic
+				on_created = {
+					set_variable = balkfm_karadordevic_tracker
+					place_character_in_void = 12
+				}
+			}
+			random_character_in_void = {
+				limit = {
+					has_variable = balkfm_karadordevic_tracker
+				}
+				save_scope_as = balkfm_karadordevic_scope
+			}
+		}
+		set_variable = {
+			name = balkfm_karadordevic_support_var
+			value = 200
+		}
+		set_variable = {
+			name = balkfm_obrenovic_support_var
+			value = 0
+		}
+		set_variable = {
+			name = balkfm_leading_dynasty_var
+			value = 200
+		}
+	}
+
+	option = {
+		name = balkfm_serbia.010.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_royal_turmoil
+			days = short_modifier_time
+			is_decaying = yes
+		}
+		scope:balkfm_karadordevic_scope = {
+			set_character_as_ruler = yes
+			remove_variable = balkfm_karadordevic_tracker
+		}
+		scope:balkfm_ruler_scope = {
+			set_variable = balkfm_obrenovic_tracker
+			place_character_in_void = 150 # characters will expire after 15 years
+		}
+		if = {
+			limit = {
+				exists = scope:balkfm_heir_scope
+			}
+			scope:balkfm_heir_scope = {
+				disinherit_character = yes
+			}
+		}
+	}
+
+}
+
+balkfm_serbia.011 = { # House Obrenović Takes the Throne
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.011.t
+	desc = balkfm_serbia.011.d
+	flavor = balkfm_serbia.011.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		var:balkfm_leading_dynasty_var < 1
+		balkfm_has_karadordevic_ruler_trigger = yes
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = balkfm_ruler_scope
+		}
+		heir = {
+			save_scope_as = balkfm_heir_scope
+		}
+		if = {
+			limit = {
+				any_character_in_void = {
+					has_variable = balkfm_obrenovic_tracker
+				}
+			}
+			random_character_in_void = {
+				limit = {
+					has_variable = balkfm_obrenovic_tracker
+				}
+				save_scope_as = balkfm_obrenovic_scope
+			}
+		}
+		else = {
+			create_character = {
+				template = template_balkfm_obrenovic_dynamic
+				on_created = {
+					set_variable = balkfm_obrenovic_tracker
+					place_character_in_void = 12
+				}
+			}
+			random_character_in_void = {
+				limit = {
+					has_variable = balkfm_obrenovic_tracker
+				}
+				save_scope_as = balkfm_obrenovic_scope
+			}
+		}
+		set_variable = {
+			name = balkfm_obrenovic_support_var
+			value = 200
+		}
+		set_variable = {
+			name = balkfm_karadordevic_support_var
+			value = 0
+		}
+		set_variable = {
+			name = balkfm_leading_dynasty_var
+			value = 200
+		}
+	}
+
+	option = {
+		name = balkfm_serbia.011.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_royal_turmoil
+			days = short_modifier_time
+		}
+		scope:balkfm_obrenovic_scope = {
+			set_character_as_ruler = yes
+			remove_variable = balkfm_obrenovic_tracker
+		}
+		scope:balkfm_ruler_scope = {
+			set_variable = balkfm_karadordevic_tracker
+			place_character_in_void = 150 # characters will expire after 15 years
+		}
+		if = {
+			limit = {
+				exists = scope:balkfm_heir_scope
+			}
+			scope:balkfm_heir_scope = {
+				disinherit_character = yes
+			}
+		}
+	}
+
+}
+
+balkfm_serbia.012 = { # Austria/Russia Requests Primacy
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.012.t
+	desc = balkfm_serbia.012.d
+	flavor = balkfm_serbia.012.f
+
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		OR = {
+			AND = {
+				balkfm_has_karadordevic_ruler_trigger = yes
+				NOT = {
+					has_variable = balkfm_russia_consul_var
+				}
+				c:RUS ?= {
+					relations:root >= relations_threshold:cordial
+				}
+			}
+			AND = {
+				balkfm_has_obrenovic_ruler_trigger = yes
+				NOT = {
+					has_variable = balkfm_austria_consul_var
+				}
+				c:AUS ?= {
+					relations:root >= relations_threshold:cordial
+				}
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				has_variable = balkfm_russia_consul_var
+			}
+			c:RUS ?= {
+				save_scope_as = balkfm_consul_scope
+			}
+			c:AUS ?= {
+				save_scope_as = balkfm_supplicant_scope
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = balkfm_austria_consul_var
+			}
+			c:RUS ?= {
+				save_scope_as = balkfm_supplicant_scope
+			}
+			c:AUS ?= {
+				save_scope_as = balkfm_consul_scope
+			}
+		}
+	}
+
+	cooldown = {
+		years = 5
+	}
+
+	option = { # Retain Current Order of Precedence
+		name = balkfm_serbia.012.a
+		default_option = yes
+		change_relations = {
+			country = scope:balkfm_consul_scope
+			value = 25
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_relations_level_increased
+			target = scope:balkfm_consul_scope
+		}
+		change_relations = {
+			country = scope:balkfm_supplicant_scope
+			value = -25
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_diplomatic_incident
+			target = scope:balkfm_supplicant_scope
+		}
+		balkfm_minor_dynasty_support_loss_effect = yes
+	}
+
+	option = { # Adopt New Order of Precedence
+		name = balkfm_serbia.012.b
+		add_modifier = {
+			name = modifier_balkfm_diplomatic_disorder
+			days = short_modifier_time
+		}
+		change_relations = {
+			country = scope:balkfm_supplicant_scope
+			value = 25
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_relations_level_increased
+			target = scope:balkfm_supplicant_scope
+		}
+		change_relations = {
+			country = scope:balkfm_consul_scope
+			value = -25
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_diplomatic_incident
+			target = scope:balkfm_consul_scope
+		}
+		balkfm_minor_dynasty_support_gain_effect = yes
+		if = {
+			limit = {
+				has_variable = balkfm_russia_consul_var
+			}
+			remove_variable = balkfm_russia_consul_var
+			set_variable = balkfm_austria_consul_var
+		}
+		else_if = {
+			limit = {
+				has_variable = balkfm_austria_consul_var
+			}
+			remove_variable = balkfm_austria_consul_var
+			set_variable = balkfm_russia_consul_var
+		}
+	}
+
+}
+
+balkfm_serbia.013 = { # Plague Outbreak!
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.013.t
+	desc = balkfm_serbia.013.d
+	flavor = balkfm_serbia.013.f
+
+	event_image = {
+		video = "southamerica_war_civilians"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = balkfm_belgrade_plague_var
+		}
+		NOT = {
+			has_variable = balkfm_constitution_pending
+		}
+	}
+
+	immediate = {
+		set_variable = balkfm_belgrade_plague_var
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+	}
+
+	option = {
+		name = balkfm_serbia.013.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_mitigated_plague
+			days = short_modifier_time
+		}
+		change_relations = {
+			country = c:TUR
+			value = -20
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_relations_level_decreased
+			target = c:TUR
+		}
+	}
+
+	option = {
+		name = balkfm_serbia.013.b
+		add_modifier = {
+			name = modifier_balkfm_plague_outbreak
+			days = short_modifier_time
+		}
+		balkfm_minor_dynasty_support_loss_effect = yes
+	}
+}
+
+balkfm_serbia.014 = { # Abusive Garrison
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.014.t
+	desc = balkfm_serbia.014.d
+	flavor = balkfm_serbia.014.f
+
+	event_image = {
+		video = "votp_cops_march"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	cooldown = {
+		years = 5
+	}
+
+	option = {
+		name = balkfm_serbia.014.a
+		default_option = yes
+		add_loyalists = {
+			culture = cu:serb
+			value = small_radicals
+		}
+		change_relations = {
+			country = c:TUR
+			value = -20
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_diplomatic_incident
+			target = c:TUR
+		}
+	}
+
+	option = {
+		name = balkfm_serbia.014.b
+		balkfm_minor_dynasty_support_loss_effect = yes
+	}
+
+}
+
+balkfm_serbia.018 = { # Cementing the Monarchy
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.018.t
+	desc = balkfm_serbia.018.d
+	flavor = balkfm_serbia.018.f
+
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by balkfm_cement_monarchy_button
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_serbia.018.a
+		default_option = yes
+		if = {
+			limit = {
+				balkfm_has_obrenovic_ruler_trigger = yes
+			}
+			add_modifier = modifier_balkfm_obrenovic_succession
+		}
+		if = {
+			limit = {
+				balkfm_has_karadordevic_ruler_trigger = yes
+			}
+			add_modifier = modifier_balkfm_karadordevic_succession
+		}
+	}
+
+}
+
+balkfm_serbia.019 = { # Mandate Secured
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.019.t
+	desc = balkfm_serbia.019.d
+	flavor = balkfm_serbia.019.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_balkfm_ser_monarchism
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = serbia_ruler_scope
+		}
+	}
+
+	option = {
+		name = balkfm_serbia.019.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_mandate_secured_country
+			days = normal_modifier_time
+		}
+		scope:serbia_ruler_scope = {
+			add_modifier = {
+				name = modifier_balkfm_mandate_secured_leader
+				days = long_modifier_time
+			}
+		}
+	}
+
+}
+
+#### SERBIAN NATIONALISM EVENTS ####
+
+balkfm_serbia.200 = { # The Serbian Heartlands
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.200.t
+	desc = balkfm_serbia.200.d
+	flavor = balkfm_serbia.200.f
+
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_serbia.200.a
+		default_option = yes
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_NORTHERN_SERBIA
+					owns_entire_state_region = STATE_NORTHERN_SERBIA
+				}
+			}
+			s:STATE_NORTHERN_SERBIA = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_SOUTHERN_SERBIA
+					owns_entire_state_region = STATE_SOUTHERN_SERBIA
+				}
+			}
+			s:STATE_SOUTHERN_SERBIA = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_SKOPIA
+					owns_entire_state_region = STATE_SKOPIA
+				}
+			}
+			s:STATE_SKOPIA = {
+				add_claim = ROOT
+			}
+		}
+	}
+
+}
+
+balkfm_serbia.201 = { # Greater Serbia
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.201.t
+	desc = balkfm_serbia.201.d
+	flavor = balkfm_serbia.201.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_serbia.201.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_balkfm_ser_greater_serbia
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_MONTENEGRO
+					owns_entire_state_region = STATE_MONTENEGRO
+				}
+			}
+			s:STATE_MONTENEGRO = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_BOSNIA
+					owns_entire_state_region = STATE_BOSNIA
+				}
+			}
+			s:STATE_BOSNIA = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_DALMATIA
+					owns_entire_state_region = STATE_DALMATIA
+				}
+			}
+			s:STATE_DALMATIA = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_SLAVONIA
+					owns_entire_state_region = STATE_SLAVONIA
+				}
+			}
+			s:STATE_SLAVONIA = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_BANAT
+					owns_entire_state_region = STATE_BANAT
+				}
+			}
+			s:STATE_BANAT = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_DELVIDEK
+					owns_entire_state_region = STATE_DELVIDEK
+				}
+			}
+			s:STATE_DELVIDEK = {
+				add_claim = ROOT
+			}
+		}
+	}
+
+}
+
+balkfm_serbia.202 = { # The Serbian Empire
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.202.t
+	desc = balkfm_serbia.202.d
+	flavor = balkfm_serbia.202.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_serbia.202.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_serbian_resurgence
+			days = very_long_modifier_time
+		}
+		every_state_region = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_state = {
+					NOT = { owner = ROOT }
+					NOT = { has_claim_by = ROOT }
+				}
+			}
+			add_claim = ROOT
+		}
+	}
+
+}
+
+balkfm_serbia.203 = { # Society of Serbian Letters
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.203.t
+	desc = balkfm_serbia.203.d
+	flavor = balkfm_serbia.203.f
+
+	event_image = {
+		video = "middleeast_middleclass_cafe"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOR = {
+			has_variable = balkfm_serbian_letters_var
+			has_technology_researched = nationalism
+		}
+		has_technology_researched = mass_communication
+	}
+
+	immediate = {
+		set_variable = balkfm_serbian_letters_var
+	}
+
+	option = {
+		name = balkfm_serbia.203.a
+		default_option = yes
+		balkfm_add_nationalism_progress_effect = yes
+	}
+
+}
+
+balkfm_serbia.204 = { # May Assembly
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.204.t
+	desc = balkfm_serbia.204.d
+	flavor = balkfm_serbia.204.f
+
+	event_image = {
+		video = "europenorthamerica_political_extremism"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_global_variable = balkfm_may_assembly_happened
+		}
+		OR = {
+			owns_entire_state_region = STATE_BANAT
+			owns_entire_state_region = STATE_DELVIDEK
+		}
+		any_scope_state ={
+			OR = {
+				state_region = s:STATE_BANAT
+				state_region = s:STATE_DELVIDEK
+			}
+			radical_fraction = {
+				culture = cu:serb
+				value >= 0.20
+			}
+		}
+	}
+
+	immediate = {
+		set_global_variable = balkfm_may_assembly_happened
+		if = {
+			limit = {
+				owns_entire_state_region = STATE_BANAT
+				owns_entire_state_region = STATE_DELVIDEK
+			}
+			create_country = {
+				tag = SER_VOJ
+				origin = this
+				state = s:STATE_BANAT.region_state:AUS
+				state = s:STATE_DELVIDEK.region_state:AUS
+			}
+		}
+		else_if = {
+			limit = {
+				owns_entire_state_region = STATE_BANAT
+			}
+			create_country = {
+				tag = SER_VOJ
+				origin = this
+				state = s:STATE_BANAT.region_state:AUS
+			}
+		}
+		else = {
+			create_country = {
+				tag = SER_VOJ
+				origin = this
+				state = s:STATE_DELVIDEK.region_state:AUS
+			}
+		}
+		c:SER_VOJ = {
+			save_scope_as = vojvodina_scope
+			create_character = {
+				template = template_balkfm_supljikac_stevan
+			}
+			create_character = {
+				template = template_balkfm_rajacic_josif
+			}
+		}
+		every_country = {
+			limit = {
+				has_diplomatic_relevance = c:AUS
+			}
+			create_bidirectional_truce = {
+				country = c:SER_VOJ
+				months = 6
+			}
+		}
+	}
+
+	option = { # Go Pound Sand
+		name = balkfm_serbia.204.a
+		default_option = yes
+		hidden_effect = {
+			end_truce = c:SER_VOJ
+		}
+		if = {
+			limit = {
+				c:SER_VOJ = {
+					owns_entire_state_region = STATE_BANAT
+					owns_entire_state_region = STATE_DELVIDEK
+				}
+			}
+			create_diplomatic_play = {
+				target_state = s:STATE_BANAT.region_state:SER_VOJ
+				type = dp_annex_war
+				add_war_goal = {
+					holder = root
+					type = conquer_state
+					target_state = s:STATE_DELVIDEK.region_state:SER_VOJ
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				c:SER_VOJ = {
+					owns_entire_state_region = STATE_BANAT
+				}
+			}
+			create_diplomatic_play = {
+				target_state = s:STATE_BANAT.region_state:SER_VOJ
+				type = dp_annex_war
+			}
+		}
+		else = {
+			create_diplomatic_play = {
+				target_state = s:STATE_DELVIDEK.region_state:SER_VOJ
+				type = dp_annex_war
+			}
+		}
+		c:SER = {
+			trigger_event = {
+				id = balkfm_serbia.205 # The Vojvodina Uprising
+			}
+		}
+		change_infamy = -10
+	}
+
+	option = { # Grant Them Autonomy
+		name = balkfm_serbia.204.b
+		create_diplomatic_pact = {
+			country = c:SER_VOJ
+			type = personal_union
+		}
+		c:SER = {
+			trigger_event = {
+				id = balkfm_serbia.206 # The Serbian Voivodship
+			}
+		}
+	}
+
+}
+
+balkfm_serbia.205 = { # The Vojvodina Uprising
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.205.t
+	desc = balkfm_serbia.205.d
+	flavor = balkfm_serbia.205.f
+
+	event_image = {
+		video = "europenorthamerica_political_extremism"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by balkfm_serbia.204
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			exists = c:SER_VOJ
+		}
+	}
+
+	immediate = {
+		c:SER_VOJ = {
+			save_scope_as = vojvodina_scope
+		}
+		random_diplomatic_play = {
+			limit = {
+				initiator = {
+					c:AUS = this
+				}
+				target = {
+					c:SER_VOJ = this
+				}
+			}
+			save_scope_as = vojvodina_uprising_scope
+		}
+	}
+
+	option = { # Join the War
+		name = balkfm_serbia.205.a
+		scope:vojvodina_uprising_scope = {
+			add_target_backers = { root }
+		}
+		scope:vojvodina_scope = {
+			add_modifier = {
+				name = modifier_balkfm_serbian_supporters
+				days = short_modifier_time
+			}
+		}
+		add_loyalists = {
+			culture = cu:serb
+			value = very_large_radicals
+		}
+	}
+
+	option = { # Provide Funding
+		name = balkfm_serbia.205.b
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_aiding_vojvodina
+			days = short_modifier_time
+		}
+		scope:vojvodina_scope = {
+			add_modifier = {
+				name = modifier_balkfm_serbian_supporters
+				days = short_modifier_time
+			}
+		}
+		create_incident = {
+			country = c:AUS
+			value = 10
+		}
+	}
+
+	option = { # Stay Neutral
+		name = balkfm_serbia.205.c
+		change_relations = {
+			country = scope:vojvodina_scope
+			value = -50
+		}
+		add_radicals = {
+			culture = cu:serb
+			value = medium_radicals
+		}
+		every_country = {
+			limit = {
+				country_rank >= rank_value:great_power
+				has_diplomatic_relevance = c:AUS
+			}
+			change_relations = {
+				country = c:SER
+				value = 15
+			}
+		}
+		if = {
+			limit = {
+				balkfm_has_obrenovic_ruler_trigger = yes
+			}
+			custom_tooltip = {
+				text = balkfm_obrenovic_vojvodina_tt
+				hidden_effect = {
+					set_variable = balkfm_obrenovic_vojvodina_var
+				}
+			}
+		}
+		if = {
+			limit = {
+				balkfm_has_karadordevic_ruler_trigger = yes
+			}
+			custom_tooltip = {
+				text = balkfm_karadordevic_vojvodina_tt
+				hidden_effect = {
+					set_variable = balkfm_karadordevic_vojvodina_var
+				}
+			}
+		}
+	}
+
+}
+
+balkfm_serbia.206 = { # The Serbian Voivodship
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.206.t
+	desc = balkfm_serbia.206.d
+	flavor = balkfm_serbia.206.f
+
+	event_image = {
+		video = "europenorthamerica_political_extremism"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by balkfm_serbia.204
+	}
+
+	cancellation_trigger = {
+		c:SER_VOJ ?= {
+			NOT = {
+				is_subject_of = c:AUS
+			}
+		}
+	}
+
+	immediate = {
+		c:SER_VOJ = {
+			save_scope_as = vojvodina_scope
+		}
+	}
+
+	option = {
+		name = balkfm_serbia.206.a
+		default_option = yes
+		if = {
+			limit = {
+				balkfm_has_obrenovic_ruler_trigger = yes
+			}
+			custom_tooltip = {
+				text = balkfm_obrenovic_vojvodina_tt
+				hidden_effect = {
+					set_variable = balkfm_obrenovic_vojvodina_var
+				}
+			}
+		}
+		if = {
+			limit = {
+				balkfm_has_karadordevic_ruler_trigger = yes
+			}
+			custom_tooltip = {
+				text = balkfm_karadordevic_vojvodina_tt
+				hidden_effect = {
+					set_variable = balkfm_karadordevic_vojvodina_var
+				}
+			}
+		}
+	}
+
+}
