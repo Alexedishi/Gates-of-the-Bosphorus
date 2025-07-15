@@ -1,1 +1,527 @@
-﻿namespace = balkfm_bosnia
+﻿##  EVENTS ##
+
+# For Greek content, see the "grefm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Turkish content, see the "turkfm" module
+# For Orthodox Church content, see the "eocfm" module
+
+####################
+
+namespace = balkfm_bosnia
+
+####################
+
+####	TABLE OF CONTENTS	####	#TOC
+
+# The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
+
+#000-009 - Eyalet of Hersek Events
+#	001 - The Small Land of the Serbs
+#	002 - Tribal Conflicts
+#	003 - The Reordering Begins
+#	004 - ##Vukalović's Uprising
+#	005 - Disruptive Influence
+#	006 - Ali Pasha's Demise
+#	007 - The Lands of Montenegro
+#	008 - Failed Ambitions
+#	009 - House Rizvanbegović of Bosnia
+
+#010-019 - Ottoman Interventions in Bosnia
+#	010 - ##The Tyranny of Omer Pasha
+
+####################
+
+## Eyalet of Hersek Events ##
+balkfm_bosnia.001 = { # The Small Land of the Serbs
+	type = country_event
+	placement = root
+
+	title = balkfm_bosnia.001.t
+	desc = balkfm_bosnia.001.d
+	flavor = balkfm_bosnia.001.f
+
+	event_image = {
+		video = "rp1_brazilian_city"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by balkfm_revivalism.009
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bosnia.001.a
+		default_option = yes
+	}
+
+}
+
+balkfm_bosnia.002 = { # Tribal Conflicts
+	type = country_event
+	placement = root
+
+	title = balkfm_bosnia.002.t
+	desc = {
+		triggered_desc = {
+			desc = balkfm_bosnia.002.d1
+			trigger = {
+				c:MON ?= {
+					NOT = {
+						is_subject_of = root
+					}
+				}
+			}
+		}
+		triggered_desc = {
+			desc = balkfm_bosnia.002.d2
+			trigger = {
+				c:MON ?= {
+					is_subject_of = root
+				}
+			}
+		}
+	}
+	flavor = balkfm_bosnia.002.f
+
+	event_image = {
+		video = "europenorthamerica_before_the_battle"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by balkfm_montenegro.030
+	}
+
+	immediate = {
+		balkfm_hersek_scopes_effect = yes
+		c:MON = {
+			save_scope_as = montenegro_scope
+		}
+	}
+
+	option = { #
+		name = balkfm_bosnia.002.a
+		default_option = yes
+		trigger = {
+			c:MON ?= {
+				NOT = {
+					is_subject_of = root
+				}
+			}
+		}
+		custom_tooltip = turkfm_no_effects
+		hidden_effect = {
+			trigger_event = {
+				id = turkfm.800 # The Battle of Grahovo
+				days = 180
+			}
+			trigger_event = {
+				id = balkfm_montenegro.031 # Negociations At Humac
+				days = 240 # should be early 1937
+			}
+			c:TUR = {
+				trigger_event = {
+					id = turkfm.800 # The Battle of Grahovo
+					days = 180
+				}
+			}
+			c:MON = {
+				trigger_event = {
+					id = turkfm.800 # The Battle of Grahovo
+					days = 180
+				}
+				trigger_event = {
+					id = balkfm_montenegro.031 # Negociations At Humac
+					days = 240 # should be early 1937
+				}
+			}
+		}
+	}
+
+	option = {
+		name = balkfm_bosnia.002.b
+		trigger = {
+			c:MON ?= {
+				is_subject_of = root
+			}
+		}
+		add_modifier = {
+			name = modifier_balkfm_forced_submission
+			days = normal_modifier_time
+		}
+	}
+
+}
+
+balkfm_bosnia.003 = { # The Reordering Begins
+	type = country_event
+	placement = root
+
+	title = balkfm_bosnia.003.t
+	desc = balkfm_bosnia.003.d
+	flavor = balkfm_bosnia.003.f
+
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = balkfm_tanizmat_considered
+		}
+		has_global_variable = turkfm_tanzimat_started
+	}
+
+	immediate = {
+		set_variable = balkfm_tanizmat_considered
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+	}
+
+	option = {
+		name = balkfm_bosnia.003.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_balkfm_bos_tanzimat
+		}
+		change_relations = {
+			country = c:TUR
+			value = 25
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_relations_level_increased
+			target = c:TUR
+		}
+		c:TUR = {
+			set_secret_goal = {
+				country = root
+				secret_goal = protect
+			}
+		}
+	}
+
+	option = {
+		name = balkfm_bosnia.003.b
+		change_relations = {
+			country = c:TUR
+			value = -25
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_diplomatic_incident
+			target = c:TUR
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_relations_level_decreased
+			target = c:TUR
+		}
+	}
+
+}
+
+balkfm_bosnia.005 = { # Disruptive Influence
+	type = country_event
+	placement = root
+
+	title = balkfm_bosnia.005.t
+	desc = balkfm_bosnia.005.d
+	flavor = balkfm_bosnia.005.f
+
+	event_image = {
+		video = "southamerica_aristocrats"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_global_variable = balkfm_humac_happened
+	}
+
+	immediate = {
+		remove_global_variable = balkfm_humac_happened
+		balkfm_hersek_scopes_effect = yes
+		c:MON = {
+			save_scope_as = montenegro_scope
+			ruler = {
+				save_scope_as = montenegro_ruler_scope
+			}
+		}
+		s:STATE_NORTHERN_SERBIA = {
+			random_scope_state = {
+				save_scope_as = northern_serbia_state_scope
+			}
+		}
+	}
+
+	option = { # stir the pot
+		name = balkfm_bosnia.005.a
+		default_option = yes
+		change_relations = {
+			country = c:MON
+			value = 20
+		}
+		set_global_variable = balkfm_stabby_stabby # triggers balkfm_montenegro.032 (Knives in the Dark)
+		ai_chance = {
+			base = 10
+			modifier = {
+				trigger = {
+					c:MON ?= {
+						relations:root < relations_threshold:neutral
+					}
+				}
+				add = -10
+			}
+		}
+	}
+
+	option = { # do nothing
+		name = balkfm_bosnia.005.b
+		ai_chance = {
+			base = 0
+			modifier = {
+				trigger = {
+					c:MON ?= {
+						relations:root < relations_threshold:neutral
+					}
+				}
+				add = 10
+			}
+		}
+	}
+
+}
+
+balkfm_bosnia.006 = { # Ali Pasha's Demise
+	type = country_event
+	placement = scope:hersek_scope
+
+	title = {
+		triggered_desc = {
+			desc = balkfm_bosnia.006.t1
+			trigger = {
+				c:TUR_BOS ?= {
+					has_variable = turkfm_ali_pasha_waxed
+				}
+			}
+		}
+		triggered_desc = {
+			desc = balkfm_bosnia.006.t2
+			trigger = {
+				c:TUR_BOS ?= {
+					NOT = {
+						has_variable = turkfm_ali_pasha_waxed
+					}
+				}
+			}
+		}
+	}
+	desc = {
+		triggered_desc = {
+			desc = balkfm_bosnia.006.d1
+			trigger = {
+				c:TUR_BOS ?= {
+					has_variable = turkfm_ali_pasha_waxed
+				}
+			}
+		}
+		triggered_desc = {
+			desc = balkfm_bosnia.006.d2
+			trigger = {
+				c:TUR_BOS ?= {
+					NOT = {
+						has_variable = turkfm_ali_pasha_waxed
+					}
+				}
+			}
+		}
+	}
+	flavor = balkfm_bosnia.006.f
+
+	event_image = {
+		video = "votp_hostile_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm.121
+	}
+
+	immediate = {
+		balkfm_hersek_scopes_effect = yes
+		c:TUR ?= {
+			random_scope_character = {
+				limit = {
+					has_variable = turkfm_omer_pasha_var
+				}
+				save_scope_as = omer_pasha_scope
+			}
+		}
+	}
+
+	option = {
+		name = balkfm_bosnia.006.a
+		default_option = yes
+		trigger = {
+			c:TUR_BOS ?= this
+		}
+		scope:ali_pasha_scope = {
+			kill_character = yes
+		}
+	}
+
+	option = {
+		name = balkfm_bosnia.006.b
+		trigger = {
+			c:MON ?= this
+		}
+		custom_tooltip = balkfm_ali_pasha_waxed
+	}
+
+}
+
+balkfm_bosnia.007 = { # The Lands of Montenegro
+	type = country_event
+	placement = root
+
+	title = balkfm_bosnia.007.t
+	desc = balkfm_bosnia.007.d
+	flavor = balkfm_bosnia.007.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_balkfm_bos_karadag
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bosnia.007.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_secured_region
+			days = long_modifier_time
+		}
+		add_loyalists = {
+			value = large_radicals
+		}
+	}
+
+}
+
+balkfm_bosnia.008 = { # Failed Amibitions
+	type = country_event
+	placement = root
+
+	title = balkfm_bosnia.008.t
+	desc = balkfm_bosnia.008.d
+	flavor = balkfm_bosnia.008.f
+
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_balkfm_bos_ali_pasha
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bosnia.008.a
+		default_option = yes
+	}
+
+}
+
+balkfm_bosnia.009 = { # House Rizvanbegović of Bosnia
+	type = country_event
+	placement = root
+
+	title = balkfm_bosnia.009.t
+	desc = balkfm_bosnia.009.d
+	flavor = balkfm_bosnia.009.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_balkfm_bos_ali_pasha
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bosnia.009.a
+		default_option = yes
+	}
+
+}
