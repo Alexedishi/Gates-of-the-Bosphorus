@@ -1,1 +1,4549 @@
-﻿namespace = balkfm_bulgaria
+﻿##  EVENTS ##
+
+# For Greek content, see the "grefm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Turkish content, see the "turkfm" module
+# For Orthodox Church content, see the "eocfm" module
+
+####################
+
+namespace = balkfm_bulgaria
+
+####################
+
+####	TABLE OF CONTENTS	####	#TOC
+
+# The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
+
+#000-009 - The Battenburg Monarchy
+#	001 - The Golden Lion Awakens
+#	002 - Democratic Obstructions
+#	003 - Conservative Tendencies
+#	004 - Defense of the Constitution
+#	005 - Russia Demands Subservience
+#	006 - Disruptive Attitudes
+# 	007 - The Sobolev Regency
+#	008 - Mandate Secured
+#	009 - The August Coup
+
+#010-019 - Early Political Events
+#	010 - //
+#	011 - //
+#	012 - Strategic Demands
+#	013 - Extortionate Pricing
+#	014 - The Bulgarian Railways
+#	015 - Royal Entourage
+#	016 - A Warm Reception
+#	017 - A Cautious Welcome
+#	018 - The Black Mountain
+#	019 - The Tsar's Court
+
+#020-029 - Stambolovism Events
+#	020 - An Elected Prince
+#	021 - A Foreigner in Sofia
+#	022 - Legitimizing the King
+#	023 - Military Conciliation
+#	024 - Military Insufficiency
+#	025 - The Bulgarian Army
+#	026 - The Panitsa Plot
+#	027 - Funerary Politics
+#	028 - The House of Bulgaria
+#	029 - Severed Hands
+
+#030-039 - The Reign of Ferdinand I Events
+#	030 - The Bulgarian Academy
+#	031 - Royal Recognition
+#	032 - Spring in Constantinople
+
+#040-049 - The Reign of Boris Events
+#	040 - OPEN
+
+#160-169 - Bulgarian Orthodox Church Events
+#	160 - Threats of Schism
+#	161 - Royal Wedding (balkfm Variant)
+#	162 - Ecclesiastic Hostility
+#	163 - An Orthodox Heir
+#	164 - Restoring the Exarchate
+#	165 - Liturgical Language >> export to EOCFM
+#	166 - Ecclesiastic Purges >> export to EOCFM
+#	167 - OPEN
+#	168 - OPEN
+#	169 - The Exarchate of Bulgaria
+
+#200-209 - Bulgarian Revival Events
+#	200 - Insurgency in Niš
+#	201 - Tsarigradski Vestnik
+#	202 - ##
+#	203 - ##
+#	204 - ##
+#	205 - ##
+#	206 - ##The Bulgarian Legion
+#	207 - ##The Legion Strikes Again!
+#	208 - Great Powers Support Bulgaria
+#	209 - Securing our Sovereignty
+
+#210-219 - The Liberation of Bulgaria
+#	210 - Dreams of the Tsardom
+#	211 - The Tophane Agreement
+#	212 - An Independent Bulgaria
+#	213 - Bulgarian Irredentism
+#	214 - The Tsardom of Bulgaria
+#	215 - The Future of the Bulgaria
+#	216 - The Bulgarian Empire
+#	217 - The Yugoslav Nation
+#	218 - The Queen of Cities
+
+#220-221 - Bulgaria Imperial Ambition & Support Events
+#	220 - Memories of the Steppe
+#	221 - Old Great Bulgaria
+#	227 - A United Bulgaria
+#	228 - The Bulgarian State
+#	229 - The Golden Lion Awakens (Alternate)
+
+#300-309 - Eastern Rumelia Events
+#	300 - The Two Bulgarias
+#	301 - ##New Governor-General Appointed
+#	307 - Bulgarian Agitation in Rumelia
+#	308 - Eastern Rumelia Rebels!
+#	309 - Union with Bulgaria
+
+
+####################
+
+## The Battenburg Monarchy ##
+balkfm_bulgaria.001 = { # The Golden Lion Awakens
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.001.t
+	desc = balkfm_bulgaria.001.d
+	flavor = balkfm_bulgaria.001.f
+
+	event_image = {
+		video = "balkfm_bulgaria_intro"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		c:RUS = {
+			save_scope_as = russia_scope
+		}
+		ruler = {
+			save_scope_as = balkfm_alex_scope
+		}
+		set_variable = {
+			name = balkfm_coup_var
+			value = 120 # Alexander had 87 months before the coup, I'm being generous here
+		}
+		set_global_variable = balkfm_lion_awakened
+	}
+
+	option = {
+		name = balkfm_bulgaria.001.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_balkfm_bul_battenburg_monarchy
+		}
+		add_modifier = {
+			name = modifier_balkfm_national_awakening
+			days = normal_modifier_time
+		}
+		hidden_effect = {
+			trigger_event = {
+				id = balkfm_bulgaria.012 # Strategic Demands
+				days = 180
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					NOT = {
+						has_variable = eocfm_is_autocephalous
+					}
+				}
+				trigger_event = {
+					id = balkfm_bulgaria.160 # Threats of Schism
+					days = 240
+				}
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.002 = { # Democratic Obstructions
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.002.t
+	desc = balkfm_bulgaria.002.d
+	flavor = balkfm_bulgaria.002.f
+
+	event_image = {
+		video = "unspecific_politicians_arguing"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = balkfm_bulgaria_consitution_1
+		}
+		var:balkfm_coup_var <= 104 # Second Session of the National Assembly, relative to Alexander I's ascent to the throne
+		NOT = {
+			has_law = law_type:law_autocracy
+		}
+	}
+
+	immediate = {
+		set_variable = balkfm_bulgaria_consitution_1
+	}
+
+	cancellation_trigger = {
+		has_law = law_type:law_oligarchy
+	}
+
+	option = { # yeet the law
+		name = balkfm_bulgaria.002.a
+		default_option = yes
+		if = {
+			limit = {
+				NOR = {
+					has_law = law_type:law_autocracy
+					has_law = law_type:law_oligarchy
+				}
+			}
+			activate_law = law_type:law_oligarchy
+		}
+		else_if = {
+			limit = {
+				has_law = law_type:law_oligarchy
+			}
+			activate_law = law_type:law_autocracy
+		}
+		add_radicals = {
+			pop_type = academics
+			value = very_large_radicals
+		}
+		add_radicals = {
+			pop_type = officers
+			value = very_large_radicals
+		}
+		add_loyalists = {
+			strata = lower
+			value = medium_radicals
+		}
+		change_relations = {
+			country = c:RUS
+			value = 20
+		}
+		custom_tooltip = balkfm_countercoup_reduce_2
+	}
+
+	option = { # protect the constitution
+		name = balkfm_bulgaria.002.b
+		add_modifier = {
+			name = modifier_balkfm_honorable_regime
+			days = long_modifier_time
+		}
+		add_radicals = {
+			strata = upper
+			value = large_radicals
+		}
+		change_relations = {
+			country = c:RUS
+			value = -20
+		}
+	}
+
+}
+
+balkfm_bulgaria.003 = { # Dissident Publishings
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.003.t
+	desc = balkfm_bulgaria.003.d
+	flavor = balkfm_bulgaria.003.f
+
+	event_image = {
+		video = "ep1_printing_press"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = { has_variable = balkfm_bulgaria_consitution_2 }
+		var:balkfm_coup_var <= 96 # Consitution was abrogated May 9th, 1881; dissident newpapers were supressed shortly thereafter
+		OR = {
+			has_law = law_type:law_protected_speech
+			has_law = law_type:law_right_of_assembly
+		}
+	}
+
+	immediate = {
+		set_variable = balkfm_bulgaria_consitution_2
+	}
+
+	cancellation_trigger = {
+		OR = {
+			has_law = law_type:law_censorship
+			has_law = law_type:law_outlawed_dissent
+		}
+	}
+
+	option = { # censor the press
+		name = balkfm_bulgaria.003.a
+		default_option = yes
+		activate_law = law_type:law_censorship
+		add_modifier = {
+			name = modifier_balkfm_conservative_tilt
+			days = normal_modifier_time
+		}
+		add_radicals = {
+			strata = lower
+			value = medium_radicals
+		}
+		custom_tooltip = balkfm_countercoup_reduce_1
+	}
+
+	option = { # defend free speech
+		name = balkfm_bulgaria.003.b
+		add_modifier = {
+			name = modifier_balkfm_honorable_ruler
+			days = normal_modifier_time
+		}
+		add_radicals = {
+			strata = upper
+			value = medium_radicals
+		}
+		custom_tooltip = balkfm_countercoup_add_1
+	}
+
+}
+
+balkfm_bulgaria.004 = { # Tsarist Influence
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.004.t
+	desc = balkfm_bulgaria.004.d
+	flavor = balkfm_bulgaria.004.f
+
+	event_image = {
+		video = "unspecific_politicians_arguing"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = { has_variable = balkfm_bulgaria_consitution_3 }
+		var:balkfm_coup_var <= 80 # kicks off a little bit into things
+	}
+
+	immediate = {
+		c:RUS = {
+			save_scope_as = russia_scope
+			ruler = {
+				save_scope_as = russia_ruler_scope
+			}
+		}
+
+		set_variable = balkfm_bulgaria_consitution_3
+	}
+
+	option = {
+		name = balkfm_bulgaria.004.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_russian_attaches
+			days = long_modifier_time
+		}
+		create_character = {
+			# Leonid Sobolev, Russian attache to Bulgaria
+			first_name = Leonid
+			last_name = Sobolev
+			historical = yes
+			age = 38 # age in 1882
+			culture = cu:russian
+			religion = rel:orthodox
+			is_general = yes
+			interest_group = ig_armed_forces
+			traits = {
+				arrogant
+				hedonist
+			}
+			on_created = {
+				set_variable = balkfm_is_attache
+			}
+		}
+		create_character = {
+			# Alexander von Kaulbars, Russian attache to Bulgaria
+			first_name = Alexander
+			last_name = Kaulbars
+			historical = yes
+			age = 38 # age in 1882
+			culture = cu:russian
+			religion = rel:orthodox
+			is_general = yes
+			interest_group = ig_armed_forces
+			traits = {
+				arrogant
+				hedonist
+			}
+			on_created = {
+				set_variable = balkfm_is_attache
+			}
+		}
+		change_relations = {
+			country = c:RUS
+			value = 25
+		}
+		change_relations = {
+			country = c:AUS
+			value = -25
+		}
+		change_relations = {
+			country = c:TUR
+			value = -25
+		}
+		custom_tooltip = balkfm_countercoup_add_1
+	}
+
+	option = {
+		name = balkfm_bulgaria.004.b
+		add_modifier = {
+			name = modifier_balkfm_national_army
+			days = long_modifier_time
+		}
+		change_relations = {
+			country = c:RUS
+			value = -25
+		}
+		change_relations = {
+			country = c:AUS
+			value = 25
+		}
+		change_relations = {
+			country = c:TUR
+			value = 25
+		}
+	}
+
+	after = {
+		hidden_effect = {
+			trigger_event = {
+				id = balkfm_bulgaria.006 # Disruptive Attitudes
+				days = 150 # they will start their bullshit regardless of your choice
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.005 = { # Russia Demands Subservience
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.005.t
+	desc = balkfm_bulgaria.005.d
+	flavor = balkfm_bulgaria.005.f
+
+	event_image = {
+		video = "europenorthamerica_before_the_battle"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = { has_variable = balkfm_bulgaria_consitution_4 }
+		var:balkfm_coup_var <= 60 #
+		exists = c:BUL_RUM
+	}
+
+	immediate = {
+		c:RUS = {
+			save_scope_as = russia_scope
+			ruler = {
+				save_scope_as = russia_ruler_scope
+			}
+		}
+		c:BUL_RUM = {
+			save_scope_as = rumelia_scope
+		}
+		set_variable = balkfm_bulgaria_consitution_4
+	}
+
+	option = {
+		name = balkfm_bulgaria.005.a
+		default_option = yes
+		change_relations = {
+			country = c:RUS
+			value = 25
+		}
+		change_relations = {
+			country = c:BUL_RUM
+			value = -50
+		}
+	}
+
+	option = { # f the po-po
+		name = balkfm_bulgaria.005.b
+		change_relations = {
+			country = c:RUS
+			value = -25
+		}
+		change_relations = {
+			country = c:BUL_RUM
+			value = 25
+		}
+	}
+
+}
+
+balkfm_bulgaria.006 = { # Disruptive Attitudes
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.006.t
+	desc = balkfm_bulgaria.006.d
+	flavor = balkfm_bulgaria.006.f
+
+	event_image = {
+		video = "unspecific_politicians_arguing"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = { has_variable = balkfm_sobolev_var }
+		has_modifier = modifier_balkfm_russian_attaches
+	}
+
+	immediate = {
+		set_variable = balkfm_sobolev_var
+	}
+
+
+	option = {
+		name = balkfm_bulgaria.006.a
+		default_option = yes
+		custom_tooltip = {
+			text = balkfm_bulgaria.006.tt
+			hidden_effect = {
+				trigger_event = {
+					id = balkfm_bulgaria.015 # Royal Entourage
+					days = 60
+				}
+			}
+		}
+		add_journal_entry = {
+			type = je_balkfm_bul_russian_influence
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.006.b
+		add_modifier = {
+			name = modifier_balkfm_placid_ruler
+			days = long_modifier_time
+		}
+	}
+
+}
+
+balkfm_bulgaria.007 = { # The Sobolev Regency
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.007.t
+	desc = balkfm_bulgaria.007.d
+	flavor = balkfm_bulgaria.007.f
+
+	event_image = {
+		video = "africa_leader_arguing"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bulgaria.007.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_restored_political_order
+			days = normal_modifier_time
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.007.b
+		remove_modifier = modifier_balkfm_russian_attaches
+		add_modifier = {
+			name = modifier_balkfm_military_turmoil
+			days = short_modifier_time
+		}
+		add_modifier = {
+			name = modifier_balkfm_defiant_ruler
+			days = long_modifier_time
+		}
+		change_relations = {
+			country = c:RUS
+			value = -25
+		}
+		every_scope_character = {
+			limit = {
+				has_variable = balkfm_is_attache
+			}
+			exile_character = yes
+		}
+	}
+
+}
+
+balkfm_bulgaria.008 = { # Mandate Secured
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.008.t
+	desc = balkfm_bulgaria.008.d
+	flavor = balkfm_bulgaria.008.f
+
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		random_character_in_void = {
+			limit = {
+				has_template = template_balkfm_battenburg_alexander
+			}
+			save_scope_as = balkfm_alex_scope
+		}
+		ruler = {
+			save_scope_as = balkfm_sava_scope
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.008.a
+		default_option = yes
+		scope:balkfm_alex_scope = {
+			free_character_from_void = yes
+			set_character_as_ruler = yes
+			add_modifier = {
+				name = modifier_balkfm_throne_secured
+				days = normal_modifier_time
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.009 = { # The August Coup
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.009.t
+	desc = balkfm_bulgaria.009.d
+	flavor = balkfm_bulgaria.009.f
+
+	event_image = {
+		video = "europenorthamerica_political_extremism"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		var:balkfm_coup_var <= 0
+		NOT = {
+			has_variable = balkfm_august_coup_happened
+		}
+	}
+
+	immediate = {
+		balkfm_create_bulgarian_regency_characters = yes
+		random_scope_character = {
+			limit = {
+				has_template = template_balkfm_battenburg_alexander
+			}
+			save_scope_as = balkfm_alex_scope
+		}
+		heir = {
+			save_scope_as = balkfm_heir_scope
+		}
+		ig:ig_armed_forces = {
+			leader = {
+				save_scope_as = balkfm_sava_scope
+			}
+		}
+		set_variable = balkfm_august_coup_happened
+	}
+
+	option = {
+		name = balkfm_bulgaria.009.a
+		default_option = yes
+		scope:balkfm_alex_scope = {
+			place_character_in_void = 600
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					exists = scope:balkfm_heir_scope
+				}
+				scope:balkfm_heir_scope = {
+					kill_character = yes
+				}
+			}
+		}
+		scope:balkfm_sava_scope = {
+			set_character_as_ruler = yes
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_balkfm_russian_attaches
+			}
+			remove_modifier = modifier_balkfm_russian_attaches
+		}
+		set_variable = balkfm_alex_yeeted
+	}
+
+}
+
+## Early Political Events ##
+balkfm_bulgaria.012 = { # Strategic Demands
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.012.t
+	desc = balkfm_bulgaria.012.d
+	flavor = balkfm_bulgaria.012.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = { # triggered by balkfm_bulgaria.001
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bulgaria.012.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_balkfm_bul_railways
+		}
+	}
+
+}
+
+balkfm_bulgaria.013 = { # Extortionate Pricing
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.013.t
+	desc = balkfm_bulgaria.013.d
+	flavor = balkfm_bulgaria.013.f
+
+	event_image = {
+		video = "europenorthamerica_capitalists_meeting"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bulgaria.013.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_railway_buyout
+			days = long_modifier_time
+		}
+	}
+
+}
+
+balkfm_bulgaria.014 = { # The Bulgarian Railways
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.014.t
+	desc = balkfm_bulgaria.014.d
+	flavor = balkfm_bulgaria.014.f
+
+	event_image = {
+		video = "unspecific_trains"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bulgaria.014.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_bulgarian_railways
+			days = long_modifier_time
+		}
+	}
+
+}
+
+balkfm_bulgaria.015 = { # Royal Entourage
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.015.t
+	desc = balkfm_bulgaria.015.d
+	flavor = balkfm_bulgaria.015.f
+
+	event_image = {
+		video = "africa_construction_colony"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		c:RUS = {
+			save_scope_as = russia_scope
+		}
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+	}
+
+	option = { # Take a Tour
+		name = balkfm_bulgaria.015.a
+		default_option = yes
+		change_relations = {
+			country = c:TUR
+			value = 10
+		}
+		trigger_event = {
+			id = balkfm_bulgaria.016 # A Warm Reception
+			days = 90
+		}
+		hidden_effect = { # fires ahead of time to let GRE set the grefm_cold_reception var
+			c:GRE = {
+				trigger_event = {
+					id = grefm_greece.160 # A Bulgarian Visitor
+				}
+			}
+		}
+	}
+
+	option = { # Go Straight to Russia
+		name = balkfm_bulgaria.015.b
+		change_relations = {
+			country = c:TUR
+			value = -25
+		}
+		trigger_event = {
+			id = balkfm_bulgaria.019 # The Tsar's Court
+			days = 240
+		}
+	}
+
+}
+
+balkfm_bulgaria.016 = { # A Warm Reception
+	type = country_event
+	placement = scope:ottoman_capital_scope
+
+	title = balkfm_bulgaria.016.t
+	desc = balkfm_bulgaria.016.d
+	flavor = balkfm_bulgaria.016.f
+
+	event_image = {
+		video = "ep1_persian_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+			ruler = {
+				save_scope_as = ottoman_ruler_scope
+			}
+			capital = {
+				save_scope_as = ottoman_capital_scope
+			}
+		}
+		ruler = {
+			save_scope_as = bulgaria_ruler_scope
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.016.a
+		default_option = yes
+		change_relations = {
+			country = c:TUR
+			value = 10
+		}
+		add_modifier = {
+			name = modifier_turkfm_order_of_osmanieh
+			days = long_modifier_time
+		}
+		add_treasury = 50000
+	}
+
+	after = {
+		trigger_event = {
+			id = balkfm_bulgaria.017 # A Cautious Welcome
+			days = 30
+		}
+	}
+
+}
+
+balkfm_bulgaria.017 = { # A Cautious Welcome
+	type = country_event
+	placement = scope:greece_capital_scope
+
+	title = balkfm_bulgaria.017.t
+	desc = {
+		triggered_desc = {
+			desc = balkfm_bulgaria.017.d1
+			trigger = {
+				has_variable = grefm_cold_reception
+			}
+		}
+		triggered_desc = {
+			desc = balkfm_bulgaria.017.d2
+			trigger = {
+				has_variable = grefm_warm_reception
+			}
+		}
+	}
+	flavor = balkfm_bulgaria.017.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		c:GRE = {
+			save_scope_as = greece_scope
+			ruler = {
+				save_scope_as = greece_ruler_scope
+			}
+			capital = {
+				save_scope_as = greece_capital_scope
+			}
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.017.a
+		default_option = yes
+		trigger = {
+			has_variable = grefm_cold_reception
+		}
+		change_relations = {
+			country = c:GRE
+			value = -15
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.017.b
+		trigger = {
+			NOT = {
+				has_variable = grefm_cold_reception
+			}
+		}
+		change_relations = {
+			country = c:GRE
+			value = 15
+		}
+	}
+
+	after = {
+		if = { # In case Petar gets clapped
+			limit = {
+				exists = c:MON
+			}
+			trigger_event = {
+				id = balkfm_bulgaria.018 # The Black Mountain
+				days = 30
+			}
+		}
+		else = {
+			trigger_event = {
+				id = balkfm_bulgaria.019 # The Tsar's Court
+				days = 60
+			}
+		}
+		remove_variable = grefm_cold_reception
+	}
+
+}
+
+balkfm_bulgaria.018 = { # The Black Mountain
+	type = country_event
+	placement = scope:montenegro_capital_scope
+
+	title = balkfm_bulgaria.018.t
+	desc = {
+		triggered_desc = {
+			desc = balkfm_bulgaria.018.d1
+			trigger = {
+				scope:bulgaria_ruler_scope = {
+					NOT = {
+						has_variable = is_married
+					}
+				}
+			}
+		}
+		triggered_desc = {
+			desc = balkfm_bulgaria.018.d2
+			trigger = {
+				scope:bulgaria_ruler_scope = {
+					has_variable = is_married
+				}
+			}
+		}
+	}
+	flavor = balkfm_bulgaria.018.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		c:MON = {
+			save_scope_as = montenegro_scope
+			ruler = {
+				save_scope_as = montenegro_ruler_scope
+			}
+			capital = {
+				save_scope_as = montenegro_capital_scope
+			}
+		}
+		ruler = {
+			save_scope_as = bulgaria_ruler_scope
+		}
+	}
+
+	option = { # get hitched
+		name = balkfm_bulgaria.018.a
+		default_option = yes
+		trigger = {
+			scope:bulgaria_ruler_scope = {
+				NOT = {
+					has_variable = is_married
+				}
+			}
+		}
+		change_relations = {
+			country = c:MON
+			value = 50
+		}
+		trigger_event = {
+			id = balkfm_bulgaria.161 # Royal Wedding
+			days = 360
+		}
+	}
+
+	option = { # sorry, your women scare me
+		name = balkfm_bulgaria.018.b
+		trigger = {
+			scope:bulgaria_ruler_scope = {
+				NOT = {
+					has_variable = is_married
+				}
+			}
+		}
+		change_relations = {
+			country = c:MON
+			value = -10
+		}
+	}
+
+	option = { # already got a ring on it
+		name = balkfm_bulgaria.018.c
+		trigger = {
+			scope:bulgaria_ruler_scope = {
+				has_variable = is_married
+			}
+		}
+		change_relations = {
+			country = c:MON
+			value = 15
+		}
+	}
+
+	after = {
+		trigger_event = {
+			id = balkfm_bulgaria.019 # The Tsar's Court
+			days = 60
+		}
+	}
+
+}
+
+balkfm_bulgaria.019 = { # The Tsar's Court
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.019.t
+	desc = balkfm_bulgaria.019.d
+	flavor = balkfm_bulgaria.019.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bulgaria.019.a
+		default_option = yes
+		change_relations = {
+			country = c:RUS
+			value = -25
+		}
+		add_loyalists = {
+			pop_type = officers
+			value = medium_radicals
+		}
+		add_loyalists = {
+			pop_type = soldiers
+			value = small_radicals
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.019.b
+		add_radicals = {
+			pop_type = officers
+			value = large_radicals
+		}
+		add_radicals = {
+			pop_type = soldiers
+			value = medium_radicals
+		}
+	}
+
+	after = {
+		set_variable = balkfm_royal_tour_complete
+	}
+
+}
+
+## Stambolovism Events ##
+balkfm_bulgaria.020 = { # An Elected Prince
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.020.t
+	desc = balkfm_bulgaria.020.d
+	flavor = balkfm_bulgaria.020.f
+
+	event_image = {
+		video = "unspecific_politicians_arguing"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		balkfm_create_bulgarian_royals = yes
+		random_character_in_void = {
+			limit = {
+				has_template = template_balkfm_sakskoburggotski_ferdinand
+			}
+			save_scope_as = balkfm_ferdinand_scope
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_balkfm_dadiani_nikoloz
+			}
+			save_scope_as = balkfm_nikoloz_scope
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_balkfm_bogoridi_alexander
+			}
+			save_scope_as = balkfm_bogoridi_scope
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_balkfm_glucksburg_valdemar
+			}
+			save_scope_as = balkfm_valdemar_scope
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_balkfm_goltz_wilhelm
+			}
+			save_scope_as = balkfm_goltz_scope
+		}
+
+		c:RUS = {
+			save_scope_as = russia_scope
+		}
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		trigger_event = {
+			id = balkfm_bulgaria.022 # Legitimizing the King
+			days = 150
+		}
+		trigger_event = {
+			id = balkfm_bulgaria.023 # Military Conciliation
+			days = 240
+		}
+		trigger_event = {
+			id = balkfm_bulgaria.162 # Ecclesiatic Hostility
+			days = 300
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_turkfm_order_of_osmanieh
+			}
+			remove_modifier = modifier_turkfm_order_of_osmanieh
+		}
+	}
+
+	option = { # Ferdinand I, the historical option
+		name = balkfm_bulgaria.020.1
+		default_option = yes
+		scope:balkfm_ferdinand_scope = {
+			free_character_from_void = yes
+			set_character_as_ruler = yes
+		}
+	}
+
+	option = { # Niko I Dadiani, former Prince of Mingrelia
+		name = balkfm_bulgaria.020.2
+		trigger = {
+			exists = c:RUS
+			OR = {
+				any_scope_treaty = {
+					binds = root
+					binds = c:RUS
+					any_scope_article = {
+						has_type = alliance
+					}
+				}
+				is_subject_of = c:RUS
+			}
+		}
+		scope:balkfm_nikoloz_scope = {
+			free_character_from_void = yes
+			set_character_as_ruler = yes
+		}
+	}
+
+	option = { # Alexander Bogoridi, former Governor-General of Rumelia
+		name = balkfm_bulgaria.020.3
+		trigger = {
+			c:BUL_RUM ?= {
+				is_subject_of = root
+			}
+			exists = scope:balkfm_bogoridi_scope
+		}
+		scope:balkfm_bogoridi_scope = {
+			free_character_from_void = yes
+			set_character_as_ruler = yes
+		}
+	}
+
+	option = { # Valdemar of Glucksburg, brother to King George I of Greece
+		name = balkfm_bulgaria.020.4
+		trigger = {
+			exists = c:DEN
+			OR = {
+				any_scope_treaty = {
+					binds = root
+					binds = c:DEN
+					any_scope_article = {
+						has_type = alliance
+					}
+				}
+				is_subject_of = c:DEN
+			}
+		}
+		scope:balkfm_valdemar_scope = {
+			free_character_from_void = yes
+			set_character_as_ruler = yes
+		}
+	}
+
+	option = { # Wilhelm von der Goltz, Prussian general who was pivotal in modernizing the Turkish army
+		name = balkfm_bulgaria.020.5
+		trigger = {
+			exists = c:PRU
+			OR = {
+				any_scope_treaty = {
+					binds = root
+					binds = c:PRU
+					any_scope_article = {
+						has_type = alliance
+					}
+				}
+				is_subject_of = c:PRU
+			}
+		}
+		scope:balkfm_valdemar_scope = {
+			free_character_from_void = yes
+			set_character_as_ruler = yes
+		}
+	}
+
+	after = {
+		trigger_event = {
+			id = balkfm_bulgaria.021 # A Foreigner in Sofia
+			days = 45
+		}
+		hidden_effect = {
+			heir ?= {
+				kill_character = yes # for good measure
+			}
+		}
+		set_variable = balkfm_ferdinand_era
+	}
+
+}
+
+balkfm_bulgaria.021 = { # A Foreigner in Sofia
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.021.t
+	desc = {
+		triggered_desc = {
+			desc = balkfm_bulgaria.021.d1
+			trigger = {
+				ruler = {
+					has_template = template_balkfm_sakskoburggotski_ferdinand
+				}
+			}
+		}
+		triggered_desc = {
+			desc = balkfm_bulgaria.021.d2
+			trigger = {
+				ruler = {
+					has_template = template_balkfm_dadiani_nikoloz
+				}
+			}
+		}
+	}
+	flavor = balkfm_bulgaria.021.f
+
+	event_image = {
+		video = "europenorthamerica_london_center"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by balkfm_bulgaria.020
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_variable = balkfm_ferdinand_era
+		}
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = balkfm_ferdinand_scope
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.021.a
+		default_option = yes
+		scope:balkfm_ferdinand_scope = {
+			add_modifier = {
+				name = modifier_balkfm_learning_bulgarian
+				days = very_long_modifier_time
+			}
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.021.b
+		scope:balkfm_ferdinand_scope = {
+			add_modifier = {
+				name = modifier_balkfm_refused_bulgarian
+				days = very_long_modifier_time
+			}
+		}
+	}
+}
+
+balkfm_bulgaria.022 = { # Legitimizing the King
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.022.t
+	desc = balkfm_bulgaria.022.d
+	flavor = balkfm_bulgaria.022.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_variable = balkfm_ferdinand_era
+		}
+	}
+
+	immediate = {
+		ig:ig_rural_folk = {
+			leader = {
+				save_scope_as = stambolov_scope
+			}
+		}
+		set_variable = {
+			name = balkfm_stambolovism_var
+			value = 0
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.022.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_balkfm_bul_stambolovism
+		}
+		set_variable = {
+			name = balkfm_stambolovism_var
+			value = balkfm_stambolovism_value
+		}
+	}
+
+}
+
+balkfm_bulgaria.023 = { # Military Conciliation
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.023.t
+	desc = balkfm_bulgaria.023.d
+	flavor = balkfm_bulgaria.023.f
+
+	event_image = {
+		video = "europenorthamerica_capitalists_meeting"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by balkfm_bulgaria.020
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_variable = balkfm_ferdinand_era
+		}
+	}
+
+	immediate = {
+		ig:ig_armed_forces = {
+			save_scope_as = armed_forces_scope
+			leader = {
+				save_scope_as = armed_forces_leader_scope
+			}
+		}
+	}
+
+	option = { # Extend an olive branch
+		name = balkfm_bulgaria.023.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_unchallenged_rule
+			days = normal_modifier_time
+		}
+		scope:armed_forces_scope = {
+			add_modifier = {
+				name = modifier_balkfm_military_reconciliation
+				days = normal_modifier_time
+			}
+		}
+		scope:armed_forces_leader_scope = {
+			set_ideology = ideology:ideology_royalist
+		}
+		trigger_event = {
+			id = balkfm_bulgaria.024 # Military Insufficiency
+			days = 30
+		}
+		custom_tooltip = {
+			text = balkfm_stamobolov_plus_1
+			hidden_effect = {
+				set_variable = balkfm_battenburg_letter
+			}
+		}
+	}
+
+	option = { # Send them packing
+		name = balkfm_bulgaria.023.b
+		add_modifier = {
+			name = modifier_balkfm_unchallenged_rule
+			days = normal_modifier_time
+		}
+		scope:armed_forces_scope = {
+			add_modifier = {
+				name = modifier_balkfm_military_tension
+				days = normal_modifier_time
+			}
+		}
+		scope:armed_forces_leader_scope = {
+			set_ideology = ideology:ideology_republican
+		}
+		trigger_event = {
+			id = balkfm_bulgaria.024 # Military Insufficiency
+			days = 30
+		}
+		custom_tooltip = {
+			text = balkfm_stamobolov_plus_1
+			hidden_effect = {
+				set_variable = balkfm_battenburg_letter
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.024 = { # Military Insufficiency
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.024.t
+	desc = balkfm_bulgaria.024.d
+	flavor = balkfm_bulgaria.024.f
+
+	event_image = {
+		video = "middleeast_battlefield_trenches"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_variable = balkfm_ferdinand_era
+		}
+	}
+
+	immediate = {
+		ig:ig_armed_forces = {
+			save_scope_as = armed_forces_leader_scope
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.024.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_balkfm_bul_military_modernization
+		}
+	}
+
+}
+
+balkfm_bulgaria.025 = { # The Bulgarian Army
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.025.t
+	desc = balkfm_bulgaria.025.d
+	flavor = balkfm_bulgaria.025.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_balkfm_bul_military_modernization
+	}
+
+	immediate = {
+		ig:ig_armed_forces = {
+			save_scope_as = armed_forces_leader_scope
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.025.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_modernized_military
+			days = long_modifier_time
+		}
+		custom_tooltip = {
+			text = balkfm_stamobolov_plus_1
+			hidden_effect = {
+				set_variable = balkfm_military_modernized
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.026 = { # The Panitsa Plot
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.026.t
+	desc = balkfm_bulgaria.026.d
+	flavor = balkfm_bulgaria.026.f
+
+	event_image = {
+		video = "ep1_clandestine_meeting"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = balkfm_panitsa_plot_happened
+		}
+		has_journal_entry = je_balkfm_bul_military_modernization
+	}
+
+	immediate = {
+		ig:ig_rural_folk = {
+			leader = {
+				save_scope_as = stambolov_scope
+			}
+		}
+		set_variable = balkfm_panitsa_plot_happened
+	}
+
+	option = { # Give 'em the Firing Squad
+		name = balkfm_bulgaria.026.a
+		default_option = yes
+		add_radicals = {
+			pop_type = officers
+			value = medium_radicals
+		}
+		add_modifier = {
+			name = modifier_balkfm_rooted_out_conspiracy
+			days = normal_modifier_time
+		}
+		custom_tooltip = {
+			text = balkfm_stamobolov_plus_1
+			hidden_effect = {
+				set_variable = balkfm_executed_panitsa
+			}
+		}
+	}
+
+	option = { # Exile Them
+		name = balkfm_bulgaria.026.b
+		add_radicals = {
+			pop_type = soldiers
+			value = large_radicals
+		}
+		add_modifier = {
+			name = modifier_balkfm_seditious_officers
+			days = normal_modifier_time
+		}
+		custom_tooltip = {
+			text = balkfm_stamobolov_minus_1
+			hidden_effect = {
+				set_variable = balkfm_exiled_panitsa
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.027 = { # Funerary Politics
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.027.t
+	desc = balkfm_bulgaria.027.d
+	flavor = balkfm_bulgaria.027.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = balkfm_ernest_coburg_died
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				exists = c:GER
+			}
+			c:GER = {
+				save_scope_as = prussia_scope
+			}
+		}
+		else_if = {
+			limit = {
+				exists = c:PRU
+			}
+			c:PRU = {
+				save_scope_as = prussia_scope
+			}
+		}
+		else = {
+			random_country = {
+				limit = {
+					country_has_primary_culture = cu:north_german
+				}
+				save_scope_as = prussia_scope
+			}
+		}
+		set_variable = balkfm_ernest_coburg_died
+	}
+
+	option = { # Be Whimpy
+		name = balkfm_bulgaria.027.a
+		default_option = yes
+		ruler = {
+			add_modifier = {
+				name = modifier_balkfm_whimpy_ruler
+				days = normal_modifier_time
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_stamobolov_minus_2
+			hidden_effect = {
+				set_variable = balkfm_put_away_regalia
+			}
+		}
+	}
+
+	option = { # Strut Yo Stuff
+		name = balkfm_bulgaria.027.b
+		create_incident = {
+			country = scope:prussia_scope
+			value = 5
+		}
+		ruler = {
+			add_modifier = {
+				name = modifier_balkfm_bold_ruler
+				days = normal_modifier_time
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_stamobolov_plus_1
+			hidden_effect = {
+				set_variable = balkfm_showed_off_regalia
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.028 = { # The House of Bulgaria
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.028.t
+	desc = balkfm_bulgaria.028.d
+	flavor = balkfm_bulgaria.028.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = balkfm_produced_heir
+		}
+		exists = heir
+	}
+
+	immediate = {
+		set_variable = balkfm_produced_heir
+	}
+
+	option = {
+		name = balkfm_bulgaria.028.a
+		default_option = yes
+		custom_tooltip = balkfm_stamobolov_plus_1
+	}
+
+}
+
+balkfm_bulgaria.029 = { # Severed Hands
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.029.t
+	desc = balkfm_bulgaria.029.d
+	flavor = balkfm_bulgaria.029.f
+
+	event_image = {
+		video = "southamerica_public_figure_assassination"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_balkfm_bul_stambolovism
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			any_character_in_void = {
+				has_template = template_balkfm_stambolov_stefan
+			}
+		}
+	}
+
+	immediate = {
+		random_character_in_void = {
+			limit = {
+				has_template = template_balkfm_stoilov_constantin
+			}
+			save_scope_as = stoilov_scope
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.029.a
+		default_option = yes
+		scope:stambolov_scope = {
+			kill_character = yes
+		}
+	}
+
+}
+
+## Reign of Ferdinand I Events ##
+balkfm_bulgaria.030 = { # The University of Sofia
+	type = country_event
+	placement = scope:university_state
+
+	title = balkfm_bulgaria.030.t
+	desc = balkfm_bulgaria.030.d
+	flavor = balkfm_bulgaria.030.f
+
+	gui_window = event_window_1char_tabloid
+
+	left_icon = scope:university_benefactor
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		morgenrote_is_active = no
+		NOT = { has_variable = balkfm_sofia_university_considered }
+		has_variable = balkfm_ferdinand_era
+		has_technology_researched = academia
+		owns_entire_state_region = STATE_BULGARIA
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = university_benefactor
+		}
+		s:STATE_BULGARIA = {
+			random_scope_state = {
+				save_scope_as = university_state
+			}
+		}
+		set_variable = balkfm_sofia_university_considered
+	}
+
+	option = {
+		name = balkfm_bulgaria.030.a
+		default_option = yes
+		scope:university_state = {
+			create_building = {
+				building = "building_university"
+				level = 1
+			}
+		}
+		add_modifier = {
+			name = modifier_grefm_funding_royal_university
+			days = normal_modifier_time
+			multiplier = money_amount_multiplier_small
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.030.b
+		scope:university_benefactor = {
+			add_modifier = {
+				name = modifier_grefm_blocked_building_university
+				days = normal_modifier_time
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.031 = { # Royal Recognition
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.031.t
+	desc = balkfm_bulgaria.031.d
+	flavor = balkfm_bulgaria.031.f
+
+	event_image = {
+		video = "ep1_power_blocs"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_balkfm_bul_stambolovism
+	}
+
+	immediate = {
+		random_scope_character = {
+			limit = {
+				has_template = template_balkfm_stambolov_stefan
+			}
+			save_scope_as = stambolov_scope
+		}
+		create_character = {
+			template = template_balkfm_stoilov_constantin
+			on_created = {
+				place_character_in_void = 12
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_balkfm_stoilov_constantin
+			}
+			save_scope_as = stoilov_scope
+		}
+	}
+
+	option = { # Dismiss Stambolov
+		name = balkfm_bulgaria.031.a
+		default_option = yes
+		trigger = {
+			exists = scope:stambolov_scope
+		}
+		scope:stambolov_scope = {
+			place_character_in_void = 12
+		}
+		scope:stoilov_scope = {
+			set_as_interest_group_leader = yes
+			free_character_from_void = yes
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					has_technology_researched = nationalism
+					NOR = {
+						owns_entire_state_region = STATE_SKOPIA
+						owns_entire_state_region = STATE_MACEDONIA
+					}
+				}
+				trigger_event = {
+					id = balkfm_bulgaria.029 # Severed Hands
+					days = 200
+				}
+			}
+		}
+		if = {
+			limit = {
+				ruler = {
+					has_template = template_balkfm_sakskoburggotski_ferdinand
+				}
+			}
+			add_modifier = {
+				name = modifier_balkfm_foxy_ferdinand
+				days = long_modifier_time
+			}
+		}
+		else = {
+			add_modifier = {
+				name = modifier_balkfm_royal_recognition
+				days = long_modifier_time
+			}
+		}
+	}
+
+	option = { # Keep Stambolov
+		name = balkfm_bulgaria.031.b
+		trigger = {
+			exists = scope:stambolov_scope
+		}
+		scope:stambolov_scope = {
+			add_modifier = {
+				name = modifier_balkfm_bulgarian_bismark
+				days = long_modifier_time
+			}
+		}
+		scope:stoilov_scope = {
+			set_as_interest_group_leader = yes
+			free_character_from_void = yes
+		}
+		if = {
+			limit = {
+				ruler = {
+					has_template = template_balkfm_sakskoburggotski_ferdinand
+				}
+			}
+			add_modifier = {
+				name = modifier_balkfm_foxy_ferdinand
+				days = long_modifier_time
+			}
+		}
+		else = {
+			add_modifier = {
+				name = modifier_balkfm_royal_recognition
+				days = long_modifier_time
+			}
+		}
+	}
+
+	option = { # Generic Option in case Stambolov isn't around
+		name = balkfm_bulgaria.031.c
+		trigger = {
+			NOT = {
+				exists = scope:stambolov_scope
+			}
+		}
+		scope:stoilov_scope = {
+			set_as_interest_group_leader = yes
+			free_character_from_void = yes
+		}
+		if = {
+			limit = {
+				ruler = {
+					has_template = template_balkfm_sakskoburggotski_ferdinand
+				}
+			}
+			add_modifier = {
+				name = modifier_balkfm_foxy_ferdinand
+				days = long_modifier_time
+			}
+		}
+		else = {
+			add_modifier = {
+				name = modifier_balkfm_royal_recognition
+				days = long_modifier_time
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				is_subject_of = c:TUR
+			}
+			trigger_event = {
+				id = balkfm_bulgaria.032 # Spring in Constantinople
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.032 = { # Spring in Constantinople
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.032.t
+	desc = balkfm_bulgaria.032.d
+	flavor = balkfm_bulgaria.032.f
+
+	event_image = {
+		video = "ep1_persian_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.032.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_order_of_honor
+			days = long_modifier_time
+		}
+	}
+
+}
+
+#### BULGARIAN ORTHODOX CHURCH EVENTS ####
+balkfm_bulgaria.160 = { # Threats of Schism
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.160.t
+	desc = balkfm_bulgaria.160.d
+	flavor = balkfm_bulgaria.160.f
+
+	event_image = {
+		video = "southamerica_christianity"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		# triggered by balkfm_bulgaria.001
+	}
+
+	option = { # Declare Autocephaly
+		name = balkfm_bulgaria.160.a
+		default_option = yes
+		add_modifier = modifier_eocfm_schismatic
+		every_country = {
+			limit = {
+				has_variable = eocfm_is_autocephalous
+			}
+			change_relations = {
+				country = PREV
+				value = -25
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_variable = eocfm_schism_var
+				}
+			}
+			set_variable = {
+				name = eocfm_schism_var
+				value = 0
+			}
+		}
+	}
+
+	option = { # Be a Soyboy
+		name = balkfm_bulgaria.160.b
+		add_modifier = {
+			name = modifier_eocfm_autocephaly_abandoned
+			days = long_modifier_time
+		}
+		add_radicals = {
+			religion = rel:orthodox
+			value = medium_radicals
+		}
+		every_country = {
+			limit = {
+				has_variable = eocfm_is_autocephalous
+			}
+			change_relations = {
+				country = PREV
+				value = 25
+			}
+		}
+		remove_variable = eocfm_schism_var
+	}
+
+}
+
+balkfm_bulgaria.161 = { # Royal Wedding; this is a chopped up version of PDX's vanilla wedding event
+	type = country_event
+	placement = root
+
+	title = wedding.1.t
+	desc = wedding.1.d
+	flavor = wedding.1.f
+
+	gui_window = event_window_1char_tabloid
+
+	left_icon = scope:royal_marriage_princess
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		create_character = {
+			# Princess Marija of Montenegro, daughter of Nicholas I of Montenegro, died in infancy historically
+			first_name = Marija
+			last_name = Petrovic_Njegos
+			historical = yes
+			age = 18 # would have been 14 in 1883, so uhh, yeah
+			female = yes
+			culture = cu:serb
+			religion = rel:orthodox
+			interest_group = ig_landowners
+			traits = {
+				reserved
+			}
+			on_created = {
+				set_variable = balkfm_is_marija
+				set_variable = getting_married
+				place_character_in_void = 720 # 60 year lease on life
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_variable = balkfm_is_marija
+			}
+			save_scope_as = royal_marriage_princess
+		}
+		ruler = {
+			save_scope_as = royal_marriage_character
+		}
+		capital = {
+			save_scope_as = capital_scope
+		}
+		c:MON = {
+			save_scope_as = marriage_country
+			ruler = {
+				save_scope_as = foreign_ruler
+			}
+		}
+	}
+
+	option = { # private wedding for international nobility
+		name = wedding.1.a
+		default_option = yes
+		add_modifier = { # influence mult
+			name = royal_marriage
+			days = normal_modifier_time
+		}
+	}
+
+	option = { # public wedding for the masses
+		name = wedding.1.b
+		scope:royal_marriage_character = {
+			add_modifier = { # popularity
+				name = marriage_popularity
+				days = very_long_modifier_time
+			}
+		}
+	}
+
+	after = {
+		scope:royal_marriage_character = {
+			remove_variable = getting_married
+		}
+	}
+}
+
+balkfm_bulgaria.162 = { # Ecclesiatic Hostility
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.162.t
+	desc = balkfm_bulgaria.162.d
+	flavor = balkfm_bulgaria.162.f
+
+	event_image = {
+		video = "middleeast_courtroom_upheaval"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_balkfm_bul_stambolovism
+		}
+	}
+
+	immediate = {
+		ig:ig_devout = {
+			save_scope_as = devout_scope
+			leader = {
+				save_scope_as = devout_leader_scope
+			}
+		}
+		ruler = {
+			save_scope_as = balkfm_ruler_scope
+		}
+	}
+
+	option = { # Send him packing
+		name = balkfm_bulgaria.162.a
+		default_option = yes
+		scope:devout_scope = {
+			add_modifier = {
+				name = modifier_eocfm_expelled_metropolitan
+				days = long_modifier_time
+			}
+		}
+		scope:devout_leader_scope = {
+			exile_character = yes
+		}
+	}
+
+	option = { # Tolerate his nonsense
+		name = balkfm_bulgaria.162.b
+		scope:balkfm_ruler_scope = {
+			add_modifier = {
+				name = modifier_balkfm_heresy_questioned
+				days = long_modifier_time
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.163 = { # An Orthodox Heir
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.163.t
+	desc = balkfm_bulgaria.163.d
+	flavor = balkfm_bulgaria.163.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = eocfm_ruler_conversion_considered
+		}
+		has_law = law_type:law_monarchy
+		ruler = {
+			NOT = {
+				has_religion = orthodox
+			}
+		}
+		heir ?= {
+			NOT = {
+				has_religion = orthodox
+			}
+		}
+		ig:ig_devout = {
+			ig_approval <= 5
+		}
+	}
+
+	immediate = {
+		set_variable = eocfm_ruler_conversion_considered
+		ruler = {
+			save_scope_as = eocfm_ruler_scope
+		}
+		heir = {
+			save_scope_as = eocfm_heir_scope
+		}
+	}
+
+	option = { # Both will convert
+		name = balkfm_bulgaria.163.a
+		default_option = yes
+		scope:eocfm_ruler_scope = {
+			change_character_religion = rel:orthodox
+			add_modifier = modifier_eocfm_accepted_conversion
+		}
+		scope:eocfm_heir_scope = {
+			change_character_religion = rel:orthodox
+			add_modifier = modifier_eocfm_accepted_conversion
+		}
+		add_modifier = {
+			name = modifier_eocfm_ruler_accepted_conversion
+			days = normal_modifier_time
+		}
+		add_loyalists = {
+			religion = rel:orthodox
+			value = medium_radicals
+		}
+		every_country = {
+			limit = {
+				country_has_state_religion = rel:catholic
+			}
+			change_relations = {
+				country = root
+				value = -25
+			}
+		}
+		every_country = {
+			limit = {
+				country_has_state_religion = rel:orthodox
+			}
+			change_relations = {
+				country = root
+				value = 25
+			}
+		}
+		c:RUS ?= {
+			set_secret_goal = {
+				country = root
+				secret_goal = protect
+			}
+		}
+	}
+
+	option = { # Heir will convert
+		name = balkfm_bulgaria.163.b
+		scope:eocfm_ruler_scope = {
+			add_modifier = {
+				name = modifier_eocfm_refused_conversion
+				days = very_long_modifier_time
+			}
+		}
+		scope:eocfm_heir_scope = {
+			change_character_religion = rel:orthodox
+			add_modifier = modifier_eocfm_accepted_conversion
+		}
+		add_loyalists = {
+			religion = rel:orthodox
+			value = small_radicals
+		}
+		every_country = {
+			limit = {
+				country_has_state_religion = rel:catholic
+			}
+			change_relations = {
+				country = root
+				value = -15
+			}
+		}
+		every_country = {
+			limit = {
+				country_has_state_religion = rel:orthodox
+			}
+			change_relations = {
+				country = root
+				value = 15
+			}
+		}
+		c:RUS ?= {
+			set_secret_goal = {
+				country = root
+				secret_goal = befriend
+			}
+		}
+	}
+
+	option = { # I mean, isn't this just the eocfm choice but worse?
+		name = balkfm_bulgaria.163.c
+		scope:eocfm_ruler_scope = {
+			add_modifier = {
+				name = modifier_eocfm_refused_conversion
+				days = very_long_modifier_time
+			}
+		}
+		scope:eocfm_heir_scope = {
+			add_modifier = {
+				name = modifier_eocfm_refused_conversion
+				days = very_long_modifier_time
+			}
+		}
+		add_modifier = {
+			name = modifier_eocfm_ruler_refused_conversion
+			days = long_modifier_time
+		}
+		add_radicals = {
+			religion = rel:orthodox
+			value = large_radicals
+		}
+		every_country = {
+			limit = {
+				country_has_state_religion = rel:catholic
+			}
+			change_relations = {
+				country = root
+				value = 15
+			}
+		}
+		every_country = {
+			limit = {
+				country_has_state_religion = rel:orthodox
+			}
+			change_relations = {
+				country = root
+				value = -15
+			}
+		}
+		c:AUS ?= {
+			set_secret_goal = {
+				country = root
+				secret_goal = protect
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.164 = { # Restoring the Exarchate
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.164.t
+	desc = balkfm_bulgaria.164.d
+	flavor = balkfm_bulgaria.164.f
+
+	event_image = {
+		video = "africa_leader_arguing"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_balkfm_bul_bulgarian_exarchate
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bulgaria.164.a
+		default_option = yes
+		show_as_tooltip = {
+			add_modifier = modifier_balkfm_schismatic_efforts
+		}
+	}
+
+}
+
+balkfm_bulgaria.169 = { # The Exarchate of Bulgaria
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.169.t
+	desc = balkfm_bulgaria.169.d
+	flavor = balkfm_bulgaria.169.f
+
+	event_image = {
+		video = "southamerica_christianity"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_balkfm_bul_bulgarian_exarchate
+	}
+
+	immediate = {
+		remove_variable = eocfm_schism_var
+		set_variable = eocfm_is_autocephalous
+		eocfm_schism_cleanup_effect = yes
+	}
+
+	option = {
+		name = balkfm_bulgaria.169.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_eocfm_autocephaly_granted
+			days = long_modifier_time
+		}
+	}
+
+}
+
+#### BULGARIAN REVIVAL EVENTS ####
+
+balkfm_bulgaria.200 = { # Insurgency in Niš
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.200.t
+	desc = balkfm_bulgaria.200.d
+	flavor = balkfm_bulgaria.200.f
+
+	event_image = {
+		video = "europenorthamerica_springtime_of_nations"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		#		has_global_variable = turkfm_tanzimat_started ##TODO turkfm interoperability
+		NOT = {
+			has_variable = balkfm_nis_insurgency_happened
+		}
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		s:STATE_SOUTHERN_SERBIA = {
+			random_scope_state = {
+				save_scope_as = southern_serbia_state_scope
+			}
+		}
+		set_variable = balkfm_nis_insurgency_happened
+	}
+
+	option = { # Claim Responsibility
+		name = balkfm_bulgaria.200.a
+		default_option = yes
+		create_incident = {
+			country = c:TUR
+			value = 10
+		}
+		add_loyalists = {
+			culture = cu:bulgarian
+			value = medium_radicals
+		}
+	}
+
+	option = { # Let the Greeks have it
+		name = balkfm_bulgaria.200.b
+		add_radicals = {
+			culture = cu:bulgarian
+			value = medium_radicals
+		}
+		add_modifier = {
+			name = modifier_balkfm_bulgarian_dissent
+			days = normal_modifier_time
+		}
+	}
+
+}
+
+balkfm_bulgaria.201 = { # The Bulgarian Eagle
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.201.t
+	desc = balkfm_bulgaria.201.d
+	flavor = balkfm_bulgaria.201.f
+
+	event_image = {
+		video = "ep1_printing_press"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = balkfm_constantinople_newspaper_published
+		}
+		has_technology_researched = mass_communication
+	}
+
+	immediate = {
+		set_variable = balkfm_constantinople_newspaper_published
+	}
+
+	option = { # Support the Publishing
+		name = balkfm_bulgaria.201.a
+		default_option = yes
+		balkfm_add_nationalism_progress_effect = yes
+		add_radicals = {
+			religion = rel:sunni
+			value = medium_radicals
+		}
+		custom_tooltip = {
+			text = balkfm_revivalism_advance_100_tt
+			hidden_effect = {
+				change_variable = {
+					name = balkfm_revivalism_var
+					add = 100
+				}
+			}
+		}
+	}
+
+	option = { # Oppose the Publishing
+		name = balkfm_bulgaria.201.b
+		add_loyalists = {
+			religion = rel:sunni
+			value = medium_radicals
+		}
+		add_radicals = {
+			culture = cu:bulgarian
+			value = medium_radicals
+		}
+		custom_tooltip = {
+			text = balkfm_revivalism_regress_100_tt
+			hidden_effect = {
+				change_variable = {
+					name = balkfm_revivalism_var
+					subtract = 100
+				}
+			}
+		}
+		change_relations = {
+			country = c:TUR
+			value = 15
+		}
+	}
+}
+
+balkfm_bulgaria.206 = { # The Bulgarian Legion
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.206.t
+	desc = balkfm_bulgaria.206.d
+	flavor = balkfm_bulgaria.206.f
+
+	event_image = {
+		video = "europenorthamerica_springtime_of_nations"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = balkfm_legion_formed
+		}
+		has_variable = balkfm_golden_lion_tickled
+	}
+
+	immediate = {
+		set_variable = balkfm_legion_formed
+	}
+
+	option = {
+		name = balkfm_bulgaria.206.a
+		default_option = yes
+		custom_tooltip = {
+			text = balkfm_revivalism_advance_100_tt
+			hidden_effect = {
+				change_variable = {
+					name = balkfm_revivalism_var
+					add = 100
+				}
+			}
+		}
+		change_relations = {
+			country = c:TUR
+			value = -10
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.206.b
+		custom_tooltip = {
+			text = balkfm_revivalism_regress_50_tt
+			hidden_effect = {
+				change_variable = {
+					name = balkfm_revivalism_var
+					subtract = 50
+				}
+			}
+		}
+		change_relations = {
+			country = c:TUR
+			value = 15
+		}
+	}
+
+	orphan = yes
+
+}
+
+balkfm_bulgaria.207 = { # The Legion Strikes Again!
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.207.t
+	desc = balkfm_bulgaria.207.d
+	flavor = balkfm_bulgaria.207.f
+
+	event_image = {
+		video = "europenorthamerica_springtime_of_nations"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_variable = balkfm_legion_formed
+	}
+
+	cooldown = {
+		years = 2
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bulgaria.207.a
+		default_option = yes
+		custom_tooltip = {
+			text = balkfm_revivalism_advance_50_tt
+			hidden_effect = {
+				change_variable = {
+					name = balkfm_revivalism_var
+					add = 50
+				}
+			}
+		}
+		change_relations = {
+			country = c:TUR
+			value = -10
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.207.b
+		custom_tooltip = {
+			text = balkfm_revivalism_regress_50_tt
+			hidden_effect = {
+				change_variable = {
+					name = balkfm_revivalism_var
+					subtract = 50
+				}
+			}
+		}
+		change_relations = {
+			country = c:TUR
+			value = 10
+		}
+	}
+
+	orphan = yes
+
+}
+
+balkfm_bulgaria.208 = { # Great Powers Support Bulgaria
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.208.t
+	desc = balkfm_bulgaria.208.d
+	flavor = balkfm_bulgaria.208.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by balkfm_revivalist_support_button
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		c:AUS ?= {
+			save_scope_as = austria_scope
+		}
+		c:RUS ?= {
+			save_scope_as = russia_scope
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.206.a
+		default_option = yes
+		trigger = {
+			c:RUS ?= {
+				relations:root >= relations_threshold:amicable
+				is_adjacent_to_country = root
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_bulgaria.208.tt1
+			hidden_effect = {
+				set_variable = balkfm_revivalism_supported_var
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_bulgaria.208.tt2
+			hidden_effect = {
+				c:RUS = {
+					set_secret_goal = {
+						secret_goal = protect
+						country = root
+					}
+					set_variable = balkfm_backing_bulgaria
+				}
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_revivalism_advance_100_tt
+			hidden_effect = {
+				change_variable = {
+					name = balkfm_revivalism_var
+					add = 100
+				}
+			}
+		}
+		create_incident = {
+			country = c:TUR
+			value = 10
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.206.b
+		trigger = {
+			c:AUS ?= {
+				relations:root >= relations_threshold:amicable
+				is_adjacent_to_country = root
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_bulgaria.208.tt1
+			hidden_effect = {
+				set_variable = balkfm_revivalism_supported_var
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_bulgaria.208.tt3
+			hidden_effect = {
+				c:AUS = {
+					set_secret_goal = {
+						secret_goal = protect
+						country = root
+					}
+					set_variable = balkfm_backing_bulgaria
+				}
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_revivalism_advance_100_tt
+			hidden_effect = {
+				change_variable = {
+					name = balkfm_revivalism_var
+					add = 100
+				}
+			}
+		}
+		create_incident = {
+			country = c:TUR
+			value = 10
+		}
+	}
+
+}
+
+balkfm_bulgaria.209 = { # Securing our Sovereignty
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.209.t
+	desc = balkfm_bulgaria.209.d
+	flavor = balkfm_bulgaria.209.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by balkfm.558
+	}
+
+	immediate = {
+		create_character = {
+			template = template_balkfm_battenburg_alexander
+			on_created = {
+				place_character_in_void = 12
+			}
+		}
+		create_character = {
+			template = template_balkfm_bogoridi_emmanuel
+			on_created = {
+				place_character_in_void = 12
+			}
+		}
+		create_character = {
+			template = template_balkfm_exarch_alexander
+			on_created = {
+				place_character_in_void = 12
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_balkfm_battenburg_alexander
+			}
+			save_scope_as = balkfm_battenburg_scope
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_balkfm_bogoridi_emmanuel
+			}
+			save_scope_as = balkfm_bogoridi_scope
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_balkfm_exarch_alexander
+			}
+			save_scope_as = balkfm_exarch_scope
+		}
+	}
+
+	option = { # Alexander Battenburg, the historical option
+		name = balkfm_bulgaria.209.1
+		default_option = yes
+		scope:balkfm_battenburg_scope = {
+			set_character_as_ruler = yes
+			free_character_from_void = yes
+		}
+		balkfm_bulgarian_politicians_effect = yes
+	}
+
+	option = { # Emmanuel Bogoridi, grandson of Stefanos Bogoridi
+		name = balkfm_bulgaria.209.2
+		trigger = {
+			has_variable = eocfm_is_autocephalous
+		}
+		scope:balkfm_bogoridi_scope = {
+			set_character_as_ruler = yes
+			free_character_from_void = yes
+		}
+		balkfm_bulgarian_politicians_effect = yes
+	}
+
+	option = { # Alexander Exarch, prominent Bulgarian revivalist
+		name = balkfm_bulgaria.209.3
+		trigger = {
+			has_technology_researched = nationalism
+		}
+		scope:balkfm_exarch_scope = {
+			set_character_as_ruler = yes
+			free_character_from_void = yes
+		}
+		balkfm_bulgarian_politicians_effect = yes
+	}
+
+}
+
+#### THE LIBERATION OF BULGARIA ####
+
+balkfm_bulgaria.210 = { # Dreams of the Tsardom
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.210.t
+	desc = balkfm_bulgaria.210.d
+	flavor = balkfm_bulgaria.210.f
+
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bulgaria.210.a
+		default_option = yes
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_NORTHERN_THRACE
+					owns_entire_state_region = STATE_NORTHERN_THRACE
+				}
+			}
+			s:STATE_NORTHERN_THRACE = {
+				add_claim = ROOT
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.211 = { # The Tophane Agreement
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.211.t
+	desc = balkfm_bulgaria.211.d
+	flavor = balkfm_bulgaria.211.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		capital = {
+			save_scope_as = bulgaria_capital_scope
+		}
+		c:BUL_RUM = {
+			save_scope_as = rumelia_scope
+		}
+		set_variable = balkfm_annex_rumelia_taken
+	}
+
+	option = {
+		name = balkfm_bulgaria.211.a
+		default_option = yes
+		if = {
+			limit = {
+				has_law = law_type:law_monarchy
+				scope:rumelia_scope = {
+					has_law = law_type:law_monarchy
+				}
+			}
+			create_diplomatic_pact = {
+				country = scope:rumelia_scope
+				type = personal_union
+			}
+		}
+		else = {
+			create_diplomatic_pact = {
+				country = scope:rumelia_scope
+				type = puppet
+			}
+		}
+		scope:rumelia_scope = {
+			add_modifier = {
+				name = modifier_balkfm_awaiting_union
+				days = very_long_modifier_time
+			}
+		}
+		change_relations = {
+			country = c:TUR
+			value = -15
+		}
+		change_relations = {
+			country = c:RUS
+			value = -25
+		}
+	}
+
+}
+
+balkfm_bulgaria.212 = { # An Independent Bulgaria
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.212.t
+	desc = balkfm_bulgaria.212.d
+	flavor = balkfm_bulgaria.212.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		set_variable = balkfm_tsardom_declared
+	}
+
+	option = {
+		name = balkfm_bulgaria.212.a
+		default_option = yes
+		add_loyalists = {
+			culture = cu:bulgarian
+			value = large_radicals
+		}
+		annex = c:BUL_RUM
+		make_independent = yes
+		create_bidirectional_truce = {
+			country = c:TUR
+			months = 60
+		}
+	}
+
+}
+
+balkfm_bulgaria.213 = { # Bulgarian Irredentism (adds je_balkfm_greater_bulgaria)
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.213.t
+	desc = balkfm_bulgaria.213.d
+	flavor = balkfm_bulgaria.213.f
+
+	event_image = {
+		video = "europenorthamerica_capitalists_meeting"
+	}
+
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bulgaria.213.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_balkfm_bul_greater_bulgaria
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_WESTERN_THRACE
+					owns_entire_state_region = STATE_WESTERN_THRACE
+				}
+			}
+			s:STATE_WESTERN_THRACE = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_MACEDONIA
+					owns_entire_state_region = STATE_MACEDONIA
+				}
+			}
+			s:STATE_MACEDONIA = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_SKOPIA
+					owns_entire_state_region = STATE_SKOPIA
+				}
+			}
+			s:STATE_SKOPIA = {
+				add_claim = ROOT
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.214 = { # Adds je_balkfm_the_bulgarian_empire
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.214.t
+	desc = balkfm_bulgaria.214.d
+	flavor = balkfm_bulgaria.214.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bulgaria.214.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_balkfm_bul_tsardom
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_WALLACHIA
+					owns_entire_state_region = STATE_WALLACHIA
+				}
+			}
+			s:STATE_WALLACHIA = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_DOBRUDJA
+					owns_entire_state_region = STATE_DOBRUDJA
+				}
+			}
+			s:STATE_DOBRUDJA = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_NORTHERN_SERBIA
+					owns_entire_state_region = STATE_NORTHERN_SERBIA
+				}
+			}
+			s:STATE_NORTHERN_SERBIA = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_SOUTHERN_SERBIA
+					owns_entire_state_region = STATE_SOUTHERN_SERBIA
+				}
+			}
+			s:STATE_SOUTHERN_SERBIA = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_ALBANIA
+					owns_entire_state_region = STATE_ALBANIA
+				}
+			}
+			s:STATE_ALBANIA = {
+				add_claim = ROOT
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.215 = { # change tag to TSAR; branches for pan-slavia or byzfm
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.215.t
+	desc = balkfm_bulgaria.215.d
+	flavor = balkfm_bulgaria.215.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = { # Restore the Bulgarian Empire
+		name = balkfm_bulgaria.215.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_balkfm_bul_empire
+		}
+		every_state_region = {
+			limit = {
+				OR = {
+					region = sr:region_balkans
+				}
+				any_scope_state = {
+					NOT = { owner = ROOT }
+					NOT = { has_claim_by = ROOT }
+				}
+			}
+			add_claim = ROOT
+		}
+	}
+
+	option = { # Embrace Yugoslavism
+		name = balkfm_bulgaria.215.b
+		default_option = yes
+		every_state_region = {
+			limit = {
+				OR = {
+					region = sr:region_balkans
+				}
+				any_scope_state = {
+					NOT = { owner = ROOT }
+					NOT = { has_claim_by = ROOT }
+				}
+			}
+			add_claim = ROOT
+		}
+		custom_tooltip = {
+			text = balkfm_bulgaria.215.tt
+			hidden_effect = {
+				set_variable = balkfm_texas_left
+			}
+		}
+	}
+
+	option = { # Restore Byzantium
+		name = balkfm_bulgaria.215.c
+		add_journal_entry = {
+			type = je_grefm_bul_megali_idea
+		}
+		every_state_region = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_state = {
+					NOT = { owner = ROOT }
+					NOT = { has_claim_by = ROOT }
+				}
+			}
+			add_claim = ROOT
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_EASTERN_THRACE
+					owns_entire_state_region = STATE_EASTERN_THRACE
+				}
+			}
+			s:STATE_EASTERN_THRACE = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_HUDAVENDIGAR
+					owns_entire_state_region = STATE_HUDAVENDIGAR
+				}
+			}
+			s:STATE_HUDAVENDIGAR = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_AYDIN
+					owns_entire_state_region = STATE_AYDIN
+				}
+			}
+			s:STATE_AYDIN = {
+				add_claim = ROOT
+			}
+		}
+		c:GRE ?= {
+			post_notification = notification_balkfm_megali_idea
+		}
+	}
+
+	option = { # Remain Just Bulgaria
+		name = balkfm_bulgaria.215.e
+		change_tag = BUL_TSR
+		custom_tooltip = {
+			text = balkfm_weaksauce_tt
+			hidden_effect = {
+				set_variable = balkfm_weaksauce
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.216 = { # The Bulgarian Empire
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.216.t
+	desc = balkfm_bulgaria.216.d
+	flavor = balkfm_bulgaria.216.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		set_global_variable = has_formed_tsar
+	}
+
+	option = {
+		name = balkfm_bulgaria.216.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_balkfm_bulgarian_resurgence
+			days = very_long_modifier_time
+		}
+		every_state_region = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_state = {
+					NOT = { owner = ROOT }
+					NOT = { has_claim_by = ROOT }
+				}
+			}
+			add_claim = ROOT
+		}
+	}
+
+}
+
+balkfm_bulgaria.217 = { # The Slavic Balkans
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.217.t
+	desc = balkfm_bulgaria.217.d
+	flavor = balkfm_bulgaria.217.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		add_primary_culture = cu:bulgarian
+		save_scope_as = formation_country
+		cu:bosniak = {
+			save_scope_as = unification_culture
+		}
+		cu:croat = {
+			save_scope_as = unification_culture_2
+		}
+		cu:serb = {
+			save_scope_as = unification_culture_3
+		}
+		cu:slovene = {
+			save_scope_as = unification_culture_4
+		}
+		every_country = {
+			limit = {
+				has_diplomatic_relevance = ROOT
+			}
+			post_notification = unification_notification_four_culture
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.217.a
+		default_option = yes
+		every_state_region = {
+			limit = {
+				region = sr:region_balkans
+				any_scope_state = {
+					NOT = { owner = ROOT }
+					NOT = { has_claim_by = ROOT }
+				}
+			}
+			add_claim = ROOT
+		}
+	}
+
+}
+
+balkfm_bulgaria.218 = { # The Queen of Cities
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.218.t
+	desc = balkfm_bulgaria.218.d
+	flavor = balkfm_bulgaria.218.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bulgaria.218.a
+		default_option = yes
+		change_tag = BYZ
+		hidden_effect = {
+			add_primary_culture = cu:bulgarian
+			add_primary_culture = cu:rhomaios
+		}
+	}
+
+}
+
+#### BULGARIA IMPERIAL AMBITION & SUPPORT EVENTS ####
+
+balkfm_bulgaria.220 = { # Memories of the Steppe
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.220.t
+	desc = balkfm_bulgaria.220.d
+	flavor = balkfm_bulgaria.220.f
+
+	event_image = {
+		video = "ep1_cossacks"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_balkfm_bul_old_bulgaria
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bulgaria.220.a
+		default_option = yes
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_CRIMEA
+					owns_entire_state_region = STATE_CRIMEA
+				}
+			}
+			s:STATE_CRIMEA = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_CHERSON
+					owns_entire_state_region = STATE_CHERSON
+				}
+			}
+			s:STATE_CHERSON = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_TAURIDA
+					owns_entire_state_region = STATE_TAURIDA
+				}
+			}
+			s:STATE_TAURIDA = {
+				add_claim = ROOT
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.221 = { # Old Great Bulgaria
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.221.t
+	desc = balkfm_bulgaria.221.d
+	flavor = balkfm_bulgaria.221.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_balkfm_bul_old_bulgaria
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bulgaria.221.a
+		default_option = yes
+		add_loyalists = {
+			culture = cu:bulgarian
+			value = medium_radicals
+		}
+	}
+
+}
+
+balkfm_bulgaria.227 = { # A United Bulgaria
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.227.t
+	desc = balkfm_bulgaria.227.d
+	flavor = balkfm_bulgaria.227.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		set_variable = balkfm_tsardom_declared
+	}
+
+	option = {
+		name = balkfm_bulgaria.227.a
+		default_option = yes
+		add_loyalists = {
+			culture = cu:bulgarian
+			value = large_radicals
+		}
+		annex = c:BUL_RUM
+	}
+
+}
+
+balkfm_bulgaria.228 = { # The Bulgarian State
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.228.t
+	desc = balkfm_bulgaria.228.d
+	flavor = balkfm_bulgaria.228.f
+
+	gui_window = event_window_1char_tabloid
+
+	left_icon = scope:bulgaria_ruler_scope
+
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_global_variable = balkfm_bulgaria_congress_var
+		NOR = {
+			has_global_variable = turkfm_congress_var
+			has_global_variable = balkfm_bulgarian_switch_var
+			has_variable = balkfm_bulgarian_switch_offer
+		}
+		is_player = yes
+		c:BUL ?= {
+			is_ai = yes
+		}
+		has_diplomatic_relevance = c:BUL
+	}
+
+	immediate = {
+		set_global_variable = balkfm_bulgarian_switch_var # in case this is an MP game
+		set_variable = balkfm_bulgarian_switch_offer
+		c:BUL = {
+			save_scope_as = bulgaria_scope
+			ruler = {
+				save_scope_as = bulgaria_ruler_scope
+			}
+		}
+	}
+
+	option = { # Do Nothing
+		name = balkfm_bulgaria.228.a
+		default_option = yes
+		custom_tooltip = {
+			text = turkfm_nothing_happens
+			remove_global_variable = balkfm_bulgarian_switch_var
+		}
+	}
+
+	option = { # Play as BUL
+		name = balkfm_bulgaria.228.b
+		play_as = c:BUL
+		hidden_effect = {
+			if = {
+				limit = {
+					has_global_variable = balkfm_lion_awakened # checking for balkfm_bulgaria.001
+				}
+				c:BUL = {
+					trigger_event = {
+						id = balkfm_bulgaria.229 # The Golden Lion Awakens (Alternate)
+						days = 1 # to prevent the AI from auto-resolving the event
+					}
+				}
+			}
+		}
+		remove_global_variable = balkfm_bulgaria_congress_var
+		remove_global_variable = balkfm_bulgarian_switch_var
+		every_country = {
+			limit = {
+				has_variable = balkfm_bulgarian_switch_offer
+			}
+			remove_variable = balkfm_bulgarian_switch_offer
+		}
+	}
+
+}
+
+balkfm_bulgaria.229 = { # The Golden Lion Awakens (Alternate)
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.229.t
+	desc = balkfm_bulgaria.229.d
+	flavor = balkfm_bulgaria.229.f
+
+	event_image = {
+		video = "balkfm_bulgaria_intro"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		c:RUS = {
+			save_scope_as = russia_scope
+		}
+		ruler = {
+			save_scope_as = balkfm_alex_scope
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.229.a
+		default_option = yes
+	}
+
+}
+
+#### EASTERN RUMELIA FLAVOR ####
+
+balkfm_bulgaria.300 = { # The Two Bulgarias
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.300.t
+	desc = balkfm_bulgaria.300.d
+	flavor = balkfm_bulgaria.300.f
+
+	event_image = {
+		video = "rp1_brazilian_city"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_rumelia.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bulgaria.300.a
+		default_option = yes
+	}
+
+}
+
+balkfm_bulgaria.301 = { # New Governor-General Appointed
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.301.t
+	desc = balkfm_bulgaria.301.d
+	flavor = balkfm_bulgaria.301.f
+
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_rumelia.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		var:balkfm_erum_governor_var <= 0
+	}
+
+	immediate = {
+		set_variable = {
+			name = balkfm_erum_governor_var
+			value = 60
+		}
+		balkfm_rumelian_ruler_rotation_effect = yes
+		random_character_in_void = {
+			limit = {
+				has_variable = balkfm_rumelian_ruler_var
+			}
+			save_scope_as = balkfm_rumelian_ruler_scope
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.301.a
+		default_option = yes
+		scope:balkfm_rumelian_ruler_scope = {
+			set_character_as_ruler = yes
+			free_character_from_void = yes
+		}
+	}
+
+}
+
+balkfm_bulgaria.307 = { # Bulgarian Agitation in Rumelia!
+	type = country_event
+	placement = scope:northern_thrace_state_scope
+
+	title = balkfm_bulgaria.307.t
+	desc = balkfm_bulgaria.307.d
+	flavor = balkfm_bulgaria.307.f
+
+	event_image = {
+		video = "europenorthamerica_springtime_of_nations"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by balkfm_agitate_rumelia_button
+	}
+
+	immediate = {
+		s:STATE_NORTHERN_THRACE = {
+			random_scope_state = {
+				save_scope_as = northern_thrace_state_scope
+			}
+		}
+		c:BUL = {
+			save_scope_as = bulgaria_scope
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.307.a
+		trigger = {
+			NOT = {
+				has_journal_entry = je_balkfm_bul_liberation_of_bulgaria
+			}
+		}
+		scope:northern_thrace_state_scope = {
+			add_radicals_in_state = {
+				culture = cu:bulgarian
+				value = large_radicals
+			}
+		}
+	}
+
+	option = {
+		name = balkfm_bulgaria.307.b
+		default_option = yes
+		trigger = {
+			has_journal_entry = je_balkfm_bul_liberation_of_bulgaria
+		}
+		show_as_tooltip = {
+			scope:northern_thrace_state_scope = {
+				add_radicals_in_state = {
+					culture = cu:bulgarian
+					value = large_radicals
+				}
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.308 = { # Eastern Rumelia Rebels!
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.308.t
+	desc = balkfm_bulgaria.308.d
+	flavor = balkfm_bulgaria.308.f
+
+	event_image = {
+		video = "votp_agitator_speaking"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by balkfm_uplift_rumelia_button
+	}
+
+	immediate = { # As if there aren't enough events all trying to hammer this type of effect
+		if = {
+			limit = {
+				c:TUR ?= this
+			}
+			create_country = {
+				tag = BUL_RUM
+				origin = this
+				state = s:STATE_NORTHERN_THRACE.region_state:TUR
+			}
+			if = {
+				limit = {
+					is_country_type = recognized
+				}
+				create_diplomatic_pact = {
+					country = c:BUL_RUM
+					type = puppet
+				}
+			}
+			else_if = {
+				limit = {
+					is_country_type = unrecognized
+				}
+				create_diplomatic_pact = {
+					country = c:BUL_RUM
+					type = vassal
+				}
+			}
+		}
+		c:BUL_RUM ?= {
+			save_scope_as = rumelia_scope
+		}
+		c:TUR ?= {
+			save_scope_as = ottoman_scope
+		}
+		c:BUL = {
+			save_scope_as = bulgaria_scope
+		}
+	}
+
+	option = { # For BUL
+		name = balkfm_bulgaria.308.a
+		default_option = yes
+		trigger = {
+			c:TUR != this
+		}
+		change_relations = {
+			country = c:BUL_RUM
+			value = 50
+		}
+	}
+
+	option = { # For TUR, spank them!
+		name = balkfm_bulgaria.308.b
+		trigger = {
+			c:TUR = this
+		}
+		scope:rumelia_scope = {
+			make_independent = yes
+		}
+		create_diplomatic_play = {
+			target_country = scope:rumelia_scope
+			type = dp_annex_war
+			add_war_goal = {
+				holder = root
+				type = conquer_state
+				target_state = s:STATE_NORTHERN_THRACE.region_state:BUL_RUM
+			}
+		}
+		hidden_effect = {
+			random_diplomatic_play = {
+				limit = {
+					c:TUR = {
+						is_diplomatic_play_initiator = yes
+					}
+					scope:rumelia_scope = {
+						is_diplomatic_play_target = yes
+					}
+				}
+				add_diplomatic_play_war_support = { target = scope:rumelia_scope value = 100 }
+			}
+		}
+		c:BUL = {
+			trigger_event = {
+				id = balkfm_bulgaria.308 # Eastern Rumelia Rebels!
+			}
+		}
+	}
+
+	option = { # For TUR, be a pansy...
+		name = balkfm_bulgaria.308.c
+		trigger = {
+			c:TUR = this
+		}
+		scope:rumelia_scope = {
+			increase_autonomy = yes
+		}
+		create_bidirectional_truce = {
+			country = scope:rumelia_scope
+			months = 60
+		}
+		add_radicals = {
+			culture = cu:turkish
+			value = medium_radicals
+		}
+		add_modifier = {
+			name = modifier_turkfm_caved_to_separatists
+			days = normal_modifier_time
+		}
+		c:BUL = {
+			trigger_event = {
+				id = balkfm_bulgaria.308 # Eastern Rumelia Rebels!
+			}
+		}
+	}
+
+}
+
+balkfm_bulgaria.309 = { # Union with Bulgaria
+	type = country_event
+	placement = root
+
+	title = balkfm_bulgaria.309.t
+	desc = balkfm_bulgaria.309.d
+	flavor = balkfm_bulgaria.309.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_rumelia.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_bulgaria.309.a
+		default_option = yes
+		add_loyalists = {
+			culture = cu:bulgarian
+			value = large_radicals
+		}
+		c:BUL ?= {
+			trigger_event = {
+				id = balkfm_bulgaria.211 # The Tophane Agreement
+			}
+			set_variable = balkfm_annex_rumelia_taken
+		}
+		custom_tooltip = balkfm_bulgarian_union_tt
+	}
+
+}
