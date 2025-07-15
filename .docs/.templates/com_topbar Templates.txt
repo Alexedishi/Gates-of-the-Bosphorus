@@ -1,0 +1,323 @@
+com_topbar_element_tempkey: "com_topbar_element_tempkey"
+com_topbar_element_tempkey_icon: ""
+com_topbar_element_tempkey_value: ""
+com_topbar_element_tempkey_tooltip: ""
+
+
+
+com_topbar_element_tempkey = {
+	scope = country
+
+	is_shown = {
+		always = yes
+	}
+}
+
+
+add_com_topbar_element = {
+	element_name = com_topbar_element_tempkey
+}
+
+every_country = {
+	limit = {
+
+	}
+	add_to_variable_list = {
+		name = com_topbar_second_line
+		target = scope:com_topbar_element_tempkey
+	}
+}
+
+# tempkey
+create_struct = {
+	struct_type = kog_seat
+	struct_scope = kog_tempkey
+}
+global_var:kog_global = {
+	set_variable = {
+		name = kog_tempkey
+		value = scope:kog_tempkey
+	}
+}
+global_var:kog_global.var:kog_tempkey = {
+	set_variable = {
+		name = seat_name
+		value = flag:kog_tempkey_name
+	}
+	set_variable = {
+		name = kog_rite_var
+		value = flag:kog_roman_rite
+	}
+	p:xF0A020 = { # tempkey
+		owner = {
+			set_variable = kog_controls_tempkey
+			save_scope_as = kog_tempkey_controller
+		}
+	}
+	set_variable = {
+		name = kog_controller_var
+		value = scope:kog_tempkey_controller
+	}
+	scope:kog_tempkey_controller = {
+		ruler = {
+			save_scope_as = kog_tempkey_patriarch
+		}
+	}
+	set_variable = {
+		name = kog_patriarch_var
+		value = scope:kog_tempkey_patriarch
+	}
+}
+
+
+kog_tempkey: "kog_tempkey"
+kog_tempkey_name: "tempkey"
+
+kog_tempkey_details: "#header$kog_tempkey_building$#!\n$TOOLTIP_DELIMITER$\n•#italic$kog_tempkey_location$#!\n•#white$kog_tempkey_patriarch$#!\n•#bold$kog_tempkey_controller$#!\n•#bold$kog_tempkey_opinion$#!"
+kog_tempkey_building: "The [GetBuildingType('kog_building_patriarchate_tempkey').GetName]"
+kog_tempkey_location: "Seated in [GetGlobalVariable('kog_global').Var('kog_tempkey').Var('kog_location_var').GetStateRegion.GetName]"
+kog_tempkey_patriarch: "Led By:#! Patriarch [GetGlobalVariable('kog_global').Var('kog_tempkey').Var('kog_patriarch_var').GetCharacter.GetLastName]"
+kog_tempkey_controller: "$kog_controller$:#! [Character.GetCustom('kog_controller_type')]"
+
+kog_tempkey_opinion: "#bold Opinion of [GetPlayer.GetNameNoFlag]:#! #tooltippable;tooltip:[Country.GetTooltipTag],kog_tempkey_opinion_breakdown [GetPlayer.MakeScope.GetScriptValue('kog_tempkey_opinion_var')|+=]#!"
+kog_tempkey_opinion_breakdown: "[GetPlayer.MakeScope.GetScriptValueDesc('kog_tempkey_opinion_value')]"
+kog_tempkey_modifier: "#bold Holding and $kog_controlling$ tempkey will grant the following modifier:#!\n [GetStaticModifier('modifier_kog_controls_tempkey').GetDesc]"
+
+kog_tempkey_details: "#bold #!n•#italic #!\n•#white \n•#bold \n•#bold Opinion of [GetPlayer.GetNameNoFlag]:#! #tooltippable;tooltip:[Country.GetTooltipTag],kog_tempkey_opinion_breakdown [GetPlayer.MakeScope.Var('kog_tempkey_opinion_var').GetValue|+=]#!"
+
+random_character_in_void = {
+	limit = {
+		has_template = template_kog_tempkey_patriarch
+	}
+	save_scope_as = kog_tempkey_patriarch
+}
+
+[GetGlobalVariable('kog_global').Var('kog_tempkey').Var('kog_location_var').GetStateRegion.GetName]
+[GetGlobalVariable('kog_global').Var('kog_tempkey').Var('kog_tempkey_patriarch_var').GetCharacter.GetLastName]
+
+kog_tempkey_opinion_value = {
+	value = 0
+
+	# Sources
+	if = {
+		limit = {
+			global_var:kog_global.var:kog_tempkey.var:kog_patriarch_var.religion = root.religion
+		}
+		add = {
+			value = 10
+			desc = kog_value_from_matching_religion
+		}
+	}
+	if = {
+		limit = {
+			has_law = law_type:law_state_religion
+		}
+		add = {
+			value = 20
+			desc = kog_value_from_state_religion
+		}
+	}
+	if = {
+		limit = {
+			has_law = law_type:law_freedom_of_conscience
+		}
+		add = {
+			value = 10
+			desc = kog_value_from_freedom_of_conscience
+		}
+	}
+	if = {
+		limit = {
+			has_law = law_type:law_charitable_health_system
+		}
+		add = {
+			value = 10
+			desc = kog_value_from_charity_hospitals
+		}
+	}
+	if = {
+		limit = {
+			has_law = law_type:law_religious_schools
+		}
+		add = {
+			value = 10
+			desc = kog_value_from_religious_schools
+		}
+	}
+	if = {
+		limit = {
+			kog_controls_tempkey_trigger = yes
+		}
+		add = {
+			value = 10
+			desc = kog_value_from_seat_control
+		}
+	}
+	if = {
+		limit = {
+			global_var:kog_global.var:kog_tempkey.var:kog_liturgical_rite_var = var:kog_local.var:kog_liturgical_rite_var
+		}
+		add = {
+			value = 10
+			desc = kog_value_from_matching_liturgical_rite
+		}
+	}
+
+	# Mixed
+	add = {
+		value = var:kog_local.var:kog_tempkey_relations_var
+		desc = kog_value_from_relations
+	}
+
+	#Penalities
+	if = {
+		limit = {
+			global_var:kog_global.var:kog_tempkey.var:kog_patriarch_var.religion != root.religion
+		}
+		add = {
+			value = -25
+			desc = kog_value_from_different_religion
+		}
+	}
+	if = {
+		limit = {
+			has_law = law_type:law_total_separation
+		}
+		add = {
+			value = -10
+			desc = kog_value_from_total_separation
+		}
+	}
+	if = {
+		limit = {
+			has_law = law_type:law_state_atheism
+		}
+		add = {
+			value = -50
+			desc = kog_value_from_state_atheism
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_law = law_type:law_private_health_insurance
+				has_law = law_type:law_public_health_insurance
+			}
+		}
+		add = {
+			value = -10
+			desc = kog_value_from_non_charity_hospitals
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_law = law_type:law_public_schools
+				has_law = law_type:law_private_schools
+			}
+		}
+		add = {
+			value = -10
+			desc = kog_value_from_non_religious_schools
+		}
+	}
+	if = {
+		limit = {
+			kog_is_autocephalous_trigger = yes
+			global_var:kog_global.var:kog_tempkey.var:kog_patriarch_var.religion = root.religion
+			kog_controls_tempkey_trigger = no
+		}
+		add = {
+			value = -10
+			desc = kog_value_from_autocephaly
+		}
+	}
+	if = {
+		limit = {
+			global_var:kog_global.var:kog_tempkey.var:kog_patriarch_var.religion = root.religion
+			kog_is_schismatic_trigger = yes
+		}
+		add = {
+			value = -25
+			desc = kog_value_from_schismatic
+		}
+	}
+	if = {
+		limit = {
+			global_var:kog_global.var:kog_tempkey.var:kog_liturgical_rite_var != var:kog_local.var:kog_liturgical_rite_var
+		}
+		add = {
+			value = -10
+			desc = kog_value_from_differing_liturgical_rite
+		}
+	}
+}
+
+kog_tempkey_opinion_type = {
+	type = country
+
+	text = {
+		trigger = {
+			var:kog_local.var:kog_tempkey_opinion_var >= 80
+			global_var:kog_global.var:kog_tempkey.var:kog_patriarch_var.religion = root.religion
+		}
+		localization_key = kog_endorsing
+	}
+	text = {
+		trigger = {
+			var:kog_local.var:kog_tempkey_opinion_var >= 80
+			global_var:kog_global.var:kog_tempkey.var:kog_patriarch_var.religion != root.religion
+		}
+		localization_key = kog_friendly
+	}
+	text = {
+		trigger = {
+			var:kog_local.var:kog_tempkey_opinion_var < 80
+			var:kog_local.var:kog_tempkey_opinion_var >= 50
+		}
+		localization_key = kog_amicable
+	}
+	text = {
+		trigger = {
+			var:kog_local.var:kog_tempkey_opinion_var < 50
+			var:kog_local.var:kog_tempkey_opinion_var >= 20
+		}
+		localization_key = kog_cordial
+	}
+	text = {
+		trigger = {
+			var:kog_local.var:kog_tempkey_opinion_var < 20
+			var:kog_local.var:kog_tempkey_opinion_var > -20
+		}
+		localization_key = kog_neutral
+	}
+	text = {
+		trigger = {
+			var:kog_local.var:kog_tempkey_opinion_var <= -20
+			var:kog_local.var:kog_tempkey_opinion_var > -50
+		}
+		localization_key = kog_poor
+	}
+	text = {
+		trigger = {
+			var:kog_local.var:kog_tempkey_opinion_var <= -50
+			var:kog_local.var:kog_tempkey_opinion_var > -80
+		}
+		localization_key = kog_cold
+	}
+	text = {
+		trigger = {
+			var:kog_local.var:kog_tempkey_opinion_var <= -80
+			global_var:kog_global.var:kog_tempkey.var:kog_patriarch_var.religion != root.religion
+		}
+		localization_key = kog_hostile
+	}
+	text = {
+		trigger = {
+			var:kog_local.var:kog_tempkey_opinion_var <= -80
+			global_var:kog_global.var:kog_tempkey.var:kog_patriarch_var.religion = root.religion
+		}
+		localization_key = kog_condemning
+	}
+}
+
