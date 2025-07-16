@@ -1,0 +1,799 @@
+﻿## IONIAN ISLANDS FLAVOR EVENTS ##
+
+# For Greek content, see the "grefm" module
+# For Turkish content, see the "turkfm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Orthodox Church content, see the "eocfm" module
+
+####################
+
+namespace = grefm_heptanese
+
+####################
+
+####	TABLE OF CONTENTS	####	#TOC
+
+# The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
+
+#000-009 - The Xenocracy Events
+#	000 - The Republic of the Seven Islands
+#	001 - The Ionian Jewel
+#	002 - Modernized Agriculture
+#	003 - A Civilized State
+#	004 - The Ionian Academy
+
+#010-019 - The Ionian Jewry Events
+#	010 - The Romaniote Jews
+#	011 - Jews Request former Rights
+#	012 - Nacamulli's Press House
+#	013 - Blood Libel
+#	014 - Unrest in Corfu
+#	017 - ##Moisis Caimis Supports Demotiki
+#	018 - Jewish Exclusion
+#	019 - A Judaeo-Greek Nation
+
+#020-029 - Greek Union Events
+#	020 - The Dream of Enosis
+#	021 - Ionian Union with the Greek State
+
+####################
+
+## Xenocracy Events ##
+grefm_heptanese.001 = { # The Republic of the Seven Islands
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_heptanese.dds"
+
+	title = grefm_heptanese.001.t
+	desc = grefm_heptanese.001.d
+	flavor = grefm_heptanese.001.f
+
+	event_image = {
+		video = "grefm_ion_intro"
+	}
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered from GLOBAL
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_heptanese.001.a
+		default_option = yes
+		show_as_tooltip = {
+			add_modifier = modifier_grefm_xenocracy
+			add_modifier = modifier_grefm_hepantese_administration
+			add_modifier = modifier_grefm_venetian_legacy
+		}
+		trigger_event = {
+			id = grefm_heptanese.010 # The Romaniote Jews
+			days = 30
+		}
+	}
+
+}
+
+grefm_heptanese.002 = { # The Ionian Jewel
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_heptanese.dds"
+
+	title = grefm_heptanese.002.t
+	desc = grefm_heptanese.002.d
+	flavor = grefm_heptanese.002.f
+
+	event_image = {
+		video = "ep1_power_blocs"
+	}
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_ion_xenocracy
+	}
+
+	immediate = {
+		c:GBR = {
+			save_scope_as = uk_scope
+		}
+	}
+
+	option = {
+		name = grefm_heptanese.002.a
+		default_option = yes
+		c:GBR = {
+			change_relations = {
+				country = root
+				value = 25
+			}
+			set_secret_goal = {
+				country = root
+				secret_goal = protect
+			}
+		}
+		add_modifier = {
+			name = modifier_grefm_ionian_jewel
+			days = long_modifier_time
+		}
+	}
+
+}
+
+grefm_heptanese.003 = { # Modernized Agriculture
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+
+	title = grefm_heptanese.003.t
+	desc = grefm_heptanese.003.d
+	flavor = grefm_heptanese.003.f
+
+	event_image = {
+		video = "southamerica_factory_opening"
+	}
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_ion_venetian_legacy
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_heptanese.003.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_modernized_agriculture
+			days = long_modifier_time
+			is_decaying = yes
+		}
+		add_loyalists = {
+			culture = cu:greek
+			value = medium_radicals
+		}
+	}
+
+}
+
+grefm_heptanese.004 = { # A Civilized State
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	title = grefm_heptanese.004.t
+	desc = grefm_heptanese.004.d
+	flavor = grefm_heptanese.004.f
+
+	event_image = {
+		video = "europenorthamerica_london_center"
+	}
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_ion_poverty
+	}
+
+	immediate = {
+		add_modifier = { # this is to avoid a snap bureaucracy shortage from the journal closing
+			name = modifier_grefm_civilized_state
+			days = long_modifier_time
+			is_decaying = yes
+		}
+	}
+
+	option = {
+		name = grefm_heptanese.004.a
+		default_option = yes
+		show_as_tooltip = {
+			add_modifier = {
+				name = modifier_grefm_civilized_state
+				days = long_modifier_time
+				is_decaying = yes
+			}
+		}
+		add_loyalists = {
+			strata = lower
+			value = large_radicals
+		}
+	}
+
+}
+
+grefm_heptanese.005 = { # The Ionian Academy
+	type = country_event
+	placement = scope:university_state
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	title = grefm_heptanese.005.t
+	desc = grefm_heptanese.005.d
+	flavor = grefm_heptanese.005.f
+
+	gui_window = event_window_1char_tabloid
+
+	left_icon = scope:university_benefactor
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		morgenrote_is_active = no
+		NOT = { has_variable = grefm_ion_university_considered }
+		has_technology_researched = academia
+		owns_entire_state_region = STATE_IONIAN_ISLANDS
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = university_benefactor
+		}
+		s:STATE_ATTICA = {
+			random_scope_state = {
+				save_scope_as = university_state
+			}
+		}
+		set_variable = grefm_ion_university_considered
+	}
+
+	option = {
+		name = grefm_heptanese.005.a
+		default_option = yes
+		scope:university_state = {
+			create_building = {
+				building = "building_university"
+				level = 1
+			}
+		}
+		add_modifier = {
+			name = modifier_grefm_funding_royal_university
+			days = normal_modifier_time
+			multiplier = money_amount_multiplier_small
+		}
+	}
+
+	option = {
+		name = grefm_heptanese.005.b
+		scope:university_benefactor = {
+			add_modifier = {
+				name = modifier_grefm_blocked_building_university
+				days = normal_modifier_time
+			}
+		}
+	}
+
+}
+
+## The Ionian Jewry Events ##
+grefm_heptanese.010 = { # The Romanyotim of the Heptanese
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_jewish.dds"
+
+	title = grefm_heptanese.010.t
+	desc = grefm_heptanese.010.d
+	flavor = grefm_heptanese.010.f
+
+	event_image = {
+		video = "europenorthamerica_judaism"
+	}
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by grefm_heptanese.001
+	}
+
+	immediate = {
+		set_variable = {
+			name = grefm_samos_loyalist_jews_var
+			value = 0
+		}
+		set_variable = {
+			name = grefm_samos_radical_jews_var
+			value = 0
+		}
+	}
+
+	option = {
+		name = grefm_heptanese.010.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_grefm_ion_jewry
+		}
+		show_as_tooltip = {
+			add_modifier = modifier_grefm_jewish_exclusion
+		}
+	}
+
+}
+
+grefm_heptanese.011 = { # Jews Request former Rights
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_jewish.dds"
+
+	title = grefm_heptanese.011.t
+	desc = grefm_heptanese.011.d
+	flavor = grefm_heptanese.011.f
+
+	event_image = {
+		video = "unspecific_politicians_arguing"
+	}
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = grefm_jews_requested_rights
+		}
+		has_technology_researched = mass_communication
+	}
+
+	immediate = {
+		set_variable = grefm_jews_requested_rights
+	}
+
+	option = { # Let them rights
+		name = grefm_heptanese.011.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_jewish_legal_concessions
+			days = very_long_modifier_time
+		}
+		add_radicals = {
+			culture = cu:greek
+			value = small_radicals
+		}
+	}
+
+	option = { # Be a chode
+		name = grefm_heptanese.011.b
+		add_modifier = {
+			name = modifier_grefm_denied_jewish_rights
+			days = very_long_modifier_time
+		}
+		add_radicals = {
+			culture = cu:romaniote
+			value = medium_radicals
+		}
+	}
+
+}
+
+grefm_heptanese.012 = { # Nacamulli's Press House
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	title = grefm_heptanese.012.t
+	desc = grefm_heptanese.012.d
+	flavor = grefm_heptanese.012.f
+
+	event_image = {
+		video = "ep1_printing_press"
+	}
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = grefm_nacamullis_press
+		}
+		has_technology_researched = human_rights # this might be too late
+	}
+
+	immediate = {
+		set_variable = grefm_nacamullis_press
+	}
+
+	option = { # Circulate the articles
+		name = grefm_heptanese.012.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_chronica_israelitika
+			days = very_long_modifier_time
+		}
+		add_radicals = {
+			culture = cu:greek
+			value = small_radicals
+		}
+	}
+
+	option = { # Supress the articles
+		name = grefm_heptanese.012.b
+		add_modifier = {
+			name = modifier_grefm_closed_presshouse
+			days = very_long_modifier_time
+		}
+		add_radicals = {
+			culture = cu:romaniote
+			value = small_radicals
+		}
+	}
+
+}
+
+grefm_heptanese.013 = { # Blood Libel
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_jewish.dds"
+
+	title = grefm_heptanese.013.t
+	desc = grefm_heptanese.013.d
+	flavor = grefm_heptanese.013.f
+
+	event_image = {
+		video = "votp_conspiring"
+	}
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = grefm_blood_libel_happened
+		}
+		has_technology_researched = nationalism # technically, this event didn't happen until 1891, but it should be plausible any time after nationalism has gripped the country
+	}
+
+	immediate = {
+		set_variable = grefm_blood_libel_happened
+	}
+
+	option = { # Break up the Mob
+		name = grefm_heptanese.013.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_suppressed_blood_libel
+			days = very_long_modifier_time
+		}
+		add_radicals = {
+			strata = lower
+			value = medium_radicals
+		}
+	}
+
+	option = { # What could go wrong?
+		name = grefm_heptanese.013.b
+		add_radicals = {
+			culture = cu:romaniote
+			value = medium_radicals
+		}
+		hidden_effect = {
+			trigger_event = {
+				id = grefm_heptanese.014 # Unrest in Corfu
+			}
+		}
+	}
+
+}
+
+grefm_heptanese.014 = { # Unrest in Corfu
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+
+	title = grefm_heptanese.014.t
+	desc = grefm_heptanese.014.d
+	flavor = grefm_heptanese.014.f
+
+	event_image = {
+		video = "votp_cops_march"
+	}
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by grefm_heptanese.013
+	}
+
+	immediate = {
+	}
+
+	option = { # Make Arrests (too late tho bro)
+		name = grefm_heptanese.014.a
+		default_option = yes
+		add_radicals = {
+			culture = cu:greek
+			value = medium_radicals
+		}
+		add_radicals = {
+			culture = cu:romaniote
+			value = large_radicals
+		}
+		kill_population = { # the incident began because of a single Jewish girl found dead
+			culture = cu:romaniote
+			value = 1
+		}
+		kill_population = { # 3 "christians" were shot by soldiers
+			religion = rel:orthodox
+			value = 3
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					is_pop_type = soldiers
+				}
+			}
+			kill_population = { # one soldier was killed defending the Jewish families
+				pop_type = soldiers
+				value = 1
+			}
+		}
+		add_modifier = {
+			name = modifier_grefm_blood_libel
+			days = very_long_modifier_time
+		}
+	}
+
+	option = { # OPE
+		name = grefm_heptanese.014.b
+		add_radicals = {
+			culture = cu:greek
+			value = small_radicals
+		}
+		add_radicals = {
+			culture = cu:romaniote
+			value = very_large_radicals
+		}
+		kill_population = { # the incident began because of a single Jewish girl found dead
+			culture = cu:romaniote
+			value = 1
+		}
+		kill_population = { # 3 "christians" were shot by soldiers
+			religion = rel:orthodox
+			value = 3
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					is_pop_type = soldiers
+				}
+			}
+			kill_population = { # one soldier was killed defending the Jewish families
+				pop_type = soldiers
+				value = 1
+			}
+		}
+		add_modifier = {
+			name = modifier_grefm_blood_libel
+			days = very_long_modifier_time
+		}
+	}
+
+}
+
+grefm_heptanese.018 = { # Jewish Exclusion
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_jewish.dds"
+
+	title = grefm_heptanese.018.t
+	desc = grefm_heptanese.018.d
+	flavor = grefm_heptanese.018.f
+
+	event_image = {
+		video = "europenorthamerica_rich_and_poor"
+	}
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_ion_jewry
+	}
+
+	immediate = {
+		grefm_cleanup_ionian_jewery_effect = yes
+	}
+
+	option = {
+		name = grefm_heptanese.018.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_jewish_neglect
+			days = very_long_modifier_time
+			is_decaying = yes
+		}
+		add_loyalists = {
+			religion = rel:orthodox
+			value = medium_radicals
+		}
+	}
+
+}
+
+grefm_heptanese.019 = { # A Judaeo-Greek Nation
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_jewish.dds"
+
+	title = grefm_heptanese.019.t
+	desc = grefm_heptanese.019.d
+	flavor = grefm_heptanese.019.f
+
+	event_image = {
+		video = "europenorthamerica_judaism"
+	}
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_ion_jewry
+	}
+
+	immediate = {
+		grefm_cleanup_ionian_jewery_effect = yes
+		#		set_global_variable = grefm_romaniote_jews_integrated
+	}
+
+	option = {
+		name = grefm_heptanese.019.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_jewish_integration
+			days = long_modifier_time
+			is_decaying = yes
+		}
+		add_loyalists = {
+			culture = cu:romaniote
+			value = medium_radicals
+		}
+		add_primary_culture = cu:romaniote
+	}
+
+}
+
+## Greek Union Events ##
+grefm_heptanese.020 = { # The Dream of Enosis
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+
+	title = grefm_heptanese.020.t
+	desc = grefm_heptanese.020.d
+	flavor = grefm_heptanese.020.f
+
+	event_image = {
+		video = "europenorthamerica_capitalists_meeting"
+	}
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by grefm_megali_idea.002
+	}
+
+	immediate = {
+		c:GRE = {
+			save_scope_as = greece_scope
+			set_secret_goal = { # Greece was not secretive about its desires for union with the Islands
+				country = c:ION
+				secret_goal = befriend
+			}
+		}
+	}
+
+	option = {
+		name = grefm_heptanese.020.a
+		default_option = yes
+		if = {
+			limit = {
+				has_dlc_feature = lobbies
+
+			}
+			create_political_lobby = {  # The majority of Ionian politics was unified on the idea of seeking union with Greece at all costs
+				type = lobby_pro_country
+				target = c:GRE
+				add_interest_group = ig:ig_petty_bourgeoisie
+				add_interest_group = ig:ig_intelligentsia
+				add_interest_group = ig:ig_armed_forces
+				add_interest_group = ig:ig_rural_folk
+				add_interest_group = ig:ig_industrialists
+			}
+		}
+	}
+
+}
+
+grefm_heptanese.021 = { # Ionian Union with the Greek State
+	type = country_event
+	placement = scope:ionian_islands_state_scope
+	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+
+	title = grefm_heptanese.021.t
+	desc = grefm_heptanese.021.d
+	flavor = grefm_heptanese.021.f
+
+	event_image = {
+		video = "ep1_transfer_of_authority"
+	}
+	
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by grefm_ionian_enosis_button
+	}
+
+	immediate = {
+		s:STATE_IONIAN_ISLANDS = {
+			random_scope_state = {
+				save_scope_as = ionian_islands_state_scope
+			}
+		}
+		c:GBR = {
+			save_scope_as = uk_scope
+		}
+	}
+
+	option = {
+		name = grefm_heptanese.021.a
+		default_option = yes
+		annex = c:ION
+		add_modifier = {
+			name = modifier_grefm_hepantese_union
+			days = normal_modifier_time
+		}
+	}
+
+}

@@ -1,0 +1,149 @@
+﻿je_balkfm_cro_croation_question = {
+	icon = "gfx/interface/icons/event_icons/event_croatia.dds"
+
+	group = je_group_balkfm_croatia
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+	}
+
+	#	scripted_button = croatia_autonomy_button
+
+	complete = {
+		OR = {
+			custom_tooltip = {
+				text = je_balkfm_cro_croation_question_complete
+				hidden_trigger = {
+					c:CRO ?= {
+						is_subject_of = ROOT
+					}
+				}
+			}
+			cultural_acceptance_base = {
+				target = cu:croat
+				value >= acceptance_status_5
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm_croatia.209 # Croatian–Hungarian Settlement / Austro-Croatian Compromise
+		}
+		balkfm_cleanup_croatian_modifiers_effect = yes
+	}
+
+	fail = {
+		cu:croat = {
+			culture_secession_progress = {
+				target = ROOT
+				value > 0.5
+			}
+		}
+	}
+
+	on_fail = {
+		set_variable = balkfm_croatian_question_failed
+		trigger_event = {
+			id = balkfm_croatia.209 # Croatian–Hungarian Settlement / Austro-Croatian Compromise
+		}
+		balkfm_cleanup_croatian_modifiers_effect = yes
+	}
+
+	invalid = {
+		OR = {
+			NOT = {
+				any_scope_state = {
+					state_region = {
+						is_homeland = cu:croat
+					}
+				}
+			}
+			NOT = {
+				this = c:AUS
+			}
+			hidden_trigger = {
+				has_variable = balkfm_croatian_question_complete
+			}
+		}
+	}
+
+	on_invalid = {
+		hidden_effect = {
+			every_scope_state = {
+				remove_modifier = modifier_balkfm_croatian_revivalism
+			}
+		}
+		balkfm_cleanup_croatian_modifiers_effect = yes
+	}
+
+	on_monthly_pulse = {
+		events = {
+		}
+		random_events = {
+			chance_of_no_event = 75
+			5 = balkfm_croatia.201 # An Austro-Slavic Proposal
+			5 = balkfm_croatia.202 # Vienna Literary Agreement (Austrian Variant)
+		}
+		effect = {
+		}
+	}
+
+	weight = 500
+
+}
+
+je_balkfm_cro_triune_restoration = {
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+
+	group = je_group_balkfm_croatia
+
+	should_be_pinned_by_default = yes
+
+	is_shown_when_inactive = {
+		country_has_primary_culture = cu:croat
+	}
+
+	possible = {
+		has_journal_entry = je_balkfm_nacertanije
+	}
+
+	immediate = {
+		trigger_event = {
+			id = balkfm_croatia.300 # The Triune Dream
+		}
+	}
+
+	scripted_button = balkfm_proclaim_triune_button
+
+	complete = {
+		custom_tooltip = {
+			text = je_balkfm_cro_triune_restoration_complete
+			hidden_trigger = {
+				c:CRO_TRI ?= this
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm_croatia.301 # Restoration of the Triune Kingdom
+		}
+	}
+
+	invalid = {
+		hidden_trigger = {
+			OR = {
+				has_variable = balkfm_weaksauce
+				has_global_variable = has_formed_triu
+				NOT = {
+					c:CRO ?= this
+				}
+			}
+		}
+	}
+
+	weight = 500
+
+}

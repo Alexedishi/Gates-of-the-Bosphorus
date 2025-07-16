@@ -1,0 +1,300 @@
+﻿je_balkfm_ser_monarchism = {
+	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
+
+	group = je_group_balkfm_serbia
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+		set_variable = {
+			name = balkfm_obrenovic_support_var
+			value = 200
+		}
+		set_variable = {
+			name = balkfm_karadordevic_support_var
+			value = 0
+		}
+		set_variable = {
+			name = balkfm_leading_dynasty_var
+			value = 0
+		}
+		set_variable = balkfm_russia_consul_var
+	}
+
+	modifiers_while_active = {
+		modifier_balkfm_dynastic_feud
+	}
+
+	scripted_button = balkfm_cement_monarchy_button
+
+	complete = {
+		has_law = law_type:law_monarchy
+		custom_tooltip = {
+			text = je_balkfm_ser_monarchism_complete_tt
+			hidden_trigger = {
+				OR = {
+					has_modifier = modifier_balkfm_obrenovic_succession
+					has_modifier = modifier_balkfm_karadordevic_succession
+				}
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm_serbia.019 # Mandate Secured
+		}
+		hidden_effect = {
+			balkfm_cleanup_dynasty_variables_effect = yes
+		}
+	}
+
+	fail = {
+		NOT = {
+			has_law = law_type:law_monarchy
+		}
+	}
+
+	on_fail = {
+		hidden_effect = {
+			balkfm_cleanup_dynasty_variables_effect = yes
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {
+			balkfm_serbia.002 # Constitution Imposed
+			balkfm_serbia.007 # Defenders of the Constitution
+			balkfm_serbia.010 # House Karađorđević Takes the Throne
+			balkfm_serbia.011 # House Obrenović Takes the Throne
+			balkfm_serbia.012 # Austria/Russia Requests Primacy
+		}
+		random_events = {
+			300 = 0
+			1 =	balkfm_serbia.013 # Plague Outbreak!
+			1 = balkfm_serbia.014 # Abusive Garrison
+		}
+		effect = {
+			balkfm_update_dynasty_variables_effect = yes
+			balkfm_dynasty_monthly_maintenance_effect = yes
+		}
+	}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_balkfm_ser_monarchism_status_1
+				trigger = {
+					has_variable = balkfm_constitution_pending
+				}
+			}
+			triggered_desc = {
+				desc = je_balkfm_ser_monarchism_status_2
+				trigger = {
+					var:balkfm_leading_dynasty_var < 50
+				}
+			}
+			triggered_desc = {
+				desc = je_balkfm_ser_monarchism_status_3
+				trigger = {
+					var:balkfm_obrenovic_support_var > var:balkfm_karadordevic_support_var
+				}
+			}
+			triggered_desc = {
+				desc = je_balkfm_ser_monarchism_status_4
+				trigger = {
+					var:balkfm_obrenovic_support_var < var:balkfm_karadordevic_support_var
+				}
+			}
+			triggered_desc = {
+				desc = je_balkfm_ser_monarchism_status_5
+				trigger = {
+					var:balkfm_obrenovic_support_var = var:balkfm_karadordevic_support_var
+				}
+			}
+		}
+	}
+
+	current_value = {
+		value = var:balkfm_leading_dynasty_value
+	}
+
+	goal_add_value = {
+		value = 500
+	}
+
+	progressbar = yes
+
+
+	weight = 1000
+
+}
+
+je_balkfm_ser_defenders = {
+	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
+
+	group = je_group_balkfm_serbia
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+	}
+
+	modifiers_while_active = {
+		modifier_balkfm_defenders
+	}
+
+	complete = {
+		NOT = { has_modifier = modifier_balkfm_royal_turmoil }
+		custom_tooltip = {
+			text = je_balkfm_ser_defenders_tt1
+			hidden_trigger = {
+				has_variable = balkfm_state_reform_complete
+			}
+		}
+		custom_tooltip = {
+			text = je_balkfm_ser_defenders_tt2
+			hidden_trigger = {
+				has_variable = balkfm_civic_reform_complete
+			}
+		}
+		custom_tooltip = {
+			text = je_balkfm_ser_defenders_tt3
+			hidden_trigger = {
+				has_variable = balkfm_land_reform_complete
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm_serbia.009 # Serbia Reforged
+		}
+		set_variable = balkfm_defenders_completed
+	}
+
+	timeout = 3650 # mod's been out for over a year and this my first timeout journal since the Bavarocracy journals... anyway, this number is based on the "Defenders" being dominant in Serbian politics from roughly 1838-1858
+
+	on_timeout = {
+		trigger_event = {
+			id = balkfm_serbia.008 # Absent Reform
+		}
+		set_variable = balkfm_defenders_completed
+	}
+
+	invalid = {
+		OR = {
+			NOT = {
+				has_law = law_type:law_monarchy
+			}
+			has_variable = balkfm_defenders_completed
+		}
+	}
+
+	on_invalid = {
+		set_variable = balkfm_defenders_completed
+	}
+
+	weight = 500
+
+}
+
+je_balkfm_ser_serbian_heartlands = {
+	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
+
+	group = je_group_balkfm_serbia
+
+	should_be_pinned_by_default = yes
+
+	is_shown_when_inactive = {
+		c:SER ?= this
+	}
+
+	possible = {
+		has_journal_entry = je_balkfm_nacertanije
+	}
+
+	immediate = {
+		trigger_event = {
+			id = balkfm_serbia.200 # The Serbian Heartlands
+		}
+	}
+
+	complete = {
+		owns_entire_state_region = STATE_NORTHERN_SERBIA
+		owns_entire_state_region = STATE_SOUTHERN_SERBIA
+		owns_entire_state_region = STATE_SKOPIA
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm_serbia.201 # Greater Serbia
+		}
+	}
+
+	fail = {
+		OR = {
+			custom_tooltip = {
+				text = je_balkfm_nacertanije_complete_tt
+				hidden_trigger = {
+					c:YUG ?= this
+				}
+			}
+			custom_tooltip = {
+				text = balkfm_weaksauce_trigger_tt
+				hidden_trigger = {
+					has_variable = balkfm_weaksauce
+				}
+			}
+		}
+	}
+
+	weight = 1000
+
+}
+
+je_balkfm_ser_greater_serbia = {
+	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
+
+	group = je_group_balkfm_serbia
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+	}
+
+	complete = {
+		custom_tooltip = {
+			text = je_balkfm_ser_greater_serbia_tt
+			hidden_trigger = {
+				c:SER_SRP ?= this
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm_serbia.202 # The Rebirth of the Serbian Empire
+		}
+	}
+
+	fail = {
+		OR = {
+			custom_tooltip = {
+				text = je_balkfm_nacertanije_complete_tt
+				hidden_trigger = {
+					c:YUG ?= this
+				}
+			}
+			custom_tooltip = {
+				text = balkfm_weaksauce_trigger_tt
+				hidden_trigger = {
+					has_variable = balkfm_weaksauce
+				}
+			}
+		}
+	}
+
+	weight = 1000
+
+}

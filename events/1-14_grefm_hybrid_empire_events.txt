@@ -1,0 +1,230 @@
+﻿## HYBRID EMPIRE RESTORATION EVENTS ##
+
+# For Greek content, see the "grefm" module
+# For Turkish content, see the "turkfm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Orthodox Church content, see the "eocfm" module
+
+####################
+
+namespace = grefm_hybrid_empire
+
+####################
+
+####	TABLE OF CONTENTS	####	#TOC
+
+# The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
+
+#001-009 - Hybrid Empire Restoration Events
+#	001 - The New Greece Rises
+#	002 - Across the Hellespont
+#	003 - The Wonders of the Nile
+#	004 - The Greek Realm
+
+####################
+
+## Hybrid Empire Restoration Events33
+grefm_hybrid_empire.001 = { # The New Greece Rises
+	type = country_event
+	placement = ROOT
+	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+
+	title = grefm_hybrid_empire.001.t
+	desc = grefm_hybrid_empire.001.d
+	flavor = grefm_hybrid_empire.001.f
+
+	gui_window = event_window_widescreen_classic
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/votp_monarch_holding_court.dds"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/epitaph_of_seikilos"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_purple_pheonix
+	}
+
+	immediate = {
+		random_scope_building = {
+			limit = {
+				is_building_type = building_hagia_sophia
+			}
+			save_scope_as = hagia_sofia_scope
+		}
+		save_scope_as = formation_country
+		every_country = {
+			limit = {
+				has_diplomatic_relevance = ROOT
+			}
+			post_notification = unification_notification_byz
+		}
+	}
+
+	option = {
+		name = grefm_hybrid_empire.001.a
+		default_option = yes
+		trigger_event = {
+			id = grefm_hybrid_empire.002 # Across the Hellespont
+			days = 30
+		}
+		add_modifier = {
+			name = modifier_grefm_rebirth
+			days = very_long_modifier_time
+		}
+	}
+
+}
+
+grefm_hybrid_empire.002 = { # Across the Hellespont
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+
+	title = grefm_hybrid_empire.002.t
+	desc = grefm_hybrid_empire.002.d
+	flavor = grefm_hybrid_empire.002.f
+
+	event_image = {
+		video = "byzfm_georgios_averof"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by grefm.300
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_hybrid_empire.002.a
+		default_option = yes
+		set_capital = STATE_EASTERN_THRACE
+		every_state_region = {
+			limit = {
+				OR = {
+					region = sr:region_anatolia
+					region = sr:region_balkans
+				}
+				any_scope_state = {
+					NOT = { owner = ROOT }
+					NOT = { has_claim_by = ROOT }
+				}
+			}
+			add_claim = ROOT
+		}
+	}
+
+}
+
+grefm_hybrid_empire.003 = { # The Wonders of the Nile
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+
+	title = grefm_hybrid_empire.003.t
+	desc = grefm_hybrid_empire.003.d
+	flavor = grefm_hybrid_empire.003.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = { # triggered by grefm_hybrid_empire.003
+	}
+
+	immediate = {
+		capital = {
+			save_scope_as = byzantium_capital_state
+		}
+	}
+
+	option = { # reclaim the east
+		name = grefm_hybrid_empire.003.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_grefm_wonders_of_the_nile
+		}
+		grefm_add_levant_claims_effect = yes
+	}
+
+	option = { # nah bro, shits for the birds
+		name = grefm_hybrid_empire.003.b
+		change_infamy = -20
+		scope:byzantium_capital_state = {
+			add_modifier = {
+				name = modifier_grefm_capital_assimiliation_boost
+				days = normal_modifier_time
+			}
+			add_modifier = {
+				name = modifier_grefm_heartland_reclaimed
+				days = normal_modifier_time
+			}
+		}
+		custom_tooltip = {
+			text = grefm_weaksauce_tt
+			hidden_effect = {
+				set_variable = grefm_weaksauce
+			}
+		}
+	}
+
+}
+
+grefm_hybrid_empire.004 = { # The Greek Realm
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+
+	title = grefm_hybrid_empire.004.t
+	desc = grefm_hybrid_empire.004.d
+	flavor = grefm_hybrid_empire.004.f
+
+	event_image = {
+		video = "europenorthamerica_before_the_battle"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# Triggered by JE
+	}
+
+	option = {
+		name = grefm_hybrid_empire.004.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_imperial_glory
+		}
+		s:STATE_EASTERN_THRACE = {
+			random_scope_state = {
+				add_modifier = {
+					name = modifier_grefm_the_queen_of_cities
+					days = long_modifier_time
+				}
+			}
+		}
+	}
+
+}

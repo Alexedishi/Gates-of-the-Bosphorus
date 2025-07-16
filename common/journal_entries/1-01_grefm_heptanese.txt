@@ -1,0 +1,229 @@
+﻿je_grefm_ion_xenocracy = {
+	icon = "gfx/interface/icons/event_icons/event_heptanese.dds"
+
+	group = je_group_grefm_heptanese
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+	}
+
+	modifiers_while_active = {
+		modifier_grefm_xenocracy
+		modifier_grefm_hepantese_administration
+	}
+
+	complete = {
+		AND = {
+			any_scope_building = {
+				is_building_type = building_government_administration
+				OR = {
+					has_active_production_method = pm_vertical_filing_cabinets
+					has_active_production_method = pm_switch_boards
+				}
+			}
+			bureaucracy < 0
+			approaching_bureaucracy_shortage = no
+		}
+		institution_investment_level = {
+			institution = institution_police
+			value >= 3
+		}
+		institution_investment_level = {
+			institution = institution_schools
+			value >= 3
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = grefm_heptanese.002 # An Ideal Colony
+		}
+	}
+
+	fail = {
+		OR = {
+			is_subject = no
+			trigger_if = {
+				limit = {
+					exists = c:GRE
+				}
+				is_subject_of = c:GRE
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		random_events = {
+			100 = 0
+			5 = grefm_heptanese.005 # The Ionian Academy
+		}
+	}
+
+	weight = 1000
+
+}
+
+je_grefm_ion_venetian_legacy = {
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+
+	group = je_group_grefm_heptanese
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+	}
+
+	modifiers_while_active = {
+		modifier_grefm_venetian_legacy
+	}
+
+	complete = {
+		NOR = {
+			has_law = law_type:law_traditionalism
+			has_law = law_type:law_serfdom
+			has_law = law_type:law_tenant_farmers
+		}
+		any_scope_building = {
+			is_building_type = building_wheat_farm
+			earnings >= 5
+			NOR = {
+				has_active_production_method = pm_simple_farming
+				has_active_production_method = pm_tools_disabled
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = grefm_heptanese.003 # Modernized Agriculture
+		}
+	}
+
+	weight = 500
+
+}
+
+je_grefm_ion_poverty = {
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	group = je_group_grefm_heptanese
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+	}
+
+	complete = {
+		bureaucracy > 0
+		institution_investment_level = {
+			institution = institution_social_security
+			value >= 2
+		}
+		institution_investment_level = {
+			institution = institution_health_system
+			value >= 2
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = grefm_heptanese.004 # A Civilized State
+		}
+	}
+
+	weight = 100
+
+}
+
+je_grefm_ion_jewry = {
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	group = je_group_grefm_heptanese
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+		set_variable = {
+			name = grefm_samos_loyalist_jews_var
+			value = grefm_jewish_loyalists_value
+		}
+		set_variable = {
+			name = grefm_samos_radical_jews_var
+			value = grefm_jewish_radicals_value
+		}
+	}
+
+	modifiers_while_active = {
+		modifier_grefm_jewish_exclusion
+	}
+
+	complete = {
+		OR = {
+			custom_tooltip = {
+				text = je_grefm_ion_jewry_complete_tt1
+				hidden_trigger = {
+					modifier:state_jewish_standard_of_living_add >= 4
+				}
+			}
+			custom_tooltip = {
+				text = je_grefm_ion_jewry_complete_tt2
+				hidden_trigger = {
+					var:grefm_samos_loyalist_jews_var >= 0.75
+				}
+			}
+			cultural_acceptance_base = {
+				target = cu:romaniote
+				value >= acceptance_status_5
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = grefm_heptanese.019 # A Judaeo-Greek Nation
+		}
+	}
+
+	fail = {
+		custom_tooltip = {
+			text = je_grefm_ion_jewry_fail_tt
+			hidden_trigger = {
+				var:grefm_samos_radical_jews_var >= 0.75
+			}
+		}
+	}
+
+	on_fail = {
+		trigger_event = {
+			id = grefm_heptanese.018 # Jewish Exclusion
+		}
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			set_variable = {
+				name = grefm_samos_loyalist_jews_var
+				value = grefm_jewish_loyalists_value
+			}
+			set_variable = {
+				name = grefm_samos_radical_jews_var
+				value = grefm_jewish_radicals_value
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {
+			grefm_heptanese.012 # Nacamulli's Press House
+		}
+		random_events = {
+			400 = 0
+			25 = grefm_heptanese.011 # Jews Request former Rights
+			 5 = grefm_heptanese.013 # Blood Libel
+		}
+	}
+
+	weight = 100
+
+}

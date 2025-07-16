@@ -1,0 +1,238 @@
+﻿je_balkfm_mon_prince_bishopric = {
+	icon = "gfx/interface/icons/event_icons/event_montenegro.dds"
+
+	group = je_group_balkfm_montenegro
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+	}
+
+	modifiers_while_active = {
+		modifier_balkfm_prince_bishopric
+		modifier_balkfm_spartan_existence
+	}
+
+	scripted_button = balkfm_visit_tsar_button
+	scripted_button = balkfm_mon_principality_button
+
+	complete = {
+		custom_tooltip = {
+			text = je_balkfm_mon_prince_bishopric_tt1
+			hidden_trigger = {
+				has_variable = balkfm_mon_soc_completed
+			}
+		}
+		custom_tooltip = {
+			text = je_balkfm_mon_prince_bishopric_tt2
+			hidden_trigger = {
+				has_variable = balkfm_mon_gov_completed
+			}
+		}
+		custom_tooltip = {
+			text = je_balkfm_mon_prince_bishopric_tt3
+			hidden_trigger = {
+				has_variable = balkfm_mon_mil_completed
+			}
+		}
+		custom_tooltip = {
+			text = je_balkfm_mon_prince_bishopric_tt4
+			hidden_trigger = {
+				OR = {
+					has_modifier = modifier_balkfm_declared_principality
+					has_modifier = modifier_balkfm_declared_kingdom
+				}
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm_montenegro.009 # The Light of Modernity
+		}
+		set_variable = balkfm_prince_bishopric_completed
+	}
+
+	invalid = {
+		has_variable = balkfm_prince_bishopric_completed
+	}
+
+	status_desc = {
+		triggered_desc = {
+			desc = je_balkfm_mon_prince_bishopric_status
+		}
+	}
+
+	weight = 1000
+
+}
+
+je_balkfm_mon_societal_reform = {
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+
+	group = je_group_balkfm_montenegro
+
+	immediate = {
+	}
+
+	complete = {
+		NOT = { has_law = law_type:law_hereditary_bureaucrats }
+		NOT = { has_law = law_type:law_traditionalism }
+		NOT = { has_law = law_type:law_serfdom }
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm_montenegro.002 # The Light of Modernity
+		}
+	}
+
+	invalid = {
+		has_variable = balkfm_prince_bishopric_completed
+	}
+
+	weight = 500
+
+}
+
+je_balkfm_mon_administration = {
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	group = je_group_balkfm_montenegro
+
+	immediate = {
+	}
+
+	complete = {
+		NOT = { has_law = law_type:law_land_based_taxation }
+		any_scope_state = {
+			has_building = building_government_administration
+		}
+		bureaucracy >= 0
+		approaching_bureaucracy_shortage = no
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm_montenegro.003 # Centralized Administration
+		}
+	}
+
+	invalid = {
+		has_variable = balkfm_prince_bishopric_completed
+	}
+
+	weight = 500
+
+}
+
+je_balkfm_mon_military_reform = {
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	group = je_group_balkfm_montenegro
+
+	immediate = {
+	}
+
+	complete = {
+		NOT = { has_law = law_type:law_peasant_levies }
+		army_size >= 4
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm_montenegro.004 # A Professional Outfit
+		}
+	}
+
+	invalid = {
+		has_variable = balkfm_prince_bishopric_completed
+	}
+
+	weight = 500
+
+}
+
+je_balkfm_mon_ali_pasha = {
+	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
+
+	group = je_group_balkfm_montenegro
+
+	should_be_pinned_by_default = yes
+
+	modifiers_while_active = {
+		modifier_balkfm_ali_pasha
+	}
+
+	complete = {
+		custom_tooltip = {
+			text = je_balkfm_mon_ali_pasha_tt
+			hidden_trigger = {
+				has_global_variable = balkfm_ali_pasha_waxed
+			}
+		}
+	}
+
+	on_complete = {
+		add_modifier = {
+			name = modifier_turkfm_weathered_the_storm
+			days = normal_modifier_time
+		}
+	}
+
+	invalid = {
+		hidden_trigger = {
+			c:TUR_BOS ?= {
+				NOT = {
+					ruler = {
+						has_template = template_balkfm_rizvanbegovic_ali
+					}
+				}
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {
+			balkfm_montenegro.032 # Knives in the Dark
+		}
+	}
+
+	weight = 400
+
+}
+
+je_balkfm_mon_nationalism = {
+	icon = "gfx/interface/icons/event_icons/event_montenegro2.dds"
+
+	group = je_group_balkfm_montenegro
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+		trigger_event = {
+			id = balkfm_montenegro.200 # The Montenegrin Identity
+		}
+	}
+
+	scripted_button = balkfm_mon_kingdom_button
+
+	complete = {
+		has_modifier = modifier_balkfm_declared_kingdom
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = balkfm_montenegro.020 # The Kingdom of Montenegro
+		}
+	}
+
+	invalid = {
+		NOT = {
+			c:MON ?= this
+		}
+	}
+
+	weight = 1000
+
+}

@@ -1,0 +1,1316 @@
+﻿## MEGALI IDEA EVENTS ##
+
+# For Greek content, see the "grefm" module
+# For Turkish content, see the "turkfm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Orthodox Church content, see the "eocfm" module
+
+####################
+
+namespace = grefm_megali_idea
+
+####################
+
+####	TABLE OF CONTENTS	####	#TOC
+
+# The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
+
+#000-009 - Hellenic Revanchism Events
+#	001 - The Lands of Thessaly
+#	002 - The Megali Idea
+#	003 - The Future of Greece
+#	004 - The Lands of Greater Greece
+#	005 - The Greek Realm
+
+
+#010-019 - Roman Revanchism Events
+#	010 - The Lands of the Rhomaios
+#	011 - The Legacy of Rhōmanía
+#	012 - The Throne of the East
+
+#020-029 - Urum Revanchism Events
+#	020 - The Last of the Romans
+
+#100-109 - Hellene Annexation Events
+#	100 - ION Annexation
+#	101 - EPI Annexation
+#	102 - CYP Annexation
+#	103 - CRE Annexation
+#	104 - MAC Annexation
+#	106 - SAMO Annexation
+
+#110-119 - Rhomaios Annexation Events
+#	110 - TRB Annexation
+#	111 - ##CAPP Annexation
+
+#120-129 - Urum Annexation Events
+#	120 - THE Annexation
+
+#200-209 - Greek Homeland Events
+#	200 - The Fate of the Turks
+#	201 - A Question of Homelands
+#	202 - Greek Expansion in X
+
+####################
+
+## Hellenic Revanchism Events ##
+grefm_megali_idea.001 = { # The Lands of Thessaly
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+
+	title = grefm_megali_idea.001.t
+	desc = grefm_megali_idea.001.d
+	flavor = grefm_megali_idea.001.f
+
+	event_image = {
+		video = "europenorthamerica_capitalists_meeting"
+	}
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = { has_global_variable = grefm_thessaly_reminded }
+		c:GRE ?= this
+		NOT = { has_truce_with = c:TUR }
+		NOT = { owns_entire_state_region = STATE_THESSALIA }
+	}
+
+	immediate = {
+		set_global_variable = grefm_thessaly_reminded
+		s:STATE_THESSALIA = {
+			random_scope_state = {
+				save_scope_as = grefm_thessaly_scope
+			}
+		}
+	}
+
+	option = {
+		name = grefm_megali_idea.001.a
+		default_option = yes
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_THESSALIA
+					owns_entire_state_region = STATE_THESSALIA
+				}
+			}
+			s:STATE_THESSALIA = {
+				add_claim = ROOT
+			}
+		}
+	}
+}
+
+grefm_megali_idea.002 = { # The Megali Idea
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+
+	title = grefm_megali_idea.002.t
+	desc = grefm_megali_idea.002.d
+	flavor = grefm_megali_idea.002.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_megali_idea
+	}
+
+	immediate = {
+	}
+
+	option = { # Vanilla Claims Option, merged into one event
+		name = grefm_megali_idea.002.a
+		default_option = yes
+		grefm_add_byzantium_claims_effect = yes
+		if = {
+			limit = {
+				c:ION ?= this
+				has_dlc_feature = lobbies
+			}
+			trigger_event = {
+				id = grefm_heptanese.020 # The Dream of Enosis
+				days = 30
+			}
+		}
+	}
+
+	option = { # vanilla option 2
+		name = grefm_megali_idea.002.b
+		custom_tooltip = {
+			text = grefm_weaksauce_tt
+			hidden_effect = {
+				set_variable = grefm_weaksauce
+			}
+		}
+		add_radicals = {
+			culture = cu:greek
+			value = large_radicals
+		}
+	}
+
+}
+
+grefm_megali_idea.003 = { # The Future of Greece
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+
+	title = grefm_megali_idea.003.t
+	desc = grefm_megali_idea.003.d
+	flavor = grefm_megali_idea.003.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_megali_idea
+	}
+
+	cancellation_trigger = {
+		OR = {
+			c:BYZ ?= this
+			c:GRE_HEL ?= this
+		}
+	}
+
+	immediate = {
+	}
+
+	option = { # Become the Hellenic Empire
+		name = grefm_megali_idea.003.a
+		default_option = yes
+		if = {
+			limit = {
+				country_has_primary_culture = cu:greek
+			}
+			custom_tooltip = grefm_hemp_possible_tt
+		}
+		if = {
+			limit = {
+				country_has_primary_culture = cu:rhomaios
+			}
+			custom_tooltip = grefm_byz_possible_tt
+		}
+	}
+
+	option = { # Remain Greece
+		name = grefm_megali_idea.003.b
+		custom_tooltip = grefm_weaksauce_tt
+		custom_tooltip = grefm_tzatzikisauce_tt
+		add_modifier = {
+			name = greek_nationalism
+			days = long_modifier_time
+		}
+		set_variable = grefm_weaksauce
+	}
+
+}
+
+grefm_megali_idea.004 = { # Greater Greece
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+
+	title = grefm_megali_idea.004.t
+	desc = grefm_megali_idea.004.d
+	flavor = grefm_megali_idea.004.f
+
+	event_image = {
+		video = "southamerica_aristocrats"
+	}
+	
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by grefm_megali_idea.003
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_megali_idea.004.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_grefm_greater_greece
+		}
+		if = {
+			limit = {
+				NOT = { owns_entire_state_region = STATE_CRETE }
+			}
+			s:STATE_CRETE = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOT = { owns_entire_state_region = STATE_CYPRUS }
+			}
+			s:STATE_CYPRUS = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOT = { owns_entire_state_region = STATE_KASTAMONU }
+			}
+			s:STATE_KASTAMONU = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOT = { owns_entire_state_region = STATE_TRABZON }
+			}
+			s:STATE_TRABZON = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOT = { owns_entire_state_region = STATE_ADANA }
+			}
+			s:STATE_ADANA = {
+				add_claim = ROOT
+			}
+		}
+	}
+
+	option = {
+		name = grefm_megali_idea.004.b
+		custom_tooltip = {
+			text = grefm_weaksauce_tt
+			hidden_effect = {
+				set_variable = grefm_weaksauce
+				set_variable = grefm_super_weaksauce
+			}
+		}
+	}
+
+}
+
+grefm_megali_idea.005 = { # A Greek Domain
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+
+	title = grefm_megali_idea.005.t
+	desc = grefm_megali_idea.005.d
+	flavor = grefm_megali_idea.005.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+	
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = { # triggered by JE
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_megali_idea.005.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_greek_resurgence
+			days = long_modifier_time
+		}
+	}
+
+}
+
+
+## Rhomaios Revanchism Events ##
+grefm_megali_idea.010 = { # The Lands of the Rhomaios
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+
+	title = grefm_megali_idea.010.t
+	desc = grefm_megali_idea.010.d
+	flavor = grefm_megali_idea.010.f
+
+	event_image = {
+		video = "grefm_ion_intro"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = grefm_rhomaios_claims_received
+		}
+		has_technology_researched = mass_communication
+	}
+
+	immediate = {
+		c:TUR ?= {
+			save_scope_as = ottoman_scope
+		}
+		set_variable = grefm_rhomaios_claims_received
+	}
+
+	option = {
+		name = grefm_megali_idea.010.a
+		default_option = yes
+		if = {
+			limit = {
+				c:BYZ_TRB ?= this
+			}
+			if = {
+				limit = {
+					NOR = {
+						has_claim = s:STATE_TRABZON
+						owns_entire_state_region = STATE_TRABZON
+					}
+				}
+				s:STATE_TRABZON = {
+					add_claim = ROOT
+				}
+			}
+		}
+		if = {
+			limit = {
+				c:BYZ_CAP ?= this
+			}
+			if = {
+				limit = {
+					NOR = {
+						has_claim = s:STATE_ANKARA
+						owns_entire_state_region = STATE_ANKARA
+					}
+				}
+				s:STATE_ANKARA = {
+					add_claim = ROOT
+				}
+			}
+			if = {
+				limit = {
+					NOR = {
+						has_claim = s:STATE_ADANA
+						owns_entire_state_region = STATE_ADANA
+					}
+				}
+				s:STATE_ADANA = {
+					add_claim = ROOT
+				}
+			}
+			if = {
+				limit = {
+					NOR = {
+						has_claim = s:STATE_DIYARBAKIR
+						owns_entire_state_region = STATE_DIYARBAKIR
+					}
+				}
+				s:STATE_DIYARBAKIR = {
+					add_claim = ROOT
+				}
+			}
+		}
+	}
+
+}
+
+grefm_megali_idea.011 = { # The Legacy of Rhōmanía
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	title = grefm_megali_idea.011.t
+	desc = grefm_megali_idea.011.d
+	flavor = grefm_megali_idea.011.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_scions_of_rhomania
+	}
+
+	immediate = {
+	}
+
+	option = { # Vanilla Claims Option, merged into one event
+		name = grefm_megali_idea.011.a
+		default_option = yes
+		grefm_add_byzantium_claims_effect = yes
+	}
+
+	option = { # vanilla option 2
+		name = grefm_megali_idea.011.b
+		custom_tooltip = {
+			text = grefm_weaksauce_tt
+			hidden_effect = {
+				set_variable = grefm_weaksauce
+			}
+		}
+		add_radicals = {
+			culture = cu:rhomaios
+			value = large_radicals
+		}
+	}
+
+}
+
+grefm_megali_idea.012 = { # The Throne of the East
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+
+	title = grefm_megali_idea.012.t
+	desc = grefm_megali_idea.012.d
+	flavor = grefm_megali_idea.012.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_scions_of_rhomania
+	}
+
+	cancellation_trigger = {
+		OR = {
+			c:BYZ ?= this
+			c:GRE_HEL ?= this
+		}
+	}
+
+	immediate = {
+		set_global_variable = grefm_megali_idea_complete
+	}
+
+	option = { # Become the Roman Empire
+		name = grefm_megali_idea.012.a
+		default_option = yes
+		if = {
+			limit = {
+				country_has_primary_culture = cu:greek
+			}
+			custom_tooltip = grefm_hemp_possible_tt
+		}
+		if = {
+			limit = {
+				country_has_primary_culture = cu:rhomaios
+			}
+			custom_tooltip = grefm_byz_possible_tt
+		}
+		if = {
+			limit = {
+				country_has_primary_culture = cu:urum
+			}
+			add_primary_culture = cu:rhomaios
+			custom_tooltip = grefm_byz_possible_tt
+		}
+	}
+
+	option = { # Remain Greece
+		name = grefm_megali_idea.012.b
+		custom_tooltip = grefm_weaksauce_tt
+		custom_tooltip = grefm_tzatzikisauce_tt
+		add_modifier = {
+			name = greek_nationalism
+			days = long_modifier_time
+		}
+		set_variable = grefm_weaksauce
+	}
+
+}
+
+## Urum Revanchism Events ##
+grefm_megali_idea.020 = { # The Last of the Romans
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+
+	title = grefm_megali_idea.020.t
+	desc = grefm_megali_idea.020.d
+	flavor = grefm_megali_idea.020.f
+
+	event_image = {
+		video = "grefm_ion_intro"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_last_of_the_romans
+	}
+
+	immediate = {
+		c:TUR ?= {
+			save_scope_as = ottoman_scope
+		}
+	}
+
+	option = {
+		name = grefm_megali_idea.020.a
+		default_option = yes
+		if = {
+			limit = {
+				c:GRA_THE ?= this
+			}
+			if = {
+				limit = {
+					NOR = {
+						has_claim = s:STATE_CRIMEA
+						owns_entire_state_region = STATE_CRIMEA
+					}
+				}
+				s:STATE_CRIMEA = {
+					add_claim = ROOT
+				}
+			}
+		}
+	}
+
+}
+
+## Hellene Annexation Events ##
+grefm_megali_idea.100 = { # ION annexation
+	type = country_event
+	placement = scope:ionian_overlord_capital
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+
+	title = grefm_megali_idea.100.t
+	desc = grefm_megali_idea.100.d
+	flavor = grefm_megali_idea.100.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = { # triggered by decision
+	}
+
+	immediate = {
+		c:ION = {
+			save_scope_as = ionian_country
+			top_overlord = {
+				save_scope_as = ionian_overlord
+				capital = {
+					save_scope_as = ionian_overlord_capital
+				}
+			}
+		}
+	}
+
+	option = {
+		name = grefm_megali_idea.100.a
+		default_option = yes
+		annex = c:ION
+		add_loyalists = {
+			culture = cu:greek
+			value = small_radicals
+		}
+	}
+}
+
+grefm_megali_idea.101 = { # EPI annexation
+	type = country_event
+	placement = scope:epirus_capital
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	
+	title = grefm_megali_idea.101.t
+	desc = grefm_megali_idea.101.d
+	flavor = grefm_megali_idea.101.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		c:GRE_EPI = {
+			save_scope_as = epirus_scope
+			capital = {
+				save_scope_as = epirus_capital
+			}
+		}
+	}
+
+	option = {
+		name = grefm_megali_idea.101.a
+		default_option = yes
+		annex = c:GRE_EPI
+		add_loyalists = {
+			culture = cu:greek
+			value = small_radicals
+		}
+		if = {
+			limit = {
+				NOT = { has_claim = s:STATE_ALBANIA }
+			}
+			s:STATE_ALBANIA = {
+				add_claim = ROOT
+			}
+		}
+	}
+}
+
+grefm_megali_idea.102 = { # CYP annexation
+	type = country_event
+	placement = scope:cyprus_capital
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	
+	title = grefm_megali_idea.102.t
+	desc = grefm_megali_idea.102.d
+	flavor = grefm_megali_idea.102.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		c:CYP = {
+			save_scope_as = cyprus_scope
+			capital = {
+				save_scope_as = cyprus_capital
+			}
+		}
+	}
+
+	option = {
+		name = grefm_megali_idea.102.a
+		default_option = yes
+		annex = c:CYP
+		add_loyalists = {
+			culture = cu:greek
+			value = small_radicals
+		}
+	}
+}
+
+grefm_megali_idea.103 = { # CRE annexation
+	type = country_event
+	placement = scope:crete_capital
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	
+	title = grefm_megali_idea.103.t
+	desc = grefm_megali_idea.103.d
+	flavor = grefm_megali_idea.103.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		c:CRE = {
+			save_scope_as = crete_scope
+			capital = {
+				save_scope_as = crete_capital
+			}
+		}
+	}
+
+	option = {
+		name = grefm_megali_idea.103.a
+		default_option = yes
+		annex = c:CRE
+		add_loyalists = {
+			culture = cu:greek
+			value = small_radicals
+		}
+	}
+}
+
+grefm_megali_idea.104 = { # MAC annexation
+	type = country_event
+	placement = scope:macedonia_capital
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+
+	title = grefm_megali_idea.104.t
+	desc = grefm_megali_idea.104.d
+	flavor = grefm_megali_idea.104.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		c:GRE_MAC = {
+			save_scope_as = macedonia_scope
+			capital = {
+				save_scope_as = macedonia_capital
+			}
+		}
+	}
+
+	option = {
+		name = grefm_megali_idea.104.a
+		default_option = yes
+		annex = c:GRE_MAC
+		add_loyalists = {
+			culture = cu:greek
+			value = small_radicals
+		}
+	}
+}
+
+grefm_megali_idea.106 = { # SAMO Annexation
+	type = country_event
+	placement = scope:samos_capital
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+
+	title = grefm_megali_idea.106.t
+	desc = grefm_megali_idea.106.d
+	flavor = grefm_megali_idea.106.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		c:GRE_SAM = {
+			save_scope_as = samos_scope
+			capital = {
+				save_scope_as = samos_capital
+			}
+		}
+	}
+
+	option = {
+		name = grefm_megali_idea.106.a
+		default_option = yes
+		annex = c:GRE_SAM
+		add_loyalists = {
+			culture = cu:greek
+			value = small_radicals
+		}
+	}
+
+}
+
+## Rhomaios Annexation Events ##
+grefm_megali_idea.110 = { # trabzon annexation
+	type = country_event
+	placement = scope:trabzon_capital
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+
+	title = grefm_megali_idea.110.t
+	desc = grefm_megali_idea.110.d
+	flavor = grefm_megali_idea.110.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		c:BYZ_TRB = {
+			save_scope_as = trabzon_scope
+			capital = {
+				save_scope_as = trabzon_capital
+			}
+		}
+	}
+
+	option = {
+		name = grefm_megali_idea.110.a
+		default_option = yes
+		annex = c:BYZ_TRB
+	}
+}
+
+## Urum Annexation Events ##
+grefm_megali_idea.120 = { # theodoro annexation
+	type = country_event
+	placement = scope:theodoro_capital
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+
+	title = grefm_megali_idea.120.t
+	desc = grefm_megali_idea.120.d
+	flavor = grefm_megali_idea.120.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+		c:GRA_THE = {
+			save_scope_as = theodoro_scope
+			capital = {
+				save_scope_as = theodoro_capital
+			}
+		}
+	}
+
+	option = {
+		name = grefm_megali_idea.120.a
+		default_option = yes
+		annex = c:GRA_THE
+	}
+}
+
+
+## Greek Homeland Events ##
+grefm_megali_idea.200 = { # The Fate of the Turks
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	title = grefm_megali_idea.200.t
+	desc = grefm_megali_idea.200.d
+	flavor = grefm_megali_idea.200.f
+
+	event_image = {
+		video = "europenorthamerica_russian_serfs"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {	has_global_variable = grefm_greek_homelands_event }
+		has_global_variable = grefm_megali_idea_complete
+		any_scope_state = {
+			state_region = {
+				OR = {
+					AND = {
+						is_homeland = cu:turkish
+						is_homeland = cu:greek
+					}
+					AND = {
+						is_homeland = cu:turkish
+						is_homeland = cu:rhomaios
+					}
+				}
+			}
+		}
+		has_technology_researched = civilizing_mission
+	}
+
+	immediate = {
+		set_global_variable = {
+			name = grefm_greek_homelands_event
+			value = 0
+		}
+	}
+
+	option = { # Tolerate the Turks
+		name = grefm_megali_idea.200.a
+		add_radicals = {
+			culture = cu:greek
+			value = large_radicals
+		}
+		add_loyalists = {
+			culture = cu:turkish
+			value = medium_radicals
+		}
+	}
+
+	option = { # Return the Favor
+		name = grefm_megali_idea.200.b
+		default_option = yes
+		if = {
+			limit = {
+				exists = c:TUR
+			}
+			change_relations = {
+				country = c:TUR
+				value = -20
+			}
+		}
+		else = {
+			change_infamy = 5
+		}
+		set_global_variable = {
+			name = grefm_greek_homelands_event
+			value = 1 # enables turkish homelands event
+		}
+	}
+
+}
+
+grefm_megali_idea.201 = { # A Question of Homelands
+	type = country_event
+	placement = scope:turkish_homeland_state
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+
+	title = grefm_megali_idea.201.t
+	desc = grefm_megali_idea.201.d
+	flavor = grefm_megali_idea.201.f
+
+	event_image = {
+		video = "europenorthamerica_russian_serfs"
+	}
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = { # will trigger for any state that shares Greek and Turkish homelands
+		global_var:grefm_greek_homelands_event ?= 1
+		any_scope_state = {
+			AND = {
+				NOT = { has_variable = grefm_turkish_reserve }
+				state_region = {
+					AND = {
+						is_homeland = cu:turkish
+						is_homeland = cu:greek
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		random_scope_state = {
+			limit = {
+				AND = {
+					NOT = { has_variable = grefm_turkish_reserve }
+					state_region = {
+						AND = {
+							is_homeland = cu:turkish
+							is_homeland = cu:greek
+						}
+					}
+				}
+			}
+			save_scope_as = turkish_homeland_state
+		}
+		random_scope_state = {
+			limit = {
+				has_variable = grefm_turkish_reserve
+			}
+			save_scope_as = turkish_reserve_state
+		}
+	}
+
+	cooldown = {
+		months = 18 # This should be slower than Greek homeland expansion
+	}
+
+	option = { # kick them out
+		name = grefm_megali_idea.201.a
+		default_option = yes
+		trigger = {
+			any_scope_state = {
+				NOT = { has_variable = grefm_turkish_reserve }
+			}
+		}
+		scope:turkish_homeland_state = {
+			show_as_tooltip = {
+				remove_homeland = cu:turkish # This strange bit of janky ensures a tooltip is presented to the player
+			}
+			add_culture_standard_of_living_modifier = {
+				culture = cu:turkish
+				days = very_long_modifier_time
+				multiplier = -2
+			}
+			state_region = {
+				hidden_effect = {
+					remove_homeland = cu:turkish # having this in the state_region executes the effect, but doesn't show a tooltip
+				}
+			}
+		}
+		add_radicals = { # They will NOT take this lying down
+			culture = cu:turkish
+			value = medium_radicals
+		}
+	}
+
+	option = { # set up a reserve
+		name = grefm_megali_idea.201.b
+		trigger = {
+			any_scope_state = {
+				NOT = { has_variable = grefm_turkish_reserve }
+			}
+		}
+		scope:turkish_homeland_state = {
+			add_culture_standard_of_living_modifier = {
+				culture = cu:turkish
+				days = very_long_modifier_time
+				multiplier = 2
+			}
+			add_loyalists_in_state = {
+				culture = cu:turkish
+				value = large_radicals
+			}
+			set_variable = grefm_turkish_reserve
+		}
+		add_radicals = {
+			culture = cu:greek
+			value = small_radicals
+		}
+	}
+
+	option = { # Send them to the Reserve
+		name = grefm_megali_idea.201.c
+		default_option = yes
+		trigger = {
+			any_scope_state = {
+				has_variable = grefm_turkish_reserve
+			}
+		}
+		scope:turkish_homeland_state = {
+			show_as_tooltip = {
+				remove_homeland = cu:turkish
+			}
+			add_culture_standard_of_living_modifier = {
+				culture = cu:turkish
+				days = very_long_modifier_time
+				multiplier = -2
+			}
+			state_region = {
+				hidden_effect = {
+					remove_homeland = cu:turkish
+				}
+			}
+		}
+		add_radicals = { # You treat them like animals, they'll view you like an animal. You deserve this.
+			culture = cu:turkish
+			value = medium_radicals
+		}
+	}
+
+}
+
+grefm_megali_idea.202 = { # Greek Expansion in X
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+
+	title = grefm_megali_idea.202.t
+	desc = grefm_megali_idea.202.d
+	flavor = grefm_megali_idea.202.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		has_global_variable = grefm_megali_idea_complete # homelands will expand regardless of turkish homeland outcome
+		OR = {
+			AND = {
+				country_has_primary_culture = cu:greek
+				any_scope_state = {
+					is_incorporated = yes
+					gbbf_dejure_byzantium_greography_trigger = yes
+					grefm_is_hellene_homeland_trigger = no
+				}
+			}
+			AND = {
+				country_has_primary_culture = cu:rhomaios
+				any_scope_state = {
+					is_incorporated = yes
+					gbbf_dejure_byzantium_greography_trigger = yes
+					grefm_is_rhomaios_homeland_trigger = no
+				}
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				country_has_primary_culture = cu:greek
+				any_scope_state = {
+					is_incorporated = yes
+					gbbf_dejure_byzantium_greography_trigger = yes
+					grefm_is_hellene_homeland_trigger = no
+				}
+			}
+			random_scope_state = {
+				limit = {
+					is_incorporated = yes
+					gbbf_dejure_byzantium_greography_trigger = yes
+					grefm_is_hellene_homeland_trigger = no
+				}
+				save_scope_as = grefm_expansion_state
+			}
+		}
+		if = {
+			limit = {
+				country_has_primary_culture = cu:rhomaios
+				any_scope_state = {
+					is_incorporated = yes
+					gbbf_dejure_byzantium_greography_trigger = yes
+					grefm_is_rhomaios_homeland_trigger = no
+				}
+			}
+			random_scope_state = {
+				limit = {
+					is_incorporated = yes
+					gbbf_dejure_byzantium_greography_trigger = yes
+					grefm_is_rhomaios_homeland_trigger = no
+				}
+				save_scope_as = grefm_expansion_state
+			}
+		}
+	}
+
+	cooldown = {
+		months = 12
+	}
+
+	option = {
+		name = grefm_megali_idea.202.a
+		default_option = yes
+		if = {
+			limit = {
+				country_has_primary_culture = cu:greek
+				scope:grefm_expansion_state = {
+					state_region = {
+						NOT = {
+							is_homeland = cu:greek
+						}
+					}
+				}
+			}
+			scope:grefm_expansion_state = {
+				state_region = {
+					add_homeland = cu:greek
+				}
+			}
+		}
+		if = {
+			limit = {
+				country_has_primary_culture = cu:rhomaios
+				scope:grefm_expansion_state = {
+					state_region = {
+						NOT = {
+							is_homeland = cu:rhomaios
+						}
+					}
+				}
+			}
+			scope:grefm_expansion_state = {
+				state_region = {
+					add_homeland = cu:rhomaios
+				}
+			}
+		}
+	}
+
+}

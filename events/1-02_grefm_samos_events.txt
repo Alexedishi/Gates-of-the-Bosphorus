@@ -1,0 +1,500 @@
+﻿## SAMOS FLAVOR EVENTS ##
+
+# For Greek content, see the "grefm" module
+# For Turkish content, see the "turkfm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Orthodox Church content, see the "eocfm" module
+
+####################
+
+namespace = grefm_samos
+
+####################
+
+####	TABLE OF CONTENTS	####	#TOC
+
+# The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
+
+#001-009 - Principality of Samos Events
+#	001 - Samos Defiant
+#	002 - An Imposed Ruler
+#	003 - The Organic Charter
+#	004 - The Tyranny of Lord Stefanos
+#	005 - Stefanos Deposed
+#	006 - New Governor Appointed
+#	007 - Ruler Deposed
+#	008 - Samos Liberated
+#	009 - Samian Union with the Greek State
+
+####################
+
+#### PRINCIPALITY OF SAMOS EVENTS ####
+
+grefm_samos.001 = { # Samos Defiant
+	type = country_event
+	placement = root
+
+	title = grefm_samos.001.t
+	desc = grefm_samos.001.d
+	flavor = grefm_samos.001.f
+
+	event_image = {
+		video = "grefm_ion_intro"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_samos.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered from GLOBAL
+	}
+
+	immediate = {
+		set_variable = grefm_stefanos_var
+	}
+
+	option = {
+		name = grefm_samos.001.a
+		default_option = yes
+		show_as_tooltip = {
+			add_modifier = modifier_grefm_submission
+		}
+		trigger_event = {
+			id = grefm_samos.002 # An Imposed Ruler
+			days = 30
+		}
+	}
+
+}
+
+grefm_samos.002 = { # An Imposed Ruler
+	type = country_event
+	placement = root
+
+	title = grefm_samos.002.t
+	desc = grefm_samos.002.d
+	flavor = grefm_samos.002.f
+
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered ny grefm_samos.001
+	}
+
+	immediate = {
+		set_variable = {
+			name = grefm_samos_support_var
+			value = 100
+		}
+		set_variable = {
+			name = grefm_samos_ruler_counter
+			value = 1
+		}
+		set_variable = {
+			name = grefm_samos_ruler_duration_var
+			value = 60
+		}
+	}
+
+	option = {
+		name = grefm_samos.001.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_grefm_samos_organic_law
+		}
+		show_as_tooltip = {
+			add_modifier = modifier_grefm_westernized_thought
+			add_modifier = modifier_grefm_hegemonic_ruler
+		}
+	}
+
+}
+
+grefm_samos.003 = { # The Organic Charter
+	type = country_event
+	placement = root
+
+	title = grefm_samos.003.t
+	desc = grefm_samos.003.d
+	flavor = grefm_samos.003.f
+
+	event_image = {
+		video = "africa_leader_arguing"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_samos.003.a
+		default_option = yes
+		every_interest_group = {
+			limit = {
+				law_stance = {
+					law = law_type:law_autocracy
+					value > neutral
+				}
+			}
+			add_modifier = {
+				name = modifier_grefm_constitution_enforced
+				days = normal_modifier_time
+				is_decaying = yes
+			}
+		}
+		add_modifier = {
+			name = modifier_grefm_organic_charter
+			days = long_modifier_time
+		}
+		add_loyalists = {
+			culture = cu:greek
+			value = medium_radicals
+		}
+	}
+
+}
+
+grefm_samos.004 = { # The Tyranny of Lord Stefanos
+	type = country_event
+	placement = root
+
+	title = grefm_samos.004.t
+	desc = grefm_samos.004.d
+	flavor = grefm_samos.004.f
+
+	event_image = {
+		video = "unspecific_politicians_arguing"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_samos.004.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_tyrannical_ruler
+			days = normal_modifier_time
+		}
+		add_radicals = {
+			culture = cu:greek
+			value = large_radicals
+		}
+		every_interest_group = {
+			limit = {
+				law_stance = {
+					law = law_type:law_autocracy
+					value < neutral
+				}
+			}
+			leader = {
+				set_ideology = ideology:ideology_republican_leader
+			}
+		}
+		every_interest_group = {
+			limit = {
+				law_stance = {
+					law = law_type:law_autocracy
+					value < neutral
+				}
+			}
+			add_modifier = {
+				name = modifier_grefm_constitution_refused
+				days = normal_modifier_time
+				is_decaying = yes
+			}
+		}
+	}
+
+}
+
+grefm_samos.005 = { # Stefanos Desposed
+	type = country_event
+	placement = root
+
+	title = grefm_samos.005.t
+	desc = grefm_samos.005.d
+	flavor = grefm_samos.005.f
+
+	event_image = {
+		video = "europenorthamerica_political_extremism"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 1
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = grefm_stefanos_var
+		}
+		var:grefm_samos_support_var <= 0
+		has_law = law_type:law_monarchy
+	}
+
+	immediate = {
+		grefm_generate_samos_ruler_effect = yes
+		random_character_in_void = {
+			limit = {
+				has_variable = grefm_samos_ruler_var
+			}
+			save_scope_as = samos_next_ruler_scope
+		}
+	}
+
+	option = {
+		name = grefm_samos.005.a
+		default_option = yes
+		ruler = {
+			exile_character = yes
+		}
+		heir ?= {
+			disinherit_character = yes
+		}
+		scope:samos_next_ruler_scope = {
+			set_character_as_ruler = yes
+			remove_variable = grefm_samos_ruler_var
+		}
+		add_modifier = {
+			name = modifier_grefm_ruler_ejected
+			days = short_modifier_time
+			is_decaying = yes
+		}
+	}
+
+}
+
+grefm_samos.006 = { # New Governor Appointed
+	type = country_event
+	placement = root
+
+	title = grefm_samos.006.t
+	desc = grefm_samos.006.d
+	flavor = grefm_samos.006.f
+
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 1
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = grefm_stefanos_var
+		}
+		var:grefm_samos_ruler_duration_var <= 0
+		has_law = law_type:law_monarchy
+	}
+
+	immediate = {
+		grefm_generate_samos_ruler_effect = yes
+		random_character_in_void = {
+			limit = {
+				has_variable = grefm_samos_ruler_var
+			}
+			save_scope_as = samos_next_ruler_scope
+		}
+	}
+
+	option = {
+		name = grefm_samos.006.a
+		default_option = yes
+		ruler = {
+			exile_character = yes
+		}
+		heir ?= {
+			disinherit_character = yes
+		}
+		scope:samos_next_ruler_scope = {
+			set_character_as_ruler = yes
+			remove_variable = grefm_samos_ruler_var
+		}
+	}
+
+}
+
+grefm_samos.007 = { # Ruler Deposed
+	type = country_event
+	placement = root
+
+	title = grefm_samos.007.t
+	desc = grefm_samos.007.d
+	flavor = grefm_samos.007.f
+
+	event_image = {
+		video = "europenorthamerica_political_extremism"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 1
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = grefm_stefanos_var
+		}
+		var:grefm_samos_support_var <= 0
+		has_law = law_type:law_monarchy
+	}
+
+	immediate = {
+		grefm_generate_samos_ruler_effect = yes
+		random_character_in_void = {
+			limit = {
+				has_variable = grefm_samos_ruler_var
+			}
+			save_scope_as = samos_next_ruler_scope
+		}
+	}
+
+	option = {
+		name = grefm_samos.007.a
+		default_option = yes
+		ruler = {
+			exile_character = yes
+		}
+		heir ?= {
+			disinherit_character = yes
+		}
+		scope:samos_next_ruler_scope = {
+			set_character_as_ruler = yes
+			remove_variable = grefm_samos_ruler_var
+		}
+		add_modifier = {
+			name = modifier_grefm_ruler_ejected
+			days = short_modifier_time
+			is_decaying = yes
+		}
+	}
+
+}
+
+grefm_samos.008 = { # Samos Liberated
+	type = country_event
+	placement = root
+
+	title = grefm_samos.008.t
+	desc = grefm_samos.008.d
+	flavor = grefm_samos.008.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_samos.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_grefm_samos_main
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_samos.008.a
+		default_option = yes
+		add_loyalists = {
+			culture = cu:greek
+			value = large_radicals
+		}
+	}
+
+}
+
+grefm_samos.009 = { # Samian Union with the Greek State
+	type = country_event
+	placement = root
+
+	title = grefm_samos.009.t
+	desc = grefm_samos.009.d
+	flavor = grefm_samos.009.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_samos.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by grefm_samos_enosis_button
+	}
+
+	immediate = {
+		c:GRE_SAM = {
+			save_scope_as = samos_scope
+		}
+	}
+
+	option = {
+		name = grefm_samos.009.a
+		default_option = yes
+		annex = c:GRE_SAM
+		add_modifier = {
+			name = modifier_grefm_samian_union
+			days = normal_modifier_time
+		}
+	}
+
+}

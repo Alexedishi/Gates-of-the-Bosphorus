@@ -1,0 +1,268 @@
+﻿## TUNIS FLAVOR EVENTS ##
+
+# For Greek content, see the "grefm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Turkish content, see the "turkfm" module
+# For Orthodox Church content, see the "eocfm" module
+
+####################
+
+namespace = turkfm_tunis
+
+####################
+
+####	TABLE OF CONTENTS	####	#TOC
+
+# The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
+
+#000-009 - The Modernization of Tunis
+#	001 - Between Seas and Sands
+#	002 - An Amibitious Bey
+#	003 - A Stately Reception
+#	008 - A Stagnant State
+#	009 - The Tunisian Fundamental Pact
+
+####################
+
+## The Modernization of Tunis ##
+turkfm_tunis.001 = { # Between Seas and Sands
+	type = country_event
+	placement = root
+
+	title = turkfm_tunis.001.t
+	desc = turkfm_tunis.001.d
+	flavor = turkfm_tunis.001.f
+
+	event_image = {
+		video = "africa_city_center"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_tunis.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered from GLOBAL
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = turkfm_tunis.001.a
+		default_option = yes
+		show_as_tooltip = {
+			add_modifier = {
+				name = modifier_turkfm_tribal_administration
+			}
+		}
+	}
+
+}
+
+turkfm_tunis.002 = { # An Amibitious Bey
+	type = country_event
+	placement = root
+
+	title = turkfm_tunis.002.t
+	desc = turkfm_tunis.002.d
+	flavor = turkfm_tunis.002.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		ruler = {
+			has_template = template_turkfm_husaini_mustafa
+		}
+		year >= 1837
+		exists = heir
+	}
+
+	cancellation_trigger = {
+		NAND = {
+			ruler = {
+				has_template = template_turkfm_husaini_mustafa
+			}
+			exists = heir
+		}
+	}
+
+	immediate = {
+		heir = {
+			save_scope_as = turkfm_ahmad_scope
+		}
+	}
+
+	option = {
+		name = turkfm_tunis.002.a
+		default_option = yes
+		heir = {
+			set_character_as_ruler = yes
+		}
+		ruler = {
+			kill_character = yes
+		}
+	}
+
+}
+
+turkfm_tunis.003 = { # A Stately Reception
+	type = country_event
+	placement = scope:france_scope
+
+	title = turkfm_tunis.003.t
+	desc = turkfm_tunis.003.d
+	flavor = turkfm_tunis.003.f
+
+	event_image = {
+		video = "europenorthamerica_london_center"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_visit_france_button
+	}
+
+	immediate = {
+		c:FRA = {
+			save_scope_as = france_scope
+		}
+	}
+
+	option = {
+		name = turkfm_tunis.003.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_western_inspirations
+			days = long_modifier_time
+		}
+		create_incident = {
+			country = c:TUR
+			value = 10
+		}
+		hidden_effect = {
+			c:TUR = {
+				set_secret_goal = {
+					country = c:TUN
+					secret_goal = antagonize
+				}
+			}
+		}
+	}
+
+}
+
+turkfm_tunis.008 = { # A Stagnant State
+	type = country_event
+	placement = root
+
+	title = turkfm_tunis.008.t
+	desc = turkfm_tunis.008.d
+	flavor = turkfm_tunis.008.f
+
+	event_image = {
+		video = "unspecific_factory_closed"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_turkfm_tun_modernization
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = turkfm_tunis.008.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_failed_reforms
+			days = long_modifier_time
+			is_decaying = yes
+		}
+		add_radicals = {
+			value = medium_radicals
+		}
+	}
+
+}
+
+turkfm_tunis.009 = { # The Tunisian Fundamental Pact
+	type = country_event
+	placement = root
+
+	title = turkfm_tunis.009.t
+	desc = turkfm_tunis.009.d
+	flavor = turkfm_tunis.009.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_turkfm_tun_modernization
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = turkfm_tunis.009.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_modernized_state
+			days = long_modifier_time
+		}
+		if = {
+			limit = {
+				has_journal_entry = je_earn_recognition
+			}
+			custom_tooltip = {
+				text = turkfm_recognition_gain_50
+				je:je_earn_recognition = {
+					add_progress = {
+						name = earn_recognition_progress_bar
+						value = 50
+					}
+				}
+			}
+		}
+	}
+
+}

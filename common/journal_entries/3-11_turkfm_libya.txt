@@ -1,0 +1,393 @@
+﻿je_turkfm_tri_centralization = {
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+
+	group = je_group_turkfm_libya
+
+	should_be_pinned_by_default = yes
+
+	immediate = {
+	}
+
+	modifiers_while_active = {
+		modifier_turkfm_informal_administration
+	}
+
+	complete = {
+		NOR = {
+			has_law = law_type:law_hereditary_bureaucrats
+			has_law = law_type:law_peasant_levies
+			has_law = law_type:law_no_police
+		}
+		any_scope_building = {
+			is_building_type = building_university
+			occupancy > 0.9
+		}
+		any_scope_building = {
+			is_building_type = building_government_administration
+			NOT = {
+				has_active_production_method = pm_simple_organization
+			}
+			occupancy >= 0.9
+		}
+		bureaucracy >= 0
+		approaching_bureaucracy_shortage = no
+		ig:ig_intelligentsia = {
+			is_marginal = no
+		}
+		OR = {
+			owns_entire_state_region = STATE_LIBYAN_DESERT
+			NOT = {
+				has_state_in_state_region = STATE_LIBYAN_DESERT
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = turkfm_libya.009 # A Centralized State
+		}
+	}
+
+	weight = 4000
+
+}
+
+je_turkfm_tri_libyan_desert = {
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+
+	group = je_group_turkfm_libya
+
+	should_be_pinned_by_default = yes
+
+	is_shown_when_inactive = {
+		c:TRI ?= this
+		NOT = {
+			owns_entire_state_region = STATE_LIBYAN_DESERT
+		}
+	}
+
+	possible = {
+		has_technology_researched = colonization
+	}
+
+	immediate = {
+	}
+
+	complete = {
+		owns_entire_state_region = STATE_TRIPOLI
+		owns_entire_state_region = STATE_LIBYA
+		owns_entire_state_region = STATE_LIBYAN_DESERT
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = turkfm_libya.008 # The Libyan Deserts
+		}
+	}
+
+	fail = {
+		NOR = {
+			has_state_in_state_region = STATE_TRIPOLI
+			has_state_in_state_region = STATE_LIBYA
+			has_state_in_state_region = STATE_LIBYAN_DESERT
+		}
+	}
+
+	weight = 500
+
+}
+
+je_turkfm_senusiyya_main = {
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	group = je_group_turkfm_libya
+
+	should_be_pinned_by_default = yes
+
+	is_shown_when_inactive = {
+		c:TRI ?= this
+		NOR = {
+			has_variable = turkfm_embraced_senussi
+			has_variable = turkfm_swept_senussi
+			owns_entire_state_region = STATE_LIBYAN_DESERT
+		}
+	}
+
+	possible = {
+		has_technology_researched = colonization
+	}
+
+	immediate = {
+		trigger_event = {
+			id = turkfm_libya.011 # The Senussi Order
+		}
+		set_variable = turkfm_senussi_has_landed
+	}
+
+	scripted_button = turkfm_embrace_senussi_button
+	scripted_button = turkfm_sweep_desert_button
+	scripted_button = turkfm_supress_senusiyya_button
+	scripted_button = turkfm_armed_delegation_button
+
+	complete = {
+		custom_tooltip = {
+			text = je_turkfm_senusiyya_main_complete
+			OR = {
+				has_variable = turkfm_embraced_senussi
+				has_variable = turkfm_swept_senussi
+			}
+		}
+	}
+
+	on_complete = {
+		custom_tooltip = {
+			text = je_turkfm_senusiyya_main_on_complete_1
+			if = {
+				limit = {
+					has_variable = turkfm_embraced_senussi
+				}
+				trigger_event = {
+					id = turkfm_libya.007 # House Senussi of Country
+				}
+			}
+		}
+		custom_tooltip = {
+			text = je_turkfm_senusiyya_main_on_complete_2
+			if = {
+				limit = {
+					has_variable = turkfm_swept_senussi
+				}
+				trigger_event = {
+					id = turkfm_libya.006 # The Senusiyya Extinguished
+				}
+			}
+		}
+		turkfm_cleanup_senussi_effect = yes
+	}
+
+	fail = {
+		OR = {
+			has_law = law_type:law_total_separation
+			has_law = law_type:law_state_atheism
+		}
+	}
+
+	on_fail = {
+		turkfm_cleanup_senussi_effect = yes
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			turkfm_senussi_weekly_effect = yes
+			turkfm_check_senussi_effect = yes
+			turkfm_find_senussi_effect = yes
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {
+			turkfm_libya.012 # The Grand Senussi
+			turkfm_libya.015 # The State-within-a-State
+			turkfm_libya.018 # Senusiyya Takes Root in State
+			turkfm_libya.019 # Senusiyya Expunged from State
+		}
+		random_events = {
+			chance_of_no_event = 90
+			5 = turkfm_libya.013 # Senussi Withdraws to the Desert
+		}
+		effect = {
+			change_variable = {
+				name = turkfm_senussi_var
+				add = var:turkfm_senussi_progress_var
+			}
+			clamp_variable = {
+				name = turkfm_senussi_var
+				max = 100
+				min = 0
+			}
+			if = {
+				limit = {
+					var:turkfm_senussi_var >= 100
+					any_country ={
+						is_adjacent_to_country = root
+						country_has_state_religion = rel:sunni
+						NOR = {
+							has_journal_entry = je_turkfm_senusiyya_sub
+							has_variable = turkfm_senussi_spanked
+						}
+						any_scope_state = {
+							gbbf_senussi_geography_trigger = yes
+						}
+					}
+				}
+				random_country = {
+					limit = {
+						is_adjacent_to_country = root
+						country_has_state_religion = rel:sunni
+						NOR = {
+							has_journal_entry = je_turkfm_senusiyya_sub
+							has_variable = turkfm_senussi_spanked
+						}
+						any_scope_state = {
+							gbbf_senussi_geography_trigger = yes
+						}
+					}
+					turkfm_senussi_arrival_effect = yes
+				}
+			}
+		}
+	}
+
+	current_value = {
+		value = var:turkfm_senussi_var
+	}
+
+	goal_add_value = {
+		value = 100
+	}
+
+	progressbar = yes
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_turkfm_senusiyya_main_status_0
+				trigger = {
+					has_variable = turkfm_senussi_location_var
+					var:turkfm_senussi_location_var = 0
+				}
+			}
+			triggered_desc = {
+				desc = je_turkfm_senusiyya_main_status_1
+				trigger = {
+					has_variable = turkfm_senussi_location_var
+					var:turkfm_senussi_location_var = 1
+				}
+			}
+			triggered_desc = {
+				desc = je_turkfm_senusiyya_main_status_2
+				trigger = {
+					has_variable = turkfm_senussi_location_var
+					var:turkfm_senussi_location_var = 2
+				}
+			}
+			triggered_desc = {
+				desc = je_turkfm_senusiyya_main_status_3
+				trigger = {
+					has_variable = turkfm_senussi_location_var
+					var:turkfm_senussi_location_var = 3
+				}
+			}
+			triggered_desc = {
+				desc = je_turkfm_senusiyya_main_status_4
+				trigger = {
+					has_variable = turkfm_senussi_location_var
+					var:turkfm_senussi_location_var = 4
+				}
+			}
+		}
+	}
+
+	weight = 1000
+
+}
+
+je_turkfm_senusiyya_sub = {
+	group = je_group_turkfm_libya
+
+	should_be_pinned_by_default = yes
+
+	scripted_button = turkfm_embrace_senussi_button
+	scripted_button = turkfm_sweep_desert_button
+	scripted_button = turkfm_supress_senusiyya_button
+
+	immediate = {
+		set_variable = turkfm_senussi_has_landed
+	}
+
+	complete = {
+		custom_tooltip = {
+			text = je_turkfm_senusiyya_main_complete
+			OR = {
+				has_variable = turkfm_embraced_senussi
+				has_variable = turkfm_swept_senussi
+			}
+		}
+	}
+
+	on_complete = {
+		custom_tooltip = {
+			text = je_turkfm_senusiyya_main_on_complete_1
+			if = {
+				limit = {
+					has_variable = turkfm_embraced_senussi
+				}
+				trigger_event = {
+					id = turkfm_libya.007 # House Senussi of Country
+				}
+			}
+		}
+		custom_tooltip = {
+			text = je_turkfm_senusiyya_main_on_complete_2
+			if = {
+				limit = {
+					has_variable = turkfm_swept_senussi
+				}
+				trigger_event = {
+					id = turkfm_libya.006 # The Senusiyya Extinguished
+				}
+			}
+		}
+		turkfm_cleanup_senussi_effect = yes
+	}
+
+	fail = {
+		OR = {
+			has_law = law_type:law_total_separation
+			has_law = law_type:law_state_atheism
+		}
+	}
+
+	on_fail = {
+		turkfm_cleanup_senussi_effect = yes
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			turkfm_senussi_weekly_effect = yes
+			turkfm_check_senussi_effect = yes
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {
+			turkfm_libya.015 # The State-within-a-State
+			turkfm_libya.018 # Senusiyya Takes Root in State
+			turkfm_libya.019 # Senusiyya Expunged from State
+		}
+		effect = {
+			change_variable = {
+				name = turkfm_senussi_var
+				add = var:turkfm_senussi_progress_var
+			}
+			clamp_variable = {
+				name = turkfm_senussi_var
+				max = 100
+				min = 0
+			}
+		}
+	}
+
+	current_value = {
+		value = var:turkfm_senussi_var
+	}
+
+	goal_add_value = {
+		value = 100
+	}
+
+	progressbar = yes
+
+	weight = 1000
+
+}

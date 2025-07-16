@@ -1,0 +1,347 @@
+﻿## BALKAN REVIVALISM EVENTS ##
+
+# For Greek content, see the "grefm" module
+# For Turkish content, see the "turkfm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Orthodox Church content, see the "eocfm" module
+
+####################
+
+namespace = balkfm_revivalism
+
+####################
+
+####	TABLE OF CONTENTS	####	#TOC
+
+# The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
+
+#000-009 - Balkan National Revival General Events
+#	001 - The National Millet
+# 	002 - The National Question
+# 	003 - The National Revival
+# 	004 - ##
+# 	005 - ##
+# 	006 - ##
+# 	007 - ##
+# 	008 - ##
+# 	009 - The Birth of a National State
+
+####################
+
+## Balkan National Revival General Events ##
+balkfm_revivalism.001 = { # The National Millet
+	type = country_event
+	placement = root
+
+	title = balkfm_revivalism.001.t
+	desc = balkfm_revivalism.001.d
+	flavor = {
+		triggered_desc = {
+			desc = balkfm_revivalism.001.f
+			trigger = {
+				NOR = {
+					country_has_primary_culture = cu:bulgarian
+					country_has_primary_culture = cu:bosniak
+					country_has_primary_culture = cu:albanian
+				}
+			}
+		}
+		triggered_desc = {
+			desc = balkfm_revivalism.001.bul
+			trigger = {
+				country_has_primary_culture = cu:bulgarian
+			}
+		}
+		triggered_desc = {
+			desc = balkfm_revivalism.001.bos
+			trigger = {
+				country_has_primary_culture = cu:bosniak
+			}
+		}
+		triggered_desc = {
+			desc = balkfm_revivalism.001.alb
+			trigger = {
+				country_has_primary_culture = cu:albanian
+			}
+		}
+	}
+
+	event_image = {
+		video = "rp1_brazilian_city"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered from GLOBAL
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_revivalism.001.a
+		default_option = yes
+		show_as_tooltip = {
+			add_modifier = modifier_turkfm_eyalet
+		}
+	}
+
+}
+
+balkfm_revivalism.002 = { # The Bulgarian Question
+	type = country_event
+	placement = root
+
+	title = balkfm_revivalism.002.t
+	desc = balkfm_revivalism.002.d
+	flavor = balkfm_revivalism.002.f
+
+	event_image = {
+		video = "unspecific_politicians_arguing"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = balkfm_national_question_happened
+		}
+		has_technology_researched = egalitarianism
+	}
+
+	immediate = {
+		set_variable = balkfm_national_question_happened
+	}
+
+	option = { # Focus on Nationalism
+		name = balkfm_revivalism.002.a
+		default_option = yes
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_NORTHERN_THRACE
+					owns_entire_state_region = STATE_NORTHERN_THRACE
+				}
+			}
+			s:STATE_NORTHERN_THRACE = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_MACEDONIA
+					owns_entire_state_region = STATE_MACEDONIA
+				}
+			}
+			s:STATE_MACEDONIA = {
+				add_claim = ROOT
+			}
+		}
+		create_incident = {
+			country = c:TUR
+			value = 15
+		}
+		balkfm_add_nationalism_progress_effect = yes
+	}
+
+	option = { # Just Coexist
+		name = balkfm_revivalism.002.b
+		balkfm_add_nationalism_progress_effect = yes
+	}
+}
+
+balkfm_revivalism.003 = { # The Bulgarian National Revival
+	type = country_event
+	placement = root
+
+	title = balkfm_revivalism.003.t
+	desc = balkfm_revivalism.003.d
+	flavor = balkfm_revivalism.003.f
+
+	event_image = {
+		video = "europenorthamerica_political_extremism"
+	}
+
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		NOT = {
+			has_variable = balkfm_national_revival_happened
+		}
+		has_technology_researched = mass_communication
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				c:TUR_SIL ?= this
+			}
+			set_variable = balkfm_golden_lion_tickled
+		}
+		set_variable = balkfm_national_revival_happened
+	}
+
+	option = {
+		name = balkfm_revivalism.003.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_westernized_thought
+			days = long_modifier_time
+		}
+	}
+
+}
+
+balkfm_revivalism.009 = { # The Birth of the Bulgarian State
+	type = country_event
+	placement = root
+
+	title = balkfm_revivalism.009.t
+	desc = {
+		triggered_desc {
+			desc = balkfm_revivalism.009.d1
+			trigger = {
+				is_subject = yes
+			}
+		}
+		triggered_desc {
+			desc = balkfm_revivalism.009.d2
+			trigger = {
+				is_subject = no
+			}
+		}
+	}
+	flavor = {
+		triggered_desc {
+			desc = balkfm_revivalism.009.f1
+			trigger = {
+				is_subject = yes
+			}
+		}
+		triggered_desc {
+			desc = balkfm_revivalism.009.f2
+			trigger = {
+				is_subject = no
+			}
+		}
+	}
+
+	event_image = {
+		video = "ep1_transfer_of_authority"
+	}
+
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_balkfm_bul_millet
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		overlord ?= {
+			save_scope_as = balkfm_overlord_scope
+		}
+		random_country = {
+			limit = {
+				has_variable = balkfm_backing_bulgaria
+			}
+			save_scope_as = balkfm_support_scope
+		}
+	}
+
+	option = {
+		name = balkfm_revivalism.009.a
+		default_option = yes
+		if = {
+			limit = {
+				country_has_primary_culture = cu:turkish
+			}
+			remove_primary_culture = cu:turkish
+		}
+		if = {
+			limit = {
+				NOT = {
+					country_has_state_religion = rel:orthodox
+				}
+			}
+			set_state_religion = rel:orthodox
+			ig:ig_devout = {
+				set_interest_group_name = ig_orthodox_church
+				remove_ideology = ideology_patriarchal
+				add_ideology = ideology_orthodox_patriarch
+			}
+		}
+		if = {
+			limit = {
+				country_has_primary_culture = cu:bulgarian
+			}
+			if = {
+				limit = {
+					NOT = {
+						c:BUL ?= this
+					}
+				}
+				change_tag = BUL
+			}
+			trigger_event = {
+				id = balkfm_bulgaria.209 # Securing our Sovereignty
+				days = 30
+			}
+		}
+		if = {
+			limit = {
+				country_has_primary_culture = cu:bosniak
+			}
+			trigger_event = {
+				id = balkfm_bosnia.001 # The Small Land of the Serbs
+				days = 30
+			}
+		}
+		if = {
+			limit = {
+				country_has_primary_culture = cu:albanian
+			}
+			if = {
+				limit = {
+					NOT = {
+						c:ALB ?= this
+					}
+				}
+				change_tag = ALB
+			}
+			trigger_event = {
+				id = balkfm_albania.001 # The Children of the Eagles
+				days = 30
+			}
+		}
+	}
+
+}
