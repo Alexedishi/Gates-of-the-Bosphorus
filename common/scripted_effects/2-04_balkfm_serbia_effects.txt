@@ -1,0 +1,117 @@
+﻿balkfm_update_dynasty_variables_effect = {
+	change_variable = {
+		name = balkfm_obrenovic_support_var
+		add = balkfm_obrenovic_progress_value
+	}
+	clamp_variable = {
+		name = balkfm_obrenovic_support_var
+		max = 500
+		min = 0
+	}
+	change_variable = {
+		name = balkfm_karadordevic_support_var
+		add = balkfm_karadordevic_progress_value
+	}
+	clamp_variable = {
+		name = balkfm_karadordevic_support_var
+		max = 500
+		min = 0
+	}
+}
+
+balkfm_dynasty_monthly_maintenance_effect = {
+	if = {
+		limit = {
+			NOT = {
+				exists = heir
+			}
+			OR = {
+				balkfm_has_karadordevic_ruler_trigger = yes
+				balkfm_has_obrenovic_ruler_trigger = yes
+			}
+		}
+		if = {
+			limit = {
+				balkfm_has_karadordevic_ruler_trigger = yes
+			}
+			create_character = {
+				template = template_balkfm_karadordevic_dynamic_heir
+			}
+		}
+		else_if = {
+			limit = {
+				balkfm_has_obrenovic_ruler_trigger = yes
+			}
+			create_character = {
+				template = template_balkfm_obrenovic_dynamic_heir
+			}
+		}
+	}
+}
+
+balkfm_minor_dynasty_support_loss_effect = {
+	if = {
+		limit = {
+			balkfm_has_obrenovic_ruler_trigger = yes
+		}
+		custom_tooltip = {
+			text = balkfm_obrenovic_minus_50
+			hidden_effect = {
+				change_variable = {
+					name = balkfm_obrenovic_support_var
+					subtract = 50
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			balkfm_has_karadordevic_ruler_trigger = yes
+		}
+		custom_tooltip = {
+			text = balkfm_karadordevic_minus_50
+			hidden_effect = {
+				change_variable = {
+					name = balkfm_karadordevic_support_var
+					subtract = 50
+				}
+			}
+		}
+	}
+}
+
+balkfm_minor_dynasty_support_gain_effect = {
+	if = {
+		limit = {
+			balkfm_has_obrenovic_ruler_trigger = yes
+		}
+		custom_tooltip = {
+			text = balkfm_obrenovic_plus_50
+			hidden_effect = {
+				change_variable = {
+					name = balkfm_obrenovic_support_var
+					add = 50
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			balkfm_has_karadordevic_ruler_trigger = yes
+		}
+		custom_tooltip = {
+			text = balkfm_karadordevic_plus_50
+			hidden_effect = {
+				change_variable = {
+					name = balkfm_karadordevic_support_var
+					add = 50
+				}
+			}
+		}
+	}
+}
+
+balkfm_cleanup_dynasty_variables_effect = {
+	remove_variable = balkfm_obrenovic_support_var
+	remove_variable = balkfm_karadordevic_support_var
+}
