@@ -1,0 +1,61 @@
+﻿balkfm_set_up_ottoman_legacies_effect = {
+	if = {
+		limit = {
+			NOT = {
+				has_variable = balkfm_ottoman_legacies_started # There's a tiny corner case where Bulgaria can fire this effect twice
+			}
+		}
+		trigger_event = {
+			id = balkfm_legacies.009 # An Ottoman Legacy
+			days = 15 # Provides a buffer from Day 1 events
+		}
+		add_journal_entry = {
+			type = je_balkfm_land_reform
+		}
+		add_journal_entry = {
+			type = je_balkfm_civic_reform
+		}
+		if = {
+			limit = {
+				balkfm_balkans_native_trigger = yes
+			}
+			add_journal_entry = {
+				type = je_balkfm_brigandage
+			}
+		}
+		if = {
+			limit = {
+				always = no
+			}
+			add_journal_entry = {
+				type = je_balkfm_tax_reform
+			}
+		}
+		if = {
+			limit = {
+				country_has_primary_culture = cu:romanian
+			}
+			add_journal_entry = {
+				type = je_balkfm_state_reform
+			}
+			add_journal_entry = {
+				type = je_balkfm_economic_reform
+			}
+			add_journal_entry = {
+				type = je_balkfm_social_reform
+			}
+		}
+		else_if = {
+			limit = {
+				country_has_primary_culture = cu:bosniak
+			}
+			add_journal_entry = {
+				type = je_balkfm_state_reform
+			}
+			add_journal_entry = {
+				type = je_balkfm_economic_reform
+			}
+		}
+		set_variable = balkfm_ottoman_legacies_started
+	}
+}

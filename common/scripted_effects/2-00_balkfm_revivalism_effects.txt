@@ -1,0 +1,72 @@
+﻿balkfm_initialize_revivalism_effect = {
+	set_variable = {
+		name = balkfm_revivalism_var
+		value = 0
+	}
+	if = {
+		limit = {
+			c:TUR_SIL ?= this
+		}
+		set_variable = {
+			name = eocfm_schism_var # Silistra isn't Orthodox so the on_actions won't trigger this
+			value = 0
+		}
+	}
+	add_journal_entry = {
+		type = je_balkfm_revival
+	}
+	trigger_event = {
+		id = balkfm_revivalism.001 # The National Millet
+	}
+}
+
+balkfm_add_nationalism_progress_effect = {
+	if = {
+		limit = {
+			NOT = {
+				has_technology_researched = mass_communication
+			}
+		}
+		add_technology_progress = {
+			progress = 1500
+			technology = mass_communication
+		}
+	}
+	else_if = {
+		limit = {
+			NOT = {
+				has_technology_researched = nationalism
+			}
+		}
+		add_technology_progress = {
+			progress = 4000
+			technology = nationalism
+		}
+	}
+	else_if = {
+		limit = {
+			NOT = {
+				has_technology_researched = pan-nationalism
+			}
+		}
+		add_technology_progress = {
+			progress = 10000
+			technology = pan-nationalism
+		}
+	}
+}
+
+balkfm_cleanup_revivalism_effect = {
+	remove_variable = balkfm_revivalism_requested_var
+	remove_variable = balkfm_revivalism_supported_var
+	remove_variable = balkfm_revivalism_var
+	remove_variable = balkfm_revivalism_progress_var
+	remove_variable = balkfm_revivalism_recognition_var
+	remove_variable = balkfm_national_question_happened
+	remove_variable = balkfm_national_revival_happened
+
+	remove_variable = balkfm_nis_insurgency_happened
+	remove_variable = balkfm_constantinople_newspaper_published
+	remove_variable = balkfm_golden_lion_tickled
+	remove_variable = balkfm_legion_formed
+}
