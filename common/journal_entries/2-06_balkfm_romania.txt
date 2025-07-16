@@ -922,24 +922,34 @@ je_balkfm_peles_castle = {
 
 	should_be_pinned_by_default = yes
 
-	immediate = {
-		balkfm_calculate_construction_effect = yes
+	is_shown_when_inactive = {
+		c:ROM ?= this
+		owns_entire_state_region = STATE_WALLACHIA
+		NOT = {
+			any_scope_building = {
+				is_building_type = gbbf_building_castelul_peles
+			}
+		}
 	}
 
-	scripted_button = balkfm_construction_0_button
-	scripted_button = balkfm_construction_1_button
-	scripted_button = balkfm_construction_2_button
-	scripted_button = balkfm_construction_3_button
+	possible = {
+		has_technology_researched = reinforced_concrete
+		has_technology_researched = pan-nationalism
+	}
+
+	immediate = {
+	}
 
 	complete = {
-		scope:journal_entry = { is_goal_complete = yes }
+		any_scope_building = {
+			is_building_type = gbbf_building_castelul_peles
+		}
 	}
 
 	on_complete = {
 		trigger_event = {
 			id = balkfm_romania.501 # A Royal Estate
 		}
-		balkfm_clean_up_construction_effect = yes
 	}
 
 	fail = {
@@ -950,66 +960,7 @@ je_balkfm_peles_castle = {
 	}
 
 	on_fail = {
-		balkfm_clean_up_construction_effect = yes
 	}
-
-	on_weekly_pulse = {
-		effect = {
-			balkfm_calculate_construction_effect = yes
-			balkfm_push_construction_effect = yes
-		}
-	}
-
-	status_desc = {
-		first_valid = {
-			triggered_desc = {
-				desc = je_balkfm_construction_4
-				trigger = {
-					scope:journal_entry = {
-						is_goal_complete = yes
-					}
-				}
-			}
-			triggered_desc = {
-				desc = je_balkfm_construction_0
-				trigger = {
-					NOR = {
-						has_modifier = modifier_balkfm_construction_1
-						has_modifier = modifier_balkfm_construction_2
-						has_modifier = modifier_balkfm_construction_3
-					}
-				}
-			}
-			triggered_desc = {
-				desc = je_balkfm_construction_3
-				trigger = {
-					has_modifier = modifier_balkfm_construction_3
-				}
-			}
-			triggered_desc = {
-				desc = je_balkfm_construction_2
-				trigger = {
-					has_modifier = modifier_balkfm_construction_2
-				}
-			}
-			triggered_desc = {
-				desc = je_balkfm_construction_1
-				trigger = {
-					has_modifier = modifier_balkfm_construction_1
-				}
-			}
-		}
-	}
-
-	current_value = {
-		value = var:balkfm_construction_var
-	}
-
-	goal_add_value = {
-		value = 2500 # Monument construction cost
-	}
-
-	progressbar = yes
 
 	weight = 100
 
