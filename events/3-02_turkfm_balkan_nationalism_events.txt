@@ -279,39 +279,68 @@ turkfm_separatism.003 = { # Nationalist Movements Intensify
 
 }
 
-turkfm_separatism.004 = { # Adds je_turkfm_separatism_main
+turkfm_separatism.004 = {
 	type = country_event
 	hidden = yes
 
 	trigger = {
-		c:TUR ?= this
-		NOR = {
-			has_global_variable = turkfm_separatism_complete
-			has_journal_entry = je_turkfm_separatism_main
+		NOT = {
+			global_var:turkfm_separatism_phase_var ?= 5 # Crisis
 		}
+		var:turkfm_riot_var >= 200
 		any_scope_state = {
-			region = sr:region_balkans
+			has_modifier = modifier_turkfm_race_riots
 		}
 	}
 
-	immediate = {
-		if = {
-			limit = {
-				has_variable = turkfm_tension_started
-			}
-			add_journal_entry = {
-				type = je_turkfm_separatism_main
-			}
-		}
-		else = {
-			add_journal_entry = {
-				type = je_turkfm_separatism_main
-			}
-			trigger_event = {
-				id = turkfm_separatism.001 # The Peoples of the Empire
+	cancellation_trigger = {
+		NOT = {
+			any_scope_state = {
+				has_modifier = modifier_turkfm_race_riots
 			}
 		}
 	}
+
+	cooldown = {
+		months = 3
+	}
+
+	immediate = {
+		set_variable = {
+			name = turkfm_riot_var
+			value = 100
+		}
+		random_scope_state = {
+			limit = {
+				has_modifier = modifier_turkfm_race_riots
+			}
+			remove_modifier = modifier_turkfm_race_riots
+			save_scope_as = turkfm_riot_state_scope
+		}
+		turkfm_create_rebellion_effect = yes
+		random_country = {
+			limit = {
+				has_variable = turkfm_rebellion_tag_tracker
+			}
+			save_scope_as = turkfm_rebellion_scope
+		}
+		if = {
+			limit = {
+				exists = scope:turkfm_rebellion_scope
+			}
+			scope:turkfm_rebellion_scope = {
+				turkfm_set_rebellion_laws = yes
+				add_modifier = {
+					name = modifier_turkfm_nationalist_uprising
+					days = normal_modifier_time
+				}
+			}
+			trigger_event = {
+				id = turkfm_separatism.006
+			}
+		}
+	}
+
 }
 
 turkfm_separatism.005 = { # Riots Break Out in State
@@ -435,34 +464,28 @@ turkfm_separatism.006 = { # Balkan Country Rebellion
 	dlc = dlc_grefm
 
 	trigger = {
-		NOT = {
-			global_var:turkfm_separatism_phase_var ?= 5 # Crisis
-		}
-		var:turkfm_riot_var >= 200
-		any_scope_state = {
-			has_modifier = modifier_turkfm_race_riots
-		}
-	}
-
-	cooldown = {
-		months = 3
+		# triggered by turkfm_separatism.004
 	}
 
 	immediate = {
-		set_variable = turkfm_riot_technical_var
-		turkfm_create_rebellion_effect = yes
+		set_variable = {
+			name = turkfm_recent_revolt_var
+			months = 3
+		}
 		random_country = {
 			limit = {
 				has_variable = turkfm_rebellion_tag_tracker
 			}
 			save_scope_as = turkfm_rebellion_scope
-			turkfm_set_rebellion_laws = yes
 			remove_variable = turkfm_rebellion_tag_tracker
-			add_modifier = modifier_turkfm_nationalist_uprising
 		}
-		set_variable = {
-			name = turkfm_riot_var
-			value = 100
+		create_diplomatic_pact = {
+			type = puppet
+			country = scope:turkfm_rebellion_scope
+		}
+		create_bidirectional_truce = {
+			country = scope:turkfm_rebellion_scope
+			months = 12
 		}
 		every_country = {
 			limit = {
@@ -470,12 +493,12 @@ turkfm_separatism.006 = { # Balkan Country Rebellion
 			}
 			create_bidirectional_truce = {
 				country = scope:turkfm_rebellion_scope
-				months = 60
+				months = 36
 			}
 		}
-		create_bidirectional_truce = {
+		set_relations = {
 			country = scope:turkfm_rebellion_scope
-			months = 60
+			value = -50
 		}
 	}
 
@@ -485,42 +508,22 @@ turkfm_separatism.006 = { # Balkan Country Rebellion
 		hidden_effect = {
 			end_truce = scope:turkfm_rebellion_scope
 		}
-		scope:turkfm_rebellion_scope = {
-			make_independent = yes
-		}
 		create_diplomatic_play = {
 			target_country = scope:turkfm_rebellion_scope
-			type = dp_secession
+			type = dp_annex_subject
 		}
-		hidden_effect = {
-			random_diplomatic_play = {
-				limit = {
-					c:TUR = {
-						is_diplomatic_play_initiator = yes
-					}
-					scope:turkfm_rebellion_scope = {
-						is_diplomatic_play_target = yes
-					}
-				}
-				add_diplomatic_play_war_support = { target = scope:turkfm_rebellion_scope value = 100 }
+		every_country = {
+			limit = {
+				has_journal_entry = je_turkfm_eastern_question
 			}
+			post_notification = notification_turkfm_revolt_seccession
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					has_journal_entry = je_turkfm_eastern_question
-				}
-				post_notification = notification_turkfm_revolt_seccession
-			}
-		}
-		remove_variable = turkfm_riot_technical_var
 	}
 
 	option = { # Let Them Go
 		name = turkfm_separatism.006.b
-		create_diplomatic_pact = {
-			country = scope:turkfm_rebellion_scope
-			type = protectorate
+		scope:turkfm_rebellion_scope = {
+			increase_autonomy = yes
 		}
 		add_radicals = {
 			culture = cu:turkish
@@ -538,7 +541,6 @@ turkfm_separatism.006 = { # Balkan Country Rebellion
 				post_notification = notification_turkfm_revolt_protectorate
 			}
 		}
-		remove_variable = turkfm_riot_technical_var
 	}
 
 }
@@ -4822,6 +4824,41 @@ turkfm_separatism.192 = { # Ottoman Alliance Monitor Event
 		}
 	}
 
+}
+
+turkfm_separatism.199 = { # Adds je_turkfm_separatism_main
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		c:TUR ?= this
+		NOR = {
+			has_global_variable = turkfm_separatism_complete
+			has_journal_entry = je_turkfm_separatism_main
+		}
+		any_scope_state = {
+			region = sr:region_balkans
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				has_variable = turkfm_tension_started
+			}
+			add_journal_entry = {
+				type = je_turkfm_separatism_main
+			}
+		}
+		else = {
+			add_journal_entry = {
+				type = je_turkfm_separatism_main
+			}
+			trigger_event = {
+				id = turkfm_separatism.001 # The Peoples of the Empire
+			}
+		}
+	}
 }
 
 ## Tension Riot Events ##
