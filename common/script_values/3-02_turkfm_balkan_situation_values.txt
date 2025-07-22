@@ -1,0 +1,409 @@
+﻿## Primary Mechanic Values
+turkfm_escalation_progress_value = {
+	value = 0
+	add = {
+		value = 1
+		desc = turkfm_value_from_base
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_nationalism_wave_happened
+		}
+		add = {
+			value = 3
+			desc = turkfm_value_from_nationalism
+		}
+	}
+	if = {
+		limit = {
+			government_legitimacy < 70
+		}
+		add = {
+			value = {
+				add = government_legitimacy
+				subtract = 70
+				multiply = -1
+				max = 3
+				min = 0
+				round_to = 0.01
+			}
+			desc = turkfm_value_from_low_legitimacy
+		}
+	}
+	add = {
+		value = turkfm_radicals_summary_value
+		desc = turkfm_value_from_balkan_radicals
+	}
+	add = {
+		value = {
+			every_country = {
+				limit = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_accelerate_tensions
+					}
+				}
+			}
+			add = 2
+		}
+		desc = turkfm_value_from_accelerating_tensions
+	}
+	subtract = {
+		value = {
+			every_country = {
+				limit = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_decelerate_tensions
+					}
+				}
+			}
+			add = 1
+		}
+		desc = turkfm_value_from_decelerating_tensions
+	}
+	if = {
+		limit = {
+			turkfm_can_escalate_tension_trigger = no
+		}
+		multiply = 0
+	}
+}
+
+turkfm_deescalation_progress_value = {
+	value = 0
+	add = {
+		value = 1
+		desc = turkfm_value_from_base
+	}
+	if = {
+		limit = {
+			government_legitimacy > 70
+		}
+		add = {
+			value = {
+				add = government_legitimacy
+				subtract = 70
+				max = 3
+				min = 0
+				round_to = 0.01
+			}
+			desc = turkfm_value_from_high_legitimacy
+		}
+	}
+	add = {
+		value = turkfm_loyalists_summary_value
+		desc = turkfm_value_from_balkan_loyalists
+	}
+	add = {
+		value = {
+			every_country = {
+				limit = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_decelerate_tensions
+					}
+				}
+			}
+			add = 2
+		}
+		desc = turkfm_value_from_decelerating_tensions
+	}
+	subtract = {
+		value = {
+			every_country = {
+				limit = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_accelerate_tensions
+					}
+				}
+			}
+			add = 1
+		}
+		desc = turkfm_value_from_accelerating_tensions
+	}
+	if = {
+		limit = {
+			turkfm_can_deescalate_tension_trigger = no
+		}
+		multiply = 0
+	}
+}
+
+turkfm_tension_progress_value = {
+	value = 0
+	if = {
+		limit = {
+			global_var:turkfm_deescalation_var > global_var:turkfm_escalation_var
+		}
+		add = global_var:turkfm_deescalation_var
+	}
+	else = {
+		add = global_var:turkfm_escalation_var
+	}
+}
+
+## Race Riot Values
+turkfm_riot_counter_value = {
+	value = 0
+	add = {
+		value = {
+			every_scope_state = {
+				limit = {
+					has_modifier = modifier_turkfm_race_riots
+				}
+				add = 1
+			}
+		}
+		desc = turkfm_value_from_riots
+	}
+}
+
+turkfm_riot_potential_value = {
+	value = 0
+	add = {
+		value = 1
+		desc = turkfm_value_from_base
+	}
+	if = {
+		limit = {
+			has_technology_researched = nationalism
+		}
+		add = {
+			value = 1
+			desc = turkfm_value_from_nationalism
+		}
+	}
+	if = {
+		limit = {
+			has_technology_researched = pan-nationalism
+		}
+		add = {
+			value = 1
+			desc = turkfm_value_from_pan_nationalism
+		}
+	}
+}
+
+turkfm_riot_progress_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = turkfm_riot_state_1_progress_var
+		}
+		add = {
+			value = var:turkfm_riot_state_1_progress_var
+			desc = turkfm_value_from_riot_state_1
+		}
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_riot_state_2_progress_var
+		}
+		add = {
+			value = var:turkfm_riot_state_2_progress_var
+			desc = turkfm_value_from_riot_state_2
+		}
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_riot_state_3_progress_var
+		}
+		add = {
+			value = var:turkfm_riot_state_3_progress_var
+			desc = turkfm_value_from_riot_state_3
+		}
+	}
+	add = {
+		value = {
+			every_country = {
+				limit = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_accelerate_tensions
+					}
+				}
+			}
+			add = 1
+		}
+		desc = turkfm_value_from_accelerating_tensions
+	}
+	if = {
+		limit = {
+			has_technology_researched = political_agitation
+		}
+		multiply = {
+			value = 2
+			desc = turkfm_value_from_political_agitation
+		}
+	}
+	add = {
+		value = {
+			add = government_legitimacy
+			subtract = 75
+			divide = 100
+		}
+		desc = turkfm_value_from_legitimacy
+	}
+	subtract = {
+		value = {
+			if = {
+				limit = {
+					has_institution = institution_police
+				}
+				institution:institution_police = {
+					add = investment
+				}
+			}
+			multiply = 0.1
+		}
+		desc = turkfm_value_from_policing
+	}
+	if = {
+		limit = {
+			NOT = {
+				any_scope_state = {
+					has_modifier = modifier_turkfm_race_riots
+				}
+			}
+		}
+		multiply = {
+			value = 0
+			desc = turkfm_value_from_no_riots
+		}
+	}
+}
+
+turkfm_riot_1_progress_value = {
+	value = 0
+	scope:turkfm_riot_state_1_scope = {
+		every_scope_pop = {
+			limit = {
+				OR = {
+					has_pop_religion = orthodox
+					has_pop_religion = jewish
+				}
+			}
+			add = pop_radical_fraction
+		}
+		divide = {
+			every_scope_pop = {
+				limit = {
+					OR = {
+						has_pop_religion = orthodox
+						has_pop_religion = jewish
+					}
+				}
+				add = 1
+			}
+			min = 1
+		}
+	}
+	multiply = 10
+	round_to = 0.01
+}
+
+turkfm_riot_2_progress_value = {
+	value = 0
+	scope:turkfm_riot_state_2_scope = {
+		every_scope_pop = {
+			limit = {
+				OR = {
+					has_pop_religion = orthodox
+					has_pop_religion = jewish
+				}
+			}
+			add = pop_radical_fraction
+		}
+		divide = {
+			every_scope_pop = {
+				limit = {
+					OR = {
+						has_pop_religion = orthodox
+						has_pop_religion = jewish
+					}
+				}
+				add = 1
+			}
+			min = 1
+		}
+	}
+	multiply = 10
+	round_to = 0.01
+}
+
+turkfm_riot_3_progress_value = {
+	value = 0
+	scope:turkfm_riot_state_3_scope = {
+		every_scope_pop = {
+			limit = {
+				OR = {
+					has_pop_religion = orthodox
+					has_pop_religion = jewish
+				}
+			}
+			add = pop_radical_fraction
+		}
+		divide = {
+			every_scope_pop = {
+				limit = {
+					OR = {
+						has_pop_religion = orthodox
+						has_pop_religion = jewish
+					}
+				}
+				add = 1
+			}
+			min = 1
+		}
+	}
+	multiply = 10
+	round_to = 0.01
+}
+
+## Secession Movement Values (CMF Overrides)
+turkfm_target_fraction_of_states_value = {
+	value = 0
+	add = owner.modifier:country_minority_secession_size_add
+	divide = {
+		value = {
+			owner = {
+				every_scope_state = {
+					add = 1
+				}
+			}
+			min = 1
+		}
+	}
+}
+
+turkfm_movement_cultural_minority_secession_target_fraction_of_states_min = {
+	value = 0
+	add = owner.modifier:country_minority_secession_size_add
+	divide = {
+		value = {
+			owner = {
+				every_scope_state = {
+					add = 1
+				}
+			}
+			min = 1
+		}
+	}
+}
+
+turkfm_movement_religious_minority_secession_target_fraction_of_states_min = {
+	value = 0
+	add = owner.modifier:country_minority_secession_size_add
+	divide = {
+		value = {
+			owner = {
+				every_scope_state = {
+					add = 1
+				}
+			}
+			min = 1
+		}
+	}
+}
