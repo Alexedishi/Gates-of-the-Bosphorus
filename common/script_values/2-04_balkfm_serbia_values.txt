@@ -1,7 +1,7 @@
 ﻿balkfm_obrenovic_support_value = {
 	value = 0
 
-	# Relevant IGs will support ruling Obrenovic if SER has enacted Autocracy
+	## Relevant IGs will support ruling Obrenovic if SER has enacted Autocracy
 	if = {
 		limit = {
 			balkfm_has_obrenovic_ruler_trigger = yes
@@ -57,7 +57,8 @@
 			}
 		}
 	}
-	# Relevant IGs will support non-ruling Obrenovic if SER has suffrage
+
+	## Relevant IGs will support non-ruling Obrenovic if SER has suffrage
 	else_if = {
 		limit = {
 			balkfm_has_karadordevic_ruler_trigger = yes
@@ -92,55 +93,77 @@
 		}
 	}
 
-	# Relevant IGs will support ruling Obrenovic if SER has any police
+	## Relevant IGs will support ruling Obrenovic if SER has any police
 	if = {
 		limit = {
 			balkfm_has_obrenovic_ruler_trigger = yes
 		}
 		if = {
 			limit = {
-				OR = {
-					has_law = law_type:law_local_police
-					has_law = law_type:law_dedicated_police
-					has_law = law_type:law_militarized_police
+				NOT = {
+					has_law = law_type:law_no_police
 				}
 			}
 			add = {
 				value = {
-					add = institution:institution_police.investment
-					multiply = 0.1
+					every_interest_group = {
+						limit = {
+							law_stance = {
+								law = law_type:law_no_police
+								value < neutral
+							}
+						}
+						add = ig_clout
+					}
 				}
-				desc = balkfm_value_from_police_level
+				desc = balkfm_value_from_police_support
 			}
 		}
 		else = {
 			subtract = {
-				value = 0.5
-				desc = balkfm_value_from_no_police
+				value = {
+					every_interest_group = {
+						limit = {
+							law_stance = {
+								law = law_type:law_no_police
+								value < neutral
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_police_support
 			}
 		}
 	}
-	# Relevant IGs will support non-ruling Obrenovic if SER has no police
+
+	## Relevant IGs will support non-ruling Obrenovic if SER has no police
 	else_if = {
 		limit = {
 			balkfm_has_karadordevic_ruler_trigger = yes
 		}
 		if = {
 			limit = {
-				NOR = {
-					has_law = law_type:law_local_police
-					has_law = law_type:law_dedicated_police
-					has_law = law_type:law_militarized_police
-				}
+				has_law = law_type:law_no_police
 			}
 			add = {
-				value = 0.5
-				desc = balkfm_value_from_no_police
+				value = {
+					every_interest_group = {
+						limit = {
+							law_stance = {
+								law = law_type:law_no_police
+								value < neutral
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_police_support
 			}
 		}
 	}
 
-	# Relevant IGs will support ruling Obrenovic land policy
+	## Relevant IGs will support ruling Obrenovic land policy
 	if = {
 		limit = {
 			balkfm_has_obrenovic_ruler_trigger = yes
@@ -196,7 +219,8 @@
 			}
 		}
 	}
-	# Relevant IGs will support non-ruling Orenovic if land reform has been implemented
+
+	## Relevant IGs will support non-ruling Orenovic if land reform has been implemented
 	else_if = {
 		limit = {
 			balkfm_has_karadordevic_ruler_trigger = yes
@@ -289,7 +313,7 @@
 balkfm_karadordevic_support_value = {
 	value = 0
 
-	# Relevant IGs will support ruling Karadordevic if suffrage is enacted
+	## Relevant IGs will support ruling Karadordevic if suffrage is enacted
 	if = {
 		limit = {
 			balkfm_has_karadordevic_ruler_trigger = yes
@@ -371,7 +395,8 @@ balkfm_karadordevic_support_value = {
 			}
 		}
 	}
-	# Relevant IGs will support non-ruling Karadordevic if no voting is present
+
+	## Relevant IGs will support non-ruling Karadordevic if no voting is present
 	else_if = {
 		limit = {
 			balkfm_has_obrenovic_ruler_trigger = yes
@@ -416,7 +441,7 @@ balkfm_karadordevic_support_value = {
 		}
 	}
 
-	# Relevant IGs will support ruling Karadordevic if Speech is protected
+	## Relevant IGs will support ruling Karadordevic if Speech is protected
 	if = {
 		limit = {
 			balkfm_has_karadordevic_ruler_trigger = yes
@@ -478,7 +503,8 @@ balkfm_karadordevic_support_value = {
 			}
 		}
 	}
-	# Relevant IGs will support non-ruling Karadordevic if speech is suppressed
+
+	## Relevant IGs will support non-ruling Karadordevic if speech is suppressed
 	else_if = {
 		limit = {
 			balkfm_has_obrenovic_ruler_trigger = yes
@@ -513,7 +539,7 @@ balkfm_karadordevic_support_value = {
 		}
 	}
 
-	# Relevant IGs will support ruling Karadorevic if land reform is enacted
+	## Relevant IGs will support ruling Karadorevic if land reform is enacted
 	if = {
 		limit = {
 			balkfm_has_karadordevic_ruler_trigger = yes
@@ -569,7 +595,8 @@ balkfm_karadordevic_support_value = {
 			}
 		}
 	}
-	# Relevant IGs will support non-ruling Karadorevic if land reform is suppressed
+
+	## Relevant IGs will support non-ruling Karadorevic if land reform is suppressed
 	if = {
 		limit = {
 			balkfm_has_obrenovic_ruler_trigger = yes
