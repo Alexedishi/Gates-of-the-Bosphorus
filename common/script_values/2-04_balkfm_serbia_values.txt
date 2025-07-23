@@ -1,6 +1,20 @@
 ﻿balkfm_obrenovic_support_value = {
 	value = 0
 
+	## Only apply ruler popularity if House is in charge
+	if = {
+		limit = {
+			balkfm_has_obrenovic_ruler_trigger = yes
+		}
+		add = {
+			value = {
+				add = ruler.popularity
+				multiply = 0.01
+			}
+			desc = balkfm_value_from_ruler_popularity
+		}
+	}
+
 	## Relevant IGs will support ruling Obrenovic if SER has enacted Autocracy
 	if = {
 		limit = {
@@ -312,6 +326,20 @@
 
 balkfm_karadordevic_support_value = {
 	value = 0
+
+	## Only apply ruler popularity if House is in charge
+	if = {
+		limit = {
+			balkfm_has_karadordevic_ruler_trigger = yes
+		}
+		add = {
+			value = {
+				add = ruler.popularity
+				multiply = 0.01
+			}
+			desc = balkfm_value_from_ruler_popularity
+		}
+	}
 
 	## Relevant IGs will support ruling Karadordevic if suffrage is enacted
 	if = {
@@ -681,38 +709,36 @@ balkfm_karadordevic_support_value = {
 			desc = balkfm_value_from_strong_kaykay
 		}
 	}
-
 	round_to = 0.01
-
 }
 
 balkfm_obrenovic_progress_value = {
 	value = 0
-	add = balkfm_obrenovic_support_value
-	subtract = balkfm_karadordevic_support_value
+	add = var:balkfm_obrenovic_support_var
+	subtract = var:balkfm_karadordevic_support_var
 }
 
 balkfm_karadordevic_progress_value = {
 	value = 0
-	add = balkfm_karadordevic_support_value
-	subtract = balkfm_obrenovic_support_value
+	add = var:balkfm_karadordevic_support_var
+	subtract = var:balkfm_obrenovic_support_var
 }
 
 balkfm_dynastic_rivalry_progress_value = {
 	value = 0
 	if = {
 		limit = {
-			balkfm_obrenovic_support_value > balkfm_karadordevic_support_value
+			var:balkfm_obrenovic_support_var > var:balkfm_karadordevic_support_var
 		}
-		add = balkfm_obrenovic_support_value
-		subtract = balkfm_karadordevic_support_value
+		add = var:balkfm_obrenovic_support_var
+		subtract = var:balkfm_karadordevic_support_var
 	}
 	if = {
 		limit = {
-			balkfm_obrenovic_support_value < balkfm_karadordevic_support_value
+			var:balkfm_obrenovic_support_var < var:balkfm_karadordevic_support_var
 		}
-		add = balkfm_karadordevic_support_value
-		subtract = balkfm_obrenovic_support_value
+		add = var:balkfm_karadordevic_support_var
+		subtract = var:balkfm_obrenovic_support_var
 	}
 	round_to = 0.01
 }
