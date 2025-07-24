@@ -1,0 +1,588 @@
+﻿turkfm_hellenic_separatism_effect = {
+	if = {
+		limit = {
+			has_modifier = modifier_turkfm_supporting_gunrunners
+		}
+		remove_modifier = modifier_turkfm_supporting_gunrunners
+		add_modifier = {
+			name = modifier_turkfm_supporting_gunrunners
+			multiplier = money_amount_multiplier_medium
+		}
+		if = {
+			limit = {
+				c:TUR ?= {
+					OR = {
+						owns_entire_state_region = STATE_THESSALIA
+						owns_entire_state_region = STATE_MACEDONIA
+						owns_entire_state_region = STATE_SKOPIA
+						owns_entire_state_region = STATE_CRETE
+						owns_entire_state_region = STATE_AYDIN
+						owns_entire_state_region = STATE_CYPRUS
+					}
+				}
+			}
+			random_list = {
+				1 = {
+					trigger = {
+						c:TUR = {
+							owns_entire_state_region = STATE_THESSALIA
+						}
+					}
+					s:STATE_THESSALIA = {
+						random_scope_state = {
+							add_radicals_in_state = {
+								culture = cu:greek
+								value = 0.05
+							}
+						}
+					}
+				}
+				1 = {
+					trigger = {
+						c:TUR = {
+							owns_entire_state_region = STATE_MACEDONIA
+						}
+					}
+					s:STATE_MACEDONIA = {
+						random_scope_state = {
+							add_radicals_in_state = {
+								culture = cu:greek
+								value = 0.05
+							}
+						}
+					}
+				}
+				1 = {
+					trigger = {
+						c:TUR = {
+							owns_entire_state_region = STATE_SKOPIA
+						}
+					}
+					s:STATE_SKOPIA = {
+						random_scope_state = {
+							add_radicals_in_state = {
+								culture = cu:greek
+								value = 0.05
+							}
+						}
+					}
+				}
+				1 = {
+					trigger = {
+						c:TUR = {
+							owns_entire_state_region = STATE_CRETE
+						}
+					}
+					s:STATE_CRETE = {
+						random_scope_state = {
+							add_radicals_in_state = {
+								culture = cu:greek
+								value = 0.05
+							}
+						}
+					}
+				}
+				1 = {
+					trigger = {
+						c:TUR = {
+							owns_entire_state_region = STATE_AYDIN
+						}
+					}
+					s:STATE_AYDIN = {
+						random_scope_state = {
+							add_radicals_in_state = {
+								culture = cu:greek
+								value = 0.05
+							}
+						}
+					}
+				}
+				1 = {
+					trigger = {
+						c:TUR = {
+							owns_entire_state_region = STATE_CYPRUS
+						}
+					}
+					s:STATE_CYPRUS = {
+						random_scope_state = {
+							add_radicals_in_state = {
+								culture = cu:greek
+								value = 0.05
+							}
+						}
+					}
+				}
+			}
+		}
+		else = {
+			remove_modifier = modifier_turkfm_supporting_gunrunners
+		}
+	}
+}
+
+turkfm_rhomaios_separatism_effect = {
+}
+
+turkfm_yugoslav_separatism_effect = {
+}
+
+turkfm_cleanup_eqfm_effect = {
+	hidden_effect = {
+		remove_modifier = modifier_turkfm_supporting_gunrunners
+	}
+}
+
+turkfm_initialize_crisis_effect = {
+	set_global_variable = {
+		name = turkfm_riot_counter_var
+		value = 0
+	}
+	set_global_variable = {
+		name = turkfm_crisis_var
+		value = 0
+	}
+	set_global_variable = {
+		name = turkfm_crisis_progress_var
+		value = 0
+	}
+	change_global_variable = {
+		name = turkfm_crisis_counter_var
+		add = 1
+	}
+	set_variable = turkfm_crisis_target
+}
+
+turkfm_crisis_weekly_effect = {
+	if = {
+		limit = {
+			has_global_variable = turkfm_crisis_var
+			NOT = {
+				has_global_variable = turkfm_crisis_launched
+			}
+		}
+		if = {
+			limit = {
+				has_global_variable = turkfm_crisis_leader_var
+				exists = global_var:turkfm_crisis_leader_var
+			}
+			global_var:turkfm_crisis_leader_var = {
+				remove_variable = turkfm_crisis_leader
+			}
+		}
+		remove_global_variable = turkfm_crisis_leader_var
+		ordered_country = {
+			limit = {
+				has_variable = turkfm_crisis_attacker
+			}
+			order_by = prestige
+			max = 1
+			check_range_bounds = no
+			save_scope_as = turkfm_crisis_leader_scope
+		}
+		if = {
+			limit = {
+				exists = scope:turkfm_crisis_leader_scope
+			}
+			scope:turkfm_crisis_leader_scope = {
+				set_variable = turkfm_crisis_leader
+			}
+			set_global_variable = {
+				name = turkfm_crisis_leader_var
+				value = scope:turkfm_crisis_leader_scope
+			}
+		}
+		change_global_variable = {
+			name = turkfm_crisis_var
+			add = var:turkfm_crisis_progress_var
+		}
+		set_global_variable = {
+			name = turkfm_crisis_progress_var
+			value = turkfm_crisis_progress_value
+		}
+	}
+}
+
+turkfm_stage_crisis_characters_effect = {
+	# event_window_crisis has this layout, from top to bottom, attackers on the left & defenders on the right:
+	# 1 4 <--attackers and defenders
+	# 2 5 <--initiator and target
+	# 3 6 <--attackers and defenders
+	# you need to save each character scope into the variable "crisis_scope_(1-6)" which is read by the gui
+	# Saves country scopes for the localization
+	random_country = {
+		limit = {
+			has_variable = turkfm_crisis_leader
+		}
+		save_scope_as = turkfm_crisis_leader_scope
+	}
+	random_country = {
+		limit = {
+			has_variable = turkfm_crisis_target
+		}
+		save_scope_as = turkfm_crisis_target_scope
+	}
+
+	# First round of assignments
+	random_country = {
+		limit = {
+			has_variable = turkfm_crisis_attacker
+			NOT = { has_variable = turkfm_crisis_leader }
+			country_rank >= rank_value:great_power
+		}
+		ruler = {
+			save_scope_as = crisis_scope_1
+		}
+	}
+	random_country = {
+		limit = {
+			has_variable = turkfm_crisis_leader
+		}
+		ruler = {
+			save_scope_as = crisis_scope_2
+		}
+	}
+	random_country = {
+		limit = {
+			has_variable = turkfm_crisis_attacker
+			NOT = {
+				ruler = {
+					THIS = scope:crisis_scope_1
+					THIS = scope:crisis_scope_2
+				}
+			}
+		}
+		ruler = {
+			save_scope_as = crisis_scope_3
+		}
+	}
+	random_country = {
+		limit = {
+			has_variable = turkfm_crisis_defender
+		}
+		ruler = {
+			save_scope_as = crisis_scope_4
+		}
+	}
+	random_country = {
+		limit = {
+			has_variable = turkfm_crisis_target
+		}
+		ruler = {
+			save_scope_as = crisis_scope_5
+		}
+	}
+	random_country = {
+		limit = {
+			has_variable = turkfm_crisis_defender
+			NOT = {
+				ruler = {
+					scope:crisis_scope_4 = this
+				}
+			}
+		}
+		ruler = {
+			save_scope_as = crisis_scope_6
+		}
+	}
+
+	# Second round checking for missing scopes
+	if = {
+		limit = {
+			NOT = {
+				exists = scope:crisis_scope_1
+			}
+		}
+		random_country = {
+			limit = {
+				has_variable = turkfm_crisis_attacker
+				NOT = {
+					ruler = {
+						THIS = scope:crisis_scope_3 # There should be at least two minors involed in the crisis
+					}
+				}
+			}
+			ruler = {
+				save_scope_as = crisis_scope_1
+			}
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				exists = scope:crisis_scope_4
+			}
+		}
+		if = {
+			limit = {
+				c:TUR = {
+					any_scope_character = {
+						has_template = template_turkfm_hakki_ismail
+					}
+				}
+			}
+			c:TUR = {
+				random_scope_character = {
+					limit = {
+						has_template = template_turkfm_hakki_ismail
+					}
+					save_scope_as = crisis_scope_4
+				}
+			}
+		}
+		else = {
+			c:TUR = {
+				create_character = {
+					template = template_turkfm_hakki_ismail
+				}
+				random_character = {
+					limit = {
+						has_template = template_turkfm_hakki_ismail
+					}
+					save_scope_as = crisis_scope_4
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				exists = scope:crisis_scope_6
+			}
+		}
+		if = {
+			limit = {
+				c:TUR = {
+					any_scope_character = {
+						has_template = template_turkfm_nuri_osman
+					}
+				}
+			}
+			c:TUR = {
+				random_character = {
+					limit = {
+						has_template = template_turkfm_nuri_osman
+					}
+					save_scope_as = crisis_scope_6
+				}
+			}
+		}
+		else = {
+			c:TUR = {
+				create_character = {
+					template = template_turkfm_nuri_osman
+				}
+				random_character = {
+					limit = {
+						has_template = template_turkfm_nuri_osman
+					}
+					save_scope_as = crisis_scope_6
+				}
+			}
+		}
+	}
+
+	# Assigning scopes to variables so they can be accessed by the gui
+	set_variable = {
+		name = crisis_character_1
+		value = scope:crisis_scope_1
+	}
+	set_variable = {
+		name = crisis_character_2
+		value = scope:crisis_scope_2
+	}
+	set_variable = {
+		name = crisis_character_3
+		value = scope:crisis_scope_3
+	}
+	set_variable = {
+		name = crisis_character_4
+		value = scope:crisis_scope_4
+	}
+	set_variable = {
+		name = crisis_character_5
+		value = scope:crisis_scope_5
+	}
+	set_variable = {
+		name = crisis_character_6
+		value = scope:crisis_scope_6
+	}
+}
+
+turkfm_crisis_armistice_effect = {
+	set_global_variable = turkfm_congress_var
+	if = {
+		limit = {
+			global_var:turkfm_congress_counter_var = 0 # special hardcoding for the Great Eastern Crisis
+		}
+		c:PRU ?= {
+			save_scope_as = prussia_scope
+		}
+		if = {
+			limit = {
+				exists = scope:prussia_scope
+			}
+			scope:prussia_scope = {
+				set_variable = turkfm_congress_host
+			}
+		}
+		else = {
+			random_country = {
+				limit = {
+					country_rank >= rank_value:great_power
+					NOR = {
+						has_variable = turkfm_crisis_leader
+						has_variable = turkfm_crisis_target
+					}
+				}
+				set_variable = turkfm_congress_host
+			}
+		}
+		turkfm_crisis_san_stefano_effect = yes
+	}
+	else = {
+		random_country = {
+			limit = {
+				turkfm_crisis_participant_trigger = yes
+				NOT = {
+					has_variable = turkfm_crisis_leader
+				}
+			}
+			set_variable = turkfm_armistice_host
+		}
+		random_country = {
+			limit = {
+				country_rank >= rank_value:great_power
+				NOR = {
+					has_variable = turkfm_crisis_leader
+					has_variable = turkfm_crisis_target
+				}
+			}
+			set_variable = turkfm_congress_host
+		}
+	}
+	random_country = {
+		limit = {
+			has_variable = turkfm_congress_host
+		}
+		save_scope_as = turkfm_congress_host_scope
+	}
+	set_global_variable = {
+		name = turkfm_congress_host_var
+		value = scope:turkfm_congress_host_scope
+	}
+	every_country = {
+		limit = {
+			turkfm_crisis_party_trigger = yes
+		}
+		trigger_event = {
+			id = turkfm_eastern_question.109 # The Treaty of X
+		}
+	}
+	c:TUR = {
+		trigger_event = {
+			id = turkfm_eastern_question.109 # The Treaty of X
+		}
+		turkfm_force_deconfliction_effect = yes
+	}
+}
+
+turkfm_crisis_san_stefano_effect = {
+	if = {
+		limit = {
+			c:BUL_RUM ?= {
+				has_variable = turkfm_crisis_attacker
+				NOT = {
+					owns_entire_state_region = STATE_NORTHERN_THRACE
+				}
+			}
+			has_state_in_state_region = STATE_NORTHERN_THRACE
+		}
+		c:TUR ?= {
+			every_scope_state = {
+				limit = {
+					state_region = s:STATE_NORTHERN_THRACE
+				}
+				set_state_owner = c:BUL_RUM
+			}
+			create_diplomatic_pact = {
+				country = c:BUL_RUM
+				type = protectorate
+			}
+		}
+	}
+	if = {
+		limit = {
+			c:BUL ?= {
+				has_variable = turkfm_crisis_attacker
+#				has_variable = turkfm_crisis_upstart
+			}
+		}
+		c:TUR ?= {
+			every_scope_state = {
+				limit = {
+					OR = {
+						state_region = s:STATE_MACEDONIA
+						state_region = s:STATE_BULGARIA
+						state_region = s:STATE_DOBRUDJA
+						state_region = s:STATE_NORTHERN_THRACE
+					}
+				}
+				set_variable = turkfm_san_stefano_var
+				set_state_owner = c:BUL
+			}
+		}
+		c:BUL = {
+#			remove_variable = turkfm_crisis_upstart
+		}
+		set_global_variable = balkfm_bulgaria_congress_var
+	}
+	if = {
+		limit = {
+			c:BOS ?= {
+				has_variable = turkfm_crisis_attacker
+#				has_variable = turkfm_crisis_upstart
+			}
+		}
+		c:TUR = {
+			create_diplomatic_pact = {
+				country = c:BOS
+				type = protectorate
+			}
+		}
+		c:BOS = {
+#			remove_variable = turkfm_crisis_upstart
+		}
+	}
+}
+
+turkfm_split_bulgaria_effect = {
+	create_country = {
+		tag = BUL_RUM
+		origin = c:TUR
+		state = s:STATE_NORTHERN_THRACE.region_state:BUL
+	}
+	c:TUR ?= {
+		create_diplomatic_pact = {
+			country = c:BUL_RUM
+			type = protectorate
+		}
+	}
+}
+
+turkfm_cleanup_congress_effect = {
+	remove_global_variable = turkfm_congress_var
+	remove_global_variable = turkfm_congress_host_var
+	remove_global_variable = turkfm_congress_cooldown_var
+	remove_global_variable = turkfm_congress_vote_var
+	remove_variable = turkfm_crisis_leader
+	remove_variable = turkfm_crisis_target
+	remove_variable = turkfm_crisis_attacker
+	remove_variable = turkfm_crisis_defender
+	remove_variable = turkfm_armistice_host
+	remove_variable = turkfm_congress_host
+	remove_variable = turkfm_congress_issue_var
+	#	remove_variable = turkfm_congress_delegation
+	every_scope_state = {
+		remove_variable = turkfm_san_stefano_var
+	}
+}

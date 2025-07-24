@@ -219,9 +219,7 @@
 		}
 	}
 	
-	c:TUR = {
-		turkfm_setup_turkey_effect = yes
-		
+	c:TUR ?= {
 		# The Sick Man of Europe
 		add_journal_entry = {
 			type = je_turkfm_sick_man_main
@@ -235,24 +233,14 @@
 		turkfm_initialize_tanzimat_effect = yes
 		
 		# The Rise of Nationalism
-		turkfm_initialize_tension_effect = yes
+		turkfm_initialize_balkan_situation_effect = yes
 		add_journal_entry = {
-			type = je_turkfm_separatism_main
+			type = je_turkfm_balkan_situation_main
 		}
 		
 		# The Lands of the Black Mountain
 		turkfm_initialize_karadag_effect = yes
-		
-		# Millet System Setup
-		set_institution_investment_level = {
-			institution = institution_millet_system
-			level = 5
-		}
-		set_variable = {
-			name = turkfm_millet_system_var
-			value = 1
-		}
-		
+
 		add_journal_entry = {
 			type = je_turkfm_pirates_of_the_adriatic
 		}
@@ -266,12 +254,17 @@
 			days = normal_modifier_time
 		}
 		# this is to insulate the Ottomans from the first month SoL cliff... I don't like it, but its the best tool I have rn
-		add_modifier = {
-			name = modifier_turkfm_ottoman_legacy
-			months = 7
+		if = {
+			limit = {
+				has_game_rule = gbbf_six_month_grace
+			}
+			add_modifier = {
+				name = modifier_turkfm_ottoman_legacy
+				months = 7
+			}
 		}
 		trigger_event = {
-			id = turkfm_separatism.001 # The Peoples of the Empire
+			id = turkfm_balkan_situation.001 # The Peoples of the Empire
 			days = 1
 			popup = yes
 		}
@@ -282,7 +275,6 @@
 			limit = {
 				jotn_is_active_trigger = no
 			}
-			turkfm_setup_egypt_effect = yes
 			trigger_event = {
 				id = turkfm_egypt.001 # The Man Who Would be Khedive
 			}
@@ -290,7 +282,6 @@
 	}
 	
 	c:TRI ?= {
-		turkfm_setup_libya_effect = yes
 		add_journal_entry = {
 			type = je_turkfm_tri_centralization
 		}
@@ -301,7 +292,6 @@
 	}
 	
 	c:TUN ?= {
-		turkfm_setup_tunis_effect = yes
 		add_journal_entry = {
 			type = je_turkfm_tun_modernization
 		}
@@ -331,7 +321,7 @@
 		limit = {
 			has_diplomatic_relevance = c:TUR
 			NOR = {
-				has_journal_entry = je_turkfm_separatism_main
+				has_journal_entry = je_turkfm_balkan_situation_main
 				has_journal_entry = je_turkfm_eastern_question
 			}
 		}

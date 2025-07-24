@@ -1,11 +1,18 @@
 ﻿balkfm_obrenovic_support_value = {
 	value = 0
-
-	## Relevant IGs will support ruling Obrenovic if SER has enacted Autocracy
 	if = {
 		limit = {
 			balkfm_has_obrenovic_ruler_trigger = yes
 		}
+		## Only apply ruler popularity if House is in charge
+		add = {
+			value = {
+				add = ruler.popularity
+				multiply = 0.01
+			}
+			desc = balkfm_value_from_ruler_popularity
+		}
+		## Relevant IGs will support ruling Obrenovic if SER has enacted Autocracy
 		if = {
 			limit = {
 				OR = {
@@ -56,48 +63,7 @@
 				desc = balkfm_value_from_liberalism
 			}
 		}
-	}
-
-	## Relevant IGs will support non-ruling Obrenovic if SER has suffrage
-	else_if = {
-		limit = {
-			balkfm_has_karadordevic_ruler_trigger = yes
-		}
-		if = {
-			limit = {
-				NOR = {
-					has_law = law_type:law_autocracy
-					has_law = law_type:law_oligarchy
-				}
-			}
-			add = {
-				value = {
-					every_interest_group = {
-						limit = {
-							OR = {
-								law_stance = {
-									law = law_type:law_autocracy
-									value > neutral
-								}
-								law_stance = {
-									law = law_type:law_oligarchy
-									value > neutral
-								}
-							}
-						}
-						add = ig_clout
-					}
-				}
-				desc = balkfm_value_from_autocracy
-			}
-		}
-	}
-
-	## Relevant IGs will support ruling Obrenovic if SER has any police
-	if = {
-		limit = {
-			balkfm_has_obrenovic_ruler_trigger = yes
-		}
+		## Relevant IGs will support ruling Obrenovic if SER has any police
 		if = {
 			limit = {
 				NOT = {
@@ -135,39 +101,7 @@
 				desc = balkfm_value_from_police_support
 			}
 		}
-	}
-
-	## Relevant IGs will support non-ruling Obrenovic if SER has no police
-	else_if = {
-		limit = {
-			balkfm_has_karadordevic_ruler_trigger = yes
-		}
-		if = {
-			limit = {
-				has_law = law_type:law_no_police
-			}
-			add = {
-				value = {
-					every_interest_group = {
-						limit = {
-							law_stance = {
-								law = law_type:law_no_police
-								value < neutral
-							}
-						}
-						add = ig_clout
-					}
-				}
-				desc = balkfm_value_from_police_support
-			}
-		}
-	}
-
-	## Relevant IGs will support ruling Obrenovic land policy
-	if = {
-		limit = {
-			balkfm_has_obrenovic_ruler_trigger = yes
-		}
+		## Relevant IGs will support ruling Obrenovic land policy
 		if = {
 			limit = {
 				OR = {
@@ -218,13 +152,79 @@
 				desc = balkfm_value_from_land_reform
 			}
 		}
+		if = {
+			limit = {
+				has_variable = balkfm_austria_consul_var
+			}
+			add = {
+				value = 0.2
+				desc = balkfm_value_from_aus_consul
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = balkfm_russia_consul_var
+			}
+			add = {
+				value = -0.2
+				desc = balkfm_value_from_rus_consul
+			}
+		}
 	}
-
-	## Relevant IGs will support non-ruling Orenovic if land reform has been implemented
-	else_if = {
+	if = {
 		limit = {
 			balkfm_has_karadordevic_ruler_trigger = yes
 		}
+		## Relevant IGs will support non-ruling Obrenovic if SER has suffrage
+		if = {
+			limit = {
+				NOR = {
+					has_law = law_type:law_autocracy
+					has_law = law_type:law_oligarchy
+				}
+			}
+			add = {
+				value = {
+					every_interest_group = {
+						limit = {
+							OR = {
+								law_stance = {
+									law = law_type:law_autocracy
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_oligarchy
+									value > neutral
+								}
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_autocracy
+			}
+		}
+		## Relevant IGs will support non-ruling Obrenovic if SER has no police
+		if = {
+			limit = {
+				has_law = law_type:law_no_police
+			}
+			add = {
+				value = {
+					every_interest_group = {
+						limit = {
+							law_stance = {
+								law = law_type:law_no_police
+								value < neutral
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_police_support
+			}
+		}
+		## Relevant IGs will support non-ruling Orenovic if land reform has been implemented
 		if = {
 			limit = {
 				NOR = {
@@ -254,7 +254,6 @@
 			}
 		}
 	}
-
 	## Austria Relations Check
 	add = {
 		value = {
@@ -263,7 +262,6 @@
 		}
 		desc = balkfm_value_from_aus_relations
 	}
-
 	## Lobby Appeasement Check
 	add = {
 		value = {
@@ -280,7 +278,6 @@
 		}
 		desc = balkfm_value_from_aus_lobbies
 	}
-
 	## Southern Serbia Control Check
 	# Alexander Karadordevic lost a huge chunk of his support for failing to secure Serbian gains after the Crimean War
 	if = {
@@ -305,19 +302,24 @@
 			desc = balkfm_value_from_strong_kaykay
 		}
 	}
-
 	round_to = 0.01
-
 }
 
 balkfm_karadordevic_support_value = {
 	value = 0
-
-	## Relevant IGs will support ruling Karadordevic if suffrage is enacted
 	if = {
 		limit = {
 			balkfm_has_karadordevic_ruler_trigger = yes
 		}
+		## Only apply ruler popularity if House is in charge
+		add = {
+			value = {
+				add = ruler.popularity
+				multiply = 0.01
+			}
+			desc = balkfm_value_from_ruler_popularity
+		}
+		## Relevant IGs will support ruling Karadordevic if suffrage is enacted
 		if = {
 			limit = {
 				OR = {
@@ -394,58 +396,7 @@ balkfm_karadordevic_support_value = {
 				desc = balkfm_value_from_disenfranchisment
 			}
 		}
-	}
-
-	## Relevant IGs will support non-ruling Karadordevic if no voting is present
-	else_if = {
-		limit = {
-			balkfm_has_obrenovic_ruler_trigger = yes
-		}
-		if = {
-			limit = {
-				NOR = {
-					has_law = law_type:law_landed_voting
-					has_law = law_type:law_wealth_voting
-					has_law = law_type:law_census_voting
-					has_law = law_type:law_universal_suffrage
-				}
-			}
-			add = {
-				value = {
-					every_interest_group = {
-						limit = {
-							OR = {
-								law_stance = {
-									law = law_type:law_landed_voting
-									value > neutral
-								}
-								law_stance = {
-									law = law_type:law_wealth_voting
-									value > neutral
-								}
-								law_stance = {
-									law = law_type:law_census_voting
-									value > neutral
-								}
-								law_stance = {
-									law = law_type:law_universal_suffrage
-									value > neutral
-								}
-							}
-						}
-						add = ig_clout
-					}
-				}
-				desc = balkfm_value_from_disenfranchisment
-			}
-		}
-	}
-
-	## Relevant IGs will support ruling Karadordevic if Speech is protected
-	if = {
-		limit = {
-			balkfm_has_karadordevic_ruler_trigger = yes
-		}
+		## Relevant IGs will support ruling Karadordevic if Speech is protected
 		if = {
 			limit = {
 				OR = {
@@ -502,48 +453,7 @@ balkfm_karadordevic_support_value = {
 				desc = balkfm_value_from_censorship
 			}
 		}
-	}
-
-	## Relevant IGs will support non-ruling Karadordevic if speech is suppressed
-	else_if = {
-		limit = {
-			balkfm_has_obrenovic_ruler_trigger = yes
-		}
-		if = {
-			limit = {
-				NOR = {
-					has_law = law_type:law_right_of_assembly
-					has_law = law_type:law_protected_speech
-				}
-			}
-			add = {
-				value = {
-					every_interest_group = {
-						limit = {
-							OR = {
-								law_stance = {
-									law = law_type:law_right_of_assembly
-									value > neutral
-								}
-								law_stance = {
-									law = law_type:law_protected_speech
-									value > neutral
-								}
-							}
-						}
-						add = ig_clout
-					}
-				}
-				desc = balkfm_value_from_censorship
-			}
-		}
-	}
-
-	## Relevant IGs will support ruling Karadorevic if land reform is enacted
-	if = {
-		limit = {
-			balkfm_has_karadordevic_ruler_trigger = yes
-		}
+		## Relevant IGs will support ruling Karadorevic if land reform is enacted
 		if = {
 			limit = {
 				NOR = {
@@ -594,13 +504,98 @@ balkfm_karadordevic_support_value = {
 				desc = balkfm_value_from_land_reform
 			}
 		}
+		if = {
+			limit = {
+				has_variable = balkfm_russia_consul_var
+			}
+			add = {
+				value = 0.2
+				desc = balkfm_value_from_rus_consul
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = balkfm_austria_consul_var
+			}
+			add = {
+				value = -0.2
+				desc = balkfm_value_from_aus_consul
+			}
+		}
 	}
-
-	## Relevant IGs will support non-ruling Karadorevic if land reform is suppressed
 	if = {
 		limit = {
 			balkfm_has_obrenovic_ruler_trigger = yes
 		}
+		## Relevant IGs will support non-ruling Karadordevic if no voting is present
+		if = {
+			limit = {
+				NOR = {
+					has_law = law_type:law_landed_voting
+					has_law = law_type:law_wealth_voting
+					has_law = law_type:law_census_voting
+					has_law = law_type:law_universal_suffrage
+				}
+			}
+			add = {
+				value = {
+					every_interest_group = {
+						limit = {
+							OR = {
+								law_stance = {
+									law = law_type:law_landed_voting
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_wealth_voting
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_census_voting
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_universal_suffrage
+									value > neutral
+								}
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_disenfranchisment
+			}
+		}
+		## Relevant IGs will support non-ruling Karadordevic if speech is suppressed
+		if = {
+			limit = {
+				NOR = {
+					has_law = law_type:law_right_of_assembly
+					has_law = law_type:law_protected_speech
+				}
+			}
+			add = {
+				value = {
+					every_interest_group = {
+						limit = {
+							OR = {
+								law_stance = {
+									law = law_type:law_right_of_assembly
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_protected_speech
+									value > neutral
+								}
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_censorship
+			}
+		}
+		## Relevant IGs will support non-ruling Karadorevic if land reform is suppressed
 		if = {
 			limit = {
 				OR = {
@@ -630,7 +625,6 @@ balkfm_karadordevic_support_value = {
 			}
 		}
 	}
-
 	## Russia Relations Check
 	add = {
 		value = {
@@ -639,7 +633,6 @@ balkfm_karadordevic_support_value = {
 		}
 		desc = balkfm_value_from_rus_relations
 	}
-
 	## Lobby Appeasement Check
 	add = {
 		value = {
@@ -656,7 +649,6 @@ balkfm_karadordevic_support_value = {
 		}
 		desc = balkfm_value_from_rus_lobbies
 	}
-
 	## Southern Serbia Control Check
 	# Alexander Karadordevic lost a huge chunk of his support for failing to secure Serbian gains after the Crimean War
 	if = {
@@ -681,38 +673,36 @@ balkfm_karadordevic_support_value = {
 			desc = balkfm_value_from_strong_kaykay
 		}
 	}
-
 	round_to = 0.01
-
 }
 
 balkfm_obrenovic_progress_value = {
 	value = 0
-	add = balkfm_obrenovic_support_value
-	subtract = balkfm_karadordevic_support_value
+	add = var:balkfm_obrenovic_support_var
+	subtract = var:balkfm_karadordevic_support_var
 }
 
 balkfm_karadordevic_progress_value = {
 	value = 0
-	add = balkfm_karadordevic_support_value
-	subtract = balkfm_obrenovic_support_value
+	add = var:balkfm_karadordevic_support_var
+	subtract = var:balkfm_obrenovic_support_var
 }
 
 balkfm_dynastic_rivalry_progress_value = {
 	value = 0
 	if = {
 		limit = {
-			balkfm_obrenovic_support_value > balkfm_karadordevic_support_value
+			var:balkfm_obrenovic_support_var > var:balkfm_karadordevic_support_var
 		}
-		add = balkfm_obrenovic_support_value
-		subtract = balkfm_karadordevic_support_value
+		add = var:balkfm_obrenovic_support_var
+		subtract = var:balkfm_karadordevic_support_var
 	}
 	if = {
 		limit = {
-			balkfm_obrenovic_support_value < balkfm_karadordevic_support_value
+			var:balkfm_obrenovic_support_var < var:balkfm_karadordevic_support_var
 		}
-		add = balkfm_karadordevic_support_value
-		subtract = balkfm_obrenovic_support_value
+		add = var:balkfm_karadordevic_support_var
+		subtract = var:balkfm_obrenovic_support_var
 	}
 	round_to = 0.01
 }

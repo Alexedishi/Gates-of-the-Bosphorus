@@ -1,0 +1,201 @@
+﻿turkfm_senussi_progress_value = {
+	value = 0
+
+	# Sources
+	add = {
+		value = {
+			every_character_in_void = {
+				limit = {
+					turkfm_is_senussi_trigger = yes
+				}
+				add = popularity
+			}
+			divide = 100
+			round_to = 0.01
+		}
+		desc = turkfm_value_from_senussi_popularity
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_senussi_control_var
+		}
+		add = {
+			value = var:turkfm_senussi_control_var
+			desc = turkfm_value_from_senussi_control
+		}
+	}
+	add = {
+		value = {
+			every_scope_state = {
+				limit = {
+					has_modifier = modifier_turkfm_senussi_stronghold
+				}
+				add = 1
+			}
+		}
+		desc = turkfm_value_from_strongholds
+	}
+	add = {
+		value = var:turkfm_bedouin_radicals_var
+		desc = turkfm_value_from_bedouin_radicals
+	}
+	save_temporary_value_as = senussi_souces
+	if = {
+		limit = {
+			has_technology_researched = nationalism
+		}
+		add = {
+			value = {
+				add = scope:senussi_souces
+				multiply = 0.1
+				round_to = 0.01
+			}
+			desc = turkfm_value_from_nationalism_bonus
+		}
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_desert_control_var
+		}
+		subtract = {
+			value = var:turkfm_desert_control_var
+			desc = turkfm_value_from_desert_control
+		}
+	}
+	subtract = {
+		value = {
+			ig:ig_devout = {
+				add = ig_clout
+			}
+			round_to = 0.01
+		}
+		desc = turkfm_value_from_devout_clout
+	}
+}
+
+turkfm_senussi_modifier_value = { # prevents the multiplier from being excessively fiddly
+	value = 0
+	add = var:turkfm_senussi_var
+	round_to = 1
+}
+
+turkfm_desert_control_value = {
+	value = 0
+	add = {
+		value = {
+			s:STATE_LIBYAN_DESERT = {
+				region_state:TRI = {
+					add = num_provinces
+				}
+			}
+		}
+	}
+	divide = 282
+	round_to = 0.01
+}
+
+turkfm_senussi_control_value = {
+	value = 0
+	add = {
+		value = {
+			s:STATE_LIBYAN_DESERT = {
+				region_state:LIB_KUF = {
+					add = num_provinces
+				}
+			}
+		}
+	}
+	divide = 282
+	round_to = 0.01
+}
+
+turkfm_bedouin_radicals_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			gbbf_senussi_geography_trigger = yes
+			any_scope_pop = {
+				has_pop_culture = bedouin
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = bedouin
+			}
+			add = pop_radical_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				gbbf_senussi_geography_trigger = yes
+				any_scope_pop = {
+					has_pop_culture = bedouin
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = bedouin
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+turkfm_senussi_bedouin_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			gbbf_senussi_geography_trigger = yes
+			any_scope_pop = {
+				has_pop_culture = bedouin
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = bedouin
+			}
+			add = pop_radical_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				gbbf_senussi_geography_trigger = yes
+				any_scope_pop = {
+					has_pop_culture = bedouin
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = bedouin
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	multiply = {
+		every_scope_state = {
+			limit = {
+				gbbf_senussi_geography_trigger = yes
+				any_scope_pop = {
+					has_pop_culture = bedouin
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = bedouin
+				}
+				add = total_size
+			}
+		}
+		min = 0
+	}
+	divide = total_population
+	round_to = 0.01
+	min = 0.01
+}

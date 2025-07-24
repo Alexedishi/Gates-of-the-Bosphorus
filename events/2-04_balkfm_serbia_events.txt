@@ -647,6 +647,9 @@ balkfm_serbia.012 = { # Austria/Russia Requests Primacy
 	dlc = dlc_grefm
 
 	trigger = {
+		NOT = {
+			has_variable = balkfm_flip_consul_var
+		}
 		OR = {
 			AND = {
 				balkfm_has_karadordevic_ruler_trigger = yes
@@ -692,6 +695,10 @@ balkfm_serbia.012 = { # Austria/Russia Requests Primacy
 				save_scope_as = balkfm_consul_scope
 			}
 		}
+	}
+
+	cancellation_trigger = {
+		has_variable = balkfm_flip_consul_var
 	}
 
 	cooldown = {
@@ -874,6 +881,96 @@ balkfm_serbia.014 = { # Abusive Garrison
 	option = {
 		name = balkfm_serbia.014.b
 		balkfm_minor_dynasty_support_loss_effect = yes
+	}
+
+}
+
+balkfm_serbia.017 = { # Austria/Russia Requests Primacy
+	type = country_event
+	placement = root
+
+	title = balkfm_serbia.017.t
+	desc = balkfm_serbia.017.d
+	flavor = balkfm_serbia.017.f
+
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by balkfm_ser_flip_consul_button
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				has_variable = balkfm_russia_consul_var
+			}
+			c:RUS ?= {
+				save_scope_as = balkfm_consul_scope
+			}
+			c:AUS ?= {
+				save_scope_as = balkfm_supplicant_scope
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = balkfm_austria_consul_var
+			}
+			c:RUS ?= {
+				save_scope_as = balkfm_supplicant_scope
+			}
+			c:AUS ?= {
+				save_scope_as = balkfm_consul_scope
+			}
+		}
+	}
+
+	option = {
+		name = balkfm_serbia.017.a
+		add_modifier = {
+			name = modifier_balkfm_diplomatic_disorder
+			days = short_modifier_time
+		}
+		change_relations = {
+			country = scope:balkfm_supplicant_scope
+			value = 25
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_relations_level_increased
+			target = scope:balkfm_supplicant_scope
+		}
+		change_relations = {
+			country = scope:balkfm_consul_scope
+			value = -25
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_diplomatic_incident
+			target = scope:balkfm_consul_scope
+		}
+		balkfm_minor_dynasty_support_gain_effect = yes
+		if = {
+			limit = {
+				has_variable = balkfm_russia_consul_var
+			}
+			remove_variable = balkfm_russia_consul_var
+			set_variable = balkfm_austria_consul_var
+		}
+		else_if = {
+			limit = {
+				has_variable = balkfm_austria_consul_var
+			}
+			remove_variable = balkfm_austria_consul_var
+			set_variable = balkfm_russia_consul_var
+		}
 	}
 
 }
