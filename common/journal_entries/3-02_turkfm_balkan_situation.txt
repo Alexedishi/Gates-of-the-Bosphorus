@@ -148,32 +148,42 @@ je_turkfm_balkan_situation_riots = {
 	immediate = {
 		set_variable = {
 			name = turkfm_riot_var
-			value = 100
+			value = 0
 		}
 		set_variable = {
 			name = turkfm_riot_progress_var
 			value = 0
 		}
-		turkfm_update_riot_variables_effect = yes
 	}
 
 	scripted_progress_bar = turkfm_riot_progress_bar
 
 	complete = {
-		NOR = {
-			any_scope_state = {
-				has_modifier = modifier_turkfm_race_riots
-			}
+		OR = {
 			custom_tooltip = {
-				text = je_turkfm_balkan_situation_riots_complete
-				any_country = {
-					is_diplomatic_play_enemy_of = root
-					has_modifier = modifier_turkfm_nationalist_uprising
+				text = je_turkfm_balkan_situation_riots_invalid
+				OR = {
+					NOT = {
+						has_global_variable = turkfm_separatism_phase_var
+					}
+					global_var:turkfm_separatism_phase_var != flag:turkfm_hostility
 				}
 			}
-			hidden_trigger = {
-				NOT = {
-					has_variable = turkfm_recent_revolt_var
+			NOR = {
+				any_scope_state = {
+					has_modifier = modifier_turkfm_race_riots
+				}
+				custom_tooltip = {
+					text = je_turkfm_balkan_situation_riots_complete
+					any_country = {
+						is_diplomatic_play_enemy_of = root
+						has_modifier = modifier_turkfm_nationalist_uprising
+					}
+				}
+				hidden_trigger = {
+					NOT = {
+						has_variable = turkfm_recent_revolt_var
+					}
 				}
 			}
 		}
@@ -181,56 +191,7 @@ je_turkfm_balkan_situation_riots = {
 
 	on_complete = { # Set variables for deescalation and call turkfm_check_balkan_situation_phase_effect
 		turkfm_add_extremely_large_deescalation = yes
-		every_scope_state = {
-			limit = {
-				has_modifier = modifier_turkfm_race_riots
-			}
-			remove_modifier = modifier_turkfm_race_riots
-		}
-		remove_variable = turkfm_riot_var
-		remove_variable = turkfm_riot_progress_var
-		remove_variable = turkfm_riot_state_1_var
-		remove_variable = turkfm_riot_state_2_var
-		remove_variable = turkfm_riot_state_3_var
-		remove_variable = turkfm_riot_state_1_progress_var
-		remove_variable = turkfm_riot_state_2_progress_var
-		remove_variable = turkfm_riot_state_3_progress_var
-		set_variable = {
-			name = turkfm_riot_current_tally_var
-			value = 0
-		}
-	}
-
-	invalid = {
-		custom_tooltip = {
-			text = je_turkfm_balkan_situation_riots_invalid
-			OR = {
-				NOT = {
-					has_global_variable = turkfm_separatism_phase_var
-				}
-				global_var:turkfm_separatism_phase_var != flag:turkfm_hostility
-			}
-		}
-	}
-
-	on_invalid = {
-		every_scope_state = {
-			limit = {
-				has_modifier = modifier_turkfm_race_riots
-			}
-			remove_modifier = modifier_turkfm_race_riots
-		}
-		remove_variable = turkfm_riot_var
-		remove_variable = turkfm_riot_state_1_var
-		remove_variable = turkfm_riot_state_2_var
-		remove_variable = turkfm_riot_state_3_var
-		remove_variable = turkfm_riot_state_1_progress_var
-		remove_variable = turkfm_riot_state_2_progress_var
-		remove_variable = turkfm_riot_state_3_progress_var
-		set_variable = {
-			name = turkfm_riot_current_tally_var
-			value = 0
-		}
+		turkfm_cleanup_riots_effect = yes
 	}
 
 	on_weekly_pulse = {
@@ -246,7 +207,7 @@ je_turkfm_balkan_situation_riots = {
 			}
 			clamp_variable = {
 				name = turkfm_riot_var
-				max = 200
+				max = 100
 				min = 0
 			}
 			je:je_turkfm_balkan_situation_riots = {
@@ -254,6 +215,11 @@ je_turkfm_balkan_situation_riots = {
 					value = owner.var:turkfm_riot_var
 					name = turkfm_riot_progress_bar
 				}
+			}
+			remove_modifier = modifier_turkfm_nationalist_insurrection
+			add_modifier = {
+				name = modifier_turkfm_nationalist_insurrection
+				multiplier = turkfm_riot_multiplier_value
 			}
 		}
 	}
