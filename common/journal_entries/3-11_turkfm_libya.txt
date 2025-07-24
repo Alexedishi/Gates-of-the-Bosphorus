@@ -99,9 +99,7 @@ je_turkfm_tri_libyan_desert = {
 
 je_turkfm_senusiyya_main = {
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-
 	group = je_group_turkfm_libya
-
 	should_be_pinned_by_default = yes
 
 	is_shown_when_inactive = {
@@ -121,8 +119,11 @@ je_turkfm_senusiyya_main = {
 		trigger_event = {
 			id = turkfm_libya.011 # The Senussi Order
 		}
+		turkfm_update_senussi_effect = yes
 		set_variable = turkfm_senussi_has_landed
 	}
+
+	scripted_progress_bar = turkfm_senussi_progressbar
 
 	scripted_button = turkfm_embrace_senussi_button
 	scripted_button = turkfm_sweep_desert_button
@@ -179,8 +180,7 @@ je_turkfm_senusiyya_main = {
 	on_weekly_pulse = {
 		effect = {
 			turkfm_senussi_weekly_effect = yes
-			turkfm_check_senussi_effect = yes
-			turkfm_find_senussi_effect = yes
+			turkfm_update_senussi_effect = yes
 		}
 	}
 
@@ -239,52 +239,11 @@ je_turkfm_senusiyya_main = {
 		}
 	}
 
-	current_value = {
-		value = var:turkfm_senussi_var
-	}
-
-	goal_add_value = {
-		value = 100
-	}
-
-	progressbar = yes
-
 	status_desc = {
-		first_valid = {
-			triggered_desc = {
-				desc = je_turkfm_senusiyya_main_status_0
-				trigger = {
-					has_variable = turkfm_senussi_location_var
-					var:turkfm_senussi_location_var = 0
-				}
-			}
-			triggered_desc = {
-				desc = je_turkfm_senusiyya_main_status_1
-				trigger = {
-					has_variable = turkfm_senussi_location_var
-					var:turkfm_senussi_location_var = 1
-				}
-			}
-			triggered_desc = {
-				desc = je_turkfm_senusiyya_main_status_2
-				trigger = {
-					has_variable = turkfm_senussi_location_var
-					var:turkfm_senussi_location_var = 2
-				}
-			}
-			triggered_desc = {
-				desc = je_turkfm_senusiyya_main_status_3
-				trigger = {
-					has_variable = turkfm_senussi_location_var
-					var:turkfm_senussi_location_var = 3
-				}
-			}
-			triggered_desc = {
-				desc = je_turkfm_senusiyya_main_status_4
-				trigger = {
-					has_variable = turkfm_senussi_location_var
-					var:turkfm_senussi_location_var = 4
-				}
+		triggered_desc = {
+			desc = je_turkfm_senusiyya_main_status
+			trigger = {
+				has_variable = turkfm_senussi_location_var
 			}
 		}
 	}
@@ -294,18 +253,20 @@ je_turkfm_senusiyya_main = {
 }
 
 je_turkfm_senusiyya_sub = {
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
 	group = je_group_turkfm_libya
-
 	should_be_pinned_by_default = yes
+
+	immediate = {
+		turkfm_update_senussi_effect = yes
+		set_variable = turkfm_senussi_has_landed
+	}
+
+	scripted_progress_bar = turkfm_senussi_progressbar
 
 	scripted_button = turkfm_embrace_senussi_button
 	scripted_button = turkfm_sweep_desert_button
 	scripted_button = turkfm_supress_senusiyya_button
-
-	immediate = {
-		turkfm_check_senussi_effect = yes
-		set_variable = turkfm_senussi_has_landed
-	}
 
 	complete = {
 		custom_tooltip = {
@@ -357,7 +318,7 @@ je_turkfm_senusiyya_sub = {
 	on_weekly_pulse = {
 		effect = {
 			turkfm_senussi_weekly_effect = yes
-			turkfm_check_senussi_effect = yes
+			turkfm_update_senussi_effect = yes
 		}
 	}
 
@@ -380,15 +341,14 @@ je_turkfm_senusiyya_sub = {
 		}
 	}
 
-	current_value = {
-		value = var:turkfm_senussi_var
+	status_desc = {
+		triggered_desc = {
+			desc = je_turkfm_senusiyya_main_status
+			trigger = {
+				has_variable = turkfm_senussi_location_var
+			}
+		}
 	}
-
-	goal_add_value = {
-		value = 100
-	}
-
-	progressbar = yes
 
 	weight = 1000
 
