@@ -5,19 +5,33 @@
 				has_variable = balkfm_ottoman_legacies_started # There's a tiny corner case where Bulgaria can fire this effect twice
 			}
 		}
-		trigger_event = {
-			id = balkfm_legacies.009 # An Ottoman Legacy
-			days = 15 # Provides a buffer from Day 1 events
+		if = {
+			limit = {
+				OR = {
+					has_law = law_type:law_traditionalism
+					has_law = law_type:law_agrarianism
+				}
+				OR = {
+					has_law = law_type:law_serfdom
+					has_law = law_type:law_tenant_farmers
+				}
+			}
+			add_journal_entry = {
+				type = je_balkfm_land_reform
+			}
 		}
-		add_journal_entry = {
-			type = je_balkfm_land_reform
-		}
-		add_journal_entry = {
-			type = je_balkfm_civic_reform
+		if = {
+			limit = {
+				has_law = law_type:law_hereditary_bureaucrats
+			}
+			add_journal_entry = {
+				type = je_balkfm_civic_reform
+			}
 		}
 		if = {
 			limit = {
 				balkfm_balkans_native_trigger = yes
+				has_law = law_type:law_no_police
 			}
 			add_journal_entry = {
 				type = je_balkfm_brigandage
@@ -57,5 +71,9 @@
 			}
 		}
 		set_variable = balkfm_ottoman_legacies_started
+		trigger_event = {
+			id = balkfm_legacies.009 # An Ottoman Legacy
+			days = 15 # Provides a buffer from Day 1 events
+		}
 	}
 }
