@@ -1,36 +1,26 @@
-﻿turkfm_tanzimat_progress_value = {
+﻿turkfm_tanzimat_ottomanist_progress_value = {
 	value = 0
-	# This value is weighted to lean towards the Islamist side. Idealized loss is approx. -1.6 per month for a failure in mid-1877. This is balanced to -2 per month at game start for playability.
-
-	## Ottomanism Sources ##
 	add = {
 		value = {
-			every_interest_group = {
+			every_political_movement = {
 				limit = {
-					OR = {
-						law_stance = {
-							law = law_type:law_landed_voting
-							value > neutral
-						}
-						law_stance = {
-							law = law_type:law_wealth_voting
-							value > neutral
-						}
-						law_stance = {
-							law = law_type:law_census_voting
-							value > neutral
-						}
-						law_stance = {
-							law = law_type:law_universal_suffrage
-							value > neutral
-						}
-					}
+					is_political_movement_type = movement_turkfm_ottomanist
 				}
-				add = ig_clout
+				add = political_movement_support
 			}
-			round_to = 0.01
 		}
-		desc = turkfm_value_from_ottomanists
+		desc = turkfm_value_from_ottomanist_movement
+	}
+	add = {
+		value = {
+			every_political_movement = {
+				limit = {
+					is_political_movement_type = movement_modernizer
+				}
+				add = political_movement_support
+			}
+		}
+		desc = turkfm_value_from_modernizer_movement
 	}
 	add = {
 		value = {
@@ -93,6 +83,10 @@
 			if = {
 				limit = {
 					has_institution = institution_schools
+					OR = {
+						has_law = law_type:law_public_schools
+						has_law = law_type:law_private_schools
+					}
 				}
 				institution:institution_schools = {
 					add = investment
@@ -109,6 +103,10 @@
 			if = {
 				limit = {
 					has_institution = institution_health_system
+					OR = {
+						has_law = law_type:law_public_health_insurance
+						has_law = law_type:law_private_health_insurance
+					}
 				}
 				institution:institution_health_system = {
 					add = investment
@@ -126,9 +124,34 @@
 		}
 		desc = turkfm_value_from_institution_levels
 	}
+	round_to = 0.01
+}
 
-	## Islamism Sources ##
-	subtract = {
+turkfm_tanzimat_islamist_progress_value = {
+	value = 0
+	add = {
+		value = {
+			every_political_movement = {
+				limit = {
+					is_political_movement_type = movement_cultural_majority
+				}
+				add = political_movement_support
+			}
+		}
+		desc = turkfm_value_from_cultural_majority_movement
+	}
+	add = {
+		value = {
+			every_political_movement = {
+				limit = {
+					is_political_movement_type = movement_religious_majority
+				}
+				add = political_movement_support
+			}
+		}
+		desc = turkfm_value_from_religious_majority_movement
+	}
+	add = {
 		value = {
 			every_interest_group = {
 				limit = {
@@ -161,7 +184,30 @@
 		}
 		desc = turkfm_value_from_islamism
 	}
-	subtract = {
+	add = {
+		value = {
+			if = {
+				limit = {
+					has_institution = institution_schools
+					has_law = law_type:law_religious_schools
+				}
+				institution:institution_schools = {
+					add = investment
+				}
+			}
+			if = {
+				limit = {
+					has_institution = institution_health_system
+					has_law = law_type:law_charitable_health_system
+				}
+				institution:institution_health_system = {
+					add = investment
+				}
+			}
+			desc = turkfm_value_from_institution_levels
+		}
+	}
+	add = {
 		value = {
 			every_scope_building = {
 				limit = {
@@ -173,7 +219,7 @@
 		}
 		desc = turkfm_value_from_religious_bureaucrats
 	}
-	subtract = {
+	add = {
 		value = {
 			every_scope_building = {
 				limit = {
@@ -185,36 +231,73 @@
 		}
 		desc = turkfm_value_from_religious_academia
 	}
-	subtract = {
+	add = {
+		value = {
+			if = {
+				limit = {
+					has_law = law_type:law_state_religion
+				}
+				add = 0.5
+			}
+			else_if = {
+				limit = {
+					has_law = law_type:law_freedom_of_conscience
+				}
+				add = -0.25
+			}
+			else_if = {
+				limit = {
+					has_law = law_type:law_total_separation
+				}
+				subtract = -0.50
+			}
+			else = {
+				subtract = 5
+			}
+		}
+		desc = turkfm_value_from_religious_law
+	}
+	add = {
 		value = {
 			if = {
 				limit = {
 					has_law = law_type:law_turkfm_religious_autonomy
 				}
-				add = 5
+				add = 0.5
 			}
-			if = {
+			else_if = {
 				limit = {
 					has_law = law_type:law_turkfm_nominal_equality
 				}
-				add = 3
+				add = 0.25
 			}
-			if = {
+			else_if = {
 				limit = {
 					has_law = law_type:law_turkfm_judicial_standardization
 				}
-				add = 1
+				subtract = 0.25
 			}
-			if = {
-				limit = {
-					has_law = law_type:law_turkfm_millet_abolished
-				}
-				add = -1
+			else = {
+				subtract = 0.5
 			}
-			multiply = 0.1
 		}
-		desc = turkfm_value_from_millet_institution
+		desc = turkfm_value_from_millet_system
 	}
+	round_to = 0.01
+}
+
+turkfm_tanzimat_progress_value = {
+	# This value should be weighted to lean towards the Islamist side. Idealized loss is approx. -1.6 per month for a failure in mid-1877. This is balanced to -2 per month at game start for playability.
+	value = 0
+	add = {
+		value = turkfm_tanzimat_ottomanist_progress_value
+		desc = turkfm_value_from_ottomanist_progress
+	}
+	subtract = {
+		value = turkfm_tanzimat_islamist_progress_value
+		desc = turkfm_value_from_islamist_progress
+	}
+	round_to = 0.01
 }
 
 turkfm_tanzimat_tilt_value = {
@@ -233,4 +316,5 @@ turkfm_tanzimat_tilt_value = {
 		add = 500
 		subtract = var:turkfm_tanzimat_var
 	}
+	round_to = 0.01
 }
