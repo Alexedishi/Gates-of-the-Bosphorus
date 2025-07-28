@@ -1770,14 +1770,42 @@ turkfm_update_riot_variables_effect = {
 	}
 }
 
-turkfm_cleanup_riots_effect = {
-	every_scope_state = {
-		limit = {
-			has_modifier = modifier_turkfm_race_riots
-		}
-		remove_modifier = modifier_turkfm_race_riots
-	}
+turkfm_update_riot_modifiers_effect = {
+	# Step 1, Remove modifiers
 	remove_modifier = modifier_turkfm_nationalist_insurrection
+	every_political_movement = {
+		remove_modifier = modifier_turkfm_nationalist_insurrection_movement
+	}
+
+	# Step 2, Add modifiers
+	add_modifier = {
+		name = modifier_turkfm_nationalist_insurrection
+		multiplier = turkfm_riot_multiplier_value
+	}
+	every_political_movement = {
+		limit = {
+			turkfm_eligible_minority_movement_trigger = yes
+		}
+		add_modifier = {
+			name = modifier_turkfm_nationalist_insurrection_movement
+			multiplier = turkfm_riot_multiplier_value
+		}
+	}
+}
+
+turkfm_cleanup_riots_effect = {
+	hidden_effect = {
+		remove_modifier = modifier_turkfm_nationalist_insurrection
+		every_scope_state = {
+			limit = {
+				has_modifier = modifier_turkfm_race_riots
+			}
+			remove_modifier = modifier_turkfm_race_riots
+		}
+		every_political_movement = {
+			remove_modifier = modifier_turkfm_nationalist_insurrection_movement
+		}
+	}
 	remove_variable = turkfm_riot_var
 	remove_variable = turkfm_riot_progress_var
 	remove_variable = turkfm_riot_state_1_var
