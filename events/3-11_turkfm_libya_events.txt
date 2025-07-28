@@ -203,7 +203,7 @@ turkfm_libya.100 = { # The Senussi Order
 		}
 	}
 
-	gui_window = event_window_2char_adventure
+	gui_window = event_window_1char_adventure
 
 	left_icon = scope:turkfm_senussi_scope
 
@@ -517,6 +517,142 @@ turkfm_libya.109 = { # The Senussi of Country
 }
 
 ## The Senusiyya Movement Mechanical Events ##
+turkfm_libya.110 = { # Senusiyya Spreads to Country
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	title = turkfm_libya.110.t
+	desc = turkfm_libya.110.d
+	flavor = turkfm_libya.110.f
+
+	event_image = {
+		video = "middleeast_islam"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		var:turkfm_senussi_var >= 100
+		any_country ={
+			is_adjacent_to_country = root
+			country_has_state_religion = rel:sunni
+			NOR = {
+				has_journal_entry = je_turkfm_senusiyya_sub
+				has_variable = turkfm_senussi_spanked
+			}
+			any_scope_state = {
+				gbbf_senussi_geography_trigger = yes
+			}
+		}
+	}
+
+	cancellation_trigger = {
+		has_variable = turkfm_senussi_spanked
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		random_country = {
+			limit = {
+				is_adjacent_to_country = root
+				country_has_state_religion = rel:sunni
+				NOR = {
+					has_journal_entry = je_turkfm_senusiyya_sub
+					has_variable = turkfm_senussi_spanked
+				}
+				any_scope_state = {
+					gbbf_senussi_geography_trigger = yes
+				}
+			}
+			save_scope_as = turkfm_senussi_target
+		}
+		scope:turkfm_senussi_target = {
+			turkfm_initialize_senussi_effect = yes
+			turkfm_senussi_arrival_effect = yes
+		}
+	}
+
+	option = {
+		name = turkfm_libya.110.a
+		default_option = yes
+		scope:turkfm_senussi_target = {
+			if = {
+				limit = {
+					has_variable = turkfm_senussi_has_landed
+				}
+				show_as_tooltip = {
+					trigger_event = {
+						id = turkfm_libya.111 # Senusiyya Arrives in Country
+					}
+				}
+				hidden_effect = {
+					add_journal_entry = {
+						type = je_turkfm_senusiyya_sub
+					}
+				}
+				post_notification = notification_turkfm_senussi_arrival
+			}
+			else = {
+				trigger_event = {
+					id = turkfm_libya.111 # Senusiyya Arrives in Country
+				}
+			}
+		}
+	}
+
+}
+
+turkfm_libya.111 = { # Senusiyya Arrives in Country
+	type = country_event
+	placement = root
+
+	title = turkfm_libya.111.t
+	desc = turkfm_libya.111.d
+	flavor = turkfm_libya.111.f
+
+	gui_window = event_window_1char_adventure
+
+	left_icon = scope:turkfm_senussi_scope
+
+	event_image = {
+		video = "middleeast_islam"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_libya.110
+	}
+
+	immediate = {
+		turkfm_update_senussi_effect = yes
+		turkfm_senussi_weekly_effect = yes
+	}
+
+	option = {
+		name = turkfm_libya.100.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_turkfm_senusiyya_sub
+		}
+	}
+
+}
+
 turkfm_libya.112 = { # Senusiyya Takes Root in State
 	type = country_event
 	placement = scope:turkfm_senussi_state_scope
