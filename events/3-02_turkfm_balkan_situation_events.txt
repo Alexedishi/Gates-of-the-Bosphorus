@@ -294,7 +294,7 @@ turkfm_balkan_situation.005 = { # Riots Break Out in State
 
 	trigger = {
 		turkfm_hostility_events_trigger = yes
-		var:turkfm_riot_current_tally_var < turkfm_riot_potential_value
+		global_var:turkfm_riot_counter_var < turkfm_riot_potential_value
 		NOT = {
 			has_variable = turkfm_riot_cooldown_var
 		}
@@ -324,13 +324,9 @@ turkfm_balkan_situation.005 = { # Riots Break Out in State
 		scope:turkfm_riot_state_scope = {
 			add_modifier = modifier_turkfm_race_riots
 		}
-		change_global_variable = {
+		set_global_variable = {
 			name = turkfm_riot_counter_var
-			add = 1
-		}
-		change_variable = {
-			name = turkfm_riot_current_tally_var
-			add = 1
+			value = turkfm_riot_counter_value
 		}
 		if = {
 			limit = {
@@ -357,6 +353,7 @@ turkfm_balkan_situation.005 = { # Riots Break Out in State
 			}
 		}
 		turkfm_update_riot_variables_effect = yes
+		turkfm_update_riot_modifiers_effect = yes
 	}
 
 	option = {
@@ -2155,6 +2152,7 @@ turkfm_balkan_situation.111 = { # Minority Rejects Classification
 			limit = {
 				region = sr:region_balkans
 			}
+			save_scope_as = turkfm_tension_state_scope
 			random_scope_pop = {
 				limit = {
 					has_pop_religion = orthodox
@@ -4514,9 +4512,9 @@ turkfm_balkan_situation.133 = { # Spy Ring Busted
 			has_global_variable = turkfm_tension_event_cooldown_var
 		}
 		OR = {
-			global_var:turkfm_separatism_phase_var ?= flag:turkfm_unrest
-			global_var:turkfm_separatism_phase_var ?= flag:turkfm_hostility
-			global_var:turkfm_separatism_phase_var ?= flag:turkfm_crisis
+			global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_unrest
+			global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_hostility
+			global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_crisis
 		}
 	}
 

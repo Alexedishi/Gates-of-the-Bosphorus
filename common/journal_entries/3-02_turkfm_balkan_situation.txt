@@ -9,7 +9,8 @@
 		set_variable = turkfm_balken_situation_starter_var
 	}
 
-	scripted_progress_bar = turkfm_balkfm_situation_progress_bar
+	scripted_progress_bar = turkfm_balkfm_escalation_progress_bar
+	scripted_progress_bar = turkfm_balkfm_deescalation_progress_bar
 
 	complete = {
 		has_law = law_type:law_multicultural
@@ -164,9 +165,9 @@ je_turkfm_balkan_situation_riots = {
 				text = je_turkfm_balkan_situation_riots_invalid
 				OR = {
 					NOT = {
-						has_global_variable = turkfm_separatism_phase_var
+						has_global_variable = turkfm_balkan_situation_phase_var
 					}
-					global_var:turkfm_separatism_phase_var != flag:turkfm_hostility
+					global_var:turkfm_balkan_situation_phase_var != flag:turkfm_hostility
 				}
 			}
 			NOR = {
@@ -196,11 +197,11 @@ je_turkfm_balkan_situation_riots = {
 
 	on_weekly_pulse = {
 		events = {
-			turkfm_balkan_situation.006 # Balkan Country Rebellion
 			turkfm_balkan_situation.007 # Riots in State Suppressed
 		}
 		effect = {
 			turkfm_update_riot_variables_effect = yes
+			turkfm_update_riot_modifiers_effect = yes
 			change_variable = {
 				name = turkfm_riot_var
 				add = var:turkfm_riot_progress_var
@@ -215,11 +216,6 @@ je_turkfm_balkan_situation_riots = {
 					value = owner.var:turkfm_riot_var
 					name = turkfm_riot_progress_bar
 				}
-			}
-			remove_modifier = modifier_turkfm_nationalist_insurrection
-			add_modifier = {
-				name = modifier_turkfm_nationalist_insurrection
-				multiplier = turkfm_riot_multiplier_value
 			}
 		}
 	}

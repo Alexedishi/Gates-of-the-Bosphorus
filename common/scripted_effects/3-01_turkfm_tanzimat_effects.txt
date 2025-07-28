@@ -4,6 +4,14 @@
 		value = 500
 	}
 	set_variable = {
+		name = turkfm_tanzimat_ottomanist_progress_var
+		value = 0
+	}
+	set_variable = {
+		name = turkfm_tanzimat_islamist_progress_var
+		value = 0
+	}
+	set_variable = {
 		name = turkfm_tanzimat_progress_var
 		value = 0
 	}
@@ -23,9 +31,31 @@
 	add_modifier = modifier_turkfm_insecure_countryside
 }
 
+turkfm_calculate_tanzimat_variables_effect = {
+	set_variable = {
+		name = turkfm_tanzimat_ottomanist_progress_var
+		value = turkfm_tanzimat_ottomanist_progress_value
+	}
+	set_variable = {
+		name = turkfm_tanzimat_islamist_progress_var
+		value = turkfm_tanzimat_islamist_progress_value
+	}
+
+	set_variable = {
+		name = turkfm_tanzimat_progress_var
+		value = turkfm_tanzimat_progress_value
+	}
+	set_variable = {
+		name = turkfm_tanzimat_tilt_var
+		value = turkfm_tanzimat_tilt_value
+	}
+}
+
 turkfm_cleanup_tanzimat_effect = {
 	set_global_variable = turkfm_tanzimat_complete
 	remove_variable = turkfm_tanzimat_var
+	remove_variable = turkfm_tanzimat_ottomanist_progress_var
+	remove_variable = turkfm_tanzimat_islamist_progress_var
 	remove_variable = turkfm_tanzimat_progress_var
 	remove_variable = turkfm_tanzimat_tilt_var
 	remove_variable = turkfm_tanzimat_completion_var
@@ -138,7 +168,7 @@ turkfm_advance_ottomanism1_effect = {
 				je:je_turkfm_tanzimat_main = {
 					set_bar_progress = {
 						name = turkfm_tanzimat_progress_bar
-						value = var:turkfm_tanzimat_var
+						value = owner.var:turkfm_tanzimat_var
 					}
 				}
 			}
@@ -166,7 +196,7 @@ turkfm_advance_ottomanism2_effect = {
 				je:je_turkfm_tanzimat_main = {
 					set_bar_progress = {
 						name = turkfm_tanzimat_progress_bar
-						value = var:turkfm_tanzimat_var
+						value = owner.var:turkfm_tanzimat_var
 					}
 				}
 			}
@@ -194,7 +224,7 @@ turkfm_advance_ottomanism3_effect = {
 				je:je_turkfm_tanzimat_main = {
 					set_bar_progress = {
 						name = turkfm_tanzimat_progress_bar
-						value = var:turkfm_tanzimat_var
+						value = owner.var:turkfm_tanzimat_var
 					}
 				}
 			}
@@ -383,5 +413,44 @@ turkfm_millet_abolished_enact_effect = {
 	set_variable = {
 		name = turkfm_millet_system_var
 		value = 4
+	}
+}
+
+turkfm_convert_ideologies_effect = {
+	every_scope_character = {
+		limit = {
+			has_ideology = ideology:ideology_traditionalist
+		}
+		set_ideology = ideology:ideology_turkfm_traditionalist
+	}
+	every_scope_character = {
+		limit = {
+			has_ideology = ideology:ideology_reformer
+		}
+		set_ideology = ideology:ideology_turkfm_reformer
+	}
+	every_scope_character = {
+		limit = {
+			has_ideology = ideology:ideology_social_democrat
+		}
+		set_ideology = ideology:ideology_turkfm_social_democrat
+	}
+	every_scope_character = {
+		limit = {
+			has_ideology = ideology:ideology_vanguardist
+		}
+		set_ideology = ideology:ideology_turkfm_vanguardist
+	}
+	every_scope_character = {
+		limit = {
+			has_ideology = ideology:ideology_theocrat
+		}
+		set_ideology = ideology:ideology_turkfm_theocrat
+	}
+	every_scope_character = {
+		limit = {
+			has_ideology = ideology:ideology_modernizer_leader
+		}
+		set_ideology = ideology:ideology_turkfm_modernizer_leader
 	}
 }

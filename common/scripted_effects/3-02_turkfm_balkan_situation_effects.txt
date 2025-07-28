@@ -1,12 +1,12 @@
 ﻿## General Situation Effects
 turkfm_initialize_balkan_situation_effect = {
 	set_global_variable = {
-		name = turkfm_separatism_phase_var
+		name = turkfm_balkan_situation_phase_var
 		value = flag:turkfm_stable # We start in the stable phase
 	}
 	set_global_variable = {
 		name = turkfm_escalation_var
-		value = 0
+		value = 300
 	}
 	set_global_variable = {
 		name = turkfm_deescalation_var
@@ -27,7 +27,7 @@ turkfm_initialize_balkan_situation_effect = {
 	add_modifier = modifier_turkfm_stable_phase
 }
 
-turkfm_clamp_variables_effect = {
+turkfm_clamp_balkan_situation_variables_effect = {
 	clamp_global_variable = {
 		name = turkfm_escalation_var
 		max = 500
@@ -49,6 +49,10 @@ turkfm_calculate_balkan_situation_variables_effect = {
 		name = turkfm_deescalation_progress_var
 		value = turkfm_deescalation_progress_value
 	}
+	set_global_variable = {
+		name = turkfm_riot_counter_var
+		value = turkfm_riot_counter_value
+	}
 }
 
 turkfm_advance_balkan_situation_variables_effect = {
@@ -60,7 +64,7 @@ turkfm_advance_balkan_situation_variables_effect = {
 		name = turkfm_deescalation_var
 		add = global_var:turkfm_deescalation_progress_var
 	}
-	turkfm_clamp_variables_effect = yes
+	turkfm_clamp_balkan_situation_variables_effect = yes
 }
 
 turkfm_check_balkan_situation_phase_effect = {
@@ -80,10 +84,10 @@ turkfm_check_balkan_situation_phase_effect = {
 			}
 			if = { # From Unrest to Deconfliction
 				limit = {
-					global_var:turkfm_separatism_phase_var ?= flag:turkfm_unrest
+					global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_unrest
 				}
 				set_global_variable = {
-					name = turkfm_separatism_phase_var
+					name = turkfm_balkan_situation_phase_var
 					value = flag:turkfm_deconfliction
 				}
 				every_country = {
@@ -96,10 +100,10 @@ turkfm_check_balkan_situation_phase_effect = {
 			}
 			else_if = { # From Hostility to Deconfliction
 				limit = {
-					global_var:turkfm_separatism_phase_var ?= flag:turkfm_hostility
+					global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_hostility
 				}
 				set_global_variable = {
-					name = turkfm_separatism_phase_var
+					name = turkfm_balkan_situation_phase_var
 					value = flag:turkfm_deconfliction
 				}
 				every_country = {
@@ -112,10 +116,10 @@ turkfm_check_balkan_situation_phase_effect = {
 			}
 			else_if = { # From Crisis to Deconfliction
 				limit = {
-					global_var:turkfm_separatism_phase_var ?= flag:turkfm_crisis
+					global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_crisis
 				}
 				set_global_variable = {
-					name = turkfm_separatism_phase_var
+					name = turkfm_balkan_situation_phase_var
 					value = flag:turkfm_deconfliction
 				}
 				every_country = {
@@ -144,10 +148,10 @@ turkfm_check_balkan_situation_phase_effect = {
 			}
 			if = { # From Stable to Unrest
 				limit = {
-					global_var:turkfm_separatism_phase_var ?= flag:turkfm_stable
+					global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_stable
 				}
 				set_global_variable = {
-					name = turkfm_separatism_phase_var
+					name = turkfm_balkan_situation_phase_var
 					value = flag:turkfm_unrest
 				}
 				every_country = {
@@ -160,10 +164,10 @@ turkfm_check_balkan_situation_phase_effect = {
 			}
 			else_if = { # From Unrest to Hostility
 				limit = {
-					global_var:turkfm_separatism_phase_var ?= flag:turkfm_unrest
+					global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_unrest
 				}
 				set_global_variable = {
-					name = turkfm_separatism_phase_var
+					name = turkfm_balkan_situation_phase_var
 					value = flag:turkfm_hostility
 				}
 				every_country = {
@@ -177,10 +181,10 @@ turkfm_check_balkan_situation_phase_effect = {
 			else_if = { # From Hostility to Crisis
 				limit = {
 					turkfm_crisis_possible_trigger = yes
-					global_var:turkfm_separatism_phase_var ?= flag:turkfm_hostility
+					global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_hostility
 				}
 				set_global_variable = {
-					name = turkfm_separatism_phase_var
+					name = turkfm_balkan_situation_phase_var
 					value = flag:turkfm_crisis
 				}
 				c:TUR ?= {
@@ -198,10 +202,10 @@ turkfm_check_balkan_situation_phase_effect = {
 			}
 			else_if = { # From Deconfliction to Stable
 				limit = {
-					global_var:turkfm_separatism_phase_var ?= flag:turkfm_deconfliction
+					global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_deconfliction
 				}
 				set_global_variable = {
-					name = turkfm_separatism_phase_var
+					name = turkfm_balkan_situation_phase_var
 					value = flag:turkfm_stable
 				}
 				every_country = {
@@ -239,65 +243,65 @@ turkfm_check_modifiers_effect = {
 			remove_modifier = modifier_turkfm_deconfliction_phase_movement
 			remove_modifier = modifier_turkfm_crisis_phase_movement
 		}
-	}
-	if = {
-		limit = {
-			global_var:turkfm_separatism_phase_var = flag:turkfm_stable
-		}
-		add_modifier = modifier_turkfm_stable_phase
-		every_political_movement = {
+		if = {
 			limit = {
-				turkfm_eligible_minority_movement_trigger = yes
+				global_var:turkfm_balkan_situation_phase_var = flag:turkfm_stable
 			}
-			add_modifier = modifier_turkfm_stable_phase_movement
+			add_modifier = modifier_turkfm_stable_phase
+			every_political_movement = {
+				limit = {
+					turkfm_eligible_minority_movement_trigger = yes
+				}
+				add_modifier = modifier_turkfm_stable_phase_movement
+			}
 		}
-	}
-	else_if = {
-		limit = {
-			global_var:turkfm_separatism_phase_var = flag:turkfm_unrest
-		}
-		add_modifier = modifier_turkfm_unrest_phase
-		every_political_movement = {
+		else_if = {
 			limit = {
-				turkfm_eligible_minority_movement_trigger = yes
+				global_var:turkfm_balkan_situation_phase_var = flag:turkfm_unrest
 			}
-			add_modifier = modifier_turkfm_unrest_phase_movement
+			add_modifier = modifier_turkfm_unrest_phase
+			every_political_movement = {
+				limit = {
+					turkfm_eligible_minority_movement_trigger = yes
+				}
+				add_modifier = modifier_turkfm_unrest_phase_movement
+			}
 		}
-	}
-	else_if = {
-		limit = {
-			global_var:turkfm_separatism_phase_var = flag:turkfm_hostility
-		}
-		add_modifier = modifier_turkfm_hosility_phase
-		every_political_movement = {
+		else_if = {
 			limit = {
-				turkfm_eligible_minority_movement_trigger = yes
+				global_var:turkfm_balkan_situation_phase_var = flag:turkfm_hostility
 			}
-			add_modifier = modifier_turkfm_hosility_phase_movement
+			add_modifier = modifier_turkfm_hosility_phase
+			every_political_movement = {
+				limit = {
+					turkfm_eligible_minority_movement_trigger = yes
+				}
+				add_modifier = modifier_turkfm_hosility_phase_movement
+			}
 		}
-	}
-	else_if = {
-		limit = {
-			global_var:turkfm_separatism_phase_var = flag:turkfm_deconfliction
-		}
-		add_modifier = modifier_turkfm_deconfliction_phase
-		every_political_movement = {
+		else_if = {
 			limit = {
-				turkfm_eligible_minority_movement_trigger = yes
+				global_var:turkfm_balkan_situation_phase_var = flag:turkfm_deconfliction
 			}
-			add_modifier = modifier_turkfm_deconfliction_phase_movement
+			add_modifier = modifier_turkfm_deconfliction_phase
+			every_political_movement = {
+				limit = {
+					turkfm_eligible_minority_movement_trigger = yes
+				}
+				add_modifier = modifier_turkfm_deconfliction_phase_movement
+			}
 		}
-	}
-	else_if = {
-		limit = {
-			global_var:turkfm_separatism_phase_var = flag:turkfm_crisis
-		}
-		add_modifier = modifier_turkfm_crisis_phase
-		every_political_movement = {
+		else_if = {
 			limit = {
-				turkfm_eligible_minority_movement_trigger = yes
+				global_var:turkfm_balkan_situation_phase_var = flag:turkfm_crisis
 			}
-			add_modifier = modifier_turkfm_crisis_phase_movement
+			add_modifier = modifier_turkfm_crisis_phase
+			every_political_movement = {
+				limit = {
+					turkfm_eligible_minority_movement_trigger = yes
+				}
+				add_modifier = modifier_turkfm_crisis_phase_movement
+			}
 		}
 	}
 }
@@ -309,8 +313,12 @@ turkfm_update_balkan_situation_progressbar_effect = {
 		}
 		je:je_turkfm_balkan_situation_main = {
 			set_bar_progress = {
-				name = turkfm_balkfm_situation_progress_bar
-				value = turkfm_tension_progress_value
+				name = turkfm_balkfm_escalation_progress_bar
+				value = global_var:turkfm_escalation_var
+			}
+			set_bar_progress = {
+				name = turkfm_balkfm_deescalation_progress_bar
+				value = global_var:turkfm_deescalation_var
 			}
 		}
 	}
@@ -320,8 +328,12 @@ turkfm_update_balkan_situation_progressbar_effect = {
 		}
 		je:je_turkfm_eastern_question = {
 			set_bar_progress = {
-				name = turkfm_balkfm_situation_progress_bar
-				value = turkfm_tension_progress_value
+				name = turkfm_balkfm_escalation_progress_bar
+				value = global_var:turkfm_escalation_var
+			}
+			set_bar_progress = {
+				name = turkfm_balkfm_deescalation_progress_bar
+				value = global_var:turkfm_deescalation_var
 			}
 		}
 	}
@@ -329,7 +341,7 @@ turkfm_update_balkan_situation_progressbar_effect = {
 
 turkfm_force_stable_effect = {
 	set_global_variable = {
-		name = turkfm_separatism_phase_var
+		name = turkfm_balkan_situation_phase_var
 		value = flag:turkfm_stable
 	}
 	every_country = {
@@ -353,7 +365,7 @@ turkfm_force_stable_effect = {
 
 turkfm_force_unrest_effect = {
 	set_global_variable = {
-		name = turkfm_separatism_phase_var
+		name = turkfm_balkan_situation_phase_var
 		value = flag:turkfm_unrest
 	}
 	every_country = {
@@ -377,7 +389,7 @@ turkfm_force_unrest_effect = {
 
 turkfm_force_hostility_effect = {
 	set_global_variable = {
-		name = turkfm_separatism_phase_var
+		name = turkfm_balkan_situation_phase_var
 		value = flag:turkfm_hostility
 	}
 	every_country = {
@@ -401,7 +413,7 @@ turkfm_force_hostility_effect = {
 
 turkfm_force_deconfliction_effect = {
 	set_global_variable = {
-		name = turkfm_separatism_phase_var
+		name = turkfm_balkan_situation_phase_var
 		value = flag:turkfm_deconfliction
 	}
 	every_country = {
@@ -425,7 +437,7 @@ turkfm_force_deconfliction_effect = {
 
 turkfm_force_crisis_effect = {
 	set_global_variable = {
-		name = turkfm_separatism_phase_var
+		name = turkfm_balkan_situation_phase_var
 		value = flag:turkfm_crisis
 	}
 	every_country = {
@@ -451,9 +463,9 @@ turkfm_tension_cooldown_effect = {
 	if = {
 		limit = {
 			OR = {
-				global_var:turkfm_separatism_phase_var ?= flag:turkfm_stable
-				global_var:turkfm_separatism_phase_var ?= flag:turkfm_unrest
-				global_var:turkfm_separatism_phase_var ?= flag:turkfm_deconfliction
+				global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_stable
+				global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_unrest
+				global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_deconfliction
 			}
 		}
 		set_global_variable = {
@@ -464,9 +476,9 @@ turkfm_tension_cooldown_effect = {
 	if = {
 		limit = {
 			OR = {
-				global_var:turkfm_separatism_phase_var ?= flag:turkfm_stable
-				global_var:turkfm_separatism_phase_var ?= flag:turkfm_unrest
-				global_var:turkfm_separatism_phase_var ?= flag:turkfm_deconfliction
+				global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_stable
+				global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_unrest
+				global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_deconfliction
 			}
 		}
 		set_global_variable = {
@@ -477,8 +489,8 @@ turkfm_tension_cooldown_effect = {
 	else_if = {
 		limit = {
 			OR = {
-				global_var:turkfm_separatism_phase_var ?= flag:turkfm_hostility
-				global_var:turkfm_separatism_phase_var ?= flag:turkfm_crisis
+				global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_hostility
+				global_var:turkfm_balkan_situation_phase_var ?= flag:turkfm_crisis
 			}
 		}
 		set_global_variable = {
@@ -1758,14 +1770,42 @@ turkfm_update_riot_variables_effect = {
 	}
 }
 
-turkfm_cleanup_riots_effect = {
-	every_scope_state = {
-		limit = {
-			has_modifier = modifier_turkfm_race_riots
-		}
-		remove_modifier = modifier_turkfm_race_riots
-	}
+turkfm_update_riot_modifiers_effect = {
+	# Step 1, Remove modifiers
 	remove_modifier = modifier_turkfm_nationalist_insurrection
+	every_political_movement = {
+		remove_modifier = modifier_turkfm_nationalist_insurrection_movement
+	}
+
+	# Step 2, Add modifiers
+	add_modifier = {
+		name = modifier_turkfm_nationalist_insurrection
+		multiplier = turkfm_riot_multiplier_value
+	}
+	every_political_movement = {
+		limit = {
+			turkfm_eligible_minority_movement_trigger = yes
+		}
+		add_modifier = {
+			name = modifier_turkfm_nationalist_insurrection_movement
+			multiplier = turkfm_riot_multiplier_value
+		}
+	}
+}
+
+turkfm_cleanup_riots_effect = {
+	hidden_effect = {
+		remove_modifier = modifier_turkfm_nationalist_insurrection
+		every_scope_state = {
+			limit = {
+				has_modifier = modifier_turkfm_race_riots
+			}
+			remove_modifier = modifier_turkfm_race_riots
+		}
+		every_political_movement = {
+			remove_modifier = modifier_turkfm_nationalist_insurrection_movement
+		}
+	}
 	remove_variable = turkfm_riot_var
 	remove_variable = turkfm_riot_progress_var
 	remove_variable = turkfm_riot_state_1_var
@@ -1774,14 +1814,10 @@ turkfm_cleanup_riots_effect = {
 	remove_variable = turkfm_riot_state_1_progress_var
 	remove_variable = turkfm_riot_state_2_progress_var
 	remove_variable = turkfm_riot_state_3_progress_var
-	set_variable = {
-		name = turkfm_riot_current_tally_var
-		value = 0
-	}
 }
 
 turkm_cleanup_tension_main_effect = {
-	remove_global_variable = turkfm_separatism_phase_var
+	remove_global_variable = turkfm_balkan_situation_phase_var
 	remove_global_variable = turkfm_escalation_var
 	remove_global_variable = turkfm_deescalation_var
 

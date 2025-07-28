@@ -8,7 +8,7 @@ turkfm_add_small_peril_effect = {
 		}
 		clamp_variable = {
 			name = turkfm_expedition_peril_var
-			max = 10
+			max = 5
 			min = 0
 		}
 	}
@@ -23,7 +23,7 @@ turkfm_add_medium_peril_effect = {
 		}
 		clamp_variable = {
 			name = turkfm_expedition_peril_var
-			max = 10
+			max = 5
 			min = 0
 		}
 	}
@@ -39,7 +39,7 @@ turkfm_add_large_peril_effect = {
 		}
 		clamp_variable = {
 			name = turkfm_expedition_peril_var
-			max = 10
+			max = 5
 			min = 0
 		}
 	}
@@ -54,7 +54,7 @@ turkfm_remove_small_peril_effect = {
 		}
 		clamp_variable = {
 			name = turkfm_expedition_peril_var
-			max = 10
+			max = 5
 			min = 0
 		}
 	}
@@ -70,7 +70,7 @@ turkfm_remove_medium_peril_effect = {
 		}
 		clamp_variable = {
 			name = turkfm_expedition_peril_var
-			max = 10
+			max = 5
 			min = 0
 		}
 	}
@@ -85,7 +85,7 @@ turkfm_remove_large_peril_effect = {
 		}
 		clamp_variable = {
 			name = turkfm_expedition_peril_var
-			max = 10
+			max = 5
 			min = 0
 		}
 	}
@@ -100,7 +100,7 @@ turkfm_add_small_progress_effect = {
 		}
 		clamp_variable = {
 			name = turkfm_expedition_progress_var
-			max = 10
+			max = 8
 			min = 0
 		}
 	}
@@ -115,7 +115,7 @@ turkfm_add_medium_progress_effect = {
 		}
 		clamp_variable = {
 			name = turkfm_expedition_progress_var
-			max = 10
+			max = 8
 			min = 0
 		}
 	}
@@ -130,7 +130,7 @@ turkfm_add_large_progress_effect = {
 		}
 		clamp_variable = {
 			name = turkfm_expedition_progress_var
-			max = 10
+			max = 8
 			min = 0
 		}
 	}
@@ -145,7 +145,7 @@ turkfm_remove_small_progress_effect = {
 		}
 		clamp_variable = {
 			name = turkfm_expedition_progress_var
-			max = 10
+			max = 8
 			min = 0
 		}
 	}
@@ -160,7 +160,7 @@ turkfm_remove_medium_progress_effect = {
 		}
 		clamp_variable = {
 			name = turkfm_expedition_progress_var
-			max = 10
+			max = 8
 			min = 0
 		}
 	}
@@ -175,7 +175,7 @@ turkfm_remove_large_progress_effect = {
 		}
 		clamp_variable = {
 			name = turkfm_expedition_progress_var
-			max = 10
+			max = 8
 			min = 0
 		}
 	}
@@ -861,6 +861,10 @@ turkfm_awaken_jack_sparrow_effect = {
 		last_name = Bey
 		on_created = {
 			place_character_in_void = 300
+			set_variable = {
+				name = com_opinion
+				value = flag:turkfm_jack_sparrow_opinion
+			}
 		}
 	}
 	random_character_in_void = {
@@ -970,6 +974,20 @@ turkfm_jack_sparrow_effect = {
 			}
 		}
 	}
+
+	## Step 4, Set Opinion Flags
+	scope:turkfm_jack_sparrow_scope ?= {
+		set_variable = {
+			name = com_opinion
+			value = flag:turkfm_jack_sparrow_opinion
+		}
+	}
+	scope:turkfm_cutler_beckett_scope ?= {
+		set_variable = {
+			name = com_opinion
+			value = flag:turkfm_cutler_beckett_opinion
+		}
+	}
 }
 
 turkfm_piracy_scopes_effect = {
@@ -1070,7 +1088,7 @@ turkfm_complete_piracy_expedition_effect = {
 		}
 		if = {
 			limit = {
-				global_var:turkfm_pirates_var >= 5
+				global_var:turkfm_pirates_var >= 4
 			}
 			set_variable = turkfm_jack_sparrow_captor
 			hidden_effect = {
@@ -1082,4 +1100,15 @@ turkfm_complete_piracy_expedition_effect = {
 		}
 	}
 	set_variable = turkfm_completed_pirate_expedition
+	every_country = {
+		limit = {
+			has_journal_entry = je_turkfm_pirates_of_the_adriatic
+		}
+		je:je_turkfm_pirates_of_the_adriatic = {
+			set_bar_progress = {
+				name = turkfm_jack_sparrow_progress_bar
+				value = global_var:turkfm_pirates_var
+			}
+		}
+	}
 }
