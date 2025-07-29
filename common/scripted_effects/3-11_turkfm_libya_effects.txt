@@ -1,89 +1,55 @@
-﻿turkfm_initialize_senussi_effect = {
+﻿turkfm_initialize_senussi_variables_effect = {
 	set_variable = {
 		name = turkfm_senussi_var
-		value = 0
+		value = 50
 	}
 	set_variable = {
 		name = turkfm_senussi_progress_var
 		value = 0
 	}
 	set_variable = {
-		name = turkfm_bedouin_radicals_var
-		value = 0
-	}
-	set_global_variable = {
-		name = turkfm_senussi_counter_var
+		name = turkfm_senussi_support_var
 		value = 0
 	}
 	set_variable = {
-		name = turkfm_desert_control_var
+		name = turkfm_senussi_opposition_var
 		value = 0
 	}
 	set_variable = {
-		name = turkfm_senussi_control_var
+		name = turkfm_senussi_desert_centralized_var
 		value = 0
 	}
 	set_variable = {
-		name = turkfm_senussi_bedouin_var
+		name = turkfm_senussi_desert_decentralized_var
 		value = 0
 	}
-}
-
-turkfm_senussi_arrival_effect = {
-	turkfm_initialize_senussi_effect = yes
-	turkfm_update_senussi_effect = yes
-	random_scope_state = {
-		limit = {
-			gbbf_senussi_geography_trigger = yes
-		}
-		add_modifier = {
-			name = modifier_turkfm_senussi_stronghold
-		}
-		save_scope_as = turkfm_senussi_state_scope
+	set_variable = {
+		name = turkfm_bedouin_radical_fraction_var
+		value = 0
 	}
 }
 
 turkfm_senussi_weekly_effect = {
 	## Step 1, Check for Libyan Desert & Bedouin Involvment
-	if = {
-		limit = {
-			has_state_in_state_region = STATE_LIBYAN_DESERT
-		}
-		set_variable = {
-			name = turkfm_desert_control_var
-			value = turkfm_desert_control_value
-		}
+	set_variable = {
+		name = turkfm_senussi_support_var
+		value = turkfm_senussi_support_value
 	}
-	else = {
-		remove_variable = turkfm_desert_control_var
+	set_variable = {
+		name = turkfm_senussi_opposition_var
+		value = turkfm_senussi_opposition_value
 	}
-	if = {
-		limit = {
-			c:LIB_KUF ?= {
-				has_state_in_state_region = STATE_LIBYAN_DESERT
-			}
-		}
-		set_variable = {
-			name = turkfm_senussi_control_var
-			value = turkfm_senussi_control_value
-		}
+	set_variable = {
+		name = turkfm_senussi_desert_centralized_var
+		value = turkfm_senussi_desert_centralized_value
 	}
-	else = {
-		remove_variable = turkfm_senussi_control_var
+	set_variable = {
+		name = turkfm_senussi_desert_decentralized_var
+		value = turkfm_senussi_desert_decentralized_value
 	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = bedouin
-			}
-		}
-		set_variable = {
-			name = turkfm_bedouin_radicals_var
-			value = turkfm_bedouin_radicals_value
-		}
-	}
-	else = {
-		remove_variable = turkfm_bedouin_radicals_var
+	set_variable = {
+		name = turkfm_bedouin_radical_fraction_var
+		value = turkfm_bedouin_radical_fraction_value
 	}
 
 	## Step 2, Set Progress Variable
@@ -96,7 +62,7 @@ turkfm_senussi_weekly_effect = {
 	remove_modifier = modifier_turkfm_senusiyya_movement
 	add_modifier = {
 		name = modifier_turkfm_senusiyya_movement
-		multiplier = turkfm_senussi_modifier_value
+		multiplier = turkfm_senussi_multiplier_value
 	}
 
 	##Step 4, Update the Progress Bar
@@ -379,8 +345,4 @@ turkfm_cleanup_senussi_effect = {
 	remove_variable = turkfm_senussi_outcome_var
 	remove_variable = turkfm_senussi_bedouin_var
 	remove_global_variable = turkfm_intimidated_sensussi
-	set_variable = {
-		name = turkfm_senussi_spanked
-		years = 5
-	}
 }
