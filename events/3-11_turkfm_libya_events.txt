@@ -503,7 +503,8 @@ turkfm_libya.110 = { # Senusiyya Spreads to Country
 			country_has_state_religion = rel:sunni
 			NOR = {
 				has_journal_entry = je_turkfm_senusiyya_sub
-				has_variable = turkfm_senussi_spanked
+				has_variable = turkfm_embraced_senussi
+				has_variable = turkfm_swept_senussi
 			}
 			any_scope_state = {
 				gbbf_senussi_geography_trigger = yes
@@ -512,11 +513,14 @@ turkfm_libya.110 = { # Senusiyya Spreads to Country
 	}
 
 	cancellation_trigger = {
-		has_variable = turkfm_senussi_spanked
+		OR = {
+			has_variable = turkfm_embraced_senussi
+			has_variable = turkfm_swept_senussi
+		}
 	}
 
 	cooldown = {
-		years = 1
+		years = 2
 	}
 
 	immediate = {
@@ -527,7 +531,8 @@ turkfm_libya.110 = { # Senusiyya Spreads to Country
 				country_has_state_religion = rel:sunni
 				NOR = {
 					has_journal_entry = je_turkfm_senusiyya_sub
-					has_variable = turkfm_senussi_spanked
+					has_variable = turkfm_embraced_senussi
+					has_variable = turkfm_swept_senussi
 				}
 				any_scope_state = {
 					gbbf_senussi_geography_trigger = yes
@@ -536,8 +541,7 @@ turkfm_libya.110 = { # Senusiyya Spreads to Country
 			save_scope_as = turkfm_senussi_target
 		}
 		scope:turkfm_senussi_target = {
-			turkfm_initialize_senussi_effect = yes
-			turkfm_senussi_arrival_effect = yes
+			turkfm_initialize_senussi_variables_effect = yes
 		}
 	}
 
@@ -545,25 +549,14 @@ turkfm_libya.110 = { # Senusiyya Spreads to Country
 		name = turkfm_libya.110.a
 		default_option = yes
 		scope:turkfm_senussi_target = {
-			if = {
-				limit = {
-					has_variable = turkfm_senussi_has_landed
-				}
-				show_as_tooltip = {
-					trigger_event = {
-						id = turkfm_libya.111 # Senusiyya Arrives in Country
-					}
-				}
-				hidden_effect = {
-					add_journal_entry = {
-						type = je_turkfm_senusiyya_sub
-					}
-				}
-				post_notification = notification_turkfm_senussi_arrival
-			}
-			else = {
+			show_as_tooltip = {
 				trigger_event = {
 					id = turkfm_libya.111 # Senusiyya Arrives in Country
+				}
+			}
+			hidden_effect = {
+				add_journal_entry = {
+					type = je_turkfm_senusiyya_sub
 				}
 			}
 		}
