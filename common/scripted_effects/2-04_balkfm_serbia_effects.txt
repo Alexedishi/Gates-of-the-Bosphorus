@@ -1,25 +1,58 @@
-﻿balkfm_update_dynasty_variables_effect = {
-	change_variable = {
+﻿balkfm_initialize_dynastic_rivalry_variables_effect = {
+	set_variable = {
 		name = balkfm_obrenovic_support_var
-		add = balkfm_obrenovic_progress_value
+		value = 0
 	}
-	clamp_variable = {
-		name = balkfm_obrenovic_support_var
-		max = 500
-		min = 0
-	}
-	change_variable = {
+	set_variable = {
 		name = balkfm_karadordevic_support_var
-		add = balkfm_karadordevic_progress_value
+		value = 0
 	}
-	clamp_variable = {
-		name = balkfm_karadordevic_support_var
-		max = 500
-		min = 0
+	set_variable = {
+		name = balkfm_obrenovic_progress_var
+		value = 0
+	}
+	set_variable = {
+		name = balkfm_karadordevic_progress_var
+		value = 0
 	}
 }
 
-balkfm_dynasty_monthly_maintenance_effect = {
+balkfm_calculate_dynastic_rivalry_variables_effect = {
+	set_variable = {
+		name = balkfm_obrenovic_progress_var
+		value = balkfm_obrenovic_progress_value
+	}
+	set_variable = {
+		name = balkfm_karadordevic_progress_var
+		value = balkfm_karadordevic_progress_value
+	}
+	je:je_balkfm_ser_monarchism = {
+		set_bar_progress = {
+			name = balkfm_dynastic_rivalry_progressbar
+			value = owner.balkfm_leading_dynasty_value
+		}
+	}
+}
+
+balkfm_dynastic_rivalry_monthly_effect = {
+	change_variable = {
+		name = balkfm_obrenovic_support_var
+		add = balkfm_obrenovic_net_progress_value
+	}
+	clamp_variable = {
+		name = balkfm_obrenovic_support_var
+		max = 500
+		min = 0
+	}
+	change_variable = {
+		name = balkfm_karadordevic_support_var
+		add = balkfm_karadordevic_net_progress_value
+	}
+	clamp_variable = {
+		name = balkfm_karadordevic_support_var
+		max = 500
+		min = 0
+	}
 	if = {
 		limit = {
 			NOT = {
@@ -78,6 +111,7 @@ balkfm_minor_dynasty_support_loss_effect = {
 			}
 		}
 	}
+	balkfm_calculate_dynastic_rivalry_variables_effect = yes
 }
 
 balkfm_minor_dynasty_support_gain_effect = {
@@ -109,9 +143,12 @@ balkfm_minor_dynasty_support_gain_effect = {
 			}
 		}
 	}
+	balkfm_calculate_dynastic_rivalry_variables_effect = yes
 }
 
 balkfm_cleanup_dynasty_variables_effect = {
 	remove_variable = balkfm_obrenovic_support_var
 	remove_variable = balkfm_karadordevic_support_var
+	remove_variable = balkfm_obrenovic_progress_var
+	remove_variable = balkfm_karadordevic_progress_var
 }

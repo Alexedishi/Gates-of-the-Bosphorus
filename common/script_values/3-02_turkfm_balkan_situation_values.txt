@@ -9,6 +9,11 @@ turkfm_escalation_progress_value = {
 		value = {
 			every_political_movement = {
 				limit = {
+					OR = {
+						is_political_movement_type = movement_cultural_minority
+						is_political_movement_type = movement_religious_minority
+					}
+
 					gbbf_balkans_culture_trigger = yes
 				}
 				add = turkfm_movement_impact_value
@@ -27,10 +32,14 @@ turkfm_escalation_progress_value = {
 						type = turkfm_accelerate_tensions
 					}
 				}
+				save_temporary_scope_as = turkfm_accelerating_country
+				add = {
+					value = 2
+					desc = turkfm_value_from_accelerating_tensions
+				}
 			}
-			add = 2
 		}
-		desc = turkfm_value_from_accelerating_tensions
+		desc = turkfm_value_from_overall_accelerating_tensions
 	}
 	add = {
 		value = {
@@ -38,11 +47,15 @@ turkfm_escalation_progress_value = {
 				limit = {
 					has_modifier = modifier_turkfm_race_riots
 				}
-				add = radical_population_fraction
+				save_temporary_scope_as = turkfm_riot_state
+				add = {
+					value = radical_fraction
+					desc = turkfm_value_from_race_riots
+				}
 			}
 			round_to = 0.01
 		}
-		desc = turkfm_value_from_race_riots
+		desc = turkfm_value_from_ongoing_riots
 	}
 	subtract = {
 		value = {
@@ -53,10 +66,14 @@ turkfm_escalation_progress_value = {
 						type = turkfm_decelerate_tensions
 					}
 				}
+				save_temporary_scope_as = turkfm_decelerating_country
+				add = {
+					value = 1
+					desc = turkfm_value_from_decelerating_tensions
+				}
 			}
-			add = 1
 		}
-		desc = turkfm_value_from_decelerating_tensions
+		desc = turkfm_value_from_overall_decelerating_tensions
 	}
 	if = {
 		limit = {
@@ -82,10 +99,14 @@ turkfm_deescalation_progress_value = {
 						type = turkfm_decelerate_tensions
 					}
 				}
+				save_temporary_scope_as = turkfm_decelerating_country
+				add = {
+					value = 2
+					desc = turkfm_value_from_decelerating_tensions
+				}
 			}
-			add = 2
 		}
-		desc = turkfm_value_from_decelerating_tensions
+		desc = turkfm_value_from_overall_decelerating_tensions
 	}
 	subtract = {
 		value = {
@@ -96,10 +117,14 @@ turkfm_deescalation_progress_value = {
 						type = turkfm_accelerate_tensions
 					}
 				}
+				save_temporary_scope_as = turkfm_accelerating_country
+				add = {
+					value = 1
+					desc = turkfm_value_from_accelerating_tensions
+				}
 			}
-			add = 1
 		}
-		desc = turkfm_value_from_accelerating_tensions
+		desc = turkfm_value_from_overall_accelerating_tensions
 	}
 	if = {
 		limit = {
@@ -131,10 +156,13 @@ turkfm_riot_counter_value = {
 				limit = {
 					has_modifier = modifier_turkfm_race_riots
 				}
-				add = 1
+				add = {
+					value = 1
+					desc = turkfm_value_from_ongoing_riots
+				}
 			}
 		}
-		desc = turkfm_value_from_riots
+		desc = turkfm_value_from_number_of_riots
 	}
 }
 
@@ -171,7 +199,17 @@ turkfm_riot_progress_value = {
 			has_variable = turkfm_riot_state_1_progress_var
 		}
 		add = {
-			value = var:turkfm_riot_state_1_progress_var
+			value = {
+				add = var:turkfm_riot_state_1_progress_var
+				if = {
+					limit = {
+						var:turkfm_riot_state_1_var = {
+							has_decree = decree_violent_suppression
+						}
+					}
+					multiply = 0.5
+				}
+			}
 			desc = turkfm_value_from_riot_state_1
 		}
 	}
@@ -180,7 +218,17 @@ turkfm_riot_progress_value = {
 			has_variable = turkfm_riot_state_2_progress_var
 		}
 		add = {
-			value = var:turkfm_riot_state_2_progress_var
+			value = {
+				add = var:turkfm_riot_state_2_progress_var
+				if = {
+					limit = {
+						var:turkfm_riot_state_2_var = {
+							has_decree = decree_violent_suppression
+						}
+					}
+					multiply = 0.5
+				}
+			}
 			desc = turkfm_value_from_riot_state_2
 		}
 	}
@@ -189,7 +237,17 @@ turkfm_riot_progress_value = {
 			has_variable = turkfm_riot_state_3_progress_var
 		}
 		add = {
-			value = var:turkfm_riot_state_3_progress_var
+			value = {
+				add = var:turkfm_riot_state_3_progress_var
+				if = {
+					limit = {
+						var:turkfm_riot_state_3_var = {
+							has_decree = decree_violent_suppression
+						}
+					}
+					multiply = 0.5
+				}
+			}
 			desc = turkfm_value_from_riot_state_3
 		}
 	}
@@ -202,10 +260,14 @@ turkfm_riot_progress_value = {
 						type = turkfm_accelerate_tensions
 					}
 				}
+				save_temporary_scope_as = turkfm_accelerating_country
+				add = {
+					value = 0.1
+					desc = turkfm_value_from_accelerating_tensions
+				}
 			}
-			add = 0.1
 		}
-		desc = turkfm_value_from_accelerating_tensions
+		desc = turkfm_value_from_overall_accelerating_tensions
 	}
 	if = {
 		limit = {

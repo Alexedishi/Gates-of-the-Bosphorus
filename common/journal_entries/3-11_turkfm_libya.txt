@@ -99,9 +99,7 @@ je_turkfm_tri_libyan_desert = {
 
 je_turkfm_senusiyya_main = {
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-
 	group = je_group_turkfm_libya
-
 	should_be_pinned_by_default = yes
 
 	is_shown_when_inactive = {
@@ -119,10 +117,13 @@ je_turkfm_senusiyya_main = {
 
 	immediate = {
 		trigger_event = {
-			id = turkfm_libya.011 # The Senussi Order
+			id = turkfm_libya.100 # The Senussi Order
 		}
+		turkfm_update_senussi_effect = yes
 		set_variable = turkfm_senussi_has_landed
 	}
+
+	scripted_progress_bar = turkfm_senussi_progressbar
 
 	scripted_button = turkfm_embrace_senussi_button
 	scripted_button = turkfm_sweep_desert_button
@@ -147,7 +148,7 @@ je_turkfm_senusiyya_main = {
 					has_variable = turkfm_embraced_senussi
 				}
 				trigger_event = {
-					id = turkfm_libya.007 # House Senussi of Country
+					id = turkfm_libya.109 # House Senussi of Country
 				}
 			}
 		}
@@ -158,7 +159,7 @@ je_turkfm_senusiyya_main = {
 					has_variable = turkfm_swept_senussi
 				}
 				trigger_event = {
-					id = turkfm_libya.006 # The Senusiyya Extinguished
+					id = turkfm_libya.108 # The Senusiyya Extinguished
 				}
 			}
 		}
@@ -179,21 +180,21 @@ je_turkfm_senusiyya_main = {
 	on_weekly_pulse = {
 		effect = {
 			turkfm_senussi_weekly_effect = yes
-			turkfm_check_senussi_effect = yes
-			turkfm_find_senussi_effect = yes
+			turkfm_update_senussi_effect = yes
 		}
 	}
 
 	on_monthly_pulse = {
 		events = {
-			turkfm_libya.012 # The Grand Senussi
-			turkfm_libya.015 # The State-within-a-State
-			turkfm_libya.018 # Senusiyya Takes Root in State
-			turkfm_libya.019 # Senusiyya Expunged from State
+			turkfm_libya.101 # The Grand Senussi
+			turkfm_libya.104 # The State-within-a-State
+			turkfm_libya.110 # Senusiyya Spreads to Country
+			turkfm_libya.112 # Senusiyya Takes Root in State
+			turkfm_libya.113 # Senusiyya Expunged from State
 		}
 		random_events = {
 			chance_of_no_event = 90
-			5 = turkfm_libya.013 # Senussi Withdraws to the Desert
+			5 = turkfm_libya.102 # Senussi Withdraws to the Desert
 		}
 		effect = {
 			change_variable = {
@@ -205,86 +206,14 @@ je_turkfm_senusiyya_main = {
 				max = 100
 				min = 0
 			}
-			if = {
-				limit = {
-					var:turkfm_senussi_var >= 100
-					any_country ={
-						is_adjacent_to_country = root
-						country_has_state_religion = rel:sunni
-						NOR = {
-							has_journal_entry = je_turkfm_senusiyya_sub
-							has_variable = turkfm_senussi_spanked
-						}
-						any_scope_state = {
-							gbbf_senussi_geography_trigger = yes
-						}
-					}
-				}
-				random_country = {
-					limit = {
-						is_adjacent_to_country = root
-						country_has_state_religion = rel:sunni
-						NOR = {
-							has_journal_entry = je_turkfm_senusiyya_sub
-							has_variable = turkfm_senussi_spanked
-						}
-						any_scope_state = {
-							gbbf_senussi_geography_trigger = yes
-						}
-					}
-					turkfm_initialize_senussi_effect = yes
-					turkfm_senussi_arrival_effect = yes
-				}
-			}
 		}
 	}
 
-	current_value = {
-		value = var:turkfm_senussi_var
-	}
-
-	goal_add_value = {
-		value = 100
-	}
-
-	progressbar = yes
-
 	status_desc = {
-		first_valid = {
-			triggered_desc = {
-				desc = je_turkfm_senusiyya_main_status_0
-				trigger = {
-					has_variable = turkfm_senussi_location_var
-					var:turkfm_senussi_location_var = 0
-				}
-			}
-			triggered_desc = {
-				desc = je_turkfm_senusiyya_main_status_1
-				trigger = {
-					has_variable = turkfm_senussi_location_var
-					var:turkfm_senussi_location_var = 1
-				}
-			}
-			triggered_desc = {
-				desc = je_turkfm_senusiyya_main_status_2
-				trigger = {
-					has_variable = turkfm_senussi_location_var
-					var:turkfm_senussi_location_var = 2
-				}
-			}
-			triggered_desc = {
-				desc = je_turkfm_senusiyya_main_status_3
-				trigger = {
-					has_variable = turkfm_senussi_location_var
-					var:turkfm_senussi_location_var = 3
-				}
-			}
-			triggered_desc = {
-				desc = je_turkfm_senusiyya_main_status_4
-				trigger = {
-					has_variable = turkfm_senussi_location_var
-					var:turkfm_senussi_location_var = 4
-				}
+		triggered_desc = {
+			desc = je_turkfm_senusiyya_main_status
+			trigger = {
+				has_variable = turkfm_senussi_location_var
 			}
 		}
 	}
@@ -294,18 +223,32 @@ je_turkfm_senusiyya_main = {
 }
 
 je_turkfm_senusiyya_sub = {
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
 	group = je_group_turkfm_libya
-
 	should_be_pinned_by_default = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_variable = turkfm_senussi_has_landed
+			}
+			post_notification = notification_turkfm_senussi_arrival
+		}
+		else = {
+			trigger_event = {
+				id = turkfm_libya.111 # Senusiyya Arrives in Country
+			}
+			set_variable = turkfm_senussi_has_landed
+		}
+		turkfm_senussi_weekly_effect = yes
+		turkfm_update_senussi_effect = yes
+	}
+
+	scripted_progress_bar = turkfm_senussi_progressbar
 
 	scripted_button = turkfm_embrace_senussi_button
 	scripted_button = turkfm_sweep_desert_button
 	scripted_button = turkfm_supress_senusiyya_button
-
-	immediate = {
-		turkfm_check_senussi_effect = yes
-		set_variable = turkfm_senussi_has_landed
-	}
 
 	complete = {
 		custom_tooltip = {
@@ -325,7 +268,7 @@ je_turkfm_senusiyya_sub = {
 					has_variable = turkfm_embraced_senussi
 				}
 				trigger_event = {
-					id = turkfm_libya.007 # House Senussi of Country
+					id = turkfm_libya.109 # House Senussi of Country
 				}
 			}
 		}
@@ -336,7 +279,7 @@ je_turkfm_senusiyya_sub = {
 					has_variable = turkfm_swept_senussi
 				}
 				trigger_event = {
-					id = turkfm_libya.006 # The Senusiyya Extinguished
+					id = turkfm_libya.108 # The Senusiyya Extinguished
 				}
 			}
 		}
@@ -357,15 +300,15 @@ je_turkfm_senusiyya_sub = {
 	on_weekly_pulse = {
 		effect = {
 			turkfm_senussi_weekly_effect = yes
-			turkfm_check_senussi_effect = yes
+			turkfm_update_senussi_effect = yes
 		}
 	}
 
 	on_monthly_pulse = {
 		events = {
-			turkfm_libya.015 # The State-within-a-State
-			turkfm_libya.018 # Senusiyya Takes Root in State
-			turkfm_libya.019 # Senusiyya Expunged from State
+			turkfm_libya.104 # The State-within-a-State
+			turkfm_libya.112 # Senusiyya Takes Root in State
+			turkfm_libya.113 # Senusiyya Expunged from State
 		}
 		effect = {
 			change_variable = {
@@ -380,15 +323,14 @@ je_turkfm_senusiyya_sub = {
 		}
 	}
 
-	current_value = {
-		value = var:turkfm_senussi_var
+	status_desc = {
+		triggered_desc = {
+			desc = je_turkfm_senusiyya_main_status
+			trigger = {
+				has_variable = turkfm_senussi_location_var
+			}
+		}
 	}
-
-	goal_add_value = {
-		value = 100
-	}
-
-	progressbar = yes
 
 	weight = 1000
 

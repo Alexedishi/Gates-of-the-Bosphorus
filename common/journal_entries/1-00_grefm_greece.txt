@@ -18,6 +18,9 @@ je_grefm_bavarocracy_main = {
 		modifier_grefm_westernized_thought
 	}
 
+	scripted_progress_bar = grefm_bavarocracy_main_progressbar
+	scripted_progress_bar = grefm_bavarocracy_instability_progressbar
+
 	scripted_button = grefm_dismiss_auxilliaries_button
 	scripted_button = grefm_release_nikitaras_button
 	scripted_button = grefm_authorize_palace_button
@@ -34,7 +37,7 @@ je_grefm_bavarocracy_main = {
 			has_law = law_type:law_autocracy
 		}
 		custom_tooltip = {
-			text = je_grefm_bavarocracy_main_complete_tt
+			text = je_grefm_bavarocracy_main_complete
 			hidden_trigger = {
 				scope:journal_entry = {
 					is_goal_complete = yes
@@ -62,7 +65,7 @@ je_grefm_bavarocracy_main = {
 
 	fail = { # Without any interaction, this will fire in the 1860s. You have hella time... irl, Otto got to shit the bed for a while anyways
 		custom_tooltip = {
-			text = je_grefm_bavarocracy_main_fail_tt1
+			text = je_grefm_bavarocracy_main_fail_1
 			hidden_trigger = {
 				var:grefm_bavarocracy_var <= 0
 			}
@@ -71,7 +74,7 @@ je_grefm_bavarocracy_main = {
 
 	on_fail = {
 		custom_tooltip = {
-			text = je_grefm_bavarocracy_main_fail_tt2
+			text = je_grefm_bavarocracy_main_fail_2
 			hidden_effect = {
 				if = {
 					limit = {
@@ -129,34 +132,7 @@ je_grefm_bavarocracy_main = {
 			grefm_greece.020 # Bavarianism in Greece
 		}
 		effect = {
-			set_variable = {
-				name = grefm_bavarocracy_progress_var
-				value = grefm_bavarocracy_progress_value
-			}
-			if = {
-				limit = {
-					OR = {
-						NOR = {
-							has_variable = grefm_1843_revolution_happened
-						}
-						has_variable = grefm_tyranny_var
-					}
-				}
-				set_variable = {
-					name = grefm_bavarocracy_instability_progress_var
-					value = grefm_bavarocracy_instability_progress_value
-				}
-			}
-			else = {
-				set_variable = {
-					name = grefm_bavarocracy_instability_progress_var
-					value = 0
-				}
-				set_variable = {
-					name = grefm_bavarocracy_instability_var
-					value = 0
-				}
-			}
+			grefm_calculate_bavarocracy_variables_effect = yes
 		}
 	}
 
@@ -173,6 +149,16 @@ je_grefm_bavarocracy_main = {
 				name = grefm_bavarocracy_instability_var
 				add = var:grefm_bavarocracy_instability_progress_var
 			}
+			clamp_variable = {
+				name = grefm_bavarocracy_var
+				max = 2000
+				min = 0
+			}
+			clamp_variable = {
+				name = grefm_bavarocracy_instability_var
+				max = 100
+				min = 0
+			}
 			if = {
 				limit = {
 					has_variable = grefm_tyranny_var
@@ -185,16 +171,6 @@ je_grefm_bavarocracy_main = {
 			}
 		}
 	}
-
-	current_value = {
-		value = var:grefm_bavarocracy_var
-	}
-
-	goal_add_value = {
-		value = 2000
-	}
-
-	progressbar = yes
 
 	status_desc = {
 		first_valid = {
@@ -260,7 +236,7 @@ je_grefm_greek_king = {
 
 	complete = {
 		custom_tooltip = {
-			text = je_grefm_greek_king_complete_tt
+			text = je_grefm_greek_king_complete
 			hidden_trigger = {
 				OR = {
 					has_variable = grefm_elected_greek_king
@@ -312,7 +288,7 @@ je_grefm_the_dedilomeni_principle = {
 
 	complete = {
 		custom_tooltip = {
-			text = je_grefm_the_dedilomeni_principle_tt
+			text = je_grefm_the_dedilomeni_principle_complete
 			hidden_trigger = {
 				scope:journal_entry = {
 					is_goal_complete = yes

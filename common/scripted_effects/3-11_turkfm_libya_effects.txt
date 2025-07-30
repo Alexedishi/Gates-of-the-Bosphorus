@@ -1,106 +1,55 @@
-﻿turkfm_initialize_senussi_effect = {
+﻿turkfm_initialize_senussi_variables_effect = {
 	set_variable = {
 		name = turkfm_senussi_var
-		value = 0
+		value = 50
 	}
 	set_variable = {
 		name = turkfm_senussi_progress_var
 		value = 0
 	}
 	set_variable = {
-		name = turkfm_bedouin_radicals_var
-		value = 0
-	}
-	set_global_variable = {
-		name = turkfm_senussi_counter_var
+		name = turkfm_senussi_support_var
 		value = 0
 	}
 	set_variable = {
-		name = turkfm_desert_control_var
+		name = turkfm_senussi_opposition_var
 		value = 0
 	}
 	set_variable = {
-		name = turkfm_senussi_control_var
+		name = turkfm_senussi_desert_centralized_var
 		value = 0
 	}
 	set_variable = {
-		name = turkfm_senussi_bedouin_var
+		name = turkfm_senussi_desert_decentralized_var
 		value = 0
 	}
-}
-
-turkfm_senussi_arrival_effect = {
-	turkfm_senussi_weekly_effect = yes
-	turkfm_check_senussi_effect = yes
-	random_scope_state = {
-		limit = {
-			gbbf_senussi_geography_trigger = yes
-		}
-		add_modifier = {
-			name = modifier_turkfm_senussi_stronghold
-		}
-		save_scope_as = turkfm_senussi_state_scope
-	}
-	if = {
-		limit = {
-			has_variable = turkfm_senussi_has_landed
-		}
-		add_journal_entry = {
-			type = je_turkfm_senusiyya_sub
-		}
-		post_notification = notification_turkfm_senussi_arrival
-	}
-	else = {
-		add_journal_entry = {
-			type = je_turkfm_senusiyya_sub
-		}
-		trigger_event = {
-			id = turkfm_libya.011 # The Senussi Order
-		}
+	set_variable = {
+		name = turkfm_bedouin_radical_fraction_var
+		value = 0
 	}
 }
 
 turkfm_senussi_weekly_effect = {
 	## Step 1, Check for Libyan Desert & Bedouin Involvment
-	if = {
-		limit = {
-			has_state_in_state_region = STATE_LIBYAN_DESERT
-		}
-		set_variable = {
-			name = turkfm_desert_control_var
-			value = turkfm_desert_control_value
-		}
+	set_variable = {
+		name = turkfm_senussi_support_var
+		value = turkfm_senussi_support_value
 	}
-	else = {
-		remove_variable = turkfm_desert_control_var
+	set_variable = {
+		name = turkfm_senussi_opposition_var
+		value = turkfm_senussi_opposition_value
 	}
-	if = {
-		limit = {
-			c:LIB_KUF ?= {
-				has_state_in_state_region = STATE_LIBYAN_DESERT
-			}
-		}
-		set_variable = {
-			name = turkfm_senussi_control_var
-			value = turkfm_senussi_control_value
-		}
+	set_variable = {
+		name = turkfm_senussi_desert_centralized_var
+		value = turkfm_senussi_desert_centralized_value
 	}
-	else = {
-		remove_variable = turkfm_senussi_control_var
+	set_variable = {
+		name = turkfm_senussi_desert_decentralized_var
+		value = turkfm_senussi_desert_decentralized_value
 	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = bedouin
-			}
-		}
-		set_variable = {
-			name = turkfm_bedouin_radicals_var
-			value = turkfm_bedouin_radicals_value
-		}
-	}
-	else = {
-		remove_variable = turkfm_bedouin_radicals_var
+	set_variable = {
+		name = turkfm_bedouin_radical_fraction_var
+		value = turkfm_bedouin_radical_fraction_value
 	}
 
 	## Step 2, Set Progress Variable
@@ -113,11 +62,37 @@ turkfm_senussi_weekly_effect = {
 	remove_modifier = modifier_turkfm_senusiyya_movement
 	add_modifier = {
 		name = modifier_turkfm_senusiyya_movement
-		multiplier = turkfm_senussi_modifier_value
+		multiplier = turkfm_senussi_multiplier_value
+	}
+
+	##Step 4, Update the Progress Bar
+	if = {
+		limit = {
+			has_journal_entry = je_turkfm_senusiyya_main
+		}
+		je:je_turkfm_senusiyya_main = {
+			set_bar_progress = {
+				name = turkfm_senussi_progressbar
+				value = var:turkfm_senussi_var
+			}
+		}
+
+	}
+	else_if = {
+		limit = {
+			has_journal_entry = je_turkfm_senusiyya_sub
+		}
+		je:je_turkfm_senusiyya_sub = {
+			set_bar_progress = {
+				name = turkfm_senussi_progressbar
+				value = var:turkfm_senussi_var
+			}
+		}
+
 	}
 }
 
-turkfm_check_senussi_effect = {
+turkfm_update_senussi_effect = {
 	## Step 1, Make Sure Senussi Exists and Recapture/Regenerate as appropriate
 	if = {
 		limit = {
@@ -197,7 +172,7 @@ turkfm_check_senussi_effect = {
 				}
 			}
 			trigger_event = {
-				id = turkfm_libya.012 # The Grand Sanusi
+				id = turkfm_libya.101 # The Grand Sanusi
 			}
 		}
 		else = {
@@ -250,110 +225,112 @@ turkfm_check_senussi_effect = {
 			}
 		}
 	}
-}
 
-turkfm_find_senussi_effect = {
+	## Step 3, Figure out where Senussi should be located
 	if = {
-		limit = {
-			NOT = {
-				any_character_in_void = {
-					turkfm_is_senussi_trigger = yes
-				}
-			}
-		}
-		if = {
-			limit = {
-				var:turkfm_senussi_location_var != 0
-			}
-			post_notification = notification_turkfm_senussi_ghosted
-		}
-		set_variable = {
-			name = turkfm_senussi_location_var
-			value = 0 # Location Unknown
-		}
-	}
-	else_if = {
 		limit = {
 			var:turkfm_senussi_var >= 99
 		}
 		if = {
 			limit = {
-				var:turkfm_senussi_location_var != 4
+				var:turkfm_senussi_location_var != flag:turkfm_senussi_court
 			}
 			post_notification = notification_turkfm_senussi_entrenched
-			set_variable = {
-				name = turkfm_senussi_var
-				value = 100
-			}
 		}
 		set_variable = {
 			name = turkfm_senussi_location_var
-			value = 4 # Entreched in Court
+			value = flag:turkfm_senussi_court
 		}
 	}
 	else_if = {
 		limit = {
-			var:turkfm_senussi_var > 75
+			var:turkfm_senussi_var >= 75
 		}
 		if = {
 			limit = {
-				var:turkfm_senussi_location_var < 3
+				OR = {
+					var:turkfm_senussi_location_var = flag:turkfm_senussi_ghosted
+					var:turkfm_senussi_location_var = flag:turkfm_senussi_desert
+					var:turkfm_senussi_location_var = flag:turkfm_senussi_villages
+				}
 			}
 			post_notification = notification_turkfm_senussi_urbanized_up
 		}
 		else_if = {
 			limit = {
-				var:turkfm_senussi_location_var > 3
+				var:turkfm_senussi_location_var = flag:turkfm_senussi_court
 			}
 			post_notification = notification_turkfm_senussi_urbanized_down
 		}
 		set_variable = {
 			name = turkfm_senussi_location_var
-			value = 3 # In Urban Areas
+			value = flag:turkfm_senussi_urban
 		}
 	}
 	else_if = {
 		limit = {
-			var:turkfm_senussi_var < 70
-			var:turkfm_senussi_var > 50
+			var:turkfm_senussi_var < 75
+			var:turkfm_senussi_var >= 50
 		}
 		if = {
 			limit = {
-				var:turkfm_senussi_location_var < 2
-			}
-			post_notification = notification_turkfm_senussi_villages_up
-		}
-		else_if = {
-			limit = {
-				var:turkfm_senussi_location_var > 2
+				OR = {
+					var:turkfm_senussi_location_var = flag:turkfm_senussi_court
+					var:turkfm_senussi_location_var = flag:turkfm_senussi_urban
+				}
 			}
 			post_notification = notification_turkfm_senussi_villages_down
 		}
+		if = {
+			limit = {
+				OR = {
+					var:turkfm_senussi_location_var = flag:turkfm_senussi_ghosted
+					var:turkfm_senussi_location_var = flag:turkfm_senussi_desert
+				}
+
+			}
+			post_notification = notification_turkfm_senussi_villages_up
+		}
 		set_variable = {
 			name = turkfm_senussi_location_var
-			value = 2 # Out in the Open
+			value = flag:turkfm_senussi_villages
 		}
 	}
 	else_if = {
 		limit = {
-			var:turkfm_senussi_var < 45
-			has_variable = turkfm_intimidated_sensussi
+			var:turkfm_senussi_var < 50
 		}
 		if = {
 			limit = {
-				var:turkfm_senussi_location_var < 1
+				var:turkfm_senussi_location_var = flag:turkfm_senussi_ghosted
 			}
 			post_notification = notification_turkfm_senussi_desert_up
 		}
 		else_if = {
 			limit = {
-				var:turkfm_senussi_location_var > 1
+				OR = {
+					var:turkfm_senussi_location_var = flag:turkfm_senussi_court
+					var:turkfm_senussi_location_var = flag:turkfm_senussi_urban
+					var:turkfm_senussi_location_var = flag:turkfm_senussi_villages
+				}
 			}
 			post_notification = notification_turkfm_senussi_desert_down
 		}
 		set_variable = {
 			name = turkfm_senussi_location_var
-			value = 1 # Hiding in the Desert
+			value = flag:turkfm_senussi_desert
+		}
+	}
+	else = {
+		if = {
+			limit = {
+				var:turkfm_senussi_location_var != flag:turkfm_senussi_ghosted
+			}
+			post_notification = notification_turkfm_senussi_ghosted
+		}
+		set_variable = {
+			name = turkfm_senussi_location_var
+			value = flag:turkfm_senussi_ghosted
 		}
 	}
 }
@@ -361,15 +338,13 @@ turkfm_find_senussi_effect = {
 turkfm_cleanup_senussi_effect = {
 	remove_variable = turkfm_senussi_var
 	remove_variable = turkfm_senussi_progress_var
-	remove_variable = turkfm_bedouin_radicals_var
+	remove_variable = turkfm_senussi_support_var
+	remove_variable = turkfm_senussi_opposition_var
 	remove_variable = turkfm_senussi_character_var
-	remove_variable = turkfm_desert_control_var
-	remove_variable = turkfm_senussi_control_var
+	remove_variable = turkfm_senussi_location_var
+	remove_variable = turkfm_senussi_desert_centralized_var
+	remove_variable = turkfm_senussi_desert_decentralized_var
+	remove_variable = turkfm_bedouin_radical_fraction_var
 	remove_variable = turkfm_senussi_outcome_var
-	remove_variable = turkfm_senussi_bedouin_var
-	remove_variable = turkfm_intimidated_sensussi
-	set_variable = {
-		name = turkfm_senussi_spanked
-		years = 5
-	}
+	remove_global_variable = turkfm_intimidated_sensussi
 }

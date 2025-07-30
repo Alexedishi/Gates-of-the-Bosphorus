@@ -1,43 +1,111 @@
 ﻿## Bavarocracy Values ##
 grefm_bavarocracy_progress_value = {
 	value = 0
-	
-	## SOURCES ##
+	add = {
+		value = var:grefm_bavarocracy_support_var
+		desc = grefm_value_from_bavarocracy_support
+	}
+	subtract = {
+		value = var:grefm_bavarocracy_opposition_var
+		desc = grefm_value_from_bavarocracy_opposition
+	}
+}
+
+grefm_bavarocracy_support_value = {
+	value = 0
+	# Absolute Royalists will support the King if Absolutism is present
 	if = {
 		limit = {
 			OR = {
-				has_law = law_type:law_wealth_voting
-				has_law = law_type:law_census_voting
-				has_law = law_type:law_universal_suffrage
+				has_law = law_type:law_autocracy
+				has_law = law_type:law_oligarchy
+			}
+		}
+		add = {
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_royalist_absolutist
+					}
+					add = political_movement_support
+				}
+				round_to = 0.01
+			}
+			desc = grefm_value_from_royalist_absolutist_movement_support
+		}
+	}
+	# Constitutional Royalists will always support the King
+	add = {
+		value = {
+			every_political_movement = {
+				limit = {
+					is_political_movement_type = movement_royalist_constitutional
+				}
+				add = political_movement_support
+			}
+			round_to = 0.01
+		}
+		desc = grefm_value_from_royalist_constitutional_movement_support
+	}
+	# The Liberal Movement will support if the King if there is voting franchise
+	if = {
+		limit = {
+			country_has_voting_franchise = yes
+		}
+		add = {
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_liberal
+					}
+					add = political_movement_support
+				}
+				if = {
+					limit = {
+						OR = {
+							has_law = law_type:law_census_voting
+							has_law = law_type:law_universal_suffrage
+						}
+					}
+					multiply = 2
+				}
+				round_to = 0.01
+			}
+			desc = grefm_value_from_liberal_movement_support
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_journal_entry = je_balkfm_land_reform
 			}
 		}
 		add = {
 			value = 0.5
-			desc = grefm_value_from_voting
+			desc = grefm_value_from_land_reform_completed
 		}
 	}
-	add = {
-		value = {
-			if = {
-				limit = {
-					has_variable = balkfm_land_reform_complete
-				}
-				add = 0.5
-			}
-			if = {
-				limit = {
-					has_variable = balkfm_brigandage_complete
-				}
-				add = 0.5
-			}
-			if = {
-				limit = {
-					has_variable = balkfm_civic_reform_complete
-				}
-				add = 0.5
+	if = {
+		limit = {
+			NOT = {
+				has_journal_entry = je_balkfm_brigandage
 			}
 		}
-		desc = grefm_value_from_completed_legacies
+		add = {
+			value = 0.5
+			desc = grefm_value_from_brigandage_completed
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_journal_entry = je_balkfm_civic_reform
+			}
+		}
+		add = {
+			value = 0.5
+			desc = grefm_value_from_civic_reform_compeleted
+		}
 	}
 	if = {
 		limit = {
@@ -56,52 +124,109 @@ grefm_bavarocracy_progress_value = {
 			}
 		}
 		add = {
-			value = 1
+			value = {
+				add = government_legitimacy
+				divide = 100
+				round_to = 0.01
+			}
 			desc = grefm_value_from_royal_palace
 		}
 	}
-	
-	## PENALTIES ##
+}
+
+grefm_bavarocracy_opposition_value = {
+	value = 0
+	# Absolute Royalists will oppose the King if voting is enacted
+	# The Liberal Movement will support if the King if there is voting franchise
 	if = {
 		limit = {
-			NOR = {
-				has_variable = grefm_bavarocracy_secured
-				has_law = law_type:law_wealth_voting
-				has_law = law_type:law_census_voting
-				has_law = law_type:law_universal_suffrage
-			}
+			country_has_voting_franchise = yes
 		}
-		subtract = {
-			value = 1
-			desc = grefm_value_from_no_voting
+		add = {
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_royalist_absolutist
+					}
+					add = political_movement_support
+				}
+				if = {
+					limit = {
+						OR = {
+							has_law = law_type:law_census_voting
+							has_law = law_type:law_universal_suffrage
+						}
+					}
+					multiply = 2
+				}
+				round_to = 0.01
+			}
+			desc = grefm_value_from_liberal_movement_support
+		}
+	}
+	# The Liberal Movement will oppose the King if there is no voting franchise
+	if = {
+		limit = {
+			country_has_voting_franchise = no
+		}
+		add = {
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_liberal
+					}
+					add = political_movement_support
+				}
+				if = {
+					limit = {
+						has_law = law_type:law_autocracy
+					}
+					multiply = 2
+				}
+				round_to = 0.01
+			}
+			desc = grefm_value_from_liberal_movement_support
 		}
 	}
 	if = {
 		limit = {
 			has_journal_entry = je_balkfm_land_reform
+
 		}
-		subtract = {
-			value = 1
-			desc = grefm_value_from_land_reform
+		add = {
+			value = 0.5
+			desc = grefm_value_from_land_reform_completed_NOT
 		}
 	}
 	if = {
 		limit = {
 			has_journal_entry = je_balkfm_brigandage
 		}
-		subtract = {
-			value = 1
-			desc = grefm_value_from_brigandage_completed
+		add = {
+			value = 0.5
+			desc = grefm_value_from_brigandage_completed_NOT
 		}
 	}
 	if = {
 		limit = {
 			has_journal_entry = je_balkfm_civic_reform
 		}
-		subtract = {
-			value = 1
-			desc = grefm_value_from_civic_tradition
+		add = {
+			value = 0.5
+			desc = grefm_value_from_civic_reform_compeleted_NOT
 		}
+	}
+	add = {
+		value = {
+			every_scope_state = {
+				limit = {
+					has_modifier = modifier_balkfm_brigandage
+				}
+				add = radical_fraction
+			}
+			round_to = 0.01
+		}
+		desc = grefm_value_from_raided_state_radicals
 	}
 	if = {
 		limit = {
@@ -128,40 +253,13 @@ grefm_bavarocracy_progress_value = {
 			desc = grefm_value_from_lacking_heir
 		}
 	}
-	
+
 	round_to = 0.01
+
 }
 
 grefm_bavarocracy_instability_progress_value = {
 	value = 0
-	if = {
-		limit = {
-			OR = {
-				has_law = law_type:law_autocracy
-				has_law = law_type:law_oligarchy
-			}
-		}
-		add = {
-			value = {
-				every_interest_group = {
-					limit = {
-						OR = {
-							law_stance = {
-								law = law_type:law_autocracy
-								value < neutral
-							}
-							law_stance = {
-								law = law_type:law_oligarchy
-								value < neutral
-							}
-						}
-					}
-					add = ig_clout
-				}
-			}
-			desc = grefm_value_from_no_voting
-		}
-	}
 	if = {
 		limit = {
 			OR = {
@@ -183,11 +281,65 @@ grefm_bavarocracy_instability_progress_value = {
 								value < neutral
 							}
 						}
+
 					}
-					add = political_movement_radicalism
+					add = grefm_movement_impact_value
 				}
 			}
-			desc = grefm_value_from_liberal_movements
+			desc = grefm_value_from_voting_movements_impact
+		}
+	}
+	else_if = { 
+		limit = {
+			country_has_voting_franchise = yes
+		}
+		add = {
+			value = {
+				every_political_movement = {
+					limit = {
+						OR = {
+							law_stance = {
+								law = law_type:law_autocracy
+								value > neutral
+							}
+							law_stance = {
+								law = law_type:law_oligarchy
+								value > neutral
+							}
+						}
+					}
+				}
+				add = grefm_movement_impact_value
+			}
+			desc = grefm_value_from_absolutist_movements_impact
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_law = law_type:law_serfdom
+				has_law = law_type:law_tenant_farmers
+			}
+		}
+		add = {
+			value = {
+				every_political_movement = {
+					limit = {
+						OR = {
+							law_stance = {
+								law = law_type:law_serfdom
+								value < neutral
+							}
+							law_stance = {
+								law = law_type:law_tenant_farmers
+								value < neutral
+							}
+						}
+					}
+					add = grefm_movement_impact_value
+				}
+			}
+			desc = grefm_value_from_land_reform_movements_impact
 		}
 	}
 	subtract = {
@@ -197,6 +349,14 @@ grefm_bavarocracy_instability_progress_value = {
 		}
 		desc = grefm_value_from_ruler_popularity
 	}
+	round_to = 0.01
+}
+
+grefm_movement_impact_value = {
+	value = 0
+	add = political_movement_support
+	multiply = political_movement_radicalism
+	multiply = 100
 	round_to = 0.01
 }
 

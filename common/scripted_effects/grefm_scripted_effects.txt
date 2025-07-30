@@ -79,6 +79,14 @@ grefm_initialize_bavarocracy_variables_effect = {
 		value = 0
 	}
 	set_variable = {
+		name = grefm_bavarocracy_support_var
+		value = 0
+	}
+	set_variable = {
+		name = grefm_bavarocracy_opposition_var
+		value = 0
+	}
+	set_variable = {
 		name = grefm_bavarocracy_progress_var
 		value = 0
 	}
@@ -92,6 +100,50 @@ grefm_initialize_bavarocracy_variables_effect = {
 	}
 }
 
+grefm_calculate_bavarocracy_variables_effect = {
+	set_variable = {
+		name = grefm_bavarocracy_support_var
+		value = grefm_bavarocracy_support_value
+	}
+	set_variable = {
+		name = grefm_bavarocracy_opposition_var
+		value = grefm_bavarocracy_opposition_value
+	}
+	set_variable = {
+		name = grefm_bavarocracy_progress_var
+		value = grefm_bavarocracy_progress_value
+	}
+	if = {
+		limit = {
+			grefm_can_accrue_instability_trigger = yes
+		}
+		set_variable = {
+			name = grefm_bavarocracy_instability_progress_var
+			value = grefm_bavarocracy_instability_progress_value
+		}
+	}
+	else = {
+		set_variable = {
+			name = grefm_bavarocracy_instability_progress_var
+			value = 0
+		}
+		set_variable = {
+			name = grefm_bavarocracy_instability_var
+			value = 0
+		}
+	}
+	je:je_grefm_bavarocracy_main = {
+		set_bar_progress = {
+			name = grefm_bavarocracy_main_progressbar
+			value = var:grefm_bavarocracy_var
+		}
+		set_bar_progress = {
+			name = grefm_bavarocracy_instability_progressbar
+			value = var:grefm_bavarocracy_instability_var
+		}
+	}
+}
+
 grefm_cleanup_bavarocracy_effect = {
 	hidden_effect = {
 		every_interest_group = {
@@ -102,7 +154,11 @@ grefm_cleanup_bavarocracy_effect = {
 		}
 	}
 	remove_variable = grefm_bavarocracy_var
+	remove_variable = grefm_bavarocracy_support_var
+	remove_variable = grefm_bavarocracy_opposition_var
 	remove_variable = grefm_bavarocracy_progress_var
+	remove_variable = grefm_bavarocracy_instability_var
+	remove_variable = grefm_bavarocracy_instability_progress_var
 	remove_variable = grefm_tyranny_var
 	set_variable = grefm_don_pacifico_var
 }
