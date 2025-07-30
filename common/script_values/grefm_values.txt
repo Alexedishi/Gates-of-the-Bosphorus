@@ -232,6 +232,129 @@ grefm_bavarocracy_opposition_value = {
 		limit = {
 			has_modifier = modifier_grefm_bavarian_auxiliaries
 		}
+		add = {
+			value = 1
+			desc = grefm_value_from_bavarian_auxiliaries
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				NOT = {
+					exists = heir
+				}
+				heir ?= {
+					has_template = template_grefm_armansperg_josef
+				}
+			}
+		}
+		add = {
+			value = 1
+			desc = grefm_value_from_lacking_heir
+		}
+	}
+
+	round_to = 0.01
+
+}
+
+grefm_bavarocracy_opposition_display_value = {
+	# This value is meant to show the factors as negatives when displayed
+	value = 0
+	if = {
+		limit = {
+			country_has_voting_franchise = yes
+		}
+		subtract = {
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_royalist_absolutist
+					}
+					add = political_movement_support
+				}
+				if = {
+					limit = {
+						OR = {
+							has_law = law_type:law_census_voting
+							has_law = law_type:law_universal_suffrage
+						}
+					}
+					multiply = 2
+				}
+				round_to = 0.01
+			}
+			desc = grefm_value_from_liberal_movement_support
+		}
+	}
+	# The Liberal Movement will oppose the King if there is no voting franchise
+	if = {
+		limit = {
+			country_has_voting_franchise = no
+		}
+		subtract = {
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_liberal
+					}
+					add = political_movement_support
+				}
+				if = {
+					limit = {
+						has_law = law_type:law_autocracy
+					}
+					multiply = 2
+				}
+				round_to = 0.01
+			}
+			desc = grefm_value_from_liberal_movement_support
+		}
+	}
+	if = {
+		limit = {
+			has_journal_entry = je_balkfm_land_reform
+
+		}
+		subtract = {
+			value = 0.5
+			desc = grefm_value_from_land_reform_completed_NOT
+		}
+	}
+	if = {
+		limit = {
+			has_journal_entry = je_balkfm_brigandage
+		}
+		subtract = {
+			value = 0.5
+			desc = grefm_value_from_brigandage_completed_NOT
+		}
+	}
+	if = {
+		limit = {
+			has_journal_entry = je_balkfm_civic_reform
+		}
+		subtract = {
+			value = 0.5
+			desc = grefm_value_from_civic_reform_compeleted_NOT
+		}
+	}
+	subtract = {
+		value = {
+			every_scope_state = {
+				limit = {
+					has_modifier = modifier_balkfm_brigandage
+				}
+				add = radical_fraction
+			}
+			round_to = 0.01
+		}
+		desc = grefm_value_from_raided_state_radicals
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_grefm_bavarian_auxiliaries
+		}
 		subtract = {
 			value = 1
 			desc = grefm_value_from_bavarian_auxiliaries
