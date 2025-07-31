@@ -530,7 +530,7 @@ turkfm_renounce_headtaking_button = {
 	effect = {
 		c:TUR = {
 			trigger_event = {
-				id = turkfm_expeditions.041 # Negociations on Headtaking (TUR)
+				id = turkfm_expeditions.041 # Negotiations on Head-taking (TUR)
 				days = { 7 14 }
 			}
 		}
@@ -579,7 +579,7 @@ turkfm_negociate_kotor_button = {
 	
 	effect = {
 		trigger_event = {
-			id = turkfm_expeditions.040 # Negociations Over Cattaro
+			id = turkfm_expeditions.040 # Negotiations Over Cattaro
 		}
 		set_variable = turkfm_negociated_kotor
 	}
@@ -777,6 +777,22 @@ turkfm_embrace_senussi_button = {
 	}
 	
 	possible = {
+		trigger_if = {
+			limit = {
+				c:TRI ?= this
+			}
+			NOT = {
+				has_journal_entry = je_turkfm_tri_centralization
+			}
+		}
+		trigger_if = {
+			limit = {
+				c:TUN ?= this
+			}
+			NOT = {
+				has_journal_entry = je_turkfm_tun_modernization
+			}
+		}
 		custom_tooltip = {
 			text = turkfm_embrace_senussi_possible
 			var:turkfm_senussi_var >= 100
@@ -810,11 +826,129 @@ turkfm_sweep_desert_button = {
 	}
 	
 	possible = {
+		trigger_if = {
+			limit = {
+				c:TRI ?= this
+			}
+			NOT = {
+				has_journal_entry = je_turkfm_tri_centralization
+			}
+		}
+		trigger_if = {
+			limit = {
+				c:TUN ?= this
+			}
+			NOT = {
+				has_journal_entry = je_turkfm_tun_modernization
+			}
+		}
 		custom_tooltip = {
 			text = turkfm_sweep_desert_possible
-			var:turkfm_senussi_var < 50
+			var:turkfm_senussi_var <= 0
 		}
-		owns_entire_state_region = STATE_LIBYAN_DESERT
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_LIBYA
+			}
+			custom_tooltip = {
+				text = turkfm_libya_centralized
+				s:STATE_LIBYA = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_LIBYAN_DESERT
+			}
+			custom_tooltip = {
+				text = turkfm_libyan_desert_centralized
+				s:STATE_LIBYAN_DESERT = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_TRIPOLI
+			}
+			custom_tooltip = {
+				text = turkfm_tripoli_centralized
+				s:STATE_TRIPOLI = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_MATRUH
+			}
+			custom_tooltip = {
+				text = turkfm_matruh_centralized
+				s:STATE_MATRUH = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_EGYPTIAN_DESERT
+			}
+			custom_tooltip = {
+				text = turkfm_egyptian_desert_centralized
+				s:STATE_EGYPTIAN_DESERT = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_TUNISIA
+			}
+			custom_tooltip = {
+				text = turkfm_tunisia_centralized
+				s:STATE_TUNISIA = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+				}
+			}
+		}
 		hidden_trigger = {
 			NOT = {
 				has_variable = turkfm_senussi_outcome_var
