@@ -1,0 +1,304 @@
+﻿balkfm_battenburg_support_value = {
+# Generally, it should be hard to get this above 5 while retaining liberal laws
+	value = 0
+	
+	## Sources ##
+	if = {
+		limit ={
+			is_in_same_power_bloc = c:RUS
+		}
+		add = {
+			value = 1
+			desc = balkfm_bul_from_russian_bloc
+		}
+	}
+	if = {
+		limit = {
+			c:RUS = {
+				relations:root > relations_threshold:neutral
+			}
+		}
+		add = {
+			value = 1
+			desc = balkfm_bul_from_good_russian_relations
+		}
+	}
+	if = { 
+		limit = {
+			AND = {
+				ig:ig_landowners = {
+					is_powerful = yes
+					is_in_government = yes
+				}
+			}
+		}
+		add = {
+			value = 1
+			desc = balkfm_bul_from_powerful_landowners_in_gov
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_balkfm_russian_attaches
+		}
+		add = {
+			value = 1
+			desc = balkfm_bul_from_russian_attaches
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_law = law_type:law_protected_speech
+				has_law = law_type:law_right_of_assembly
+			}
+		}
+		add = {
+			value = 1
+			desc = balkfm_bul_from_good_speech_laws
+		}
+	}
+	if = {
+		limit = {
+			has_variable = balkfm_railways_built
+		}
+		add = {
+			value = 1
+			desc = balkfm_bul_from_building_railways
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = eocfm_schism_var
+				has_variable = eocfm_is_autocephalous
+			}
+		}
+		add = {
+			value = 1
+			desc = balkfm_bul_from_autocephaly
+		}
+	}
+	if = {
+		limit = {
+			has_variable = balkfm_brigandage_complete
+		}
+		add = {
+			value = 1
+			desc = balkfm_bul_from_brigandage_completed
+		}
+	}
+	
+	## PENALTIES ##
+	
+	if = {
+		limit = {
+			is_in_power_bloc = yes
+			exists = c:RUS
+			power_bloc = {
+				power_bloc_leader = {
+					c:RUS != this
+				}
+			}
+		}
+		subtract = {
+			value = 1
+			desc = balkfm_bul_from_non_russian_bloc
+		}
+	}
+	if = {
+		limit = {
+			c:RUS = {
+				relations:root < relations_threshold:neutral
+			}
+		}
+		subtract = {
+			value = 1
+			desc = balkfm_bul_from_bad_russian_relations
+		}
+	}
+	if = {
+		limit = {
+			AND = {
+				ig:ig_armed_forces = {
+					is_powerful = yes
+					is_in_government = no
+				}
+			}
+		}
+		subtract = {
+			value = 1
+			desc = balkfm_bul_from_powerful_military_not_in_gov
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_law = law_type:law_censorship
+				has_law = law_type:law_outlawed_dissent
+			}
+		}
+		subtract = {
+			value = 1
+			desc = balkfm_bul_from_bad_speech_laws
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_law = law_type:law_autocracy
+				has_law = law_type:law_oligarchy
+			}
+		}
+		subtract = {
+			value = 1
+			desc = balkfm_bul_from_no_voting
+		}
+	}
+	if = {
+		limit = {
+			AND = {
+				owns_entire_state_region = STATE_BULGARIA
+				country_or_subject_owns_entire_state_region = STATE_NORTHERN_THRACE
+			}
+		}
+		subtract = {
+			value = 1
+			desc = balkfm_bul_from_controlling_rumelia
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_balkfm_railway_buyout
+		}
+		subtract = {
+			value = 1
+			desc = balkfm_bul_from_railways_buyout
+		}
+	}
+	
+	round = 0.01
+	min = 0
+	max = 10
+	
+}
+
+balkfm_stambolovism_value = {
+	value = 0
+	
+	## Sources
+	if = {
+		limit = {
+			exists = heir
+		}
+		add = {
+			value = 1
+			desc = balkfm_bul_from_having_heir
+		}
+	}
+	if = {
+		limit = {
+			ruler = {
+				popularity > 50
+			}
+		}
+		add = {
+			value = 1
+			desc = balkfm_bul_from_ruler_popularity
+		}
+	}
+	if = {
+		limit = {
+			any_scope_character = {
+				has_template = template_balkfm_stambolov_stefan
+			}
+		}
+		add = {
+			value = 1
+			desc = balkfm_bul_from_stambolov
+		}
+	}
+	if = {
+		limit = {
+			has_variable = balkfm_battenburg_letter
+		}
+		add = {
+			value = 1
+			desc = balkfm_bul_from_battenburg_letter
+		}
+	}
+	if = {
+		limit = {
+			has_variable = balkfm_military_modernized
+		}
+		add = {
+			value = 1
+			desc = balkfm_bul_from_military_modernized
+		}
+	}
+	if = {
+		limit = {
+			has_variable = balkfm_executed_panitsa
+		}
+		add = {
+			value = 1
+			desc = balkfm_bul_from_firing_squad
+		}
+	}
+	if = {
+		limit = {
+			has_variable = balkfm_showed_off_regalia
+		}
+		add = {
+			value = 1
+			desc = balkfm_bul_from_boldness
+		}
+	}
+	
+	## Penalities
+	
+	if = {
+		limit = {
+			has_variable = balkfm_exiled_panitsa
+		}
+		subtract = {
+			value = 1
+			desc = balkfm_bul_from_exiled_panitsa
+		}
+	}
+	if = {
+		limit = {
+			has_variable = balkfm_put_away_regalia
+		}
+		subtract = {
+			value = 2
+			desc = balkfm_bul_from_whimpy
+		}
+	}
+	
+	max = 5
+	min = 0
+	
+}
+
+balkfm_intelligentsia_influence_value = {
+	value = 0
+	add = root.prestige
+	multiply = root.ig:ig_intelligentsia.ig_clout
+}
+
+balkfm_intelligentsia_devout_value = {
+	value = 0
+	add = root.prestige
+	multiply = root.ig:ig_devout.ig_clout
+}
+
+balkfm_ottoman_relations_value = {
+	value = 0
+	c:TUR = {
+		add = {
+			value = relations:root	
+		}
+	}
+	multiply = 0.01
+}
