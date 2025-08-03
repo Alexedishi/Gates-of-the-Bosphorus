@@ -18,7 +18,9 @@ namespace = turkfm_kurdistan
 #001-009 - The Tribes of Kurdistan Events
 #	001 - The Tribes of Kurdistan
 #	002 - A Centralized State
-#	009 - ##The Mir-i Miran
+#	003 - The Mir-i Miran
+#	004 - The Eyâlet-i Kurdistan (TUR)
+#	005 - The Eyâlet-i Kurdistan (KUR)
 
 #200-209 - Kurdish Irredentism
 #	200 - The Lands of Kurdistan
@@ -145,6 +147,305 @@ turkfm_kurdistan.003 = { # The Mir-i Miran
 			add_modifier = {
 				name = modifier_turkfm_miri_miran_leader
 				months = 120
+			}
+		}
+	}
+
+}
+
+turkfm_kurdistan.004 = { # The Eyâlet-i Kurdistan (TUR)
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	title = turkfm_kurdistan.004.t
+	desc = turkfm_kurdistan.004.d
+	flavor = turkfm_kurdistan.004.f
+
+	event_image = {
+		video = "ep1_transfer_of_authority"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_kurdistan_eyalet_button
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				has_state_in_state_region = STATE_ERZURUM
+			}
+			random_scope_state = {
+				limit = {
+					state_region = s:STATE_ERZURUM
+				}
+			}
+			save_scope_as = turkfm_kurdistan_creation_scope
+		}
+		else_if = {
+			limit = {
+				has_state_in_state_region = STATE_DIYARBAKIR
+			}
+			random_scope_state = {
+				limit = {
+					state_region = s:STATE_DIYARBAKIR
+				}
+			}
+			save_scope_as = turkfm_kurdistan_creation_scope
+		}
+		else_if = {
+			limit = {
+				has_state_in_state_region = STATE_DEIR_EZ_ZOR
+			}
+			random_scope_state = {
+				limit = {
+					state_region = s:STATE_DEIR_EZ_ZOR
+				}
+			}
+			save_scope_as = turkfm_kurdistan_creation_scope
+		}
+		else_if = {
+			limit = {
+				has_state_in_state_region = STATE_MOSUL
+			}
+			random_scope_state = {
+				limit = {
+					state_region = s:STATE_MOSUL
+				}
+			}
+			save_scope_as = turkfm_kurdistan_creation_scope
+		}
+		else_if = {
+			limit = {
+				has_state_in_state_region = STATE_URMIA
+			}
+			random_scope_state = {
+				limit = {
+					state_region = s:STATE_URMIA
+				}
+			}
+			save_scope_as = turkfm_kurdistan_creation_scope
+		}
+		else_if = {
+			limit = {
+				has_state_in_state_region = STATE_PERSIAN_KURDISTAN
+			}
+			random_scope_state = {
+				limit = {
+					state_region = s:STATE_PERSIAN_KURDISTAN
+				}
+			}
+			save_scope_as = turkfm_kurdistan_creation_scope
+		}
+		create_country = {
+			tag = KUR
+			origin = root
+			state = scope:turkfm_kurdistan_creation_scope
+		}
+		s:STATE_ERZURUM = {
+			every_scope_state = {
+				limit = {
+					owner = {
+						OR = {
+							this = root
+							AND = {
+								top_overlord ?= root
+								is_subject_type = subject_type_puppet
+							}
+						}
+					}
+				}
+				set_state_owner = c:KUR
+			}
+		}
+		s:STATE_DIYARBAKIR = {
+			every_scope_state = {
+				limit = {
+					owner = {
+						OR = {
+							this = root
+							AND = {
+								top_overlord ?= root
+								is_subject_type = subject_type_puppet
+							}
+						}
+					}
+				}
+				set_state_owner = c:KUR
+			}
+		}
+		s:STATE_DEIR_EZ_ZOR = {
+			every_scope_state = {
+				limit = {
+					owner = {
+						OR = {
+							this = root
+							AND = {
+								top_overlord ?= root
+								is_subject_type = subject_type_puppet
+							}
+						}
+					}
+				}
+				set_state_owner = c:KUR
+			}
+		}
+		s:STATE_MOSUL = {
+			every_scope_state = {
+				limit = {
+					owner = {
+						OR = {
+							this = root
+							AND = {
+								top_overlord ?= root
+								is_subject_type = subject_type_puppet
+							}
+						}
+					}
+				}
+				set_state_owner = c:KUR
+			}
+		}
+		s:STATE_URMIA = {
+			every_scope_state = {
+				limit = {
+					owner = {
+						OR = {
+							this = root
+							AND = {
+								top_overlord ?= root
+								is_subject_type = subject_type_puppet
+							}
+						}
+					}
+				}
+				set_state_owner = c:KUR
+			}
+		}
+		s:STATE_PERSIAN_KURDISTAN = {
+			every_scope_state = {
+				limit = {
+					owner = {
+						OR = {
+							this = root
+							AND = {
+								top_overlord ?= root
+								is_subject_type = subject_type_puppet
+							}
+						}
+					}
+				}
+				set_state_owner = c:KUR
+			}
+		}
+		create_diplomatic_pact = {
+			country = c:KUR
+			type = puppet
+		}
+		create_bidirectional_truce = {
+			country = c:KUR
+			months = 60
+		}
+		set_relations = {
+			country = c:KUR
+			value = 50
+		}
+		c:KUR = {
+			save_scope_as = turkfm_kurdistan_scope
+			trigger_event = {
+				id = turkfm_kurdistan.005 # The Eyâlet-i Kurdistan (KUR)
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_kurdistan.004.a
+		default_option = yes
+		add_loyalists = {
+			culture = cu:kurdish
+			value = very_large_radicals
+		}
+	}
+
+}
+
+turkfm_kurdistan.005 = { # The Eyâlet-i Kurdistan (KUR)
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_kurdish.dds"
+
+	title = turkfm_kurdistan.005.t
+	desc = turkfm_kurdistan.005.d
+	flavor = turkfm_kurdistan.005.f
+
+	event_image = {
+		video = "ep1_transfer_of_authority"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_kurdistan.004
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+	}
+
+	option = {
+		name = turkfm_kurdistan.005.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_autonomy_granted
+			months = 120
+		}
+		if = {
+			limit = {
+				OR = {
+					army_size < 20
+					has_law = law_type:law_hereditary_bureaucrats
+					has_law = law_type:law_peasant_levies
+					has_law = law_type:law_no_police
+					NOT = {
+						any_scope_building = {
+							is_building_type = building_university
+						}
+					}
+					NOT = {
+						any_scope_building = {
+							is_building_type = building_government_administration
+						}
+					}
+					bureaucracy < 0
+					ig:ig_intelligentsia = {
+						is_marginal = yes
+					}
+
+				}
+			}
+			add_journal_entry = {
+				type = je_turkfm_kur_tribes
+			}
+		}
+		else = {
+			add_modifier = {
+				name = modifier_turkfm_centralized_authority
+				days = long_modifier_time
+			}
+			add_loyalists = {
+				value = medium_radicals
 			}
 		}
 	}
