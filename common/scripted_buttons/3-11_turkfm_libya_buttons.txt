@@ -1,0 +1,286 @@
+﻿# Senussi Movement Scripted Buttons
+turkfm_embrace_senussi_button = {
+	name = "turkfm_embrace_senussi_button"
+	desc = "turkfm_embrace_senussi_button_desc"
+
+	visible = {
+		always = yes
+	}
+
+	possible = {
+		trigger_if = {
+			limit = {
+				c:TRI ?= this
+			}
+			NOT = {
+				has_journal_entry = je_turkfm_tri_centralization
+			}
+		}
+		trigger_if = {
+			limit = {
+				c:TUN ?= this
+			}
+			NOT = {
+				has_journal_entry = je_turkfm_tun_modernization
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_embrace_senussi_possible
+			var:turkfm_senussi_var >= 100
+		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = turkfm_senussi_outcome_var
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = turkfm_embrace_senussi_button_effect
+			set_variable = turkfm_embraced_senussi
+			set_variable = turkfm_senussi_outcome_var
+		}
+	}
+
+	ai_chance = {
+		value = 100
+	}
+}
+
+turkfm_sweep_desert_button = {
+	name = "turkfm_sweep_desert_button"
+	desc = "turkfm_sweep_desert_button_desc"
+
+	visible = {
+		always = yes
+	}
+
+	possible = {
+		trigger_if = {
+			limit = {
+				c:TRI ?= this
+			}
+			NOT = {
+				has_journal_entry = je_turkfm_tri_centralization
+			}
+		}
+		trigger_if = {
+			limit = {
+				c:TUN ?= this
+			}
+			NOT = {
+				has_journal_entry = je_turkfm_tun_modernization
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_sweep_desert_possible
+			var:turkfm_senussi_var <= 0
+		}
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_LIBYA
+			}
+			custom_tooltip = {
+				text = turkfm_libya_centralized
+				s:STATE_LIBYA = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_LIBYAN_DESERT
+			}
+			custom_tooltip = {
+				text = turkfm_libyan_desert_centralized
+				s:STATE_LIBYAN_DESERT = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_TRIPOLI
+			}
+			custom_tooltip = {
+				text = turkfm_tripoli_centralized
+				s:STATE_TRIPOLI = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_MATRUH
+			}
+			custom_tooltip = {
+				text = turkfm_matruh_centralized
+				s:STATE_MATRUH = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_EGYPTIAN_DESERT
+			}
+			custom_tooltip = {
+				text = turkfm_egyptian_desert_centralized
+				s:STATE_EGYPTIAN_DESERT = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_TUNISIA
+			}
+			custom_tooltip = {
+				text = turkfm_tunisia_centralized
+				s:STATE_TUNISIA = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+				}
+			}
+		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = turkfm_senussi_outcome_var
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = turkfm_sweep_desert_button_effect
+			set_variable = turkfm_swept_senussi
+			set_variable = turkfm_senussi_outcome_var
+		}
+	}
+
+	ai_chance = {
+		value = 100
+	}
+}
+
+turkfm_supress_senusiyya_button = {
+	name = "turkfm_supress_senusiyya_button"
+	desc = "turkfm_supress_senusiyya_button_desc"
+
+	visible = {
+		always = yes
+	}
+
+	selected = {
+		has_modifier = modifier_turkfm_desert_raids
+	}
+
+	possible = {
+		has_technology_researched = centralization
+		trigger_if = {
+			limit = {
+				NOT = {
+					has_modifier = modifier_turkfm_desert_raids
+				}
+			}
+			authority >= 200
+		}
+		custom_tooltip = {
+			text = turkfm_supress_senusiyya_possible_1
+			has_global_variable = turkfm_intimidated_sensussi
+		}
+		custom_tooltip = {
+			text = turkfm_supress_senusiyya_possible_2
+			NOT = {
+				has_variable = turkfm_desert_raids_var
+			}
+		}
+	}
+
+	effect = {
+		if = {
+			limit = {
+				has_modifier = modifier_turkfm_desert_raids
+			}
+			remove_modifier = modifier_turkfm_desert_raids
+		}
+		else = {
+			add_modifier = modifier_turkfm_desert_raids
+		}
+		custom_tooltip = {
+			text = turkfm_supress_senusiyya_effect
+			set_variable = {
+				name = turkfm_desert_raids_var
+				years = 2
+			}
+		}
+	}
+
+	ai_chance = {
+		value = 0
+	}
+}
+
+turkfm_armed_delegation_button = {
+	name = "turkfm_armed_delegation_button"
+	desc = "turkfm_armed_delegation_button_desc"
+
+	visible = {
+		NOR = {
+			has_global_variable = turkfm_intimidated_sensussi
+		}
+	}
+
+	possible = {
+		has_technology_researched = centralization
+		army_size >= 5
+	}
+
+	effect = {
+		trigger_event = {
+			id = turkfm_libya.103 # Armed Diplomacy
+		}
+		set_global_variable = turkfm_intimidated_sensussi
+	}
+
+	ai_chance = {
+		value = 10
+	}
+}
