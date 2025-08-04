@@ -1,0 +1,335 @@
+﻿
+#### General Expedition Scripted Buttons
+turkfm_recall_expedition_button = {
+	name = "turkfm_recall_expedition_button"
+	desc = "turkfm_recall_expedition_button_desc"
+	
+	visible = {
+		turkfm_has_any_expedition_trigger = yes
+	}
+	
+	possible = {
+		turkfm_has_any_expedition_trigger = yes
+	}
+	
+	effect = {
+		turkfm_clear_expedition_effect = yes
+		turkfm_cancel_expedition_effect = yes
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+#### Karadag Expedition Scripted Buttons
+turkfm_karadag_expedition_button = {
+	name = "turkfm_karadag_expedition_button"
+	desc = "turkfm_karadag_expedition_button_desc"
+	
+	visible = {
+		turkfm_has_any_expedition_trigger = no
+	}
+	
+	possible = {
+		turkfm_no_expedition_trigger = yes
+		NOR = {
+			has_modifier = modifier_turkfm_deployed_expedition
+			has_modifier = modifier_turkfm_cancelled_expedition
+		}
+	}
+	
+	effect = {
+		trigger_event = {
+			id = turkfm_expeditions.010 # Reclaiming the Hinterlands
+			popup = yes
+		}
+		add_modifier = {
+			name = modifier_turkfm_deployed_expedition
+			multiplier = money_amount_multiplier_medium
+		}
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+turkfm_ransom_captives_button = {
+	name = "turkfm_ransom_captives_button"
+	desc = "turkfm_ransom_captives_button_desc"
+	
+	visible = {
+		c:MON ?= this
+	}
+	
+	selected = {
+		has_variable = turkfm_ransom_var
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = turkfm_has_captive_nobles
+			hidden_trigger = {
+				turkfm_captured_nobles_value > 0
+			}
+		}
+	}
+	
+	effect = {
+		trigger_event = {
+			id = turkfm_expeditions.014 # The Gaols of Centinje
+		}
+		set_variable = turkfm_ransom_var
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+turkfm_renounce_headtaking_button = {
+	name = "turkfm_renounce_headtaking_button"
+	desc = "turkfm_renounce_headtaking_button_desc"
+	
+	visible = {
+		c:MON ?= this
+		has_modifier = modifier_turkfm_practicing_headtaking
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = turkfm_renounce_headtaking_possible
+			NOT = {
+				has_variable = turkfm_negociated_headtaking
+			}
+		}
+	}
+	
+	effect = {
+		c:TUR = {
+			trigger_event = {
+				id = turkfm_expeditions.041 # Negotiations on Head-taking (TUR)
+				days = { 7 14 }
+			}
+		}
+		custom_tooltip = turkfm_renounce_headtaking_effect
+		set_variable = {
+			name = turkfm_negociated_headtaking
+			years = 10
+		}
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+turkfm_negociate_kotor_button = {
+	name = "turkfm_negociate_kotor_button"
+	desc = "turkfm_negociate_kotor_button_desc"
+	
+	visible = {
+		c:MON ?= this
+		NOT = {
+			has_variable = turkfm_negociated_kotor
+		}
+		c:AUS ?= {
+			has_state_in_state_region = STATE_MONTENEGRO
+		}
+	}
+	
+	possible = {
+		OR = {
+			is_subject_of = c:AUS
+			is_in_same_power_bloc = c:AUS
+			any_scope_treaty = {
+				binds = root
+				binds = c:AUS
+				any_scope_article = {
+					has_type = alliance
+				}
+			}
+		}
+		c:AUS = {
+			relations:root >= relations_threshold:amicable
+		}
+	}
+	
+	effect = {
+		trigger_event = {
+			id = turkfm_expeditions.040 # Negotiations Over Cattaro
+		}
+		set_variable = turkfm_negociated_kotor
+	}
+	
+	ai_chance = {
+		value = 100
+	}
+}
+
+#### Albanian Piracy Scripted Buttons
+turkfm_sanction_privateers_button = {
+	name = "turkfm_sanction_privateers_button"
+	desc = "turkfm_sanction_privateers_button_desc"
+	
+	visible = {
+		c:TUR ?= this
+	}
+	
+	selected = {
+		has_modifier = modifier_turkfm_sanctioning_privateers
+	}
+	
+	possible = {
+		NOT = {
+			has_modifier = modifier_turkfm_curtailing_privateers
+		}
+	}
+	
+	effect = {
+		if = {
+			limit = {
+				has_modifier = modifier_turkfm_sanctioning_privateers
+			}
+			remove_modifier = modifier_turkfm_sanctioning_privateers
+		}
+		else = {
+			add_modifier = modifier_turkfm_sanctioning_privateers
+		}
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+turkfm_curtail_privateers_button = {
+	name = "turkfm_curtail_privateers_button"
+	desc = "turkfm_curtail_privateers_button_desc"
+	
+	visible = {
+		c:TUR ?= this
+	}
+	
+	selected = {
+		has_modifier = modifier_turkfm_curtailing_privateers
+	}
+	
+	possible = {
+		NOT = {
+			has_modifier = modifier_turkfm_sanctioning_privateers
+		}
+	}
+	
+	effect = {
+		if = {
+			limit = {
+				has_modifier = modifier_turkfm_curtailing_privateers
+			}
+			remove_modifier = modifier_turkfm_curtailing_privateers
+		}
+		else = {
+			add_modifier = modifier_turkfm_curtailing_privateers
+		}
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+turkfm_hire_retired_pirates_button = {
+	name = "turkfm_hire_retired_pirates_button"
+	desc = "turkfm_hire_retired_pirates_button_desc"
+	
+	visible = {
+		c:TUR ?= this
+	}
+	
+	possible = {
+		NOR = {
+			has_modifier = modifier_turkfm_hired_pirates
+			hidden_trigger = {
+				has_variable = turkfm_selecting_recruits
+			}
+		}
+	}
+	
+	effect = {
+		trigger_event = {
+			id = turkfm_expeditions.105 # Treating with Corsairs
+			popup = yes
+		}
+		set_variable = {
+			name = turkfm_selecting_recruits
+			months = 3
+		}
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+turkfm_suppress_slavers_button = {
+	name = "turkfm_suppress_slavers_button"
+	desc = "turkfm_suppress_slavers_button_desc"
+	
+	visible = {
+		c:TUR ?= this
+		NOT = {
+			has_law = law_type:law_slavery_banned
+		}
+	}
+	
+	selected = {
+		has_modifier = modifier_turkfm_supressing_slavers
+	}
+	
+	possible = {
+		NOT = {
+			has_modifier = modifier_turkfm_supressing_slavers
+		}
+	}
+	
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+#### Adriatic Expedition Scripted Buttons
+turkfm_adriatic_expedition_button = {
+	name = "turkfm_adriatic_expedition_button"
+	desc = "turkfm_adriatic_expedition_button_desc"
+	
+	visible = {
+		turkfm_has_any_expedition_trigger = no
+	}
+	
+	possible = {
+		turkfm_no_expedition_trigger = yes
+		NOR = {
+			has_modifier = modifier_turkfm_deployed_expedition
+			has_modifier = modifier_turkfm_cancelled_expedition
+		}
+	}
+	
+	effect = {
+		trigger_event = {
+			id = turkfm_expeditions.101 # Pacifying the Adriatic
+			popup = yes
+		}
+		add_modifier = {
+			name = modifier_turkfm_deployed_expedition
+			multiplier = money_amount_multiplier_medium
+		}
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}

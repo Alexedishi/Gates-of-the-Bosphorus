@@ -1,1 +1,150 @@
-﻿
+﻿je_turkfm_kur_tribes = {
+	icon = "gfx/interface/icons/event_icons/event_kurdish.dds"
+	group = je_group_turkfm_kurdistan
+	should_be_pinned_by_default = yes
+
+	immediate = {
+	}
+
+	modifiers_while_active = {
+		modifier_turkfm_informal_administration
+	}
+
+	scripted_button = turkfm_claim_miri_miran_button
+
+	complete = {
+		army_size >= 20
+		NOR = {
+			has_law = law_type:law_hereditary_bureaucrats
+			has_law = law_type:law_peasant_levies
+			has_law = law_type:law_no_police
+		}
+		any_scope_building = {
+			is_building_type = building_university
+			occupancy > 0.9
+		}
+		any_scope_building = {
+			is_building_type = building_government_administration
+			NOT = {
+				has_active_production_method = pm_simple_organization
+			}
+			occupancy >= 0.9
+		}
+		bureaucracy >= 0
+		approaching_bureaucracy_shortage = no
+		ig:ig_intelligentsia = {
+			is_marginal = no
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = turkfm_kurdistan.002
+		}
+		remove_modifier = modifier_turkfm_tribal_tradition
+	}
+
+	weight = 2000
+}
+
+je_turkfm_kur_unification = {
+	icon = "gfx/interface/icons/event_icons/event_kurdish.dds"
+	group = je_group_turkfm_kurdistan
+	should_be_pinned_by_default = yes
+
+	is_shown_when_inactive = {
+		country_has_primary_culture = cu:kurdish
+	}
+
+	possible = {
+		has_technology_researched = nationalism
+	}
+
+	immediate = {
+		trigger_event = {
+			id = turkfm_kurdistan.200 # Uniting the Kurdish People
+		}
+	}
+
+	complete = {
+		custom_tooltip = {
+			text = je_turkfm_kur_unification_complete
+			c:KUR ?= this
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = turkfm_kurdistan.201 # The Birth of Kurdistan
+		}
+	}
+
+	fail = {
+		NOT = {
+			any_scope_state = {
+				state_region = {
+					is_homeland = cu:kurdish
+				}
+			}
+		}
+	}
+
+	on_fail = {
+	}
+
+	weight = 1000
+
+}
+
+je_turkfm_kur_heartlands = {
+	icon = "gfx/interface/icons/event_icons/event_kurdish.dds"
+	group = je_group_turkfm_kurdistan
+	should_be_pinned_by_default = yes
+
+	is_shown_when_inactive = {
+		always = no # TODO enable journal when ready
+		country_has_primary_culture = cu:kurdish
+	}
+
+	possible = {
+		has_technology_researched = nationalism
+		custom_tooltip = {
+			text = je_turkfm_kur_heartlands_possible
+			c:KUR ?= this
+		}
+	}
+
+	immediate = {
+		trigger_event = {
+			id = turkfm_kurdistan.202 # The Lands of Kurdistan
+		}
+	}
+
+	complete = {
+		owns_entire_state_region = STATE_MOSUL
+		owns_entire_state_region = STATE_DEIR_EZ_ZOR
+		owns_entire_state_region = STATE_DIYARBAKIR
+		owns_entire_state_region = STATE_ERZURUM
+		owns_entire_state_region = STATE_URMIA
+		owns_entire_state_region = STATE_PERSIAN_KURDISTAN
+	}
+
+	on_complete = {
+	}
+
+	fail = {
+		NOT = {
+			any_scope_state = {
+				state_region = {
+					is_homeland = cu:kurdish
+				}
+			}
+		}
+	}
+
+	on_fail = {
+	}
+
+	weight = 1000
+
+}

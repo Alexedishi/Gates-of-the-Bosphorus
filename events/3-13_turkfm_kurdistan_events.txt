@@ -15,4 +15,367 @@ namespace = turkfm_kurdistan
 
 # The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
 
-#000-009 - OPEN
+#001-009 - The Tribes of Kurdistan Events
+#	001 - The Tribes of Kurdistan
+#	002 - A Centralized State
+#	003 - The Mir-i Miran
+#	004 - The Eyâlet-i Kurdistan (TUR)
+#	005 - The Eyâlet-i Kurdistan (KUR)
+
+#200-209 - Kurdish Irredentism
+#	200 - Uniting the Kurdish People
+#	201 - The Birth of Kurdistan
+#	200 - ##The Lands of Greater Kurdistan
+
+####################
+
+## THE TRIBES OF KURDISTAN EVENTS ##
+turkfm_kurdistan.001 = { # The Tribes of Kurdistan
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	title = turkfm_kurdistan.001.t
+	desc = turkfm_kurdistan.001.d
+	flavor = turkfm_kurdistan.001.f
+
+	event_image = {
+		video = "africa_desert_expedition"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered from GLOBAL
+	}
+
+	immediate = {
+		turkfm_add_local_kurd_claims_effect = yes
+	}
+
+	option = {
+		name = turkfm_kurdistan.001.a
+		default_option = yes
+		show_as_tooltip = {
+			add_journal_entry = {
+				type = je_turkfm_kur_tribes
+			}
+			add_modifier = modifier_turkfm_informal_administration
+		}
+	}
+
+}
+
+turkfm_kurdistan.002 = { # A Centralized State
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	title = turkfm_kurdistan.002.t
+	desc = turkfm_kurdistan.002.d
+	flavor = turkfm_kurdistan.002.f
+
+	event_image = {
+		video = "unspecific_world_fair"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_turkfm_kur_tribes
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = turkfm_kurdistan.002.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_centralized_authority
+			days = long_modifier_time
+		}
+		add_loyalists = {
+			value = medium_radicals
+		}
+	}
+
+}
+
+turkfm_kurdistan.003 = { # The Mir-i Miran
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+
+	title = turkfm_kurdistan.003.t
+	desc = turkfm_kurdistan.003.d
+	flavor = turkfm_kurdistan.003.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_claim_miri_miran_button
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+	}
+
+	option = {
+		name = turkfm_kurdistan.003.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_miri_miran_country
+			months = 120
+		}
+		ruler ?= {
+			add_modifier = {
+				name = modifier_turkfm_miri_miran_leader
+				months = 120
+			}
+		}
+	}
+
+}
+
+turkfm_kurdistan.004 = { # The Eyâlet-i Kurdistan (TUR)
+	type = country_event
+	placement = scope:kurdistan_scope
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	title = turkfm_kurdistan.004.t
+	desc = turkfm_kurdistan.004.d
+	flavor = turkfm_kurdistan.004.f
+
+	event_image = {
+		video = "ep1_transfer_of_authority"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_organize_kurdistan_button
+	}
+
+	immediate = {
+		c:KUR ?= {
+			save_scope_as = kurdistan_scope
+		}
+	}
+
+	option = {
+		name = turkfm_kurdistan.004.a
+		default_option = yes
+		add_loyalists = {
+			culture = cu:kurdish
+			value = very_large_radicals
+		}
+	}
+
+}
+
+turkfm_kurdistan.005 = { # The Eyâlet-i Kurdistan (KUR)
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_kurdish.dds"
+
+	title = turkfm_kurdistan.005.t
+	desc = turkfm_kurdistan.005.d
+	flavor = turkfm_kurdistan.005.f
+
+	event_image = {
+		video = "ep1_transfer_of_authority"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by turkfm_kurdistan.004
+	}
+
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+	}
+
+	option = {
+		name = turkfm_kurdistan.005.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_autonomy_granted
+			months = 120
+		}
+		if = {
+			limit = {
+				OR = {
+					army_size < 20
+					has_law = law_type:law_hereditary_bureaucrats
+					has_law = law_type:law_peasant_levies
+					has_law = law_type:law_no_police
+					NOT = {
+						any_scope_building = {
+							is_building_type = building_university
+						}
+					}
+					NOT = {
+						any_scope_building = {
+							is_building_type = building_government_administration
+						}
+					}
+					bureaucracy < 0
+					ig:ig_intelligentsia = {
+						is_marginal = yes
+					}
+
+				}
+			}
+			add_journal_entry = {
+				type = je_turkfm_kur_tribes
+			}
+			add_modifier = modifier_turkfm_tribal_tradition
+		}
+		else = {
+			add_modifier = {
+				name = modifier_turkfm_centralized_tribe
+				days = long_modifier_time
+			}
+			add_loyalists = {
+				value = medium_radicals
+			}
+		}
+		turkfm_add_kurdistan_claims_effect = yes
+	}
+}
+
+## KURDISH IRREDENTISM ##
+turkfm_kurdistan.200 = { # Uniting the Kurdish People
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_kurdish.dds"
+
+	title = turkfm_kurdistan.200.t
+	desc = turkfm_kurdistan.200.d
+	flavor = turkfm_kurdistan.200.f
+
+	event_image = {
+		video = "southamerica_aristocrats"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_turkfm_kur_unification
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = turkfm_kurdistan.200.a
+		default_option = yes
+		turkfm_add_kurdistan_claims_effect = yes
+	}
+
+}
+
+turkfm_kurdistan.201 = { # The Birth of Kurdistan
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_kurdish.dds"
+
+	title = turkfm_kurdistan.201.t
+	desc = turkfm_kurdistan.201.d
+	flavor = turkfm_kurdistan.201.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_turkfm_kur_unification
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = turkfm_kurdistan.201.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_kurdish_unification
+			months = 120
+		}
+	}
+
+}
+
+turkfm_kurdistan.202 = { # The Lands of Greater Kurdistan
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_kurdish.dds"
+
+	title = turkfm_kurdistan.202.t
+	desc = turkfm_kurdistan.202.d
+	flavor = turkfm_kurdistan.202.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_turkfm_kur_heartlands
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = turkfm_kurdistan.202.a
+		default_option = yes
+		turkfm_add_kurdistan_claims_effect = yes
+	}
+
+}
