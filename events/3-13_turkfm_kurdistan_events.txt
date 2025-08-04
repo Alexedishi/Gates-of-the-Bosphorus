@@ -158,7 +158,7 @@ turkfm_kurdistan.003 = { # The Mir-i Miran
 
 turkfm_kurdistan.004 = { # The Eyâlet-i Kurdistan (TUR)
 	type = country_event
-	placement = root
+	placement = scope:kurdistan_scope
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
 
 	title = turkfm_kurdistan.004.t
@@ -176,194 +176,12 @@ turkfm_kurdistan.004 = { # The Eyâlet-i Kurdistan (TUR)
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by turkfm_kurdistan_eyalet_button
+		# triggered by turkfm_organize_kurdistan_button
 	}
 
 	immediate = {
-		if = {
-			limit = {
-				has_state_in_state_region = STATE_ERZURUM
-			}
-			random_scope_state = {
-				limit = {
-					state_region = s:STATE_ERZURUM
-				}
-			}
-			save_scope_as = turkfm_kurdistan_creation_scope
-		}
-		else_if = {
-			limit = {
-				has_state_in_state_region = STATE_DIYARBAKIR
-			}
-			random_scope_state = {
-				limit = {
-					state_region = s:STATE_DIYARBAKIR
-				}
-			}
-			save_scope_as = turkfm_kurdistan_creation_scope
-		}
-		else_if = {
-			limit = {
-				has_state_in_state_region = STATE_DEIR_EZ_ZOR
-			}
-			random_scope_state = {
-				limit = {
-					state_region = s:STATE_DEIR_EZ_ZOR
-				}
-			}
-			save_scope_as = turkfm_kurdistan_creation_scope
-		}
-		else_if = {
-			limit = {
-				has_state_in_state_region = STATE_MOSUL
-			}
-			random_scope_state = {
-				limit = {
-					state_region = s:STATE_MOSUL
-				}
-			}
-			save_scope_as = turkfm_kurdistan_creation_scope
-		}
-		else_if = {
-			limit = {
-				has_state_in_state_region = STATE_URMIA
-			}
-			random_scope_state = {
-				limit = {
-					state_region = s:STATE_URMIA
-				}
-			}
-			save_scope_as = turkfm_kurdistan_creation_scope
-		}
-		else_if = {
-			limit = {
-				has_state_in_state_region = STATE_PERSIAN_KURDISTAN
-			}
-			random_scope_state = {
-				limit = {
-					state_region = s:STATE_PERSIAN_KURDISTAN
-				}
-			}
-			save_scope_as = turkfm_kurdistan_creation_scope
-		}
-		create_country = {
-			tag = KUR
-			origin = root
-			state = scope:turkfm_kurdistan_creation_scope
-		}
-		s:STATE_ERZURUM = {
-			every_scope_state = {
-				limit = {
-					owner = {
-						OR = {
-							this = root
-							AND = {
-								top_overlord ?= root
-								is_subject_type = subject_type_puppet
-							}
-						}
-					}
-				}
-				set_state_owner = c:KUR
-			}
-		}
-		s:STATE_DIYARBAKIR = {
-			every_scope_state = {
-				limit = {
-					owner = {
-						OR = {
-							this = root
-							AND = {
-								top_overlord ?= root
-								is_subject_type = subject_type_puppet
-							}
-						}
-					}
-				}
-				set_state_owner = c:KUR
-			}
-		}
-		s:STATE_DEIR_EZ_ZOR = {
-			every_scope_state = {
-				limit = {
-					owner = {
-						OR = {
-							this = root
-							AND = {
-								top_overlord ?= root
-								is_subject_type = subject_type_puppet
-							}
-						}
-					}
-				}
-				set_state_owner = c:KUR
-			}
-		}
-		s:STATE_MOSUL = {
-			every_scope_state = {
-				limit = {
-					owner = {
-						OR = {
-							this = root
-							AND = {
-								top_overlord ?= root
-								is_subject_type = subject_type_puppet
-							}
-						}
-					}
-				}
-				set_state_owner = c:KUR
-			}
-		}
-		s:STATE_URMIA = {
-			every_scope_state = {
-				limit = {
-					owner = {
-						OR = {
-							this = root
-							AND = {
-								top_overlord ?= root
-								is_subject_type = subject_type_puppet
-							}
-						}
-					}
-				}
-				set_state_owner = c:KUR
-			}
-		}
-		s:STATE_PERSIAN_KURDISTAN = {
-			every_scope_state = {
-				limit = {
-					owner = {
-						OR = {
-							this = root
-							AND = {
-								top_overlord ?= root
-								is_subject_type = subject_type_puppet
-							}
-						}
-					}
-				}
-				set_state_owner = c:KUR
-			}
-		}
-		create_diplomatic_pact = {
-			country = c:KUR
-			type = puppet
-		}
-		create_bidirectional_truce = {
-			country = c:KUR
-			months = 60
-		}
-		set_relations = {
-			country = c:KUR
-			value = 50
-		}
-		c:KUR = {
-			save_scope_as = turkfm_kurdistan_scope
-			trigger_event = {
-				id = turkfm_kurdistan.005 # The Eyâlet-i Kurdistan (KUR)
-			}
+		c:KUR ?= {
+			save_scope_as = kurdistan_scope
 		}
 	}
 
@@ -441,6 +259,7 @@ turkfm_kurdistan.005 = { # The Eyâlet-i Kurdistan (KUR)
 			add_journal_entry = {
 				type = je_turkfm_kur_tribes
 			}
+			add_modifier = modifier_turkfm_tribal_tradition
 		}
 		else = {
 			add_modifier = {
