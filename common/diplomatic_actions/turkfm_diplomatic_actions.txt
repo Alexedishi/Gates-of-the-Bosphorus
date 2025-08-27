@@ -4,36 +4,27 @@
 	}
 	requires_approval = no
 	should_notify_third_parties = yes
-
+	
 	unlocking_technologies = {
 		international_relations
 	}
 	
 	selectable = {
-		NOT = { is_country_type = decentralized }
-		is_revolutionary = no
-		custom_tooltip = {
-			text = turkfm_tension_involved_tt
-			hidden_trigger = {
-				turkfm_balkans_involved_trigger = yes
-				NOT = {
-					has_journal_entry = je_turkfm_balkan_situation_main
-				}
-			}
+		NOT = {
+			is_country_type = decentralized
 		}
+		turkfm_balkans_involved_trigger = yes
 	}
 	
 	potential = {
 		scope:target_country = {
-			NOT = { is_country_type = decentralized }
-			is_revolutionary = no
 			has_journal_entry = je_turkfm_balkan_situation_main
 		}
 	}
 	
 	possible = {
 		country_rank >= rank_value:great_power
-		NOT = {
+		NOR = {
 			any_scope_treaty = {
 				binds = root
 				binds = scope:target_country
@@ -41,8 +32,6 @@
 					has_type = alliance
 				}
 			}
-		}
-		NOT = {
 			any_scope_treaty = {
 				binds = root
 				binds = scope:target_country
@@ -53,7 +42,7 @@
 		}
 	}
 	
-	pact = {	
+	pact = {
 		cost = 100
 		is_hostile = yes
 		is_two_sided_pact = no
@@ -68,8 +57,8 @@
 			country_balkan_escalation_progress_add = 2
 			country_balkan_deescalation_progress_add = -1
 		}
-
-	 	requirement_to_maintain = {
+		
+		requirement_to_maintain = {
 			trigger = {
 				has_diplomatic_relevance = scope:target_country
 			}
@@ -88,7 +77,7 @@
 				scope:target_country.relations_change_rate:root > 0
 			}
 		}
-
+		
 		requirement_to_maintain = {
 			trigger = {
 				custom_tooltip = {
@@ -132,14 +121,14 @@
 			add = {
 				value = country_rank
 				multiply = 0.05
-			}			
+			}
 		}
 		
 		propose_score = {
 			value = 10
 		}
 		
-		will_propose = { 
+		will_propose = {
 			country_rank >= rank_value:great_power
 			OR = {
 				AND = {
@@ -147,34 +136,34 @@
 					has_attitude = {
 						who = scope:target_country
 						attitude = antagonistic
-					}				
+					}
 					OR = {
 						AND = {
 							country_rank >= scope:target_country.country_rank
-							has_strategic_adjacency = scope:target_country					
+							has_strategic_adjacency = scope:target_country
 						}
 						AND = {
 							country_rank = scope:target_country.country_rank
 							OR = {
 								country_rank = rank_value:great_power
 								capital.region = scope:target_country.capital.region
-							}				
-						}					
-					}						
+							}
+						}
+					}
 				}
 				AND = {
 					NOT = {
 						has_attitude = {
 							who = scope:target_country
 							attitude = conciliatory
-						}						
+						}
 					}
 					scope:target_country = {
 						has_diplomatic_pact = {
 							who = root
 							type = rivalry
-						}										
-					}					
+						}
+					}
 				}
 				has_secret_goal = {
 					who = scope:target_country
@@ -212,21 +201,21 @@
 				has_secret_goal = {
 					who = scope:target_country
 					secret_goal = dominate
-				}				
+				}
 			}
 			NAND = {
 				NOT = {
 					has_attitude = {
 						who = scope:target_country
 						attitude = conciliatory
-					}						
+					}
 				}
 				scope:target_country = {
 					has_diplomatic_pact = {
 						who = root
 						type = rivalry
-					}										
-				}					
+					}
+				}
 			}
 		}
 	}
@@ -238,42 +227,31 @@ turkfm_decelerate_tensions = {
 	}
 	requires_approval = no
 	should_notify_third_parties = yes
-
+	
 	unlocking_technologies = {
 		international_relations
 	}
 	
 	selectable = {
-		NOT = { is_country_type = decentralized }
-		is_revolutionary = no
-		custom_tooltip = {
-			text = turkfm_tension_involved_tt
-			hidden_trigger = {
-				turkfm_balkans_involved_trigger = yes
-				NOT = {
-					has_journal_entry = je_turkfm_balkan_situation_main
-				}
-			}
+		NOT = {
+			is_country_type = decentralized
 		}
+		turkfm_balkans_involved_trigger = yes
 	}
 	
 	potential = {
 		scope:target_country = {
-			NOT = { is_country_type = decentralized }
-			is_revolutionary = no
 			has_journal_entry = je_turkfm_balkan_situation_main
 		}
 	}
 	
 	possible = {
 		country_rank >= rank_value:great_power
-		NOT = {
+		NOR = {
 			has_diplomatic_pact = {
 				who = scope:target_country
 				type = rivalry
 			}
-		}	
-		NOT = {
 			has_diplomatic_pact = {
 				who = scope:target_country
 				type = embargo
@@ -281,7 +259,7 @@ turkfm_decelerate_tensions = {
 		}
 	}
 	
-	pact = {	
+	pact = {
 		cost = 100
 		is_two_sided_pact = no
 		forced_duration = 12
@@ -295,8 +273,8 @@ turkfm_decelerate_tensions = {
 			country_balkan_escalation_progress_add = -1
 			country_balkan_deescalation_progress_add = 2
 		}
-
-	 	requirement_to_maintain = {
+		
+		requirement_to_maintain = {
 			trigger = {
 				has_diplomatic_relevance = scope:target_country
 			}
@@ -307,15 +285,15 @@ turkfm_decelerate_tensions = {
 				custom_tooltip = {
 					text = DIPLO_ACTION_RELATIONS_POOR_OR_LESS_NOT
 					scope:target_country.relations:root > relations_threshold:poor
-				}		
+				}
 			}
 			
 			show_about_to_break_warning = {
 				scope:target_country.relations:root <= -17 # this is: poor + 3
 				scope:target_country.relations_change_rate:root < 0
-			}					
-		}	
-
+			}
+		}
+		
 		requirement_to_maintain = {
 			trigger = {
 				custom_tooltip = {
@@ -359,32 +337,32 @@ turkfm_decelerate_tensions = {
 			add = {
 				value = country_rank
 				multiply = 0.05
-			}			
+			}
 		}
 		
 		propose_score = {
 			value = 10
 			if = {
 				limit = {
-					scope:target_country.relations:root >= relations_threshold:friendly					
+					scope:target_country.relations:root >= relations_threshold:friendly
 				}
 				add = 10
 			}
 			else_if = {
 				limit = {
-					scope:target_country.relations:root >= relations_threshold:amicable					
+					scope:target_country.relations:root >= relations_threshold:amicable
 				}
 				add = 7.5
-			}	
+			}
 			else_if = {
 				limit = {
-					scope:target_country.relations:root >= relations_threshold:cordial				
+					scope:target_country.relations:root >= relations_threshold:cordial
 				}
 				add = 5
 			}
 		}
 		
-		will_propose = { 
+		will_propose = {
 			country_rank >= rank_value:great_power
 			OR = {
 				AND = {
@@ -392,7 +370,7 @@ turkfm_decelerate_tensions = {
 						has_attitude = {
 							who = scope:target_country
 							attitude = antagonistic
-						}						
+						}
 					}
 					scope:target_country = {
 						any_scope_treaty = {
@@ -402,7 +380,7 @@ turkfm_decelerate_tensions = {
 								has_type = alliance
 							}
 						}
-					}					
+					}
 				}
 				has_secret_goal = {
 					who = scope:target_country
@@ -428,7 +406,7 @@ turkfm_decelerate_tensions = {
 				has_secret_goal = {
 					who = scope:target_country
 					secret_goal = protect
-				}			
+				}
 			}
 		}
 	}
