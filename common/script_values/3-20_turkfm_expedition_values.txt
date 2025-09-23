@@ -1,275 +1,27 @@
-﻿turkfm_karadag_progress_value = {
-	value = 0
-	subtract = global_var:turkfm_karadag_tur_var
-	add = global_var:turkfm_karadag_mon_var
-	round_to = 0.01
-}
-
-turkfm_provinces_value = {
+﻿turkfm_expedition_value = {
 	value = 0
 	if = {
 		limit = {
-			p:x8C6292 = {
-				owner = root
+			has_variable = turkfm_black_mountain_expedition_var
+		}
+		if = {
+			limit = {
+				c:MON ?= this
 			}
+			add = money_amount_multiplier_very_small
+			desc = turkfm_value_from_organizing_raids
 		}
-		add = {
-			desc = balkfm_mon_value_from_cetinje
-			value = 1
-		}
-	}
-	if = {
-		limit = {
-			p:xF5F6C2 = {
-				owner = root
-			}
-		}
-		add = {
-			desc = balkfm_mon_value_from_niksic
-			value = 1
+		else = {
+			add = money_amount_multiplier_small
+			desc = turkfm_value_from_black_mountain_expedition
 		}
 	}
 	if = {
 		limit = {
-			p:x446E84 = {
-				owner = root
-			}
+			has_variable = turkfm_adriatic_expedition_var
 		}
-		add = {
-			desc = balkfm_mon_value_from_podgorica
-			value = 1
-		}
-	}
-	if = {
-		limit = {
-			p:xA12F82 = {
-				owner = root
-			}
-		}
-		add = {
-			desc = balkfm_mon_value_from_pljevlja
-			value = 1
-		}
-	}
-	if = {
-		limit = {
-			p:x90A0E0 = {
-				owner = root
-			}
-		}
-		add = {
-			desc = balkfm_mon_value_from_kotor
-			value = 1
-		}
-	}
-}
-
-turkfm_karadag_tur_value = {
-	value = 0
-
-	#Sources
-	if = {
-		limit = {
-			NOT = {
-				has_journal_entry = je_turkfm_sick_man_main
-			}
-		}
-		add = {
-			desc = turkfm_value_from_sick_man
-			value = 4
-		}
-	}
-	else_if = {
-		limit = {
-			has_variable = turkfm_sick_man_var
-		}
-		add = {
-			desc = turkfm_value_from_sick_man
-			value = var:turkfm_sick_man_var
-		}
-	}
-	if = {
-		limit = {
-			NOT = {
-				has_journal_entry = je_turkfm_tanzimat_main
-			}
-		}
-		add = {
-			desc = turkfm_value_from_tanzimat
-			value = 5
-		}
-	}
-	if = {
-		limit = {
-			has_variable = turkfm_tanzimat_completion_var
-		}
-		add = {
-			desc = turkfm_value_from_tanzimat
-			value = {
-				add = var:turkfm_tanzimat_completion_var
-				max = 5
-			}
-		}
-	}
-
-	#Penalities
-	if = {
-		limit = {
-			has_journal_entry = je_sick_man_main
-		}
-		subtract = {
-			desc = turkfm_value_from_sick_man_open
-			value = 4
-		}
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_turkfm_accepted_ransom
-		}
-		subtract = {
-			desc = turkfm_value_from_ransoming_nobles
-			value = 1
-		}
-	}
-}
-
-turkfm_karadag_mon_value = {
-	value = 0
-
-	# Sources
-	add = {
-		desc = turkfm_value_from_bishopric_journals
-		value = {
-			if = {
-				limit = {
-					has_variable = balkfm_mon_soc_completed
-				}
-				add = 1
-			}
-			if = {
-				limit = {
-					has_variable = balkfm_mon_gov_completed
-				}
-				add = 1
-			}
-			if = {
-				limit = {
-					has_variable = balkfm_mon_mil_completed
-				}
-				add = 1
-			}
-		}
-	}
-	add = {
-		desc = turkfm_value_from_capital_infrastructure
-		value = {
-			add = root.capital.relative_infrastructure
-			divide = 10
-			max = 10 # to prevent abuse
-		}
-	}
-	add = {
-		desc = turkfm_value_from_standing_army
-		value = {
-			add = root.army_power_projection
-			divide = 10
-			max = 100 # lol
-		}
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_turkfm_ransomed_noble
-		}
-		add = {
-			desc = turkfm_value_from_ransoming_nobles
-			value = 1
-		}
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_turkfm_executed_noble
-		}
-		add = {
-			desc = turkfm_value_from_beheading_noble
-			value = 2
-		}
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_balkfm_skulduggery
-		}
-		add = {
-			desc = turkfm_value_from_skulduggery
-			value = 1
-		}
-	}
-	if = {
-		limit = {
-			any_country = {
-				c:TUR != this
-				OR = {
-					any_scope_treaty = {
-						binds = root
-						binds = c:TUR
-						any_scope_article = {
-							has_type = alliance
-						}
-					}
-					any_scope_treaty = {
-						binds = root
-						binds = c:TUR
-						any_scope_article = {
-							has_type = defensive_pact
-						}
-					}
-				}
-				has_diplomatic_pact = {
-					who = c:TUR
-					type = rivalry
-				}
-			}
-		}
-		add = {
-			desc = turkfm_value_from_diplomatic_pacts
-			value = 5
-		}
-	}
-	if = {
-		limit = {
-			is_in_power_bloc = yes
-			power_bloc = {
-				power_bloc_leader = {
-					has_diplomatic_pact = {
-						who = c:TUR
-						type = rivalry
-					}
-				}
-			}
-		}
-		add = {
-			desc = turkfm_value_from_power_bloc
-			value = 5
-		}
-	}
-
-	#Penalities
-	if = {
-		limit = {
-			has_modifier = modifier_balkfm_tolerated_abuses
-		}
-		subtract = {
-			desc = turkfm_value_from_tolerating_abuses
-			value = 1
-		}
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_balkfm_display_of_poverty
-		}
-		subtract = {
-			desc = turkfm_value_from_poverty_display
-			value = 1
-		}
+		add = money_amount_multiplier_medium
+		desc = turkfm_value_from_adriatic_expedition
 	}
 }
 
@@ -285,4 +37,43 @@ turkfm_captured_nobles_value = {
 		}
 		add = 1
 	}
+}
+
+### OVERRIDDEN VANILLA VALUES
+# Taken from je_values.txt 27-AUG-2025; ##DIFF_MARK
+max_raiding_income = { # Used below and in raiding loc trigger.
+	value = 5000 #increased from 2500.
+}
+
+raiding_income = { # Used in raiding loc trigger.
+	value = c:MON.army_power_projection
+	multiply = c:MON.var:raiding_intensity
+	multiply = 0.15
+	if = {
+		limit = {
+			c:MON ?= {
+				turkfm_has_black_mountain_expedition_trigger = no
+			}
+		}
+		divide = 4
+	}
+	if = {
+		limit = {
+			has_global_variable = turkfm_black_mountain_skirmish_var
+		}
+		divide = 2
+	}
+	round = yes
+	min = 0
+	max = max_raiding_income
+}
+
+raiding_level = { # 1-6
+	value = raiding_income
+	add = 501 #stops divide by 0 errors, round up
+	min = 1
+	divide = 1000
+	min = 1
+	round = yes
+	max = 6
 }

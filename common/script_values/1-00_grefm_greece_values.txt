@@ -1,0 +1,712 @@
+﻿grefm_bavarocracy_progress_value = {
+	value = 0
+	add = {
+		value = var:grefm_bavarocracy_support_var
+		desc = grefm_value_from_bavarocracy_support
+	}
+	subtract = {
+		value = var:grefm_bavarocracy_opposition_var
+		desc = grefm_value_from_bavarocracy_opposition
+	}
+}
+
+grefm_bavarocracy_support_value = {
+	value = 0
+	# Absolute Royalists will support the King if Absolutism is present
+	if = {
+		limit = {
+			OR = {
+				has_law = law_type:law_autocracy
+				has_law = law_type:law_oligarchy
+			}
+		}
+		add = {
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_royalist_absolutist
+					}
+					add = political_movement_support
+				}
+				round_to = 0.01
+			}
+			desc = grefm_value_from_royalist_absolutist_movement_support
+		}
+	}
+	# Constitutional Royalists will always support the King
+	add = {
+		value = {
+			every_political_movement = {
+				limit = {
+					is_political_movement_type = movement_royalist_constitutional
+				}
+				add = political_movement_support
+			}
+			round_to = 0.01
+		}
+		desc = grefm_value_from_royalist_constitutional_movement_support
+	}
+	# The Liberal Movement will support if the King if there is voting franchise
+	if = {
+		limit = {
+			country_has_voting_franchise = yes
+		}
+		add = {
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_liberal
+					}
+					add = political_movement_support
+				}
+				if = {
+					limit = {
+						OR = {
+							has_law = law_type:law_census_voting
+							has_law = law_type:law_universal_suffrage
+						}
+					}
+					multiply = 2
+				}
+				round_to = 0.01
+			}
+			desc = grefm_value_from_liberal_movement_support
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_journal_entry = je_balkfm_land_reform
+			}
+		}
+		add = {
+			value = 0.5
+			desc = grefm_value_from_land_reform_completed
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_journal_entry = je_balkfm_brigandage
+			}
+		}
+		add = {
+			value = 0.5
+			desc = grefm_value_from_brigandage_completed
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_journal_entry = je_balkfm_civic_reform
+			}
+		}
+		add = {
+			value = 0.5
+			desc = grefm_value_from_civic_reform_compeleted
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_grefm_nikitas_released
+		}
+		add = {
+			value = 1
+			desc = grefm_value_from_turkeater_unleashed
+		}
+	}
+	if = {
+		limit = {
+			owns_entire_state_region = STATE_ATTICA
+			s:STATE_ATTICA = {
+				has_building = gbbf_building_palaia_anaktora
+			}
+		}
+		add = {
+			value = {
+				add = government_legitimacy
+				divide = 100
+				round_to = 0.01
+			}
+			desc = grefm_value_from_royal_palace
+		}
+	}
+}
+
+grefm_bavarocracy_opposition_value = {
+	value = 0
+	# Absolute Royalists will oppose the King if voting is enacted
+	# The Liberal Movement will support if the King if there is voting franchise
+	if = {
+		limit = {
+			country_has_voting_franchise = yes
+		}
+		add = {
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_royalist_absolutist
+					}
+					add = political_movement_support
+				}
+				if = {
+					limit = {
+						OR = {
+							has_law = law_type:law_census_voting
+							has_law = law_type:law_universal_suffrage
+						}
+					}
+					multiply = 2
+				}
+				round_to = 0.01
+			}
+			desc = grefm_value_from_liberal_movement_support
+		}
+	}
+	# The Liberal Movement will oppose the King if there is no voting franchise
+	if = {
+		limit = {
+			country_has_voting_franchise = no
+		}
+		add = {
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_liberal
+					}
+					add = political_movement_support
+				}
+				if = {
+					limit = {
+						has_law = law_type:law_autocracy
+					}
+					multiply = 2
+				}
+				round_to = 0.01
+			}
+			desc = grefm_value_from_liberal_movement_support
+		}
+	}
+	if = {
+		limit = {
+			has_journal_entry = je_balkfm_land_reform
+
+		}
+		add = {
+			value = 0.5
+			desc = grefm_value_from_land_reform_completed_NOT
+		}
+	}
+	if = {
+		limit = {
+			has_journal_entry = je_balkfm_brigandage
+		}
+		add = {
+			value = 0.5
+			desc = grefm_value_from_brigandage_completed_NOT
+		}
+	}
+	if = {
+		limit = {
+			has_journal_entry = je_balkfm_civic_reform
+		}
+		add = {
+			value = 0.5
+			desc = grefm_value_from_civic_reform_compeleted_NOT
+		}
+	}
+	add = {
+		value = {
+			every_scope_state = {
+				limit = {
+					has_modifier = modifier_balkfm_brigandage
+				}
+				add = radical_fraction
+			}
+			round_to = 0.01
+		}
+		desc = grefm_value_from_raided_state_radicals
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_grefm_bavarian_auxiliaries
+		}
+		add = {
+			value = 1
+			desc = grefm_value_from_bavarian_auxiliaries
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				NOT = {
+					exists = heir
+				}
+				heir ?= {
+					has_template = template_grefm_armansperg_josef
+				}
+			}
+		}
+		add = {
+			value = 1
+			desc = grefm_value_from_lacking_heir
+		}
+	}
+
+	round_to = 0.01
+
+}
+
+grefm_bavarocracy_opposition_display_value = {
+	# This value is meant to show the factors as negatives when displayed
+	value = 0
+	if = {
+		limit = {
+			country_has_voting_franchise = yes
+		}
+		subtract = {
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_royalist_absolutist
+					}
+					add = political_movement_support
+				}
+				if = {
+					limit = {
+						OR = {
+							has_law = law_type:law_census_voting
+							has_law = law_type:law_universal_suffrage
+						}
+					}
+					multiply = 2
+				}
+				round_to = 0.01
+			}
+			desc = grefm_value_from_liberal_movement_support
+		}
+	}
+	# The Liberal Movement will oppose the King if there is no voting franchise
+	if = {
+		limit = {
+			country_has_voting_franchise = no
+		}
+		subtract = {
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_liberal
+					}
+					add = political_movement_support
+				}
+				if = {
+					limit = {
+						has_law = law_type:law_autocracy
+					}
+					multiply = 2
+				}
+				round_to = 0.01
+			}
+			desc = grefm_value_from_liberal_movement_support
+		}
+	}
+	if = {
+		limit = {
+			has_journal_entry = je_balkfm_land_reform
+
+		}
+		subtract = {
+			value = 0.5
+			desc = grefm_value_from_land_reform_completed_NOT
+		}
+	}
+	if = {
+		limit = {
+			has_journal_entry = je_balkfm_brigandage
+		}
+		subtract = {
+			value = 0.5
+			desc = grefm_value_from_brigandage_completed_NOT
+		}
+	}
+	if = {
+		limit = {
+			has_journal_entry = je_balkfm_civic_reform
+		}
+		subtract = {
+			value = 0.5
+			desc = grefm_value_from_civic_reform_compeleted_NOT
+		}
+	}
+	subtract = {
+		value = {
+			every_scope_state = {
+				limit = {
+					has_modifier = modifier_balkfm_brigandage
+				}
+				add = radical_fraction
+			}
+			round_to = 0.01
+		}
+		desc = grefm_value_from_raided_state_radicals
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_grefm_bavarian_auxiliaries
+		}
+		subtract = {
+			value = 1
+			desc = grefm_value_from_bavarian_auxiliaries
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				NOT = {
+					exists = heir
+				}
+				heir ?= {
+					has_template = template_grefm_armansperg_josef
+				}
+			}
+		}
+		subtract = {
+			value = 1
+			desc = grefm_value_from_lacking_heir
+		}
+	}
+
+	round_to = 0.01
+
+}
+
+grefm_bavarocracy_instability_progress_value = {
+	value = 0
+	if = {
+		limit = {
+			OR = {
+				has_law = law_type:law_autocracy
+				has_law = law_type:law_oligarchy
+			}
+		}
+		add = {
+			value = {
+				every_political_movement = {
+					limit = {
+						OR = {
+							law_stance = {
+								law = law_type:law_autocracy
+								value < neutral
+							}
+							law_stance = {
+								law = law_type:law_oligarchy
+								value < neutral
+							}
+						}
+
+					}
+					add = grefm_movement_impact_value
+				}
+			}
+			desc = grefm_value_from_voting_movements_impact
+		}
+	}
+	else_if = {
+		limit = {
+			country_has_voting_franchise = yes
+		}
+		add = {
+			value = {
+				every_political_movement = {
+					limit = {
+						OR = {
+							law_stance = {
+								law = law_type:law_autocracy
+								value > neutral
+							}
+							law_stance = {
+								law = law_type:law_oligarchy
+								value > neutral
+							}
+						}
+					}
+				}
+				add = grefm_movement_impact_value
+			}
+			desc = grefm_value_from_absolutist_movements_impact
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_law = law_type:law_serfdom
+				has_law = law_type:law_tenant_farmers
+			}
+		}
+		add = {
+			value = {
+				every_political_movement = {
+					limit = {
+						OR = {
+							law_stance = {
+								law = law_type:law_serfdom
+								value < neutral
+							}
+							law_stance = {
+								law = law_type:law_tenant_farmers
+								value < neutral
+							}
+						}
+					}
+					add = grefm_movement_impact_value
+				}
+			}
+			desc = grefm_value_from_land_reform_movements_impact
+		}
+	}
+	round_to = 0.01
+}
+
+grefm_movement_impact_value = {
+	value = 0
+	add = political_movement_support
+	multiply = political_movement_radicalism
+	multiply = 100
+	round_to = 0.01
+}
+
+grefm_bavarocractic_ire_progress_value = {
+	value = 0
+	# Sources for Bavarocratic Ire
+	if = {
+		limit = {
+			any_scope_character = {
+				culture = cu:south_german
+			}
+		}
+		add = {
+			desc = grefm_value_from_bavarians
+			every_scope_character = {
+				limit = {
+					culture = cu:south_german
+				}
+				add = 1
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_grefm_bavarian_auxiliaries
+		}
+		add = {
+			value = 1
+			desc = grefm_value_from_bavarian_auxiliaries
+		}
+	}
+	if = {
+		limit = {
+			ruler.religion != rel:orthodox
+		}
+		add = {
+			desc = grefm_value_from_catholic_ruler
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			ruler = {
+				NOT = {
+					has_variable = is_married
+				}
+			}
+		}
+		add = {
+			desc = grefm_value_from_unmarried
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				exists = heir
+			}
+		}
+		add = {
+			desc = grefm_value_from_no_heir
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			country_has_voting_franchise = no
+		}
+		add = {
+			desc = grefm_value_from_no_voting
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			army_size < 10 # Small army, i.e. unemployed klephts
+		}
+		add = {
+			desc = grefm_value_from_small_army
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			any_scope_state = {
+				state_region = {
+					is_homeland = cu:greek
+				}
+				turmoil >= 0.10
+			}
+		}
+		add = {
+			desc = grefm_value_from_turmoil
+			every_scope_state = {
+				limit = {
+					state_region = {
+						is_homeland = cu:greek
+					}
+					turmoil >= 0.10
+				}
+				add = this.turmoil
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_variable = recently_lost_war
+		}
+		add = {
+			desc = grefm_value_from_losing_wars_tt
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_modifier = declared_bankruptcy
+				in_default = yes
+			}
+		}
+		add = {
+			value = 1
+			desc = grefm_value_from_finances
+		}
+	}
+
+	# Sources for Bavarocratic Loyalism
+	if = {
+		limit = {
+			any_scope_state = {
+				state_region = {
+					is_homeland = cu:greek
+				}
+			}
+		}
+		add = {
+			desc = grefm_value_from_homeland_states
+			every_scope_state = {
+				limit = {
+					state_region = {
+						is_homeland = cu:greek
+					}
+				}
+				add = -1
+			}
+		}
+	}
+	if = {
+		limit = {
+			any_scope_state = {
+				state_region = {
+					is_homeland = cu:greek
+				}
+				loyalty >= 0.10
+			}
+		}
+		add = {
+			desc = grefm_value_from_loyalists
+			every_scope_state = {
+				limit = {
+					state_region = {
+						is_homeland = cu:greek
+					}
+					loyalty >= 0.10
+				}
+				subtract = this.loyalty
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_variable = recently_won_war
+		}
+		add = {
+			desc = grefm_value_from_recently_won_war
+			value = -1
+		}
+	}
+	if = {
+		limit = {
+			any_scope_state = {
+				state_region = {
+					is_homeland = cu:greek
+				}
+				any_scope_building = {
+					is_building_type = building_university
+				}
+			}
+		}
+		add = {
+			desc = grefm_value_from_having_university
+			value = -1
+		}
+	}
+	if = {
+		limit = {
+			capital = {
+				any_scope_building = {
+					is_building_type = gbbf_building_palaia_anaktora
+				}
+			}
+		}
+		add = {
+			value = -1
+			desc = grefm_value_from_royal_palace
+		}
+	}
+	if = {
+		limit = {
+
+			army_size > 20
+		}
+		add = {
+			desc = grefm_value_from_large_army
+			value = -1
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_grefm_dismissed_bavarians
+		}
+		add = {
+			value = -1
+			desc = grefm_value_from_dismissed_bavarians
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_grefm_nikitas_released
+		}
+		add = {
+			value = -1
+			desc = grefm_value_from_turkeater_unleashed
+		}
+	}
+
+	round_to = 0.01
+}

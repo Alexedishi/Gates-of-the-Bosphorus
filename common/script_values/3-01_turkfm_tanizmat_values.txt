@@ -1,4 +1,5 @@
-﻿turkfm_tanzimat_ottomanist_progress_value = {
+﻿## Imperial Identity Values
+turkfm_tanzimat_ottomanist_progress_value = {
 	value = 0
 	add = {
 		value = {
@@ -22,6 +23,67 @@
 		}
 		desc = turkfm_value_from_modernizer_movement
 	}
+}
+
+turkfm_tanzimat_islamist_progress_value = {
+	add = {
+		value = {
+			every_political_movement = {
+				limit = {
+					is_political_movement_type = movement_cultural_majority
+				}
+				add = political_movement_support
+			}
+		}
+		desc = turkfm_value_from_cultural_majority_movement
+	}
+	add = {
+		value = {
+			every_political_movement = {
+				limit = {
+					is_political_movement_type = movement_religious_majority
+				}
+				add = political_movement_support
+			}
+		}
+		desc = turkfm_value_from_religious_majority_movement
+	}
+}
+
+turkfm_tanzimat_identity_progress_value = {
+	value = 0
+	add = {
+		value = turkfm_tanzimat_ottomanist_progress_value
+		desc = turkfm_value_from_ottomanist_progress
+	}
+	subtract = {
+		value = turkfm_tanzimat_islamist_progress_value
+		desc = turkfm_value_from_islamist_progress
+	}
+	round_to = 0.01
+}
+
+turkfm_tanzimat_identity_tilt_value = {
+	value = 0
+	if = {
+		limit = {
+			var:turkfm_tanzimat_identity_var > 500
+		}
+		add = var:turkfm_tanzimat_identity_var
+		subtract = 500
+	}
+	if = {
+		limit = {
+			var:turkfm_tanzimat_identity_var < 500
+		}
+		add = 500
+		subtract = var:turkfm_tanzimat_identity_var
+	}
+	round_to = 0.01
+}
+
+turkfm_tanzimat_reformist_progress_value = {
+	value = 0
 	add = {
 		value = {
 			every_scope_building = {
@@ -119,30 +181,8 @@
 	round_to = 0.01
 }
 
-turkfm_tanzimat_islamist_progress_value = {
+turkfm_tanzimat_conservatist_progress_value = {
 	value = 0
-	add = {
-		value = {
-			every_political_movement = {
-				limit = {
-					is_political_movement_type = movement_cultural_majority
-				}
-				add = political_movement_support
-			}
-		}
-		desc = turkfm_value_from_cultural_majority_movement
-	}
-	add = {
-		value = {
-			every_political_movement = {
-				limit = {
-					is_political_movement_type = movement_religious_majority
-				}
-				add = political_movement_support
-			}
-		}
-		desc = turkfm_value_from_religious_majority_movement
-	}
 	add = {
 		value = {
 			every_interest_group = {
@@ -196,7 +236,6 @@ turkfm_tanzimat_islamist_progress_value = {
 					add = investment
 				}
 			}
-
 		}
 		desc = turkfm_value_from_institution_levels
 	}
@@ -228,21 +267,27 @@ turkfm_tanzimat_islamist_progress_value = {
 		value = {
 			if = {
 				limit = {
+					has_law = law_type:law_millet_system
+				}
+				add = 2
+			}
+			else_if = {
+				limit = {
 					has_law = law_type:law_state_religion
 				}
-				add = 0.5
+				add = 1
 			}
 			else_if = {
 				limit = {
 					has_law = law_type:law_freedom_of_conscience
 				}
-				add = -0.25
+				add = -1
 			}
 			else_if = {
 				limit = {
 					has_law = law_type:law_total_separation
 				}
-				subtract = -0.50
+				subtract = -2
 			}
 			else = {
 				subtract = 5
@@ -250,64 +295,85 @@ turkfm_tanzimat_islamist_progress_value = {
 		}
 		desc = turkfm_value_from_religious_law
 	}
-	add = {
-		value = {
-			if = {
-				limit = {
-					has_law = law_type:law_turkfm_religious_autonomy
-				}
-				add = 0.5
-			}
-			else_if = {
-				limit = {
-					has_law = law_type:law_turkfm_nominal_equality
-				}
-				add = 0.25
-			}
-			else_if = {
-				limit = {
-					has_law = law_type:law_turkfm_judicial_standardization
-				}
-				subtract = 0.25
-			}
-			else = {
-				subtract = 0.5
-			}
-		}
-		desc = turkfm_value_from_millet_system
-	}
 	round_to = 0.01
 }
 
-turkfm_tanzimat_progress_value = {
-	# This value should be weighted to lean towards the Islamist side. Idealized loss is approx. -1.6 per month for a failure in mid-1877. This is balanced to -2 per month at game start for playability.
+turkfm_tanzimat_reform_progress_value = {
+	# This value should be weighted to lean towards the Conservatist side. Idealized loss is approx. -1.6 per month for a failure in mid-1877. This is balanced to -2 per month at game start for playability.
 	value = 0
 	add = {
-		value = turkfm_tanzimat_ottomanist_progress_value
-		desc = turkfm_value_from_ottomanist_progress
+		value = turkfm_tanzimat_reformist_progress_value
+		desc = turkfm_value_from_reformist_progress
 	}
 	subtract = {
-		value = turkfm_tanzimat_islamist_progress_value
-		desc = turkfm_value_from_islamist_progress
+		value = turkfm_tanzimat_conservatist_progress_value
+		desc = turkfm_value_from_conservatist_progress
 	}
 	round_to = 0.01
 }
 
-turkfm_tanzimat_tilt_value = {
+turkfm_young_ottomans_progress_value = {
 	value = 0
-	if = {
-		limit = {
-			var:turkfm_tanzimat_var > 500
+	add = {
+		value = {
+			every_interest_group = {
+				limit = {
+					OR = {
+						law_stance = {
+							law = law_type:law_wealth_voting
+							value > neutral
+						}
+						law_stance = {
+							law = law_type:law_census_voting
+							value > neutral
+						}
+						law_stance = {
+							law = law_type:law_universal_suffrage
+							value > neutral
+						}
+					}
+					law_stance = {
+						law = law_type:law_state_religion
+						value > neutral
+					}
+					OR = {
+						law_stance = {
+							law = law_type:law_parliamentary_republic
+							value > neutral
+						}
+						law_stance = {
+							law = law_type:law_presidential_republic
+							value > neutral
+						}
+					}
+					NOR = {
+						is_interest_group_type = ig_armed_forces
+						ig_approval > 0
+					}
+				}
+				add = ig_clout
+			}
 		}
-		add = var:turkfm_tanzimat_var
-		subtract = 500
+		desc = turkfm_value_from_pro_young_ottomans
 	}
 	if = {
 		limit = {
-			var:turkfm_tanzimat_var < 500
+			ig:ig_armed_forces = {
+				ig_approval > 0
+			}
 		}
-		add = 500
-		subtract = var:turkfm_tanzimat_var
+		add = {
+			value = ig:ig_armed_forces.ig_clout
+			desc = turkfm_value_from_armed_forces
+		}
+	}
+	subtract = {
+		value = 0.20
+		desc = turkfm_value_from_powerful_ig_baseline
 	}
 	round_to = 0.01
+}
+
+turkfm_young_turks_progress_value = {
+	value = 0
 }

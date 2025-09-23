@@ -81,50 +81,83 @@ turkfm_escalation_progress_value = {
 		}
 		multiply = 0
 	}
+	min = 0
 }
 
 turkfm_deescalation_progress_value = {
 	value = 0
-	add = {
-		value = 1
-		desc = turkfm_value_from_base
-	}
+	if = {
+		limit = {
+			global_var:turkfm_balkan_situation_phase_var != flag:turkfm_crisis
+		}
+		add = {
+			value = 1
+			desc = turkfm_value_from_base
+		}
 
-	add = {
-		value = {
-			every_country = {
-				limit = {
-					has_diplomatic_pact = {
-						who = c:TUR
-						type = turkfm_decelerate_tensions
+		add = {
+			value = {
+				every_country = {
+					limit = {
+						has_diplomatic_pact = {
+							who = c:TUR
+							type = turkfm_decelerate_tensions
+						}
+					}
+					save_temporary_scope_as = turkfm_decelerating_country
+					add = {
+						value = 2
+						desc = turkfm_value_from_decelerating_tensions
 					}
 				}
-				save_temporary_scope_as = turkfm_decelerating_country
-				add = {
-					value = 2
-					desc = turkfm_value_from_decelerating_tensions
+			}
+			desc = turkfm_value_from_overall_decelerating_tensions
+		}
+		subtract = {
+			value = {
+				every_country = {
+					limit = {
+						has_diplomatic_pact = {
+							who = c:TUR
+							type = turkfm_accelerate_tensions
+						}
+					}
+					save_temporary_scope_as = turkfm_accelerating_country
+					add = {
+						value = 1
+						desc = turkfm_value_from_accelerating_tensions
+					}
 				}
 			}
+			desc = turkfm_value_from_overall_accelerating_tensions
 		}
-		desc = turkfm_value_from_overall_decelerating_tensions
 	}
-	subtract = {
-		value = {
-			every_country = {
-				limit = {
-					has_diplomatic_pact = {
-						who = c:TUR
-						type = turkfm_accelerate_tensions
+	if = {
+		limit = {
+			global_var:turkfm_balkan_situation_phase_var = flag:turkfm_crisis
+		}
+		if = {
+			limit = {
+				has_any_secessionists_broken_out = no
+				has_any_secessionists_growing = no
+				is_at_war = no
+			}
+			add = {
+				value = 50
+				desc = turkfm_value_from_base_progress
+			}
+			subtract = {
+				value = {
+					every_political_movement = {
+						limit = {
+							turkfm_eligible_minority_movement_trigger = yes
+							is_secessionist = yes
+						}
 					}
 				}
-				save_temporary_scope_as = turkfm_accelerating_country
-				add = {
-					value = 1
-					desc = turkfm_value_from_accelerating_tensions
-				}
+				desc = turkfm_value_from_secessionist_movements
 			}
 		}
-		desc = turkfm_value_from_overall_accelerating_tensions
 	}
 	if = {
 		limit = {
@@ -132,6 +165,7 @@ turkfm_deescalation_progress_value = {
 		}
 		multiply = 0
 	}
+	min = 0
 }
 
 turkfm_tension_progress_value = {
