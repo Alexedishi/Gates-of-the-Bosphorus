@@ -1,47 +1,93 @@
-﻿je_turkfm_black_mountain = { # This is a temporary journal... je_turkfm_karadag returns to development hell
-	icon = "gfx/interface/icons/event_icons/event_montenegro.dds"
-
+﻿je_turkfm_the_black_mountain = {
+	# This journal integrates je_montenegrin_raiding with GotB content
 	group = je_group_turkfm_sick_man
+	icon = "gfx/interface/icons/alert_icons/secession.dds"
+	weight = 10000
 
+	can_revolution_inherit = yes
+	transferable = no
 	should_be_pinned_by_default = yes
+
+	is_shown_in_lobby = {
+		OR = {
+			c:MON ?= this
+			c:TUR ?= this
+		}
+	}
 
 	immediate = {
 		add_modifier = modifier_turkfm_practicing_headtaking
 	}
 
+	# Montenegrin Buttons
+	scripted_button = turkfm_increase_raiding_button
+	scripted_button = turkfm_decrease_raiding_button
+	scripted_button = turkfm_appoint_tribal_chief_button
+	scripted_button = turkfm_dismiss_tribal_chief_button
+	scripted_button = turkfm_negotiate_kotor_button
+
+	# Ottoman Buttons
+	scripted_button = turkfm_assign_border_guard_button
+	scripted_button = turkfm_recall_black_mountain_expedition_button
+	
+	# Shared Buttons
 	scripted_button = turkfm_renounce_headtaking_button
-	scripted_button = turkfm_negociate_kotor_button
 
 	complete = {
+		## MON Completion Trigger
+		## IP3's functionality is a sub-set of this journal; separate GotB scripting handles the resolution of raiding if IP3 is active
 		trigger_if = {
 			limit = {
-				c:TUR ?= this
+				c:MON ?= this
 			}
-			c:MON ?= {
+			owns_entire_state_region = STATE_MONTENEGRO
+			trigger_if = {
+				limit = {
+					exists = c:TUR
+				}
 				NOT = {
-					has_state_in_state_region = STATE_MONTENEGRO
+					is_subject_of = c:TUR
 				}
 			}
 		}
-		trigger_else = {
-			c:TUR ?= {
+		## TUR Completion Triggers
+		trigger_if = { # These are the pre-IP3 GotB triggers
+			limit = {
+				c:TUR ?= this
 				NOT = {
-					has_state_in_state_region = STATE_MONTENEGRO
+					has_dlc_feature = ip3_content # National Awakening
+				}
+			}
+			c:MON ?= {
+				OR = {
+					NOT = {
+						has_state_in_state_region = STATE_MONTENEGRO
+					}
+				}
+				is_subject_of = root
+			}
+		}
+		trigger_if = { # These are the imported triggers from IP3
+			limit = {
+				c:TUR ?= this
+				has_dlc_feature = ip3_content # National Awakening
+			}
+			OR = {
+				NOT = {
+					exists = c:MON
+				}
+				c:MON ?= {
+					OR = {
+						is_country_alive = no
+						is_subject_of = ROOT
+					}
 				}
 			}
 		}
 	}
 
 	on_complete = {
-		if = {
-			limit = {
-				c:TUR ?= this
-			}
-			trigger_event = {
-				id = turkfm_expeditions.007 # The Black Mountain Subdued
-			}
-		}
-		else_if = {
+		if = { # David Slays Goliath moved to event
 			limit = {
 				c:MON ?= this
 			}
@@ -49,95 +95,12 @@
 				id = turkfm_expeditions.009 # The Lands of Montenegro
 			}
 		}
-		turkfm_cleanup_karadag_effect = yes
-	}
-
-	fail = {
-		NOT = {
-			has_state_in_state_region = STATE_MONTENEGRO
-		}
-	}
-
-	on_fail = {
-		if = {
-			limit = {
-				c:TUR ?= this
-			}
-			trigger_event = {
-				id = turkfm_expeditions.006 # The Black Mountain Lost
-			}
-		}
 		else_if = {
 			limit = {
-				c:MON ?= this
-			}
-			trigger_event = {
-				id = turkfm_expeditions.008 # International Indifference
-			}
-		}
-		turkfm_cleanup_karadag_effect = yes
-	}
-
-	invalid = {
-		NAND = {
-			exists = c:TUR
-			exists = c:MON
-		}
-	}
-
-	on_invalid = {
-		turkfm_cleanup_karadag_effect = yes
-	}
-
-	weight = 1000
-
-}
-
-je_turkfm_karadag = {
-	icon = "gfx/interface/icons/event_icons/event_montenegro.dds"
-
-	group = je_group_turkfm_sick_man
-
-	should_be_pinned_by_default = yes
-
-	immediate = {
-		add_modifier = modifier_turkfm_practicing_headtaking
-	}
-
-	scripted_progress_bar = turkfm_karadag_progress_bar
-
-	# General Buttons
-	scripted_button = turkfm_karadag_expedition_button
-	scripted_button = turkfm_recall_expedition_button
-
-	# Montenegro Buttons
-	scripted_button = turkfm_renounce_headtaking_button
-	scripted_button = turkfm_negociate_kotor_button
-
-	complete = {
-		trigger_if = {
-			limit = {
 				c:TUR ?= this
-			}
-			c:MON ?= {
 				NOT = {
-					has_state_in_state_region = STATE_MONTENEGRO
+					has_dlc_feature = ip3_content # National Awakening
 				}
-			}
-		}
-		trigger_else = {
-			c:TUR ?= {
-				NOT = {
-					has_state_in_state_region = STATE_MONTENEGRO
-				}
-			}
-		}
-	}
-
-	on_complete = {
-		if = {
-			limit = {
-				c:TUR ?= this
 			}
 			trigger_event = {
 				id = turkfm_expeditions.007 # The Black Mountain Subdued
@@ -145,25 +108,82 @@ je_turkfm_karadag = {
 		}
 		else_if = {
 			limit = {
-				c:MON ?= this
+				c:TUR ?= this
+				has_dlc_feature = ip3_content # National Awakening
 			}
 			trigger_event = {
-				id = turkfm_expeditions.009 # The Lands of Montenegro
+				id = mon_state_formation.14
+				popup = yes
+			}
+			hidden_effect = {
+				add_modifier = {
+					name = goliath_slays_david_modifier
+				}
+			}
+			add_modifier = {
+				name = put_down_rebels_modifier
+				days = very_long_modifier_time
+				is_decaying = yes
+			}
+			add_fervor_target_modifier = {
+				culture = cu:serb
+				days = stupidly_long_modifier_time
+				multiplier = -20
 			}
 		}
-		turkfm_cleanup_karadag_effect = yes
+		turkfm_cleanup_black_mountain_effect = yes
+		turkfm_update_expedition_costs_effect = yes
 	}
 
 	fail = {
-		NOT = {
-			has_state_in_state_region = STATE_MONTENEGRO
+		OR = {
+			NOT = { # Pre-IP3 fail block, retained in IP3
+				has_state_in_state_region = STATE_MONTENEGRO
+			}
+			trigger_if = { # Imported IP3 fail trigger
+				limit = {
+					has_dlc_feature = ip3_content # National Awakening
+					c:MON ?= this
+					exists = c:TUR
+				}
+				is_subject_of = c:TUR
+			}
+			trigger_if = { # Alternate fail trigger, present in IP3 only
+				limit = {
+					c:TUR ?= this
+					has_dlc_feature = ip3_content # National Awakening
+				}
+				NOT = {
+					has_claim = s:STATE_MONTENEGRO
+				}
+			}
 		}
 	}
 
 	on_fail = {
 		if = {
 			limit = {
+				c:MON ?= this
+				NOT = {
+					has_dlc_feature = ip3_content # National Awakening
+				}
+			}
+			trigger_event = {
+				id = turkfm_expeditions.008 # International Indifference
+			}
+		}
+		else_if = {
+			limit = {
+				c:MON ?= this
+				has_dlc_feature = ip3_content # National Awakening
+			}
+		}
+		else_if = {
+			limit = {
 				c:TUR ?= this
+				NOT = {
+					has_dlc_feature = ip3_content # National Awakening
+				}
 			}
 			trigger_event = {
 				id = turkfm_expeditions.006 # The Black Mountain Lost
@@ -171,91 +191,72 @@ je_turkfm_karadag = {
 		}
 		else_if = {
 			limit = {
-				c:MON ?= this
-			}
-			trigger_event = {
-				id = turkfm_expeditions.008 # International Indifference
+				c:TUR ?= this
+				has_dlc_feature = ip3_content # National Awakening
 			}
 		}
-		turkfm_cleanup_karadag_effect = yes
-	}
-
-	invalid = {
-		NAND = {
-			exists = c:TUR
-			exists = c:MON
-		}
-	}
-
-	on_invalid = {
-		turkfm_cleanup_karadag_effect = yes
+		turkfm_cleanup_black_mountain_effect = yes
+		turkfm_update_expedition_costs_effect = yes
 	}
 
 	on_weekly_pulse = {
 		effect = {
-			turkfm_update_karadag_variables_effect = yes
+			if = {
+				limit = {
+					has_dlc_feature = ip3_content # National Awakening
+					NOT = {
+						has_global_variable = turkfm_montenegrin_raiding_settled
+					}
+					c:MON ?= this
+				}
+				turkfm_weekly_black_mountain_effect = yes
+				turkfm_update_black_mountain_characters_effect = yes
+				turkfm_update_expedition_costs_effect = yes
+			}
 		}
+		events = {
+			turkfm_expeditions.023 # Expeditionary Force Withdraws from the Border
+			turkfm_expeditions.023 # Expeditionary Force Leader Has Died!
+		}
+#		random_events = {
+#			 5 = turkfm_expeditions.021 # Steady Grind
+#			 5 = turkfm_expeditions.022 # Village Outskirts Burned
+#			 5 = turkfm_expeditions.023 # Village Families Massacred
+#			 5 = turkfm_expeditions.023 # Ottoman Noble Captured
+#			 5 = turkfm_expeditions.035 # Montenegrin Folk Hero Killed
+#			 5 = turkfm_expeditions.036 # Sudden Breakthrough
+#			 5 = turkfm_expeditions.037 # Rations Running Low
+#			 5 = turkfm_expeditions.038 # Mountain Village Defended
+#			 5 = turkfm_expeditions.039 # Mountain Village Captured
+#		}
 	}
 
 	on_monthly_pulse = {
-		events = {
-			turkfm_expeditions.004 # Montenegrin Lands Gained
-			turkfm_expeditions.012 # //Withdraws from Montenegro
-			turkfm_expeditions.013 # //Has Died!
-
-		}
-		random_events = {
-			5 = turkfm_expeditions.031 # Steady Grind
-			5 = turkfm_expeditions.032 # Village Outskirts Burned
-			5 = turkfm_expeditions.033 # Village Families Massacred
-			5 = turkfm_expeditions.034 # Ottoman Noble Captured
-			5 = turkfm_expeditions.035 # Montenegrin Folk Hero Killed
-			#			 5 = turkfm_expeditions.036 # Sudden Breakthrough
-			#			 5 = turkfm_expeditions.037 # Rations Running Low
-			#			 5 = turkfm_expeditions.038 # Mountain Village Defended
-			#			 5 = turkfm_expeditions.039 # Mountain Village Captured
-		}
-		random_events = {
-			chance_of_no_event = 75
-			5 = turkfm_expeditions.020 # Local Informants
-			5 = turkfm_expeditions.021 # Bear Sighted
-			10 = turkfm_expeditions.022 # A Circular Expedition
-			20 = turkfm_expeditions.023 # Snow on the Ground
-			5 = turkfm_expeditions.024 # Balkan Hospitality
-			5 = turkfm_expeditions.025 # Expedition Beset by Plague!
-			10 = turkfm_expeditions.026 # Tax Evasion
-			1 = turkfm_expeditions.027 # Successful Scouting
-			#			10 = turkfm_expeditions.028 #
-			#			10 = turkfm_expeditions.029 #
-			10 = turkfm_expeditions.030 # Village Skirmish Escalates
-		}
-		effect = {
-			change_global_variable = {
-				name = turkfm_karadag_var
-				add = global_var:turkfm_karadag_mon_var
-				subtract = global_var:turkfm_karadag_tur_var
-			}
-			clamp_global_variable = {
-				name = turkfm_karadag_var
-				max = 100
-				min = 0
-			}
-			turkfm_karadag_progressbar_effect = yes
-		}
+#		random_events = {
+#			chance_of_no_event = 75
+#			 5 = turkfm_expeditions.020 # Local Informants
+#			 5 = turkfm_expeditions.021 # Bear Sighted
+#			10 = turkfm_expeditions.022 # A Circular Expedition
+#			20 = turkfm_expeditions.023 # Snow on the Ground
+#			 5 = turkfm_expeditions.024 # Balkan Hospitality
+#			 5 = turkfm_expeditions.025 # Expedition Beset by Plague!
+#			10 = turkfm_expeditions.026 # Tax Evasion
+#			 1 = turkfm_expeditions.027 # Successful Scouting
+#			10 = turkfm_expeditions.028 #
+#			10 = turkfm_expeditions.029 #
+#			10 = turkfm_expeditions.020 # Village Skirmish Escalates
+#		}
 	}
 
 	status_desc = {
+		desc = je_turkfm_the_black_mountain_status
 	}
-
-	weight = 1000
 
 }
 
 je_turkfm_pirates_of_the_adriatic = {
 	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
-
 	group = je_group_turkfm_sick_man
-
 	should_be_pinned_by_default = yes
 
 	immediate = {
@@ -275,7 +276,7 @@ je_turkfm_pirates_of_the_adriatic = {
 	scripted_progress_bar = turkfm_jack_sparrow_progress_bar
 
 	scripted_button = turkfm_adriatic_expedition_button
-	scripted_button = turkfm_recall_expedition_button
+	scripted_button = turkfm_recall_adriatic_expedition_button
 	scripted_button = turkfm_hire_retired_pirates_button
 
 	complete = {
@@ -287,6 +288,7 @@ je_turkfm_pirates_of_the_adriatic = {
 
 	on_complete = {
 		turkfm_cleanup_piracy_effect = yes
+		turkfm_update_expedition_costs_effect = yes
 	}
 
 	fail = {
@@ -300,6 +302,7 @@ je_turkfm_pirates_of_the_adriatic = {
 
 	on_fail = {
 		turkfm_cleanup_piracy_effect = yes
+		turkfm_update_expedition_costs_effect = yes
 	}
 
 	on_weekly_pulse = {
@@ -360,10 +363,10 @@ je_turkfm_pirates_of_the_adriatic = {
 		effect = {
 			if = {
 				limit = {
-					var:turkfm_expedition_var ?= 1
+					has_variable = turkfm_adriatic_expedition_var
 				}
 				change_variable = {
-					name = turkfm_expedition_progress_var
+					name = turkfm_adriatic_expedition_progress_var
 					add = 1
 				}
 				post_notification = notification_turkfm_piracy_yearly_progress
