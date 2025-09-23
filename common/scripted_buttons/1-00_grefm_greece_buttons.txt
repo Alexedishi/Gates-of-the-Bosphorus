@@ -1,0 +1,394 @@
+﻿grefm_dismiss_auxilliaries_button = {
+	name = "grefm_dismiss_auxilliaries_button"
+	desc = "grefm_dismiss_auxilliaries_button_desc"
+	
+	visible = {
+		has_modifier = modifier_grefm_bavarian_auxiliaries
+		NOT = {
+			has_variable = grefm_dismissed_bavarian_auxiliaries
+		}
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = grefm_regency_discharged
+			NOT = {
+				has_modifier = modifier_grefm_armansperg_regency
+			}
+		}
+		has_modifier = modifier_grefm_bavarian_auxiliaries
+	}
+	
+	effect = {
+		set_variable = grefm_dismissed_bavarian_auxiliaries
+		trigger_event = {
+			id = grefm_greece.018 # Bavarian Auxiliaries Dismissed
+			popup = yes
+		}
+		show_as_tooltip = {
+			remove_modifier = modifier_grefm_bavarian_auxiliaries
+			remove_modifier = modifier_grefm_funding_bavarian_auxiliaries
+			add_modifier = {
+				name = modifier_grefm_dismissed_bavarians
+				days = normal_modifier_time
+				is_decaying = yes
+			}
+			if = {
+				limit = {
+					exists = c:BAV
+				}
+				create_incident = {
+					country = c:BAV
+					value = 5
+				}
+
+			}
+		}
+		custom_tooltip = grefm_dismiss_auxilliaries_effect
+		if = {
+			limit = {
+				has_journal_entry = je_grefm_bavarocracy_main
+			}
+			custom_tooltip = {
+				text = grefm_instability_minus_25
+				change_variable = {
+					name = grefm_bavarocracy_instability_var
+					subtract = 25
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				has_journal_entry = je_grefm_bavarocracy_ip3
+			}
+			grefm_bavarocracy_medium_support_effect = yes
+		}
+		grefm_calculate_bavarocracy_variables_effect = yes
+	}
+	
+	ai_chance = {
+		value = 10
+	}
+}
+
+grefm_release_nikitaras_button = {
+	name = "grefm_release_nikitaras_button"
+	desc = "grefm_release_nikitaras_button_desc"
+	
+	visible = {
+		NOT = { has_variable = grefm_turkeater_released }
+		year <= 1849
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = grefm_regency_discharged
+			hidden_trigger = {
+				NOT = {
+					has_modifier = modifier_grefm_armansperg_regency
+				}
+			}
+		}
+		year <= 1849
+	}
+	
+	effect = {
+		trigger_event = {
+			id = grefm_greece.019 # nikitas released from jail
+		}
+		if = {
+			limit = {
+				has_journal_entry = je_grefm_bavarocracy_main
+			}
+			custom_tooltip = {
+				text = grefm_instability_minus_25
+				change_variable = {
+					name = grefm_bavarocracy_instability_var
+					subtract = 25
+				}
+			}
+		}
+		show_as_tooltip = {
+			add_modifier = {
+				name = modifier_grefm_nikitas_released
+				days = normal_modifier_time
+				is_decaying = yes
+			}
+			grefm_bavarocracy_medium_support_effect = yes
+		}
+		grefm_calculate_bavarocracy_variables_effect = yes
+		set_variable = grefm_turkeater_released
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+grefm_authorize_palace_button = {
+	name = "grefm_authorize_palace_button"
+	desc = "grefm_authorize_palace_button_desc"
+	
+	visible = {
+		NOT = { has_variable = grefm_palace_authorized }
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = grefm_regency_discharged
+			hidden_trigger = {
+				NOT = {
+					has_modifier = modifier_grefm_armansperg_regency
+				}
+			}
+		}
+		has_law = law_type:law_monarchy
+	}
+	
+	effect = {
+		custom_tooltip = {
+			text = palaia_anaktora_enable_tt
+			hidden_effect = {
+				set_variable = grefm_palace_authorized
+			}
+		}
+		add_modifier = {
+			name = modifier_grefm_palace_authorized
+			days = long_modifier_time
+		}
+	}
+}
+
+grefm_philhellenic_loan_button = {
+	name = "grefm_philhellenic_loan_button"
+	desc = "grefm_philhellenic_loan_button_desc"
+	
+	visible = {
+		always = yes
+	}
+	
+	possible = {
+		OR = {
+			c:GBR ?= {
+				relations:root >= relations_threshold:amicable
+			}
+			c:FRA ?= {
+				relations:root >= relations_threshold:amicable
+			}
+		}
+		custom_tooltip = {
+			text = grefm_regency_discharged
+			hidden_trigger = {
+				NOT = {
+					has_modifier = modifier_grefm_armansperg_regency
+				}
+			}
+		}
+		NOT = { has_modifier = modifier_grefm_philhellenic_loans }
+	}
+	
+	effect = {
+		add_treasury = 100000
+		add_modifier = {
+			name = modifier_grefm_philhellenic_loans
+			months = 120
+		}
+	}
+	
+}
+
+grefm_bavarocracy_convert_button = {
+	name = "grefm_bavarocracy_convert_button"
+	desc = "grefm_bavarocracy_convert_button_desc"
+
+	visible = {
+		NOT = {
+			has_variable = grefm_ruler_conversion_var
+		}
+		ruler = {
+			religion = rel:catholic
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			text = grefm_bavarocracy_convert_button_possible
+			ruler.religion = rel:catholic
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = grefm_greece.093 # The True Faith of Greece
+			popup = yes
+		}
+		show_as_tooltip = {
+			custom_tooltip = grefm_bavarocracy_convert_button_effect
+			c:BAV ?= {
+				change_relations = {
+					country = root
+					value = -30
+				}
+				create_diplomatic_catalyst = {
+					type = catalyst_event_negative
+					target = root
+				}
+			}
+			c:PAP ?= {
+				change_relations = {
+					country = root
+					value = -30
+				}
+				create_diplomatic_catalyst = {
+					type = catalyst_event_negative
+					target = root
+				}
+			}
+			c:RUS ?= {
+				change_relations = {
+					country = root
+					value = 30
+				}
+				create_diplomatic_catalyst = {
+					type = catalyst_event_positive
+					target = root
+				}
+			}
+			grefm_bavarocracy_medium_support_effect = yes
+		}
+		set_variable = grefm_ruler_conversion_var
+	}
+
+}
+
+grefm_favor_hellene_king_button = {
+	name = "grefm_favor_hellene_king_button"
+	desc = "grefm_favor_hellene_king_button_desc"
+	
+	visible = {
+		always = yes
+	}
+	
+	selected = {
+		has_variable = grefm_favoring_hellene_king
+	}
+	
+	possible = {
+		always = yes
+	}
+	
+	effect = {
+		custom_tooltip = {
+			text = grefm_favor_hellene_king_effect
+			hidden_effect = {
+				if = {
+					limit = {
+						has_variable = grefm_favoring_hellene_king
+					}
+					remove_variable = grefm_favoring_hellene_king
+				}
+				else = {
+					set_variable = grefm_favoring_hellene_king
+					remove_variable = grefm_favoring_roman_king
+				}
+			}
+		}
+	}
+	
+}
+
+grefm_favor_roman_king_button = {
+	name = "grefm_favor_roman_king_button"
+	desc = "grefm_favor_roman_king_button_desc"
+	
+	visible = {
+		always = yes
+	}
+	
+	selected = {
+		has_variable = grefm_favoring_roman_king
+	}
+	
+	possible = {
+		always = yes
+	}
+	
+	effect = {
+		custom_tooltip = {
+			text = grefm_favor_roman_king_effect
+			hidden_effect = {
+				if = {
+					limit = {
+						has_variable = grefm_favoring_roman_king
+					}
+					remove_variable = grefm_favoring_roman_king
+				}
+				else = {
+					set_variable = grefm_favoring_roman_king
+					remove_variable = grefm_favoring_hellene_king
+				}
+			}
+		}
+	}
+	
+}
+
+grefm_elect_hellene_king_button = {
+	name = "grefm_elect_hellene_king_button"
+	desc = "grefm_elect_hellene_king_button_desc"
+	
+	visible = {
+		always = yes
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = grefm_favor_hellene_king_button_effect
+			hidden_trigger = {
+				je:je_grefm_greek_king = {
+					"scripted_bar_progress(grefm_hellene_king_progressbar)" >= 100
+				}
+				NOT = {
+					has_variable = grefm_greek_king_var
+				}
+			}
+		}
+	}
+	
+	effect = {
+		trigger_event = {
+			id = grefm_greece.022 # A Hellene King
+		}
+		set_variable = grefm_greek_king_var
+	}
+	
+}
+
+grefm_elect_roman_king_button = {
+	name = "grefm_elect_roman_king_button"
+	desc = "grefm_elect_roman_king_button_desc"
+	
+	visible = {
+		always = yes
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = grefm_elect_roman_king_button_effect
+			hidden_trigger = {
+				je:je_grefm_greek_king = {
+					"scripted_bar_progress(grefm_roman_king_progressbar)" >= 100
+				}
+				NOT = {
+					has_variable = grefm_greek_king_var
+				}
+			}
+		}
+	}
+	
+	effect = {
+		trigger_event = {
+			id = grefm_greece.023 # A Roman King
+		}
+		set_variable = grefm_greek_king_var
+	}
+	
+}

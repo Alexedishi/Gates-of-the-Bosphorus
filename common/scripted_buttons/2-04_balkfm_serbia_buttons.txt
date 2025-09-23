@@ -1,0 +1,226 @@
+﻿balkfm_cement_monarchy_button = {
+	name = "balkfm_cement_monarchy"
+	desc = "balkfm_cement_monarchy_desc"
+	
+	visible = {
+		always = yes
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = balkfm_cement_monarchy_tt1
+			OR = {
+				AND = {
+					balkfm_has_karadordevic_ruler_trigger = yes
+					var:balkfm_karadordevic_support_var >= 500
+				}
+				AND = {
+					balkfm_has_obrenovic_ruler_trigger = yes
+					var:balkfm_obrenovic_support_var >= 500
+				}
+			}
+			var:balkfm_obrenovic_support_var != var:balkfm_karadordevic_support_var
+		}
+		custom_tooltip = {
+			text = balkfm_cement_monarchy_tt2
+			hidden_trigger = {
+				NOT = {
+					has_variable = balkfm_constitution_pending
+				}
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_friend_with_all_great_powers_tt
+			hidden_trigger = {
+				any_country = {
+					country_rank >= rank_value:great_power
+					NOT = { c:TUR ?= this }
+					NOT = { has_war_with = ROOT }
+					has_interest_marker_in_region = ROOT.capital.region
+					relations:root > 0
+				}
+			}
+		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = balkfm_cement_monarchy_var
+			}
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = balkfm_serbia.018 # Cementing the Monarchy
+		}
+		set_variable = balkfm_cement_monarchy_var
+	}
+}
+
+balkfm_ser_flip_consul_button = {
+	name = "balkfm_ser_flip_consul_button"
+	desc = "balkfm_ser_flip_consul_button_desc"
+	
+	visible = {
+		OR = {
+			AND = {
+				balkfm_has_karadordevic_ruler_trigger = yes
+				NOT = {
+					has_variable = balkfm_russia_consul_var
+				}
+			}
+			AND = {
+				balkfm_has_obrenovic_ruler_trigger = yes
+				NOT = {
+					has_variable = balkfm_austria_consul_var
+				}
+			}
+		}
+	}
+	possible = {
+		hidden_trigger = {
+			NOT = {
+				has_variable = balkfm_flip_consul_var
+			}
+		}
+		trigger_if = {
+			limit = {
+				balkfm_has_karadordevic_ruler_trigger = yes
+			}
+			custom_tooltip = {
+				text = balkfm_has_austrian_consul
+				has_variable = balkfm_austria_consul_var
+			}
+			c:RUS ?= {
+				relations:root >= relations_threshold:cordial
+			}
+		}
+		trigger_else = {
+			custom_tooltip = {
+				text = balkfm_has_russian_consul
+				has_variable = balkfm_russia_consul_var
+			}
+			c:AUS ?= {
+				relations:root >= relations_threshold:cordial
+			}
+		}
+		NOT = {
+			has_modifier = modifier_balkfm_royal_turmoil
+		}
+	}
+	effect = {
+		set_variable = {
+			name = balkfm_flip_consul_var
+			months = 3
+		}
+		trigger_event = {
+			id = balkfm_serbia.017
+			popup = yes
+		}
+	}
+}
+
+balkfm_ser_slander_button = {
+	name = "je_tot_slander_button"
+	desc = "je_tot_slander_button_desc"
+	
+	visible = {
+		has_dlc_feature = ip3_content # National Awakening
+	}
+	possible = {
+		has_building = building_paper_mills
+		has_technology_researched = mass_communication
+		scope:journal_entry = {
+			not = {
+				custom_tooltip = {
+					text = je_tot_slander_button_cooldown_tt
+					has_variable = je_tot_slander_button_cooldown
+				}
+			}
+		}
+	}
+	effect = {
+		scope:journal_entry = {
+			set_variable = { name = je_tot_slander_button_cooldown months = 48 }
+		}
+		trigger_event = {
+			id = balkfm_serbia.021 # Slander Pamphlets
+		}
+		if = {
+			limit = {
+				scope:journal_entry = {
+					has_variable = balkfm_opposition_leader_var
+					exists = var:balkfm_opposition_leader_var
+				}
+			}
+			show_as_tooltip = {
+				var:balkfm_opposition_leader_var = {
+					add_modifier = {
+						name = modifier_balkfm_reputation_slandered
+						days = short_modifier_time
+					}
+				}
+			}
+		}
+		custom_tooltip = je_tot_slander_button_custom_tt
+		show_as_tooltip = {
+			add_modifier = {
+				name = serbia_pamphlet_money_mod
+				days = short_modifier_time
+				multiplier = money_amount_multiplier_medium
+			}
+			add_modifier = {
+				name = serbia_pamphlet_auth_mod
+				days = short_modifier_time
+			}
+		}
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+balkfm_ser_campaign_button = {
+	name = "je_tot_campaign_button"
+	desc = "je_tot_campaign_button_desc"
+	
+	visible = {
+		has_dlc_feature = ip3_content # National Awakening
+	}
+	selected = {
+		has_variable = campaign_button_pressed
+	}
+	possible = {
+		hidden_trigger = {
+			NOT = {
+				has_variable = campaign_button_pressed
+			}
+		}
+		ig:ig_landowners = {
+			ig_approval >= 15
+		}
+	}
+	effect = {
+		custom_tooltip = {
+			text = je_tot_campaign_button_tt
+			trigger_event = {
+				id = balkfm_serbia.030 # Campaign Planning
+			}
+		}
+		show_as_tooltip = {
+			add_modifier = {
+				name = serbia_campaign_auth_fund_mod
+			}
+			add_modifier = {
+				name = serbia_campaign_med_fund_mod
+				multiplier = money_amount_multiplier_small
+			}
+			add_modifier = {
+				name = serbia_campaign_high_fund_mod
+				multiplier = money_amount_multiplier_medium
+			}
+		}
+		custom_tooltip = {
+			text = je_tot_campaign_button_tt_2
+		}
+		set_variable = campaign_button_pressed
+	}
+}
