@@ -7,7 +7,6 @@
 			has_global_variable = turkfm_tanzimat_started
 		}
 	}
-
 	possible = {
 		custom_tooltip = {
 			text = turkfm_mahmud_dead_tt
@@ -18,7 +17,6 @@
 			}
 		}
 	}
-
 	effect = {
 		trigger_event = {
 			id = turkfm_tanzimat.002 # Edict of Gülhane
@@ -29,7 +27,7 @@
 				years = 30
 			}
 			custom_tooltip = {
-				text = turkfm_reform_completed_tt
+				text = turkfm_tanzimat_declaration
 				change_variable = {
 					name = turkfm_tanzimat_completion_var
 					add = 1
@@ -81,5 +79,41 @@
 		}
 		set_global_variable = turkfm_tanzimat_started
 	}
+}
 
+turkfm_enforce_identity_button = {
+	name = "turkfm_enforce_identity_button"
+	desc = "turkfm_enforce_identity_button_desc"
+
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = turkfm_enforce_identity_button_possible_1
+			hidden_trigger = {
+				var:turkfm_tanzimat_reform_var >= 1000
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_enforce_identity_button_possible_2
+			hidden_trigger = {
+				OR = {
+					var:turkfm_tanzimat_identity_var < 100
+					var:turkfm_tanzimat_identity_var > 900
+				}
+			}
+		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = turkfm_selecting_identity_var
+			}
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = turkfm_tanzimat.005 # The Identity of the Empire
+		}
+		set_variable = turkfm_selecting_identity_var
+	}
 }
