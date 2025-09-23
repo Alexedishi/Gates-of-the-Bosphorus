@@ -20,10 +20,6 @@ turkfm_initialize_balkan_situation_effect = {
 		name = turkfm_crisis_counter_var
 		value = 0
 	}
-	set_global_variable = {
-		name = turkfm_congress_counter_var
-		value = 0
-	}
 	add_modifier = modifier_turkfm_stable_phase
 }
 
@@ -122,6 +118,11 @@ turkfm_check_balkan_situation_phase_effect = {
 					name = turkfm_balkan_situation_phase_var
 					value = flag:turkfm_deconfliction
 				}
+				c:TUR = {
+					trigger_event = {
+						id = turkfm_balkan_situation.029 # Order Returns to Rumelia
+					}
+				}
 				every_country = {
 					limit = {
 						turkfm_balkans_party_trigger = yes
@@ -189,7 +190,7 @@ turkfm_check_balkan_situation_phase_effect = {
 				}
 				c:TUR ?= {
 					trigger_event = {
-						id = turkfm_eastern_question.100 # A Crisis in Rumelia
+						id = turkfm_balkan_situation.020 # A Crisis in Rumelia
 					}
 				}
 				every_country = {
@@ -197,6 +198,14 @@ turkfm_check_balkan_situation_phase_effect = {
 						turkfm_balkans_party_trigger = yes
 					}
 					post_notification = notification_turkfm_transition_crisis
+				}
+				every_country = {
+					limit = {
+						has_journal_entry = je_turkfm_eastern_question
+					}
+					trigger_event = {
+						id = turkfm_balkan_situation.021 # A Crisis in Rumelia
+					}
 				}
 				custom_tooltip = turkfm_transition_crisis_tt
 			}
@@ -1820,6 +1829,7 @@ turkm_cleanup_tension_main_effect = {
 	remove_global_variable = turkfm_balkan_situation_phase_var
 	remove_global_variable = turkfm_escalation_var
 	remove_global_variable = turkfm_deescalation_var
+	remove_global_variable = turkfm_crisis_counter_var
 
 	remove_variable = turkfm_tension_event_cooldown_var
 
@@ -1829,5 +1839,155 @@ turkm_cleanup_tension_main_effect = {
 		remove_modifier = modifier_turkfm_hosility_phase
 		remove_modifier = modifier_turkfm_deconfliction_phase
 		remove_modifier = modifier_turkfm_crisis_phase
+	}
+}
+
+## Separatism Effects ##
+turkfm_hellenic_separatism_effect = {
+	if = {
+		limit = {
+			has_modifier = modifier_turkfm_supporting_gunrunners
+		}
+		remove_modifier = modifier_turkfm_supporting_gunrunners
+		add_modifier = {
+			name = modifier_turkfm_supporting_gunrunners
+			multiplier = money_amount_multiplier_medium
+		}
+		if = {
+			limit = {
+				c:TUR ?= {
+					OR = {
+						owns_entire_state_region = STATE_THESSALIA
+						owns_entire_state_region = STATE_MACEDONIA
+						owns_entire_state_region = STATE_SKOPIA
+						owns_entire_state_region = STATE_CRETE
+						owns_entire_state_region = STATE_AYDIN
+						owns_entire_state_region = STATE_CYPRUS
+					}
+				}
+			}
+			random_list = {
+				1 = {
+					trigger = {
+						c:TUR = {
+							owns_entire_state_region = STATE_THESSALIA
+						}
+					}
+					s:STATE_THESSALIA = {
+						random_scope_state = {
+							add_radicals_in_state = {
+								culture = cu:greek
+								value = 0.05
+							}
+						}
+					}
+				}
+				1 = {
+					trigger = {
+						c:TUR = {
+							owns_entire_state_region = STATE_MACEDONIA
+						}
+					}
+					s:STATE_MACEDONIA = {
+						random_scope_state = {
+							add_radicals_in_state = {
+								culture = cu:greek
+								value = 0.05
+							}
+						}
+					}
+				}
+				1 = {
+					trigger = {
+						c:TUR = {
+							owns_entire_state_region = STATE_SKOPIA
+						}
+					}
+					s:STATE_SKOPIA = {
+						random_scope_state = {
+							add_radicals_in_state = {
+								culture = cu:greek
+								value = 0.05
+							}
+						}
+					}
+				}
+				1 = {
+					trigger = {
+						c:TUR = {
+							owns_entire_state_region = STATE_CRETE
+						}
+					}
+					s:STATE_CRETE = {
+						random_scope_state = {
+							add_radicals_in_state = {
+								culture = cu:greek
+								value = 0.05
+							}
+						}
+					}
+				}
+				1 = {
+					trigger = {
+						c:TUR = {
+							owns_entire_state_region = STATE_AYDIN
+						}
+					}
+					s:STATE_AYDIN = {
+						random_scope_state = {
+							add_radicals_in_state = {
+								culture = cu:greek
+								value = 0.05
+							}
+						}
+					}
+				}
+				1 = {
+					trigger = {
+						c:TUR = {
+							owns_entire_state_region = STATE_CYPRUS
+						}
+					}
+					s:STATE_CYPRUS = {
+						random_scope_state = {
+							add_radicals_in_state = {
+								culture = cu:greek
+								value = 0.05
+							}
+						}
+					}
+				}
+			}
+		}
+		else = {
+			remove_modifier = modifier_turkfm_supporting_gunrunners
+		}
+	}
+}
+
+turkfm_rhomaios_separatism_effect = {
+}
+
+turkfm_yugoslav_separatism_effect = {
+}
+
+## Technical Effects ##
+turkfm_cleanup_eqfm_effect = {
+	hidden_effect = {
+		remove_modifier = modifier_turkfm_supporting_gunrunners
+	}
+}
+
+turkfm_split_bulgaria_effect = {
+	create_country = {
+		tag = BUL_RUM
+		origin = c:TUR
+		state = s:STATE_NORTHERN_THRACE.region_state:BUL
+	}
+	c:TUR ?= {
+		create_diplomatic_pact = {
+			country = c:BUL_RUM
+			type = protectorate
+		}
 	}
 }
