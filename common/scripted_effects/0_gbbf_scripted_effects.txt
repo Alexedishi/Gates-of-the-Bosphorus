@@ -12,7 +12,7 @@ gbbf_play_yanya_effect = {
 			is_player = yes
 		}
 		create_country = {
-			tag = TUR_YAN
+			tag = ALB_YAN
 			origin = c:TUR
 			province = p:x71C0E0
 			province = p:xC42EC6
@@ -27,7 +27,7 @@ gbbf_play_yanya_effect = {
 				balkfm_initialize_revivalism_effect = yes
 			}
 		}
-		play_as = c:TUR_YAN
+		play_as = c:ALB_YAN
 	}
 	c:ALK = {
 		annex = c:GBBF_ALB
@@ -64,7 +64,7 @@ gbbf_play_cappadocia_effect = {
 			province = p:xFB66D7
 			province = p:x5E4B3A
 			on_created = {
-				grefm_setup_cappadocia_effect = yes
+				gbbf_setup_cappadocia_effect = yes
 				trigger_event = {
 					id = grefm_cappadocia.001 # The Greeks of the Highlands
 				}
@@ -84,7 +84,7 @@ gbbf_play_silistra_effect = {
 			is_player = yes
 		}
 		create_country = {
-			tag = TUR_SIL
+			tag = BUL_SIL
 			origin = c:TUR
 			state = s:STATE_BULGARIA.region_state:TUR
 			state = s:STATE_DOBRUDJA.region_state:TUR
@@ -93,7 +93,7 @@ gbbf_play_silistra_effect = {
 				balkfm_initialize_revivalism_effect = yes
 			}
 		}
-		play_as = c:TUR_SIL
+		play_as = c:BUL_SIL
 	}
 	c:ALK = {
 		annex = c:GBBF_SIL
@@ -112,7 +112,7 @@ gbbf_play_theodoro_effect = {
 			province = p:xF56D13
 			province = p:x706060
 			on_created = {
-				grefm_setup_theodoro_effect = yes
+				gbbf_setup_theodoro_effect = yes
 				trigger_event = {
 					id = grefm_theodoro.001 # The Urums of Little Theodoro
 				}
@@ -146,7 +146,7 @@ gbbf_play_trabzon_effect = {
 			origin = c:TUR
 			state = s:STATE_TRABZON.region_state:TUR
 			on_created = {
-				grefm_setup_trabzon_effect = yes
+				gbbf_setup_trabzon_effect = yes
 				trigger_event = {
 					id = grefm_trabzon.001 # The Pontic Greeks
 				}
@@ -162,7 +162,7 @@ gbbf_play_trabzon_effect = {
 
 gbbf_spawn_yanya_effect = {
 	create_country = {
-		tag = TUR_YAN
+		tag = ALB_YAN
 		origin = c:TUR
 		province = p:x71C0E0
 		province = p:xC42EC6
@@ -181,7 +181,7 @@ gbbf_spawn_yanya_effect = {
 
 gbbf_spawn_silistra_effect = {
 	create_country = {
-		tag = TUR_SIL
+		tag = BUL_SIL
 		origin = c:TUR
 		state = s:STATE_BULGARIA.region_state:TUR
 		state = s:STATE_DOBRUDJA.region_state:TUR
@@ -403,6 +403,116 @@ gbbf_purge_buildings_effect = { # This effect only checks for buildings that are
 
 ############################
 
+gbbf_setup_hellene_pops_effect = {
+	every_scope_pop = {
+		limit = {
+			has_pop_culture = greek
+			NOR = {
+				is_pop_type = aristocrats
+				is_pop_type = capitalists
+				is_pop_type = clergymen
+				is_pop_type = academics
+				is_pop_type = bureaucrats
+				is_pop_type = engineers
+				is_pop_type = shopkeepers
+				is_pop_type = clerks
+				is_pop_type = machinists
+				is_pop_type = farmers
+			}
+		}
+		change_pop_culture = {
+			target = cu:rhomaios
+			value = 0.4
+		}
+	}
+}
+
+gbbf_setup_rhomaios_pops_effect = {
+	every_scope_pop = {
+		limit = {
+			has_pop_culture = greek
+		}
+		change_pop_culture = {
+			target = cu:rhomaios
+			value = 0.90
+		}
+	}
+}
+
+gbbf_purge_turkish_homelands_effect = {
+	every_scope_state = {
+		limit = {
+			AND = {
+				NOT = { has_variable = grefm_turkish_reserve }
+				state_region = {
+					is_homeland = cu:turkish
+				}
+			}
+		}
+		add_radicals_in_state = {
+			culture = cu:turkish
+			value = small_radicals
+		}
+		state_region = {
+			remove_homeland = cu:turkish
+		}
+	}
+}
+
+############################
+
+gbbf_setup_cappadocia_effect = {
+	c:TUR = {
+		create_diplomatic_pact = {
+			country = c:BYZ_CAP
+			type = puppet
+		}
+	}
+}
+
+gbbf_setup_theodoro_effect = {
+	c:RUS = {
+		create_diplomatic_pact = {
+			country = c:GRA_THE
+			type = puppet
+		}
+		set_secret_goal = {
+			country = c:GRA_THE
+			secret_goal = protect
+		}
+		set_relations = {
+			country = c:GRA_THE
+			value = 50
+		}
+	}
+	s:STATE_CRIMEA = {
+		region_state:RUS = {
+			every_scope_pop = {
+				limit = {
+					OR = {
+						has_pop_culture = greek
+						has_pop_culture = rhomaios
+						has_pop_culture = urum
+					}
+				}
+				move_pop = s:STATE_CRIMEA.region_state:GRA_THE
+			}
+		}
+	}
+}
+
+gbbf_setup_trabzon_effect = {
+	c:TUR = {
+		create_diplomatic_pact = {
+			country = c:BYZ_TRB
+			type = puppet
+		}
+	}
+}
+
+
+############################
+
 gbbf_balkanize_effect = {
 	c:TUR ?= {
 		if = {
@@ -508,23 +618,23 @@ gbbf_balkanize_effect = {
 		if = {
 			limit  = {
 				NOT = { exists = c:SER_NIS }
-				owns_entire_state_region = STATE_SOUTHERN_SERBIA
+				owns_entire_state_region = STATE_EASTERN_SERBIA
 			}
 			create_country = {
 				tag = SER_NIS
 				origin = this
-				state = s:STATE_SOUTHERN_SERBIA.region_state:TUR
+				state = s:STATE_EASTERN_SERBIA.region_state:TUR
 			}
 		}
 		if = {
 			limit = {
 				NOT = { exists = c:SER }
-				owns_entire_state_region = STATE_NORTHERN_SERBIA
+				owns_entire_state_region = STATE_WESTERN_SERBIA
 			}
 			create_country = {
 				tag = SER
 				origin = this
-				state = s:STATE_NORTHERN_SERBIA.region_state:TUR
+				state = s:STATE_WESTERN_SERBIA.region_state:TUR
 			}
 		}
 		if = {
@@ -699,21 +809,21 @@ gbbf_turkboom_effect = {
 			limit = {
 				AND = {
 					NOT = { exists = c:SER }
-					owns_entire_state_region = STATE_SOUTHERN_SERBIA
+					owns_entire_state_region = STATE_EASTERN_SERBIA
 				}
 			}
 			create_country = {
 				tag = SER
 				origin = this
-				state = s:STATE_NORTHERN_SERBIA.region_state:TUR
-				state = s:STATE_SOUTHERN_SERBIA.region_state:TUR
+				state = s:STATE_WESTERN_SERBIA.region_state:TUR
+				state = s:STATE_EASTERN_SERBIA.region_state:TUR
 			}
 		}
 		else_if = {
 			limit = {
 				AND = {
 					exists = c:SER
-					owns_entire_state_region = STATE_SOUTHERN_SERBIA
+					owns_entire_state_region = STATE_EASTERN_SERBIA
 					owns_entire_state_region = STATE_SKOPIA
 				}
 			}
@@ -722,7 +832,7 @@ gbbf_turkboom_effect = {
 					set_state_owner = c:SER
 				}
 			}
-			s:STATE_SOUTHERN_SERBIA = {
+			s:STATE_EASTERN_SERBIA = {
 				random_scope_state = {
 					set_state_owner = c:SER
 				}
@@ -732,10 +842,10 @@ gbbf_turkboom_effect = {
 			limit = {
 				AND = {
 					exists = c:SER
-					owns_entire_state_region = STATE_SOUTHERN_SERBIA
+					owns_entire_state_region = STATE_EASTERN_SERBIA
 				}
 			}
-			s:STATE_SOUTHERN_SERBIA = {
+			s:STATE_EASTERN_SERBIA = {
 				random_scope_state = {
 					set_state_owner = c:SER
 				}
@@ -849,3 +959,10 @@ gbbf_turkboom_effect = {
 		}
 	}
 }
+
+############################
+
+eocfm_schism_cleanup_effect = {
+	post_notification = notification_turkfm_translations_provided
+}
+
