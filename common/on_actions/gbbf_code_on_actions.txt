@@ -30,7 +30,7 @@ on_monthly_pulse_country = {
 #### GBBF GENERAL PULSE
 gbbf_monthly_pulse = { # These events are monitored from all scopes
 	events = {
-		turkfm_eastern_question.009 # Adds the Eastern Question JE
+		turkfm_balkan_situation.019 # Adds the Eastern Question JE
 		turkfm_expeditions.119 # Adds the Piracy JE
 		gbbf_technical.020 # Places Yugoslav Secession Variable
 		balkfm_serbia.204 # May Assembly
@@ -79,6 +79,7 @@ grefm_monthly_pulse_1 = {
 	}
 	effect = {
 		turkfm_hellenic_separatism_effect = yes
+		grefm_check_annexation_variables_effect = yes
 	}
 }
 
@@ -100,6 +101,9 @@ grefm_monthly_pulse_2 = {
 		25 = grefm_megali_idea.201 # A Question of Homelands
 		25 = grefm_megali_idea.202 # Greek Expansion in X
 	}
+	effect = {
+		grefm_check_annexation_variables_effect = yes
+	}
 }
 
 grefm_monthly_pulse_3 = {
@@ -113,78 +117,8 @@ grefm_monthly_pulse_3 = {
 	}
 	random_events = {
 	}
-}
-
-
-#### TURKFM PULSES
-turkfm_monthly_pulse = {
-	trigger = {
-		c:TUR ?= this
-	}
-	events = {
-		turkfm_balkan_situation.199 # Adds je_turkfm_balkan_situation_main
-	}
-	random_events = {
-	}
 	effect = {
-		if = {
-			limit = {
-				has_journal_entry = je_turkfm_tanzimat_main
-			}
-			turkfm_convert_ideologies_effect = yes
-		}
-	}
-}
-
-turkfm_tri_monthly_pulse = {
-	trigger = {
-		c:TRI ?= this
-	}
-	events = {
-	}
-	random_events = {
-		100 = 0
-	}
-	effect = {
-	}
-}
-
-turkfm_tun_monthly_pulse = {
-	trigger = {
-		c:TUN ?= this
-	}
-	events = {
-	}
-	random_events = {
-		100 = 0
-	}
-	effect = {
-	}
-}
-
-turkfm_arm_monthly_pulse = {
-	trigger = {
-		country_has_primary_culture = cu:armenian
-	}
-	events = {
-	}
-	random_events = {
-		100 = 0
-	}
-	effect = {
-	}
-}
-
-turkfm_kur_monthly_pulse = {
-	trigger = {
-		country_has_primary_culture = cu:kurdish
-	}
-	events = {
-	}
-	random_events = {
-		100 = 0
-	}
-	effect = {
+		grefm_check_annexation_variables_effect = yes
 	}
 }
 
@@ -208,7 +142,7 @@ balkfm_yug_monthly_pulse = {
 		turkfm_yugoslav_separatism_effect = yes
 	}
 }
-	
+
 balkfm_mon_monthly_pulse = {
 	trigger = {
 		OR = {
@@ -218,12 +152,13 @@ balkfm_mon_monthly_pulse = {
 	events = {
 		balkfm_montenegro.006 # The Mountain Wreath
 		balkfm_montenegro.012 # Blood Revenge
+		balkfm_montenegro.017 # Building the Biljarda
 		balkfm_montenegro.900 # [TECH] Creates Historical Heirs
 	}
 	random_events = {
 		100 = 0
-		 20 = balkfm_montenegro.007 # An Intractable Illness
-		 20 = balkfm_montenegro.008 # The Passing of the Bishop
+		20 = balkfm_montenegro.007 # An Intractable Illness
+		20 = balkfm_montenegro.008 # The Passing of the Bishop
 	}
 	effect = {
 	}
@@ -317,6 +252,73 @@ balkfm_cro_monthly_pulse = {
 balkfm_slo_monthly_pulse = {
 	trigger = {
 		country_has_primary_culture = cu:slovene
+	}
+	events = {
+	}
+	random_events = {
+		100 = 0
+	}
+	effect = {
+	}
+}
+
+#### TURKFM PULSES
+turkfm_monthly_pulse = {
+	trigger = {
+		c:TUR ?= this
+	}
+	events = {
+		turkfm_tanzimat.015 # Equality Before the Law
+		turkfm_balkan_situation.199 # Adds je_turkfm_balkan_situation_main
+	}
+	random_events = {
+	}
+	effect = {
+	}
+}
+
+turkfm_tri_monthly_pulse = {
+	trigger = {
+		c:TRI ?= this
+	}
+	events = {
+	}
+	random_events = {
+		100 = 0
+	}
+	effect = {
+	}
+}
+
+turkfm_tun_monthly_pulse = {
+	trigger = {
+		c:TUN ?= this
+	}
+	events = {
+	}
+	random_events = {
+		100 = 0
+	}
+	effect = {
+	}
+}
+
+turkfm_arm_monthly_pulse = {
+	trigger = {
+		country_has_primary_culture = cu:armenian
+	}
+	events = {
+	}
+	random_events = {
+		100 = 0
+	}
+	effect = {
+	}
+}
+
+turkfm_kur_monthly_pulse = {
+	trigger = {
+		country_has_primary_culture = cu:kurdish
 	}
 	events = {
 	}
@@ -608,8 +610,6 @@ on_wargoal_enforced = {
 	on_actions = {
 		turkfm_tension_wargoal_enforced_1
 		turkfm_tension_wargoal_enforced_2
-		turkfm_crisis_wargoal_defender
-		turkfm_crisis_wargoal_attacker
 	}
 }
 
@@ -659,42 +659,6 @@ turkfm_tension_wargoal_enforced_2 = {
 			}
 			post_notification = notification_turkfm_wargoal_enforced_2
 		}
-	}
-}
-
-turkfm_crisis_wargoal_defender = { # From TUR, in the case of Ottoman victory
-	trigger = {
-		has_global_variable = turkfm_crisis_launched
-		has_variable = turkfm_crisis_target
-		scope:target = {
-			has_variable = turkfm_crisis_leader
-		}
-	}
-	effect = {
-		remove_global_variable = turkfm_crisis_launched
-		every_country = {
-			limit = {
-				turkfm_crisis_participant_trigger = yes
-			}
-			trigger_event = {
-				id = turkfm_eastern_question.108 # The Porte Triumphant
-			}
-		}
-		turkfm_force_stable_effect = yes # Skip the Congress, transition to Stable
-	}
-}
-
-turkfm_crisis_wargoal_attacker = { # From Crisis initiator, in the case of Ottoman defeat
-	trigger = {
-		has_global_variable = turkfm_crisis_launched
-		has_variable = turkfm_crisis_leader
-		scope:target = {
-			has_variable = turkfm_crisis_target
-		}
-	}
-	effect = {
-		remove_global_variable = turkfm_crisis_launched
-		turkfm_crisis_armistice_effect = yes
 	}
 }
 
