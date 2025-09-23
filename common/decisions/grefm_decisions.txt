@@ -6,12 +6,10 @@
 		}
 		owns_entire_state_region = STATE_PELOPONNESE
 	}
-	
 	possible = {
 		owns_entire_state_region = STATE_PELOPONNESE
 		has_technology_researched = railways
 	}
-	
 	when_taken = {
 		set_variable = { 
 			name = grefm_corinth_canal_var
@@ -24,7 +22,6 @@
 			add_modifier = modifier_grefm_corinth_canal_survey
 		}
 	}
-	
 	ai_chance = {
 		value = 0
 		if = {
@@ -53,12 +50,10 @@ grefm_lake_kopais_decision = {
 		}
 		owns_entire_state_region = STATE_ATTICA
 	}
-	
 	possible = {
 		owns_entire_state_region = STATE_ATTICA
 		has_technology_researched = hydraulic_cranes
 	}
-	
 	when_taken = {
 		set_global_variable = { 
 			name = grefm_lake_kopais_var
@@ -73,7 +68,6 @@ grefm_lake_kopais_decision = {
 			}
 		}
 	}
-	
 	ai_chance = {
 		value = 0
 		if = {
@@ -94,67 +88,450 @@ grefm_lake_kopais_decision = {
 	}
 }
 
-#####
-
-grefm_annex_hepatanese_decision = {
+revive_olympic_games_decision = {
 	is_shown = {
-		NOT = { has_variable = ionian_islands_var }
 		country_has_primary_culture = cu:greek
-		is_subject = no
-		exists = c:ION
-		c:ION = {
-			is_subject = yes
-			is_player = no
-			NOT = { is_subject_of = ROOT }
-			top_overlord = {
-				is_player = no
-			}
-		}
 	}
-
+	
 	possible = {
-		is_at_war = no
-		has_technology_researched = nationalism
-		country_has_primary_culture = cu:greek
-		custom_tooltip = {
-			text = hellene_annexation_possible_tt
-			any_scope_state = {
-				state_region = {
-					is_homeland = cu:greek
-				}
-				count >= 3
-			}
-		}
-		c:ION = {
-			relations:root >= relations_threshold:cordial
-			is_at_war = no
-			top_overlord = {
-				relations:root >= relations_threshold:cordial
-				NOT = { has_war_with = ROOT }
-			}
+		owns_entire_state_region = STATE_ATTICA
+		has_technology_researched = organized_sports
+		hidden_trigger = {
+			NOT = { has_variable = revive_olympics_decision_taken }
 		}
 	}
-
+	
 	when_taken = {
-		set_variable = ionian_islands_var
-		custom_tooltip = treaty_of_heptanese_event_tt
-		hidden_effect = {
-			trigger_event = {
-				id = grefm_megali_idea.100 # ION Annexation
-				days = 0
-				popup = yes
-			}
+		set_variable = {
+			name = revive_olympics_decision_taken
+			value = yes
+		}
+		add_modifier = {
+			name = modifier_olympic_games
+		}
+		add_modifier = {
+			name = modifier_olympic_games_bureaucracy
+			days = short_modifier_time
 		}
 	}
-
+	
 	ai_chance = {
-		value = 10
+		value = 0
+		if = {
+			limit = { bureaucracy > 0 }
+			add = 5
+		}
+		if = {
+			limit = {
+				OR = {
+					is_diplomatic_play_committed_participant = yes
+					is_at_war = yes
+				}
+			}
+			multiply = 0
+		}
 	}
 }
 
 
-grefm_annex_epirus_decision = {
+#####
+
+grefm_annex_hepatanese_decision = {
 	is_shown = {
+		country_has_primary_culture = cu:greek
+		grefm_has_megali_idea_trigger = no
+		c:ION ?= {
+			this != root
+			top_overlord ?= {
+				is_player = no
+			}
+		}
+		has_variable = grefm_heptanese_annex_var
+	}
+	possible = {
+		has_technology_researched = nationalism
+		c:ION ?= {
+			is_at_war = no
+			relations:root >= relations_threshold:cordial
+			trigger_if = {
+				limit = {
+					is_subject = yes
+				}
+				top_overlord ?= {
+					custom_tooltip = {
+						text = grefm_annex_heptanese_possible_1
+						NOT = { has_war_with = ROOT }
+					}
+					relations:root >= relations_threshold:cordial
+				}
+			}
+		}
+		is_at_war = no
+		is_subject = no
+		custom_tooltip = {
+			text = grefm_annex_heptanese_possible_2
+			var:grefm_heptanese_annex_var >= 60
+		}
+	}
+	when_taken = {
+		custom_tooltip = {
+			text = grefm_annex_heptanese_effect
+			trigger_event = {
+				id = grefm_megali_idea.100 # ION Annexation
+				popup = yes
+			}
+			set_variable = {
+				name = grefm_heptanese_annex_var
+				value = 0
+			}
+		}
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+grefm_annex_cyprus_decision = {
+	is_shown = {
+		country_has_primary_culture = cu:greek
+		grefm_has_megali_idea_trigger = no
+		c:CYP ?= {
+			this != root
+			top_overlord ?= {
+				is_player = no
+			}
+		}
+		has_variable = grefm_cyprus_annex_var
+	}
+	possible = {
+		has_technology_researched = nationalism
+		c:CYP ?= {
+			is_at_war = no
+			relations:root >= relations_threshold:cordial
+			trigger_if = {
+				limit = {
+					is_subject = yes
+				}
+				top_overlord ?= {
+					custom_tooltip = {
+						text = grefm_annex_cyprus_possible_1
+						NOT = { has_war_with = ROOT }
+					}
+					relations:root >= relations_threshold:cordial
+				}
+			}
+		}
+		is_at_war = no
+		is_subject = no
+		custom_tooltip = {
+			text = grefm_annex_cyprus_possible_2
+			var:grefm_cyprus_annex_var >= 60
+		}
+	}
+	when_taken = {
+		custom_tooltip = {
+			text = grefm_annex_cyprus_effect
+			trigger_event = {
+				id = grefm_megali_idea.102 # CYP Annexation
+				popup = yes
+			}
+			set_variable = {
+				name = grefm_cyprus_annex_var
+				value = 0
+			}
+		}
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+grefm_annex_crete_decision = {
+	is_shown = {
+		country_has_primary_culture = cu:greek
+		grefm_has_megali_idea_trigger = no
+		c:CRE ?= {
+			this != root
+			top_overlord ?= {
+				is_player = no
+			}
+		}
+		has_variable = grefm_crete_annex_var
+	}
+	possible = {
+		has_technology_researched = nationalism
+		c:CRE ?= {
+			is_at_war = no
+			relations:root >= relations_threshold:cordial
+			trigger_if = {
+				limit = {
+					is_subject = yes
+				}
+				top_overlord ?= {
+					custom_tooltip = {
+						text = grefm_annex_crete_possible_1
+						NOT = { has_war_with = ROOT }
+					}
+					relations:root >= relations_threshold:cordial
+				}
+			}
+		}
+		is_at_war = no
+		is_subject = no
+		custom_tooltip = {
+			text = grefm_annex_crete_possible_2
+			var:grefm_crete_annex_var >= 60
+		}
+	}
+	when_taken = {
+		custom_tooltip = {
+			text = grefm_annex_crete_effect
+			trigger_event = {
+				id = grefm_megali_idea.103 # CRE Annexation
+				popup = yes
+			}
+			set_variable = {
+				name = grefm_crete_annex_var
+				value = 0
+			}
+		}
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+grefm_annex_samos_decision = {
+	is_shown = {
+		country_has_primary_culture = cu:greek
+		grefm_has_megali_idea_trigger = no
+		c:GRE_SAM ?= {
+			this != root
+			top_overlord ?= {
+				is_player = no
+			}
+		}
+		has_variable = grefm_samos_annex_var
+	}
+	possible = {
+		has_technology_researched = nationalism
+		c:GRE_SAM ?= {
+			is_at_war = no
+			relations:root >= relations_threshold:cordial
+			trigger_if = {
+				limit = {
+					is_subject = yes
+				}
+				top_overlord ?= {
+					custom_tooltip = {
+						text = grefm_annex_samos_possible_1
+						NOT = { has_war_with = ROOT }
+					}
+					relations:root >= relations_threshold:cordial
+				}
+			}
+		}
+		is_at_war = no
+		is_subject = no
+		custom_tooltip = {
+			text = grefm_annex_samos_possible_2
+			var:grefm_samos_annex_var >= 60
+		}
+	}
+	when_taken = {
+		custom_tooltip = {
+			text = grefm_annex_samos_effect
+			trigger_event = {
+				id = grefm_megali_idea.106 # GRE_SAM Annexation
+				days = 0
+				popup = yes
+			}
+			set_variable = {
+				name = grefm_samos_annex_var
+				value = 0
+			}
+		}
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+#####
+
+grefm_annex_trabzon_decision = {
+	is_shown = {
+		country_has_primary_culture = cu:rhomaios
+		grefm_has_megali_idea_trigger = no
+		c:BYZ_TRB ?= {
+			this != root
+			top_overlord ?= {
+				is_player = no
+			}
+		}
+		has_variable = grefm_trabzon_annex_var
+	}
+	possible = {
+		has_technology_researched = nationalism
+		c:BYZ_TRB ?= {
+			is_at_war = no
+			relations:root >= relations_threshold:cordial
+			trigger_if = {
+				limit = {
+					is_subject = yes
+				}
+				top_overlord ?= {
+					custom_tooltip = {
+						text = grefm_annex_trabzon_possible_1
+						NOT = { has_war_with = ROOT }
+					}
+					relations:root >= relations_threshold:cordial
+				}
+			}
+		}
+		is_at_war = no
+		is_subject = no
+		custom_tooltip = {
+			text = grefm_annex_trabzon_possible_2
+			var:grefm_trabzon_annex_var >= 60
+		}
+	}
+	when_taken = {
+		custom_tooltip = {
+			text = grefm_annex_trabzon_effect
+			trigger_event = {
+				id = grefm_megali_idea.110 # BYZ_TRB Annexation
+				popup = yes
+			}
+			set_variable = {
+				name = grefm_trabzon_annex_var
+				value = 0
+			}
+		}
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+grefm_annex_cappadocia_decision = {
+	is_shown = {
+		country_has_primary_culture = cu:rhomaios
+		grefm_has_megali_idea_trigger = no
+		c:BYZ_CAP ?= {
+			this != root
+			top_overlord ?= {
+				is_player = no
+			}
+		}
+		has_variable = grefm_cappadocia_annex_var
+	}
+	possible = {
+		has_technology_researched = nationalism
+		c:BYZ_CAP ?= {
+			is_at_war = no
+			relations:root >= relations_threshold:cordial
+			trigger_if = {
+				limit = {
+					is_subject = yes
+				}
+				top_overlord ?= {
+					custom_tooltip = {
+						text = grefm_annex_cappadocia_possible_1
+						NOT = { has_war_with = ROOT }
+					}
+					relations:root >= relations_threshold:cordial
+				}
+			}
+		}
+		is_at_war = no
+		is_subject = no
+		custom_tooltip = {
+			text = grefm_annex_cappadocia_possible_2
+			var:grefm_cappadocia_annex_var >= 60
+		}
+	}
+	when_taken = {
+		custom_tooltip = {
+			text = grefm_annex_cappadocia_effect
+			trigger_event = {
+				id = grefm_megali_idea.111 # BYZ_CAP Annexation
+				popup = yes
+			}
+			set_variable = {
+				name = grefm_cappadocia_annex_var
+				value = 0
+			}
+		}
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+#####
+
+grefm_annex_theodoro_decision = {
+	is_shown = {
+		country_has_primary_culture = cu:urum
+		grefm_has_megali_idea_trigger = no
+		c:GRA_THE ?= {
+			this != root
+			top_overlord ?= {
+				is_player = no
+			}
+		}
+		has_variable = grefm_theodoro_annex_var
+	}
+	possible = {
+		has_technology_researched = nationalism
+		c:GRA_THE ?= {
+			is_at_war = no
+			relations:root >= relations_threshold:cordial
+			trigger_if = {
+				limit = {
+					is_subject = yes
+				}
+				top_overlord ?= {
+					custom_tooltip = {
+						text = grefm_annex_theodoro_possible_1
+						NOT = { has_war_with = ROOT }
+					}
+					relations:root >= relations_threshold:cordial
+				}
+			}
+		}
+		is_at_war = no
+		is_subject = no
+		custom_tooltip = {
+			text = grefm_annex_theodoro_possible_2
+			var:grefm_theodoro_annex_var >= 60
+		}
+	}
+	when_taken = {
+		custom_tooltip = {
+			text = grefm_annex_theodoro_effect
+			trigger_event = {
+				id = grefm_megali_idea.120 # GRA_THE Annexation
+				popup = yes
+			}
+			set_variable = {
+				name = grefm_theodoro_annex_var
+				value = 0
+			}
+		}
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+## Unused Decisions ##
+grefm_annex_epirus_decision = {
+	# GRE_EPI no longer rebels, so this button is disabled
+	
+	is_shown = {
+		always = no
 		NOT = { has_variable = grefm_epirus_var }
 		country_has_primary_culture = cu:greek
 		is_subject = no
@@ -167,7 +544,7 @@ grefm_annex_epirus_decision = {
 			is_player = no
 		}
 	}
-
+	
 	possible = {
 		is_at_war = no
 		has_technology_researched = nationalism
@@ -187,10 +564,10 @@ grefm_annex_epirus_decision = {
 			NOT = { has_truce_with = ROOT }
 		}
 	}
-
+	
 	when_taken = {
 		set_variable = grefm_epirus_var
-		custom_tooltip = treaty_of_eprius_event_tt
+#		custom_tooltip = treaty_of_eprius_event_tt
 		hidden_effect = {
 			trigger_event = {
 				id = grefm_megali_idea.101 # GRE_EPI Annexation
@@ -199,117 +576,17 @@ grefm_annex_epirus_decision = {
 			}
 		}
 	}
-
-	ai_chance = {
-		value = 10
-	}
-}
-
-grefm_annex_cyprus_decision = {
-	is_shown = {
-		NOT = { has_variable = grefm_cyprus_var }
-		country_has_primary_culture = cu:greek
-		is_subject = no
-		exists = c:CYP
-		c:CYP = {
-			is_subject = no
-			is_player = no
-			NOT = { is_subject_of = ROOT }
-		}
-	}
-
-	possible = {
-		is_at_war = no
-		has_technology_researched = nationalism
-		country_has_primary_culture = cu:greek
-		custom_tooltip = {
-			text = hellene_annexation_possible_tt
-			any_scope_state = {
-				state_region = {
-					is_homeland = cu:greek
-				}
-				count >= 3
-			}
-		}
-		c:CYP = {
-			relations:root >= relations_threshold:cordial
-			is_at_war = no
-			NOT = { has_truce_with = ROOT }
-		}
-	}
-
-	when_taken = {
-		set_variable = grefm_cyprus_var
-		custom_tooltip = treaty_of_cyprus_event_tt
-		hidden_effect = {
-			trigger_event = {
-				id = grefm_megali_idea.102 # CYP Annexation
-				days = 0
-				popup = yes
-			}
-		}
-	}
-
-	ai_chance = {
-		value = 10
-	}
-}
-
-grefm_annex_crete_decision = {
-	is_shown = {
-		NOT = { has_variable = grefm_crete_var }
-		country_has_primary_culture = cu:greek
-		is_subject = no
-		exists = c:CRE
-		c:CRE = {
-			OR = {
-				is_subject = no
-				is_subject_of = ROOT
-			}
-			is_player = no
-		}
-	}
-
-	possible = {
-		is_at_war = no
-		has_technology_researched = nationalism
-		country_has_primary_culture = cu:greek
-		custom_tooltip = {
-			text = hellene_annexation_possible_tt
-			any_scope_state = {
-				state_region = {
-					is_homeland = cu:greek
-				}
-				count >= 3
-			}
-		}
-		c:CRE = {
-			relations:root >= relations_threshold:cordial
-			is_at_war = no
-			NOT = { has_truce_with = ROOT }
-		}
-	}
-
-	when_taken = {
-		set_variable = grefm_crete_var
-		custom_tooltip = treaty_of_crete_event_tt
-		hidden_effect = {
-			trigger_event = {
-				id = grefm_megali_idea.103 # CRE Annexation
-				days = 0
-				popup = yes
-			}
-		}
-	}
-
-	ai_chance = {
-		value = 10
-	}
 	
+	ai_chance = {
+		value = 10
+	}
 }
 
 grefm_annex_macedonia_decision = {
+	# GRE_MAC no longer rebels, so this button is disabled
+	
 	is_shown = {
+		always = no
 		NOT = { has_variable = grefm_macedonia_var }
 		country_has_primary_culture = cu:greek
 		is_subject = no
@@ -320,7 +597,7 @@ grefm_annex_macedonia_decision = {
 			NOT = { is_subject_of = ROOT }
 		}
 	}
-
+	
 	possible = {
 		is_at_war = no
 		has_technology_researched = nationalism
@@ -340,10 +617,10 @@ grefm_annex_macedonia_decision = {
 			NOT = { has_truce_with = ROOT }
 		}
 	}
-
+	
 	when_taken = {
 		set_variable = grefm_macedonia_var
-		custom_tooltip = treaty_of_macedonia_event_tt
+#		custom_tooltip = treaty_of_macedonia_event_tt
 		hidden_effect = {
 			trigger_event = {
 				id = grefm_megali_idea.104 # MAC Annexation
@@ -352,160 +629,7 @@ grefm_annex_macedonia_decision = {
 			}
 		}
 	}
-
-	ai_chance = {
-		value = 10
-	}
-}
-
-grefm_annex_samos_decision = {
-	is_shown = {
-		NOT = { has_variable = grefm_samos_var }
-		country_has_primary_culture = cu:greek
-		is_subject = no
-		exists = c:GRE_SAM
-		c:GRE_SAM = {
-			OR = {
-				is_subject = no
-				is_subject_of = ROOT
-			}
-			is_player = no
-		}
-	}
-
-	possible = {
-		is_at_war = no
-		has_technology_researched = nationalism
-		country_has_primary_culture = cu:greek
-		custom_tooltip = {
-			text = hellene_annexation_possible_tt
-			any_scope_state = {
-				state_region = {
-					is_homeland = cu:greek
-				}
-				count >= 3
-			}
-		}
-		c:GRE_SAM = {
-			relations:root >= relations_threshold:cordial
-			is_at_war = no
-			NOT = { has_truce_with = ROOT }
-		}
-	}
-
-	when_taken = {
-		set_variable = grefm_samos_var
-		custom_tooltip = treaty_of_samos_event_tt
-		hidden_effect = {
-			trigger_event = {
-				id = grefm_megali_idea.106 # SAMO Annexation
-				days = 0
-				popup = yes
-			}
-		}
-	}
-
-	ai_chance = {
-		value = 10
-	}
 	
-}
-
-grefm_annex_theodoro_decision = {
-	is_shown = {
-		NOT = { has_variable = grefm_theodoro_var }
-		country_has_primary_culture = cu:rhomaios
-		is_subject = no
-		exists = c:GRA_THE
-		c:GRA_THE = {
-			is_subject = no
-			is_player = no
-			NOT = { is_subject_of = ROOT }
-		}
-	}
-
-	possible = {
-		is_at_war = no
-		has_technology_researched = nationalism
-		country_has_primary_culture = cu:rhomaios
-		custom_tooltip = {
-			text = roman_annexation_possible_tt
-			any_scope_state = {
-				state_region = {
-					is_homeland = cu:rhomaios
-				}
-				count >= 3
-			}
-		}
-		c:GRA_THE = {
-			relations:root >= relations_threshold:cordial
-			is_at_war = no
-			NOT = { has_truce_with = ROOT }
-		}
-	}
-
-	when_taken = {
-		set_variable = grefm_theodoro_var
-		custom_tooltip = treaty_of_theodoro_event_tt
-		hidden_effect = {
-			trigger_event = {
-				id = grefm_megali_idea.120 # THE Annexation
-				days = 0
-				popup = yes
-			}
-		}
-	}
-
-	ai_chance = {
-		value = 10
-	}
-}
-
-grefm_annex_trabzon_decision = {
-	is_shown = {
-		NOT = { has_variable = grefm_trabzon_var }
-		country_has_primary_culture = cu:rhomaios
-		is_subject = no
-		exists = c:BYZ_TRB
-		c:BYZ_TRB = {
-			is_subject = no
-			is_player = no
-			NOT = { is_subject_of = ROOT }
-		}
-	}
-
-	possible = {
-		is_at_war = no
-		has_technology_researched = nationalism
-		country_has_primary_culture = cu:rhomaios
-		custom_tooltip = {
-			text = roman_annexation_possible_tt
-			any_scope_state = {
-				state_region = {
-					is_homeland = cu:rhomaios
-				}
-				count >= 3
-			}
-		}
-		c:BYZ_TRB = {
-			relations:root >= relations_threshold:cordial
-			is_at_war = no
-			NOT = { has_truce_with = ROOT }
-		}
-	}
-
-	when_taken = {
-		set_variable = grefm_trabzon_var
-		custom_tooltip = treaty_of_trabzon_event_tt
-		hidden_effect = {
-			trigger_event = {
-				id = grefm_megali_idea.110 # TRB Annexation
-				days = 0
-				popup = yes
-			}
-		}
-	}
-
 	ai_chance = {
 		value = 10
 	}
