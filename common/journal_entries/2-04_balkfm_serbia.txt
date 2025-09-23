@@ -1,17 +1,14 @@
 ﻿je_balkfm_ser_monarchism = {
 	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
-
 	group = je_group_balkfm_serbia
-
 	should_be_pinned_by_default = yes
-
-	immediate = {
-	}
 
 	modifiers_while_active = {
 		modifier_balkfm_dynastic_feud
 	}
-
+	
+	scripted_button = balkfm_ser_slander_button
+	scripted_button = balkfm_ser_campaign_button
 	scripted_button = balkfm_ser_flip_consul_button
 	scripted_button = balkfm_cement_monarchy_button
 
@@ -20,7 +17,7 @@
 	complete = {
 		has_law = law_type:law_monarchy
 		custom_tooltip = {
-			text = je_balkfm_ser_monarchism_complete_tt
+			text = je_balkfm_ser_monarchism_complete
 			hidden_trigger = {
 				OR = {
 					has_modifier = modifier_balkfm_obrenovic_succession
@@ -31,8 +28,37 @@
 	}
 
 	on_complete = {
-		trigger_event = {
-			id = balkfm_serbia.019 # Mandate Secured
+		if = {
+			limit = {
+				has_dlc_feature = ip3_content # National Awakening
+			}
+			custom_tooltip = {
+				text = je_balkfm_ser_monarchism_obrenovic_outcome
+				if = {
+					limit = {
+						balkfm_has_obrenovic_ruler_trigger = yes
+					}
+				}
+				trigger_event = {
+					id = balkfm_serbia.029 # The Reckoning
+				}
+			}
+			custom_tooltip = {
+				text = je_balkfm_ser_monarchism_karadordevic_outcome
+				if = {
+					limit = {
+						balkfm_has_karadordevic_ruler_trigger = yes
+					}
+				}
+				trigger_event = {
+					id = balkfm_serbia.028 # Here to Stay
+				}
+			}
+		}
+		else = {
+			trigger_event = {
+				id = balkfm_serbia.019 # Mandate Secured
+			}
 		}
 		hidden_effect = {
 			balkfm_cleanup_dynasty_variables_effect = yes
@@ -54,6 +80,7 @@
 	on_weekly_pulse = {
 		effect = {
 			balkfm_calculate_dynastic_rivalry_variables_effect = yes
+			balkfm_update_dynasty_character_scopes_effect = yes
 		}
 	}
 
@@ -66,9 +93,14 @@
 			balkfm_serbia.012 # Austria/Russia Requests Primacy
 		}
 		random_events = {
-			300 = 0
-			1 =	balkfm_serbia.013 # Plague Outbreak!
-			1 = balkfm_serbia.014 # Abusive Garrison
+			400 = 0
+			5 =	balkfm_serbia.013 # Plague Outbreak!
+			5 = balkfm_serbia.014 # Abusive Garrison
+			5 = balkfm_serbia.020 # Clerical Publicity
+			5 = balkfm_serbia.022 # Exposing Hypocrites
+			5 = balkfm_serbia.023 # Renegade Hajduks
+			5 = balkfm_serbia.024 # Urban Rebels
+			5 = balkfm_serbia.025 # Plea for Aid
 		}
 		effect = {
 			balkfm_dynastic_rivalry_monthly_effect = yes
@@ -76,38 +108,7 @@
 	}
 
 	status_desc = {
-		first_valid = {
-			triggered_desc = {
-				desc = je_balkfm_ser_monarchism_status_1
-				trigger = {
-					has_variable = balkfm_constitution_pending
-				}
-			}
-			triggered_desc = {
-				desc = je_balkfm_ser_monarchism_status_2
-				trigger = {
-					balkfm_leading_dynasty_value < 50
-				}
-			}
-			triggered_desc = {
-				desc = je_balkfm_ser_monarchism_status_3
-				trigger = {
-					var:balkfm_obrenovic_support_var > var:balkfm_karadordevic_support_var
-				}
-			}
-			triggered_desc = {
-				desc = je_balkfm_ser_monarchism_status_4
-				trigger = {
-					var:balkfm_obrenovic_support_var < var:balkfm_karadordevic_support_var
-				}
-			}
-			triggered_desc = {
-				desc = je_balkfm_ser_monarchism_status_5
-				trigger = {
-					var:balkfm_obrenovic_support_var = var:balkfm_karadordevic_support_var
-				}
-			}
-		}
+		desc = je_balkfm_ser_monarchism_status
 	}
 
 	weight = 1000
@@ -116,9 +117,7 @@
 
 je_balkfm_ser_defenders = {
 	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
-
 	group = je_group_balkfm_serbia
-
 	should_be_pinned_by_default = yes
 
 	immediate = {
@@ -185,10 +184,12 @@ je_balkfm_ser_defenders = {
 
 je_balkfm_ser_serbian_heartlands = {
 	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
-
 	group = je_group_balkfm_serbia
-
 	should_be_pinned_by_default = yes
+
+	is_shown_in_lobby = {
+		c:SER ?= this
+	}
 
 	is_shown_when_inactive = {
 		c:SER ?= this
@@ -205,8 +206,8 @@ je_balkfm_ser_serbian_heartlands = {
 	}
 
 	complete = {
-		owns_entire_state_region = STATE_NORTHERN_SERBIA
-		owns_entire_state_region = STATE_SOUTHERN_SERBIA
+		owns_entire_state_region = STATE_WESTERN_SERBIA
+		owns_entire_state_region = STATE_EASTERN_SERBIA
 		owns_entire_state_region = STATE_SKOPIA
 	}
 
@@ -239,9 +240,7 @@ je_balkfm_ser_serbian_heartlands = {
 
 je_balkfm_ser_greater_serbia = {
 	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
-
 	group = je_group_balkfm_serbia
-
 	should_be_pinned_by_default = yes
 
 	immediate = {
@@ -281,4 +280,27 @@ je_balkfm_ser_greater_serbia = {
 
 	weight = 1000
 
+}
+
+####################
+
+je_balkfm_ser_monarchism_dummy_1 = {
+	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
+	group = je_group_balkfm_serbia
+	is_shown_in_lobby = {
+		c:SER ?= this
+		NOT = {
+			has_dlc_feature = ip3_content # National Awakening
+		}
+	}
+	weight = 0
+}
+je_balkfm_ser_monarchism_dummy_2 = {
+	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
+	group = je_group_balkfm_serbia
+	is_shown_in_lobby = {
+		c:SER ?= this
+		has_dlc_feature = ip3_content # National Awakening
+	}
+	weight = 0
 }
