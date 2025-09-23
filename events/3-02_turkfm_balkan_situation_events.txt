@@ -15,7 +15,7 @@ namespace = turkfm_balkan_situation
 
 # The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
 
-#000-009 - Tension Narrative Events
+#000-009 - Balkan Situation Narrative Events
 #	001 - The Peoples of the Empire
 #	002 - The Rise of Nationalism
 #	003 - Nationalist Movements Intensify
@@ -26,7 +26,16 @@ namespace = turkfm_balkan_situation
 #	008 - Rumelia Lost
 #	009 - Dominion Over Rumelia
 
-#100-109 - Tension Neutral Events
+#010-019 - Eastern Question Narrative Events
+#	010 - The Eastern Question
+#	019 - Adds the Eastern Question JE [TECH]
+
+#020-029 - Balkan Crisis Narrative Events
+#	020 - A Crisis in Rumelia (TUR)
+#	021 - A Crisis in Rumelia (Involved)
+#	029 - Order Returns to Rumelia
+
+#100-109 - Balkan Situation Neutral Events
 #	100 - Extortionate Taxation in State
 #	101 - Plague Outbreak in State
 #	102 - Ecumenical Patriarch Demands Protections
@@ -38,7 +47,7 @@ namespace = turkfm_balkan_situation
 #	108 - Villages Request Schools
 #	109 - Revivalist Publications
 
-#110-119 - Tension Unrest Events
+#110-119 - Balkan Situation Unrest Events
 #	110 - Storefronts Ransacked
 #	111 - Minority Rejects Classification
 #	112 - Shipping Merchants Held Up
@@ -50,7 +59,7 @@ namespace = turkfm_balkan_situation
 #	118 - Villagers Displaced in State
 #	119 - Brigands Cross the Border
 
-#120-129 - Tension Hostility Events
+#120-129 - Balkan Situation Hostility Events
 #	120 - Churches Burned in State
 #	121 - Popular Speaker Lynched in State
 #	122 - Brigandage in State
@@ -62,38 +71,50 @@ namespace = turkfm_balkan_situation
 #	128 - Local Garrison Fires into Crowd
 #	129 - Railways Bombed in State
 
-#130-139 - Tension Deconfliction Events
+#130-139 - Balkan Situation Deconfliction Events
 #	130 - Dragoman Reduces Tensions
 #	131 - Inter-faith Dialogue
 #	132 - Great Power Mediates Local Conflict
 #	133 - Spy Ring Busted
-#	134 - 
-#	135 - 
-#	136 - 
-#	137 - 
-#	138 - 
+#	134 - ##
+#	135 - ##
+#	136 - ##
+#	137 - ##
+#	138 - ##
 #	139 - Great Power Intervenes in Riots
 
-#190-190 - Tension Technical Events
+#140-149 - Balkan Situation Riot Events
+#	140 - Fortress in State Besieged
+#	141 - Crowds Burn Administrative Palace
+#	142 - IG Sides with Minorities
+#	143 - Ulema Mobilizes the Faithful
+#	144 - Armed Forces Requests Intervention
+#	145 - ##
+#	146 - ##
+#	147 - Rioting Worsens in State
+#	148 - Massacre in State
+#	149 - Crowds Dispersed in State
+
+#180-189 - Balkan Situation Involved Events
+#	180 - Brigands Raid Turkish Lands
+#	181 - Gun-Runners Arrested
+#	182 - Diplomat Offers Mediation -> turkfm_balkan_situation.132
+#	183 - ##Priest Murdered in State
+#	184 - ##Wali of State Exceeds Authority
+#	185 - ##
+#	186 - ##
+#	187 - ##
+#	188 - ##Activists Call for Famine Relief
+# 	189 - ##Activists Denounce Riots
+
+#190-190 - Balkan Situation Technical Events
 #	190 - Ottoman Humiliation Monitor Event
 #	191 - Ottoman Rivalry Monitor Event
 #	192 - Ottoman Alliance Monitor Event
 
-#200-209 - Tension Riot Events
-#	200 - Fortress in State Besieged
-#	201 - Crowds Burn Administrative Palace
-#	202 - IG Sides with Minorities
-#	203 - Ulema Mobilizes the Faithful
-#	204 - Armed Forces Requests Intervention
-#	205 - 
-#	206 - 
-#	207 - Rioting Worsens in State
-#	208 - Massacre in State
-#	209 - Crowds Dispersed in State
-
 ####################
 
-## Tension Narrative Events ##
+## Balkan Situation Narrative Events ##
 turkfm_balkan_situation.001 = { # The Peoples of the Empire
 	type = country_event
 	placement = root
@@ -914,8 +935,216 @@ turkfm_balkan_situation.009 = { # Region Secured
 
 }
 
+## Eastern Question Narrative Events ##
+turkfm_balkan_situation.011 = { # The Eastern Question
+	type = country_event
+	placement = root
+	
+	title = turkfm_balkan_situation.011.t
+	desc = turkfm_balkan_situation.011.d
+	flavor = turkfm_balkan_situation.011.f
+	
+	gui_window = event_window_widescreen_newspaper
+	
+	event_image = {
+		video = "turkfm_golden_horn"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by turkfm_balkan_situation.019
+	}
+	
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		set_variable = turkfm_eqfm_started
+	}
+	
+	option = {
+		name = turkfm_balkan_situation.011.a
+		default_option = yes
+		custom_tooltip = turkfm_no_effects
+	}
+	
+}
 
-## Tension Neutral Events ##
+turkfm_balkan_situation.019 = { # Adds the Eastern Question JE
+	type = country_event
+	placement = root
+	hidden = yes
+	
+	trigger = {
+		exists = c:TUR
+		c:TUR ?= {
+			has_diplomatic_relevance = root
+			any_scope_state = {
+				region = sr:region_balkans
+			}
+		}
+		NOR = {
+			has_global_variable = turkfm_separatism_complete
+			has_journal_entry = je_turkfm_eastern_question
+			has_journal_entry = je_turkfm_balkan_situation_main
+		}
+	}
+	
+	cooldown = {
+		months = 3
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				has_variable = turkfm_eqfm_started
+			}
+			add_journal_entry = {
+				type = je_turkfm_eastern_question
+			}
+		}
+		else = {
+			set_variable = turkfm_eqfm_started
+			add_journal_entry = {
+				type = je_turkfm_eastern_question
+			}
+			trigger_event = {
+				id = turkfm_balkan_situation.011 # The Eastern Question
+			}
+		}
+	}
+	
+}
+
+## Balkan Crisis Narrative Events ##
+turkfm_balkan_situation.020 = { # A Crisis in Rumelia
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = turkfm_balkan_situation.020.t
+	desc = turkfm_balkan_situation.020.d
+	flavor = turkfm_balkan_situation.020.f
+	
+	gui_window = event_window_1char_adventure
+	left_icon = scope:left_icon
+	
+	event_image = {
+		video = "turkfm_balkan_crisis"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by turkfm_check_balkan_situation_phase_effect
+	}
+	
+	immediate = {
+		c:TUR = {
+			ruler = {
+				save_scope_as = left_icon
+			}
+			save_scope_as = ottoman_scope
+		}
+	}
+	
+	option = {
+		name = turkfm_balkan_situation.020.a
+		default_option = yes
+		custom_tooltip = turkfm_no_effects
+	}
+}
+
+turkfm_balkan_situation.021 = { # A Crisis in Rumelia
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = turkfm_balkan_situation.021.t
+	desc = turkfm_balkan_situation.021.d
+	flavor = turkfm_balkan_situation.021.f
+	
+	gui_window = event_window_1char_adventure
+	left_icon = scope:left_icon
+	
+	event_image = {
+		video = "turkfm_balkan_crisis"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by turkfm_check_balkan_situation_phase_effect
+	}
+	
+	immediate = {
+		c:TUR = {
+			ruler = {
+				save_scope_as = left_icon
+			}
+			save_scope_as = ottoman_scope
+		}
+	}
+	
+	option = {
+		name = turkfm_balkan_situation.021.a
+		default_option = yes
+		custom_tooltip = turkfm_no_effects
+	}
+	
+}
+
+turkfm_balkan_situation.029 = { # Order Returns to Rumelia
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = turkfm_balkan_situation.029.t
+	desc = turkfm_balkan_situation.029.d
+	flavor = turkfm_balkan_situation.029.f
+	
+	gui_window = event_window_1char_adventure
+	left_icon = scope:left_icon
+	
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_turkish_palace1.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/unspecific/military_parade"
+	
+	trigger = {
+		# triggered by turkfm_check_balkan_situation_phase_effect
+	}
+	
+	immediate = {
+		c:TUR = {
+			ruler = {
+				save_scope_as = left_icon
+			}
+			save_scope_as = ottoman_scope
+		}
+	}
+	
+	option = {
+		name = turkfm_balkan_situation.029.a
+		default_option = yes
+		custom_tooltip = turkfm_no_effects
+	}
+	
+}
+
+## Balkan Situation Neutral Events ##
 turkfm_balkan_situation.100 = { # Extortionate Taxation in State
 	type = country_event
 	placement = scope:turkfm_tension_state_scope
@@ -938,10 +1167,7 @@ turkfm_balkan_situation.100 = { # Extortionate Taxation in State
 
 	trigger = {
 		turkfm_neutral_events_trigger = yes
-		OR = {
-			has_law = law_type:law_turkfm_religious_autonomy
-			has_law = law_type:law_turkfm_nominal_equality
-		}
+		has_law = law_type:law_millet_system
 		any_scope_state = {
 			region = sr:region_balkans
 			NOR = {
@@ -1124,7 +1350,7 @@ turkfm_balkan_situation.102 = { # Ecumenical Patriarch Demands Protections
 		NOT = {
 			has_variable = turkfm_firman_requested
 		}
-		has_variable = eocfm_controls_constantinople
+		owns_entire_state_region = STATE_EASTERN_THRACE
 	}
 
 	immediate = {
@@ -1204,10 +1430,7 @@ turkfm_balkan_situation.103 = { # The Language of Paperwork
 
 	trigger = {
 		turkfm_neutral_events_trigger = yes
-		OR = {
-			has_law = law_type:law_turkfm_judicial_standardization
-			has_law = law_type:law_turkfm_nominal_equality
-		}
+		has_law = law_type:law_millet_system
 		any_scope_state = {
 			region = sr:region_balkans
 			NOR = {
@@ -1527,9 +1750,7 @@ turkfm_balkan_situation.106 = { # Local Bey Exceeds Authority
 
 	trigger = {
 		turkfm_neutral_events_trigger = yes
-		NOT = {
-			has_law = law_type:law_turkfm_millet_abolished
-		}
+		has_law = law_type:law_millet_system
 		any_scope_state = {
 			region = sr:region_balkans
 			NOR = {
@@ -1628,9 +1849,7 @@ turkfm_balkan_situation.107 = { # Church Services Disrupted
 
 	trigger = {
 		turkfm_neutral_events_trigger = yes
-		NOT = {
-			has_law = law_type:law_turkfm_religious_autonomy
-		}
+		has_law = law_type:law_millet_system
 		any_scope_state = {
 			region = sr:region_balkans
 			NOT = {
@@ -1980,7 +2199,7 @@ turkfm_balkan_situation.109 = { # Revivalist Publications
 
 }
 
-## Tension Unrest Events ##
+## Balkan Situation Unrest Events ##
 turkfm_balkan_situation.110 = { # Storefronts Ransacked
 	type = country_event
 	placement = scope:turkfm_tension_state_scope
@@ -2123,10 +2342,7 @@ turkfm_balkan_situation.111 = { # Minority Rejects Classification
 
 	trigger = {
 		turkfm_unrest_events_trigger = yes
-		OR = {
-			has_law = law_type:law_turkfm_religious_autonomy
-			has_law = law_type:law_turkfm_nominal_equality
-		}
+		has_law = law_type:law_millet_system
 		NOR = {
 			has_modifier = modifier_turkfm_enforced_millets
 			has_modifier = modifier_turkfm_millets_eroding
@@ -2478,10 +2694,7 @@ turkfm_balkan_situation.114 = { # Language Bans in State
 			has_variable = turkfm_language_ban_considered
 		}
 		turkfm_unrest_events_trigger = yes
-		OR = {
-			has_law = law_type:law_turkfm_religious_autonomy
-			has_law = law_type:law_turkfm_nominal_equality
-		}
+		has_law = law_type:law_millet_system
 		NOR = {
 			has_law = law_type:law_protected_speech
 			has_law = law_type:law_guaranteed_liberties
@@ -2576,10 +2789,7 @@ turkfm_balkan_situation.114 = { # Language Bans in State
 		}
 		highlighted_option = yes
 		trigger = {
-			OR = {
-				has_law = law_type:law_turkfm_religious_autonomy
-				has_law = law_type:law_turkfm_nominal_equality
-			}
+			has_law = law_type:law_millet_system
 		}
 		every_scope_state = {
 			limit = {
@@ -2727,7 +2937,7 @@ turkfm_balkan_situation.115 = { # Gun-Runners Intercepted (Greek)
 		}
 		scope:turkfm_tension_country_scope = {
 			trigger_event = {
-				id = turkfm_eastern_question.011 # Gun-Runners Arrested
+				id = turkfm_balkan_situation.181 # Gun-Runners Arrested
 			}
 			create_incident = {
 				country = root
@@ -2829,7 +3039,7 @@ turkfm_balkan_situation.116 = { # Gun-Runners Intercepted (Yugoslav)
 		}
 		scope:turkfm_tension_country_scope = {
 			trigger_event = {
-				id = turkfm_eastern_question.011 # Gun-Runners Arrested
+				id = turkfm_balkan_situation.181 # Gun-Runners Arrested
 			}
 			create_incident = {
 				country = root
@@ -3198,7 +3408,7 @@ turkfm_balkan_situation.119 = { # Brigands Cross the Border
 		}
 		scope:turkfm_tension_country_scope = {
 			trigger_event = {
-				id = turkfm_eastern_question.010 # Brigands Raid Turkish Lands
+				id = turkfm_balkan_situation.180 # Brigands Raid Turkish Lands
 			}
 		}
 		turkfm_add_small_escalation_effect = yes
@@ -3243,7 +3453,7 @@ turkfm_balkan_situation.119 = { # Brigands Cross the Border
 
 }
 
-## Tension Hostility Events ##
+## Balkan Situation Hostility Events ##
 turkfm_balkan_situation.120 = { # Churches Burned in State
 	type = country_event
 	placement = scope:turkfm_tension_state_scope
@@ -4285,7 +4495,7 @@ turkfm_balkan_situation.129 = { # Railways Bombed in State
 
 }
 
-## Tension Deconfliction Events ##
+## Balkan Situation Deconfliction Events ##
 turkfm_balkan_situation.130 = { # Dragoman Reduces Tensions
 	type = country_event
 	placement = scope:turkfm_tension_state_scope
@@ -4418,7 +4628,7 @@ turkfm_balkan_situation.132 = { # Great Power Mediates Local Conflict
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by turkfm_eastern_question.012
+		# triggered by turkfm_balkan_situation.182
 	}
 
 	immediate = {
@@ -4640,7 +4850,1232 @@ turkfm_balkan_situation.139 = { # Great Power Intervenes in Riots
 
 }
 
-## Tension Technical Events ##
+## Balkan Situation Riot Events ##
+turkfm_balkan_situation.140 = { # Fortress in State Besieged
+	type = country_event
+	placement = scope:turkfm_riot_state_scope
+	
+	title = turkfm_balkan_situation.140.t
+	desc = turkfm_balkan_situation.140.d
+	flavor = turkfm_balkan_situation.140.f
+	
+	event_image = {
+		video = "votp_barricade"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		turkfm_hostility_events_trigger = yes
+		any_scope_state = {
+			has_modifier = modifier_turkfm_race_riots
+			any_scope_building = {
+				is_building_type = building_barracks
+			}
+			NOR = {
+				has_modifier = modifier_turkfm_garrison_entrenched
+				has_modifier = modifier_turkfm_garrison_disarmed
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_balkan_situation_riots
+		}
+	}
+	
+	immediate = {
+		turkfm_tension_cooldown_effect = yes
+		random_scope_state = {
+			limit = {
+				has_modifier = modifier_turkfm_race_riots
+				any_scope_building = {
+					is_building_type = building_barracks
+				}
+				NOR = {
+					has_modifier = modifier_turkfm_garrison_entrenched
+					has_modifier = modifier_turkfm_garrison_disarmed
+				}
+			}
+			save_scope_as = turkfm_riot_state_scope
+		}
+	}
+	
+	option = { # Soldiers mad they can't leave
+		name = turkfm_balkan_situation.140.a
+		default_option = yes
+		scope:turkfm_riot_state_scope = {
+			add_radicals_in_state = {
+				value = medium_radicals
+				pop_type = soldiers
+			}
+			add_modifier = {
+				name = modifier_turkfm_garrison_entrenched
+				days = short_modifier_time
+			}
+		}
+		random_list = {
+			2 = {
+				turkfm_add_small_deescalation_effect = yes
+			}
+			1 = {
+				turkfm_add_medium_escalation_effect = yes
+			}
+		}
+	}
+	
+	option = { # Officers mad you let them leave
+		name = turkfm_balkan_situation.140.b
+		scope:turkfm_riot_state_scope = {
+			add_radicals_in_state = {
+				value = medium_radicals
+				pop_type = officers
+			}
+			add_modifier = {
+				name = modifier_turkfm_garrison_disarmed
+				days = short_modifier_time
+			}
+		}
+		random_list = {
+			1 = {
+				turkfm_add_medium_deescalation_effect = yes
+			}
+			2 = {
+				turkfm_add_small_escalation_effect = yes
+			}
+		}
+	}
+	
+}
+
+turkfm_balkan_situation.141 = { # Crowds Burn Administrative Palace
+	type = country_event
+	placement = scope:turkfm_riot_state_scope
+	
+	title = turkfm_balkan_situation.141.t
+	desc = turkfm_balkan_situation.141.d
+	flavor = turkfm_balkan_situation.141.f
+	
+	event_image = {
+		video = "unspecific_vandalized_storefront"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		turkfm_hostility_events_trigger = yes
+		any_scope_state = {
+			has_modifier = modifier_turkfm_race_riots
+		}
+		any_scope_state = {
+			has_modifier = modifier_turkfm_race_riots
+			any_scope_building = {
+				is_building_type = building_government_administration
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_balkan_situation_riots
+		}
+	}
+	
+	immediate = {
+		turkfm_tension_cooldown_effect = yes
+		random_scope_state = {
+			limit = {
+				has_modifier = modifier_turkfm_race_riots
+				any_scope_building = {
+					is_building_type = building_government_administration
+				}
+			}
+			save_scope_as = turkfm_riot_state_scope
+		}
+	}
+	
+	option = { # Where are the cops?
+		name = turkfm_balkan_situation.141.a
+		default_option = yes
+		random_list = {
+			1 = {
+				scope:turkfm_riot_state_scope = {
+					add_radicals_in_state = {
+						value = medium_radicals
+					}
+				}
+			}
+			1 = {
+				turkfm_add_medium_deescalation_effect = yes
+			}
+		}
+	}
+	
+	option = { # Deploy the Garrison
+		name = turkfm_balkan_situation.141.b
+		trigger = {
+			scope:turkfm_riot_state_scope = {
+				NOT = {
+					has_modifier = modifier_turkfm_garrison_disarmed
+				}
+			}
+		}
+		show_as_unavailable = {
+			always = yes
+		}
+		highlighted_option = yes
+		random_list = {
+			1 = {
+				scope:turkfm_riot_state_scope = {
+					add_loyalists_in_state = {
+						value = small_radicals
+					}
+				}
+			}
+			1 = {
+				turkfm_add_small_escalation_effect = yes
+			}
+		}
+		add_modifier = {
+			name = modifier_turkfm_deployed_garrison
+			multiplier = money_amount_multiplier_small
+			days = short_modifier_time
+		}
+	}
+}
+
+turkfm_balkan_situation.142 = { # IG Sides with Minorities
+	type = country_event
+	placement = scope:turkfm_riot_state_scope
+	
+	title = turkfm_balkan_situation.142.t
+	desc = turkfm_balkan_situation.142.d
+	flavor = turkfm_balkan_situation.142.f
+	
+	event_image = {
+		video = "africa_leader_arguing"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/bicorne_hat.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		turkfm_hostility_events_trigger = yes
+		any_scope_state = {
+			has_modifier = modifier_turkfm_race_riots
+		}
+		NOT = {
+			has_law = law_type:law_no_police
+		}
+		any_interest_group = {
+			ig_approval < -10
+			is_marginal = no
+			law_stance = {
+				law = law_type:law_multicultural
+				value > neutral
+			}
+			NOR = {
+				has_modifier = modifier_turkfm_membership_arrested
+				has_modifier = modifier_turkfm_supporting_protests
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_balkan_situation_riots
+		}
+	}
+	
+	immediate = {
+		turkfm_tension_cooldown_effect = yes
+		random_scope_state = {
+			limit = {
+				has_modifier = modifier_turkfm_race_riots
+			}
+			save_scope_as = turkfm_riot_state_scope
+		}
+		random_interest_group = {
+			limit = {
+				ig_approval < -10
+				is_marginal = no
+				law_stance = {
+					law = law_type:law_multicultural
+					value > neutral
+				}
+				NOR = {
+					has_modifier = modifier_turkfm_membership_arrested
+					has_modifier = modifier_turkfm_supporting_protests
+				}
+			}
+			save_scope_as = turkfm_riot_ig_scope
+		}
+	}
+	
+	option = { # Round them up!
+		name = turkfm_balkan_situation.142.a
+		default_option = yes
+		turkfm_add_medium_deescalation_effect = yes
+		scope:turkfm_riot_ig_scope = {
+			add_modifier = {
+				name = modifier_turkfm_membership_arrested
+				days = short_modifier_time
+			}
+			leader = {
+				exile_character = yes
+			}
+		}
+	}
+	
+	option = { # Publish an expose
+		name = turkfm_balkan_situation.142.b
+		scope:turkfm_riot_ig_scope = {
+			add_modifier = {
+				name = modifier_turkfm_supporting_protests
+				days = short_modifier_time
+			}
+		}
+	}
+	
+}
+
+turkfm_balkan_situation.143 = { # Ulema Mobilizes the Faithful
+	type = country_event
+	placement = scope:turkfm_riot_state_scope
+	
+	title = turkfm_balkan_situation.143.t
+	desc = turkfm_balkan_situation.143.d
+	flavor = turkfm_balkan_situation.143.f
+	
+	event_image = {
+		video = "votp_agitator_speaking"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		turkfm_hostility_events_trigger = yes
+		any_scope_state = {
+			has_modifier = modifier_turkfm_race_riots
+		}
+		ig:ig_devout = {
+			NOT = {
+				has_modifier = modifier_turkfm_religious_fervor
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_balkan_situation_riots
+		}
+	}
+	
+	immediate = {
+		turkfm_tension_cooldown_effect = yes
+		random_scope_state = {
+			limit = {
+				has_modifier = modifier_turkfm_race_riots
+			}
+			save_scope_as = turkfm_riot_state_scope
+		}
+		ig:ig_devout = {
+			save_scope_as = turkfm_riot_ig_scope
+		}
+	}
+	
+	option = { # Our Imams know best
+		name = turkfm_balkan_situation.143.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_religious_fervor
+			days = normal_modifier_time
+		}
+		ig:ig_devout = {
+			add_modifier = {
+				name = modifier_turkfm_popular_imam
+				days = normal_modifier_time
+			}
+		}
+		scope:turkfm_riot_state_scope = {
+			add_radicals_in_state = {
+				religion = rel:orthodox
+				value = medium_radicals
+			}
+			add_loyalists_in_state = {
+				religion = rel:sunni
+				value = medium_radicals
+			}
+		}
+		turkfm_add_medium_escalation_effect = yes
+	}
+	
+	option = { # Shut him up before things get worse
+		name = turkfm_balkan_situation.143.b
+		add_modifier = {
+			name = modifier_turkfm_religious_fervor
+			days = normal_modifier_time
+		}
+		ig:ig_devout = {
+			add_modifier = {
+				name = modifier_turkfm_imam_muzzled
+				days = normal_modifier_time
+			}
+		}
+		scope:turkfm_riot_state_scope = {
+			add_loyalists_in_state = {
+				religion = rel:orthodox
+				value = medium_radicals
+			}
+			add_radicals_in_state = {
+				religion = rel:sunni
+				value = medium_radicals
+			}
+		}
+		turkfm_add_small_deescalation_effect = yes
+	}
+	
+}
+
+turkfm_balkan_situation.144 = { # Armed Forces Requests Intervention
+	type = country_event
+	placement = root
+	
+	title = turkfm_balkan_situation.144.t
+	desc = turkfm_balkan_situation.144.d
+	flavor = turkfm_balkan_situation.144.f
+	
+	event_image = {
+		video = "europenorthamerica_before_the_battle"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		turkfm_hostility_events_trigger = yes
+		any_scope_state = {
+			has_modifier = modifier_turkfm_race_riots
+		}
+		ig:ig_armed_forces = {
+			NOR = {
+				has_modifier = modifier_turkfm_intervention_denied
+				has_modifier = modifier_turkfm_intervention_granted
+			}
+			ig_approval > 5
+			leader = {
+				NOR = {
+					has_ideology = ideology:ideology_pacifist
+					has_ideology = ideology:ideology_radical
+					has_ideology = ideology:ideology_anarchist
+				}
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_balkan_situation_riots
+		}
+	}
+	
+	immediate = {
+		turkfm_tension_cooldown_effect = yes
+		random_scope_state = {
+			limit = {
+				has_modifier = modifier_turkfm_race_riots
+			}
+			save_scope_as = turkfm_riot_state_scope
+		}
+		ig:ig_armed_forces = {
+			save_scope_as = turkfm_riot_ig_scope
+		}
+	}
+	
+	option = { # Grant the Order
+		name = turkfm_balkan_situation.144.a
+		default_option = yes
+		ig:ig_armed_forces = {
+			add_modifier = {
+				name = modifier_turkfm_intervention_granted
+				days = normal_modifier_time
+			}
+		}
+		scope:turkfm_riot_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_military_intervention
+				days = short_modifier_time
+			}
+		}
+		add_radicals = {
+			religion = rel:orthodox
+			value = medium_radicals
+		}
+		random_list = {
+			2 = {
+				turkfm_add_small_deescalation_effect = yes
+			}
+			1 = {
+				turkfm_add_medium_escalation_effect = yes
+			}
+		}
+	}
+	
+	option = { # Have them pack up and leave
+		name = turkfm_balkan_situation.144.b
+		ig:ig_armed_forces = {
+			add_modifier = {
+				name = modifier_turkfm_intervention_denied
+				days = normal_modifier_time
+			}
+		}
+		add_radicals = {
+			pop_type = officers
+			value = medium_radicals
+		}
+		turkfm_add_small_escalation_effect = yes
+	}
+	
+}
+
+turkfm_balkan_situation.147 = { # Rioting Worsens in State
+	type = country_event
+	placement = scope:turkfm_riot_state_scope
+	
+	title = turkfm_balkan_situation.147.t
+	desc = turkfm_balkan_situation.147.d
+	flavor = turkfm_balkan_situation.147.f
+	
+	event_image = {
+		video = "europenorthamerica_springtime_of_nations"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		turkfm_hostility_events_trigger = yes
+		any_scope_state = {
+			has_modifier = modifier_turkfm_race_riots
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_balkan_situation_riots
+		}
+	}
+	
+	immediate = {
+		turkfm_tension_cooldown_effect = yes
+		random_scope_state = {
+			limit = {
+				has_modifier = modifier_turkfm_race_riots
+			}
+			save_scope_as = turkfm_riot_state_scope
+			set_variable = turkfm_riot_state_var
+		}
+	}
+	
+	option = { # Leave it to local officers
+		name = turkfm_balkan_situation.147.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_deployed_garrison
+			multiplier = money_amount_multiplier_very_small
+			days = short_modifier_time
+		}
+		scope:turkfm_riot_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_mass_arrests
+				days = short_modifier_time
+			}
+			if = {
+				limit = {
+					any_scope_pop = {
+						has_pop_religion = orthodox
+					}
+				}
+				add_radicals_in_state = {
+					religion = rel:orthodox
+					value = large_radicals
+				}
+			}
+			if = {
+				limit = {
+					any_scope_pop = {
+						has_pop_religion = oriental_orthodox
+					}
+				}
+				add_radicals_in_state = {
+					religion = rel:oriental_orthodox
+					value = large_radicals
+				}
+			}
+		}
+		every_political_movement = {
+			limit = {
+				turkfm_cultural_minority_movement_trigger = yes
+			}
+			add_modifier = {
+				name = modifier_turkfm_increased_radicalism
+				months = 24
+				is_decaying = yes
+			}
+		}
+		turkfm_add_medium_escalation_effect = yes
+		hidden_effect = {
+			random_list = {
+				50 = {
+					trigger_event = {
+						id = turkfm_balkan_situation.148 # Massacre in State
+						days = 15
+					}
+				}
+				50 = {
+					trigger_event = {
+						id = turkfm_balkan_situation.149 # Crowds Dispersed in State
+						days = 15
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Let them protest
+		name = turkfm_balkan_situation.147.b
+		scope:turkfm_riot_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_massive_riots
+				days = short_modifier_time
+			}
+			if = {
+				limit = {
+					any_scope_pop = {
+						has_pop_religion = orthodox
+					}
+				}
+				add_radicals_in_state = {
+					religion = rel:orthodox
+					value = medium_radicals
+				}
+			}
+			if = {
+				limit = {
+					any_scope_pop = {
+						has_pop_religion = oriental_orthodox
+					}
+				}
+				add_radicals_in_state = {
+					religion = rel:oriental_orthodox
+					value = medium_radicals
+				}
+			}
+			remove_variable = turkfm_riot_state_var
+		}
+		every_political_movement = {
+			limit = {
+				is_political_movement_type = movement_cultural_majority
+			}
+			add_modifier = {
+				name = modifier_turkfm_increased_radicalism
+				months = 24
+				is_decaying = yes
+			}
+		}
+		add_radicals = {
+			religion = rel:sunni
+			value = medium_radicals
+		}
+		turkfm_add_large_escalation_effect = yes
+	}
+	
+	option = { # Send the military
+		name = turkfm_balkan_situation.147.c
+		add_modifier = {
+			name = modifier_turkfm_deployed_army
+			multiplier = money_amount_multiplier_medium
+			days = short_modifier_time
+		}
+		scope:turkfm_riot_state_scope = {
+			add_modifier = {
+				name = modifier_turkfm_military_intervention
+				days = short_modifier_time
+			}
+			if = {
+				limit = {
+					any_scope_pop = {
+						has_pop_religion = orthodox
+					}
+				}
+				add_radicals_in_state = {
+					religion = rel:orthodox
+					value = very_large_radicals
+				}
+			}
+			if = {
+				limit = {
+					any_scope_pop = {
+						has_pop_religion = oriental_orthodox
+					}
+				}
+				add_radicals_in_state = {
+					religion = rel:oriental_orthodox
+					value = very_large_radicals
+				}
+			}
+			add_loyalists_in_state = {
+				religion = rel:sunni
+				value = very_large_radicals
+			}
+		}
+		every_political_movement = {
+			limit = {
+				turkfm_cultural_minority_movement_trigger = yes
+			}
+			add_modifier = {
+				name = modifier_turkfm_greatly_increased_radicalism
+				months = 24
+				is_decaying = yes
+			}
+		}
+		turkfm_add_medium_deescalation_effect = yes
+		hidden_effect = {
+			random_list = {
+				80 = {
+					trigger_event = {
+						id = turkfm_balkan_situation.148 # Massacre in State
+						days = 15
+					}
+				}
+				20 = {
+					trigger_event = {
+						id = turkfm_balkan_situation.149 # Crowds Dispersed in State
+						days = 15
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+turkfm_balkan_situation.148 = { # Massacre in State
+	type = country_event
+	placement = root
+	
+	title = turkfm_balkan_situation.148.t
+	desc = turkfm_balkan_situation.148.d
+	flavor = turkfm_balkan_situation.148.f
+	
+	event_image = {
+		video = "middleeast_police_breaking_door"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by turkfm_balkan_situation.147
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_balkan_situation_riots
+		}
+	}
+	
+	immediate = {
+		random_scope_state = {
+			limit = {
+				has_variable = turkfm_riot_state_var
+			}
+			save_scope_as = turkfm_riot_state_scope
+			remove_variable = turkfm_riot_state_var
+		}
+	}
+	
+	option = { # Bring out the big guns
+		name = turkfm_balkan_situation.148.a
+		default_option = yes
+		create_incident = {
+			country = root
+			value = 20
+		}
+		scope:turkfm_riot_state_scope = {
+			if = {
+				limit = {
+					any_scope_pop = {
+						has_pop_religion = orthodox
+					}
+				}
+				add_radicals_in_state = {
+					religion = rel:orthodox
+					value = large_radicals
+				}
+			}
+			if = {
+				limit = {
+					any_scope_pop = {
+						has_pop_religion = oriental_orthodox
+					}
+				}
+				add_radicals_in_state = {
+					religion = rel:oriental_orthodox
+					value = large_radicals
+				}
+			}
+			add_radicals_in_state = {
+				religion = rel:sunni
+				value = medium_radicals
+			}
+		}
+		every_political_movement = {
+			limit = {
+				turkfm_cultural_minority_movement_trigger = yes
+			}
+			add_modifier = {
+				name = modifier_turkfm_critically_increased_radicalism
+				months = 36
+				is_decaying = yes
+			}
+		}
+		turkfm_add_large_deescalation_effect = yes
+	}
+	
+	option = { # Order them to stand down
+		name = turkfm_balkan_situation.148.b
+		scope:turkfm_riot_state_scope = {
+			if = {
+				limit = {
+					any_scope_pop = {
+						has_pop_religion = orthodox
+					}
+				}
+				add_radicals_in_state = {
+					religion = rel:orthodox
+					value = medium_radicals
+				}
+			}
+			if = {
+				limit = {
+					any_scope_pop = {
+						has_pop_religion = oriental_orthodox
+					}
+				}
+				add_radicals_in_state = {
+					religion = rel:oriental_orthodox
+					value = medium_radicals
+				}
+			}
+			add_radicals_in_state = {
+				religion = rel:sunni
+				value = very_large_radicals
+			}
+		}
+		random_political_movement = {
+			limit = {
+				is_political_movement_type = movement_cultural_majority
+			}
+			add_modifier = {
+				name = modifier_turkfm_increased_radicalism
+				months = 24
+				is_decaying = yes
+			}
+		}
+		turkfm_add_medium_deescalation_effect = yes
+	}
+	
+}
+
+turkfm_balkan_situation.149 = { # Crowds Dispersed in State
+	type = country_event
+	placement = root
+	
+	title = turkfm_balkan_situation.149.t
+	desc = turkfm_balkan_situation.149.d
+	flavor = turkfm_balkan_situation.149.f
+	
+	event_image = {
+		video = "votp_cops_march"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by turkfm_balkan_situation.147
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_balkan_situation_riots
+		}
+	}
+	
+	immediate = {
+		random_scope_state = {
+			limit = {
+				has_variable = turkfm_riot_state_var
+			}
+			save_scope_as = turkfm_riot_state_scope
+			remove_variable = turkfm_riot_state_var
+		}
+	}
+	
+	option = {
+		name = turkfm_balkan_situation.149.a
+		default_option = yes
+		scope:turkfm_riot_state_scope = {
+			kill_population_percent_in_state = {
+				religion = rel:orthodox
+				percent = 0.05
+			}
+			kill_population_percent_in_state = {
+				religion = rel:oriental_orthodox
+				percent = 0.05
+			}
+			if = {
+				limit = {
+					any_scope_pop = {
+						has_pop_religion = orthodox
+					}
+				}
+				add_loyalists_in_state = {
+					religion = rel:orthodox
+					value = large_radicals
+				}
+			}
+			if = {
+				limit = {
+					any_scope_pop = {
+						has_pop_religion = oriental_orthodox
+					}
+				}
+				add_loyalists_in_state = {
+					religion = rel:oriental_orthodox
+					value = large_radicals
+				}
+			}
+			add_loyalists_in_state = {
+				religion = rel:sunni
+				value = very_large_radicals
+			}
+		}
+		every_political_movement = {
+			limit = {
+				turkfm_cultural_minority_movement_trigger = yes
+			}
+			add_modifier = {
+				name = modifier_turkfm_increased_radicalism
+				months = 48
+				is_decaying = yes
+			}
+		}
+		turkfm_add_very_large_deescalation_effect = yes
+	}
+	
+}
+
+## Balkan Situation Crisis Events ##
+
+
+## Balkan Situation Involved Events ##
+turkfm_balkan_situation.180 = { # Brigands Raid Turkish Lands
+	type = country_event
+	placement = scope:turkfm_brigandage_event_scope
+	
+	title = turkfm_balkan_situation.180.t
+	desc = turkfm_balkan_situation.180.d
+	flavor = turkfm_balkan_situation.180.f
+	
+	event_image = {
+		video = "rp1_social_banditry"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by turkfm_balkan_situation.119
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_balkfm_brigandage
+		}
+	}
+	
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+			random_scope_state = {
+				limit = {
+					has_variable = turkfm_brigandage_event_var
+				}
+				save_scope_as = turkfm_brigandage_event_scope
+				remove_variable = turkfm_brigandage_event_var
+			}
+		}
+		set_global_variable = {
+			name = turkfm_global_reference_var
+			value = money_amount_multiplier_small
+		}
+	}
+	
+	option = { # Offer Compensation
+		name = turkfm_balkan_situation.180.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_brigandage_reparations_negative
+			days = normal_modifier_time
+			multiplier = global_var:turkfm_global_reference_var
+		}
+		c:TUR = {
+			add_modifier = {
+				name = modifier_turkfm_brigandage_reparations_positive
+				days = normal_modifier_time
+				multiplier = global_var:turkfm_global_reference_var
+			}
+			post_notification = notification_turkfm_brigandage_reparations
+		}
+		change_relations = {
+			country = c:TUR
+			value = 15
+		}
+	}
+	
+	option = { # Ignore the Complaint
+		name = turkfm_balkan_situation.180.b
+		c:TUR = {
+			post_notification = notification_turkfm_brigandage_permitted
+		}
+		change_relations = {
+			country = c:TUR
+			value = -15
+		}
+	}
+	
+	after = {
+		remove_global_variable = turkfm_global_reference_var
+	}
+	
+}
+
+turkfm_balkan_situation.181 = { # Gun-Runners Arrested
+	type = country_event
+	placement = scope:turkfm_tension_state_scope
+	
+	title = turkfm_balkan_situation.181.t
+	desc = turkfm_balkan_situation.181.d
+	flavor = turkfm_balkan_situation.181.f
+	
+	event_image = {
+		video = "votp_hostile_court"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by turkfm_balkan_situation.115/226
+	}
+	
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+			random_scope_state = {
+				limit = {
+					has_variable = turkfm_gunrunners_var
+				}
+				save_scope_as = turkfm_tension_state_scope
+				remove_variable = turkfm_gunrunners_var
+			}
+		}
+	}
+	
+	option = { # Halt Support
+		name = turkfm_balkan_situation.181.a
+		default_option = yes
+		if = {
+			limit = {
+				has_modifier = modifier_turkfm_supporting_gunrunners
+			}
+			remove_modifier = modifier_turkfm_supporting_gunrunners
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_balkfm_ottoman_gunrunners
+			}
+			remove_modifier = modifier_balkfm_ottoman_gunrunners
+		}
+		custom_tooltip = {
+			text = balkfm_ottoman_gunrunners_effect2
+			set_variable = {
+				name = balkfm_ottoman_gunrunners_lockout
+				years = 2
+			}
+		}
+		change_relations = {
+			country = c:TUR
+			value = 15
+		}
+		c:TUR = {
+			post_notification = notification_turkfm_gunrunners_halted
+		}
+	}
+	
+	option = { # Continue Support
+		name = turkfm_balkan_situation.181.b
+		create_incident = {
+			country = c:TUR
+			value = 10
+		}
+		change_relations = {
+			country = c:TUR
+			value = 15
+		}
+		c:TUR = {
+			post_notification = notification_turkfm_gunrunners_continued
+		}
+	}
+}
+
+turkfm_balkan_situation.182 = { # Diplomat Offers Mediation
+	type = country_event
+	placement = scope:turkfm_tension_state_scope
+	
+	title = turkfm_balkan_situation.182.t
+	desc = turkfm_balkan_situation.182.d
+	flavor = turkfm_balkan_situation.182.f
+	
+	event_image = {
+		video = "ep1_power_blocs"
+	}
+	
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		always = no # TODO enable when ready
+		OR = {
+			has_diplomatic_pact = {
+				who = c:TUR
+				type = increase_relations
+			}
+			has_diplomatic_pact = {
+				who = c:TUR
+				type = turkfm_decelerate_tensions
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			exists = c:TUR
+		}
+	}
+	
+	cooldown = {
+		years = 5
+	}
+	
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+			random_scope_state = {
+				limit = {
+					region = sr:region_balkans
+					NOT = {
+						has_modifier = modifier_turkfm_tensions_defused
+					}
+				}
+				save_scope_as = turkfm_tension_state_scope
+			}
+		}
+	}
+	
+	option = {
+		name = turkfm_balkan_situation.182.a
+		default_option = yes
+		set_variable = turkfm_tension_third_party_var
+		c:TUR = {
+			trigger_event = {
+				id = turkfm_balkan_situation.132 # Great Power Mediates Local Conflict
+			}
+		}
+		scope:turkfm_tension_state_scope = {
+			set_variable = turkfm_intervention_var
+		}
+	}
+	
+	option = {
+		name = turkfm_balkan_situation.182.b
+		custom_tooltip = turkfm_nothing_happens
+	}
+	
+}
+
+## Balkan Situation Technical Events ##
 turkfm_balkan_situation.190 = { # Ottoman Humiliation Monitor Event
 	type = country_event
 	hidden = yes
@@ -4773,7 +6208,7 @@ turkfm_balkan_situation.199 = { # Adds je_turkfm_balkan_situation_main
 	immediate = {
 		if = {
 			limit = {
-				has_variable = turkfm_balken_situation_starter_var
+				has_variable = turkfm_balkan_situation_starter_var
 			}
 			add_journal_entry = {
 				type = je_turkfm_balkan_situation_main
@@ -4788,975 +6223,4 @@ turkfm_balkan_situation.199 = { # Adds je_turkfm_balkan_situation_main
 			}
 		}
 	}
-}
-
-## Tension Riot Events ##
-turkfm_balkan_situation.200 = { # Fortress in State Besieged
-	type = country_event
-	placement = scope:turkfm_riot_state_scope
-
-	title = turkfm_balkan_situation.200.t
-	desc = turkfm_balkan_situation.200.d
-	flavor = turkfm_balkan_situation.200.f
-
-	event_image = {
-		video = "votp_barricade"
-	}
-
-	icon = "gfx/interface/icons/event_icons/event_military.dds"
-
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-		turkfm_hostility_events_trigger = yes
-		any_scope_state = {
-			has_modifier = modifier_turkfm_race_riots
-			any_scope_building = {
-				is_building_type = building_barracks
-			}
-			NOR = {
-				has_modifier = modifier_turkfm_garrison_entrenched
-				has_modifier = modifier_turkfm_garrison_disarmed
-			}
-		}
-	}
-
-	cancellation_trigger = {
-		NOT = {
-			has_journal_entry = je_turkfm_balkan_situation_riots
-		}
-	}
-
-	immediate = {
-		turkfm_tension_cooldown_effect = yes
-		random_scope_state = {
-			limit = {
-				has_modifier = modifier_turkfm_race_riots
-				any_scope_building = {
-					is_building_type = building_barracks
-				}
-				NOR = {
-					has_modifier = modifier_turkfm_garrison_entrenched
-					has_modifier = modifier_turkfm_garrison_disarmed
-				}
-			}
-			save_scope_as = turkfm_riot_state_scope
-		}
-	}
-
-	option = { # Soldiers mad they can't leave
-		name = turkfm_balkan_situation.200.a
-		default_option = yes
-		scope:turkfm_riot_state_scope = {
-			add_radicals_in_state = {
-				value = medium_radicals
-				pop_type = soldiers
-			}
-			add_modifier = {
-				name = modifier_turkfm_garrison_entrenched
-				days = short_modifier_time
-			}
-		}
-		random_list = {
-			2 = {
-				turkfm_add_small_deescalation_effect = yes
-			}
-			1 = {
-				turkfm_add_medium_escalation_effect = yes
-			}
-		}
-	}
-
-	option = { # Officers mad you let them leave
-		name = turkfm_balkan_situation.200.b
-		scope:turkfm_riot_state_scope = {
-			add_radicals_in_state = {
-				value = medium_radicals
-				pop_type = officers
-			}
-			add_modifier = {
-				name = modifier_turkfm_garrison_disarmed
-				days = short_modifier_time
-			}
-		}
-		random_list = {
-			1 = {
-				turkfm_add_medium_deescalation_effect = yes
-			}
-			2 = {
-				turkfm_add_small_escalation_effect = yes
-			}
-		}
-	}
-
-}
-
-turkfm_balkan_situation.201 = { # Crowds Burn Administrative Palace
-	type = country_event
-	placement = scope:turkfm_riot_state_scope
-
-	title = turkfm_balkan_situation.201.t
-	desc = turkfm_balkan_situation.201.d
-	flavor = turkfm_balkan_situation.201.f
-
-	event_image = {
-		video = "unspecific_vandalized_storefront"
-	}
-
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-		turkfm_hostility_events_trigger = yes
-		any_scope_state = {
-			has_modifier = modifier_turkfm_race_riots
-		}
-		any_scope_state = {
-			has_modifier = modifier_turkfm_race_riots
-			any_scope_building = {
-				is_building_type = building_government_administration
-			}
-		}
-	}
-
-	cancellation_trigger = {
-		NOT = {
-			has_journal_entry = je_turkfm_balkan_situation_riots
-		}
-	}
-
-	immediate = {
-		turkfm_tension_cooldown_effect = yes
-		random_scope_state = {
-			limit = {
-				has_modifier = modifier_turkfm_race_riots
-				any_scope_building = {
-					is_building_type = building_government_administration
-				}
-			}
-			save_scope_as = turkfm_riot_state_scope
-		}
-	}
-
-	option = { # Where are the cops?
-		name = turkfm_balkan_situation.201.a
-		default_option = yes
-		random_list = {
-			1 = {
-				scope:turkfm_riot_state_scope = {
-					add_radicals_in_state = {
-						value = medium_radicals
-					}
-				}
-			}
-			1 = {
-				turkfm_add_medium_deescalation_effect = yes
-			}
-		}
-	}
-
-	option = { # Deploy the Garrison
-		name = turkfm_balkan_situation.201.b
-		trigger = {
-			scope:turkfm_riot_state_scope = {
-				NOT = {
-					has_modifier = modifier_turkfm_garrison_disarmed
-				}
-			}
-		}
-		show_as_unavailable = {
-			always = yes
-		}
-		highlighted_option = yes
-		random_list = {
-			1 = {
-				scope:turkfm_riot_state_scope = {
-					add_loyalists_in_state = {
-						value = small_radicals
-					}
-				}
-			}
-			1 = {
-				turkfm_add_small_escalation_effect = yes
-			}
-		}
-		add_modifier = {
-			name = modifier_turkfm_deployed_garrison
-			multiplier = money_amount_multiplier_small
-			days = short_modifier_time
-		}
-	}
-}
-
-turkfm_balkan_situation.202 = { # IG Sides with Minorities
-	type = country_event
-	placement = scope:turkfm_riot_state_scope
-
-	title = turkfm_balkan_situation.202.t
-	desc = turkfm_balkan_situation.202.d
-	flavor = turkfm_balkan_situation.202.f
-
-	event_image = {
-		video = "africa_leader_arguing"
-	}
-
-	icon = "gfx/interface/icons/event_icons/bicorne_hat.dds"
-
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-		turkfm_hostility_events_trigger = yes
-		any_scope_state = {
-			has_modifier = modifier_turkfm_race_riots
-		}
-		NOT = {
-			has_law = law_type:law_no_police
-		}
-		any_interest_group = {
-			ig_approval < -10
-			is_marginal = no
-			law_stance = {
-				law = law_type:law_multicultural
-				value > neutral
-			}
-			NOR = {
-				has_modifier = modifier_turkfm_membership_arrested
-				has_modifier = modifier_turkfm_supporting_protests
-			}
-		}
-	}
-
-	cancellation_trigger = {
-		NOT = {
-			has_journal_entry = je_turkfm_balkan_situation_riots
-		}
-	}
-
-	immediate = {
-		turkfm_tension_cooldown_effect = yes
-		random_scope_state = {
-			limit = {
-				has_modifier = modifier_turkfm_race_riots
-			}
-			save_scope_as = turkfm_riot_state_scope
-		}
-		random_interest_group = {
-			limit = {
-				ig_approval < -10
-				is_marginal = no
-				law_stance = {
-					law = law_type:law_multicultural
-					value > neutral
-				}
-				NOR = {
-					has_modifier = modifier_turkfm_membership_arrested
-					has_modifier = modifier_turkfm_supporting_protests
-				}
-			}
-			save_scope_as = turkfm_riot_ig_scope
-		}
-	}
-
-	option = { # Round them up!
-		name = turkfm_balkan_situation.202.a
-		default_option = yes
-		turkfm_add_medium_deescalation_effect = yes
-		scope:turkfm_riot_ig_scope = {
-			add_modifier = {
-				name = modifier_turkfm_membership_arrested
-				days = short_modifier_time
-			}
-			leader = {
-				exile_character = yes
-			}
-		}
-	}
-
-	option = { # Publish an expose
-		name = turkfm_balkan_situation.202.b
-		scope:turkfm_riot_ig_scope = {
-			add_modifier = {
-				name = modifier_turkfm_supporting_protests
-				days = short_modifier_time
-			}
-		}
-	}
-
-}
-
-turkfm_balkan_situation.203 = { # Ulema Mobilizes the Faithful
-	type = country_event
-	placement = scope:turkfm_riot_state_scope
-
-	title = turkfm_balkan_situation.203.t
-	desc = turkfm_balkan_situation.203.d
-	flavor = turkfm_balkan_situation.203.f
-
-	event_image = {
-		video = "votp_agitator_speaking"
-	}
-
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-		turkfm_hostility_events_trigger = yes
-		any_scope_state = {
-			has_modifier = modifier_turkfm_race_riots
-		}
-		ig:ig_devout = {
-			NOT = {
-				has_modifier = modifier_turkfm_religious_fervor
-			}
-		}
-	}
-
-	cancellation_trigger = {
-		NOT = {
-			has_journal_entry = je_turkfm_balkan_situation_riots
-		}
-	}
-
-	immediate = {
-		turkfm_tension_cooldown_effect = yes
-		random_scope_state = {
-			limit = {
-				has_modifier = modifier_turkfm_race_riots
-			}
-			save_scope_as = turkfm_riot_state_scope
-		}
-		ig:ig_devout = {
-			save_scope_as = turkfm_riot_ig_scope
-		}
-	}
-
-	option = { # Our Imams know best
-		name = turkfm_balkan_situation.203.a
-		default_option = yes
-		add_modifier = {
-			name = modifier_turkfm_religious_fervor
-			days = normal_modifier_time
-		}
-		ig:ig_devout = {
-			add_modifier = {
-				name = modifier_turkfm_popular_imam
-				days = normal_modifier_time
-			}
-		}
-		scope:turkfm_riot_state_scope = {
-			add_radicals_in_state = {
-				religion = rel:orthodox
-				value = medium_radicals
-			}
-			add_loyalists_in_state = {
-				religion = rel:sunni
-				value = medium_radicals
-			}
-		}
-		turkfm_add_medium_escalation_effect = yes
-	}
-
-	option = { # Shut him up before things get worse
-		name = turkfm_balkan_situation.203.b
-		add_modifier = {
-			name = modifier_turkfm_religious_fervor
-			days = normal_modifier_time
-		}
-		ig:ig_devout = {
-			add_modifier = {
-				name = modifier_turkfm_imam_muzzled
-				days = normal_modifier_time
-			}
-		}
-		scope:turkfm_riot_state_scope = {
-			add_loyalists_in_state = {
-				religion = rel:orthodox
-				value = medium_radicals
-			}
-			add_radicals_in_state = {
-				religion = rel:sunni
-				value = medium_radicals
-			}
-		}
-		turkfm_add_small_deescalation_effect = yes
-	}
-
-}
-
-turkfm_balkan_situation.204 = { # Armed Forces Requests Intervention
-	type = country_event
-	placement = root
-
-	title = turkfm_balkan_situation.204.t
-	desc = turkfm_balkan_situation.204.d
-	flavor = turkfm_balkan_situation.204.f
-
-	event_image = {
-		video = "europenorthamerica_before_the_battle"
-	}
-
-	icon = "gfx/interface/icons/event_icons/event_military.dds"
-
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-		turkfm_hostility_events_trigger = yes
-		any_scope_state = {
-			has_modifier = modifier_turkfm_race_riots
-		}
-		ig:ig_armed_forces = {
-			NOR = {
-				has_modifier = modifier_turkfm_intervention_denied
-				has_modifier = modifier_turkfm_intervention_granted
-			}
-			ig_approval > 5
-			leader = {
-				NOR = {
-					has_ideology = ideology:ideology_pacifist
-					has_ideology = ideology:ideology_radical
-					has_ideology = ideology:ideology_anarchist
-				}
-			}
-		}
-	}
-
-	cancellation_trigger = {
-		NOT = {
-			has_journal_entry = je_turkfm_balkan_situation_riots
-		}
-	}
-
-	immediate = {
-		turkfm_tension_cooldown_effect = yes
-		random_scope_state = {
-			limit = {
-				has_modifier = modifier_turkfm_race_riots
-			}
-			save_scope_as = turkfm_riot_state_scope
-		}
-		ig:ig_armed_forces = {
-			save_scope_as = turkfm_riot_ig_scope
-		}
-	}
-
-	option = { # Grant the Order
-		name = turkfm_balkan_situation.204.a
-		default_option = yes
-		ig:ig_armed_forces = {
-			add_modifier = {
-				name = modifier_turkfm_intervention_granted
-				days = normal_modifier_time
-			}
-		}
-		scope:turkfm_riot_state_scope = {
-			add_modifier = {
-				name = modifier_turkfm_military_intervention
-				days = short_modifier_time
-			}
-		}
-		add_radicals = {
-			religion = rel:orthodox
-			value = medium_radicals
-		}
-		random_list = {
-			2 = {
-				turkfm_add_small_deescalation_effect = yes
-			}
-			1 = {
-				turkfm_add_medium_escalation_effect = yes
-			}
-		}
-	}
-
-	option = { # Have them pack up and leave
-		name = turkfm_balkan_situation.204.b
-		ig:ig_armed_forces = {
-			add_modifier = {
-				name = modifier_turkfm_intervention_denied
-				days = normal_modifier_time
-			}
-		}
-		add_radicals = {
-			pop_type = officers
-			value = medium_radicals
-		}
-		turkfm_add_small_escalation_effect = yes
-	}
-
-}
-
-turkfm_balkan_situation.207 = { # Rioting Worsens in State
-	type = country_event
-	placement = scope:turkfm_riot_state_scope
-
-	title = turkfm_balkan_situation.207.t
-	desc = turkfm_balkan_situation.207.d
-	flavor = turkfm_balkan_situation.207.f
-
-	event_image = {
-		video = "europenorthamerica_springtime_of_nations"
-	}
-
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-		turkfm_hostility_events_trigger = yes
-		any_scope_state = {
-			has_modifier = modifier_turkfm_race_riots
-		}
-	}
-
-	cancellation_trigger = {
-		NOT = {
-			has_journal_entry = je_turkfm_balkan_situation_riots
-		}
-	}
-
-	immediate = {
-		turkfm_tension_cooldown_effect = yes
-		random_scope_state = {
-			limit = {
-				has_modifier = modifier_turkfm_race_riots
-			}
-			save_scope_as = turkfm_riot_state_scope
-			set_variable = turkfm_riot_state_var
-		}
-	}
-
-	option = { # Leave it to local officers
-		name = turkfm_balkan_situation.207.a
-		default_option = yes
-		add_modifier = {
-			name = modifier_turkfm_deployed_garrison
-			multiplier = money_amount_multiplier_very_small
-			days = short_modifier_time
-		}
-		scope:turkfm_riot_state_scope = {
-			add_modifier = {
-				name = modifier_turkfm_mass_arrests
-				days = short_modifier_time
-			}
-			if = {
-				limit = {
-					any_scope_pop = {
-						has_pop_religion = orthodox
-					}
-				}
-				add_radicals_in_state = {
-					religion = rel:orthodox
-					value = large_radicals
-				}
-			}
-			if = {
-				limit = {
-					any_scope_pop = {
-						has_pop_religion = oriental_orthodox
-					}
-				}
-				add_radicals_in_state = {
-					religion = rel:oriental_orthodox
-					value = large_radicals
-				}
-			}
-		}
-		every_political_movement = {
-			limit = {
-				turkfm_cultural_minority_movement_trigger = yes
-			}
-			add_modifier = {
-				name = modifier_turkfm_increased_radicalism
-				months = 24
-				is_decaying = yes
-			}
-		}
-		turkfm_add_medium_escalation_effect = yes
-		hidden_effect = {
-			random_list = {
-				50 = {
-					trigger_event = {
-						id = turkfm_balkan_situation.208 # Massacre in State
-						days = 15
-					}
-				}
-				50 = {
-					trigger_event = {
-						id = turkfm_balkan_situation.209 # Crowds Dispersed in State
-						days = 15
-					}
-				}
-			}
-		}
-	}
-
-	option = { # Let them protest
-		name = turkfm_balkan_situation.207.b
-		scope:turkfm_riot_state_scope = {
-			add_modifier = {
-				name = modifier_turkfm_massive_riots
-				days = short_modifier_time
-			}
-			if = {
-				limit = {
-					any_scope_pop = {
-						has_pop_religion = orthodox
-					}
-				}
-				add_radicals_in_state = {
-					religion = rel:orthodox
-					value = medium_radicals
-				}
-			}
-			if = {
-				limit = {
-					any_scope_pop = {
-						has_pop_religion = oriental_orthodox
-					}
-				}
-				add_radicals_in_state = {
-					religion = rel:oriental_orthodox
-					value = medium_radicals
-				}
-			}
-			remove_variable = turkfm_riot_state_var
-		}
-		every_political_movement = {
-			limit = {
-				is_political_movement_type = movement_cultural_majority
-			}
-			add_modifier = {
-				name = modifier_turkfm_increased_radicalism
-				months = 24
-				is_decaying = yes
-			}
-		}
-		add_radicals = {
-			religion = rel:sunni
-			value = medium_radicals
-		}
-		turkfm_add_large_escalation_effect = yes
-	}
-
-	option = { # Send the military
-		name = turkfm_balkan_situation.207.c
-		add_modifier = {
-			name = modifier_turkfm_deployed_army
-			multiplier = money_amount_multiplier_medium
-			days = short_modifier_time
-		}
-		scope:turkfm_riot_state_scope = {
-			add_modifier = {
-				name = modifier_turkfm_military_intervention
-				days = short_modifier_time
-			}
-			if = {
-				limit = {
-					any_scope_pop = {
-						has_pop_religion = orthodox
-					}
-				}
-				add_radicals_in_state = {
-					religion = rel:orthodox
-					value = very_large_radicals
-				}
-			}
-			if = {
-				limit = {
-					any_scope_pop = {
-						has_pop_religion = oriental_orthodox
-					}
-				}
-				add_radicals_in_state = {
-					religion = rel:oriental_orthodox
-					value = very_large_radicals
-				}
-			}
-			add_loyalists_in_state = {
-				religion = rel:sunni
-				value = very_large_radicals
-			}
-		}
-		every_political_movement = {
-			limit = {
-				turkfm_cultural_minority_movement_trigger = yes
-			}
-			add_modifier = {
-				name = modifier_turkfm_greatly_increased_radicalism
-				months = 24
-				is_decaying = yes
-			}
-		}
-		turkfm_add_medium_deescalation_effect = yes
-		hidden_effect = {
-			random_list = {
-				80 = {
-					trigger_event = {
-						id = turkfm_balkan_situation.208 # Massacre in State
-						days = 15
-					}
-				}
-				20 = {
-					trigger_event = {
-						id = turkfm_balkan_situation.209 # Crowds Dispersed in State
-						days = 15
-					}
-				}
-			}
-		}
-	}
-
-}
-
-turkfm_balkan_situation.208 = { # Massacre in State
-	type = country_event
-	placement = root
-
-	title = turkfm_balkan_situation.208.t
-	desc = turkfm_balkan_situation.208.d
-	flavor = turkfm_balkan_situation.208.f
-
-	event_image = {
-		video = "middleeast_police_breaking_door"
-	}
-
-	icon = "gfx/interface/icons/event_icons/event_skull.dds"
-
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-		# triggered by turkfm_balkan_situation.207
-	}
-
-	cancellation_trigger = {
-		NOT = {
-			has_journal_entry = je_turkfm_balkan_situation_riots
-		}
-	}
-
-	immediate = {
-		random_scope_state = {
-			limit = {
-				has_variable = turkfm_riot_state_var
-			}
-			save_scope_as = turkfm_riot_state_scope
-			remove_variable = turkfm_riot_state_var
-		}
-	}
-
-	option = { # Bring out the big guns
-		name = turkfm_balkan_situation.208.a
-		default_option = yes
-		create_incident = {
-			country = root
-			value = 20
-		}
-		scope:turkfm_riot_state_scope = {
-			if = {
-				limit = {
-					any_scope_pop = {
-						has_pop_religion = orthodox
-					}
-				}
-				add_radicals_in_state = {
-					religion = rel:orthodox
-					value = large_radicals
-				}
-			}
-			if = {
-				limit = {
-					any_scope_pop = {
-						has_pop_religion = oriental_orthodox
-					}
-				}
-				add_radicals_in_state = {
-					religion = rel:oriental_orthodox
-					value = large_radicals
-				}
-			}
-			add_radicals_in_state = {
-				religion = rel:sunni
-				value = medium_radicals
-			}
-		}
-		every_political_movement = {
-			limit = {
-				turkfm_cultural_minority_movement_trigger = yes
-			}
-			add_modifier = {
-				name = modifier_turkfm_critically_increased_radicalism
-				months = 36
-				is_decaying = yes
-			}
-		}
-		turkfm_add_large_deescalation_effect = yes
-	}
-
-	option = { # Order them to stand down
-		name = turkfm_balkan_situation.208.b
-		scope:turkfm_riot_state_scope = {
-			if = {
-				limit = {
-					any_scope_pop = {
-						has_pop_religion = orthodox
-					}
-				}
-				add_radicals_in_state = {
-					religion = rel:orthodox
-					value = medium_radicals
-				}
-			}
-			if = {
-				limit = {
-					any_scope_pop = {
-						has_pop_religion = oriental_orthodox
-					}
-				}
-				add_radicals_in_state = {
-					religion = rel:oriental_orthodox
-					value = medium_radicals
-				}
-			}
-			add_radicals_in_state = {
-				religion = rel:sunni
-				value = very_large_radicals
-			}
-		}
-		random_political_movement = {
-			limit = {
-				is_political_movement_type = movement_cultural_majority
-			}
-			add_modifier = {
-				name = modifier_turkfm_increased_radicalism
-				months = 24
-				is_decaying = yes
-			}
-		}
-		turkfm_add_medium_deescalation_effect = yes
-	}
-
-}
-
-turkfm_balkan_situation.209 = { # Crowds Dispersed in State
-	type = country_event
-	placement = root
-
-	title = turkfm_balkan_situation.209.t
-	desc = turkfm_balkan_situation.209.d
-	flavor = turkfm_balkan_situation.209.f
-
-	event_image = {
-		video = "votp_cops_march"
-	}
-
-	icon = "gfx/interface/icons/event_icons/event_military.dds"
-
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-		# triggered by turkfm_balkan_situation.207
-	}
-
-	cancellation_trigger = {
-		NOT = {
-			has_journal_entry = je_turkfm_balkan_situation_riots
-		}
-	}
-
-	immediate = {
-		random_scope_state = {
-			limit = {
-				has_variable = turkfm_riot_state_var
-			}
-			save_scope_as = turkfm_riot_state_scope
-			remove_variable = turkfm_riot_state_var
-		}
-	}
-
-	option = {
-		name = turkfm_balkan_situation.209.a
-		default_option = yes
-		scope:turkfm_riot_state_scope = {
-			kill_population_percent_in_state = {
-				religion = rel:orthodox
-				percent = 0.05
-			}
-			kill_population_percent_in_state = {
-				religion = rel:oriental_orthodox
-				percent = 0.05
-			}
-			if = {
-				limit = {
-					any_scope_pop = {
-						has_pop_religion = orthodox
-					}
-				}
-				add_loyalists_in_state = {
-					religion = rel:orthodox
-					value = large_radicals
-				}
-			}
-			if = {
-				limit = {
-					any_scope_pop = {
-						has_pop_religion = oriental_orthodox
-					}
-				}
-				add_loyalists_in_state = {
-					religion = rel:oriental_orthodox
-					value = large_radicals
-				}
-			}
-			add_loyalists_in_state = {
-				religion = rel:sunni
-				value = very_large_radicals
-			}
-		}
-		every_political_movement = {
-			limit = {
-				turkfm_cultural_minority_movement_trigger = yes
-			}
-			add_modifier = {
-				name = modifier_turkfm_increased_radicalism
-				months = 48
-				is_decaying = yes
-			}
-		}
-		turkfm_add_very_large_deescalation_effect = yes
-	}
-
 }
