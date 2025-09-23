@@ -1,57 +1,258 @@
-﻿
-#### General Expedition Scripted Buttons
-turkfm_recall_expedition_button = {
-	name = "turkfm_recall_expedition_button"
-	desc = "turkfm_recall_expedition_button_desc"
+﻿## Black Mountain Decision Buttons ##
+turkfm_renounce_headtaking_button = {
+	name = "turkfm_renounce_headtaking_button"
+	desc = "turkfm_renounce_headtaking_button_desc"
 	
 	visible = {
-		turkfm_has_any_expedition_trigger = yes
+		has_modifier = modifier_turkfm_practicing_headtaking
 	}
-	
 	possible = {
-		turkfm_has_any_expedition_trigger = yes
+		custom_tooltip = {
+			text = turkfm_renounce_headtaking_possible
+			NOT = {
+				has_global_variable = turkfm_headtaking_cooldown_var
+			}
+		}
+		trigger_if = {
+			limit = {
+				c:MON ?= this
+			}
+			c:TUR.relations:root >= relations_threshold:cold
+		}
+		trigger_if = {
+			limit = {
+				c:TUR ?= this
+			}
+			c:MON.relations:root >= relations_threshold:cold
+		}
 	}
-	
 	effect = {
-		turkfm_clear_expedition_effect = yes
-		turkfm_cancel_expedition_effect = yes
+		c:MON ?= {
+			if = {
+				limit = {
+					this != root
+					has_modifier = modifier_turkfm_practicing_headtaking
+				}
+				trigger_event = {
+					id = turkfm_expeditions.010 # Negotiations on Head-taking (Receiver)
+					days = { 7 14 }
+				}
+				hidden_effect = {
+					trigger_event = {
+						id = turkfm_expeditions.011 # Negotiations on Head-taking (Outcome)
+						days = 45
+					}
+				}
+			}
+		}
+		c:TUR ?= {
+			if = {
+				limit = {
+					this != root
+					has_modifier = modifier_turkfm_practicing_headtaking
+				}
+				trigger_event = {
+					id = turkfm_expeditions.010 # Negotiations on Head-taking (Receiver)
+					days = { 7 14 }
+				}
+				hidden_effect = {
+					trigger_event = {
+						id = turkfm_expeditions.011 # Negotiations on Head-taking (Outcome)
+						days = 45
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_renounce_headtaking_effect
+			set_variable = {
+				name = turkfm_negociated_headtaking
+				months = 3
+			}
+			trigger_event = {
+				id = turkfm_expeditions.011 # Negotiations on Head-taking (Outcome)
+				days = 45
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_headtaking_cooldown_GET
+			set_global_variable = {
+				name = turkfm_headtaking_cooldown_var
+				years = 5
+			}
+		}
 	}
-	
 	ai_chance = {
 		value = 0
 	}
 }
 
-#### Karadag Expedition Scripted Buttons
-turkfm_karadag_expedition_button = {
-	name = "turkfm_karadag_expedition_button"
-	desc = "turkfm_karadag_expedition_button_desc"
+
+## Black Mountain Montenegrin Buttons
+turkfm_increase_raiding_button = {
+	name = "turkfm_increase_raiding_button"
+	desc = "turkfm_increase_raiding_button_desc"
 	
 	visible = {
-		turkfm_has_any_expedition_trigger = no
+		has_dlc_feature = ip3_content # National Awakening
+		NOT = {
+			has_global_variable = turkfm_montenegrin_raiding_settled
+		}
+		c:MON ?= this
 	}
-	
 	possible = {
-		turkfm_no_expedition_trigger = yes
-		NOR = {
-			has_modifier = modifier_turkfm_deployed_expedition
-			has_modifier = modifier_turkfm_cancelled_expedition
+		custom_tooltip = {
+			text = turkfm_raiding_status_cooldown
+			NOT = {
+				has_variable = turkfm_raiding_status_cooldown_var
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_raiding_less_than_max
+			var:raiding_intensity < 100
+		}
+	}
+	selected = {
+		has_variable = mon_more_raiding
+	}
+	effect = {
+		if = {
+			limit = {
+				has_variable = mon_more_raiding
+			}
+			remove_variable = mon_more_raiding
+		}
+		else = {
+			custom_tooltip = {
+				text = turkfm_increase_raiding_effect
+				set_variable = mon_more_raiding
+			}
+			custom_tooltip = {
+				text = turkfm_raiding_status_cooldown_GET
+				set_variable = {
+					name = turkfm_raiding_status_cooldown_var
+					years = 2
+				}
+			}
+			c:RUS = {
+				change_relations = {
+					country = root
+					value = -15
+				}
+			}
+			c:TUR = {
+				change_relations = {
+					country = root
+					value = -35
+				}
+			}
+		}
+	}
+}
+
+turkfm_decrease_raiding_button = {
+	name = "turkfm_decrease_raiding_button"
+	desc = "turkfm_decrease_raiding_button_desc"
+	
+	visible = {
+		has_dlc_feature = ip3_content # National Awakening
+		NOT = {
+			has_global_variable = turkfm_montenegrin_raiding_settled
+		}
+		c:MON ?= this
+	}
+	possible = {
+		custom_tooltip = {
+			text = turkfm_raiding_status_cooldown
+			NOT = {
+				has_variable = turkfm_raiding_status_cooldown_var
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_raiding_more_than_min
+			var:raiding_intensity > 0
+		}
+	}
+	selected = {
+		has_variable = mon_less_raiding
+	}
+	effect = {
+		if = {
+			limit = {
+				has_variable = mon_less_raiding
+			}
+			remove_variable = mon_less_raiding
+		}
+		else = {
+			custom_tooltip = {
+				text = turkfm_decrease_raiding_effect
+				set_variable = mon_less_raiding
+			}
+			custom_tooltip = {
+				text = turkfm_raiding_status_cooldown_GET
+				set_variable = {
+					name = turkfm_raiding_status_cooldown_var
+					years = 2
+				}
+			}
+			c:RUS = {
+				change_relations = {
+					country = root
+					value = 10
+				}
+			}
+			c:TUR = {
+				change_relations = {
+					country = root
+					value = 25
+				}
+			}
 		}
 	}
 	
+}
+
+turkfm_appoint_tribal_chief_button = {
+	name = "turkfm_appoint_tribal_chief_button"
+	desc = "turkfm_appoint_tribal_chief_button_desc"
+	
+	visible = {
+		has_dlc_feature = ip3_content # National Awakening
+		NOT = {
+			has_global_variable = turkfm_montenegrin_raiding_settled
+		}
+		c:MON ?= this
+		turkfm_has_black_mountain_expedition_trigger = no
+	}
+	possible = {
+		turkfm_has_black_mountain_expedition_trigger = no
+	}
 	effect = {
 		trigger_event = {
-			id = turkfm_expeditions.010 # Reclaiming the Hinterlands
+			id = turkfm_expeditions.020 # Defending the Hinterlands
 			popup = yes
 		}
-		add_modifier = {
-			name = modifier_turkfm_deployed_expedition
-			multiplier = money_amount_multiplier_medium
-		}
+		set_variable = turkfm_black_mountain_expedition_var
 	}
-	
 	ai_chance = {
 		value = 0
+	}
+}
+
+turkfm_dismiss_tribal_chief_button = {
+	name = "turkfm_dismiss_tribal_chief_button"
+	desc = "turkfm_dismiss_tribal_chief_button_desc"
+	
+	visible = {
+		has_dlc_feature = ip3_content # National Awakening
+		c:MON ?= this
+		turkfm_has_black_mountain_expedition_trigger = yes
+	}
+	possible = {
+		turkfm_has_black_mountain_expedition_trigger = yes
+	}
+	effect = {
+		turkfm_dismiss_tribal_chief_effect = yes
 	}
 }
 
@@ -60,185 +261,165 @@ turkfm_ransom_captives_button = {
 	desc = "turkfm_ransom_captives_button_desc"
 	
 	visible = {
-		c:MON ?= this
+		always = no # TODO enable when ready
+		has_dlc_feature = ip3_content # National Awakening
 	}
 	
 	selected = {
-		has_variable = turkfm_ransom_var
+#		has_variable = turkfm_ransom_var
 	}
 	
 	possible = {
-		custom_tooltip = {
-			text = turkfm_has_captive_nobles
-			hidden_trigger = {
-				turkfm_captured_nobles_value > 0
-			}
-		}
+#		custom_tooltip = {
+#			text = turkfm_has_captive_nobles
+#			hidden_trigger = {
+#				turkfm_captured_nobles_value > 0
+#			}
+#		}
 	}
 	
 	effect = {
-		trigger_event = {
-			id = turkfm_expeditions.014 # The Gaols of Centinje
-		}
-		set_variable = turkfm_ransom_var
+#		trigger_event = {
+#			id = turkfm_expeditions.014 # The Gaols of Centinje
+#		}
+#		set_variable = turkfm_ransom_var
 	}
 	
 	ai_chance = {
-		value = 0
+		value = -1000
 	}
 }
 
-turkfm_renounce_headtaking_button = {
-	name = "turkfm_renounce_headtaking_button"
-	desc = "turkfm_renounce_headtaking_button_desc"
-	
-	visible = {
-		c:MON ?= this
-		has_modifier = modifier_turkfm_practicing_headtaking
-	}
-	
-	possible = {
-		custom_tooltip = {
-			text = turkfm_renounce_headtaking_possible
-			NOT = {
-				has_variable = turkfm_negociated_headtaking
-			}
-		}
-	}
-	
-	effect = {
-		c:TUR = {
-			trigger_event = {
-				id = turkfm_expeditions.041 # Negotiations on Head-taking (TUR)
-				days = { 7 14 }
-			}
-		}
-		custom_tooltip = turkfm_renounce_headtaking_effect
-		set_variable = {
-			name = turkfm_negociated_headtaking
-			years = 10
-		}
-	}
-	
-	ai_chance = {
-		value = 0
-	}
-}
-
-turkfm_negociate_kotor_button = {
-	name = "turkfm_negociate_kotor_button"
-	desc = "turkfm_negociate_kotor_button_desc"
+turkfm_negotiate_kotor_button = {
+	name = "turkfm_negotiate_kotor_button"
+	desc = "turkfm_negotiate_kotor_button_desc"
 	
 	visible = {
 		c:MON ?= this
 		NOT = {
-			has_variable = turkfm_negociated_kotor
+			has_variable = turkfm_negotiated_kotor
 		}
-		c:AUS ?= {
-			has_state_in_state_region = STATE_MONTENEGRO
+		p:x90A0E0 = { # Kotor
+			owner = {
+				c:AUS ?= this
+			}
 		}
 	}
-	
 	possible = {
-		OR = {
-			is_subject_of = c:AUS
-			is_in_same_power_bloc = c:AUS
-			any_scope_treaty = {
-				binds = root
-				binds = c:AUS
-				any_scope_article = {
-					has_type = alliance
+		trigger_if = {
+			limit = {
+				NOT = {
+					has_dlc_feature = ip3_content
+				}
+			}
+			OR = {
+				is_subject_of = c:AUS
+				is_in_same_power_bloc = c:AUS
+				any_scope_treaty = {
+					binds = root
+					binds = c:AUS
+					any_scope_article = {
+						OR = {
+							has_type = alliance
+							has_type = defensive_pact
+						}
+					}
+				}
+			}
+			c:AUS = {
+				relations:root >= relations_threshold:amicable
+			}
+			NOT = {
+				owes_obligation_to = c:AUS
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_dlc_feature = ip3_content
+			}
+			government_legitimacy > 50
+			c:RUS ?= {
+				relations:root <= relations_threshold:poor
+			}
+			c:AUS = {
+				relations:root >= relations_threshold:friendly
+			}
+			trigger_if = {
+				limit = {
+					has_journal_entry = je_montenegrin_raiding
+				}
+				custom_tooltip = {
+					text = raiding_income_greater_tt
+					raiding_income < 700
 				}
 			}
 		}
-		c:AUS = {
-			relations:root >= relations_threshold:amicable
-		}
 	}
-	
 	effect = {
-		trigger_event = {
-			id = turkfm_expeditions.040 # Negotiations Over Cattaro
+		c:AUS = {
+			trigger_event = {
+				id = turkfm_expeditions.012 # Negotiations Over Cattaro
+				days = { 7 14 }
+			}
 		}
-		set_variable = turkfm_negociated_kotor
+		set_variable = turkfm_negotiated_kotor
 	}
-	
 	ai_chance = {
 		value = 100
 	}
 }
 
-#### Albanian Piracy Scripted Buttons
-turkfm_sanction_privateers_button = {
-	name = "turkfm_sanction_privateers_button"
-	desc = "turkfm_sanction_privateers_button_desc"
+
+## Black Mountain Ottoman Buttons
+turkfm_assign_border_guard_button = {
+	name = "turkfm_assign_border_guard_button"
+	desc = "turkfm_assign_border_guard_button_desc"
 	
 	visible = {
-		c:TUR ?= this
-	}
-	
-	selected = {
-		has_modifier = modifier_turkfm_sanctioning_privateers
-	}
-	
-	possible = {
+		has_dlc_feature = ip3_content # National Awakening
 		NOT = {
-			has_modifier = modifier_turkfm_curtailing_privateers
+			has_global_variable = turkfm_montenegrin_raiding_settled
+		}
+		c:TUR ?= this
+		turkfm_has_black_mountain_expedition_trigger = no
+	}
+	possible = {
+		turkfm_has_black_mountain_expedition_trigger = no
+		NOT = {
+			has_modifier = modifier_turkfm_failed_black_mountain_expedition_country
 		}
 	}
-	
 	effect = {
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_sanctioning_privateers
-			}
-			remove_modifier = modifier_turkfm_sanctioning_privateers
+		trigger_event = {
+			id = turkfm_expeditions.021 # Defending the Hinterlands
+			popup = yes
 		}
-		else = {
-			add_modifier = modifier_turkfm_sanctioning_privateers
-		}
+		set_variable = turkfm_black_mountain_expedition_var
 	}
-	
 	ai_chance = {
 		value = 0
 	}
 }
 
-turkfm_curtail_privateers_button = {
-	name = "turkfm_curtail_privateers_button"
-	desc = "turkfm_curtail_privateers_button_desc"
+turkfm_recall_black_mountain_expedition_button = {
+	name = "turkfm_recall_expedition_button"
+	desc = "turkfm_recall_expedition_button_desc"
 	
 	visible = {
+		has_dlc_feature = ip3_content # National Awakening
 		c:TUR ?= this
+		turkfm_has_black_mountain_expedition_trigger = yes
 	}
-	
-	selected = {
-		has_modifier = modifier_turkfm_curtailing_privateers
-	}
-	
 	possible = {
-		NOT = {
-			has_modifier = modifier_turkfm_sanctioning_privateers
-		}
+		turkfm_has_black_mountain_expedition_trigger = yes
 	}
-	
 	effect = {
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_curtailing_privateers
-			}
-			remove_modifier = modifier_turkfm_curtailing_privateers
-		}
-		else = {
-			add_modifier = modifier_turkfm_curtailing_privateers
-		}
-	}
-	
-	ai_chance = {
-		value = 0
+		turkfm_cancel_black_mountain_expedition_effect = yes
 	}
 }
 
+
+## Albanian Piracy Scripted Buttons ##
 turkfm_hire_retired_pirates_button = {
 	name = "turkfm_hire_retired_pirates_button"
 	desc = "turkfm_hire_retired_pirates_button_desc"
@@ -272,36 +453,8 @@ turkfm_hire_retired_pirates_button = {
 	}
 }
 
-turkfm_suppress_slavers_button = {
-	name = "turkfm_suppress_slavers_button"
-	desc = "turkfm_suppress_slavers_button_desc"
-	
-	visible = {
-		c:TUR ?= this
-		NOT = {
-			has_law = law_type:law_slavery_banned
-		}
-	}
-	
-	selected = {
-		has_modifier = modifier_turkfm_supressing_slavers
-	}
-	
-	possible = {
-		NOT = {
-			has_modifier = modifier_turkfm_supressing_slavers
-		}
-	}
-	
-	effect = {
-	}
-	
-	ai_chance = {
-		value = 0
-	}
-}
 
-#### Adriatic Expedition Scripted Buttons
+## Adriatic Expedition Scripted Buttons ##
 turkfm_adriatic_expedition_button = {
 	name = "turkfm_adriatic_expedition_button"
 	desc = "turkfm_adriatic_expedition_button_desc"
@@ -312,9 +465,8 @@ turkfm_adriatic_expedition_button = {
 	
 	possible = {
 		turkfm_no_expedition_trigger = yes
-		NOR = {
-			has_modifier = modifier_turkfm_deployed_expedition
-			has_modifier = modifier_turkfm_cancelled_expedition
+		NOT = {
+			has_modifier = modifier_turkfm_failed_adriatic_expedition_country
 		}
 	}
 	
@@ -323,10 +475,29 @@ turkfm_adriatic_expedition_button = {
 			id = turkfm_expeditions.101 # Pacifying the Adriatic
 			popup = yes
 		}
-		add_modifier = {
-			name = modifier_turkfm_deployed_expedition
-			multiplier = money_amount_multiplier_medium
-		}
+		set_variable = turkfm_adriatic_expedition_var
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+turkfm_recall_adriatic_expedition_button = {
+	name = "turkfm_recall_expedition_button"
+	desc = "turkfm_recall_expedition_button_desc"
+	
+	visible = {
+		turkfm_has_adriatic_expedition_trigger = yes
+	}
+	
+	possible = {
+		turkfm_has_adriatic_expedition_trigger = yes
+	}
+	
+	effect = {
+		turkfm_cancel_piracy_expedition_effect = yes
+		turkfm_clear_piracy_expedition_variables_effect = yes
 	}
 	
 	ai_chance = {
