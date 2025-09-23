@@ -1,12 +1,12 @@
 ﻿je_turkfm_sick_man_main = {
 	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
-
 	group = je_group_turkfm_sick_man
-
 	should_be_pinned_by_default = yes
 
-	immediate = {
+	is_shown_in_lobby = {
+		c:TUR ?= this
 	}
+
 
 	modifiers_while_active = {
 		modifier_turkfm_sick_man
@@ -17,7 +17,7 @@
 	complete = {
 		country_rank >= rank_value:great_power
 		custom_tooltip = {
-			text = turkfm_controls_anatolia_tt
+			text = turkfm_controls_anatolia
 			hidden_trigger = {
 				has_variable = turkfm_controls_anatolia
 			}
@@ -25,38 +25,38 @@
 		calc_true_if = {
 			amount >= 3
 			custom_tooltip = {
-				text = turkfm_controls_balkans_tt
+				text = turkfm_controls_balkans
 				hidden_trigger = {
 					has_variable = turkfm_controls_balkans
 				}
 			}
 			custom_tooltip = {
-				text = turkfm_controls_arabia_tt
+				text = turkfm_controls_arabia
 				hidden_trigger = {
 					has_variable = turkfm_controls_arabia
 				}
 			}
 			custom_tooltip = {
-				text = turkfm_controls_nile_tt
+				text = turkfm_controls_nile
 				hidden_trigger = {
 					has_variable = turkfm_controls_nile
 				}
 			}
 			custom_tooltip = {
-				text = turkfm_controls_danubia_tt
+				text = turkfm_controls_danubia
 				hidden_trigger = {
 					has_variable = turkfm_controls_danubia
 				}
 			}
 			custom_tooltip = {
-				text = turkfm_controls_caucasus_tt
+				text = turkfm_controls_caucasus
 				hidden_trigger = {
 					has_variable = turkfm_controls_caucasus
 				}
 			}
 		}
 		custom_tooltip = {
-			text = turkfm_tanzimat_completed_tt
+			text = turkfm_tanzimat_completed_or_failed
 			hidden_trigger = {
 				has_global_variable = turkfm_tanzimat_complete
 			}
@@ -77,54 +77,63 @@
 	}
 
 	fail = {
-		country_rank < rank_value:great_power
-		custom_tooltip = {
-			text = turkfm_lost_balkans_tt
-			hidden_trigger = {
-				NOT = {
-					has_variable = turkfm_controls_balkans
+		OR = {
+			country_rank < rank_value:major_power
+			custom_tooltip = {
+				text = turkfm_grand_collapse_failed
+				has_global_variable = turkfm_grand_collapse_failed
+			}
+			AND = {
+				custom_tooltip = {
+					text = turkfm_lost_balkans_tt
+					hidden_trigger = {
+						NOT = {
+							has_variable = turkfm_controls_balkans
+						}
+					}
+				}
+				custom_tooltip = {
+					text = turkfm_lost_anatolia_tt
+					hidden_trigger = {
+						NOT = {
+							has_variable = turkfm_controls_anatolia
+						}
+					}
+				}
+				custom_tooltip = {
+					text = turkfm_lost_arabia_tt
+					hidden_trigger = {
+						NOT = {
+							has_variable = turkfm_controls_arabia
+						}
+					}
+				}
+				custom_tooltip = {
+					text = turkfm_lost_nile_tt
+					hidden_trigger = {
+						NOT = {
+							has_variable = turkfm_controls_nile
+						}
+					}
+				}
+				custom_tooltip = {
+					text = turkfm_lost_danubia_tt
+					hidden_trigger = {
+						NOT = {
+							has_variable = turkfm_controls_danubia
+						}
+					}
+				}
+				custom_tooltip = {
+					text = turkfm_lost_caucasus_tt
+					hidden_trigger = {
+						NOT = {
+							has_variable = turkfm_controls_caucasus
+						}
+					}
 				}
 			}
-		}
-		custom_tooltip = {
-			text = turkfm_lost_anatolia_tt
-			hidden_trigger = {
-				NOT = {
-					has_variable = turkfm_controls_anatolia
-				}
-			}
-		}
-		custom_tooltip = {
-			text = turkfm_lost_arabia_tt
-			hidden_trigger = {
-				NOT = {
-					has_variable = turkfm_controls_arabia
-				}
-			}
-		}
-		custom_tooltip = {
-			text = turkfm_lost_nile_tt
-			hidden_trigger = {
-				NOT = {
-					has_variable = turkfm_controls_nile
-				}
-			}
-		}
-		custom_tooltip = {
-			text = turkfm_lost_danubia_tt
-			hidden_trigger = {
-				NOT = {
-					has_variable = turkfm_controls_danubia
-				}
-			}
-		}
-		custom_tooltip = {
-			text = turkfm_lost_caucasus_tt
-			hidden_trigger = {
-				NOT = {
-					has_variable = turkfm_controls_caucasus
-				}
-			}
+			
 		}
 	}
 
@@ -139,6 +148,16 @@
 			}
 			custom_tooltip = sick_man_of_europe_lose_power_bloc
 		}
+		set_global_variable = turkfm_sick_man_complete
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_global_variable = turkfm_sick_man_complete
+		}
+	}
+
+	on_invalid = {
 		set_global_variable = turkfm_sick_man_complete
 	}
 
@@ -164,7 +183,6 @@
 
 je_sick_man_syria = {
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
-
 	group = je_group_turkfm_sick_man
 
 	complete = {
@@ -220,7 +238,6 @@ je_sick_man_syria = {
 
 je_sick_man_egypt = {
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
-
 	group = je_group_turkfm_sick_man
 
 	complete = {
@@ -263,7 +280,6 @@ je_sick_man_egypt = {
 
 je_turkfm_sick_man_crete = {
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
-
 	group = je_group_turkfm_sick_man
 
 	complete = {
@@ -294,7 +310,6 @@ je_turkfm_sick_man_crete = {
 
 je_turkfm_sick_man_caucasus = {
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
-
 	group = je_group_turkfm_sick_man
 
 	complete = {
@@ -332,7 +347,6 @@ je_turkfm_sick_man_caucasus = {
 
 je_turkfm_sick_man_bosnia = {
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
-
 	group = je_group_turkfm_sick_man
 
 	modifiers_while_active = {
@@ -353,7 +367,7 @@ je_turkfm_sick_man_bosnia = {
 			NOT = {
 				has_state_in_state_region = STATE_BOSNIA
 			}
-			c:TUR_BOS ?= {
+			c:BOS_HER ?= {
 				NOT = {
 					is_subject_of = root
 				}
@@ -376,7 +390,6 @@ je_turkfm_sick_man_bosnia = {
 
 je_turkfm_sick_man_kurdistan = {
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
-
 	group = je_group_turkfm_sick_man
 
 	modifiers_while_active = {
@@ -508,4 +521,126 @@ je_turkfm_sick_man_kurdistan = {
 
 	weight = 1000
 
+}
+
+je_turkfm_sick_man_grand_collapse = {
+	group = je_group_turkfm_sick_man
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	weight = 10000
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = no
+	transferable = no
+
+	is_shown_when_inactive = {
+		NOT = {
+			has_global_variable = turkfm_tanzimat_complete
+		}
+		c:TUR ?= this
+	}
+
+	possible = {
+		custom_tooltip = {
+			text = turkfm_tanzimat_failed
+			has_global_variable = turkfm_tanzimat_failed
+		}
+		OR = {
+			NOT = {
+				has_law_or_variant = law_type:law_monarchy
+			}
+			any_civil_war = {
+				count >= 1
+			}
+		}
+	}
+
+	immediate = {
+		trigger_event = the_grand_collapse.1
+	}
+
+	scripted_button = je_the_grand_collapse_bribe_politicians_button
+	scripted_button = je_the_grand_collapse_issue_khutbah_button
+	scripted_button = je_the_grand_collapse_law_speed_start_button
+	scripted_button = je_the_grand_collapse_law_speed_stop_button
+	scripted_button = je_the_grand_collapse_relation_speed_start_button
+	scripted_button = je_the_grand_collapse_relation_Speed_stop_button
+
+	complete = {
+		any_civil_war = {
+			count = 0
+		}
+		trigger_if = {
+			limit = {
+				is_player = yes
+			}
+			has_law_or_variant = law_type:law_monarchy
+			radical_fraction = {
+				value < 0.1
+			}
+			ig:ig_intelligentsia = {
+				is_in_government = no
+			}
+		}
+		government_legitimacy > 80
+		trigger_if = {
+			limit = {
+				any_subject_or_below = {
+					count > 0
+				}
+			}
+			any_subject_or_below = {
+				relations:root >= relations_threshold:cordial
+			}
+		}
+		any_interest_group = {
+			ig_approval >= happy
+			count >= 3
+		}
+	}
+
+	on_complete = {
+		trigger_event = the_grand_collapse.4
+		hidden_effect = {
+			the_grand_collapse_mod_cleanser = yes
+		}
+	}
+
+	timeout = 3650
+
+	on_timeout = {
+		trigger_event = the_grand_collapse.5
+		hidden_effect = {
+			the_grand_collapse_mod_cleanser = yes
+		}
+		set_global_variable = turkfm_grand_collapse_failed
+	}
+
+	invalid = {
+		any_scope_state = {
+			NOT = {
+				region = sr:region_anatolia
+			}
+			count = 0
+		}
+	}
+
+	on_invalid = {
+		hidden_effect = {
+			the_grand_collapse_mod_cleanser = yes
+		}
+	}
+
+	on_monthly_pulse = {
+		random_events = {
+			200 = 0
+			20 = the_grand_collapse.2 #Any Port in a Storm
+		}
+	}
+}
+
+####################
+
+# Overriding vanilla entry to merge with existing GotB events and reconcile variables
+je_the_grand_collapse = {
+	group = je_group_historical_content
 }
