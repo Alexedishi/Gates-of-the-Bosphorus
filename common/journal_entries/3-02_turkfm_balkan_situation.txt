@@ -326,3 +326,128 @@ je_turkfm_eastern_question = {
 	weight = 1000
 	
 }
+
+je_great_eastern_crisis = {
+	group = je_group_turkfm_separatism
+	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
+	weight = 100000
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	scripted_progress_bar = turkfm_crisis_progress_bar
+
+	is_shown_in_lobby = {
+		has_dlc_feature = ip3_content #National Awakening
+		c:TUR ?= this
+	}
+
+	modifiers_while_active = {
+	}
+
+	immediate = {
+		turkfm_initialize_crisis_effect = yes
+	}
+
+	complete = {
+		custom_tooltip = {
+			text = je_turkfm_balkan_situation_crisis_complete
+			global_var:turkfm_crisis_var >= 100
+		}
+		has_any_secessionists_broken_out = no
+		has_any_secessionists_growing = no
+		is_at_war = no
+	}
+
+	on_complete = {
+		show_as_tooltip = {
+			trigger_event = {
+				id = turkfm_balkan_situation.029 # Order Returns to Rumelia
+			}
+		}
+		turkfm_cleanup_crisis_effect = yes
+		turkfm_force_deconfliction_effect = yes
+	}
+
+	fail = {
+		custom_tooltip = {
+			text = je_turkfm_balkan_situation_crisis_complete
+			global_var:turkfm_crisis_var <= 0
+		}
+	}
+
+	on_fail = {
+		show_as_tooltip = {
+			trigger_event = {
+				id = turkfm_balkan_situation.028 # Rumelia in Disarray
+			}
+		}
+		turkfm_cleanup_crisis_effect = yes
+		turkfm_force_deconfliction_effect = yes
+	}
+
+	invalid = {
+		OR = {
+			NOT = {
+				has_global_variable = turkfm_balkan_situation_phase_var
+			}
+			AND = {
+				has_global_variable = turkfm_balkan_situation_phase_var
+				global_var:turkfm_balkan_situation_phase_var != flag:turkfm_crisis
+			}
+			has_global_variable = turkfm_separatism_complete
+		}
+	}
+
+	on_invalid = {
+		turkfm_cleanup_crisis_effect = yes
+		if = {
+			limit = {
+				NOT = {
+					has_global_variable = turkfm_separatism_complete
+				}
+			}
+			turkfm_force_deconfliction_effect = yes
+		}
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			set_global_variable = {
+				name = turkfm_crisis_progress_var
+				value = turkfm_crisis_progress_value
+			}
+			change_global_variable = {
+				name = turkfm_crisis_duration_var
+				add = 1
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			change_global_variable = {
+				name = turkfm_crisis_var
+				add = global_var:turkfm_crisis_progress_var
+			}
+			clamp_global_variable = {
+				name = turkfm_crisis_var
+				max = 250
+				min = 0
+			}
+		}
+	}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_global_variable = turkfm_crisis_var
+				}
+				desc = je_turkfm_balkan_situation_crisis_status
+			}
+		}
+	}
+
+}
