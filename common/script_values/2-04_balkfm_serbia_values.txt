@@ -1,696 +1,1144 @@
 ﻿balkfm_obrenovic_progress_value = {
 	value = 0
+	# Apply these values if House Obrenovic is ruling
 	if = {
 		limit = {
-			has_dlc_feature = ip3_content # National Awakening
+			balkfm_has_obrenovic_ruler_trigger = yes
 		}
-		
-	}
-	else = {
+		## Only apply ruler popularity if House is in charge
+		add = {
+			value = {
+				add = ruler.popularity
+				multiply = 0.01
+			}
+			desc = balkfm_value_from_ruler_popularity
+		}
+		## Relevant IGs will support ruling Obrenovic if SER has enacted Autocracy
 		if = {
 			limit = {
-				balkfm_has_obrenovic_ruler_trigger = yes
+				OR = {
+					has_law = law_type:law_autocracy
+					has_law = law_type:law_oligarchy
+				}
 			}
-			## Only apply ruler popularity if House is in charge
 			add = {
 				value = {
-					add = ruler.popularity
-					multiply = 0.01
-				}
-				desc = balkfm_value_from_ruler_popularity
-			}
-			## Relevant IGs will support ruling Obrenovic if SER has enacted Autocracy
-			if = {
-				limit = {
-					OR = {
-						has_law = law_type:law_autocracy
-						has_law = law_type:law_oligarchy
-					}
-				}
-				add = {
-					value = {
-						every_interest_group = {
-							limit = {
-								OR = {
-									law_stance = {
-										law = law_type:law_autocracy
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_oligarchy
-										value > neutral
-									}
-								}
-							}
-							add = ig_clout
-						}
-					}
-					desc = balkfm_value_from_autocracy
-				}
-			}
-			else = {
-				subtract = {
-					value = {
-						every_interest_group = {
-							limit = {
-								OR = {
-									law_stance = {
-										law = law_type:law_autocracy
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_oligarchy
-										value > neutral
-									}
-								}
-							}
-							add = ig_clout
-						}
-					}
-					desc = balkfm_value_from_liberalism
-				}
-			}
-			## Relevant IGs will support ruling Obrenovic if SER has any police
-			if = {
-				limit = {
-					NOT = {
-						has_law = law_type:law_no_police
-					}
-				}
-				add = {
-					value = {
-						every_interest_group = {
-							limit = {
+					every_interest_group = {
+						limit = {
+							OR = {
 								law_stance = {
-									law = law_type:law_no_police
-									value < neutral
+									law = law_type:law_autocracy
+									value > neutral
 								}
-							}
-							add = ig_clout
-						}
-					}
-					desc = balkfm_value_from_police_support
-				}
-			}
-			else = {
-				subtract = {
-					value = {
-						every_interest_group = {
-							limit = {
 								law_stance = {
-									law = law_type:law_no_police
-									value < neutral
+									law = law_type:law_oligarchy
+									value > neutral
 								}
 							}
-							add = ig_clout
 						}
-					}
-					desc = balkfm_value_from_police_support
-				}
-			}
-			## Relevant IGs will support ruling Obrenovic land policy
-			if = {
-				limit = {
-					OR = {
-						has_law = law_type:law_serfdom
-						has_law = law_type:law_tenant_farmers
+						add = ig_clout
 					}
 				}
-				add = {
-					value = {
-						every_interest_group = {
-							limit = {
-								OR = {
-									law_stance = {
-										law = law_type:law_serfdom
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_tenant_farmers
-										value > neutral
-									}
-								}
-							}
-							add = ig_clout
-						}
-					}
-					desc = balkfm_value_from_land_conversativism
-				}
-			}
-			else = {
-				subtract = {
-					value = {
-						every_interest_group = {
-							limit = {
-								OR = {
-									law_stance = {
-										law = law_type:law_serfdom
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_tenant_farmers
-										value > neutral
-									}
-								}
-							}
-							add = ig_clout
-						}
-					}
-					desc = balkfm_value_from_land_reform
-				}
+				desc = balkfm_value_from_autocracy
 			}
 		}
-		if = {
-			limit = {
-				balkfm_has_karadordevic_ruler_trigger = yes
-			}
-			## Relevant IGs will support non-ruling Obrenovic if SER has suffrage
-			if = {
-				limit = {
-					NOR = {
-						has_law = law_type:law_autocracy
-						has_law = law_type:law_oligarchy
-					}
-				}
-				add = {
-					value = {
-						every_interest_group = {
-							limit = {
-								OR = {
-									law_stance = {
-										law = law_type:law_autocracy
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_oligarchy
-										value > neutral
-									}
+		else = {
+			subtract = {
+				value = {
+					every_interest_group = {
+						limit = {
+							OR = {
+								law_stance = {
+									law = law_type:law_autocracy
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_oligarchy
+									value > neutral
 								}
 							}
-							add = ig_clout
 						}
+						add = ig_clout
 					}
-					desc = balkfm_value_from_autocracy
 				}
+				desc = balkfm_value_from_liberalism
 			}
-			## Relevant IGs will support non-ruling Obrenovic if SER has no police
-			if = {
-				limit = {
+		}
+		## Relevant IGs will support ruling Obrenovic if SER has any police
+		if = {
+			limit = {
+				NOT = {
 					has_law = law_type:law_no_police
 				}
-				add = {
-					value = {
-						every_interest_group = {
-							limit = {
-								law_stance = {
-									law = law_type:law_no_police
-									value < neutral
-								}
+			}
+			add = {
+				value = {
+					every_interest_group = {
+						limit = {
+							law_stance = {
+								law = law_type:law_no_police
+								value < neutral
 							}
-							add = ig_clout
 						}
+						add = ig_clout
 					}
-					desc = balkfm_value_from_police_support
+				}
+				desc = balkfm_value_from_police_support
+			}
+		}
+		else = {
+			subtract = {
+				value = {
+					every_interest_group = {
+						limit = {
+							law_stance = {
+								law = law_type:law_no_police
+								value < neutral
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_police_support
+			}
+		}
+		## Relevant IGs will support ruling Obrenovic land policy
+		if = {
+			limit = {
+				OR = {
+					has_law = law_type:law_serfdom
+					has_law = law_type:law_tenant_farmers
 				}
 			}
-			## Relevant IGs will support non-ruling Orenovic if land reform has been implemented
+			add = {
+				value = {
+					every_interest_group = {
+						limit = {
+							OR = {
+								law_stance = {
+									law = law_type:law_serfdom
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_tenant_farmers
+									value > neutral
+								}
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_land_conversativism
+			}
+		}
+		else = {
+			subtract = {
+				value = {
+					every_interest_group = {
+						limit = {
+							OR = {
+								law_stance = {
+									law = law_type:law_serfdom
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_tenant_farmers
+									value > neutral
+								}
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_land_reform
+			}
+		}
+
+		### IP3-Specific Values
+		if = {
+			limit = {
+				has_dlc_feature = ip3_content # National Awakening
+			}
+			## Radical Fraction
+			subtract = {
+				value = {
+					add = radical_fraction
+					multiply = 10
+				}
+				desc = "balkfm_value_from_radicals"
+			}
+			## Loyalist Fraction
+			add = {
+				value = {
+					add = loyalist_fraction
+					multiply = 10
+				}
+				desc = "balkfm_value_from_loyalists"
+			}
+
+			# Stopping hajduk lootings (serbian_throne.4)
 			if = {
 				limit = {
-					NOR = {
-						has_law = law_type:law_serfdom
-						has_law = law_type:law_tenant_farmers
+					any_country = {
+						has_modifier = serbia_stopped_hajduks_armed_penalty
 					}
 				}
 				add = {
-					value = {
-						every_interest_group = {
-							limit = {
-								OR = {
-									law_stance = {
-										law = law_type:law_serfdom
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_tenant_farmers
-										value > neutral
-									}
+					value = 0.4
+					desc = "balkfm_value_from_stopped_hajduks"
+				}
+			}
+
+			# Clerical publicity (serbian_throne.1.b)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_clerical_publicity_mod
+					}
+				}
+				add = {
+					value = 0.75
+					desc = "balkfm_value_from_clerical_publicity"
+				}
+			}
+			# Clerical publicity (serbian_throne.1.a)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_funded_clerical_publicity_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_clerical_publicity"
+					value = 0.40
+				}
+			}
+			# Clerical publicity (serbian_throne.1.c)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_forced_clerical_publicity_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_clerical_publicity"
+					value = 0.40
+				}
+			}
+
+			# Having one less hypocrite politician (serbian_throne.3.a)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_exposing_hypocrite_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_exposing_hypocrite"
+					value = 0.40
+				}
+			}
+			# Coecred politician (serbian_throne.3.b)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_exposing_hypocrite_forcing_to_work_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_exposing_hypocrite_forcing_to_work"
+					value = 0.40
+				}
+			}
+			# Failed assassination attempt (serbian_throne.3.a)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_exposing_hypocrite_fail_mod
+					}
+				}
+				subtract = {
+					desc = "balkfm_value_from_exposing_hypocrite_fail"
+					value = 0.40
+				}
+			}
+			# Slander pamphlet production (serbian_throne.2.a/b)
+			if = {
+				limit = {
+					OR = {
+						any_country = {
+							has_modifier = serbia_pamphlet_money_mod
+						}
+						any_country = {
+							has_modifier = serbia_pamphlet_auth_mod
+						}
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_pamphlets"
+					value = 3
+					multiply = {
+						value = literacy_rate
+					}
+				}
+			}
+			# Quashed urban rebels (serbian_throne.5.a/c)
+			if = {
+				limit = {
+					OR = {
+						any_country = {
+							has_modifier = serbia_urban_rebels_killed_by_armed_forces_mod
+						}
+						any_country = {
+							has_modifier = serbia_urban_rebels_bribed_mod
+						}
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_quashed_urban_rebels"
+					value = 0.35
+				}
+			}
+			# Quashed urban rebels (serbian_throne.5.b)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_urban_rebels_killed_by_loyalists_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_quashed_urban_rebels"
+					value = 0.60
+				}
+			}
+
+			# Aided Maygarized Serbs (serbian_throne.6.a)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_aided_magyarized_serbs_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_aided_magyarized_serbs"
+					value = 0.25
+				}
+			}
+			# Aided Maygarized Serbs (serbian_throne.6.b)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_greatly_aided_magyarized_serbs_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_greatly_aided_magyarized_serbs"
+					value = 0.75
+				}
+			}
+
+			# + If SOL is higher than 7.5
+			add = {
+				desc = "balkfm_value_from_sol"
+				value = {
+					add = average_sol
+					subtract = 10
+					divide = 1.5
+					round_to = 0.01
+				}
+			}
+
+			# Negative bureaucracy
+			if = {
+				limit = {
+					bureaucracy < 0
+				}
+				add = {
+					desc = "balkfm_value_from_negative_bureaucracy"
+					value = -1
+				}
+			}
+
+			# Negative authority
+			if = {
+				limit = {
+					authority < 0
+				}
+				add = {
+					desc = "balkfm_value_from_negative_authority"
+					value = -1
+				}
+			}
+
+			# Legitimacy below 90
+			add = {
+				desc = "balkfm_value_from_legitimacy"
+				value = legitimacy
+				subtract = 80
+				divide = 30
+			}
+		}
+
+	}
+
+	# Apply these values if House Karadordevic is ruling
+	if = {
+		limit = {
+			balkfm_has_karadordevic_ruler_trigger = yes
+		}
+		## Relevant IGs will support non-ruling Obrenovic if SER has suffrage
+		if = {
+			limit = {
+				NOR = {
+					has_law = law_type:law_autocracy
+					has_law = law_type:law_oligarchy
+				}
+			}
+			add = {
+				value = {
+					every_interest_group = {
+						limit = {
+							OR = {
+								law_stance = {
+									law = law_type:law_autocracy
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_oligarchy
+									value > neutral
 								}
 							}
-							add = ig_clout
 						}
+						add = ig_clout
 					}
-					desc = balkfm_value_from_land_conversativism
 				}
+				desc = balkfm_value_from_autocracy
 			}
 		}
-		## Consul Check
+		## Relevant IGs will support non-ruling Obrenovic if SER has no police
 		if = {
 			limit = {
-				has_variable = balkfm_austria_consul_var
+				has_law = law_type:law_no_police
 			}
 			add = {
-				value = 0.2
-				desc = balkfm_value_from_aus_consul
-			}
-		}
-		else_if = {
-			limit = {
-				has_variable = balkfm_russia_consul_var
-			}
-			add = {
-				value = -0.2
-				desc = balkfm_value_from_rus_consul
-			}
-		}
-		## Austria Relations Check
-		add = {
-			value = {
-				add = c:AUS.relations:root
-				divide = 100
-			}
-			desc = balkfm_value_from_aus_relations
-		}
-		## Lobby Appeasement Check
-		add = {
-			value = {
-				every_political_lobby = {
-					limit = {
-						is_political_lobby_type = lobby_pro_country
-						target = {
-							c:AUS ?= this
+				value = {
+					every_interest_group = {
+						limit = {
+							law_stance = {
+								law = law_type:law_no_police
+								value < neutral
+							}
 						}
+						add = ig_clout
 					}
-					add = appeasement
 				}
-				multiply = 0.1
+				desc = balkfm_value_from_police_support
 			}
-			desc = balkfm_value_from_aus_lobbies
 		}
-		## Southern Serbia Control Check
-		# Alexander Karadordevic lost a huge chunk of his support for failing to secure Serbian gains after the Crimean War
+		## Relevant IGs will support non-ruling Orenovic if land reform has been implemented
 		if = {
 			limit = {
-				has_variable = balkfm_obrenovic_vojvodina_var
-				NOT = {
-					owns_entire_state_region = STATE_EASTERN_SERBIA
+				NOR = {
+					has_law = law_type:law_serfdom
+					has_law = law_type:law_tenant_farmers
 				}
 			}
-			subtract = {
-				value = 2
-				desc = balkfm_value_from_weak_kaykay
+			add = {
+				value = {
+					every_interest_group = {
+						limit = {
+							OR = {
+								law_stance = {
+									law = law_type:law_serfdom
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_tenant_farmers
+									value > neutral
+								}
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_land_conversativism
 			}
 		}
-		else_if = {
-			limit = {
-				has_variable = balkfm_karadordevic_vojvodina_var
+	}
+
+	# Always apply these values
+	## Consul Check
+	if = {
+		limit = {
+			has_variable = balkfm_austria_consul_var
+		}
+		add = {
+			value = 0.2
+			desc = balkfm_value_from_aus_consul
+		}
+	}
+	else_if = {
+		limit = {
+			has_variable = balkfm_russia_consul_var
+		}
+		add = {
+			value = -0.2
+			desc = balkfm_value_from_rus_consul
+		}
+	}
+	## Austria Relations Check
+	add = {
+		value = {
+			add = c:AUS.relations:root
+			divide = 100
+		}
+		desc = balkfm_value_from_aus_relations
+	}
+	## Lobby Appeasement Check
+	add = {
+		value = {
+			every_political_lobby = {
+				limit = {
+					is_political_lobby_type = lobby_pro_country
+					target = {
+						c:AUS ?= this
+					}
+				}
+				add = appeasement
+			}
+			multiply = 0.1
+		}
+		desc = balkfm_value_from_aus_lobbies
+	}
+	## Southern Serbia Control Check
+	# Alexander Karadordevic lost a huge chunk of his support for failing to secure Serbian gains after the Crimean War
+	if = {
+		limit = {
+			has_variable = balkfm_obrenovic_vojvodina_var
+			NOT = {
 				owns_entire_state_region = STATE_EASTERN_SERBIA
 			}
-			add = {
-				value = 2
-				desc = balkfm_value_from_strong_kaykay
-			}
 		}
-		round_to = 0.01
+		subtract = {
+			value = 2
+			desc = balkfm_value_from_weak_kaykay
+		}
 	}
+	else_if = {
+		limit = {
+			has_variable = balkfm_karadordevic_vojvodina_var
+			owns_entire_state_region = STATE_EASTERN_SERBIA
+		}
+		add = {
+			value = 2
+			desc = balkfm_value_from_strong_kaykay
+		}
+	}
+	round_to = 0.01
 }
 
 balkfm_karadordevic_progress_value = {
 	value = 0
+
+	# Apply these values if House Karadordevic is ruling
 	if = {
 		limit = {
-			has_dlc_feature = ip3_content # National Awakening
+			balkfm_has_karadordevic_ruler_trigger = yes
 		}
-	}
-	else = {
+		## Only apply ruler popularity if House is in charge
+		add = {
+			value = {
+				add = ruler.popularity
+				multiply = 0.01
+			}
+			desc = balkfm_value_from_ruler_popularity
+		}
+		## Relevant IGs will support ruling Karadordevic if suffrage is enacted
 		if = {
 			limit = {
-				balkfm_has_karadordevic_ruler_trigger = yes
+				OR = {
+					has_law = law_type:law_landed_voting
+					has_law = law_type:law_wealth_voting
+					has_law = law_type:law_census_voting
+					has_law = law_type:law_universal_suffrage
+				}
 			}
-			## Only apply ruler popularity if House is in charge
 			add = {
 				value = {
-					add = ruler.popularity
-					multiply = 0.01
-				}
-				desc = balkfm_value_from_ruler_popularity
-			}
-			## Relevant IGs will support ruling Karadordevic if suffrage is enacted
-			if = {
-				limit = {
-					OR = {
-						has_law = law_type:law_landed_voting
-						has_law = law_type:law_wealth_voting
-						has_law = law_type:law_census_voting
-						has_law = law_type:law_universal_suffrage
-					}
-				}
-				add = {
-					value = {
-						every_interest_group = {
-							limit = {
-								OR = {
-									law_stance = {
-										law = law_type:law_landed_voting
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_wealth_voting
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_census_voting
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_universal_suffrage
-										value > neutral
-									}
+					every_interest_group = {
+						limit = {
+							OR = {
+								law_stance = {
+									law = law_type:law_landed_voting
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_wealth_voting
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_census_voting
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_universal_suffrage
+									value > neutral
 								}
 							}
-							add = ig_clout
 						}
-					}
-					desc = balkfm_value_from_enfranchisment
-				}
-			}
-			else_if = {
-				limit = {
-					NOR = {
-						has_law = law_type:law_landed_voting
-						has_law = law_type:law_wealth_voting
-						has_law = law_type:law_census_voting
-						has_law = law_type:law_universal_suffrage
+						add = ig_clout
 					}
 				}
-				subtract = {
-					value = {
-						every_interest_group = {
-							limit = {
-								OR = {
-									law_stance = {
-										law = law_type:law_landed_voting
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_wealth_voting
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_census_voting
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_universal_suffrage
-										value > neutral
-									}
-								}
-							}
-							add = ig_clout
-						}
-					}
-					desc = balkfm_value_from_disenfranchisment
-				}
-			}
-			## Relevant IGs will support ruling Karadordevic if Speech is protected
-			if = {
-				limit = {
-					OR = {
-						has_law = law_type:law_right_of_assembly
-						has_law = law_type:law_protected_speech
-					}
-				}
-				add = {
-					value = {
-						every_interest_group = {
-							limit = {
-								OR = {
-									law_stance = {
-										law = law_type:law_right_of_assembly
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_protected_speech
-										value > neutral
-									}
-								}
-							}
-							add = ig_clout
-						}
-					}
-					desc = balkfm_value_from_speech
-				}
-			}
-			else_if = {
-				limit = {
-					NOR = {
-						has_law = law_type:law_right_of_assembly
-						has_law = law_type:law_protected_speech
-					}
-				}
-				subtract = {
-					value = {
-						every_interest_group = {
-							limit = {
-								OR = {
-									law_stance = {
-										law = law_type:law_right_of_assembly
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_protected_speech
-										value > neutral
-									}
-								}
-							}
-							add = ig_clout
-						}
-					}
-					desc = balkfm_value_from_censorship
-				}
-			}
-			## Relevant IGs will support ruling Karadorevic if land reform is enacted
-			if = {
-				limit = {
-					NOR = {
-						has_law = law_type:law_serfdom
-						has_law = law_type:law_tenant_farmers
-					}
-				}
-				subtract = {
-					value = {
-						every_interest_group = {
-							limit = {
-								OR = {
-									law_stance = {
-										law = law_type:law_serfdom
-										value < neutral
-									}
-									law_stance = {
-										law = law_type:law_tenant_farmers
-										value < neutral
-									}
-								}
-							}
-							add = ig_clout
-						}
-					}
-					desc = balkfm_value_from_land_conversativism
-				}
-			}
-			else = {
-				add = {
-					value = {
-						every_interest_group = {
-							limit = {
-								OR = {
-									law_stance = {
-										law = law_type:law_serfdom
-										value < neutral
-									}
-									law_stance = {
-										law = law_type:law_tenant_farmers
-										value < neutral
-									}
-								}
-							}
-							add = ig_clout
-						}
-					}
-					desc = balkfm_value_from_land_reform
-				}
-			}
-		}
-		if = {
-			limit = {
-				balkfm_has_obrenovic_ruler_trigger = yes
-			}
-			## Relevant IGs will support non-ruling Karadordevic if no voting is present
-			if = {
-				limit = {
-					NOR = {
-						has_law = law_type:law_landed_voting
-						has_law = law_type:law_wealth_voting
-						has_law = law_type:law_census_voting
-						has_law = law_type:law_universal_suffrage
-					}
-				}
-				add = {
-					value = {
-						every_interest_group = {
-							limit = {
-								OR = {
-									law_stance = {
-										law = law_type:law_landed_voting
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_wealth_voting
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_census_voting
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_universal_suffrage
-										value > neutral
-									}
-								}
-							}
-							add = ig_clout
-						}
-					}
-					desc = balkfm_value_from_disenfranchisment
-				}
-			}
-			## Relevant IGs will support non-ruling Karadordevic if speech is suppressed
-			if = {
-				limit = {
-					NOR = {
-						has_law = law_type:law_right_of_assembly
-						has_law = law_type:law_protected_speech
-					}
-				}
-				add = {
-					value = {
-						every_interest_group = {
-							limit = {
-								OR = {
-									law_stance = {
-										law = law_type:law_right_of_assembly
-										value > neutral
-									}
-									law_stance = {
-										law = law_type:law_protected_speech
-										value > neutral
-									}
-								}
-							}
-							add = ig_clout
-						}
-					}
-					desc = balkfm_value_from_censorship
-				}
-			}
-			## Relevant IGs will support non-ruling Karadorevic if land reform is suppressed
-			if = {
-				limit = {
-					OR = {
-						has_law = law_type:law_serfdom
-						has_law = law_type:law_tenant_farmers
-					}
-				}
-				add = {
-					value = {
-						every_interest_group = {
-							limit = {
-								OR = {
-									law_stance = {
-										law = law_type:law_serfdom
-										value < neutral
-									}
-									law_stance = {
-										law = law_type:law_tenant_farmers
-										value < neutral
-									}
-								}
-							}
-							add = ig_clout
-						}
-					}
-					desc = balkfm_value_from_land_conversativism
-				}
-			}
-		}
-		## Consul Check
-		if = {
-			limit = {
-				has_variable = balkfm_russia_consul_var
-			}
-			add = {
-				value = 0.2
-				desc = balkfm_value_from_rus_consul
+				desc = balkfm_value_from_enfranchisment
 			}
 		}
 		else_if = {
 			limit = {
-				has_variable = balkfm_austria_consul_var
-			}
-			add = {
-				value = -0.2
-				desc = balkfm_value_from_aus_consul
-			}
-		}
-		## Russia Relations Check
-		add = {
-			value = {
-				add = c:RUS.relations:root
-				divide = 100
-			}
-			desc = balkfm_value_from_rus_relations
-		}
-		## Lobby Appeasement Check
-		add = {
-			value = {
-				every_political_lobby = {
-					limit = {
-						is_political_lobby_type = lobby_pro_country
-						target = {
-							c:RUS ?= this
-						}
-					}
-					add = appeasement
-				}
-				multiply = 0.1
-			}
-			desc = balkfm_value_from_rus_lobbies
-		}
-		## Southern Serbia Control Check
-		# Alexander Karadordevic lost a huge chunk of his support for failing to secure Serbian gains after the Crimean War
-		if = {
-			limit = {
-				has_variable = balkfm_karadordevic_vojvodina_var
-				NOT = {
-					owns_entire_state_region = STATE_EASTERN_SERBIA
+				NOR = {
+					has_law = law_type:law_landed_voting
+					has_law = law_type:law_wealth_voting
+					has_law = law_type:law_census_voting
+					has_law = law_type:law_universal_suffrage
 				}
 			}
 			subtract = {
-				value = 2
-				desc = balkfm_value_from_weak_kaykay
+				value = {
+					every_interest_group = {
+						limit = {
+							OR = {
+								law_stance = {
+									law = law_type:law_landed_voting
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_wealth_voting
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_census_voting
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_universal_suffrage
+									value > neutral
+								}
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_disenfranchisment
+			}
+		}
+		## Relevant IGs will support ruling Karadordevic if Speech is protected
+		if = {
+			limit = {
+				OR = {
+					has_law = law_type:law_right_of_assembly
+					has_law = law_type:law_protected_speech
+				}
+			}
+			add = {
+				value = {
+					every_interest_group = {
+						limit = {
+							OR = {
+								law_stance = {
+									law = law_type:law_right_of_assembly
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_protected_speech
+									value > neutral
+								}
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_speech
 			}
 		}
 		else_if = {
 			limit = {
-				has_variable = balkfm_karadordevic_vojvodina_var
-				owns_entire_state_region = STATE_EASTERN_SERBIA
+				NOR = {
+					has_law = law_type:law_right_of_assembly
+					has_law = law_type:law_protected_speech
+				}
 			}
-			add = {
-				value = 2
-				desc = balkfm_value_from_strong_kaykay
+			subtract = {
+				value = {
+					every_interest_group = {
+						limit = {
+							OR = {
+								law_stance = {
+									law = law_type:law_right_of_assembly
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_protected_speech
+									value > neutral
+								}
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_censorship
 			}
 		}
-		round_to = 0.01
+		## Relevant IGs will support ruling Karadorevic if land reform is enacted
+		if = {
+			limit = {
+				NOR = {
+					has_law = law_type:law_serfdom
+					has_law = law_type:law_tenant_farmers
+				}
+			}
+			subtract = {
+				value = {
+					every_interest_group = {
+						limit = {
+							OR = {
+								law_stance = {
+									law = law_type:law_serfdom
+									value < neutral
+								}
+								law_stance = {
+									law = law_type:law_tenant_farmers
+									value < neutral
+								}
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_land_conversativism
+			}
+		}
+		else = {
+			add = {
+				value = {
+					every_interest_group = {
+						limit = {
+							OR = {
+								law_stance = {
+									law = law_type:law_serfdom
+									value < neutral
+								}
+								law_stance = {
+									law = law_type:law_tenant_farmers
+									value < neutral
+								}
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_land_reform
+			}
+		}
+
+		### IP3-Specific Values
+		if = {
+			limit = {
+				has_dlc_feature = ip3_content # National Awakening
+			}
+			## Radical Fraction
+			subtract = {
+				value = {
+					add = radical_fraction
+					multiply = 10
+				}
+				desc = "balkfm_value_from_radicals"
+			}
+			## Loyalist Fraction
+			add = {
+				value = {
+					add = loyalist_fraction
+					multiply = 10
+				}
+				desc = "balkfm_value_from_loyalists"
+			}
+
+			# Stopping hajduk lootings (serbian_throne.4)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_stopped_hajduks_armed_penalty
+					}
+				}
+				add = {
+					value = 0.4
+					desc = "balkfm_value_from_stopped_hajduks"
+				}
+			}
+
+			# Clerical publicity (serbian_throne.1.b)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_clerical_publicity_mod
+					}
+				}
+				add = {
+					value = 0.75
+					desc = "balkfm_value_from_clerical_publicity"
+				}
+			}
+			# Clerical publicity (serbian_throne.1.a)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_funded_clerical_publicity_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_clerical_publicity"
+					value = 0.40
+				}
+			}
+			# Clerical publicity (serbian_throne.1.c)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_forced_clerical_publicity_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_clerical_publicity"
+					value = 0.40
+				}
+			}
+
+			# Having one less hypocrite politician (serbian_throne.3.a)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_exposing_hypocrite_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_exposing_hypocrite"
+					value = 0.40
+				}
+			}
+			# Coecred politician (serbian_throne.3.b)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_exposing_hypocrite_forcing_to_work_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_exposing_hypocrite_forcing_to_work"
+					value = 0.40
+				}
+			}
+			# Failed assassination attempt (serbian_throne.3.a)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_exposing_hypocrite_fail_mod
+					}
+				}
+				subtract = {
+					desc = "balkfm_value_from_exposing_hypocrite_fail"
+					value = 0.40
+				}
+			}
+			# Slander pamphlet production (serbian_throne.2.a/b)
+			if = {
+				limit = {
+					OR = {
+						any_country = {
+							has_modifier = serbia_pamphlet_money_mod
+						}
+						any_country = {
+							has_modifier = serbia_pamphlet_auth_mod
+						}
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_pamphlets"
+					value = 3
+					multiply = {
+						value = literacy_rate
+					}
+				}
+			}
+			# Quashed urban rebels (serbian_throne.5.a/c)
+			if = {
+				limit = {
+					OR = {
+						any_country = {
+							has_modifier = serbia_urban_rebels_killed_by_armed_forces_mod
+						}
+						any_country = {
+							has_modifier = serbia_urban_rebels_bribed_mod
+						}
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_quashed_urban_rebels"
+					value = 0.35
+				}
+			}
+			# Quashed urban rebels (serbian_throne.5.b)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_urban_rebels_killed_by_loyalists_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_quashed_urban_rebels"
+					value = 0.60
+				}
+			}
+
+			# Aided Maygarized Serbs (serbian_throne.6.a)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_aided_magyarized_serbs_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_aided_magyarized_serbs"
+					value = 0.25
+				}
+			}
+			# Aided Maygarized Serbs (serbian_throne.6.b)
+			if = {
+				limit = {
+					any_country = {
+						has_modifier = serbia_greatly_aided_magyarized_serbs_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_greatly_aided_magyarized_serbs"
+					value = 0.75
+				}
+			}
+
+			# + If SOL is higher than 7.5
+			add = {
+				desc = "balkfm_value_from_sol"
+				value = {
+					add = average_sol
+					subtract = 10
+					divide = 1.5
+					round_to = 0.01
+				}
+			}
+
+			# Negative bureaucracy
+			if = {
+				limit = {
+					bureaucracy < 0
+				}
+				add = {
+					desc = "balkfm_value_from_negative_bureaucracy"
+					value = -1
+				}
+			}
+
+			# Negative authority
+			if = {
+				limit = {
+					authority < 0
+				}
+				add = {
+					desc = "balkfm_value_from_negative_authority"
+					value = -1
+				}
+			}
+
+			# Legitimacy below 90
+			add = {
+				desc = "balkfm_value_from_legitimacy"
+				value = legitimacy
+				subtract = 80
+				divide = 30
+			}
+		}
+
 	}
+
+	# Apply these values if House Obrenovic is ruling
+	if = {
+		limit = {
+			balkfm_has_obrenovic_ruler_trigger = yes
+		}
+		## Relevant IGs will support non-ruling Karadordevic if no voting is present
+		if = {
+			limit = {
+				NOR = {
+					has_law = law_type:law_landed_voting
+					has_law = law_type:law_wealth_voting
+					has_law = law_type:law_census_voting
+					has_law = law_type:law_universal_suffrage
+				}
+			}
+			add = {
+				value = {
+					every_interest_group = {
+						limit = {
+							OR = {
+								law_stance = {
+									law = law_type:law_landed_voting
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_wealth_voting
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_census_voting
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_universal_suffrage
+									value > neutral
+								}
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_disenfranchisment
+			}
+		}
+		## Relevant IGs will support non-ruling Karadordevic if speech is suppressed
+		if = {
+			limit = {
+				NOR = {
+					has_law = law_type:law_right_of_assembly
+					has_law = law_type:law_protected_speech
+				}
+			}
+			add = {
+				value = {
+					every_interest_group = {
+						limit = {
+							OR = {
+								law_stance = {
+									law = law_type:law_right_of_assembly
+									value > neutral
+								}
+								law_stance = {
+									law = law_type:law_protected_speech
+									value > neutral
+								}
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_censorship
+			}
+		}
+		## Relevant IGs will support non-ruling Karadorevic if land reform is suppressed
+		if = {
+			limit = {
+				OR = {
+					has_law = law_type:law_serfdom
+					has_law = law_type:law_tenant_farmers
+				}
+			}
+			add = {
+				value = {
+					every_interest_group = {
+						limit = {
+							OR = {
+								law_stance = {
+									law = law_type:law_serfdom
+									value < neutral
+								}
+								law_stance = {
+									law = law_type:law_tenant_farmers
+									value < neutral
+								}
+							}
+						}
+						add = ig_clout
+					}
+				}
+				desc = balkfm_value_from_land_conversativism
+			}
+		}
+	}
+
+	# Always apply these values
+	## Consul Check
+	if = {
+		limit = {
+			has_variable = balkfm_russia_consul_var
+		}
+		add = {
+			value = 0.2
+			desc = balkfm_value_from_rus_consul
+		}
+	}
+	else_if = {
+		limit = {
+			has_variable = balkfm_austria_consul_var
+		}
+		add = {
+			value = -0.2
+			desc = balkfm_value_from_aus_consul
+		}
+	}
+	## Russia Relations Check
+	add = {
+		value = {
+			add = c:RUS.relations:root
+			divide = 100
+		}
+		desc = balkfm_value_from_rus_relations
+	}
+	## Lobby Appeasement Check
+	add = {
+		value = {
+			every_political_lobby = {
+				limit = {
+					is_political_lobby_type = lobby_pro_country
+					target = {
+						c:RUS ?= this
+					}
+				}
+				add = appeasement
+			}
+			multiply = 0.1
+		}
+		desc = balkfm_value_from_rus_lobbies
+	}
+	## Southern Serbia Control Check
+	# Alexander Karadordevic lost a huge chunk of his support for failing to secure Serbian gains after the Crimean War
+	if = {
+		limit = {
+			has_variable = balkfm_karadordevic_vojvodina_var
+			NOT = {
+				owns_entire_state_region = STATE_EASTERN_SERBIA
+			}
+		}
+		subtract = {
+			value = 2
+			desc = balkfm_value_from_weak_kaykay
+		}
+	}
+	else_if = {
+		limit = {
+			has_variable = balkfm_karadordevic_vojvodina_var
+			owns_entire_state_region = STATE_EASTERN_SERBIA
+		}
+		add = {
+			value = 2
+			desc = balkfm_value_from_strong_kaykay
+		}
+	}
+	round_to = 0.01
 }
 
 balkfm_obrenovic_net_progress_value = {
