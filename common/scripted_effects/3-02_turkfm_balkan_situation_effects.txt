@@ -1865,6 +1865,275 @@ turkfm_initialize_crisis_effect = {
 	}
 }
 
+turkfm_crisis_success_effect = {
+	# Stolen from chris_scripted_effects
+	c:TUR ?= {
+		add_modifier = {
+			name = eastern_crisis_controlled
+			days = moderately_long_modifier_time
+		}
+		every_country = {
+			limit = {
+				is_subject_of = root
+				OR = {
+					capital.region = sr:region_balkans
+					has_interest_marker_in_region = region_balkans
+				}
+			}
+			c:TUR.power_bloc ?= {
+				add_leverage = { target = PREV value = 250 }
+			}
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					culture = cu:albanian
+				}
+			}
+			add_fervor_target_modifier = {
+				#changes target
+				culture = cu:albanian
+				days = very_long_modifier_time
+				multiplier = eastern_crisis_fervor_loss
+			}
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					culture = cu:bosniak
+				}
+			}
+			add_fervor_target_modifier = {
+				#changes target
+				culture = cu:bosniak
+				days = very_long_modifier_time
+				multiplier = eastern_crisis_fervor_loss
+			}
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					culture = cu:bulgarian
+				}
+			}
+			add_fervor_target_modifier = {
+				#changes target
+				culture = cu:bulgarian
+				days = very_long_modifier_time
+				multiplier = eastern_crisis_fervor_loss
+			}
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					culture = cu:croat
+				}
+			}
+			add_fervor_target_modifier = {
+				#changes target
+				culture = cu:croat
+				days = very_long_modifier_time
+				multiplier = eastern_crisis_fervor_loss
+			}
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					culture = cu:greek
+				}
+			}
+			add_fervor_target_modifier = {
+				#changes target
+				culture = cu:greek
+				days = very_long_modifier_time
+				multiplier = eastern_crisis_fervor_loss
+			}
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					culture = cu:romanian
+				}
+			}
+			add_fervor_target_modifier = {
+				#changes target
+				culture = cu:romanian
+				days = very_long_modifier_time
+				multiplier = eastern_crisis_fervor_loss
+			}
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					culture = cu:serb
+				}
+			}
+			add_fervor_target_modifier = {
+				#changes target
+				culture = cu:serb
+				days = very_long_modifier_time
+				multiplier = eastern_crisis_fervor_loss
+			}
+		}
+	}
+}
+
+turkfm_crisis_fail_effect = {
+	c:TUR ?= {
+		add_modifier = {
+			name = eastern_crisis_not_controlled
+			days = moderately_long_modifier_time
+		}
+		if = {
+			limit = {
+				any_country = {
+					OR = {
+						is_subject_of = root
+						capital.region = sr:region_balkans
+					}
+				}
+			}
+			custom_tooltip = {
+				text = eastern_crisis_subjects_modifier__ten_years_tt
+			}
+			every_country = {
+				limit = {
+					OR = {
+						is_subject_of = root
+						capital.region = sr:region_balkans
+					}
+				}
+				hidden_effect = { #covered by custom tooltip above
+					add_modifier = {
+						name = eastern_crisis_liberty_desire_increase
+						days = long_modifier_time
+						is_decaying = yes
+					}
+				}
+			}
+		}
+
+		if = { #lose leverage
+			limit = {
+				exists = c:TUR.power_bloc
+			}
+			every_country = {
+				limit = {
+					capital.region = sr:region_balkans
+				}
+				c:TUR.power_bloc ?= {
+					add_leverage = { target = PREV value = -500 }
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				any_political_movement = {
+					OR = {
+						is_political_movement_type = movement_religious_majority
+						is_political_movement_type = movement_religious_minority
+						is_political_movement_type = movement_cultural_majority
+						is_political_movement_type = movement_cultural_minority
+					}
+				}
+			}
+			every_political_movement = {
+				limit = {
+					OR = {
+						is_political_movement_type = movement_religious_majority
+						is_political_movement_type = movement_religious_minority
+						is_political_movement_type = movement_cultural_majority
+						is_political_movement_type = movement_cultural_minority
+					}
+				}
+				add_modifier = {
+					name = eastern_crisis_movement_attraction
+					days = long_modifier_time
+					is_decaying = yes
+				}
+			}
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					culture = cu:albanian
+				}
+			}
+			add_fervor_target_modifier = { #changes target
+				culture = cu:albanian
+				multiplier = eastern_crisis_fervor_gain
+			}
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					culture = cu:bosniak
+				}
+			}
+			add_fervor_target_modifier = { #changes target
+				culture = cu:bosniak
+				multiplier = eastern_crisis_fervor_gain
+			}
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					culture = cu:bulgarian
+				}
+			}
+			add_fervor_target_modifier = { #changes target
+				culture = cu:bulgarian
+				multiplier = eastern_crisis_fervor_gain
+			}
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					culture = cu:croat
+				}
+			}
+			add_fervor_target_modifier = { #changes target
+				culture = cu:croat
+				multiplier = eastern_crisis_fervor_gain
+			}
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					culture = cu:greek
+				}
+			}
+			add_fervor_target_modifier = { #changes target
+				culture = cu:greek
+				multiplier = eastern_crisis_fervor_gain
+			}
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					culture = cu:romanian
+				}
+			}
+			add_fervor_target_modifier = { #changes target
+				culture = cu:romanian
+				multiplier = eastern_crisis_fervor_gain
+			}
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					culture = cu:serb
+				}
+			}
+			add_fervor_target_modifier = { #changes target
+				culture = cu:serb
+				multiplier = eastern_crisis_fervor_gain
+			}
+		}
+	}
+}
+
 turkfm_cleanup_crisis_effect = {
 	remove_global_variable = turkfm_crisis_var
 	remove_global_variable = turkfm_crisis_progress_var

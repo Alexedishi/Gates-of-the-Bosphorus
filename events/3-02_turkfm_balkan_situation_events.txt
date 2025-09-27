@@ -33,7 +33,7 @@ namespace = turkfm_balkan_situation
 #020-029 - Balkan Crisis Narrative Events
 #	020 - A Crisis in Rumelia (TUR)
 #	021 - A Crisis in Rumelia (Involved)
-#	028 - ##Rumelia in Disarry
+#	028 - Rumelia in Disarray
 #	029 - Order Returns to Rumelia
 
 #100-109 - Balkan Situation Neutral Events
@@ -1104,6 +1104,62 @@ turkfm_balkan_situation.021 = { # A Crisis in Rumelia
 	
 }
 
+turkfm_balkan_situation.028 = { # Rumelia in Disarray
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = turkfm_balkan_situation.028.t
+	desc = turkfm_balkan_situation.028.d
+	flavor = turkfm_balkan_situation.028.f
+
+	event_image = {
+		video = "ip3_angry_mob_raiding_minorities"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by je_great_eastern_crisis
+	}
+
+	cancellation_trigger = {
+		has_global_variable = turkfm_separatism_complete
+	}
+
+	immediate = {
+		c:TUR ?= {
+			random_scope_state = {
+				limit = {
+					is_capital = yes
+				}
+				save_scope_as = relevant_state_scope
+			}
+			ruler = {
+				save_scope_as = ruler_scope
+			}
+			save_scope_as = ottoman_scope
+		}
+	}
+
+	option = {
+		name = turkfm_balkan_situation.028.a
+		default_option = yes
+		if = {
+			limit = {
+				c:TUR ?= root
+			}
+			turkfm_crisis_fail_effect = yes
+		}
+		else = {
+			show_as_tooltip = {
+				turkfm_crisis_fail_effect = yes
+			}
+		}
+	}
+}
+
 turkfm_balkan_situation.029 = { # Order Returns to Rumelia
 	type = country_event
 	placement = root
@@ -1116,7 +1172,7 @@ turkfm_balkan_situation.029 = { # Order Returns to Rumelia
 	flavor = turkfm_balkan_situation.029.f
 	
 	gui_window = event_window_1char_adventure
-	left_icon = scope:left_icon
+	left_icon = scope:ruler_scope
 	
 	event_image = {
 		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_turkish_palace1.dds"
@@ -1129,9 +1185,15 @@ turkfm_balkan_situation.029 = { # Order Returns to Rumelia
 	}
 	
 	immediate = {
-		c:TUR = {
+		c:TUR ?= {
+			random_scope_state = {
+				limit = {
+					is_capital = yes
+				}
+				save_scope_as = relevant_state_scope
+			}
 			ruler = {
-				save_scope_as = left_icon
+				save_scope_as = ruler_scope
 			}
 			save_scope_as = ottoman_scope
 		}
@@ -1140,9 +1202,18 @@ turkfm_balkan_situation.029 = { # Order Returns to Rumelia
 	option = {
 		name = turkfm_balkan_situation.029.a
 		default_option = yes
-		custom_tooltip = turkfm_no_effects
+		if = {
+			limit = {
+				c:TUR ?= root
+			}
+			turkfm_crisis_success_effect = yes
+		}
+		else = {
+			show_as_tooltip = {
+				turkfm_crisis_success_effect = yes
+			}
+		}
 	}
-	
 }
 
 ## Balkan Situation Neutral Events ##
