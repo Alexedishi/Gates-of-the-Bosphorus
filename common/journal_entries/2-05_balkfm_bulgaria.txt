@@ -1,12 +1,29 @@
 ﻿je_balkfm_bul_battenburg_monarchy = {
+	group = je_group_
 	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
-	group = je_group_balkfm_bulgaria
+	weight = 1000
+
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	scripted_progress_bar = balkfm_battenburg_legitimacy_progressbar
+	scripted_progress_bar = balkfm_battenburg_support_progressbar
+
+	is_shown_in_lobby = {
+		c:BUL ?= this
+	}
+
+	is_shown_when_inactive = {
+		c:BUL ?= this
+		has_law_or_variant = law_type:law_monarchy
+	}
+
+	possible = {
+		is_country_type = recognized
+	}
 
 	immediate = {
-		ruler = {
-			save_scope_as = balkfm_alex_scope
-		}
 		set_variable = {
 			name = balkfm_battenburg_support_var
 			value = balkfm_battenburg_support_value
@@ -17,23 +34,18 @@
 		}
 	}
 
-	scripted_progress_bar = balkfm_battenburg_legitimacy_progressbar
-	scripted_progress_bar = balkfm_battenburg_support_progressbar
-
-	complete = { # Battenburgs stay in power
-		has_law = law_type:law_monarchy
-		AND = {
-			custom_tooltip = {
-				text = battenburg_monarchy_success_tt1
-				hidden_trigger = {
-					balkfm_battenburg_support_value > 5
-				}
+	complete = {
+		has_law_or_variant = law_type:law_monarchy
+		custom_tooltip = {
+			text = battenburg_monarchy_success_tt1
+			hidden_trigger = {
+				var:balkfm_battenburg_support_var > 5
 			}
-			custom_tooltip = {
-				text = battenburg_monarchy_success_tt2
-				hidden_trigger = {
-					has_variable = balkfm_alex_yeeted
-				}
+		}
+		custom_tooltip = {
+			text = battenburg_monarchy_success_tt2
+			hidden_trigger = {
+				has_variable = balkfm_alex_yeeted
 			}
 		}
 	}
@@ -45,19 +57,16 @@
 	}
 
 	fail = { # Battenburgs get the boot
-		has_law = law_type:law_monarchy
-		AND = {
-			custom_tooltip = {
-				text = battenburg_monarchy_fail_tt1
-				hidden_trigger = {
-					balkfm_battenburg_support_value <= 5
-				}
+		custom_tooltip = {
+			text = battenburg_monarchy_fail_tt1
+			hidden_trigger = {
+				balkfm_battenburg_support_value <= 5
 			}
-			custom_tooltip = {
-				text = battenburg_monarchy_fail_tt2
-				hidden_trigger = {
-					has_variable = balkfm_alex_yeeted
-				}
+		}
+		custom_tooltip = {
+			text = battenburg_monarchy_fail_tt2
+			hidden_trigger = {
+				has_variable = balkfm_alex_yeeted
 			}
 		}
 	}
@@ -69,7 +78,7 @@
 	}
 
 	invalid = { # 404 monarch not found
-		NOT = { has_law = law_type:law_monarchy }
+		NOT = { has_law_or_variant = law_type:law_monarchy }
 	}
 
 	on_invalid = {
@@ -146,9 +155,6 @@
 			}
 		}
 	}
-
-	weight = 2000
-
 }
 
 je_balkfm_bul_russian_influence = {
@@ -309,22 +315,44 @@ je_balkfm_bul_stambolovism = {
 }
 
 je_balkfm_bul_military_modernization = {
-	icon = "gfx/interface/icons/event_icons/event_military.dds"
 	group = je_group_balkfm_bulgaria
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	weight = 100
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	scripted_progress_bar = bulgaria_military_progress_bar
+
+	is_shown_when_inactive = {
+		has_dlc_feature = ip3_content
+		c:BUL ?= this
+	}
+
+	possible = {
+		is_country_type = recognized
+		is_subject = no
+	}
+
+	immediate = {
+		set_variable = {
+			Name = army_projection_target
+			Value = 1000
+		}
+		add_journal_entry = {
+			type = je_prussia_of_the_balkans
+		}
+	}
+
+	modifiers_while_active = {
+		modifier_balgaria_arming
+	}
 
 	complete = {
-		any_military_formation = {
-			any_combat_unit = {
-				count >= 50
-				OR = {
-					has_unit_type = unit_type:combat_unit_type_trench_infantry
-					has_unit_type = unit_type:combat_unit_type_squad_infantry
-					has_unit_type = unit_type:combat_unit_type_mechanized_infantry
-					has_unit_type = unit_type:combat_unit_type_shrapnel_artillery
-					has_unit_type = unit_type:combat_unit_type_siege_artillery
-					has_unit_type = unit_type:combat_unit_type_heavy_tank
-				}
-			}
+		custom_tooltip = {
+			text = bularia_military_progress_tt
+			ROOT.army_power_projection >= var:army_projection_target
 		}
 	}
 
@@ -334,35 +362,54 @@ je_balkfm_bul_military_modernization = {
 		}
 	}
 
-	weight = 100
+	fail = {
+		is_subject = yes
+	}
 
+	on_fail = {
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			scope:journal_entry = {
+				set_bar_progress = {
+					value = ROOT.army_power_projection
+					name = bulgaria_military_progress_bar
+				}
+			}
+		}
+	}
 }
 
 #### BULGARIAN IRREDENTISM
-
 je_balkfm_bul_liberation_of_bulgaria = {
-	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
 	group = je_group_balkfm_bulgaria
+	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+	weight = 1000
+
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	scripted_button = balkfm_agitate_rumelia_button # balkfm_bulgaria.307
+	scripted_button = balkfm_uplift_rumelia_button # balkfm_bulgaria.308
+	scripted_button = balkfm_annex_rumelia_button # balkfm_bulgaria.211
+	scripted_button = balkfm_declare_tsardom_button # balkfm_bulgaria.212
 
 	is_shown_when_inactive = {
 		c:BUL ?= this
-		NOR = {
-			#			has_global_variable = eqfm_crisis_var ## TODO update these variables when the new EQ is added
-			#			has_global_variable = eqfm_berlin_congress_var
-			has_variable = balkfm_bulgarian_liberation
-			has_variable = balkfm_golden_lion_tickled
-		}
 		owns_entire_state_region = STATE_BULGARIA
-		NOT = { owns_entire_state_region = STATE_NORTHERN_THRACE }
+		NOT = {
+			owns_entire_state_region = STATE_NORTHERN_THRACE
+		}
 	}
 
 	possible = {
 		has_technology_researched = nationalism
+		is_country_type = recognized
 	}
 
 	immediate = {
-		set_variable = balkfm_bulgarian_liberation
 		trigger_event = {
 			id = balkfm_bulgaria.210 # Dreams of the Tsardom
 		}
@@ -375,91 +422,33 @@ je_balkfm_bul_liberation_of_bulgaria = {
 	}
 
 	on_complete = {
-		trigger_event = {
-			id = balkfm_bulgaria.213 # Bulgarian Irredentism
-		}
 	}
-
-	invalid = {
-		hidden_trigger = {
-			has_variable = balkfm_weaksauce
-		}
-	}
-
-	scripted_button = balkfm_agitate_rumelia_button # balkfm_bulgaria.307
-	scripted_button = balkfm_uplift_rumelia_button # balkfm_bulgaria.308
-	scripted_button = balkfm_annex_rumelia_button # balkfm_bulgaria.211
-	scripted_button = balkfm_declare_tsardom_button # balkfm_bulgaria.212
-
-	weight = 1000
-
 }
 
 je_balkfm_bul_greater_bulgaria = {
-	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
 	group = je_group_balkfm_bulgaria
-	should_be_pinned_by_default = yes
-
-	complete = {
-		is_subject = no
-		owns_entire_state_region = STATE_BULGARIA
-		owns_entire_state_region = STATE_NORTHERN_THRACE
-		owns_entire_state_region = STATE_WESTERN_THRACE
-		owns_entire_state_region = STATE_SKOPIA
-		owns_entire_state_region = STATE_MACEDONIA
-	}
-
-	on_complete = {
-		trigger_event = {
-			id = balkfm_bulgaria.214 # The Tsardom of Bulgaria
-		}
-	}
-
-	invalid = {
-		hidden_trigger = {
-			has_variable = balkfm_weaksauce
-		}
-	}
-
-	weight = 500
-
-}
-
-je_balkfm_bul_greater_bulgaria_alternate = {
-	# NOTE: there is a corner case where BUL can spawn with both STATE_BULGARIA and STATE_NORTHERN_THRACE, AND the on_actions won't catch it
-	# The variable balkfm_bulgarian_liberation combined with the owns_entire_state_region triggers will activate the correct journal entry
-	# balkfm_bulgaria.213 can be triggered by either journal, but will add je_balkfm_bul_greater_bulgaria if balkfm_bulgarian_liberation is present
-	# Yes, this is jank and I don't like it either
-
 	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
-	group = je_group_balkfm_bulgaria
+	weight = 1000
+
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
 
 	is_shown_when_inactive = {
 		c:BUL ?= this
-		NOR = {
-			#			has_global_variable = eqfm_crisis_var
-			#			has_global_variable = eqfm_berlin_congress_var
-			has_variable = balkfm_bulgarian_liberation
-			has_variable = balkfm_golden_lion_tickled # this is to block this journal in the event that the player is coming in from BUL_SIL
-		}
 		owns_entire_state_region = STATE_BULGARIA
 		owns_entire_state_region = STATE_NORTHERN_THRACE
 	}
 
 	possible = {
 		has_technology_researched = nationalism
+		is_country_type = recognized
+		is_subject = no
 	}
 
 	immediate = {
-		if = {
-			limit = {
-				NOT = { has_variable = balkfm_bulgarian_liberation }
-			}
-			set_variable = balkfm_bulgarian_liberation
-			trigger_event = {
-				id = balkfm_bulgaria.213 # Bulgarian Irredentism
-			}
+		trigger_event = {
+			id = balkfm_bulgaria.213 # Bulgarian Irredentism
 		}
 	}
 
@@ -478,14 +467,9 @@ je_balkfm_bul_greater_bulgaria_alternate = {
 		}
 	}
 
-	invalid = {
-		hidden_trigger = {
-			has_variable = balkfm_weaksauce
-		}
+	fail = {
+		is_subject = yes
 	}
-
-	weight = 500
-
 }
 
 je_balkfm_bul_tsardom = {
@@ -511,10 +495,8 @@ je_balkfm_bul_tsardom = {
 		}
 	}
 
-	invalid = {
-		hidden_trigger = {
-			has_variable = balkfm_weaksauce
-		}
+	fail = {
+		is_subject = yes
 	}
 
 	weight = 500
@@ -541,10 +523,8 @@ je_balkfm_bul_empire = {
 		}
 	}
 
-	invalid = {
-		hidden_trigger = {
-			has_variable = balkfm_weaksauce
-		}
+	fail = {
+		is_subject = yes
 	}
 
 	weight = 500
@@ -684,7 +664,7 @@ je_balkfm_bul_bulgarian_exarchate = {
 	is_shown_when_inactive = {
 		always = no # TODO provide KoG integration when ready
 		eocfm_is_active_trigger = yes
-		c:BUL_SIL ?= this
+		c:BUL ?= this
 	}
 
 	possible = {
