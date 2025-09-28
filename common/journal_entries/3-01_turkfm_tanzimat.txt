@@ -39,7 +39,7 @@
 	on_complete = {
 		set_global_variable = turkfm_tanzimat_complete
 		custom_tooltip = {
-			text = BULje_turkfm_tanzimat_main_on_complete_ottomanist
+			text = je_turkfm_tanzimat_main_on_complete_ottomanist
 			if = {
 				limit = {
 					has_variable = turkfm_ottomanist_identity_enforced
@@ -50,7 +50,7 @@
 			}
 		}
 		custom_tooltip = {
-			text = BULje_turkfm_tanzimat_main_on_complete_islamist
+			text = je_turkfm_tanzimat_main_on_complete_islamist
 			if = {
 				limit = {
 					has_variable = turkfm_islamist_identity_enforced
@@ -571,6 +571,8 @@ je_turkfm_tanzimat_young_ottomans = {
 	can_revolution_inherit = yes
 	transferable = no
 
+	scripted_progress_bar = turkfm_young_ottomans_progressbar
+
 	is_shown_when_inactive = {
 		has_journal_entry = je_turkfm_tanzimat_main
 	}
@@ -585,18 +587,20 @@ je_turkfm_tanzimat_young_ottomans = {
 
 	immediate = {
 		turkfm_initialize_young_ottomans_effect = yes
+		trigger_event = {
+			id = turkfm_tanzimat.100 # The Young Ottomans
+		}
 	}
 
-	scripted_progress_bar = turkfm_young_ottomans_progressbar
+	modifiers_while_active = {
+		modifier_turkfm_ottomanist_thought
+	}
 
 	complete = {
-		OR = {
-			has_law_or_variant = law_type:law_wealth_voting
-			has_law_or_variant = law_type:law_census_voting
-			has_law_or_variant = law_type:law_universal_suffrage
-		}
+		country_has_voting_franchise = yes
 		NOR = {
 			has_law_or_variant = law_type:law_ethnostate
+			has_law_or_variant = law_type:law_national_supremacy
 			has_law_or_variant = law_type:law_multicultural
 		}
 		has_law_or_variant = law_type:law_state_religion
