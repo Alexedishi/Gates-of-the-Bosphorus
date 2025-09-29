@@ -603,19 +603,45 @@ je_turkfm_tanzimat_young_ottomans = {
 	}
 
 	complete = {
-		country_has_voting_franchise = yes
-		NOR = {
-			has_law_or_variant = law_type:law_ethnostate
-			has_law_or_variant = law_type:law_national_supremacy
-			has_law_or_variant = law_type:law_multicultural
+		OR = {
+			AND = {
+				country_has_voting_franchise = yes
+				NOR = {
+					has_law_or_variant = law_type:law_ethnostate
+					has_law_or_variant = law_type:law_national_supremacy
+					has_law_or_variant = law_type:law_multicultural
+				}
+				has_law_or_variant = law_type:law_state_religion
+			}
+			custom_tooltip = {
+				text = je_turkfm_tanzimat_young_ottomans_complete
+				var:turkfm_young_ottomans_var <= 0
+			}
 		}
-		has_law_or_variant = law_type:law_state_religion
+
 	}
 
 	on_complete = {
-		show_as_tooltip = {
-			ruler = {
-				exile_character = yes
+		custom_tooltip = {
+			text = je_turkfm_tanzimat_young_ottomans_reform_outcome
+			if = {
+				limit = {
+					var:turkfm_young_ottomans_var > 0
+				}
+				trigger_event = {
+					id =
+				}
+			}
+		}
+		custom_tooltip = {
+			text = je_turkfm_tanzimat_young_ottomans_autocracy_outcome
+			if = {
+				limit = {
+					var:turkfm_young_ottomans_var <= 0
+				}
+				trigger_event = {
+					id =
+				}
 			}
 		}
 		turkfm_cleanup_young_ottomans_effect = yes
@@ -629,12 +655,10 @@ je_turkfm_tanzimat_young_ottomans = {
 	}
 
 	on_fail = {
-		show_as_tooltip = {
-			every_scope_character = {
-				limit = {
-					has_variable = turkfm_young_ottoman_member
-				}
-				exile_character = yes
+		custom_tooltip = {
+			text = je_turkfm_tanzimat_young_ottomans_failure_outcome
+			trigger_event = {
+				id =
 			}
 		}
 		turkfm_cleanup_young_ottomans_effect = yes
