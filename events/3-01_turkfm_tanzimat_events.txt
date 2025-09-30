@@ -56,6 +56,10 @@ namespace = turkfm_tanzimat
 #	108 - ##Sultanic Authority
 #	109 - ##A Bloodless Coup
 
+#110-119 - Young Ottomans Aftermath Events
+#	110 - ##A Broken Sultan
+#	111 - ##Renewed Momentum
+
 
 ## Section 2: The Young Turks Events ##
 #200-209 - Emergence of the Young Turks Events
@@ -319,7 +323,7 @@ turkfm_tanzimat.003 = { # The Men of the Tanzimat
 				}
 			}
 			scope:turkfm_tanzimat_character_1 = {
-				add_trait = trait_turkfm_master_bureaucrat
+				add_trait = gbbf_trait_master_bureaucrat
 			}
 		}
 		else = {
@@ -617,7 +621,7 @@ turkfm_tanzimat.010 = { # Modernized Agriculture
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by je_turkfm_tanzimat_argiculture
+		# triggered by je_turkfm_tanzimat_agriculture
 	}
 
 	immediate = {
@@ -1174,6 +1178,353 @@ turkfm_tanzimat.100 = { # Yeni Osmanlılar
 		name = turkfm_tanzimat.100.a
 		default_option = yes
 		custom_tooltip = turkfm_young_ottoman_warning
+	}
+
+}
+
+turkfm_tanzimat.101 = { # The Softas Take to the Streets
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = turkfm_tanzimat.101.t
+	desc = turkfm_tanzimat.101.d
+	flavor = turkfm_tanzimat.101.f
+
+	event_image = {
+		video = "europenorthamerica_sufferage"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		var:turkfm_young_ottomans_var >= 40
+		NOT = {
+			has_variable = turkfm_softas_happened
+		}
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_tanzimat_main
+		}
+	}
+
+	immediate = {
+		set_variable = turkfm_softas_happened
+	}
+
+	option = {
+		name = turkfm_tanzimat.101.a
+		default_option = yes
+	}
+
+	option = {
+		name = turkfm_tanzimat.101.b
+	}
+
+}
+
+turkfm_tanzimat.107 = { # The Tanzimat Uncontested
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = turkfm_tanzimat.107.t
+	desc = turkfm_tanzimat.107.d
+	flavor = turkfm_tanzimat.107.f
+
+	event_image = {
+		video = "middleeast_middleclass_cafe"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by je_turkfm_tanzimat_young_ottomans
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = turkfm_tanzimat.107.a
+		default_option = yes
+		ruler = {
+			add_modifier = {
+				name = modifier_balkfm_popular_leader
+				months = long_modifier_time
+				is_decaying = yes
+			}
+		}
+		every_political_movement = {
+			limit = {
+				OR = {
+					is_political_movement_type = movement_turkfm_ottomanist
+					is_political_movement_type = movement_modernizer
+				}
+			}
+			add_modifier = {
+				name = initial_movement_enthusiasm
+				months = long_modifier_time
+				is_decaying = yes
+			}
+		}
+	}
+
+}
+
+turkfm_tanzimat.108 = { # Sultanic Authority
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = turkfm_tanzimat.108.t
+	desc = turkfm_tanzimat.108.d
+	flavor = turkfm_tanzimat.108.f
+
+	event_image = {
+		video = "middleeast_middleclass_cafe"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by je_turkfm_tanzimat_young_ottomans
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = turkfm_tanzimat.108.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_sultanic_authority
+			months = long_modifier_time
+		}
+		every_scope_character = {
+			limit = {
+				has_variable = turkfm_young_ottoman_member
+			}
+			exile_character = yes
+		}
+	}
+
+}
+
+turkfm_tanzimat.109 = { # A Bloodless Coup
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = turkfm_tanzimat.109.t
+	desc = turkfm_tanzimat.109.d
+	flavor = turkfm_tanzimat.109.f
+
+	event_image = {
+		video = "middleeast_middleclass_cafe"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by je_turkfm_tanzimat_young_ottomans
+	}
+
+	immediate = {
+		random_character_in_void = {
+			limit = {
+				has_template = template_turkfm_murad_osmanoglu
+			}
+			save_scope_as = turkfm_murad_scope
+		}
+	}
+
+	option = {
+		name = turkfm_tanzimat.109.a
+		default_option = yes
+		ruler = {
+			kill_character = yes
+		}
+		scope:turkfm_murad_scope = {
+			gbbf_free_from_void_ruler = yes
+		}
+		custom_tooltip = {
+			text = turkfm_murad_mental_break
+			random_list = {
+				5 = {
+					trigger_event = {
+						id = turkfm_tanzimat.110 # A Broken Sultan
+					}
+				}
+				5 = {
+					trigger_event = {
+						id = turkfm_tanzimat.111 # Renewed Momentum
+					}
+				}
+			}
+		}
+	}
+
+}
+
+
+turkfm_tanzimat.110 = { # A Broken Sultan
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = turkfm_tanzimat.110.t
+	desc = turkfm_tanzimat.110.d
+	flavor = turkfm_tanzimat.110.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:turkfm_murad_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_turkish_palace1.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+
+	trigger = {
+		# triggered by turkfm_tanzimat.109
+	}
+
+	cancellation_trigger = {
+		ruler = {
+			NOT = {
+				has_template = template_turkfm_murad_osmanoglu
+			}
+		}
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = turkfm_murad_scope
+		}
+	}
+
+	option = {
+		name = turkfm_tanzimat.110.a
+		default_option = yes
+		scope:turkfm_murad_scope = {
+			add_trait = psychological_affliction
+			add_trait = gbbf_trait_incapable
+		}
+	}
+
+}
+
+turkfm_tanzimat.111 = { # Renewed Momentum
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = turkfm_tanzimat.111.t
+	desc = turkfm_tanzimat.111.d
+	flavor = turkfm_tanzimat.111.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:turkfm_murad_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_turkish_palace1.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+
+	trigger = {
+		# triggered by turkfm_tanzimat.109
+	}
+
+	cancellation_trigger = {
+		ruler = {
+			NOT = {
+				has_template = template_turkfm_murad_osmanoglu
+			}
+		}
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = turkfm_murad_scope
+		}
+	}
+
+	option = {
+		name = turkfm_tanzimat.110.a
+		default_option = yes
+		scope:turkfm_murad_scope = {
+			add_trait = erudite
+		}
+	}
+
+}
+
+turkfm_tanzimat.112 = { # Deposing an Invalid
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = turkfm_tanzimat.112.t
+	desc = turkfm_tanzimat.112.d
+	flavor = turkfm_tanzimat.112.f
+
+	event_image = {
+		video = "votp_conspiring"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by turkfm_depose_murad_button
+	}
+
+	cancellation_trigger = {
+		ruler = {
+			NOT = {
+				has_template = template_turkfm_murad_osmanoglu
+			}
+		}
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = turkfm_murad_scope
+		}
+		create_character = {
+			template = template_turkfm_osmanoglu_abdulhamid_ii
+			on_created = {
+				place_character_in_void = 12
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_tanzimat.112.a
+		default_option = yes
+		random_character_in_void = {
+			limit = {
+				has_template = template_turkfm_osmanoglu_abdulhamid_ii
+			}
+			gbbf_free_from_void_ruler = yes
+		}
+		add_modifier = {
+			name = modifier_turkfm_administrative_disarray
+			months = normal_modifier_time
+			is_decaying = yes
+		}
 	}
 
 }
