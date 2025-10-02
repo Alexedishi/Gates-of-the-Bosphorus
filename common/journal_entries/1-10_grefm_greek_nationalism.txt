@@ -43,10 +43,83 @@
 	scripted_button = grefm_embrace_hybrid_identity_button
 
 	complete = {
+		OR = {
+			custom_tooltip = {
+				text = je_grefm_greek_nationalism_complete
+				hidden_trigger = {
+					has_variable = grefm_nationalism_complete
+				}
+			}
+			has_law_or_variant = law_type:law_ethnostate
+			has_law_or_variant = law_type:law_multicultural
+		}
+	}
+
+	on_complete = {
 		custom_tooltip = {
-			text = je_grefm_greek_nationalism_complete
-			hidden_trigger = {
-				has_variable = grefm_nationalism_complete
+			text = je_grefm_greek_nationalism_ethostate
+			if = {
+				limit = {
+					has_law_or_variant = law_type:law_ethnostate
+				}
+				if = {
+					limit = {
+						country_has_primary_culture = cu:greek
+						NOT = {
+							country_has_primary_culture = cu:rhomaios
+						}
+					}
+					set_variable = {
+						name = grefm_culture_var
+						value = 1
+					}
+					trigger_event = {
+						id = grefm_greek_nationalism.009 # The Greek Ethnogenesis
+					}
+				}
+				else_if = {
+					limit = {
+						country_has_primary_culture = cu:rhomaios
+						NOT = {
+							country_has_primary_culture = cu:greek
+						}
+					}
+					set_variable = {
+						name = grefm_culture_var
+						value = 2
+					}
+					trigger_event = {
+						id = grefm_greek_nationalism.009 # The Greek Ethnogenesis
+					}
+				}
+				else_if = {
+					limit = {
+						country_has_primary_culture = cu:greek
+						country_has_primary_culture = cu:rhomaios
+					}
+					set_variable = {
+						name = grefm_culture_var
+						value = 3
+					}
+					trigger_event = {
+						id = grefm_greek_nationalism.009 # The Greek Ethnogenesis
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			text = je_grefm_greek_nationalism_multicultural
+			if = {
+				limit = {
+					has_law_or_variant = law_type:law_multicultural
+				}
+				set_variable = {
+					name = grefm_culture_var
+					value = 3
+				}
+				trigger_event = {
+					id = grefm_greek_nationalism.009 # The Greek Ethnogenesis
+				}
 			}
 		}
 	}
