@@ -23,6 +23,125 @@ turkfm_initialize_balkan_situation_effect = {
 	add_modifier = modifier_turkfm_stable_phase
 }
 
+turkfm_initialize_eastern_question_effect = {
+	if = {
+		limit = {
+			has_global_variable = turkfm_balkans_situation_var
+			exists = global_var:turkfm_balkans_situation_var
+		}
+		random_in_global_list = {
+			variable = com_situation_cache
+			limit = {
+				var:com_id ?= flag:turkfm_balkan_situation
+			}
+			save_scope_as = com_situation
+		}
+		scope:journal_entry = {
+			set_variable = {
+				name = com_situation
+				value = scope:com_situation
+			}
+		}
+	}
+	else = {
+		create_com_situation = {
+			id = flag:turkfm_balkan_situation
+
+			side_leader_country_left = c:TUR
+			side_name_left = je_turkfm_eastern_question_porte
+			side_desc_left = je_turkfm_eastern_question_porte_desc
+
+			side_leader_country_right = c:RUS
+			side_name_right = je_turkfm_eastern_question_balkans
+			side_desc_right = je_turkfm_eastern_question_balkans_desc
+		}
+		set_com_situation_header = {
+			text = je_turkfm_eastern_question_header
+		}
+
+		# Create Porte faction
+		create_com_situation_faction = {
+			side = left
+			name = je_turkfm_eastern_question_faction_porte
+			desc = je_turkfm_eastern_question_faction_porte_desc
+		}
+		add_com_situation_faction_country = {
+			name = je_turkfm_eastern_question_faction_porte
+			country = c:GBR
+		}
+		add_com_situation_faction_country = {
+			name = je_turkfm_eastern_question_faction_porte
+			country = c:FRA
+		}
+
+		# Create Balkans Faction
+		create_com_situation_faction = {
+			side = right
+			name = je_turkfm_eastern_question_faction_balkans
+			desc = je_turkfm_eastern_question_faction_balkans_desc
+		}
+		add_com_situation_faction_country = {
+			name = je_turkfm_eastern_question_faction_balkans
+			country = c:MON
+		}
+		add_com_situation_faction_country = {
+			name = je_turkfm_eastern_question_faction_balkans
+			country = c:SER
+		}
+		add_com_situation_faction_country = {
+			name = je_turkfm_eastern_question_faction_balkans
+			country = c:MOL
+		}
+		add_com_situation_faction_country = {
+			name = je_turkfm_eastern_question_faction_balkans
+			country = c:WAL
+		}
+		add_com_situation_faction_country = {
+			name = je_turkfm_eastern_question_faction_balkans
+			country = c:BOS
+		}
+		add_com_situation_faction_country = {
+			name = je_turkfm_eastern_question_faction_balkans
+			country = c:GRE
+		}
+		add_com_situation_faction_country = {
+			name = je_turkfm_eastern_question_faction_balkans
+			country = c:ION
+		}
+		add_com_situation_faction_country = {
+			name = je_turkfm_eastern_question_faction_balkans
+			country = c:GRE_SAM
+		}
+
+		# Create Main Actions button group
+		# // I got nothing yet
+
+		#
+		# Create Diplomatic Actions button group
+		create_com_situation_button_group = {
+			name = je_turkfm_eastern_question_button_group_diplomatic_actions
+			desc = je_turkfm_eastern_question_button_group_diplomatic_actions_desc
+		}
+		add_com_situation_button_group_element = {
+			group = je_turkfm_eastern_question_button_group_diplomatic_actions
+			name = turkfm_accelerate_tensions_button
+		}
+		add_com_situation_button_group_element = {
+			group = je_turkfm_eastern_question_button_group_diplomatic_actions
+			name = turkfm_decelerate_tensions_button
+		}
+		add_com_situation_button_group_element = {
+			group = je_turkfm_eastern_question_button_group_diplomatic_actions
+			name = turkfm_greek_gunrunners_button
+		}
+		set_global_variable = {
+			name = turkfm_balkans_situation_var
+			value = scope:com_situation
+		}
+	}
+
+}
+
 turkfm_clamp_balkan_situation_variables_effect = {
 	clamp_global_variable = {
 		name = turkfm_escalation_var

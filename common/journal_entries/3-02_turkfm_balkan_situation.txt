@@ -235,14 +235,39 @@ je_turkfm_eastern_question = {
 	group = je_group_turkfm_eastern_question
 	should_be_pinned_by_default = yes
 	
-	immediate = {
-		set_variable = turkfm_eqfm_started
-	}
-	
 	scripted_progress_bar = turkfm_balkfm_escalation_progress_bar
 	scripted_progress_bar = turkfm_balkfm_deescalation_progress_bar
-	
-	scripted_button = turkfm_greek_gunrunners_button
+
+	immediate = {
+		turkfm_initialize_eastern_question_effect = yes
+		if = {
+			limit = {
+				NOT = {
+					has_variable = turkfm_eqfm_started
+				}
+			}
+			if = {
+				limit = {
+					c:TUR ?= this
+				}
+				trigger_event = {
+					id = turkfm_balkan_situation.001 # The Peoples of the Empire
+					days = 1
+					popup = yes
+				}
+			}
+			else = {
+				trigger_event = {
+					id = turkfm_balkan_situation.011 # The Eastern Question
+					days = 1
+					popup = yes
+				}
+			}
+		}
+		else = {
+			set_variable = turkfm_eqfm_started
+		}
+	}
 	
 	complete = {
 		custom_tooltip = {
