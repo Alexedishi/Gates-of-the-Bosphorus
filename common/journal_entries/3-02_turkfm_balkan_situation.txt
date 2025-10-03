@@ -238,6 +238,10 @@ je_turkfm_eastern_question = {
 	scripted_progress_bar = turkfm_balkfm_escalation_progress_bar
 	scripted_progress_bar = turkfm_balkfm_deescalation_progress_bar
 
+	scripted_button = turkfm_accelerate_tensions_button
+	scripted_button = turkfm_decelerate_tensions_button
+	scripted_button = turkfm_greek_gunrunners_button
+
 	immediate = {
 		turkfm_initialize_eastern_question_effect = yes
 		if = {
@@ -271,10 +275,8 @@ je_turkfm_eastern_question = {
 	
 	complete = {
 		custom_tooltip = {
-			text = turkfm_separatism_completed_third_tt
-			hidden_trigger = {
-				has_global_variable = turkfm_separatism_complete
-			}
+			text = turkfm_separatism_completed_third
+			has_global_variable = turkfm_separatism_complete
 		}
 	}
 	
@@ -284,40 +286,19 @@ je_turkfm_eastern_question = {
 	
 	fail = {
 		OR = {
-			NOT = {
-				exists = c:TUR
-			}
-			NOT = {
-				has_diplomatic_relevance = c:TUR
-			}
 			custom_tooltip = {
-				text = turkfm_sick_man_completed_third_tt
-				hidden_trigger = {
+				text = turkfm_separatism_failed_third
+				OR = {
 					has_global_variable = turkfm_sick_man_complete
+					NOT = {
+						exists = c:TUR
+					}
 				}
 			}
 		}
 	}
 	
 	on_fail = {
-		turkfm_cleanup_eqfm_effect = yes
-	}
-	
-	invalid = {
-		hidden_trigger = {
-			c:TUR ?= this
-			any_scope_state = {
-				region = sr:region_balkans
-			}
-		}
-	}
-	
-	on_invalid = {
-		hidden_effect = {
-			trigger_event = {
-				id = turkfm_balkan_situation.199 # Adds je_turkfm_balkan_situation_main
-			}
-		}
 		turkfm_cleanup_eqfm_effect = yes
 	}
 	
