@@ -40,6 +40,7 @@ turkfm_balkans_involved_trigger = {
 			has_journal_entry = je_turkfm_balkan_situation_main
 		}
 		OR = {
+			c:TUR ?= this
 			is_subject_of = c:TUR
 			capital = {
 				region = sr:region_balkans
@@ -54,6 +55,10 @@ turkfm_balkans_involved_trigger = {
 			has_diplomatic_pact = {
 				who = c:TUR
 				type = rivalry
+			}
+			AND = {
+				country_rank >= rank_value:great_power
+				has_interest_marker_in_region = region_balkans
 			}
 		}
 	}
@@ -66,6 +71,7 @@ turkfm_balkans_interloper_trigger = {
 			has_journal_entry = je_turkfm_balkan_situation_main
 		}
 		NOR = {
+			c:TUR ?= this
 			is_subject_of = c:TUR
 			capital = {
 				region = sr:region_balkans
@@ -80,6 +86,10 @@ turkfm_balkans_interloper_trigger = {
 			has_diplomatic_pact = {
 				who = c:TUR
 				type = rivalry
+			}
+			AND = {
+				country_rank >= rank_value:great_power
+				has_interest_marker_in_region = region_balkans
 			}
 		}
 		OR = {
@@ -103,6 +113,7 @@ turkfm_balkans_uninvolved_trigger = {
 			has_journal_entry = je_turkfm_balkan_situation_main
 		}
 		NOR = {
+			c:TUR ?= this
 			is_subject_of = c:TUR
 			capital = {
 				region = sr:region_balkans
@@ -117,6 +128,10 @@ turkfm_balkans_uninvolved_trigger = {
 			has_diplomatic_pact = {
 				who = c:TUR
 				type = rivalry
+			}
+			AND = {
+				country_rank >= rank_value:great_power
+				has_interest_marker_in_region = region_balkans
 			}
 			has_diplomatic_relevance = c:TUR
 			any_scope_state = {
@@ -133,8 +148,8 @@ turkfm_balkans_uninvolved_trigger = {
 
 turkfm_balkans_party_trigger = {
 	OR = {
-		has_journal_entry = je_turkfm_balkan_situation_main
-		has_journal_entry = je_turkfm_eastern_question
+		turkfm_balkans_involved_trigger = yes
+		turkfm_balkans_interloper_trigger = yes
 	}
 }
 
