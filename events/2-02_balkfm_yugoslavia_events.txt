@@ -132,7 +132,7 @@ balkfm_yugoslavia.001 = { # Yugoslavism Starter Event
 	}
 
 	event_image = {
-		video = "unspecific_ruler_speaking_to_people"
+		video = "ip3_agitator_reading_manifesto"
 	}
 
 	icon = "gfx/interface/icons/event_icons/event_flag_yug.dds"
@@ -144,9 +144,12 @@ balkfm_yugoslavia.001 = { # Yugoslavism Starter Event
 	dlc = dlc_grefm
 
 	trigger = {
+		# triggered by je_balkfm_nacertanije
 	}
 
 	immediate = {
+		# I'm not harmonizing that ruler immortality nonsense
+		save_scope_as = yugoslavia_seeker_scope
 		if = {
 			limit = {
 				NOT = {
@@ -176,7 +179,62 @@ balkfm_yugoslavia.001 = { # Yugoslavism Starter Event
 	option = {
 		name = balkfm_yugoslavia.001.a
 		default_option = yes
+		hidden_effect = {
+			every_country = {
+				limit = {
+					NOT = { THIS = ROOT }
+					OR = {
+						country_has_primary_culture = cu:croat
+						country_has_primary_culture = cu:serb
+						country_has_primary_culture = cu:slovene
+						country_has_primary_culture = cu:bosniak
+					}
+				}
+				post_notification = yugoslavia_seeking_warning
+			}
+		}
+		ordered_diplomatically_relevant_country = {
+			limit = {
+				NOT = { THIS = ROOT }
+				owner = {
+					OR = {
+						country_has_primary_culture = cu:croat
+						country_has_primary_culture = cu:serb
+						country_has_primary_culture = cu:slovene
+						country_has_primary_culture = cu:bosniak
+					}
+					relations:root < relations_threshold:cordial
+				}
+			}
+			order_by = country_rank
+			ROOT = {
+				create_incident = {
+					country = PREV
+					value = 10
+				}
+			}
+		}
+		add_modifier = {
+			name = seeking_yugoslavia
+			days = moderately_long_modifier_time
+		}
 		custom_tooltip = balkfm_yugoslavism_tt
+	}
+
+	option = {
+		name = balkfm_yugoslavia.001.b
+		every_country = {
+			limit = {
+				NOT = { THIS = ROOT }
+				OR = {
+					country_has_primary_culture = cu:croat
+					country_has_primary_culture = cu:serb
+					country_has_primary_culture = cu:slovene
+					country_has_primary_culture = cu:bosniak
+				}
+			}
+			change_relations = { country = ROOT value = 10 }
+		}
 	}
 
 }
