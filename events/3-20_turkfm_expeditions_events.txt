@@ -1296,13 +1296,16 @@ turkfm_expeditions.028 = { # Skirmish Fizzles Out
 }
 
 turkfm_expeditions.029 = { # Village Skirmish Monitor
-	# I don't feel like making this into a scripted effect to embed in an on_action; I profusely apologize for this egregious affront DLZ, pls don't take away my modding license
+	# I don't feel like making this into a scripted effect to embed in an on_action; I profusely apologize for this egregious affront to civilized practices, DLZ. pls don't take away my modding license
 	type = country_event
 	hidden = yes
 
 	trigger = {
 		OR = {
-			has_global_variable = turkfm_black_mountain_skirmish_var
+			c:MON ?= this # EVALUATE THIS ONLY ONCE PER PULSE, ASK ME HOW I FIGURED THIS OUT
+			c:MON = {
+				has_variable = turkfm_black_mountain_expedition_var
+			}
 			c:TUR ?= {
 				has_variable = turkfm_black_mountain_expedition_progress_var
 				var:turkfm_black_mountain_expedition_progress_var >= 5
@@ -1333,6 +1336,10 @@ turkfm_expeditions.029 = { # Village Skirmish Monitor
 				name = turkfm_black_mountain_skirmish_var
 				value = 0
 			}
+			set_global_variable = {
+				name = turkfm_black_mountain_skirmish_duration_var
+				value = 0
+			}
 		}
 		else_if = {
 			limit = {
@@ -1340,242 +1347,268 @@ turkfm_expeditions.029 = { # Village Skirmish Monitor
 				global_var:turkfm_black_mountain_skirmish_var > 0
 				global_var:turkfm_black_mountain_skirmish_var < 9
 			}
-			random_list = {
-				# Steady Grind
-				25 = {
-					c:MON = {
-						trigger_event = {
-							id = turkfm_expeditions.050 # Steady Grind
-						}
-					}
-					c:TUR = {
-						trigger_event = {
-							id = turkfm_expeditions.050 # Steady Grind
-						}
-					}
-					change_global_variable = {
-						name = turkfm_black_mountain_skirmish_var
-						add = 1
+			change_global_variable = {
+				name = turkfm_black_mountain_skirmish_duration_var
+				add = 1
+			}
+			if = {
+				limit = {
+					global_var:turkfm_black_mountain_skirmish_duration_var >= 24
+				}
+				c:MON = {
+					trigger_event = {
+						id = turkfm_expeditions.028 # Skirmish Fizzles Out
 					}
 				}
+				c:TUR = {
+					trigger_event = {
+						id = turkfm_expeditions.028 # Skirmish Fizzles Out
+					}
+				}
+				remove_global_variable = turkfm_black_mountain_skirmish_var
+				remove_global_variable = turkfm_black_mountain_skirmish_duration_var
+			}
+			else = {
+				random_list = {
+					# Steady Grind
+					25 = {
+						c:MON = {
+							trigger_event = {
+								id = turkfm_expeditions.050 # Steady Grind
+							}
+						}
+						c:TUR = {
+							trigger_event = {
+								id = turkfm_expeditions.050 # Steady Grind
+							}
+						}
+						change_global_variable = {
+							name = turkfm_black_mountain_skirmish_var
+							add = 1
+						}
+					}
 
-				# Village Outskirts Burned
-				20 = {
-					random_list = {
-						5 = {
-							modifier = {
-								if = {
-									limit = {
-										scope:turkfm_black_mountain_mon_leader ?= {
-											OR = {
-												has_trait = pillager
-												has_trait = bandit
-												has_trait = social_bandit
+					# Village Outskirts Burned
+					20 = {
+						random_list = {
+							5 = {
+								modifier = {
+									if = {
+										limit = {
+											scope:turkfm_black_mountain_mon_leader ?= {
+												OR = {
+													has_trait = pillager
+													has_trait = bandit
+													has_trait = social_bandit
+												}
 											}
 										}
+										add = 10
 									}
-									add = 10
-								}
-								if = {
-									limit = {
-										scope:turkfm_black_mountain_mon_leader ?= {
-											OR = {
-												has_trait = war_criminal
-												has_trait = cruel
+									if = {
+										limit = {
+											scope:turkfm_black_mountain_mon_leader ?= {
+												OR = {
+													has_trait = war_criminal
+													has_trait = cruel
+												}
 											}
 										}
+										add = 25
 									}
-									add = 25
+								}
+								c:MON = {
+									trigger_event = {
+										id = turkfm_expeditions.051
+									}
 								}
 							}
-							c:MON = {
-								trigger_event = {
-									id = turkfm_expeditions.051
-								}
-							}
-						}
-						5 = {
-							modifier = {
-								if = {
-									limit = {
-										scope:turkfm_black_mountain_tur_leader ?= {
-											OR = {
-												has_trait = pillager
-												has_trait = bandit
-												has_trait = social_bandit
+							5 = {
+								modifier = {
+									if = {
+										limit = {
+											scope:turkfm_black_mountain_tur_leader ?= {
+												OR = {
+													has_trait = pillager
+													has_trait = bandit
+													has_trait = social_bandit
+												}
 											}
 										}
+										add = 10
 									}
-									add = 10
-								}
-								if = {
-									limit = {
-										scope:turkfm_black_mountain_tur_leader ?= {
-											OR = {
-												has_trait = war_criminal
-												has_trait = cruel
+									if = {
+										limit = {
+											scope:turkfm_black_mountain_tur_leader ?= {
+												OR = {
+													has_trait = war_criminal
+													has_trait = cruel
+												}
 											}
 										}
+										add = 25
 									}
-									add = 25
 								}
-							}
-							c:TUR = {
-								trigger_event = {
-									id = turkfm_expeditions.051
+								c:TUR = {
+									trigger_event = {
+										id = turkfm_expeditions.051
+									}
 								}
 							}
 						}
 					}
+
+					# Village Families Massacred
+					5 = {
+						trigger = {
+							NOT = {
+								s:STATE_MONTENEGRO = {
+									any_scope_state = {
+										has_modifier = modifier_turkfm_civilians_massacred
+									}
+								}
+							}
+						}
+						modifier = {
+							if = {
+								limit = {
+									scope:turkfm_black_mountain_tur_leader ?= {
+										OR = {
+											has_trait = reserved
+											has_trait = tactful
+										}
+									}
+								}
+								add = -5
+							}
+						}
+						c:TUR = {
+							trigger_event = {
+								id = turkfm_expeditions.052
+							}
+						}
+					}
+
+					# Bora Disrupts Operations
+					5 = {
+						trigger = {
+							NOT = {
+								has_global_variable = turkfm_adriatic_windstorm_cooldown_var
+							}
+						}
+						c:MON = {
+							trigger_event = {
+								id = turkfm_expeditions.053
+							}
+						}
+						c:TUR = {
+							trigger_event = {
+								id = turkfm_expeditions.053
+							}
+						}
+						change_global_variable = {
+							name = turkfm_black_mountain_skirmish_var
+							subtract = 1
+						}
+					}
+
+					# event 54
+
+					# Pitched Battle
+					5 = {
+						modifier = {
+							if = {
+								limit = {
+									scope:turkfm_black_mountain_mon_leader ?= {
+										OR = {
+											has_trait = basic_defensive_strategist
+											has_trait = experienced_defensive_strategist
+											has_trait = expert_defensive_strategist
+											has_trait = cautious
+										}
+									}
+								}
+								add = 10
+							}
+							if = {
+								limit = {
+									scope:turkfm_black_mountain_tur_leader ?= {
+										OR = {
+											has_trait = basic_defensive_strategist
+											has_trait = experienced_defensive_strategist
+											has_trait = expert_defensive_strategist
+											has_trait = cautious
+										}
+									}
+								}
+								add = 10
+							}
+						}
+						c:MON ?= {
+							trigger_event = {
+								id = turkfm_expeditions.055
+							}
+						}
+						c:TUR ?= {
+							trigger_event = {
+								id = turkfm_expeditions.055
+							}
+						}
+						change_global_variable = {
+							name = turkfm_black_mountain_skirmish_var
+							add = 2
+						}
+					}
+
+					# Sudden Breakthrough
+					0 = {
+						modifier = {
+							if = {
+								limit = {
+									scope:turkfm_black_mountain_mon_leader ?= {
+										OR = {
+											has_trait = basic_offensive_planner
+											has_trait = experienced_offensive_planner
+											has_trait = expert_offensive_planner
+										}
+									}
+								}
+								add = 10
+							}
+							if = {
+								limit = {
+									scope:turkfm_black_mountain_tur_leader ?= {
+										OR = {
+											has_trait = basic_offensive_planner
+											has_trait = experienced_offensive_planner
+											has_trait = expert_offensive_planner
+										}
+									}
+								}
+								add = 10
+							}
+						}
+						c:MON ?= {
+							trigger_event = {
+								id = turkfm_expeditions.056
+							}
+						}
+						c:TUR ?= {
+							trigger_event = {
+								id = turkfm_expeditions.056
+							}
+						}
+						change_global_variable = {
+							name = turkfm_black_mountain_skirmish_var
+							add = 3
+						}
+					}
+
+					# event 57
 				}
-
-				# Village Families Massacred
-				5 = {
-					trigger = {
-						NOT = {
-							s:STATE_MONTENEGRO = {
-								any_scope_state = {
-									has_modifier = modifier_turkfm_civilians_massacred
-								}
-							}
-						}
-					}
-					modifier = {
-						if = {
-							limit = {
-								scope:turkfm_black_mountain_tur_leader ?= {
-									OR = {
-										has_trait = reserved
-										has_trait = tactful
-									}
-								}
-							}
-							add = -5
-						}
-					}
-					c:TUR = {
-						trigger_event = {
-							id = turkfm_expeditions.052
-						}
-					}
+				s:STATE_MONTENEGRO = {
+					add_devastation = 1
 				}
-
-				# Bora Disrupts Operations
-				5 = {
-					trigger = {
-						NOT = {
-							has_global_variable = turkfm_adriatic_windstorm_cooldown_var
-						}
-					}
-					c:MON = {
-						trigger_event = {
-							id = turkfm_expeditions.053
-						}
-					}
-					c:TUR = {
-						trigger_event = {
-							id = turkfm_expeditions.053
-						}
-					}
-					change_global_variable = {
-						name = turkfm_black_mountain_skirmish_var
-						subtract = 1
-					}
-				}
-
-				# event 54
-
-				# Pitched Battle
-				5 = {
-					modifier = {
-						if = {
-							limit = {
-								scope:turkfm_black_mountain_mon_leader ?= {
-									OR = {
-										has_trait = basic_defensive_strategist
-										has_trait = experienced_defensive_strategist
-										has_trait = expert_defensive_strategist
-										has_trait = cautious
-									}
-								}
-							}
-							add = 10
-						}
-						if = {
-							limit = {
-								scope:turkfm_black_mountain_tur_leader ?= {
-									OR = {
-										has_trait = basic_defensive_strategist
-										has_trait = experienced_defensive_strategist
-										has_trait = expert_defensive_strategist
-										has_trait = cautious
-									}
-								}
-							}
-							add = 10
-						}
-					}
-					c:MON ?= {
-						trigger_event = {
-							id = turkfm_expeditions.055
-						}
-					}
-					c:TUR ?= {
-						trigger_event = {
-							id = turkfm_expeditions.055
-						}
-					}
-					change_global_variable = {
-						name = turkfm_black_mountain_skirmish_var
-						add = 2
-					}
-				}
-
-				# Sudden Breakthrough
-				0 = {
-					modifier = {
-						if = {
-							limit = {
-								scope:turkfm_black_mountain_mon_leader ?= {
-									OR = {
-										has_trait = basic_offensive_planner
-										has_trait = experienced_offensive_planner
-										has_trait = expert_offensive_planner
-									}
-								}
-							}
-							add = 10
-						}
-						if = {
-							limit = {
-								scope:turkfm_black_mountain_tur_leader ?= {
-									OR = {
-										has_trait = basic_offensive_planner
-										has_trait = experienced_offensive_planner
-										has_trait = expert_offensive_planner
-									}
-								}
-							}
-							add = 10
-						}
-					}
-					c:MON ?= {
-						trigger_event = {
-							id = turkfm_expeditions.056
-						}
-					}
-					c:TUR ?= {
-						trigger_event = {
-							id = turkfm_expeditions.056
-						}
-					}
-					change_global_variable = {
-						name = turkfm_black_mountain_skirmish_var
-						add = 3
-					}
-				}
-
-				# event 57
 			}
 		}
 		else_if = {
@@ -1644,6 +1677,7 @@ turkfm_expeditions.030 = { # Tax Evasion
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
+		c:MON ?= this
 		NOR = {
 			has_variable = turkfm_expedition_cooldown_var
 			has_modifier = modifier_turkfm_threw_yoshi_in_jail
@@ -1782,6 +1816,14 @@ turkfm_expeditions.031 = { # Foreign Nobleman Held Captive (for MON)
 		}
 		show_as_unavailable = { always = yes }
 		highlighted_option = yes
+	}
+
+	after = {
+		scope:turkfm_hostage_nation = {
+			trigger_event = {
+				id = turkfm_expeditions.032 # Nobleman Held Captive Abroad (for Recipient)
+			}
+		}
 	}
 
 }
