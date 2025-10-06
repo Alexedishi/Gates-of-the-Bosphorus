@@ -133,7 +133,7 @@ turkfm_initialize_eastern_question_effect = {
 
 }
 
-turkfm_update_faction_lists = {
+turkfm_update_balkan_situation_lists_effect = {
 	if = {
 		limit = {
 			NOT = {
@@ -145,6 +145,60 @@ turkfm_update_faction_lists = {
 		set_global_variable = {
 			name = turkfm_faction_lists_cooldown
 			days = 20
+		}
+	}
+}
+
+turkfm_update_balkan_situation_factions_effect = {
+	# Starting from any country as root
+	save_com_situation_scope = {
+		id = flag:turkfm_balkan_situation
+	}
+
+	# Ensure lists are up to date and sorted
+	turkfm_update_balkan_situation_lists_effect = yes
+
+	# Reset factions
+	clear_com_situation_factions_both = yes
+
+	# Update Ottoman Side Faction Members
+	create_com_situation_faction = {
+		side = left
+		name = je_turkfm_eastern_question_faction_porte
+		desc = je_turkfm_eastern_question_faction_porte_desc
+	}
+	every_in_global_list = {
+		variable = turkfm_balkan_situation_ottoman_side_list
+		add_com_situation_faction_country = {
+			side = left
+			name = je_turkfm_eastern_question_faction_porte
+			country = this
+		}
+	}
+
+	# Update Balkan Side Faction Leader
+	ordered_in_global_list = {
+		variable = turkfm_balkan_situation_balkan_side_list
+		order_by = prestige
+		position = 0
+		change_com_situation_leader = {
+			side = right
+			leader = this
+		}
+	}
+
+	# Update Balkan Side Faction Members
+	create_com_situation_faction = {
+		side = right
+		name = je_turkfm_eastern_question_faction_balkans
+		desc = je_turkfm_eastern_question_faction_balkans_desc
+	}
+	every_in_global_list = {
+		variable = je_turkfm_eastern_question_faction_balkans
+		add_com_situation_faction_country = {
+			side = left
+			name = je_turkfm_eastern_question_faction_porte
+			country = this
 		}
 	}
 }
