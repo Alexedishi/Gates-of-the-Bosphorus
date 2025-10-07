@@ -125,6 +125,7 @@ turkfm_accelerate_tensions_button = {
 		}
 	}
 	possible = {
+		country_rank >= rank_value:great_power
 		turkfm_balkans_involved_trigger = yes
 		NOR = {
 			gbbf_has_alliance_trigger = {
@@ -133,6 +134,17 @@ turkfm_accelerate_tensions_button = {
 			gbbf_has_defensive_pact_trigger = {
 				country = c:TUR
 			}
+		}
+		trigger_if = {
+			limit = {
+				NOT = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_accelerate_tensions
+					}
+				}
+			}
+			c:TUR.relations:root <= relations_threshold:poor
 		}
 		custom_tooltip = {
 			text = turkfm_tension_button_cooldown_trigger
@@ -177,6 +189,158 @@ turkfm_accelerate_tensions_button = {
 			remove_diplomatic_pact = {
 				country = c:TUR
 				type = turkfm_decelerate_tensions
+			}
+		}
+	}
+	ai_chance = {
+		value = -10
+
+		# Logic to start Accelerating Tensions first
+		if = {
+			limit = {
+				NOT = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_accelerate_tensions
+					}
+				}
+			}
+			if = {
+				limit = {
+					c:TUR.relations:root >= relations_threshold:hostile
+				}
+				add = 25
+			}
+			else_if = {
+				limit = {
+					c:TUR.relations:root >= relations_threshold:cold
+				}
+				add = 20
+			}
+			else_if = {
+				limit = {
+					c:TUR.relations:root >= relations_threshold:poor
+				}
+				add = 15
+			}
+			if = {
+				limit = {
+					OR = {
+						has_secret_goal = {
+							who = c:TUR
+							secret_goal = antagonize
+						}
+						has_secret_goal = {
+							who = c:TUR
+							secret_goal = conquer
+						}
+						has_secret_goal = {
+							who = c:TUR
+							secret_goal = dominate
+						}
+					}
+				}
+				add = 25
+			}
+			if = {
+				limit = { 
+					OR = {
+						has_attitude = {
+							who = c:TUR
+							attitude = antagonistic
+						}
+						has_attitude = {
+							who = c:TUR
+							attitude = belligerent
+						}
+						has_attitude = {
+							who = c:TUR
+							attitude = domineering
+						}
+					}
+				}
+				add = 25
+			}
+			if = {
+				limit = { 
+					OR = {
+						gbbf_has_rivalry_trigger = {
+							country = c:TUR
+						}
+						gbbf_has_embargo_trigger = {
+							country = c:TUR
+						}
+					}
+				}
+				add = 100
+			}
+			if = {
+				limit = {
+					has_attitude = {
+						who = c:TUR
+						attitude = conciliatory
+					}
+				}
+				add = -100
+			}
+			if = {
+				limit = {
+					has_attitude = {
+						who = c:TUR
+						attitude = disinterested
+					}
+				}
+				add = -1000
+			}
+		}
+		
+		# Logic to stop Accelerating Tensions second
+		else_if = { 
+			limit = {
+				has_diplomatic_pact = {
+					who = c:TUR
+					type = turkfm_accelerate_tensions
+				}
+			}
+			
+			if = {
+				limit = { 
+					c:TUR.relations:root > relations_threshold:poor
+				}
+				add = 50
+			}
+			if = {
+				limit = {
+					OR = {
+						has_secret_goal = {
+							who = scope:target_country
+							secret_goal = befriend
+						}
+						has_secret_goal = {
+							who = scope:target_country
+							secret_goal = protect
+						}
+					}
+				}
+				add = 100
+			}
+			if = {
+				limit = {
+					has_attitude = {
+						who = c:TUR
+						attitude = conciliatory
+					}
+				}
+				add = 50
+			}
+			if = {
+				limit = {
+					has_attitude = {
+						who = c:TUR
+						attitude = disinterested
+					}
+				}
+				add = 1000
 			}
 		}
 	}
@@ -211,6 +375,17 @@ turkfm_decelerate_tensions_button = {
 				type = embargo
 			}
 		}
+		trigger_if = {
+			limit = {
+				NOT = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_decelerate_tensions
+					}
+				}
+			}
+			c:TUR.relations:root >= relations_threshold:cordial
+		}
 		custom_tooltip = {
 			text = turkfm_tension_button_cooldown_trigger
 			NOT = {
@@ -256,5 +431,332 @@ turkfm_decelerate_tensions_button = {
 				type = turkfm_accelerate_tensions
 			}
 		}
+	}
+	ai_chance = {
+		value = -10
+
+		# Logic to start Decelerating Tensions first
+		if = {
+			limit = {
+				NOT = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_decelerate_tensions
+					}
+					c:TUR.relations:root >= relations_threshold:cordial
+				}
+			}
+			if = {
+				limit = {
+					c:TUR.relations:root >= relations_threshold:friendly
+				}
+				add = 25
+			}
+			else_if = {
+				limit = {
+					c:TUR.relations:root >= relations_threshold:amicable
+				}
+				add = 20
+			}
+			else_if = {
+				limit = {
+					c:TUR.relations:root >= relations_threshold:cordial
+				}
+				add = 15
+			}
+			if = {
+				limit = {
+					OR = {
+						has_secret_goal = {
+							who = c:TUR
+							secret_goal = protect
+						}
+						has_secret_goal = {
+							who = c:TUR
+							secret_goal = befriend
+						}
+					}
+				}
+				add = 25
+			}
+			if = {
+				limit = {
+					OR = {
+						has_attitude = {
+							who = c:TUR
+							attitude = protective
+						}
+						has_attitude = {
+							who = c:TUR
+							attitude = cooperative
+						}
+						has_attitude = {
+							who = c:TUR
+							attitude = genial
+						}
+					}
+				}
+				add = 25
+			}
+			if = {
+				limit = {
+					OR = {
+						gbbf_has_alliance_trigger = {
+							country = c:TUR
+						}
+						gbbf_has_defensive_pact_trigger = {
+							country = c:TUR
+						}
+					}
+				}
+				add = 100
+			}
+			if = {
+				limit = {
+					OR = {
+						has_attitude = {
+							who = c:TUR
+							attitude = belligerent
+						}
+						has_attitude = {
+							who = c:TUR
+							attitude = domineering
+						}
+						has_attitude = {
+							who = c:TUR
+							attitude = antagonistic
+						}
+					}
+				}
+				add = -250
+			}
+			if = {
+				limit = {
+					has_attitude = {
+						who = c:TUR
+						attitude = disinterested
+					}
+				}
+				add = -1000
+			}
+
+		}
+
+		# Logic to Stop Decelerating Tensions second
+		else_if = {
+			limit = {
+				has_diplomatic_pact = {
+					who = c:TUR
+					type = turkfm_decelerate_tensions
+				}
+			}
+			if = {
+				limit = {
+					c:TUR.relations:root < relations_threshold:cordial
+				}
+				add = 50
+			}
+			if = {
+				limit = {
+					OR = {
+						has_secret_goal = {
+							who = scope:target_country
+							secret_goal = conquer
+						}
+						has_secret_goal = {
+							who = scope:target_country
+							secret_goal = antagonize
+						}
+						has_secret_goal = {
+							who = scope:target_country
+							secret_goal = dominate
+						}
+					}
+				}
+				add = 100
+			}
+			if = {
+				limit = {
+					OR = {
+						has_attitude = {
+							who = c:TUR
+							attitude = belligerent
+						}
+						has_attitude = {
+							who = c:TUR
+							attitude = domineering
+						}
+						has_attitude = {
+							who = c:TUR
+							attitude = antagonistic
+						}
+					}
+				}
+				add = 100
+			}
+			if = {
+				limit = {
+					has_attitude = {
+						who = c:TUR
+						attitude = disinterested
+					}
+				}
+				add = 1000
+			}
+		}
+	}
+}
+
+turkfm_declare_disloyalty_button = {
+	name = "turkfm_declare_disloyalty_button"
+	desc = "turkfm_declare_disloyalty_button_desc"
+
+	visible = {
+		exists = c:TUR
+		is_subject_of = c:TUR
+	}
+	selected = {
+		has_diplomatic_pact = {
+			who = c:TUR
+			type = turkfm_disloyal_subject
+		}
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				NOT = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_disloyal_subject
+					}
+				}
+			}
+			c:TUR.relations:root <= relations_threshold:poor
+		}
+		custom_tooltip = {
+			text = turkfm_loyalty_button_cooldown_trigger
+			NOT = {
+				has_variable = turkfm_tension_button_cooldown_var
+			}
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				has_diplomatic_pact = {
+					who = c:TUR
+					type = turkfm_disloyal_subject
+				}
+			}
+			remove_diplomatic_pact = {
+				country = c:TUR
+				type = turkfm_disloyal_subject
+			}
+		}
+		else = {
+			create_diplomatic_pact = {
+				country = c:TUR
+				type = turkfm_disloyal_subject
+			}
+			custom_tooltip = {
+				text = turkfm_loyalty_button_effect
+				set_variable = {
+					name = turkfm_tension_button_cooldown_var
+					years = 2
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_diplomatic_pact = {
+					who = c:TUR
+					type = turkfm_loyal_subject
+				}
+			}
+			remove_diplomatic_pact = {
+				country = c:TUR
+				type = turkfm_loyal_subject
+			}
+		}
+	}
+	ai_chance = {
+		value = -10
+	}
+}
+
+turkfm_swear_loyalty_button = {
+	name = "turkfm_swear_loyalty_button"
+	desc = "turkfm_swear_loyalty_button_desc"
+
+	visible = {
+		exists = c:TUR
+		is_subject_of = c:TUR
+	}
+	selected = {
+		has_diplomatic_pact = {
+			who = c:TUR
+			type = turkfm_loyal_subject
+		}
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				NOT = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_loyal_subject
+					}
+				}
+			}
+			c:TUR.relations:root >= relations_threshold:cordial
+		}
+		custom_tooltip = {
+			text = turkfm_loyalty_button_cooldown_trigger
+			NOT = {
+				has_variable = turkfm_tension_button_cooldown_var
+			}
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				has_diplomatic_pact = {
+					who = c:TUR
+					type = turkfm_loyal_subject
+				}
+			}
+			remove_diplomatic_pact = {
+				country = c:TUR
+				type = turkfm_loyal_subject
+			}
+		}
+		else = {
+			create_diplomatic_pact = {
+				country = c:TUR
+				type = turkfm_loyal_subject
+			}
+			custom_tooltip = {
+				text = turkfm_loyalty_button_effect
+				set_variable = {
+					name = turkfm_tension_button_cooldown_var
+					years = 2
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_diplomatic_pact = {
+					who = c:TUR
+					type = turkfm_disloyal_subject
+				}
+			}
+			remove_diplomatic_pact = {
+				country = c:TUR
+				type = turkfm_disloyal_subject
+			}
+		}
+	}
+	ai_chance = {
+		value = -10
 	}
 }
