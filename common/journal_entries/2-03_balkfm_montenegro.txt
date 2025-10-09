@@ -7,11 +7,17 @@
 	can_revolution_inherit = yes
 	transferable = no
 
+	scripted_button = balkfm_visit_tsar_button
+	scripted_button = je_montenegrin_visit_moscow
+	scripted_button = je_montenegrin_make_saint
+	scripted_button = balkfm_mon_principality_button
+
 	is_shown_in_lobby = {
 		c:MON ?= this
 	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		if = {
 			limit = {
 				has_dlc_feature = ip3_content # National Awakening
@@ -37,11 +43,6 @@
 		modifier_balkfm_prince_bishopric
 		modifier_balkfm_spartan_existence
 	}
-
-	scripted_button = balkfm_visit_tsar_button
-	scripted_button = je_montenegrin_visit_moscow
-	scripted_button = je_montenegrin_make_saint
-	scripted_button = balkfm_mon_principality_button
 
 	complete = {
 		has_law_or_variant = law_type:law_monarchy
@@ -229,12 +230,20 @@
 			desc = je_montenegrin_russian_aid_income
 		}
 	}
-
 }
 
 je_balkfm_mon_societal_reform = {
-	icon = "gfx/interface/icons/event_icons/event_scales.dds"
 	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	weight = 500
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	complete = {
 		NOT = { has_law_or_variant = law_type:law_hereditary_bureaucrats }
@@ -251,14 +260,20 @@ je_balkfm_mon_societal_reform = {
 	invalid = {
 		has_variable = balkfm_prince_bishopric_completed
 	}
-
-	weight = 500
-
 }
 
 je_balkfm_mon_administration = {
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
 	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	weight = 500
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	complete = {
 		NOT = { has_law_or_variant = law_type:law_land_based_taxation }
@@ -278,14 +293,20 @@ je_balkfm_mon_administration = {
 	invalid = {
 		has_variable = balkfm_prince_bishopric_completed
 	}
-
-	weight = 500
-
 }
 
 je_balkfm_mon_military_reform = {
-	icon = "gfx/interface/icons/event_icons/event_military.dds"
 	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	weight = 500
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	complete = {
 		NOT = { has_law_or_variant = law_type:law_peasant_levies }
@@ -301,20 +322,24 @@ je_balkfm_mon_military_reform = {
 	invalid = {
 		has_variable = balkfm_prince_bishopric_completed
 	}
-
-	weight = 500
-
 }
 
 je_balkfm_mon_ali_pasha = {
-	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
 	group = je_group_foreign_affairs
+	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
+	weight = 100
+
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
 
 	is_shown_in_lobby = {
 		c:MON ?= this
 	}
 
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	modifiers_while_active = {
 		modifier_balkfm_ali_pasha
@@ -353,23 +378,25 @@ je_balkfm_mon_ali_pasha = {
 			balkfm_montenegro.032 # Knives in the Dark
 		}
 	}
-
-	weight = 400
-
 }
 
 je_balkfm_mon_nationalism = {
-	icon = "gfx/interface/icons/event_icons/event_montenegro2.dds"
 	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	weight = 100
+
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	scripted_button = balkfm_mon_kingdom_button
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		trigger_event = {
 			id = balkfm_montenegro.200 # The Montenegrin Identity
 		}
 	}
-
-	scripted_button = balkfm_mon_kingdom_button
 
 	complete = {
 		has_modifier = modifier_balkfm_declared_kingdom
@@ -386,15 +413,12 @@ je_balkfm_mon_nationalism = {
 			c:MON ?= this
 		}
 	}
-
-	weight = 1000
-
 }
 
 je_balkfm_mon_austria_alliance = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_scales.dds"
-	weight = 100
+	weight = 500
 	
 	should_be_pinned_by_default = yes
 	transferable = no
@@ -422,6 +446,7 @@ je_balkfm_mon_austria_alliance = {
 	}
 	
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		c:RUS ?= {
 			save_scope_as = russia
 		}
@@ -497,14 +522,7 @@ je_balkfm_mon_austria_alliance = {
 			}
 		}
 	}
-	
-	on_weekly_pulse = {
-	}
-	
-	status_desc = {
-		desc = je_mon_austria_status_desc
-	}
-	
+
 	invalid = { #p:x90A0E0.state.owner might work better
 		NOT = {
 			exists = c:AUS
@@ -512,5 +530,9 @@ je_balkfm_mon_austria_alliance = {
 				owner = c:AUS
 			}
 		}
+	}
+
+	status_desc = {
+		desc = je_mon_austria_status_desc
 	}
 }
