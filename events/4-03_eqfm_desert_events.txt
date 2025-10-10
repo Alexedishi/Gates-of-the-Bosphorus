@@ -27,9 +27,9 @@ namespace = eqfm_libyan_desert
 #	009 - The Libyan Deserts
 
 #010-019 - Libyan Desert Flavor Events
-#	010 - ##
-#	011 - ##
-#	012 - ##
+#	010 - ##Marabouts Spread Dissident Teachings
+#	011 - ##Insecure Desert Routes
+#	012 - ##Issues with Taxation
 #	013 - ##
 #	014 - ##
 #	015 - ##
@@ -39,8 +39,8 @@ namespace = eqfm_libyan_desert
 #	019 - ##
 
 #020-029 - Libyan Desert Expedition Events
-#	020 - ##
-#	021 - ##
+#	020 - ##A Storm of Sand
+#	021 - ##Sand, Sand, and More Sand
 #	022 - ##
 #	023 - ##
 #	024 - ##
@@ -431,6 +431,273 @@ eqfm_libyan_desert.009 = { # The Libyan Deserts
 				days = long_modifier_time
 			}
 		}
+	}
+
+}
+
+
+## Libyan Desert Flavor Events ##
+eqfm_libyan_desert.010 = { # 
+	type = country_event
+	placement = scope:eqfm_senussi_marabout_state
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_libyan_desert.010.t
+	desc = eqfm_libyan_desert.010.d
+	flavor = eqfm_libyan_desert.010.f
+
+	event_image = {
+		video = "africa_city_center"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		has_journal_entry = je_turkfm_senusiyya_main
+		s:STATE_LIBYAN_DESERT = {
+			any_scope_state = {
+				owner ?= {
+					is_country_type = decentralized
+				}
+			}
+		}
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_eqfm_libyan_desert
+		}
+	}
+
+	cooldown = {
+		years = 8
+	}
+
+	immediate = {
+		random_scope_state = { 
+			limit = {
+				NOT = {
+					has_modifier = modifier_eqfm_dissident_teachings
+				}
+			}
+			save_scope_as = eqfm_senussi_marabout_state
+		}
+	}
+
+	option = {
+		name = eqfm_libyan_desert.010.a
+		default_option = yes
+	}
+
+	option = {
+		name = eqfm_libyan_desert.010.b
+		default_option = yes
+	}
+
+}
+
+eqfm_libyan_desert.011 = { # Insecure Desert Routes
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_trade.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_libyan_desert.011.t
+	desc = eqfm_libyan_desert.011.d
+	flavor = eqfm_libyan_desert.011.f
+
+	event_image = {
+		video = "africa_desert_expedition"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		s:STATE_LIBYAN_DESERT = {
+			any_scope_state = {
+				owner ?= {
+					is_country_type = decentralized
+				}
+			}
+		}
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_eqfm_libyan_desert
+		}
+	}
+
+	cooldown = {
+		years = 10
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = eqfm_libyan_desert.011.a
+		default_option = yes
+	}
+
+	option = {
+		name = eqfm_libyan_desert.011.b
+	}
+
+	option = {
+		name = eqfm_libyan_desert.011.c
+	}
+
+}
+
+eqfm_libyan_desert.012 = { # Issues with Taxation
+	type = country_event
+	placement = scope:eqfm_desert_event_state
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_libyan_desert.012.t
+	desc = eqfm_libyan_desert.012.d
+	flavor = eqfm_libyan_desert.012.f
+
+	event_image = {
+		video = "middleeast_courtroom_upheaval"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		any_scope_state = {
+			state_region = s:STATE_LIBYAN_DESERT
+			is_under_colonization = yes
+		}
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_eqfm_libyan_desert
+		}
+	}
+
+	cooldown = {
+		years = 5
+	}
+
+	immediate = {
+		random_scope_state = {
+			limit = {
+				state_region = s:STATE_LIBYAN_DESERT
+				is_under_colonization = yes
+			}
+		}
+		save_scope_as = eqfm_desert_event_state
+	}
+
+	option = {
+		name = eqfm_libyan_desert.012.a
+		default_option = yes
+	}
+
+	option = {
+		name = eqfm_libyan_desert.012.b
+	}
+
+	option = {
+		name = eqfm_libyan_desert.012.c
+	}
+
+}
+
+## Libyan Desert Expedition Events ##
+eqfm_libyan_desert.020 = { # A Storm of Sand
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_libyan_desert.020.t
+	desc = eqfm_libyan_desert.020.d
+	flavor = eqfm_libyan_desert.020.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_desert_expedition_leader_scope
+
+	event_image = {
+		video = "turkfm_libya_intro"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		eqfm_has_desert_expedition_trigger = yes
+	}
+
+	cancellation_trigger = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+
+	cooldown = {
+		years = 2
+	}
+
+	immediate = {
+		set_variable = {
+			name = eqfm_desert_expedition_cooldown_var
+			months = 6
+		}
+		eqfm_update_desert_variables_effect = yes
+	}
+
+	option = {
+		name = eqfm_libyan_desert.020.a
+		default_option = yes
+	}
+
+}
+
+eqfm_libyan_desert.021 = { # Sand, Sand, and More Sand
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_libyan_desert.021.t
+	desc = eqfm_libyan_desert.021.d
+	flavor = eqfm_libyan_desert.021.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_desert_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_desert_sunset.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		eqfm_has_desert_expedition_trigger = yes
+	}
+
+	cancellation_trigger = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		set_variable = {
+			name = eqfm_desert_expedition_cooldown_var
+			months = 6
+		}
+		eqfm_update_desert_variables_effect = yes
+	}
+
+	option = {
+		name = eqfm_libyan_desert.021.a
+		default_option = yes
 	}
 
 }
