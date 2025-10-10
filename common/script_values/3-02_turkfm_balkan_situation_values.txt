@@ -525,7 +525,7 @@ turkfm_movement_impact_value = {
 	round_to = 0.01
 }
 
-## Secession Movement Values (CMF Overrides)
+## Minority Movement Values (CMF Overrides)
 turkfm_target_fraction_of_states_value = {
 	value = 0
 	add = owner.modifier:country_minority_secession_size_add
@@ -569,6 +569,61 @@ turkfm_movement_religious_minority_secession_target_fraction_of_states_min = {
 			min = 1
 		}
 	}
+}
+
+## Minority Movement Values (Activism Adjustments)
+turkfm_movement_target = {
+	value = 0
+	if = {
+		limit = {
+			OR = {
+				turkfm_deconfliction_phase_trigger = yes
+				turkfm_stable_phase_trigger = yes
+			}
+		}
+		add = 25
+	}
+	else_if = {
+		limit = {
+			turkfm_unrest_phase_trigger = yes
+		}
+		add = 70
+	}
+	else_if = {
+		limit = {
+			turkfm_hostility_phase_trigger = yes
+		}
+		add = 90
+	}
+	else_if = {
+		limit = {
+			turkfm_crisis_phase_trigger = yes
+		}
+		add = 100
+	}
+}
+
+turkfm_movement_activism_adjustment_value = {
+	value = 0
+	add = turkfm_movement_target
+	subtract = political_movement_radicalism
+	if = {
+		limit = {
+			has_variable = turkfm_previous_adjustment_var
+		}
+		subtract = var:turkfm_previous_adjustment_var
+	}
+}
+
+turkfm_movement_activism_multiplier_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = turkfm_previous_adjustment_var
+		}
+		add = var:turkfm_previous_adjustment_var
+	}
+	add = turkfm_movement_activism_adjustment_value
 }
 
 ## Overall Balkan Radical Values
