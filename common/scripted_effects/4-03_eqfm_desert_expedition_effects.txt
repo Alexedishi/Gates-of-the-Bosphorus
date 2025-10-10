@@ -1,0 +1,123 @@
+﻿eqfm_start_desert_expedition_effect = {
+	remove_variable = eqfm_expedition_desert_transit_var
+	set_variable = eqfm_desert_expedition_var
+	set_variable = {
+		name = eqfm_desert_expedition_progress_var
+		value = 0
+	}
+	set_variable = {
+		name = eqfm_desert_expedition_peril_var
+		value = 0
+	}
+}
+
+eqfm_update_desert_variables_effect = {
+	set_variable = {
+		name = eqfm_desert_provinces_var
+		value = eqfm_desert_provinces_value
+	}
+	if = {
+		limit = {
+			has_variable = eqfm_desert_expedition_var
+		}
+		random_scope_character = {
+			limit = {
+				has_modifier = modifier_eqfm_leading_desert_expedition
+			}
+			save_scope_as = eqfm_desert_expedition_leader_scope
+		}
+		set_variable = {
+			name = eqfm_desert_expedition_leader_var
+			value = scope:eqfm_desert_expedition_leader_scope
+		}
+		je:je_eqfm_libyan_desert = {
+			clear_variable_list = com_journal_characters
+			add_to_variable_list = {
+				name = com_journal_characters
+				target = scope:eqfm_desert_expedition_leader_scope
+			}
+		}
+	}
+	else = {
+		je:je_eqfm_libyan_desert = {
+			clear_variable_list = com_journal_characters
+		}
+	}
+}
+
+eqfm_complete_desert_expedition_effect = {
+	every_scope_character = {
+		limit = {
+			has_modifier = modifier_eqfm_leading_desert_expedition
+		}
+		remove_modifier = modifier_eqfm_leading_desert_expedition
+		set_character_busy_and_immortal = no
+		add_modifier = {
+			name = modifier_eqfm_completed_desert_expedition
+			days = long_modifier_time
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_failed_desert_expedition_character
+			}
+			remove_modifier = modifier_eqfm_failed_desert_expedition_character
+		}
+	}
+	eqfm_clear_desert_expedition_variables = yes
+	turkfm_update_expedition_costs_effect = yes
+}
+
+turkfm_fail_desert_expedition_effect = {
+	every_scope_character = {
+		limit = {
+			has_modifier = modifier_eqfm_leading_desert_expedition
+		}
+		remove_modifier = modifier_eqfm_leading_desert_expedition
+		set_character_busy_and_immortal = no
+		add_modifier = {
+			name = modifier_eqfm_failed_desert_expedition_character
+			days = long_modifier_time
+		}
+	}
+	add_modifier = {
+		name = modifier_eqfm_failed_desert_expedition_country
+		days = short_modifier_time
+	}
+	eqfm_clear_desert_expedition_variables = yes
+	turkfm_update_expedition_costs_effect = yes
+}
+
+eqfm_cancel_desert_expedition_effect = {
+	every_scope_character = {
+		limit = {
+			has_modifier = modifier_eqfm_leading_desert_expedition
+		}
+		remove_modifier = modifier_eqfm_leading_desert_expedition
+		set_character_busy_and_immortal = no
+	}
+	add_modifier = {
+		name = modifier_eqfm_cancelled_desert_expedition
+		days = short_modifier_time
+	}
+	eqfm_clear_desert_expedition_variables = yes
+	turkfm_update_expedition_costs_effect = yes
+}
+
+eqfm_clear_desert_expedition_variables = {
+	remove_variable = eqfm_expedition_desert_transit_var
+	remove_variable = eqfm_desert_expedition_progress_var
+	remove_variable = eqfm_desert_expedition_peril_var
+	remove_variable = eqfm_desert_expedition_leader_var
+}
+
+eqfm_cleanup_libyan_desert_effect = {
+	every_scope_character = {
+		limit = {
+			has_modifier = modifier_eqfm_leading_desert_expedition
+		}
+		remove_modifier = modifier_eqfm_leading_desert_expedition
+		set_character_busy_and_immortal = no
+	}
+	eqfm_clear_desert_expedition_variables = yes
+	turkfm_update_expedition_costs_effect = yes
+}
