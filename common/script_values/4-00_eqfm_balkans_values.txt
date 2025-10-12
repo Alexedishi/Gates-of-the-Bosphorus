@@ -572,7 +572,7 @@ turkfm_movement_religious_minority_secession_target_fraction_of_states_min = {
 }
 
 ## Minority Movement Values (Activism Adjustments)
-turkfm_movement_target = {
+turkfm_movement_activism_target = {
 	value = 0
 	if = {
 		limit = {
@@ -605,13 +605,18 @@ turkfm_movement_target = {
 
 turkfm_movement_activism_adjustment_value = {
 	value = 0
-	add = turkfm_movement_target
-	subtract = political_movement_radicalism
 	if = {
 		limit = {
-			has_variable = turkfm_previous_adjustment_var
+			political_movement_radicalism < turkfm_movement_activism_target
 		}
-		subtract = var:turkfm_previous_adjustment_var
+		add = turkfm_movement_activism_target
+		subtract = political_movement_radicalism
+		if = {
+			limit = {
+				has_variable = turkfm_previous_adjustment_var
+			}
+			subtract = var:turkfm_previous_adjustment_var
+		}
 	}
 }
 
