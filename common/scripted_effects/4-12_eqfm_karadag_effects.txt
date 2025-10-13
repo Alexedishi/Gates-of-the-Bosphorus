@@ -1,4 +1,4 @@
-﻿turkfm_initialize_black_mountain_effect = {
+﻿eqfm_initialize_black_mountain_effect = {
 	# This is modified from je_montenegrin_raiding's immediate block
 	# Vanilla variables are retained for compatibility
 	# This effect is fired from global if IP3 is active
@@ -42,7 +42,7 @@
 	}
 }
 
-turkfm_weekly_black_mountain_effect = {
+eqfm_weekly_black_mountain_effect = {
 	# Ok look bruv, I don't like this either. You got a problem, email the complaint line. A pipebomb will be delivered to your mailbox within 7 to 12 Bosnian business days.
 	if = {
 		limit = {
@@ -78,7 +78,7 @@ turkfm_weekly_black_mountain_effect = {
 				has_variable = mon_more_raiding
 			}
 			remove_variable = mon_more_raiding
-			remove_variable = turkfm_raiding_status_cooldown_var
+			remove_variable = eqfm_raiding_status_cooldown_var
 		}
 		if = {
 			limit = {
@@ -86,12 +86,12 @@ turkfm_weekly_black_mountain_effect = {
 				has_variable = mon_less_raiding
 			}
 			remove_variable = mon_less_raiding
-			remove_variable = turkfm_raiding_status_cooldown_var
+			remove_variable = eqfm_raiding_status_cooldown_var
 		}
 
 		## IP3 Raiding Income Effects ##
-		turkfm_check_raiding_target_effect = yes
-		turkfm_update_raiding_income_effect = yes
+		eqfm_check_raiding_target_effect = yes
+		eqfm_update_raiding_income_effect = yes
 
 		## IP3 Raiding Event Script ##
 		#Higher odds of ottoman Retribution Depending on Raiding Income. Note max Raiding income is 2500
@@ -159,7 +159,7 @@ turkfm_weekly_black_mountain_effect = {
 	}
 }
 
-turkfm_check_raiding_target_effect = {
+eqfm_check_raiding_target_effect = {
 	scope:raid_target ?= {
 		if = {
 			limit = {
@@ -196,7 +196,7 @@ turkfm_check_raiding_target_effect = {
 	}
 }
 
-turkfm_update_raiding_income_effect = {
+eqfm_update_raiding_income_effect = {
 	#If Raiding_income has changed, remove and reapply the modifiers with the new values. This is necessary because we do not have support for dynamic modifiers.
 	if = {
 		limit = {
@@ -232,73 +232,73 @@ turkfm_update_raiding_income_effect = {
 	}
 }
 
-turkfm_update_black_mountain_characters_effect = {
-	je:je_turkfm_the_black_mountain = {
+eqfm_update_black_mountain_characters_effect = {
+	je:je_eqfm_the_black_mountain = {
 		clear_variable_list = com_journal_characters
 	}
 	c:MON ?= {
 		random_scope_character = {
 			limit = {
-				has_modifier = modifier_turkfm_leading_black_mountain_expedition
+				has_modifier = modifier_eqfm_leading_black_mountain_expedition
 			}
-			save_scope_as = turkfm_black_mountain_mon_leader
+			save_scope_as = eqfm_black_mountain_mon_leader
 		}
 		if = {
 			limit = {
-				exists = scope:turkfm_black_mountain_mon_leader
+				exists = scope:eqfm_black_mountain_mon_leader
 			}
 			set_variable = {
-				name = turkfm_black_mountain_leader_var
-				value = scope:turkfm_black_mountain_mon_leader
+				name = eqfm_black_mountain_leader_var
+				value = scope:eqfm_black_mountain_mon_leader
 			}
 		}
 		else = {
-			remove_variable = turkfm_black_mountain_leader_var
+			remove_variable = eqfm_black_mountain_leader_var
 		}
 	}
 	c:TUR ?= {
 		random_scope_character = {
 			limit = {
-				has_modifier = modifier_turkfm_leading_black_mountain_expedition
+				has_modifier = modifier_eqfm_leading_black_mountain_expedition
 			}
-			save_scope_as = turkfm_black_mountain_tur_leader
+			save_scope_as = eqfm_black_mountain_tur_leader
 		}
 		if = {
 			limit = {
-				exists = scope:turkfm_black_mountain_tur_leader
+				exists = scope:eqfm_black_mountain_tur_leader
 			}
 			set_variable = {
-				name = turkfm_black_mountain_leader_var
-				value = scope:turkfm_black_mountain_tur_leader
+				name = eqfm_black_mountain_leader_var
+				value = scope:eqfm_black_mountain_tur_leader
 			}
 		}
 		else = {
-			remove_variable = turkfm_black_mountain_leader_var
+			remove_variable = eqfm_black_mountain_leader_var
 		}
 	}
-	je:je_turkfm_the_black_mountain = {
+	je:je_eqfm_the_black_mountain = {
 		if = {
 			limit = {
-				exists = scope:turkfm_black_mountain_mon_leader
+				exists = scope:eqfm_black_mountain_mon_leader
 			}
 			add_to_variable_list = {
 				name = com_journal_characters
-				target = scope:turkfm_black_mountain_mon_leader
+				target = scope:eqfm_black_mountain_mon_leader
 			}
 		}
 		if = {
 			limit = {
-				exists = scope:turkfm_black_mountain_tur_leader
+				exists = scope:eqfm_black_mountain_tur_leader
 			}
 			add_to_variable_list = {
 				name = com_journal_characters
-				target = scope:turkfm_black_mountain_tur_leader
+				target = scope:eqfm_black_mountain_tur_leader
 			}
 		}
 	}
 }
 
-turkfm_cleanup_black_mountain_effect = {
+eqfm_cleanup_black_mountain_effect = {
 	if = {
 		limit = {
 			c:MON ?= this
@@ -312,20 +312,20 @@ turkfm_cleanup_black_mountain_effect = {
 		}
 	}
 	hidden_effect = {
-		turkfm_cancel_black_mountain_expedition_effect = yes
+		eqfm_cancel_black_mountain_expedition_effect = yes
 	}
 }
 
 turkfm_settle_raiding_effect = {
 	custom_tooltip = {
 		text = montenegrin_raiding_stop_tt
-		set_global_variable = turkfm_montenegrin_raiding_settled
+		set_global_variable = eqfm_montenegrin_raiding_settled
 		remove_variable = raiding_intensity
 		remove_variable = last_week_raiding_income
 
 		remove_modifier = modifier_montenegrin_raiding
 		remove_modifier = modifier_montenegrin_disobedience
-		remove_modifier = modifier_turkfm_practicing_headtaking
+		remove_modifier = modifier_eqfm_practicing_headtaking
 
 		c:RUS ?= {
 			remove_diplomatic_pact = {
@@ -340,7 +340,7 @@ turkfm_settle_raiding_effect = {
 			}
 		}
 		c:MON ?= {
-			je:je_turkfm_the_black_mountain ?= {
+			je:je_eqfm_the_black_mountain ?= {
 				remove_modifier = modifier_eqfm_border_raids
 			}
 		}
@@ -354,43 +354,43 @@ turkfm_settle_raiding_effect = {
 	}
 }
 
-turkfm_major_raiding_increase_effect = {
+eqfm_major_raiding_increase_effect = {
 	custom_tooltip = {
 		text = mon_more_heads_tt
 		change_variable = {
 			name = raiding_intensity
 			add = 25
 		}
-		turkfm_update_raiding_income_effect = yes
+		eqfm_update_raiding_income_effect = yes
 	}
 }
 
-turkfm_black_mountain_scopes_effect = {
+eqfm_black_mountain_scopes_effect = {
 	c:MON ?= {
 		random_scope_character = {
 			limit = {
-				has_modifier = modifier_turkfm_leading_black_mountain_expedition
+				has_modifier = modifier_eqfm_leading_black_mountain_expedition
 			}
-			save_scope_as = turkfm_black_mountain_mon_leader
+			save_scope_as = eqfm_black_mountain_mon_leader
 		}
 	}
 	c:TUR ?= {
 		random_scope_character = {
 			limit = {
-				has_modifier = modifier_turkfm_leading_black_mountain_expedition
+				has_modifier = modifier_eqfm_leading_black_mountain_expedition
 			}
-			save_scope_as = turkfm_black_mountain_tur_leader
+			save_scope_as = eqfm_black_mountain_tur_leader
 		}
 	}
 	if = {
 		limit = {
 			NOT = {
-				exists = scope:turkfm_black_mountain_mon_leader
+				exists = scope:eqfm_black_mountain_mon_leader
 			}
 		}
 		c:MON ?= {
 			ruler = {
-				save_scope_as = turkfm_black_mountain_mon_leader
+				save_scope_as = eqfm_black_mountain_mon_leader
 			}
 		}
 
@@ -398,33 +398,33 @@ turkfm_black_mountain_scopes_effect = {
 	if = {
 		limit = {
 			NOT = {
-				exists = scope:turkfm_black_mountain_tur_leader
+				exists = scope:eqfm_black_mountain_tur_leader
 			}
 		}
 		c:TUR ?= {
 			ruler = {
-				save_scope_as = turkfm_black_mountain_tur_leader
+				save_scope_as = eqfm_black_mountain_tur_leader
 			}
 		}
 	}
 }
 
-turkfm_dismiss_tribal_chief_effect = {
+eqfm_dismiss_tribal_chief_effect = {
 	every_scope_character = {
 		limit = {
-			has_modifier = modifier_turkfm_leading_raids
+			has_modifier = modifier_eqfm_leading_raids
 		}
-		remove_modifier = modifier_turkfm_leading_raids
+		remove_modifier = modifier_eqfm_leading_raids
 		set_character_busy_and_immortal = no
 	}
 	custom_tooltip = {
-		text = turkfm_dismiss_tribal_chief
+		text = eqfm_dismiss_tribal_chief
 		remove_variable = eqfm_black_mountain_expedition_var
 	}
-	turkfm_update_expedition_costs_effect = yes
+	eqfm_update_expedition_costs_effect = yes
 }
 
-turkfm_start_black_mountain_expedition_effect = {
+eqfm_start_black_mountain_expedition_effect = {
 	set_variable = eqfm_black_mountain_expedition_var
 	set_variable = {
 		name = eqfm_black_mountain_expedition_progress_var
@@ -436,47 +436,47 @@ turkfm_start_black_mountain_expedition_effect = {
 	}
 }
 
-turkfm_fail_black_mountain_expedition_effect = {
+eqfm_fail_black_mountain_expedition_effect = {
 	every_scope_character = {
 		limit = {
-			has_modifier = modifier_turkfm_leading_black_mountain_expedition
+			has_modifier = modifier_eqfm_leading_black_mountain_expedition
 		}
-		remove_modifier = modifier_turkfm_leading_black_mountain_expedition
+		remove_modifier = modifier_eqfm_leading_black_mountain_expedition
 		set_character_busy_and_immortal = no
 		add_modifier = {
-			name = modifier_turkfm_failed_black_mountain_expedition_character
+			name = modifier_eqfm_failed_black_mountain_expedition_character
 			days = long_modifier_time
 		}
 	}
 	remove_variable = eqfm_adriatic_expedition_var
 	add_modifier = {
-		name = modifier_turkfm_failed_adriatic_expedition_country
+		name = modifier_eqfm_failed_adriatic_expedition_country
 		days = short_modifier_time
 	}
-	turkfm_update_expedition_costs_effect = yes
+	eqfm_update_expedition_costs_effect = yes
 }
 
-turkfm_cancel_black_mountain_expedition_effect = {
+eqfm_cancel_black_mountain_expedition_effect = {
 	every_scope_character = {
 		limit = {
-			has_modifier = modifier_turkfm_leading_black_mountain_expedition
+			has_modifier = modifier_eqfm_leading_black_mountain_expedition
 		}
-		remove_modifier = modifier_turkfm_leading_black_mountain_expedition
+		remove_modifier = modifier_eqfm_leading_black_mountain_expedition
 		set_character_busy_and_immortal = no
 	}
 	custom_tooltip = {
-		text = turkfm_cancel_black_mountain_expedition
+		text = eqfm_cancel_black_mountain_expedition
 		remove_variable = eqfm_black_mountain_expedition_var
 	}
-	turkfm_update_expedition_costs_effect = yes
+	eqfm_update_expedition_costs_effect = yes
 }
 
-turkfm_clear_black_mountain_expedition_variables_effect = {
+eqfm_clear_black_mountain_expedition_variables_effect = {
 	remove_variable = eqfm_black_mountain_expedition_progress_var
 	remove_variable = eqfm_black_mountain_expedition_peril_var
 }
 
-turkfm_generate_captive_effect = {
+eqfm_generate_captive_effect = {
 	random_list = {
 		5 = { # Bosnian Noble
 			trigger = {
@@ -490,7 +490,7 @@ turkfm_generate_captive_effect = {
 				}
 			}
 			create_character = {
-				template = template_balkfm_captive_bosnian
+				template = template_eqfm_captive_bosnian
 			}
 		}
 		5 = { # Albanian Noble
@@ -500,7 +500,7 @@ turkfm_generate_captive_effect = {
 				}
 			}
 			create_character = {
-				template = template_balkfm_captive_albanian
+				template = template_eqfm_captive_albanian
 			}
 		}
 		5 = { # Serbian Noble
@@ -510,7 +510,7 @@ turkfm_generate_captive_effect = {
 				}
 			}
 			create_character = {
-				template = template_balkfm_captive_serbian
+				template = template_eqfm_captive_serbian
 			}
 		}
 	}
