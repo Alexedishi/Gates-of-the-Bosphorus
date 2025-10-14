@@ -98,7 +98,7 @@ eqfm_weekly_black_mountain_effect = {
 		#Note that montenegrin_raiding.1 can only fire once, after which montenegrin_raiding.2 fires from then on.
 		if = { #playing Russian Roulette each week
 			limit = {
-				raiding_income > 4200
+				eqfm_raiding_income_value > 4200
 			}
 			random_list = {
 				150 = { trigger_event = { id = montenegrin_raiding.1 popup = yes} } # Ottoman Attack
@@ -108,7 +108,7 @@ eqfm_weekly_black_mountain_effect = {
 		}
 		else_if = {
 			limit = {
-				raiding_income > 3500
+				eqfm_raiding_income_value > 3500
 			}
 			random_list = {
 				150 = { trigger_event = { id = montenegrin_raiding.1 popup = yes} } # Ottoman Attack
@@ -118,7 +118,7 @@ eqfm_weekly_black_mountain_effect = {
 		}
 		else_if = {
 			limit = {
-				raiding_income > 2800
+				eqfm_raiding_income_value > 2800
 			}
 			random_list = {
 				150 = { trigger_event = { id = montenegrin_raiding.1 popup = yes} } # Ottoman Attack
@@ -128,7 +128,7 @@ eqfm_weekly_black_mountain_effect = {
 		}
 		else_if = {
 			limit = {
-				raiding_income > 2000
+				eqfm_raiding_income_value > 2000
 			}
 			random_list = {
 				150 = { trigger_event = { id = montenegrin_raiding.1 popup = yes} } # Ottoman Attack
@@ -138,7 +138,7 @@ eqfm_weekly_black_mountain_effect = {
 		}
 		else_if = {
 			limit = {
-				raiding_income > 1200
+				eqfm_raiding_income_value > 1200
 			}
 			random_list = {
 				150 = { trigger_event = { id = montenegrin_raiding.1 popup = yes} } # Ottoman Attack
@@ -175,11 +175,11 @@ eqfm_check_raiding_target_effect = {
 				save_scope_as = raid_target
 				if = {
 					limit = {
-						raiding_level > 0
+						eqfm_raiding_level_value > 0
 					}
 					add_modifier = {
 						name = raid_target
-						multiplier = raiding_level
+						multiplier = eqfm_raiding_level_value
 					}
 				}
 			}
@@ -187,7 +187,7 @@ eqfm_check_raiding_target_effect = {
 		#still state scope. add some radicals
 		if = {
 			limit = {
-				raiding_level > 1
+				eqfm_raiding_level_value > 1
 			}
 			add_radicals_in_state = {
 				value = 0.005
@@ -197,15 +197,15 @@ eqfm_check_raiding_target_effect = {
 }
 
 eqfm_update_raiding_income_effect = {
-	#If Raiding_income has changed, remove and reapply the modifiers with the new values. This is necessary because we do not have support for dynamic modifiers.
+	#If Raiding Income has changed, remove and reapply the modifiers with the new values. This is necessary because we do not have support for dynamic modifiers.
 	if = {
 		limit = {
-			var:last_week_raiding_income != raiding_income
+			var:last_week_raiding_income != eqfm_raiding_income_value
 		}
 		remove_modifier = modifier_montenegrin_raiding
 		add_modifier = {
 			name = modifier_montenegrin_raiding
-			multiplier = raiding_income
+			multiplier = eqfm_raiding_income_value
 		}
 		remove_modifier = modifier_montenegrin_disobedience
 		add_modifier = {
@@ -220,13 +220,13 @@ eqfm_update_raiding_income_effect = {
 		}
 		set_variable = {
 			name = last_week_raiding_income
-			value = raiding_income
+			value = eqfm_raiding_income_value
 		}
 		scope:raid_target ?= {
 			remove_modifier = raid_target
 			add_modifier = {
 				name = raid_target
-				multiplier = raiding_level
+				multiplier = eqfm_raiding_level_value
 			}
 		}
 	}

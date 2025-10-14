@@ -1,4 +1,4 @@
-﻿turkfm_captured_nobles_value = {
+﻿eqfm_captured_nobles_value = {
 	value = 0
 	every_character_in_void = {
 		limit = {
@@ -12,37 +12,49 @@
 	}
 }
 
-### OVERRIDDEN VANILLA VALUES
-# Taken from je_values.txt 27-AUG-2025; ##DIFF_MARK
-max_raiding_income = { # Used below and in raiding loc trigger.
-	value = 5000 #increased from 2500.
-}
-
-raiding_income = { # Used in raiding loc trigger.
-	value = c:MON.army_power_projection
-	multiply = c:MON.var:raiding_intensity
-	multiply = 0.15
+eqfm_raiding_income_value = {
+	# Integrated from je_values.txt 27-AUG-2025; ##DIFF_MARK
+	value = 0
+	add = {
+		value = {
+			value = c:MON.army_power_projection
+			multiply = c:MON.var:raiding_intensity
+			multiply = 0.15
+		}
+		desc = eqfm_value_from_raiding_intensity
+	}
 	if = {
 		limit = {
 			c:MON ?= {
-				turkfm_has_black_mountain_expedition_trigger = no
+				eqfm_has_black_mountain_expedition_trigger = no
 			}
 		}
-		divide = 4
+		divide = {
+			value = 4
+			desc = eqfm_value_from_no_raid_leader
+		}
 	}
 	if = {
 		limit = {
 			has_global_variable = eqfm_black_mountain_skirmish_var
 		}
-		divide = 2
+		divide = {
+			value = 2
+			desc = eqfm_value_from_skirmish
+		}
 	}
 	round = yes
 	min = 0
-	max = max_raiding_income
+	max = eqfm_max_raiding_income_value
 }
 
-raiding_level = { # 1-6
-	value = raiding_income
+eqfm_max_raiding_income_value = {
+	value = 5000
+}
+
+eqfm_raiding_level_value = { # 1-6
+	#TODO This is so strange, and I'll be adding my own script in the future, I guess
+	value = eqfm_raiding_income_value
 	add = 501 #stops divide by 0 errors, round up
 	min = 1
 	divide = 1000
