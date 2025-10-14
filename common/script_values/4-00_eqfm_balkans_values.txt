@@ -576,43 +576,52 @@ eqfm_movement_activism_target = {
 	value = 0
 	if = {
 		limit = {
-			OR = {
-				eqfm_deconfliction_phase_trigger = yes
-				eqfm_stable_phase_trigger = yes
-			}
+			eqfm_deconfliction_phase_trigger = yes
 		}
-		add = 25
+		add = 0
+	}
+	if = {
+		limit = {
+			eqfm_stable_phase_trigger = yes
+		}
+		add = 10
 	}
 	else_if = {
 		limit = {
 			eqfm_unrest_phase_trigger = yes
 		}
-		add = 70
+		add = 25
 	}
 	else_if = {
 		limit = {
 			eqfm_hostility_phase_trigger = yes
 		}
-		add = 90
+		add = 50
 	}
 	else_if = {
 		limit = {
 			eqfm_crisis_phase_trigger = yes
 		}
-		add = 100
+		add = 75
 	}
 }
 
 eqfm_movement_activism_adjustment_value = {
 	value = 0
-	add = eqfm_movement_activism_target
-	subtract = political_movement_radicalism
 	if = {
 		limit = {
-			has_variable = eqfm_previous_adjustment_var
+			political_movement_radicalism < eqfm_movement_activism_target
 		}
-		subtract = var:eqfm_previous_adjustment_var
+		add = eqfm_movement_activism_target
+		subtract = political_movement_radicalism
+		if = {
+			limit = {
+				has_variable = eqfm_previous_adjustment_var
+			}
+			subtract = var:eqfm_previous_adjustment_var
+		}
 	}
+	
 }
 
 eqfm_movement_activism_multiplier_value = {
@@ -624,4 +633,5 @@ eqfm_movement_activism_multiplier_value = {
 		add = var:eqfm_previous_adjustment_var
 	}
 	add = eqfm_movement_activism_adjustment_value
+	min = 0
 }
