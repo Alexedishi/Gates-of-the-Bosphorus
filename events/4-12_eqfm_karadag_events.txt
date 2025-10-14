@@ -1171,7 +1171,24 @@ eqfm_black_mountain.027 = { # Village Skirmish Escalates
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
-		# triggered by eqfm_black_mountain.029
+		c:MON ?= this # Evaluate this once per pulse because I'm too lazy to make two journal entries
+		NOR = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+			has_global_variable = eqfm_black_mountain_skirmish_var
+		}
+		OR = {
+			AND = {
+				c:MON ?= {
+					eqfm_has_black_mountain_expedition_trigger = yes
+					# Progress? What progress? I didn't know Montenegrins could read...
+				}
+				c:TUR ?= {
+					eqfm_has_black_mountain_expedition_trigger = yes
+					var:eqfm_black_mountain_expedition_progress_var >= 5
+				}
+			}
+			has_variable = eqfm_village_skirmish_event_var
+		}
 	}
 
 	cancellation_trigger = {
@@ -1180,6 +1197,23 @@ eqfm_black_mountain.027 = { # Village Skirmish Escalates
 
 	immediate = {
 		eqfm_black_mountain_scopes_effect = yes
+		set_global_variable = {
+			name = eqfm_black_mountain_skirmish_var
+			value = 0
+		}
+		set_global_variable = {
+			name = eqfm_black_mountain_skirmish_duration_var
+			value = 0
+		}
+		c:TUR ?= {
+			# I AM NOT MAKING TWO EVENTS TO GET AROUND THE TRIGGER, FUCK YOU JOHN PARADOX, I'M IN CONTROL OF MY LIFE, I'M A BIG BOY WHO CAN MAKE BIG BOY DECISIONS, I WILL NOT BE DENIED
+			# That said, this is gross and makes me want to shower
+			set_variable = eqfm_village_skirmish_event_var
+			trigger_event = {
+				id = eqfm_black_mountain.027
+			}
+			remove_variable = eqfm_village_skirmish_event_var
+		}
 	}
 
 	option = {
@@ -1240,45 +1274,13 @@ eqfm_black_mountain.029 = { # Village Skirmish Monitor
 	trigger = {
 		OR = {
 			c:MON ?= this # EVALUATE THIS ONLY ONCE PER PULSE, ASK ME HOW I FIGURED THIS OUT
-			c:MON = {
-				has_variable = eqfm_black_mountain_expedition_var
-			}
-			c:TUR ?= {
-				has_variable = eqfm_black_mountain_expedition_progress_var
-				var:eqfm_black_mountain_expedition_progress_var >= 5
-				var:eqfm_black_mountain_expedition_peril_var < 5
-			}
+			has_global_variable = eqfm_black_mountain_skirmish_var
 		}
 	}
 
 	immediate = {
 		eqfm_black_mountain_scopes_effect = yes
 		if = {
-			limit = {
-				NOT = {
-					has_global_variable = eqfm_black_mountain_skirmish_var
-				}
-			}
-			c:MON ?= {
-				trigger_event = {
-					id = eqfm_black_mountain.027
-				}
-			}
-			c:TUR ?= {
-				trigger_event = {
-					id = eqfm_black_mountain.027
-				}
-			}
-			set_global_variable = {
-				name = eqfm_black_mountain_skirmish_var
-				value = 0
-			}
-			set_global_variable = {
-				name = eqfm_black_mountain_skirmish_duration_var
-				value = 0
-			}
-		}
-		else_if = {
 			limit = {
 				has_global_variable = eqfm_black_mountain_skirmish_var
 				global_var:eqfm_black_mountain_skirmish_var > 0
@@ -1836,7 +1838,7 @@ eqfm_black_mountain.033 = { # Landslide Across the Border
 	}
 
 	immediate = {
-		s:STATE_MONTENEGRO.region_state:TUR = {
+		s:STATE_MONTENEGRO.region_state:TUR ?= {
 			save_scope_as = ottoman_montenegro_state_scope
 		}
 		set_variable = {
