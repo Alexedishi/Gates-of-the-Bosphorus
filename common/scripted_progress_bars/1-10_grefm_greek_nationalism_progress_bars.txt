@@ -42,6 +42,21 @@ grefm_dimotiki_progress_bar = {
 			desc = grefm_progress_from_hellene_literacy
 			value = grefm_hellene_literacy_value
 		}
+		add = {
+			value = {
+				owner = {
+					every_scope_state = {
+						limit = {
+							state_region = {
+								is_homeland = greek
+							}
+						}
+						add = 0.1
+					}
+				}
+			}
+			desc = grefm_value_from_greek_homelands
+		}
 		subtract = {
 			desc = grefm_progress_from_language_friction
 			value = grefm_language_decay_value
@@ -97,18 +112,51 @@ grefm_khoine_progress_bar = {
 		if = {
 			limit = {
 				owner = {
-					OR = {
-						has_law_or_variant = law_type:law_state_religion
-						has_law_or_variant = law_type:law_freedom_of_conscience
-					}
+					has_law_or_variant = law_type:law_state_religion
 				}
 			}
 			add = {
 				desc = grefm_progress_from_devout_clout_religion
-				value = 1
+				value = owner.ig:ig_devout.ig_clout
+				multiply = 2
 			}
 		}
-		if = {
+		else_if = {
+			limit = {
+				owner = {
+					has_law_or_variant = law_type:law_freedom_of_conscience
+				}
+			}
+			add = {
+				desc = grefm_progress_from_devout_clout_religion
+				value = owner.ig:ig_devout.ig_clout
+			}
+		}
+		else_if = {
+			limit = {
+				owner = {
+					has_law_or_variant = law_type:law_total_separation
+				}
+			}
+			subtract = {
+				desc = grefm_progress_from_hostile_religious_policy
+				value = owner.ig:ig_devout.ig_clout
+				divide = 2
+			}
+		}
+		else_if = {
+			limit = {
+				owner = {
+					has_law_or_variant = law_type:law_state_atheism
+				}
+			}
+			subtract = {
+				desc = grefm_progress_from_hostile_religious_policy
+				value = owner.ig:ig_devout.ig_clout
+				divide = 10
+			}
+		}
+		else_if = {
 			limit = {
 				owner = {
 					has_law_or_variant = law_type:law_theocracy
@@ -117,20 +165,7 @@ grefm_khoine_progress_bar = {
 			add = {
 				desc = grefm_progress_from_devout_clout_theocracy
 				value = owner.ig:ig_devout.ig_clout
-			}
-		}
-		if = {
-			limit = {
-				owner = {
-					OR = {
-						has_law_or_variant = law_type:law_total_separation
-						has_law_or_variant = law_type:law_state_atheism
-					}
-				}
-			}
-			subtract = {
-				desc = grefm_progress_from_hostile_religious_policy
-				value = 1
+				multiply = 10
 			}
 		}
 		subtract = {
@@ -166,6 +201,21 @@ grefm_rhomaiika_progress_bar = {
 		add = {
 			desc = grefm_progress_from_rhomaios_literacy
 			value = grefm_rhomaios_literacy_value
+		}
+		add = {
+			value = {
+				owner = {
+					every_scope_state = {
+						limit = {
+							state_region = {
+								is_homeland = rhomaios
+							}
+						}
+						add = 0.1
+					}
+				}
+			}
+			desc = grefm_value_from_rhomaios_homelands
 		}
 		subtract = {
 			desc = grefm_progress_from_language_friction
