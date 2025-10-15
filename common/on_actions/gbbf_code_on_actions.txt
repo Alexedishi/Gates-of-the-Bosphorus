@@ -9,10 +9,10 @@ on_monthly_pulse_country = {
 		grefm_monthly_pulse_2 # Rhomaios Tags
 #		grefm_monthly_pulse_3 # Urum Tags
 		balkfm_yug_monthly_pulse
-# 		balkfm_mon_monthly_pulse
-# 		balkfm_ser_monthly_pulse
-# 		balkfm_bul_monthly_pulse
-# 		balkfm_rom_monthly_pulse
+ 		balkfm_mon_monthly_pulse
+ 		balkfm_ser_monthly_pulse
+ 		balkfm_bul_monthly_pulse
+ 		balkfm_rom_monthly_pulse
 #		balkfm_bos_monthly_pulse
 #		balkfm_alb_monthly_pulse
 # 		balkfm_cro_monthly_pulse
@@ -332,6 +332,88 @@ turkfm_kur_monthly_pulse = {
 
 ##########################################################################
 
+#### COUNTRY FORMATION ON ACTIONS
+on_country_formed = {
+	on_actions = {
+		grefm_byz_culture_validation
+	}
+}
+
+grefm_byz_culture_validation = {
+	trigger = {
+		c:BYZ ?= this
+	}
+	effect = {
+		if = {
+			limit = {
+				has_variable = grefm_culture_var
+			}
+			if = {
+				limit = {
+					var:grefm_culture_var = 1 # Hellene
+				}
+				remove_primary_culture = cu:rhomaios
+			}
+			if = {
+				limit = {
+					var:grefm_culture_var = 2 # Hellene
+				}
+				remove_primary_culture = cu:greek
+			}
+		}
+		else = {
+			if = {
+				limit = {
+					OR = {
+						was_formed_from = GRE
+						was_formed_from = GRE_EPI
+						was_formed_from = ION
+						was_formed_from = CRE
+						was_formed_from = CYP
+						was_formed_from = GRE_SAM
+					}
+				}
+				remove_primary_culture = cu:rhomaios
+			}
+			else_if = {
+				limit = {
+					OR = {
+						was_formed_from = BYZ_TRB
+						was_formed_from = BYZ_TRB
+					}
+				}
+				remove_primary_culture = cu:greek
+			}
+			else_if = {
+				limit = {
+					was_formed_from = GRA_THE
+				}
+				add_primary_culture = cu:urum
+			}
+			else_if = {
+				limit = {
+					was_formed_from = BUL
+				}
+				add_primary_culture = cu:bulgarian
+			}
+			else_if = {
+				limit = {
+					was_formed_from = ROM
+				}
+				add_primary_culture = cu:romanian
+			}
+			else_if = {
+				limit = {
+					was_formed_from = AST
+				}
+				add_primary_culture = cu:australian
+			}
+		}
+	}
+}
+
+##########################################################################
+
 #### COUNTRY RELEASE ON ACTIONS
 
 on_country_released_as_independent = {
@@ -467,7 +549,7 @@ turkfm_secession_start = {
 
 ##########################################################################
 
-#### DIPLOMAT EXPLUSION ON ACTIONS
+#### DIPLOMAT EXPULSION ON ACTIONS
 # Root = Diplomatic Action
 # scope:target = the country whose diplomats were expelled
 # scope:initiator = the country doing the expelling
