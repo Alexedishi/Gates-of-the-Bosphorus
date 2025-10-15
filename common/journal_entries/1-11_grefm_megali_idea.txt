@@ -102,6 +102,10 @@
 				id = grefm_megali_idea.002 # The Megali Idea
 			}
 		}
+		set_variable = {
+			name = grefm_megali_idea_counter_var
+			value = grefm_megali_idea_counter_value
+		}
 		add_journal_entry = {
 			type = je_greek_nationalism
 		}
@@ -164,7 +168,22 @@
 			}
 			country_rank >= rank_value:major_power
 		}
-
+		custom_tooltip = {
+			text = no_insurrectionary_movement_tt
+			NOT = {
+				any_political_movement = {
+					is_insurrectionary = yes
+				}
+			}
+		}
+		hidden_trigger = {
+			OR = {
+				has_variable = grefm_weaksauce
+				has_variable = grefm_embraced_megali_idea
+				has_variable = grefm_embraced_imperial_restoration
+			}
+			has_variable = grefm_megali_idea_expansion_considered
+		}
 	}
 
 	on_complete = {
@@ -241,6 +260,17 @@
 			has_variable = grefm_megali_idea_rejected
 		}
 	}
+	
+	on_weekly_pulse = {
+		effect = {
+			# Dude, WHY THE FUCK is this cluttering the monthly on_action in base game when you can just wedge it here???
+			# COMPLETE WITH THROWING THE VARIABLE CHECKS INTO THE SCRIPT VALUE ITSELF?!?!?!
+			set_variable = {
+				name = grefm_megali_idea_counter_var
+				value = grefm_megali_idea_counter_value
+			}
+		}
+	}
 
 	on_monthly_pulse = {
 		events = {
@@ -255,30 +285,18 @@
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					NOR = {
-						has_variable = grefm_embraced_megali_idea
-						has_variable = grefm_embraced_imperial_restoration
-					}
+					has_variable = grefm_embraced_imperial_restoration
 				}
-				desc = je_grefm_megali_idea_status_default
+				desc = je_grefm_megali_idea_status_embraced_imperial_restoration
 			}
 			triggered_desc = {
 				trigger = {
-					NOR = {
-						has_variable = grefm_embraced_megali_idea
-						has_variable = grefm_embraced_imperial_restoration
-					}
+					has_variable = grefm_embraced_megali_idea
 				}
 				desc = je_grefm_megali_idea_status_embraced_megali_idea
 			}
 			triggered_desc = {
-				trigger = {
-					NOR = {
-						has_variable = grefm_embraced_megali_idea
-						has_variable = grefm_embraced_imperial_restoration
-					}
-				}
-				desc = je_grefm_megali_idea_status_embraced_imperial_restoration
+				desc = je_grefm_megali_idea_status_default
 			}
 		}
 	}
