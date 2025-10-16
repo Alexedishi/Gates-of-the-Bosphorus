@@ -50,3 +50,40 @@ eqfm_cancel_desert_expedition_button = {
 		value = 0
 	}
 }
+
+eqfm_resupply_desert_expedition_button = {
+	name = "eqfm_resupply_desert_expedition_button"
+	desc = "eqfm_resupply_desert_expedition_button_desc"
+
+	visible = {
+		eqfm_has_desert_expedition_trigger = yes
+	}
+	possible = {
+		NOT = {
+			has_modifier = modifier_eqfm_resupplied_desert_expedition
+		}
+		custom_tooltip = {
+			text = eqfm_resupply_desert_expedition_possible
+			var:eqfm_desert_expedition_peril_var >= 3
+		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = eqfm_expedition_desert_transit_var
+			}
+		}
+	}
+	effect = {
+		add_modifier = {
+			name = modifier_eqfm_resupplied_desert_expedition
+			days = short_modifier_time
+			multiplier = money_amount_multiplier_small
+		}
+		custom_tooltip = {
+			text = eqfm_resupply_desert_expedition_effect
+			change_variable = {
+				name = eqfm_desert_expedition_peril_var
+				subtract = 3
+			}
+		}
+	}
+}
