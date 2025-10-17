@@ -886,6 +886,132 @@ ideology_gbbf_ottomanist = {
 
 }
 
+ideology_gbbf_symphonist_leader = {
+	icon = gfx/interface/icons/ideology_icons/ideology_leader/unused/ideology_leader_russian_patriarch.dds
+	
+	character_ideology = yes
+	
+	lawgroup_governance_principles = {
+		law_monarchy = strongly_approve
+		law_theocracy = disapprove
+		law_presidential_republic = neutral
+		law_parliamentary_republic = neutral
+		law_corporate_state = strongly_disapprove
+		law_council_republic = strongly_disapprove
+	}
+	
+	lawgroup_bureaucracy = {
+		law_elected_bureaucrats = neutral
+		law_appointed_bureaucrats = approve
+		law_hereditary_bureaucrats = disapprove
+	}
+	
+	lawgroup_church_and_state = {
+		law_state_religion = strongly_approve
+		law_freedom_of_conscience = neutral
+		law_total_separation = strongly_disapprove
+		law_state_atheism = strongly_disapprove
+	}
+	
+	lawgroup_trade_policy = {
+		law_isolationism = strongly_disapprove
+		law_mercantilism = neutral
+		law_protectionism = approve
+		law_free_trade = disapprove
+	}
+	
+	lawgroup_health_system = {
+		law_private_health_insurance = disapprove
+		law_no_health_system = neutral
+		law_charitable_health_system = strongly_approve
+		law_public_health_insurance = approve
+	}
+	
+	lawgroup_education_system = {
+		law_private_schools = disapprove
+		law_public_schools = approve
+		law_religious_schools = strongly_approve
+		law_no_schools = neutral
+	}
+	
+	country_trigger = {
+		c:BYZ ?= this
+		country_has_primary_culture = cu:rhomaios
+	}
+	
+	interest_group_leader_trigger = {
+		OR = {
+			ideology_theocrat_valid_trigger = yes
+			ideology_traditionalist_valid_trigger = yes
+		}
+	}
+	
+	interest_group_leader_weight = {
+		value = 100
+		if = {
+			limit = {
+				owner = {
+					has_law_or_variant = law_type:law_state_atheism
+				}
+			}
+			add = -1000
+		}
+		if = {
+			limit = {
+				owner = {
+					has_law_or_variant = law_type:law_monarchy
+				}
+				ig_approval < 0
+			}
+			add = 50
+		}
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_theocracy
+				}
+			}
+			add = -100
+		}
+	}
+	
+	non_interest_group_leader_trigger = {
+		OR = {
+			ideology_theocrat_valid_trigger = yes
+			ideology_traditionalist_valid_trigger = yes
+		}
+	}
+	
+	non_interest_group_leader_weight = {
+		value = 100
+		if = {
+			limit = {
+				owner = {
+					has_law_or_variant = law_type:law_state_atheism
+				}
+			}
+			add = -1000
+		}
+		if = {
+			limit = {
+				owner = {
+					has_law_or_variant = law_type:law_monarchy
+				}
+				ig_approval < 0
+			}
+			add = 50
+		}
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_theocracy
+				}
+			}
+			add = -100
+		}
+	}
+}
+
 ideology_gbbf_venizelos = {
 	# This is unique to Venizelos. He personally varied between pro-Monarchy and ambivalence towards the Monarchy. His followers were ardent anti-monarchists on the other hand.
 	icon = "gfx/interface/icons/ideology_icons/ideology_leader/ideology_gbbf_venizelist.dds"
