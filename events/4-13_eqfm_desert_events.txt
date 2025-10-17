@@ -29,9 +29,9 @@ namespace = eqfm_libyan_desert
 #	009 - The Libyan Deserts
 
 #010-019 - Libyan Desert Flavor Events
-#	010 - ##Marabouts Spread Dissident Teachings
-#	011 - ##Insecure Desert Routes
-#	012 - ##Issues with Taxation
+#	010 - Marabouts Spread Dissident Teachings
+#	011 - Insecure Desert Routes
+#	012 - Issues with Taxation
 #	013 - ##
 #	014 - ##
 #	015 - ##
@@ -41,8 +41,8 @@ namespace = eqfm_libyan_desert
 #	019 - ##
 
 #020-029 - Libyan Desert Expedition Events
-#	020 - ##A Storm of Sand
-#	021 - ##Sand, Sand, and More Sand
+#	020 - A Storm of Sand
+#	021 - Sand, Sand, and More Sand
 #	022 - ##
 #	023 - ##
 #	024 - ##
@@ -450,7 +450,6 @@ eqfm_libyan_desert.009 = { # The Libyan Deserts
 
 }
 
-
 ## Libyan Desert Flavor Events ##
 eqfm_libyan_desert.010 = { # 
 	type = country_event
@@ -522,7 +521,7 @@ eqfm_libyan_desert.010 = { #
 
 eqfm_libyan_desert.011 = { # Insecure Desert Routes
 	type = country_event
-	placement = root
+	placement = scope:eqfm_desert_event_state
 	icon = "gfx/interface/icons/event_icons/event_trade.dds"
 	duration = 3
 	dlc = dlc_grefm
@@ -544,6 +543,10 @@ eqfm_libyan_desert.011 = { # Insecure Desert Routes
 				}
 			}
 		}
+		any_scope_state = {
+			state_region = s:STATE_LIBYAN_DESERT
+			is_under_colonization = yes
+		}
 	}
 
 	cancellation_trigger = {
@@ -558,11 +561,28 @@ eqfm_libyan_desert.011 = { # Insecure Desert Routes
 
 	immediate = {
 		eqfm_update_desert_variables_effect = yes
+		random_scope_state = {
+			limit = {
+				state_region = s:STATE_LIBYAN_DESERT
+				is_under_colonization = yes
+			}
+			save_scope_as = eqfm_desert_event_state
+		}
 	}
 
 	option = {
 		name = eqfm_libyan_desert.011.a
 		default_option = yes
+		scope:eqfm_desert_event_state = {
+			add_modifier = {
+				name = modifier_eqfm_tribal_conflicts
+				days = normal_modifier_time
+			}
+			add_radicals_in_state = {
+				culture = primary_culture
+				value = medium_radicals
+			}
+		}
 	}
 
 	option = {
@@ -572,6 +592,16 @@ eqfm_libyan_desert.011 = { # Insecure Desert Routes
 		}
 		show_as_unavailable = { always = yes }
 		highlighted_option = yes
+		scope:eqfm_desert_event_state = {
+			add_modifier = {
+				name = modifier_eqfm_settled_conflict
+				days = normal_modifier_time
+			}
+			add_radicals_in_state = {
+				culture = cu:bedouin
+				value = large_radicals
+			}
+		}
 	}
 
 	option = {
@@ -581,6 +611,18 @@ eqfm_libyan_desert.011 = { # Insecure Desert Routes
 		}
 		show_as_unavailable = { always = yes }
 		highlighted_option = yes
+		scope:eqfm_desert_event_state = {
+			add_modifier = {
+				name = modifier_eqfm_settled_conflict
+				days = normal_modifier_time
+			}
+			eqfm_add_medium_progress_effect = {
+				type = desert
+			}
+			eqfm_remove_small_peril_effect = {
+				type = desert
+			}
+		}
 	}
 
 }
@@ -631,10 +673,36 @@ eqfm_libyan_desert.012 = { # Issues with Taxation
 	option = {
 		name = eqfm_libyan_desert.012.a
 		default_option = yes
+		scope:eqfm_desert_event_state = {
+			add_modifier = {
+				name = modifier_eqfm_enforced_tax_law
+				days = long_modifier_time
+			}
+			add_radicals_in_state = {
+				culture = cu:bedouin
+				value = medium_radicals
+			}
+		}
 	}
 
 	option = {
 		name = eqfm_libyan_desert.012.b
+		scope:eqfm_desert_event_state = {
+			add_modifier = {
+				name = modifier_eqfm_brokered_tax_deal
+				days = long_modifier_time
+			}
+			add_loyalists_in_state = {
+				culture = cu:bedouin
+				value = large_radicals
+			}
+		}
+		capital = {
+			add_radicals_in_state = {
+				pop_type = aristocrats
+				value = medium_radicals
+			}
+		}
 	}
 
 }
@@ -682,6 +750,12 @@ eqfm_libyan_desert.020 = { # A Storm of Sand
 	option = {
 		name = eqfm_libyan_desert.020.a
 		default_option = yes
+		eqfm_add_medium_peril_effect = {
+			type = desert
+		}
+		eqfm_remove_small_progress_effect = {
+			type = desert
+		}
 	}
 
 }
@@ -728,6 +802,28 @@ eqfm_libyan_desert.021 = { # Sand, Sand, and More Sand
 	option = {
 		name = eqfm_libyan_desert.021.a
 		default_option = yes
+		eqfm_add_medium_peril_effect = {
+			type = desert
+		}
 	}
 
+	option = {
+		name = eqfm_libyan_desert.021.b
+		trigger = {
+			scope:eqfm_desert_expedition_leader_scope = {
+				OR = {
+					has_trait = plains_commander
+					has_trait = surveyor
+				}
+			}
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		eqfm_add_small_peril_effect = {
+			type = desert
+		}
+		eqfm_add_small_progress_effect = {
+			type = desert
+		}
+	}
 }
