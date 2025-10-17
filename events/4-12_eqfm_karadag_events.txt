@@ -1736,6 +1736,7 @@ eqfm_black_mountain.031 = { # Foreign Nobleman Held Captive (for MON)
 			}
 			save_scope_as = turkfm_hostage_nation
 		}
+		eqfm_black_mountain_scopes_effect = yes
 		set_variable = {
 			name = eqfm_expedition_cooldown_var
 			days = 45
@@ -1745,21 +1746,96 @@ eqfm_black_mountain.031 = { # Foreign Nobleman Held Captive (for MON)
 	option = { # Broker their release
 		name = eqfm_black_mountain.031.a
 		default_option = yes
+		add_modifier = {
+			name = modifier_eqfm_brokered_noble_release
+			months = gbbf_duration_2_years
+			multiplier = money_amount_multiplier_very_small
+		}
+		add_modifier = {
+			name = modifier_eqfm_negotiated_with_tribes
+			months = gbbf_duration_5_years
+		}
+		change_relations = {
+			country = scope:turkfm_hostage_nation
+			value = 15
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_event_positive
+			target = scope:turkfm_hostage_nation
+		}
 	}
 
 	option = { # Do nothing
 		name = eqfm_black_mountain.031.b
+		create_incident = {
+			country = scope:turkfm_hostage_nation
+			value = 5
+		}
+		add_modifier = {
+			name = modifier_eqfm_abandoned_noble
+			months = gbbf_duration_5_years
+			is_decaying = yes
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_event_negative
+			target = scope:turkfm_hostage_nation
+		}
 	}
-
-	option = { # Bust them out
+	
+	option = { # Arrest them
 		name = eqfm_black_mountain.031.c
 		trigger = {
-			eqfm_has_black_mountain_expedition_trigger = yes
+			institution_investment_level = {
+				institution = institution_police
+				value >= 2
+			}
 		}
 		show_as_unavailable = { always = yes }
 		highlighted_option = yes
+		add_modifier = {
+			name = modifier_eqfm_arrested_hostage_takers
+			months = gbbf_duration_5_years
+		}
+		add_radicals = {
+			value = medium_radicals
+		}
+		change_relations = {
+			country = scope:turkfm_hostage_nation
+			value = 15
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_event_positive
+			target = scope:turkfm_hostage_nation
+		}
 	}
 
+	option = { # Bust them out
+		name = eqfm_black_mountain.031.e
+		trigger = {
+			eqfm_has_black_mountain_expedition_trigger = yes
+		}
+		add_modifier = {
+			name = modifier_eqfm_executed_hostage_takers
+			months = gbbf_duration_5_years
+		}
+		add_radicals = {
+			value = small_radicals
+		}
+		change_relations = {
+			country = scope:turkfm_hostage_nation
+			value = 15
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_event_positive
+			target = scope:turkfm_hostage_nation
+		}
+		scope:turkfm_hostage_nation = {
+			trigger_event = {
+				id = eqfm_black_mountain.032 # Nobleman Held Captive Abroad (for Recipient)
+			}
+		}
+	}
+	
 	after = {
 		scope:turkfm_hostage_nation = {
 			trigger_event = {
@@ -1767,7 +1843,6 @@ eqfm_black_mountain.031 = { # Foreign Nobleman Held Captive (for MON)
 			}
 		}
 	}
-
 }
 
 eqfm_black_mountain.032 = { # Nobleman Held Captive Abroad (for Recipient)
@@ -1778,11 +1853,30 @@ eqfm_black_mountain.032 = { # Nobleman Held Captive Abroad (for Recipient)
 	dlc = dlc_grefm
 
 	title = eqfm_black_mountain.032.t
-	desc = eqfm_black_mountain.032.d
+	desc = {
+		triggered_desc = {
+			trigger = {
+				c:MON = {
+					NOT = {
+						has_modifier = modifier_eqfm_abandoned_noble
+					}
+				}
+			}
+			desc = eqfm_black_mountain.032.d1
+		}
+		triggered_desc = {
+			trigger = {
+				c:MON = {
+					has_modifier = modifier_eqfm_abandoned_noble
+				}
+			}
+			desc = eqfm_black_mountain.032.d2
+		}
+	}
 	flavor = eqfm_black_mountain.032.f
 
 	event_image = {
-		video = "rp1_social_banditry"
+		video = "ep1_octopus"
 	}
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
@@ -1795,15 +1889,54 @@ eqfm_black_mountain.032 = { # Nobleman Held Captive Abroad (for Recipient)
 	}
 
 	immediate = {
+		c:MON = {
+			save_scope_as = montenegro_scope
+		}
 	}
 
 	option = {
 		name = eqfm_black_mountain.032.a
 		default_option = yes
+		trigger = {
+			c:MON = {
+				NOT = {
+					has_modifier = modifier_eqfm_abandoned_noble
+				}
+			}
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_event_positive
+			target = c:MON
+		}
+		show_as_tooltip = {
+			change_relations = {
+				country = c:MON
+				value = 15
+			}
+		}
 	}
 
 	option = {
 		name = eqfm_black_mountain.032.b
+		trigger = {
+			c:MON = {
+				has_modifier = modifier_eqfm_abandoned_noble
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_noble_kidnapped
+			months = gbbf_duration_5_years
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_event_negative
+			target = c:MON
+		}
+		show_as_tooltip = {
+			change_relations = {
+				country = c:MON
+				value = -15
+			}
+		}
 	}
 
 }
