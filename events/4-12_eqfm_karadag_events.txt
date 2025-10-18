@@ -2062,6 +2062,9 @@ eqfm_black_mountain.033 = { # Landslide Across the Border
 
 	trigger = {
 		c:MON ?= this
+		c:TUR ?= {
+			has_state_in_state_region = STATE_MONTENEGRO
+		}
 		NOR = {
 			has_variable = eqfm_black_mountain_cooldown_var
 			has_global_variable = eqfm_black_mountain_skirmish_var
@@ -2077,6 +2080,9 @@ eqfm_black_mountain.033 = { # Landslide Across the Border
 	}
 
 	immediate = {
+		s:STATE_MONTENEGRO.region_state:MON ?= {
+			save_scope_as = montenegro_state_scope
+		}
 		s:STATE_MONTENEGRO.region_state:TUR ?= {
 			save_scope_as = ottoman_montenegro_state_scope
 		}
@@ -2089,10 +2095,54 @@ eqfm_black_mountain.033 = { # Landslide Across the Border
 	option = {
 		name = eqfm_black_mountain.033.a
 		default_option = yes
+		scope:montenegro_state_scope ?= {
+			add_modifier = {
+				name = modifier_eqfm_landslide_crossings
+				months = gbbf_duration_1_year
+			}
+		}
 	}
 
 	option = {
 		name = eqfm_black_mountain.033.b
+		scope:montenegro_state_scope ?= {
+			add_modifier = {
+				name = modifier_eqfm_landslide_aid_state
+				months = gbbf_duration_1_year
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_landslide_aid_state_country
+			months = gbbf_duration_1_year
+		}
+		add_loyalists = {
+			value = medium_radicals
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.033.c
+		trigger = {
+			OR = {
+				eqfm_has_black_mountain_expedition_trigger = yes
+				army_size >= 10
+			}
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		scope:montenegro_state_scope ?= {
+			add_modifier = {
+				name = modifier_eqfm_landslide_aid_blocked_state
+				months = gbbf_duration_1_year
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_landslide_aid_blocked_country
+			months = gbbf_duration_1_year
+		}
+		add_radicals = {
+			value = medium_radicals
+		}
 	}
 
 }
