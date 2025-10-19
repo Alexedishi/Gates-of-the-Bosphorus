@@ -1,0 +1,264 @@
+﻿je_eqfm_the_black_mountain = {
+	# This journal integrates je_montenegrin_raiding with GotB content
+	group = je_group_expeditions
+	icon = "gfx/interface/icons/alert_icons/secession.dds"
+	weight = 10000
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = no
+	transferable = no
+
+	is_shown_in_lobby = {
+		OR = {
+			c:MON ?= this
+			c:TUR ?= this
+		}
+	}
+	
+	# Montenegrin Buttons
+	scripted_button = eqfm_increase_raiding_button
+	scripted_button = eqfm_decrease_raiding_button
+	scripted_button = eqfm_appoint_tribal_chief_button
+	scripted_button = eqfm_dismiss_tribal_chief_button
+	scripted_button = eqfm_ransom_captives_button
+	scripted_button = eqfm_negotiate_kotor_button
+	
+	# Ottoman Buttons
+	scripted_button = eqfm_assign_border_guard_button
+	scripted_button = eqfm_recall_karadag_expedition_button
+	
+	# Shared Buttons
+	scripted_button = eqfm_renounce_headtaking_button
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		if = {
+			limit = {
+				c:MON ?= this
+			}
+			scope:journal_entry = {
+				add_modifier = modifier_eqfm_border_raids
+			}
+            add_modifier = modifier_eqfm_practicing_headtaking_mon
+		}
+        if = {
+            limit = {
+                c:TUR ?= this
+            }
+            add_modifier = modifier_eqfm_practicing_headtaking_tur
+        }
+	}
+
+	complete = {
+		## These are the pre-IP3 GotB triggers
+		## IP3's functionality is a sub-set of this journal; separate GotB scripting handles the resolution of raiding if IP3 is active
+		
+		# MON Completion Trigger
+		trigger_if = {
+			limit = {
+				c:MON ?= this
+			}
+			owns_entire_state_region = STATE_MONTENEGRO
+			trigger_if = {
+				limit = {
+					exists = c:TUR
+				}
+				NOT = {
+					is_subject_of = c:TUR
+				}
+			}
+		}
+		# TUR Completion Triggers
+		trigger_if = {
+			limit = {
+				c:TUR ?= this
+				NOT = {
+					has_dlc_feature = ip3_content # National Awakening
+				}
+			}
+			c:MON ?= {
+				OR = {
+					NOT = {
+						has_state_in_state_region = STATE_MONTENEGRO
+					}
+				}
+				is_subject_of = root
+			}
+		}
+		
+		## These are the imported triggers from IP3
+		trigger_if = {
+			limit = {
+				c:TUR ?= this
+				has_dlc_feature = ip3_content # National Awakening
+			}
+			OR = {
+				NOT = {
+					exists = c:MON
+				}
+				c:MON ?= {
+					OR = {
+						is_country_alive = no
+						is_subject_of = ROOT
+					}
+				}
+			}
+		}
+	}
+
+	on_complete = {
+		if = { # David Slays Goliath moved to event
+			limit = {
+				c:MON ?= this
+			}
+			trigger_event = {
+				id = eqfm_black_mountain.009 # The Lands of Montenegro
+			}
+		}
+		else_if = {
+			limit = {
+				c:TUR ?= this
+				NOT = {
+					has_dlc_feature = ip3_content # National Awakening
+				}
+			}
+			trigger_event = {
+				id = eqfm_black_mountain.007 # The Black Mountain Subdued
+			}
+		}
+		else_if = {
+			limit = {
+				c:TUR ?= this
+				has_dlc_feature = ip3_content # National Awakening
+			}
+			trigger_event = {
+				id = mon_state_formation.14
+				popup = yes
+			}
+			hidden_effect = {
+				add_modifier = {
+					name = goliath_slays_david_modifier
+				}
+			}
+			add_modifier = {
+				name = put_down_rebels_modifier
+				months = gbbf_duration_20_years
+				is_decaying = yes
+			}
+			add_fervor_target_modifier = {
+				culture = cu:serb
+				months = gbbf_duration_50_years
+				multiplier = -20
+			}
+		}
+		eqfm_cleanup_black_mountain_effect = yes
+		eqfm_update_expedition_costs_effect = yes
+	}
+
+	fail = {
+		OR = {
+			NOT = { # Pre-IP3 fail block, retained in IP3
+				has_state_in_state_region = STATE_MONTENEGRO
+			}
+			trigger_if = { # Imported IP3 fail trigger
+				limit = {
+					has_dlc_feature = ip3_content # National Awakening
+					c:MON ?= this
+					exists = c:TUR
+				}
+				is_subject_of = c:TUR
+			}
+			trigger_if = { # Alternate fail trigger, present in IP3 only
+				limit = {
+					c:TUR ?= this
+					has_dlc_feature = ip3_content # National Awakening
+				}
+				NOT = {
+					has_claim = s:STATE_MONTENEGRO
+				}
+			}
+		}
+	}
+
+	on_fail = {
+		if = {
+			limit = {
+				c:MON ?= this
+				NOT = {
+					has_dlc_feature = ip3_content # National Awakening
+				}
+			}
+			trigger_event = {
+				id = eqfm_black_mountain.008 # International Indifference
+			}
+		}
+		else_if = {
+			limit = {
+				c:MON ?= this
+				has_dlc_feature = ip3_content # National Awakening
+			}
+		}
+		else_if = {
+			limit = {
+				c:TUR ?= this
+				NOT = {
+					has_dlc_feature = ip3_content # National Awakening
+				}
+			}
+			trigger_event = {
+				id = eqfm_black_mountain.006 # The Black Mountain Lost
+			}
+		}
+		else_if = {
+			limit = {
+				c:TUR ?= this
+				has_dlc_feature = ip3_content # National Awakening
+			}
+		}
+		eqfm_cleanup_black_mountain_effect = yes
+		eqfm_update_expedition_costs_effect = yes
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			if = {
+				limit = {
+					has_dlc_feature = ip3_content # National Awakening
+					NOT = {
+						has_global_variable = eqfm_montenegrin_raiding_settled
+					}
+					c:MON ?= this
+				}
+				eqfm_weekly_black_mountain_effect = yes
+				eqfm_update_black_mountain_characters_effect = yes
+				eqfm_update_expedition_costs_effect = yes
+			}
+		}
+		events = {
+			eqfm_black_mountain.023 # Expeditionary Force Withdraws from the Border
+			eqfm_black_mountain.024 # Expeditionary Force Leader Has Died!
+			eqfm_black_mountain.029 # Village Skirmish Monitor
+		}
+	}
+
+	on_monthly_pulse = {
+		random_events = {
+			chance_of_no_event = 90
+			 5 = eqfm_black_mountain.027 # Village Skirmish Escalates
+			 1 = eqfm_black_mountain.030 # Tax Evasion
+			 5 = eqfm_black_mountain.031 # Nobleman Held Hostage
+			10 = eqfm_black_mountain.033 # Landslide Across the Border
+			 5 = eqfm_black_mountain.040 # Local Informants
+			 5 = eqfm_black_mountain.041 # Bear Sighted
+			10 = eqfm_black_mountain.042 # A Circular Expedition
+			20 = eqfm_black_mountain.043 # Snow on the Ground
+			 5 = eqfm_black_mountain.044 # Balkan Hospitality
+			 5 = eqfm_black_mountain.045 # Expedition Beset by Plague!
+			10 = eqfm_black_mountain.046 # Tax Evasion
+		}
+	}
+
+	status_desc = {
+		desc = je_eqfm_the_black_mountain_status
+	}
+}

@@ -1,7 +1,13 @@
 ﻿je_grefm_constantinople = { # 14 Regions of Constantinople
+	group = je_group_technology
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	group = je_group_grefm_byzantium
+	weight = 2000
+
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	scripted_button = grefm_mega_palation_survey_button
 
 	is_shown_when_inactive = {
 		c:BYZ ?= this
@@ -21,12 +27,11 @@
 	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		trigger_event = {
 			id = grefm_byzantium.010 # The 14 Regions of Constantinople
 		}
 	}
-
-	scripted_button = grefm_mega_palation_survey_button
 
 	complete = {
 		owns_entire_state_region = STATE_EASTERN_THRACE
@@ -84,26 +89,33 @@
 		}
 	}
 
-	on_fail = {
-	}
-
 	on_monthly_pulse = {
 		events = {
 			grefm_byzantium.012 # The Great Palace of Constantinople
 			grefm_byzantium.013 # The Hippodrome of Constantinople
 		}
 	}
-
-	weight = 400
-
 }
 
 je_grefm_mega_palation_survey = {
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	group = je_group_grefm_content
+	group = je_group_technology
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	weight = 100
+
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	progressbar = yes
+	goal_add_value = {
+		value = 24
+	}
+	current_value = {
+		value = root.var:grefm_imperial_palace_var
+	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		set_variable = {
 			name = grefm_imperial_palace_var
 			value = 0
@@ -153,25 +165,16 @@ je_grefm_mega_palation_survey = {
 			}
 		}
 	}
-
-	current_value = {
-		value = root.var:grefm_imperial_palace_var
-	}
-
-	goal_add_value = {
-		value = 24
-	}
-
-	progressbar = yes
-
-	weight = 100
-
 }
 
 je_grefm_byzantine_nationalism = {
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	group = je_group_grefm_byzantium
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/invention_icons/nationalism.dds"
+	weight = 1000
+
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
 
 	is_shown_when_inactive = {
 		always = no # TODO enable this journal when ready
@@ -205,6 +208,7 @@ je_grefm_byzantine_nationalism = {
 	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 	}
 
 	complete = {
@@ -225,7 +229,4 @@ je_grefm_byzantine_nationalism = {
 
 	on_fail = {
 	}
-
-	weight = 100
-
 }

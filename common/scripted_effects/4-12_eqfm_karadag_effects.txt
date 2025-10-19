@@ -1,0 +1,516 @@
+﻿eqfm_initialize_black_mountain_effect = {
+	# This is modified from je_montenegrin_raiding's immediate block
+	# Vanilla variables are retained for compatibility
+	# This effect is fired from global if IP3 is active
+	set_variable = {
+		name = raiding_intensity
+		value = 50
+	}
+	set_variable = {
+		name = last_week_raiding_income
+		value = 1281
+	}
+	create_diplomatic_pact = {
+		country = c:TUR
+		type = raiding_pact
+	}
+	create_diplomatic_pact = {
+		country = c:RUS
+		type = disapproval_pact
+	}
+	add_modifier = {
+		name = modifier_montenegrin_raiding
+		multiplier = 1281
+	}
+	add_modifier = {
+		name = modifier_montenegrin_disobedience
+		multiplier = 50
+	}
+	random_neighbouring_state = {
+		limit = {
+			owner ?= c:TUR
+		}
+		save_scope_as = raid_target
+		add_modifier = {
+			name = raid_target
+			multiplier = 1
+		}
+	}
+	set_global_variable = {
+		name = mon_raid_state
+		value = scope:raid_target
+	}
+}
+
+eqfm_weekly_black_mountain_effect = {
+	# Ok look bruv, I don't like this either. You got a problem, email the complaint line. A pipebomb will be delivered to your mailbox within 7 to 12 Bosnian business days.
+	if = {
+		limit = {
+			c:MON ?= this
+		}
+		## Reworked script from the IP3 journal
+		if = {
+			limit = {
+				has_variable = mon_more_raiding
+			}
+			change_variable = {
+				name = raiding_intensity
+				add = 1
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = mon_less_raiding
+			}
+			change_variable = {
+				name = raiding_intensity
+				subtract = 1
+			}
+		}
+		clamp_variable = {
+			name = raiding_intensity
+			max = 100
+			min = 0
+		}
+		if = {
+			limit = {
+				var:raiding_intensity >= 100
+				has_variable = mon_more_raiding
+			}
+			remove_variable = mon_more_raiding
+			remove_variable = eqfm_raiding_status_cooldown_var
+		}
+		if = {
+			limit = {
+				var:raiding_intensity <= 0
+				has_variable = mon_less_raiding
+			}
+			remove_variable = mon_less_raiding
+			remove_variable = eqfm_raiding_status_cooldown_var
+		}
+
+		## IP3 Raiding Income Effects ##
+		eqfm_check_raiding_target_effect = yes
+		eqfm_update_raiding_income_effect = yes
+
+		## IP3 Raiding Event Script ##
+		#Higher odds of ottoman Retribution Depending on Raiding Income. Note max Raiding income is 2500
+		#Note that montenegrin_raiding.1 can only fire once, after which montenegrin_raiding.2 fires from then on.
+		if = { #playing Russian Roulette each week
+			limit = {
+				eqfm_raiding_income_value > 4200
+			}
+			random_list = {
+				150 = { trigger_event = { id = montenegrin_raiding.1 popup = yes} } # Ottoman Attack
+				100 = { trigger_event = { id = montenegrin_raiding.2 popup = yes } }
+				600 = { } # nothing happens this week
+			}
+		}
+		else_if = {
+			limit = {
+				eqfm_raiding_income_value > 3500
+			}
+			random_list = {
+				150 = { trigger_event = { id = montenegrin_raiding.1 popup = yes} } # Ottoman Attack
+				100 = { trigger_event = { id = montenegrin_raiding.2 popup = yes } } # Ottoman Attack
+				2000 = { } # nothing happens this week
+			}
+		}
+		else_if = {
+			limit = {
+				eqfm_raiding_income_value > 2800
+			}
+			random_list = {
+				150 = { trigger_event = { id = montenegrin_raiding.1 popup = yes} } # Ottoman Attack
+				100 = { trigger_event = { id = montenegrin_raiding.2 popup = yes } } # Ottoman Attack
+				5000 = { } # nothing happens this week
+			}
+		}
+		else_if = {
+			limit = {
+				eqfm_raiding_income_value > 2000
+			}
+			random_list = {
+				150 = { trigger_event = { id = montenegrin_raiding.1 popup = yes} } # Ottoman Attack
+				100 = { trigger_event = { id = montenegrin_raiding.2 popup = yes } } # Ottoman Attack
+				10000 = { } # nothing happens this week
+			}
+		}
+		else_if = {
+			limit = {
+				eqfm_raiding_income_value > 1200
+			}
+			random_list = {
+				150 = { trigger_event = { id = montenegrin_raiding.1 popup = yes} } # Ottoman Attack
+				100 = { trigger_event = { id = montenegrin_raiding.2 popup = yes } } # Ottoman Attack
+				20000 = { } # nothing happens this week
+			}
+		}
+		else = {
+			random_list = {
+				20000 = { } # nothing happens this week
+			}
+		}
+	}
+	if = {
+		limit = {
+			c:TUR ?= this
+		}
+	}
+}
+
+eqfm_check_raiding_target_effect = {
+	scope:raid_target ?= {
+		if = {
+			limit = {
+				NOT = {
+					owner ?= c:TUR
+				}
+			}
+			remove_modifier = raid_target
+			random_neighbouring_state = {
+				limit = {
+					owner ?= c:TUR
+				}
+				save_scope_as = raid_target
+				if = {
+					limit = {
+						eqfm_raiding_level_value > 0
+					}
+					add_modifier = {
+						name = raid_target
+						multiplier = eqfm_raiding_level_value
+					}
+				}
+			}
+		}
+		#still state scope. add some radicals
+		if = {
+			limit = {
+				eqfm_raiding_level_value > 1
+			}
+			add_radicals_in_state = {
+				value = 0.005
+			}
+		}
+	}
+}
+
+eqfm_update_raiding_income_effect = {
+	#If Raiding Income has changed, remove and reapply the modifiers with the new values. This is necessary because we do not have support for dynamic modifiers.
+	if = {
+		limit = {
+			var:last_week_raiding_income != eqfm_raiding_income_value
+		}
+		remove_modifier = modifier_montenegrin_raiding
+		add_modifier = {
+			name = modifier_montenegrin_raiding
+			multiplier = eqfm_raiding_income_value
+		}
+		remove_modifier = modifier_montenegrin_disobedience
+		add_modifier = {
+			name = modifier_montenegrin_disobedience
+			multiplier = var:raiding_intensity
+		}
+		scope:journal_entry = {
+			set_bar_progress = {
+				value = root.var:raiding_intensity
+				name = montenegrin_raiding_progress_bar
+			}
+		}
+		set_variable = {
+			name = last_week_raiding_income
+			value = eqfm_raiding_income_value
+		}
+		scope:raid_target ?= {
+			remove_modifier = raid_target
+			add_modifier = {
+				name = raid_target
+				multiplier = eqfm_raiding_level_value
+			}
+		}
+	}
+}
+
+eqfm_update_black_mountain_characters_effect = {
+	je:je_eqfm_the_black_mountain = {
+		clear_variable_list = com_journal_characters
+	}
+	c:MON ?= {
+		random_scope_character = {
+			limit = {
+				has_modifier = modifier_eqfm_leading_black_mountain_expedition
+			}
+			save_scope_as = eqfm_black_mountain_mon_leader
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_black_mountain_mon_leader
+			}
+			set_variable = {
+				name = eqfm_black_mountain_leader_var
+				value = scope:eqfm_black_mountain_mon_leader
+			}
+		}
+		else = {
+			remove_variable = eqfm_black_mountain_leader_var
+		}
+	}
+	c:TUR ?= {
+		random_scope_character = {
+			limit = {
+				has_modifier = modifier_eqfm_leading_black_mountain_expedition
+			}
+			save_scope_as = eqfm_black_mountain_tur_leader
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_black_mountain_tur_leader
+			}
+			set_variable = {
+				name = eqfm_black_mountain_leader_var
+				value = scope:eqfm_black_mountain_tur_leader
+			}
+		}
+		else = {
+			remove_variable = eqfm_black_mountain_leader_var
+		}
+	}
+	je:je_eqfm_the_black_mountain = {
+		if = {
+			limit = {
+				exists = scope:eqfm_black_mountain_mon_leader
+			}
+			add_to_variable_list = {
+				name = com_journal_characters
+				target = scope:eqfm_black_mountain_mon_leader
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_black_mountain_tur_leader
+			}
+			add_to_variable_list = {
+				name = com_journal_characters
+				target = scope:eqfm_black_mountain_tur_leader
+			}
+		}
+	}
+}
+
+eqfm_cleanup_black_mountain_effect = {
+	if = {
+		limit = {
+			c:MON ?= this
+		}
+		turkfm_settle_raiding_effect = yes
+
+	}
+	else_if = {
+		limit = {
+			c:TUR ?= this
+		}
+	}
+	hidden_effect = {
+		eqfm_cancel_black_mountain_expedition_effect = yes
+	}
+}
+
+turkfm_settle_raiding_effect = {
+	custom_tooltip = {
+		text = montenegrin_raiding_stop_tt
+		set_global_variable = eqfm_montenegrin_raiding_settled
+		remove_variable = raiding_intensity
+		remove_variable = last_week_raiding_income
+
+		remove_modifier = modifier_montenegrin_raiding
+		remove_modifier = modifier_montenegrin_disobedience
+		remove_modifier = modifier_eqfm_practicing_headtaking_mon
+		remove_modifier = modifier_eqfm_practicing_headtaking_tur
+		remove_modifier = modifier_eqfm_need_tribal_leader
+
+		c:RUS ?= {
+			remove_diplomatic_pact = {
+				country = root
+				type = disapproval_pact
+			}
+		}
+		c:TUR ?= {
+			remove_diplomatic_pact = {
+				country = root
+				type = raiding_pact
+			}
+		}
+		c:MON ?= {
+			je:je_eqfm_the_black_mountain ?= {
+				remove_modifier = modifier_eqfm_border_raids
+			}
+		}
+
+		every_state = {
+			limit = {
+				has_modifier = raid_target
+			}
+			remove_modifier = raid_target
+		}
+	}
+}
+
+eqfm_major_raiding_increase_effect = {
+	custom_tooltip = {
+		text = mon_more_heads_tt
+		change_variable = {
+			name = raiding_intensity
+			add = 25
+		}
+		eqfm_update_raiding_income_effect = yes
+	}
+}
+
+eqfm_black_mountain_scopes_effect = {
+	c:MON ?= {
+		random_scope_character = {
+			limit = {
+				has_modifier = modifier_eqfm_leading_black_mountain_expedition
+			}
+			save_scope_as = eqfm_black_mountain_mon_leader
+		}
+	}
+	c:TUR ?= {
+		random_scope_character = {
+			limit = {
+				has_modifier = modifier_eqfm_leading_black_mountain_expedition
+			}
+			save_scope_as = eqfm_black_mountain_tur_leader
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				exists = scope:eqfm_black_mountain_mon_leader
+			}
+		}
+		c:MON ?= {
+			ruler = {
+				save_scope_as = eqfm_black_mountain_mon_leader
+			}
+		}
+
+	}
+	if = {
+		limit = {
+			NOT = {
+				exists = scope:eqfm_black_mountain_tur_leader
+			}
+		}
+		c:TUR ?= {
+			ruler = {
+				save_scope_as = eqfm_black_mountain_tur_leader
+			}
+		}
+	}
+}
+
+eqfm_dismiss_tribal_chief_effect = {
+	every_scope_character = {
+		limit = {
+			has_modifier = modifier_eqfm_leading_raids
+		}
+		remove_modifier = modifier_eqfm_leading_raids
+		set_character_busy_and_immortal = no
+	}
+	custom_tooltip = {
+		text = eqfm_dismiss_tribal_chief
+		remove_variable = eqfm_black_mountain_expedition_var
+	}
+	eqfm_update_expedition_costs_effect = yes
+}
+
+eqfm_start_black_mountain_expedition_effect = {
+	set_variable = eqfm_black_mountain_expedition_var
+	set_variable = {
+		name = eqfm_black_mountain_expedition_progress_var
+		value = 0
+	}
+	set_variable = {
+		name = eqfm_black_mountain_expedition_peril_var
+		value = 0
+	}
+}
+
+eqfm_fail_black_mountain_expedition_effect = {
+	every_scope_character = {
+		limit = {
+			has_modifier = modifier_eqfm_leading_black_mountain_expedition
+		}
+		remove_modifier = modifier_eqfm_leading_black_mountain_expedition
+		set_character_busy_and_immortal = no
+		add_modifier = {
+			name = modifier_eqfm_failed_black_mountain_expedition_character
+			months = gbbf_duration_10_years
+		}
+	}
+	remove_variable = eqfm_adriatic_expedition_var
+	add_modifier = {
+		name = modifier_eqfm_failed_adriatic_expedition_country
+		months = gbbf_duration_2_plus_half_years
+	}
+	eqfm_update_expedition_costs_effect = yes
+}
+
+eqfm_cancel_black_mountain_expedition_effect = {
+	every_scope_character = {
+		limit = {
+			has_modifier = modifier_eqfm_leading_black_mountain_expedition
+		}
+		remove_modifier = modifier_eqfm_leading_black_mountain_expedition
+		set_character_busy_and_immortal = no
+	}
+    remove_variable = eqfm_black_mountain_expedition_var
+	eqfm_update_expedition_costs_effect = yes
+}
+
+eqfm_clear_black_mountain_expedition_variables_effect = {
+	remove_variable = eqfm_black_mountain_expedition_progress_var
+	remove_variable = eqfm_black_mountain_expedition_peril_var
+}
+
+eqfm_generate_captive_effect = {
+	random_list = {
+		5 = { # Bosnian Noble
+			trigger = {
+				OR = {
+					c:TUR = {
+						has_state_in_state_region = STATE_BOSNIA
+					}
+					c:BOS = {
+						has_state_in_state_region = STATE_BOSNIA
+					}
+				}
+			}
+			create_character = {
+				template = template_eqfm_captive_bosnian
+			}
+		}
+		5 = { # Albanian Noble
+			trigger = {
+				c:TUR = {
+					has_state_in_state_region = STATE_ALBANIA
+				}
+			}
+			create_character = {
+				template = template_eqfm_captive_albanian
+			}
+		}
+		5 = { # Serbian Noble
+			trigger = {
+				c:TUR = {
+					has_state_in_state_region = STATE_WESTERN_SERBIA
+				}
+			}
+			create_character = {
+				template = template_eqfm_captive_serbian
+			}
+		}
+	}
+}

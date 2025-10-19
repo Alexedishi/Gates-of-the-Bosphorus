@@ -1,0 +1,442 @@
+﻿## Black Mountain Decision Buttons ##
+eqfm_renounce_headtaking_button = {
+	name = "eqfm_renounce_headtaking_button"
+	desc = "eqfm_renounce_headtaking_button_desc"
+	
+	visible = {
+		OR = {
+            has_modifier = modifier_eqfm_practicing_headtaking_mon
+            has_modifier = modifier_eqfm_practicing_headtaking_tur
+        }
+	}
+	possible = {
+		custom_tooltip = {
+			text = eqfm_renounce_headtaking_possible
+			NOT = {
+				has_global_variable = turkfm_headtaking_cooldown_var
+			}
+		}
+		trigger_if = {
+			limit = {
+				c:MON ?= this
+			}
+			c:TUR.relations:root >= relations_threshold:cold
+		}
+		trigger_if = {
+			limit = {
+				c:TUR ?= this
+			}
+			c:MON.relations:root >= relations_threshold:cold
+		}
+	}
+	effect = {
+		c:MON ?= {
+			if = {
+				limit = {
+					this != root
+					has_modifier = modifier_eqfm_practicing_headtaking_mon
+				}
+				trigger_event = {
+					id = eqfm_black_mountain.010 # Negotiations on Head-taking (Receiver)
+					days = { 7 14 }
+				}
+				hidden_effect = {
+					trigger_event = {
+						id = eqfm_black_mountain.011 # Negotiations on Head-taking (Outcome)
+						days = 45
+					}
+				}
+			}
+		}
+		c:TUR ?= {
+			if = {
+				limit = {
+					this != root
+					has_modifier = modifier_eqfm_practicing_headtaking_tur
+				}
+				trigger_event = {
+					id = eqfm_black_mountain.010 # Negotiations on Head-taking (Receiver)
+					days = { 7 14 }
+				}
+				hidden_effect = {
+					trigger_event = {
+						id = eqfm_black_mountain.011 # Negotiations on Head-taking (Outcome)
+						days = 45
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			text = eqfm_renounce_headtaking_effect
+			set_variable = {
+				name = turkfm_negociated_headtaking
+				months = 3
+			}
+			trigger_event = {
+				id = eqfm_black_mountain.011 # Negotiations on Head-taking (Outcome)
+				days = 45
+			}
+		}
+		custom_tooltip = {
+			text = eqfm_headtaking_cooldown_GET
+			set_global_variable = {
+				name = turkfm_headtaking_cooldown_var
+				years = 5
+			}
+		}
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+## Black Mountain Montenegrin Buttons
+eqfm_increase_raiding_button = {
+	name = "eqfm_increase_raiding_button"
+	desc = "eqfm_increase_raiding_button_desc"
+	
+	visible = {
+		has_dlc_feature = ip3_content # National Awakening
+		NOT = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+		}
+		c:MON ?= this
+	}
+	possible = {
+		custom_tooltip = {
+			text = eqfm_raiding_status_cooldown
+			NOT = {
+				has_variable = eqfm_raiding_status_cooldown_var
+			}
+		}
+		custom_tooltip = {
+			text = eqfm_raiding_less_than_max
+			var:raiding_intensity < 100
+		}
+	}
+	selected = {
+		has_variable = mon_more_raiding
+	}
+	effect = {
+		if = {
+			limit = {
+				has_variable = mon_more_raiding
+			}
+			remove_variable = mon_more_raiding
+		}
+		else = {
+			custom_tooltip = {
+				text = eqfm_increase_raiding_effect
+				set_variable = mon_more_raiding
+			}
+			custom_tooltip = {
+				text = eqfm_raiding_status_cooldown_GET
+				set_variable = {
+					name = eqfm_raiding_status_cooldown_var
+					years = 2
+				}
+			}
+			c:RUS = {
+				change_relations = {
+					country = root
+					value = -15
+				}
+			}
+			c:TUR = {
+				change_relations = {
+					country = root
+					value = -35
+				}
+			}
+		}
+	}
+}
+
+eqfm_decrease_raiding_button = {
+	name = "eqfm_decrease_raiding_button"
+	desc = "eqfm_decrease_raiding_button_desc"
+	
+	visible = {
+		has_dlc_feature = ip3_content # National Awakening
+		NOT = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+		}
+		c:MON ?= this
+	}
+	possible = {
+		custom_tooltip = {
+			text = eqfm_raiding_status_cooldown
+			NOT = {
+				has_variable = eqfm_raiding_status_cooldown_var
+			}
+		}
+		custom_tooltip = {
+			text = eqfm_raiding_more_than_min
+			var:raiding_intensity > 0
+		}
+	}
+	selected = {
+		has_variable = mon_less_raiding
+	}
+	effect = {
+		if = {
+			limit = {
+				has_variable = mon_less_raiding
+			}
+			remove_variable = mon_less_raiding
+		}
+		else = {
+			custom_tooltip = {
+				text = eqfm_decrease_raiding_effect
+				set_variable = mon_less_raiding
+			}
+			custom_tooltip = {
+				text = eqfm_raiding_status_cooldown_GET
+				set_variable = {
+					name = eqfm_raiding_status_cooldown_var
+					years = 2
+				}
+			}
+			c:RUS = {
+				change_relations = {
+					country = root
+					value = 10
+				}
+			}
+			c:TUR = {
+				change_relations = {
+					country = root
+					value = 25
+				}
+			}
+		}
+	}
+	
+}
+
+eqfm_appoint_tribal_chief_button = {
+	name = "eqfm_appoint_tribal_chief_button"
+	desc = "eqfm_appoint_tribal_chief_button_desc"
+	
+	visible = {
+		has_dlc_feature = ip3_content # National Awakening
+		NOT = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+		}
+		c:MON ?= this
+		eqfm_has_black_mountain_expedition_trigger = no
+	}
+	possible = {
+		eqfm_has_black_mountain_expedition_trigger = no
+	}
+	effect = {
+		trigger_event = {
+			id = eqfm_black_mountain.020 # Defending the Hinterlands
+			popup = yes
+		}
+        custom_tooltip = {
+            text = eqfm_tribal_chief_cooldown
+            set_variable = {
+                name = eqfm_tribal_chief_cooldown_var
+                months = 12
+            }
+        }
+		set_variable = eqfm_black_mountain_expedition_var
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+eqfm_dismiss_tribal_chief_button = {
+	name = "eqfm_dismiss_tribal_chief_button"
+	desc = "eqfm_dismiss_tribal_chief_button_desc"
+	
+	visible = {
+		has_dlc_feature = ip3_content # National Awakening
+		c:MON ?= this
+		eqfm_has_black_mountain_expedition_trigger = yes
+	}
+	possible = {
+		eqfm_has_black_mountain_expedition_trigger = yes
+        custom_tooltip = {
+            text = eqfm_has_tribal_chief_cooldown_NOT
+            NOT = {
+                has_variable = eqfm_tribal_chief_cooldown_var
+            }
+        }
+	}
+	effect = {
+		eqfm_dismiss_tribal_chief_effect = yes
+	}
+	ai_chance = {
+		value = -1000
+	}
+}
+
+eqfm_ransom_captives_button = {
+	name = "eqfm_ransom_captives_button"
+	desc = "eqfm_ransom_captives_button_desc"
+	
+	visible = {
+		has_dlc_feature = ip3_content # National Awakening
+		NOT = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+		}
+	}
+	
+	selected = {
+		has_variable = eqfm_ransom_var
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = eqmfm_has_captive_nobles
+			hidden_trigger = {
+				eqfm_captured_nobles_value > 0
+			}
+		}
+		NOR = {
+			has_modifier = modifier_eqfm_ransomed_noble
+			has_modifier = modifier_eqfm_ransom_failed
+			has_modifier = modifier_eqfm_executed_noble
+		}
+	}
+	
+	effect = {
+		trigger_event = {
+			id = eqfm_black_mountain.014 # The Gaols of Cetinje
+		}
+		set_variable = {
+			name = eqfm_ransom_var
+			months = 6
+		}
+	}
+	
+	ai_chance = {
+		value = 5
+	}
+}
+
+eqfm_negotiate_kotor_button = {
+	name = "eqfm_negotiate_kotor_button"
+	desc = "eqfm_negotiate_kotor_button_desc"
+	
+	visible = {
+		c:MON ?= this
+		NOT = {
+			has_variable = turkfm_negotiated_kotor
+		}
+		p:x90A0E0 = { # Kotor
+			owner = {
+				c:AUS ?= this
+			}
+		}
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				NOT = {
+					has_dlc_feature = ip3_content # National Awakening
+				}
+			}
+			OR = {
+				is_subject_of = c:AUS
+				is_in_same_power_bloc = c:AUS
+				gbbf_has_alliance_trigger = {
+					country = c:AUS
+				}
+				gbbf_has_defensive_pact_trigger = {
+					country = c:AUS
+				}
+			}
+			c:AUS = {
+				relations:root >= relations_threshold:amicable
+			}
+			NOT = {
+				owes_obligation_to = c:AUS
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_dlc_feature = ip3_content # National Awakening
+			}
+			government_legitimacy > 50
+			c:RUS ?= {
+				relations:root <= relations_threshold:poor
+			}
+			c:AUS = {
+				relations:root >= relations_threshold:friendly
+			}
+			trigger_if = {
+				limit = {
+					has_journal_entry = je_montenegrin_raiding
+				}
+				custom_tooltip = {
+					text = raiding_income_greater_tt
+					eqfm_raiding_income_value < 700
+				}
+			}
+		}
+	}
+	effect = {
+		c:AUS = {
+			trigger_event = {
+				id = eqfm_black_mountain.012 # Negotiations Over Cattaro
+				days = { 7 14 }
+			}
+		}
+		set_variable = turkfm_negotiated_kotor
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+## Black Mountain Ottoman Buttons
+eqfm_assign_border_guard_button = {
+	name = "eqfm_assign_border_guard_button"
+	desc = "eqfm_assign_border_guard_button_desc"
+	
+	visible = {
+		has_dlc_feature = ip3_content # National Awakening
+		NOT = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+		}
+		c:TUR ?= this
+		eqfm_has_black_mountain_expedition_trigger = no
+	}
+	possible = {
+		eqfm_has_black_mountain_expedition_trigger = no
+		NOT = {
+			has_modifier = modifier_eqfm_failed_black_mountain_expedition_country
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = eqfm_black_mountain.021 # Defending the Hinterlands
+			popup = yes
+		}
+		set_variable = eqfm_black_mountain_expedition_var
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_recall_karadag_expedition_button = {
+	name = "eqfm_recall_expedition_button"
+	desc = "eqfm_recall_expedition_button_desc"
+	
+	visible = {
+		has_dlc_feature = ip3_content # National Awakening
+		c:TUR ?= this
+		eqfm_has_black_mountain_expedition_trigger = yes
+	}
+	possible = {
+		eqfm_has_black_mountain_expedition_trigger = yes
+	}
+	effect = {
+		eqfm_cancel_black_mountain_expedition_effect = yes
+	}
+}

@@ -1,5 +1,5 @@
 ﻿je_balkfm_mon_prince_bishopric = {
-	group = je_group_balkfm_montenegro
+	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_montenegro.dds"
 	weight = 1000
 
@@ -7,11 +7,17 @@
 	can_revolution_inherit = yes
 	transferable = no
 
+	scripted_button = balkfm_visit_tsar_button
+	scripted_button = je_montenegrin_visit_moscow
+	scripted_button = je_montenegrin_make_saint
+	scripted_button = balkfm_mon_principality_button
+
 	is_shown_in_lobby = {
 		c:MON ?= this
 	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		if = {
 			limit = {
 				has_dlc_feature = ip3_content # National Awakening
@@ -37,11 +43,6 @@
 		modifier_balkfm_prince_bishopric
 		modifier_balkfm_spartan_existence
 	}
-
-	scripted_button = balkfm_visit_tsar_button
-	scripted_button = je_montenegrin_visit_moscow
-	scripted_button = je_montenegrin_make_saint
-	scripted_button = balkfm_mon_principality_button
 
 	complete = {
 		has_law_or_variant = law_type:law_monarchy
@@ -206,9 +207,23 @@
 						multiplier = russian_aid_income
 					}
 				}
+				if = {
+					limit = {
+						NOR = {
+							has_global_variable = eqfm_montenegrin_raiding_settled
+							has_modifier = modifier_eqfm_need_tribal_leader
+						}
+						eqfm_has_black_mountain_expedition_trigger = no
+					}
+					add_modifier = modifier_eqfm_need_tribal_leader
+				}
+				else = {
+					remove_modifier = modifier_eqfm_need_tribal_leader
+				}
 			}
 			else = {
 				remove_modifier = modifier_montenegrin_aid
+				remove_modifier = modifier_eqfm_need_tribal_leader
 			}
 		}
 	}
@@ -229,12 +244,20 @@
 			desc = je_montenegrin_russian_aid_income
 		}
 	}
-
 }
 
 je_balkfm_mon_societal_reform = {
+	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_scales.dds"
-	group = je_group_balkfm_montenegro
+	weight = 500
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	complete = {
 		NOT = { has_law_or_variant = law_type:law_hereditary_bureaucrats }
@@ -251,14 +274,20 @@ je_balkfm_mon_societal_reform = {
 	invalid = {
 		has_variable = balkfm_prince_bishopric_completed
 	}
-
-	weight = 500
-
 }
 
 je_balkfm_mon_administration = {
+	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
-	group = je_group_balkfm_montenegro
+	weight = 500
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	complete = {
 		NOT = { has_law_or_variant = law_type:law_land_based_taxation }
@@ -278,14 +307,20 @@ je_balkfm_mon_administration = {
 	invalid = {
 		has_variable = balkfm_prince_bishopric_completed
 	}
-
-	weight = 500
-
 }
 
 je_balkfm_mon_military_reform = {
+	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
-	group = je_group_balkfm_montenegro
+	weight = 500
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	complete = {
 		NOT = { has_law_or_variant = law_type:law_peasant_levies }
@@ -301,20 +336,24 @@ je_balkfm_mon_military_reform = {
 	invalid = {
 		has_variable = balkfm_prince_bishopric_completed
 	}
-
-	weight = 500
-
 }
 
 je_balkfm_mon_ali_pasha = {
+	group = je_group_foreign_affairs
 	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
-	group = je_group_balkfm_montenegro
+	weight = 100
+
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
 
 	is_shown_in_lobby = {
 		c:MON ?= this
 	}
 
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	modifiers_while_active = {
 		modifier_balkfm_ali_pasha
@@ -331,8 +370,8 @@ je_balkfm_mon_ali_pasha = {
 
 	on_complete = {
 		add_modifier = {
-			name = modifier_turkfm_weathered_the_storm
-			days = normal_modifier_time
+			name = modifier_eqfm_weathered_the_storm
+			months = gbbf_duration_5_years
 		}
 	}
 
@@ -353,23 +392,25 @@ je_balkfm_mon_ali_pasha = {
 			balkfm_montenegro.032 # Knives in the Dark
 		}
 	}
-
-	weight = 400
-
 }
 
 je_balkfm_mon_nationalism = {
-	icon = "gfx/interface/icons/event_icons/event_montenegro2.dds"
-	group = je_group_balkfm_montenegro
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	weight = 100
+
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	scripted_button = balkfm_mon_kingdom_button
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		trigger_event = {
 			id = balkfm_montenegro.200 # The Montenegrin Identity
 		}
 	}
-
-	scripted_button = balkfm_mon_kingdom_button
 
 	complete = {
 		has_modifier = modifier_balkfm_declared_kingdom
@@ -386,15 +427,12 @@ je_balkfm_mon_nationalism = {
 			c:MON ?= this
 		}
 	}
-
-	weight = 1000
-
 }
 
 je_balkfm_mon_austria_alliance = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_scales.dds"
-	weight = 100
+	weight = 500
 	
 	should_be_pinned_by_default = yes
 	transferable = no
@@ -417,11 +455,12 @@ je_balkfm_mon_austria_alliance = {
 			}
 		}
 		NOT = {
-			has_journal_entry = je_turkfm_the_black_mountain
+			has_journal_entry = je_eqfm_the_black_mountain
 		}
 	}
 	
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		c:RUS ?= {
 			save_scope_as = russia
 		}
@@ -447,7 +486,7 @@ je_balkfm_mon_austria_alliance = {
 			}
 			custom_tooltip = {
 				text = raiding_income_greater_tt
-				raiding_income < 700
+				eqfm_raiding_income_value < 700
 			}
 		}
 	}
@@ -497,14 +536,7 @@ je_balkfm_mon_austria_alliance = {
 			}
 		}
 	}
-	
-	on_weekly_pulse = {
-	}
-	
-	status_desc = {
-		desc = je_mon_austria_status_desc
-	}
-	
+
 	invalid = { #p:x90A0E0.state.owner might work better
 		NOT = {
 			exists = c:AUS
@@ -513,44 +545,8 @@ je_balkfm_mon_austria_alliance = {
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
-}
 
-####################
-
-je_montenegrin_raiding = {
-	group = je_group_historical_content
-	
-	is_shown_when_inactive = {
-		always = no
-	}
-	
-	possible = {
-		always = no
-	}
-	
-	invalid = {
-		always = yes
-	}
-}
-
-je_mon_state_formation = {
-	group = je_group_historical_content
-	
-	is_shown_when_inactive = {
-		always = no
-	}
-	
-	possible = {
-		always = no
-	}
-	
-	invalid = {
-		always = yes
+	status_desc = {
+		desc = je_mon_austria_status_desc
 	}
 }

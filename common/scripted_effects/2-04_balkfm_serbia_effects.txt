@@ -193,6 +193,14 @@ balkfm_update_dynasty_character_scopes_effect = {
 	}
 	if = {
 		limit = {
+			balkfm_has_obrenovic_ruler_trigger = yes
+		}
+		ruler = {
+			save_scope_as = balkfm_obrenovic_scope
+		}
+	}
+	else_if = {
+		limit = {
 			any_scope_character = {
 				balkfm_is_obrenovic_character_trigger = yes
 			}
@@ -208,6 +216,14 @@ balkfm_update_dynasty_character_scopes_effect = {
 		balkfm_find_obrenovic_effect = yes
 	}
 	if = {
+		limit = {
+			balkfm_has_karadordevic_ruler_trigger = yes
+		}
+		ruler = {
+			save_scope_as = balkfm_karadordevic_scope
+		}
+	}
+	else_if = {
 		limit = {
 			any_scope_character = {
 				balkfm_is_karadordevic_character_trigger = yes
@@ -241,7 +257,6 @@ balkfm_update_dynasty_character_scopes_effect = {
 }
 
 balkfm_find_obrenovic_effect = {
-	# Effects use alexandar_karadordevic_scope to play nice with IP3
 	if = {
 		limit = {
 			any_scope_character = {
@@ -252,7 +267,7 @@ balkfm_find_obrenovic_effect = {
 			limit = {
 				balkfm_is_obrenovic_character_trigger = yes
 			}
-			save_scope_as = alexandar_karadordevic_scope
+			save_scope_as = balkfm_dynastic_opposition_scope
 			save_scope_as = balkfm_obrenovic_scope
 		}
 	}
@@ -266,7 +281,7 @@ balkfm_find_obrenovic_effect = {
 			limit = {
 				balkfm_is_obrenovic_character_trigger = yes
 			}
-			save_scope_as = alexandar_karadordevic_scope
+			save_scope_as = balkfm_dynastic_opposition_scope
 			save_scope_as = balkfm_obrenovic_scope
 		}
 	}
@@ -333,13 +348,12 @@ balkfm_find_obrenovic_effect = {
 		limit = {
 			balkfm_is_obrenovic_character_trigger = yes
 		}
-		save_scope_as = alexandar_karadordevic_scope
+		save_scope_as = balkfm_dynastic_opposition_scope
 		save_scope_as = balkfm_obrenovic_scope
 	}
 }
 
 balkfm_find_karadordevic_effect = {
-	# Effects use alexandar_karadordevic_scope to play nice with IP3
 	if = {
 		limit = {
 			any_scope_character = {
@@ -350,7 +364,7 @@ balkfm_find_karadordevic_effect = {
 			limit = {
 				balkfm_is_karadordevic_character_trigger = yes
 			}
-			save_scope_as = alexandar_karadordevic_scope
+			save_scope_as = balkfm_dynastic_opposition_scope
 			save_scope_as = balkfm_karadordevic_scope
 		}
 	}
@@ -364,7 +378,7 @@ balkfm_find_karadordevic_effect = {
 			limit = {
 				balkfm_is_karadordevic_character_trigger = yes
 			}
-			save_scope_as = alexandar_karadordevic_scope
+			save_scope_as = balkfm_dynastic_opposition_scope
 			save_scope_as = balkfm_karadordevic_scope
 		}
 	}
@@ -416,13 +430,13 @@ balkfm_find_karadordevic_effect = {
 		limit = {
 			balkfm_is_karadordevic_character_trigger = yes
 		}
-		save_scope_as = alexandar_karadordevic_scope
 		save_scope_as = balkfm_karadordevic_scope
+		save_scope_as = balkfm_dynastic_opposition_scope
 	}
 }
 
 balkfm_save_opposition_dynasty_scope_effect = {
-	# Remember, this effect returns the alexandar_karadordevic_scope key regardless of which house is in control
+	# Remember, this effect returns the balkfm_dynastic_opposition_scope alongside the appropriate house scope
 	if = {
 		limit = {
 			balkfm_has_obrenovic_ruler_trigger = yes
@@ -431,9 +445,6 @@ balkfm_save_opposition_dynasty_scope_effect = {
 	}
 	else = {
 		balkfm_find_obrenovic_effect = yes
-	}
-	scope:alexandar_karadordevic_scope = {
-		save_scope_as = balkfm_dynastic_opposition_scope
 	}
 }
 
@@ -470,6 +481,36 @@ balkfm_ruling_dynasty_progress_loss_tooltip_effect = {
 	}
 	else = {
 		custom_tooltip = balkfm_obrenovic_loyalty_decrease
+	}
+}
+
+balkfm_serbian_throne_modifier_cleanser_effect = {
+	# This is an expanded form of the serbian_throne_modifier_cleanser effect
+	hidden_effect = {
+		remove_modifier = serbia_permitted_hajduks_armed_bonus
+		remove_modifier = serbia_stopped_hajduks_armed_penalty
+		
+		remove_modifier = serbia_pamphlet_money_mod
+		remove_modifier = serbia_pamphlet_auth_mod
+		
+		remove_modifier = serbia_exposing_hypocrite_mod
+		remove_modifier = serbia_exposing_hypocrite_forcing_to_work_mod
+		remove_modifier = serbia_exposing_hypocrite_fail_mod
+		
+		remove_modifier = serbia_campaign_auth_fund_mod
+		remove_modifier = serbia_campaign_med_fund_mod
+		remove_modifier = serbia_campaign_high_fund_mod
+		
+		remove_modifier = serbia_urban_rebels_killed_by_armed_forces_mod
+		remove_modifier = serbia_urban_rebels_bribed_mod
+		remove_modifier = serbia_urban_rebels_killed_by_loyalists_mod
+		
+		remove_modifier = serbia_aided_magyarized_serbs_mod
+		remove_modifier = serbia_greatly_aided_magyarized_serbs_mod
+		
+		remove_modifier = serbia_clerical_publicity_mod
+		remove_modifier = serbia_funded_clerical_publicity_mod
+		remove_modifier = serbia_forced_clerical_publicity_mod
 	}
 }
 

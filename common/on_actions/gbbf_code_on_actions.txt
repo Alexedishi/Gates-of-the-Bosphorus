@@ -7,31 +7,33 @@ on_monthly_pulse_country = {
 		gbbf_monthly_pulse # General Monthly Pulse
 		grefm_monthly_pulse_1 # Hellene Tags
 		grefm_monthly_pulse_2 # Rhomaios Tags
-#		grefm_monthly_pulse_3 # Urum Tags
-		turkfm_monthly_pulse # Ottoman Empire/Turkey
-#		turkfm_tri_monthly_pulse
-#		turkfm_tun_monthly_pulse
-#		turkfm_arm_monthly_pulse
-#		turkfm_kur_monthly_pulse
+		# grefm_monthly_pulse_3 # Urum Tags
 		balkfm_yug_monthly_pulse
 		balkfm_mon_monthly_pulse
 		balkfm_ser_monthly_pulse
 		balkfm_bul_monthly_pulse
 		balkfm_rom_monthly_pulse
-#		balkfm_bos_monthly_pulse
-#		balkfm_alb_monthly_pulse
-#		balkfm_cro_monthly_pulse
-#		balkfm_slo_monthly_pulse
+		# balkfm_bos_monthly_pulse
+		# balkfm_alb_monthly_pulse
+		# balkfm_cro_monthly_pulse
+		# balkfm_slo_monthly_pulse
+		turkfm_monthly_pulse # Ottoman Empire/Turkey
+		# turkfm_tri_monthly_pulse
+		# turkfm_tun_monthly_pulse
+		# turkfm_arm_monthly_pulse
+		# turkfm_kur_monthly_pulse
+		
 	}
 }
 
 ##########################################################################
 
-#### GBBF GENERAL PULSE
-gbbf_monthly_pulse = { # These events are monitored from all scopes
+#### GBBF GENERAL PULSES
+gbbf_monthly_pulse = {
+	# These events are monitored from all scopes
 	events = {
-		turkfm_balkan_situation.019 # Adds the Eastern Question JE
-		turkfm_expeditions.119 # Adds the Piracy JE
+		eqfm_balkans.019 # Adds the Eastern Question JE
+		eqfm_pirates.019 # Adds the Piracy JE
 		gbbf_technical.020 # Places Yugoslav Secession Variable
 		balkfm_serbia.204 # May Assembly
 		balkfm_bulgaria.228 # The Bulgarian State
@@ -65,14 +67,14 @@ grefm_monthly_pulse_1 = {
 	}
 	random_events = {
 		200 = 0
-		 5 = grefm_greece.032 # Who is to Blame
-		 5 = grefm_greece.035 # A Perennial Problem
-		 5 = grefm_greece.100 # fix brewery
-		 5 = grefm_greece.102 # greek aviation
-		 5 = grefm_greece.122 # university of constantinople
-		 5 = grefm_greece.180 # The Defence of Jonas King
+		5 = grefm_greece.032 # Who is to Blame
+		5 = grefm_greece.035 # A Perennial Problem
+		5 = grefm_greece.100 # fix brewery
+		5 = grefm_greece.102 # greek aviation
+		5 = grefm_greece.122 # university of constantinople
+		5 = grefm_greece.180 # The Defence of Jonas King
 		25 = grefm_greek_nationalism.002 # Paparrigopoulos's History of the Greek Nation
-		 5 = grefm_greek_nationalism.057 # The Mask of Agamemnon
+		5 = grefm_greek_nationalism.057 # The Mask of Agamemnon
 		25 = grefm_megali_idea.201 # A Question of Homelands
 		25 = grefm_megali_idea.202 # Greek Expansion in X
 		10 = gbbf_technical.003 # Don Pacifico Affair
@@ -139,7 +141,7 @@ balkfm_yug_monthly_pulse = {
 	random_events = {
 	}
 	effect = {
-		turkfm_yugoslav_separatism_effect = yes
+		# turkfm_yugoslav_separatism_effect = yes
 	}
 }
 
@@ -269,7 +271,7 @@ turkfm_monthly_pulse = {
 	}
 	events = {
 		turkfm_tanzimat.015 # Equality Before the Law
-		turkfm_balkan_situation.199 # Adds je_turkfm_balkan_situation_main
+		eqfm_balkans.199 # Adds je_eqfm_balkan_situation_main
 	}
 	random_events = {
 	}
@@ -331,6 +333,88 @@ turkfm_kur_monthly_pulse = {
 
 ##########################################################################
 
+#### COUNTRY FORMATION ON ACTIONS
+on_country_formed = {
+	on_actions = {
+		grefm_byz_culture_validation
+	}
+}
+
+grefm_byz_culture_validation = {
+	trigger = {
+		c:BYZ ?= this
+	}
+	effect = {
+		if = {
+			limit = {
+				has_variable = grefm_culture_var
+			}
+			if = {
+				limit = {
+					var:grefm_culture_var = 1 # Hellene
+				}
+				remove_primary_culture = cu:rhomaios
+			}
+			if = {
+				limit = {
+					var:grefm_culture_var = 2 # Hellene
+				}
+				remove_primary_culture = cu:greek
+			}
+		}
+		else = {
+			if = {
+				limit = {
+					OR = {
+						was_formed_from = GRE
+						was_formed_from = GRE_EPI
+						was_formed_from = ION
+						was_formed_from = CRE
+						was_formed_from = CYP
+						was_formed_from = GRE_SAM
+					}
+				}
+				remove_primary_culture = cu:rhomaios
+			}
+			else_if = {
+				limit = {
+					OR = {
+						was_formed_from = BYZ_TRB
+						was_formed_from = BYZ_TRB
+					}
+				}
+				remove_primary_culture = cu:greek
+			}
+			else_if = {
+				limit = {
+					was_formed_from = GRA_THE
+				}
+				add_primary_culture = cu:urum
+			}
+			else_if = {
+				limit = {
+					was_formed_from = BUL
+				}
+				add_primary_culture = cu:bulgarian
+			}
+			else_if = {
+				limit = {
+					was_formed_from = ROM
+				}
+				add_primary_culture = cu:romanian
+			}
+			else_if = {
+				limit = {
+					was_formed_from = AST
+				}
+				add_primary_culture = cu:australian
+			}
+		}
+	}
+}
+
+##########################################################################
+
 #### COUNTRY RELEASE ON ACTIONS
 
 on_country_released_as_independent = {
@@ -345,7 +429,8 @@ on_country_released_as_own_subject = {
 	}
 }
 
-balkfm_country_release_1 = { # BUL keeps BUL_RUM if fully independent
+balkfm_country_release_1 = {
+	# BUL keeps BUL_RUM if fully independent
 	effect = {
 		if = {
 			limit = {
@@ -363,7 +448,8 @@ balkfm_country_release_1 = { # BUL keeps BUL_RUM if fully independent
 	}
 }
 
-balkfm_country_release_2 = { # Splits BUL and BUL_RUM if BUL is released as a subject
+balkfm_country_release_2 = {
+	# Splits BUL and BUL_RUM if BUL is released as a subject
 	effect = {
 		if = {
 			limit = {
@@ -434,31 +520,31 @@ turkfm_secession_start = {
 	effect = {
 		if = {
 			limit = {
-				has_journal_entry = je_turkfm_balkan_situation_main
+				has_journal_entry = je_eqfm_balkan_situation_main
 				scope:target = {
 					balkfm_balkans_native_trigger = yes
 				}
 			}
 			scope:target = {
-				set_variable = turkfm_rebellion_tag_tracker
+				set_variable = eqfm_rebellion_tag_tracker
 				every_scope_state = {
-					remove_modifier = modifier_turkfm_race_riots
+					remove_modifier = modifier_eqfm_race_riots
 				}
 				add_modifier = {
-					name = modifier_turkfm_nationalist_uprising
-					months = 60
+					name = modifier_eqfm_nationalist_uprising
+					months = gbbf_duration_5_years
 				}
 				balkfm_set_up_ottoman_legacies_effect = yes
 			}
-			turkfm_add_large_deescalation_effect = yes
+			eqfm_add_large_deescalation_effect = yes
 			every_country = {
 				limit = {
-					turkfm_balkans_party_trigger = yes
+					eqfm_balkans_party_trigger = yes
 				}
-				post_notification = notification_turkfm_secession_start
+				post_notification = notification_eqfm_secession_start
 			}
 			trigger_event = {
-				id = turkfm_balkan_situation.006
+				id = eqfm_balkans.006
 			}
 		}
 	}
@@ -466,20 +552,20 @@ turkfm_secession_start = {
 
 ##########################################################################
 
-#### DIPLOMAT EXPLUSION ON ACTIONS
+#### DIPLOMAT EXPULSION ON ACTIONS
 # Root = Diplomatic Action
 # scope:target = the country whose diplomats were expelled
 # scope:initiator = the country doing the expelling
 
 on_diplomats_expelled = {
 	on_actions = {
-		turkfm_tension_diplomats_expelled
+		eqfm_tension_diplomats_expelled
 	}
 }
 
-turkfm_tension_diplomats_expelled = {
+eqfm_tension_diplomats_expelled = {
 	trigger = {
-		turkfm_can_escalate_tension_trigger = yes
+		eqfm_can_escalate_tension_trigger = yes
 		scope:target = {
 			c:TUR ?= this
 		}
@@ -492,17 +578,17 @@ turkfm_tension_diplomats_expelled = {
 				}
 			}
 			change_global_variable = {
-				name = turkfm_escalation_var
+				name = eqfm_escalation_var
 				add = 5
 			}
 			c:TUR ?= {
-				turkfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
+				eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
 			}
 			every_country = {
 				limit = {
-					turkfm_balkans_party_trigger = yes
+					eqfm_balkans_party_trigger = yes
 				}
-				post_notification = notification_turkfm_diplomats_expelled_1
+				post_notification = notification_eqfm_diplomats_expelled_1
 			}
 		}
 		else_if = {
@@ -512,17 +598,17 @@ turkfm_tension_diplomats_expelled = {
 				}
 			}
 			change_global_variable = {
-				name = turkfm_escalation_var
+				name = eqfm_escalation_var
 				add = 10
 			}
 			every_country = {
 				limit = {
-					turkfm_balkans_party_trigger = yes
+					eqfm_balkans_party_trigger = yes
 				}
-				post_notification = notification_turkfm_diplomats_expelled_2
+				post_notification = notification_eqfm_diplomats_expelled_2
 			}
 			c:TUR ?= {
-				turkfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
+				eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
 			}
 		}
 	}
@@ -533,19 +619,19 @@ turkfm_tension_diplomats_expelled = {
 #### AUTONOMY CHANGE ON ACTIONS
 on_diplomatic_action_overlord_decrease_autonomy = {
 	on_actions = {
-		turkfm_tension_decrease_autonomy
+		eqfm_tension_decrease_autonomy
 	}
 }
 
 on_diplomatic_action_overlord_increase_autonomy = {
 	on_actions = {
-		turkfm_tension_increase_autonomy
+		eqfm_tension_increase_autonomy
 	}
 }
 
-turkfm_tension_decrease_autonomy = {
+eqfm_tension_decrease_autonomy = {
 	trigger = {
-		turkfm_can_escalate_tension_trigger = yes
+		eqfm_can_escalate_tension_trigger = yes
 		scope:actor = {
 			c:TUR ?= this
 		}
@@ -555,24 +641,24 @@ turkfm_tension_decrease_autonomy = {
 	}
 	effect = {
 		change_global_variable = {
-			name = turkfm_escalation_var
+			name = eqfm_escalation_var
 			add = 50
 		}
 		every_country = {
 			limit = {
-				turkfm_balkans_party_trigger = yes
+				eqfm_balkans_party_trigger = yes
 			}
-			post_notification = notification_turkfm_autonomy_decreased
+			post_notification = notification_eqfm_autonomy_decreased
 		}
 		c:TUR ?= {
-			turkfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
+			eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
 		}
 	}
 }
 
-turkfm_tension_increase_autonomy = {
+eqfm_tension_increase_autonomy = {
 	trigger = {
-		turkfm_can_deescalate_tension_trigger = yes
+		eqfm_can_deescalate_tension_trigger = yes
 		scope:actor = {
 			c:TUR ?= this
 		}
@@ -582,17 +668,17 @@ turkfm_tension_increase_autonomy = {
 	}
 	effect = {
 		change_global_variable = {
-			name = turkfm_deescalation_var
+			name = eqfm_deescalation_var
 			add = 25
 		}
 		every_country = {
 			limit = {
-				turkfm_balkans_party_trigger = yes
+				eqfm_balkans_party_trigger = yes
 			}
-			post_notification = notification_turkfm_autonomy_increased
+			post_notification = notification_eqfm_autonomy_increased
 		}
 		c:TUR ?= {
-			turkfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
+			eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
 		}
 	}
 }
@@ -608,38 +694,38 @@ turkfm_tension_increase_autonomy = {
 
 on_wargoal_enforced = {
 	on_actions = {
-		turkfm_tension_wargoal_enforced_1
-		turkfm_tension_wargoal_enforced_2
+		eqfm_tension_wargoal_enforced_1
+		eqfm_tension_wargoal_enforced_2
 	}
 }
 
-turkfm_tension_wargoal_enforced_1 = {
+eqfm_tension_wargoal_enforced_1 = {
 	trigger = {
-		turkfm_can_escalate_tension_trigger = yes
+		eqfm_can_escalate_tension_trigger = yes
 		scope:target = {
 			c:TUR ?= this
 		}
 	}
 	effect = {
 		change_global_variable = {
-			name = turkfm_escalation_var
+			name = eqfm_escalation_var
 			add = 3
 		}
 		c:TUR ?= {
-			turkfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
+			eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
 		}
 		every_country = {
 			limit = {
-				turkfm_balkans_party_trigger = yes
+				eqfm_balkans_party_trigger = yes
 			}
-			post_notification = notification_turkfm_wargoal_enforced_1
+			post_notification = notification_eqfm_wargoal_enforced_1
 		}
 	}
 }
 
-turkfm_tension_wargoal_enforced_2 = {
+eqfm_tension_wargoal_enforced_2 = {
 	trigger = {
-		turkfm_can_deescalate_tension_trigger = yes
+		eqfm_can_deescalate_tension_trigger = yes
 		c:TUR ?= this
 		scope:target = {
 			country_rank >= rank_value:great_power
@@ -647,17 +733,17 @@ turkfm_tension_wargoal_enforced_2 = {
 	}
 	effect = {
 		change_global_variable = {
-			name = turkfm_deescalation_var
+			name = eqfm_deescalation_var
 			add = 5
 		}
 		c:TUR ?= {
-			turkfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
+			eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
 		}
 		every_country = {
 			limit = {
-				turkfm_balkans_party_trigger = yes
+				eqfm_balkans_party_trigger = yes
 			}
-			post_notification = notification_turkfm_wargoal_enforced_2
+			post_notification = notification_eqfm_wargoal_enforced_2
 		}
 	}
 }

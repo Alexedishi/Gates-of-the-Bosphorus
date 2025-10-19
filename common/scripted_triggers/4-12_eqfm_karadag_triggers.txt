@@ -1,0 +1,61 @@
+﻿## Black Mountain Triggers ##
+eqfm_has_black_mountain_expedition_trigger = {
+	trigger_if = {
+		limit = {
+			c:MON ?= this
+		}
+		custom_tooltip = {
+			text = eqfm_has_tribal_chief
+			has_variable = eqfm_black_mountain_expedition_var
+		}
+	}
+	trigger_else = {
+		custom_tooltip = {
+			text = turkfm_has_black_mountain_expedition
+			has_variable = eqfm_black_mountain_expedition_var
+		}
+	}
+}
+
+eqfm_black_mountain_placid_trigger = {
+	NOT = {
+		has_global_variable = eqfm_black_mountain_skirmish_var
+	}
+	c:MON ?= {
+		eqfm_has_black_mountain_expedition_trigger = no
+	}
+}
+
+eqfm_black_mountain_raiding_trigger = {
+	NOT = {
+		has_global_variable = eqfm_black_mountain_skirmish_var
+	}
+	c:MON ?= this
+	eqfm_has_black_mountain_expedition_trigger = yes
+}
+
+eqfm_black_mountain_raided_trigger = {
+	NOT = {
+		has_global_variable = eqfm_black_mountain_skirmish_var
+	}
+	c:TUR ?= this
+	eqfm_has_black_mountain_expedition_trigger = no
+	c:MON ?= {
+		eqfm_has_black_mountain_expedition_trigger = yes
+	}
+}
+
+eqfm_black_mountain_patrolling_trigger = {
+	NOT = {
+		has_global_variable = eqfm_black_mountain_skirmish_var
+	}
+	c:TUR ?= this
+	eqfm_has_black_mountain_expedition_trigger = yes
+	c:MON ?= {
+		eqfm_has_black_mountain_expedition_trigger = yes
+	}
+}
+
+eqfm_black_mountain_skirmish_trigger = {
+	has_global_variable = eqfm_black_mountain_skirmish_var
+}

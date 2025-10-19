@@ -1,0 +1,79 @@
+﻿eqfm_captured_nobles_value = {
+	value = 0
+	every_character_in_void = {
+		limit = {
+			OR = {
+				has_template = template_eqfm_captive_bosnian
+				has_template = template_eqfm_captive_albanian
+				has_template = template_eqfm_captive_serbian
+			}
+		}
+		add = 1
+	}
+}
+
+eqfm_raiding_income_value = {
+	# Integrated from je_values.txt 27-AUG-2025; ##DIFF_MARK
+	value = 0
+	add = {
+		value = {
+			value = c:MON.army_power_projection
+			multiply = c:MON.var:raiding_intensity
+			multiply = 0.15
+		}
+		desc = eqfm_value_from_raiding_intensity
+	}
+    if = {
+        limit = {
+            has_modifier = modifier_eqfm_practicing_headtaking_mon
+        }
+        add = {
+            value = 100
+            desc = eqfm_value_from_practicing_headtaking
+        }
+    }
+	if = {
+		limit = {
+			c:MON ?= {
+				eqfm_has_black_mountain_expedition_trigger = no
+			}
+		}
+		divide = {
+			value = 4
+			desc = eqfm_value_from_no_raid_leader
+		}
+	}
+	if = {
+		limit = {
+			has_global_variable = eqfm_black_mountain_skirmish_var
+		}
+		divide = {
+			value = 2
+			desc = eqfm_value_from_skirmish
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_eqfm_ransomed_noble
+		}
+		add = 500
+	}
+	round = yes
+	min = 0
+	max = eqfm_max_raiding_income_value
+}
+
+eqfm_max_raiding_income_value = {
+	value = 5000
+}
+
+eqfm_raiding_level_value = { # 1-6
+	#TODO This is so strange, and I'll be adding my own script in the future, I guess
+	value = eqfm_raiding_income_value
+	add = 501 #stops divide by 0 errors, round up
+	min = 1
+	divide = 1000
+	min = 1
+	round = yes
+	max = 6
+}

@@ -1,0 +1,596 @@
+﻿je_eqfm_balkan_situation_main = { # This is assigned to TUR
+	group = je_group_internal_affairs
+	icon = "gfx/interface/icons/invention_icons/pan_nationalism.dds"
+	weight = 1000
+	
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	is_shown_in_lobby = {
+		c:TUR ?= this
+	}
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		set_variable = eqfm_balkan_situation_starter_var
+	}
+
+	complete = {
+		any_scope_state = {
+			region = sr:region_balkans
+		}
+		OR = {
+			AND = {
+				trigger_if = {
+					limit = {
+						any_scope_state = {
+							state_region = {
+								is_homeland = cu:greek
+							}
+						}
+					}
+					cultural_acceptance_base = {
+						target = cu:greek
+						value >= acceptance_status_5
+					}
+				}
+				trigger_if = {
+					limit = {
+						any_scope_state = {
+							state_region = {
+								is_homeland = cu:rhomaios
+							}
+						}
+					}
+					cultural_acceptance_base = {
+						target = cu:rhomaios
+						value >= acceptance_status_5
+					}
+				}
+				trigger_if = {
+					limit = {
+						any_scope_state = {
+							state_region = {
+								is_homeland = cu:serb
+							}
+						}
+					}
+					cultural_acceptance_base = {
+						target = cu:serb
+						value >= acceptance_status_5
+					}
+				}
+				trigger_if = {
+					limit = {
+						any_scope_state = {
+							state_region = {
+								is_homeland = cu:bulgarian
+							}
+						}
+					}
+					cultural_acceptance_base = {
+						target = cu:bulgarian
+						value >= acceptance_status_5
+					}
+				}
+				trigger_if = {
+					limit = {
+						any_scope_state = {
+							state_region = {
+								is_homeland = cu:romanian
+							}
+						}
+					}
+					cultural_acceptance_base = {
+						target = cu:romanian
+						value >= acceptance_status_5
+					}
+				}
+				trigger_if = {
+					limit = {
+						any_scope_state = {
+							state_region = {
+								is_homeland = cu:bosniak
+							}
+						}
+					}
+					cultural_acceptance_base = {
+						target = cu:bosniak
+						value >= acceptance_status_5
+					}
+				}
+				trigger_if = {
+					limit = {
+						any_scope_state = {
+							state_region = {
+								is_homeland = cu:albanian
+							}
+						}
+					}
+					cultural_acceptance_base = {
+						target = cu:albanian
+						value >= acceptance_status_5
+					}
+				}
+				trigger_if = {
+					limit = {
+						any_scope_state = {
+							state_region = {
+								is_homeland = cu:croat
+							}
+						}
+					}
+					cultural_acceptance_base = {
+						target = cu:croat
+						value >= acceptance_status_5
+					}
+				}
+				trigger_if = {
+					limit = {
+						any_scope_state = {
+							state_region = {
+								is_homeland = cu:slovene
+							}
+						}
+					}
+					cultural_acceptance_base = {
+						target = cu:slovene
+						value >= acceptance_status_5
+					}
+				}
+			}
+		}
+	}
+
+	on_complete = {
+		set_global_variable = eqfm_separatism_complete
+		eqfm_cleanup_tension_main_effect = yes
+		trigger_event = {
+			id = eqfm_balkans.009 # Dominion Over Rumelia
+		}
+	}
+
+	fail = {
+		OR = {
+			NOT = {
+				any_scope_state = {
+					region = sr:region_balkans
+				}
+			}
+			AND = {
+				custom_tooltip = {
+					text = turkfm_sick_man_failed
+					has_global_variable = turkfm_sick_man_failed
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_failed
+					has_global_variable = turkfm_tanzimat_failed
+				}
+			}
+		}
+		hidden_trigger = {
+			# Sanity triggers in case a revolution/secession steals the last state in the Balkans
+			has_any_secessionists_broken_out = no
+			has_any_secessionists_growing = no
+			is_at_war = no
+			has_revolution = no
+		}
+	}
+
+	on_fail = {
+		set_global_variable = eqfm_separatism_complete
+		eqfm_cleanup_tension_main_effect = yes
+		trigger_event = {
+			id = eqfm_balkans.008 # Rumelia Lost
+		}
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			eqfm_calculate_balkan_situation_variables_effect = yes
+			eqfm_update_balkan_situation_progressbar_effect = yes
+			eqfm_check_balkan_situation_phase_effect = yes
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {
+			eqfm_balkans.002 # The Rise of Nationalism
+			eqfm_balkans.003 # Nationalist Movements Intensify
+			eqfm_balkans.005 # Riots Break Out in State
+		}
+		random_events = {
+			chance_of_no_event = 75
+
+			# Stable Phase
+			5 = eqfm_balkans.100 # Extortionate Taxation in State
+			5 = eqfm_balkans.101 # Plague Outbreak in State
+			5 = eqfm_balkans.102 # Ecumenical Patriarch Demands Protections
+			5 = eqfm_balkans.103 # The Language of Paperwork
+			5 = eqfm_balkans.104 # Food Shortages in State
+			5 = eqfm_balkans.105 # Peasants March in State
+			5 = eqfm_balkans.106 # Local Bey Exceeds Authority
+			5 = eqfm_balkans.107 # Church Services Disrupted
+			5 = eqfm_balkans.108 # Villages Request Schools
+			5 = eqfm_balkans.109 # Revivalist Publications
+
+			# Unrest Phase
+			5 = eqfm_balkans.110 # Storefronts Ransacked
+			5 = eqfm_balkans.111 # Minority Rejects Classification
+			5 = eqfm_balkans.112 # Shipping Merchants Held Up
+			5 = eqfm_balkans.113 # Crowds Gather in City Hub
+			5 = eqfm_balkans.114 # Language Bans in State
+			5 = eqfm_balkans.115 # Gun-Runners Intercepted (Greek)
+			5 = eqfm_balkans.116 # Gun-Runners Intercepted (Yugoslav)
+			5 = eqfm_balkans.117 # Piracy in State
+			5 = eqfm_balkans.118 # Villagers Displaced in State
+			5 = eqfm_balkans.119 # Brigands Cross the Border
+
+			# Hostility Phase
+			5 = eqfm_balkans.120 # Churches Burned in State
+			5 = eqfm_balkans.121 # Popular Speaker Lynched in State
+			5 = eqfm_balkans.122 # Brigandage in State
+			5 = eqfm_balkans.123 # Port Burned in State
+			5 = eqfm_balkans.124 # Blood Libel
+			5 = eqfm_balkans.125 # Administrative Offices Ransacked
+			5 = eqfm_balkans.126 # Military Column Attacked
+			5 = eqfm_balkans.127 # Muslim Militia Organizes in State
+			5 = eqfm_balkans.128 # Local Garrison Fires into Crowd
+			5 = eqfm_balkans.129 # Railways Bombed in State
+
+			# Deconfliction Phase
+			5 = eqfm_balkans.130 # Dragoman Reduces Tensions
+			5 = eqfm_balkans.131 # Inter-faith Dialogue
+			5 = eqfm_balkans.133 # Spy Ring Busted
+			
+			# Crisis Phase
+			
+		}
+		effect = {
+			eqfm_advance_balkan_situation_variables_effect = yes
+		}
+	}
+}
+
+je_eqfm_balkan_situation_riots = {
+	group = je_group_internal_affairs
+	icon = "gfx/interface/icons/event_icons/bicorne_hat.dds"
+	weight = 500
+	
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+	
+	scripted_progress_bar = eqfm_riot_progress_bar
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		set_variable = {
+			name = eqfm_riot_var
+			value = 50
+		}
+		set_variable = {
+			name = eqfm_riot_progress_var
+			value = 0
+		}
+	}
+
+	complete = {
+		OR = {
+			custom_tooltip = {
+				text = je_eqfm_balkan_situation_riots_invalid
+				OR = {
+					NOT = {
+						has_global_variable = eqfm_balkans_phase_var
+					}
+					global_var:eqfm_balkans_phase_var != flag:eqfm_hostility
+				}
+			}
+			NOR = {
+				any_scope_state = {
+					has_modifier = modifier_eqfm_race_riots
+				}
+				custom_tooltip = {
+					text = je_eqfm_balkan_situation_riots_complete
+					any_country = {
+						is_diplomatic_play_enemy_of = root
+						has_modifier = modifier_eqfm_nationalist_uprising
+					}
+				}
+				hidden_trigger = {
+					NOT = {
+						has_variable = eqfm_recent_revolt_var
+					}
+				}
+			}
+		}
+	}
+
+	on_complete = { # Set variables for deescalation and call eqfm_check_balkan_situation_phase_effect
+		eqfm_add_extremely_large_deescalation = yes
+		eqfm_cleanup_riots_effect = yes
+	}
+
+	on_weekly_pulse = {
+		events = {
+			eqfm_balkans.007 # Riots in State Suppressed
+		}
+		effect = {
+			eqfm_update_riot_variables_effect = yes
+			eqfm_update_riot_modifiers_effect = yes
+			change_variable = {
+				name = eqfm_riot_var
+				add = var:eqfm_riot_progress_var
+			}
+			clamp_variable = {
+				name = eqfm_riot_var
+				max = 100
+				min = 0
+			}
+			je:je_eqfm_balkan_situation_riots = {
+				set_bar_progress = {
+					value = owner.var:eqfm_riot_var
+					name = eqfm_riot_progress_bar
+				}
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		random_events = {
+			5 = eqfm_balkans.140 # Fortress in State Beseiged
+			5 = eqfm_balkans.141 # Crowds Burn Administrative Palace
+			5 = eqfm_balkans.142 # IG Sides with Minorities
+			5 = eqfm_balkans.143 # Ulema Mobilizes the Faithful
+			5 = eqfm_balkans.144 # Armed Forces Requests Intervention
+			5 = eqfm_balkans.147 # Rioting Worsens in State
+		}
+	}
+}
+
+je_eqfm_eastern_question = {
+	group = je_group_com_situations
+	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
+	weight = 100
+	
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+	
+	scripted_progress_bar = eqfm_balkfm_escalation_progress_bar
+	scripted_progress_bar = eqfm_balkfm_deescalation_progress_bar
+
+	scripted_button = eqfm_accelerate_tensions_button
+	scripted_button = eqfm_decelerate_tensions_button
+	scripted_button = eqfm_declare_disloyalty_button
+	scripted_button = eqfm_declare_loyalty_button
+	scripted_button = eqfm_greek_gunrunners_button
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		eqfm_initialize_eastern_question_effect = yes
+		if = {
+			limit = {
+				NOT = {
+					has_variable = eqfm_eqfm_started
+				}
+			}
+			if = {
+				limit = {
+					c:TUR ?= this
+				}
+				trigger_event = {
+					id = eqfm_balkans.001 # The Peoples of the Empire
+					days = 1
+					popup = yes
+				}
+			}
+			else = {
+				trigger_event = {
+					id = eqfm_balkans.011 # The Eastern Question
+					days = 1
+					popup = yes
+				}
+			}
+		}
+		else = {
+			set_variable = eqfm_eqfm_started
+		}
+	}
+	
+	complete = {
+		custom_tooltip = {
+			text = eqfm_separatism_completed_third
+			has_global_variable = eqfm_separatism_complete
+		}
+	}
+	
+	on_complete = {
+		eqfm_cleanup_eqfm_effect = yes
+	}
+	
+	fail = {
+		custom_tooltip = {
+			text = turkfm_separatism_failed_third
+			NOR = {
+				exists = c:TUR
+				c:TUR = {
+					has_journal_entry = je_eqfm_balkan_situation_main
+				}
+			}
+		}
+	}
+	
+	on_fail = {
+		eqfm_cleanup_eqfm_effect = yes
+	}
+	
+	on_weekly_pulse = {
+		events = {
+			eqfm_balkans.190 # Ottoman Humiliation Monitor Event
+			eqfm_balkans.191 # Ottoman Rivalry Monitor Event
+			eqfm_balkans.192 # Ottoman Rivalry Monitor Event
+		}
+		effect = {
+			eqfm_update_balkan_situation_progressbar_effect = yes
+		}
+	}
+	
+	on_monthly_pulse = {
+		effect = {
+			eqfm_update_balkan_situation_lists_effect = yes
+		}
+		random_events = {
+			500 = 0
+			5 = eqfm_balkans.182 # Diplomat Offers Mediation
+		}
+	}
+	
+	status_desc = {
+		triggered_desc = {
+			desc = eqfm_tension_status
+			trigger = {
+				has_global_variable = eqfm_balkans_phase_var
+			}
+		}
+	}
+}
+
+je_eqfm_balkan_situation_crisis = {
+	group = je_group_crises
+	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
+	weight = 100000
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	is_shown_in_lobby = {
+		has_dlc_feature = ip3_content # National Awakening
+		c:TUR ?= this
+	}
+	
+	scripted_progress_bar = eqfm_crisis_progress_bar
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		eqfm_initialize_crisis_effect = yes
+	}
+
+	complete = {
+		custom_tooltip = {
+			text = je_eqfm_balkan_situation_crisis_complete
+			global_var:eqfm_crisis_var >= 100
+		}
+		has_any_secessionists_broken_out = no
+		has_any_secessionists_growing = no
+		is_at_war = no
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = eqfm_balkans.029 # Order Returns to Rumelia
+		}
+		hidden_effect = {
+			every_country = {
+				limit = {
+					has_journal_entry = je_eqfm_eastern_question
+				}
+				trigger_event = {
+					id = eqfm_balkans.029 # Order Returns to Rumelia
+				}
+			}
+		}
+		eqfm_cleanup_crisis_effect = yes
+		eqfm_force_deconfliction_effect = yes
+	}
+
+	fail = {
+		custom_tooltip = {
+			text = je_eqfm_balkan_situation_crisis_complete
+			global_var:eqfm_crisis_var <= 0
+		}
+	}
+
+	on_fail = {
+		trigger_event = {
+			id = eqfm_balkans.028 # Rumelia in Disarray
+		}
+		hidden_effect = {
+			every_country = {
+				limit = {
+					has_journal_entry = je_eqfm_eastern_question
+				}
+				trigger_event = {
+					id = eqfm_balkans.028 # Rumelia in Disarray
+				}
+			}
+		}
+		eqfm_cleanup_crisis_effect = yes
+		eqfm_force_deconfliction_effect = yes
+	}
+
+	invalid = {
+		OR = {
+			NOT = {
+				has_global_variable = eqfm_balkans_phase_var
+			}
+			AND = {
+				has_global_variable = eqfm_balkans_phase_var
+				global_var:eqfm_balkans_phase_var != flag:eqfm_crisis
+			}
+			has_global_variable = eqfm_separatism_complete
+		}
+	}
+
+	on_invalid = {
+		eqfm_cleanup_crisis_effect = yes
+		if = {
+			limit = {
+				NOT = {
+					has_global_variable = eqfm_separatism_complete
+				}
+			}
+			eqfm_force_deconfliction_effect = yes
+		}
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			set_global_variable = {
+				name = eqfm_crisis_progress_var
+				value = eqfm_crisis_progress_value
+			}
+			change_global_variable = {
+				name = eqfm_crisis_duration_var
+				add = 1
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			change_global_variable = {
+				name = eqfm_crisis_var
+				add = global_var:eqfm_crisis_progress_var
+			}
+			clamp_global_variable = {
+				name = eqfm_crisis_var
+				max = 250
+				min = 0
+			}
+		}
+	}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_global_variable = eqfm_crisis_var
+				}
+				desc = je_eqfm_balkan_situation_crisis_status
+			}
+		}
+	}
+}
