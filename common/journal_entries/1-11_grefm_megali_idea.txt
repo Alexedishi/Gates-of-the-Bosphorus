@@ -79,7 +79,7 @@
 				c:AST ?= this
 			}
 			trigger_event = {
-				id = grefm_byzantium.900 # The Emu has Landed
+				id = grefm_emu_empire.001 # 'Straya has Landed
 			}
 			set_variable = grefm_megali_idea_aspirant
 		}
@@ -337,5 +337,217 @@ je_grefm_the_greek_plan = {
 	}
 
 	weight = 1000
+
+}
+
+je_grefm_byzantine_restoration = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+	weight = 10000
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	scripted_button = grefm_balkans_triumph_button
+	scripted_button = grefm_anatolia_triumph_button
+	scripted_button = grefm_levant_triumph_button
+	scripted_button = grefm_egypt_triumph_button
+	scripted_button = grefm_italy_triumph_button
+
+	is_shown_when_inactive = {
+		OR = {
+			gbbf_country_has_greek_culture_trigger = yes
+			has_variable = grefm_megali_idea_aspirant
+		}
+		NOT = {
+			has_variable = grefm_weaksauce
+		}
+	}
+
+	possible = {
+		custom_tooltip = {
+			text = grefm_greek_empire_formed
+			c:BYZ ?= this
+		}
+		trigger_if = {
+			limit = {
+				has_journal_entry = je_grefm_greek_nationalism
+			}
+			custom_tooltip = {
+				text = grefm_greek_identity_resolved
+				has_variable = grefm_nationalism_complete
+			}
+		}
+		is_subject = no
+		is_diplomatic_play_committed_participant = no
+	}
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		if = {
+			limit = {
+				country_has_primary_culture = cu:australian
+			}
+			scope:journal_entry = {
+				add_modifier = modifier_grefm_wanakterian_aspiriations
+			}
+			trigger_event = {
+				id = grefm_emu_empire.001 # The Empire from Down Under
+			}
+		}
+		else_if = {
+			limit = {
+				country_has_primary_culture = cu:greek
+				NOT = {
+					country_has_primary_culture = cu:rhomaios
+				}
+			}
+			scope:journal_entry = {
+				add_modifier = modifier_grefm_hellenic_aspiriations
+			}
+			trigger_event = {
+				id = grefm_greek_empire.001 # The Revenge of the Greeks
+			}
+		}
+		else_if = {
+			limit = {
+				country_has_primary_culture = cu:rhomaios
+				NOT = {
+					country_has_primary_culture = cu:greek
+				}
+			}
+			scope:journal_entry = {
+				add_modifier = modifier_grefm_imperial_aspiriations
+			}
+			trigger_event = {
+				id = grefm_roman_empire.001 # The Purple Pheonix
+			}
+		}
+		else_if = {
+			limit = {
+				country_has_primary_culture = cu:rhomaios
+				country_has_primary_culture = cu:greek
+			}
+			scope:journal_entry = {
+				add_modifier = modifier_grefm_imperial_aspiriations
+			}
+			trigger_event = {
+				id = grefm_hybrid_empire.001 # The New Greece Rises
+			}
+		}
+	}
+
+	modifiers_while_active = {
+		modifier_grefm_imperial_aspiriations
+	}
+
+	complete = {
+		owns_entire_state_region = STATE_EASTERN_THRACE
+		trigger_if = {
+			limit = {
+				has_variable = grefm_embraced_roman_reconquest
+			}
+			owns_entire_state_region = STATE_LAZIO
+			country_rank >= rank_value:great_power
+			has_modifier = modifier_grefm_reclaimed_balkans
+			has_modifier = modifier_grefm_reclaimed_anatolia
+			has_modifier = modifier_grefm_reclaimed_levant
+			has_modifier = modifier_grefm_reclaimed_egypt
+			has_modifier = modifier_grefm_reclaimed_italy
+		}
+		trigger_else = {
+			country_rank >= rank_value:major_power
+			has_modifier = modifier_grefm_reclaimed_balkans
+			has_modifier = modifier_grefm_reclaimed_anatolia
+			has_modifier = modifier_grefm_reclaimed_levant
+			has_modifier = modifier_grefm_reclaimed_egypt
+		}
+		is_at_war = no
+		is_subject = no
+		gold_reserves > 0
+	}
+
+	on_complete = {
+		if = {
+			limit = {
+				country_has_primary_culture = cu:australian
+			}
+			trigger_event = {
+				id = grefm_emu_empire.902
+			}
+		}
+		else_if = {
+			limit = {
+				country_has_primary_culture = cu:greek
+				NOT = {
+					country_has_primary_culture = cu:rhomaios
+				}
+			}
+			trigger_event = {
+				id =
+			}
+		}
+		else_if = {
+			limit = {
+				country_has_primary_culture = cu:rhomaios
+				NOT = {
+					country_has_primary_culture = cu:greek
+				}
+			}
+			trigger_event = {
+				id =
+			}
+		}
+		else_if = {
+			limit = {
+				country_has_primary_culture = cu:rhomaios
+				country_has_primary_culture = cu:greek
+			}
+			trigger_event = {
+				id = grefm_hybrid_empire.009 # The Greek Realm
+			}
+		}
+		set_global_variable = grefm_byzantium_restored
+	}
+
+	fail = {
+		OR = {
+			is_subject = yes
+			AND = {
+				country_rank < rank_value:minor_power
+				gold_reserves < 0
+			}
+		}
+	}
+
+	on_fail = {
+	}
+
+	invalid = {
+		custom_tooltip = {
+			text = je_grefm_byzantine_restoration_rejected_trigger
+			has_variable = grefm_byzantine_restoration_rejected
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {
+		}
+	}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_variable = grefm_embraced_roman_reconquest
+				}
+				desc = je_grefm_byzantine_restoration_status_expanded
+			}
+			triggered_desc = {
+				desc = je_grefm_byzantine_restoration_status_base
+			}
+		}
+	}
 
 }
