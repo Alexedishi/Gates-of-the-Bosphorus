@@ -244,7 +244,7 @@ eqfm_appoint_tribal_chief_button = {
 		set_variable = eqfm_black_mountain_expedition_var
 	}
 	ai_chance = {
-		value = 0
+		value = 100
 	}
 }
 
@@ -269,6 +269,9 @@ eqfm_dismiss_tribal_chief_button = {
 	effect = {
 		eqfm_dismiss_tribal_chief_effect = yes
 	}
+	ai_chance = {
+		value = -1000
+	}
 }
 
 eqfm_ransom_captives_button = {
@@ -276,32 +279,42 @@ eqfm_ransom_captives_button = {
 	desc = "eqfm_ransom_captives_button_desc"
 	
 	visible = {
-		always = no # TODO enable when ready
 		has_dlc_feature = ip3_content # National Awakening
+		NOT = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+		}
 	}
 	
 	selected = {
-#		has_variable = turkfm_ransom_var
+		has_variable = eqfm_ransom_var
 	}
 	
 	possible = {
-#		custom_tooltip = {
-#			text = turkfm_has_captive_nobles
-#			hidden_trigger = {
-#				eqfm_captured_nobles_value > 0
-#			}
-#		}
+		custom_tooltip = {
+			text = eqmfm_has_captive_nobles
+			hidden_trigger = {
+				eqfm_captured_nobles_value > 0
+			}
+		}
+		NOR = {
+			has_modifier = modifier_eqfm_ransomed_noble
+			has_modifier = modifier_eqfm_ransom_failed
+			has_modifier = modifier_eqfm_executed_noble
+		}
 	}
 	
 	effect = {
-#		trigger_event = {
-#			id = eqfm_black_mountain.014 # The Gaols of Cetinje
-#		}
-#		set_variable = turkfm_ransom_var
+		trigger_event = {
+			id = eqfm_black_mountain.014 # The Gaols of Cetinje
+		}
+		set_variable = {
+			name = eqfm_ransom_var
+			months = 6
+		}
 	}
 	
 	ai_chance = {
-		value = -1000
+		value = 5
 	}
 }
 

@@ -703,6 +703,350 @@ eqfm_black_mountain.013 = {
 	}
 }
 
+eqfm_black_mountain.014 = {
+	# The Gaols of Cetinje
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_black_mountain.014.t
+	desc = eqfm_black_mountain.014.d
+	flavor = eqfm_black_mountain.014.f
+
+	event_image = {
+		video = "votp_prison"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by eqfm_ransom_captives_button
+	}
+
+	cancellation_trigger = {
+		OR = {
+			eqfm_captured_nobles_value <= 0
+			NOT = {
+				has_variable = eqfm_ransom_var
+			}
+		}
+	}
+
+	immediate = {
+		random_character_in_void = {
+			limit = {
+				has_variable = eqfm_captive_var
+			}
+			save_scope_as = eqfm_captive_scope_1
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_captive_scope_1
+				any_character_in_void = {
+					has_variable = eqfm_captive_var
+					NOT = {
+						scope:eqfm_captive_scope_1 != this
+					}
+				}
+			}
+			random_character_in_void = { 
+				limit = {
+					has_variable = eqfm_captive_var
+					NOT = {
+						scope:eqfm_captive_scope_1 != this
+					}
+				}
+				save_scope_as = eqfm_captive_scope_2
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_captive_scope_2
+				any_character_in_void = {
+					has_variable = eqfm_captive_var
+					NOT = {
+						scope:eqfm_captive_scope_1 != this
+						scope:eqfm_captive_scope_2 != this
+					}
+				}
+			}
+			random_character_in_void = {
+				limit = {
+					has_variable = eqfm_captive_var
+					NOT = {
+						scope:eqfm_captive_scope_1 != this
+						scope:eqfm_captive_scope_2 != this
+					}
+				}
+				save_scope_as = eqfm_captive_scope_3
+			}
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.014.a
+		trigger = { 
+			exists = scope:eqfm_captive_scope_1
+		}
+		custom_tooltip = {
+			text = eqfm_black_mountain.014.a.tt
+			scope:eqfm_captive_scope_1 = {
+				set_variable = eqfm_ransom_target_var
+			}
+		}
+		c:TUR = {
+			trigger_event = {
+				id = eqfm_black_mountain.015 # Montenegro Offers Ransom
+			}
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.014.b
+		trigger = {
+			exists = scope:eqfm_captive_scope_2
+		}
+		custom_tooltip = {
+			text = eqfm_black_mountain.014.b.tt
+			scope:eqfm_captive_scope_2 = {
+				set_variable = eqfm_ransom_target_var
+			}
+		}
+		c:TUR = {
+			trigger_event = {
+				id = eqfm_black_mountain.015 # Montenegro Offers Ransom
+			}
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.014.c
+		trigger = {
+			exists = scope:eqfm_captive_scope_3
+		}
+		custom_tooltip = {
+			text = eqfm_black_mountain.014.c.tt
+			scope:eqfm_captive_scope_3 = {
+				set_variable = eqfm_ransom_target_var
+			}
+		}
+		c:TUR = {
+			trigger_event = {
+				id = eqfm_black_mountain.015 # Montenegro Offers Ransom
+			}
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.014.e
+		default_option = yes
+		custom_tooltip = {
+			text = gbbf_nothing_happens
+			remove_variable = eqfm_ransom_var
+		}
+	}
+
+}
+
+eqfm_black_mountain.015 = { # 
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_black_mountain.015.t
+	desc = eqfm_black_mountain.015.d
+	flavor = eqfm_black_mountain.015.f
+
+	event_image = {
+		video = "votp_hostile_court"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by eqfm_black_mountain.014
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			any_character_in_void = { 
+				has_variable = eqfm_ransom_target_var
+			}
+		}
+	}
+
+	immediate = {
+		random_character_in_void = {
+			limit = {
+				has_variable = eqfm_ransom_target_var
+			}
+			save_scope_as = eqfm_ransom_target_scope
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.015.a
+		default_option = yes
+		scope:eqfm_ransom_target_scope = {
+			set_variable = eqfm_ransom_accepted
+		}
+		add_modifier = { 
+			name = modifier_eqfm_accepted_ransom
+			months = gbbf_duration_2_plus_half_years
+		}
+		capital = {
+			add_radicals_in_state = { 
+				pop_type = officers
+				value = medium_radicals
+			}
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.015.b
+		scope:eqfm_ransom_target_scope = {
+			set_variable = eqfm_ransom_rejected
+		}
+		add_modifier = {
+			name = modifier_eqfm_refused_ransom
+			months = gbbf_duration_2_plus_half_years
+		}
+		capital = {
+			add_radicals_in_state = {
+				pop_type = aristocrats
+				value = medium_radicals
+			}
+		}
+	}
+	
+	after = {
+		c:MON = {
+			trigger_event = {
+				id = eqfm_black_mountain.016 # Ottoman Reply to Ransom
+				days = { 5 15 }
+			}
+		}
+	}
+
+}
+
+eqfm_black_mountain.016 = { # 
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_black_mountain.016.t
+	desc = {
+		triggered_desc = {
+			trigger = {
+				scope:eqfm_ransom_target_scope ?= {
+					has_variable = eqfm_ransom_accepted
+				}
+			}
+			desc = eqfm_black_mountain.016.d1
+		}
+		triggered_desc = {
+			trigger = {
+				scope:eqfm_ransom_target_scope ?= {
+					has_variable = eqfm_ransom_rejected
+				}
+			}
+			desc = eqfm_black_mountain.016.d2
+		}
+	}
+	flavor = eqfm_black_mountain.016.f
+
+	event_image = {
+		video = "africa_diplomats_negotiating"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# eqfm_black_mountain.015
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			any_character_in_void = {
+				has_variable = eqfm_ransom_target_var
+			}
+		}
+	}
+
+	immediate = {
+		random_character_in_void = {
+			limit = {
+				has_variable = eqfm_ransom_target_var
+			}
+			save_scope_as = eqfm_ransom_target_scope
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.016.a
+		default_option = yes
+		trigger = {
+			scope:eqfm_ransom_target_scope = {
+				has_variable = eqfm_ransom_accepted
+			}
+		}
+		custom_tooltip = {
+			text = eqfm_black_mountain.016.a.tt
+			scope:eqfm_ransom_target_scope = {
+				gbbf_free_from_void = yes
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_ransomed_noble
+			months = gbbf_duration_2_plus_half_years
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.016.b
+		trigger = {
+			scope:eqfm_ransom_target_scope = {
+				has_variable = eqfm_ransom_rejected
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_ransom_failed
+			months = gbbf_duration_5_years
+		}
+		custom_tooltip = {
+			text = eqfm_black_mountain.016.b.tt
+			scope:eqfm_ransom_target_scope = {
+				remove_variable = eqfm_ransom_target_var
+				remove_variable = eqfm_ransom_rejected
+			}
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.016.c
+		trigger = {
+			scope:eqfm_ransom_target_scope = {
+				has_variable = eqfm_ransom_rejected
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_executed_noble
+			months = gbbf_duration_5_years
+		}
+		scope:eqfm_ransom_target_scope = {
+			kill_character = yes
+		}
+		c:TUR = {
+			post_notification = notification_eqfm_noble_beheaded
+		}
+	}
+
+}
+
 ## Black Mountain Expedition Narrative Events ##
 eqfm_black_mountain.020 = {
 	# Marauding in the Hinterlands
@@ -1712,9 +2056,9 @@ eqfm_black_mountain.029 = {
 			}
 			every_character_in_void = {
 				limit = {
-					has_variable = turkfm_captive_var
+					has_variable = eqfm_captive_var
 				}
-				remove_variable = turkfm_captive_var
+				remove_variable = eqfm_captive_var
 			}
 			remove_global_variable = eqfm_black_mountain_skirmish_var
 		}
