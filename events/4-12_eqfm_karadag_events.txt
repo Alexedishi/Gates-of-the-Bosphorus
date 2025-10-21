@@ -161,6 +161,7 @@ eqfm_black_mountain.001 = {
 				save_scope_as = balkfm_joko_scope
 			}
 		}
+		eqfm_black_mountain_scopes_effect = yes
 	}
 	
 	option = {
@@ -170,7 +171,7 @@ eqfm_black_mountain.001 = {
 		trigger = {
 			c:MON ?= this
 		}
-		scope:balkfm_joko_scope = {
+		scope:eqfm_black_mountain_mon_leader = {
 			kill_character = yes
 		}
 		custom_tooltip = {
@@ -1497,7 +1498,7 @@ eqfm_black_mountain.023 = {
 	}
 	
 	immediate = {
-		# TODO scope save effect
+		eqfm_black_mountain_scopes_effect = yes
 		eqfm_clear_black_mountain_expedition_variables_effect = yes
 		if = {
 			limit = {
@@ -2045,21 +2046,9 @@ eqfm_black_mountain.029 = {
 				global_var:eqfm_black_mountain_skirmish_var <= 1
 			}
 			c:MON ?= {
-				eqfm_generate_captive_effect = yes
 				trigger_event = {
 					id = eqfm_black_mountain.058
 				}
-			}
-			c:TUR ?= {
-				trigger_event = {
-					id = eqfm_black_mountain.058
-				}
-			}
-			every_character_in_void = {
-				limit = {
-					has_variable = eqfm_captive_var
-				}
-				remove_variable = eqfm_captive_var
 			}
 			remove_global_variable = eqfm_black_mountain_skirmish_var
 		}
@@ -2164,11 +2153,6 @@ eqfm_black_mountain.030 = {
 	option = {
 		name = eqfm_black_mountain.030.a
 		default_option = yes
-		trigger = {
-			NOT = {
-				has_variable = gbbf_enter_the_meme_zone
-			}
-		}
 		add_modifier = {
 			name = modifier_eqfm_white_collar_crime
 			months = gbbf_duration_3_years
@@ -2184,59 +2168,6 @@ eqfm_black_mountain.030 = {
 	option = {
 		name = eqfm_black_mountain.030.b
 		trigger = {
-			NOT = {
-				has_variable = gbbf_enter_the_meme_zone
-			}
-			OR = {
-				eqfm_has_black_mountain_expedition_trigger = yes
-				army_size >= 10
-			}
-		}
-		show_as_unavailable = { always = yes }
-		highlighted_option = yes
-		add_modifier = {
-			name = modifier_eqfm_threw_yoshi_in_jail
-			months = gbbf_duration_3_years
-		}
-		scope:montenegro_state_scope = {
-			add_modifier = {
-				name = modifier_eqfm_yoshi_got_pinched_state
-				months = gbbf_duration_3_years
-			}
-			add_radicals_in_state = {
-				pop_type = aristocrats
-				value = large_radicals
-			}
-		}
-		ig:ig_landowners = {
-			add_modifier = {
-				name = modifier_eqfm_yoshi_got_pinched_ig
-				months = gbbf_duration_3_years
-			}
-		}
-	}
-	
-	option = {
-		name = eqfm_black_mountain.030.a2
-		trigger = {
-			has_variable = gbbf_enter_the_meme_zone
-		}
-		add_modifier = {
-			name = modifier_eqfm_white_collar_crime
-			months = gbbf_duration_3_years
-		}
-		scope:montenegro_state_scope = {
-			add_modifier = {
-				name = modifier_eqfm_white_collar_crime_state
-				months = gbbf_duration_3_years
-			}
-		}
-	}
-	
-	option = {
-		name = eqfm_black_mountain.030.b2
-		trigger = {
-			has_variable = gbbf_enter_the_meme_zone
 			OR = {
 				eqfm_has_black_mountain_expedition_trigger = yes
 				army_size >= 10
@@ -2409,11 +2340,6 @@ eqfm_black_mountain.031 = {
 		create_diplomatic_catalyst = {
 			type = catalyst_event_positive
 			target = scope:turkfm_hostage_nation
-		}
-		scope:turkfm_hostage_nation = {
-			trigger_event = {
-				id = eqfm_black_mountain.032 # Nobleman Held Captive Abroad (for Recipient)
-			}
 		}
 	}
 	
@@ -2594,6 +2520,7 @@ eqfm_black_mountain.033 = {
 		add_modifier = {
 			name = modifier_eqfm_landslide_aid_state_country
 			months = gbbf_duration_1_year
+			multiplier = money_amount_multiplier_small
 		}
 		add_loyalists = {
 			value = medium_radicals
@@ -2740,7 +2667,7 @@ eqfm_black_mountain.041 = {
 	
 	option = {
 		name = eqfm_black_mountain.041.b
-		add_small_peril_effect = {
+		eqfm_add_small_peril_effect = {
 			type = black_mountain
 		}
 		add_loyalists = {
@@ -2915,7 +2842,7 @@ eqfm_black_mountain.044 = {
 	option = {
 		name = eqfm_black_mountain.044.a
 		default_option = yes
-		add_medium_peril_effect = {
+		eqfm_add_medium_peril_effect = {
 			type = black_mountain
 		}
 	}
@@ -2929,7 +2856,7 @@ eqfm_black_mountain.044 = {
 		}
 		show_as_unavailable = { always = yes }
 		highlighted_option = yes
-		add_small_peril_effect = {
+		eqfm_add_small_peril_effect = {
 			type = black_mountain
 		}
 	}
@@ -3507,12 +3434,7 @@ eqfm_black_mountain.058 = {
 	}
 	
 	cancellation_trigger = {
-		OR = {
-			has_global_variable = eqfm_montenegrin_raiding_settled
-			NOT = {
-				has_global_variable = eqfm_black_mountain_skirmish_var
-			}
-		}
+		has_global_variable = eqfm_montenegrin_raiding_settled
 	}
 	
 	immediate = {
@@ -3560,6 +3482,10 @@ eqfm_black_mountain.058 = {
 					name = modifier_eqfm_failed_black_mountain_expedition_character
 					months = gbbf_duration_10_years
 				}
+				set_variable = {
+					name = eqfm_captive_commander_var
+					months = 6
+				}
 				set_variable = eqfm_captive_var
 				place_character_in_void = 120 # 10 years
 			}
@@ -3577,7 +3503,15 @@ eqfm_black_mountain.058 = {
 		trigger = {
 			c:MON ?= this
 		}
-		custom_tooltip = eqfm_karadag_commander_released
+		custom_tooltip = {
+			text = eqfm_karadag_commander_released
+			scope:eqfm_black_mountain_tur_leader = {
+				set_variable = {
+					name = eqfm_captive_commander_var
+					months = 6
+				}
+			}
+		}
 		c:TUR ?= {
 			set_variable = eqfm_karadag_commander_returned
 			trigger_event = {

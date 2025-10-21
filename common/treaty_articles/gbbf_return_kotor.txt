@@ -1,82 +1,91 @@
-﻿gbbf_cease_raiding = {
+﻿gbbf_return_kotor = {
 	kind = directed
 	cost = 25
-
+	
 	icon = "gfx/interface/icons/diplomatic_treaties_articles_icons/law_commitment_treaties.dds"
-
+	
 	flags = {
 		can_be_enforced
 	}
-
+	
 	maintenance_paid_by = target_country
 	usage_limit = once_per_side
-
+	
 	visible = {
 		has_dlc_feature = ip3_content
 		NOT = {
 			has_global_variable = eqfm_montenegrin_raiding_settled
 		}
-		c:MON ?= this
+		c:AUS ?= this
+		has_state_in_state_region = STATE_MONTENEGRO
 		scope:other_country = {
-			c:TUR ?= this
+			c:MON ?= this
 		}
 	}
-
+	
 	possible = {
-		c:MON ?= this
+		c:AUS ?= this
+		has_state_in_state_region = STATE_MONTENEGRO
 		scope:other_country = {
-			c:TUR ?= this
+			c:MON ?= this
 		}
 	}
-
+	
 	can_ratify = {}
-
+	
 	on_entry_into_force = {
-		eqfm_cleanup_black_mountain_effect = yes
+		s:STATE_MONTENEGRO = {
+			every_scope_state = {
+				limit = {
+					owner = c:AUS
+				}
+				set_state_owner = c:MON
+			}
+		}
 	}
-
+	
 	on_withdrawal = {}
-
+	
 	on_break = {}
-
+	
 	ai = {
 		treaty_categories = {
-			ideology
+			expansion
 		}
-
+		
 		evaluation_chance = {
 			value = 0.1
-
+			
 			add = {
 				value = country_rank
 				multiply = 0.05
 			}
 		}
-
+		
 		article_ai_usage = {
 			request
 		}
-
+		
 		inherent_accept_score = {
 			value = 0
-
+			
 			if = {
 				limit = {
 					scope:source_country ?= this
 				}
-
+				
 				scope:source_country = {
 					save_temporary_scope_as = actor
 				}
 				scope:target_country = {
 					save_temporary_scope_as = target
 				}
-
+				
 				add = {
 					desc = "DIPLOMATIC_ACCEPTANCE_BASE_ADDITIONAL"
 					value = -50
 				}
-
+				
 				add = {
 					desc = "DIPLOMATIC_ACCEPTANCE_ATTITUDE"
 					if = {
@@ -99,7 +108,7 @@
 						value = -1000
 					}
 				}
-
+				
 				add = {
 					desc = "DIPLOMATIC_ACCEPTANCE_INFAMY"
 					if = {
@@ -109,7 +118,7 @@
 						value = -1000
 					}
 				}
-
+				
 				if = {
 					limit = {
 						"num_alliances_and_defensive_pacts_with_rivals(scope:target_country)" > 0
@@ -119,7 +128,7 @@
 						value = -1000
 					}
 				}
-
+				
 				if = {
 					limit = {
 						exists = power_bloc
@@ -149,7 +158,7 @@
 				scope:source_country = {
 					save_temporary_scope_as = target
 				}
-
+				
 				add = {
 					desc = "DIPLOMATIC_ACCEPTANCE_BASE_ADDITIONAL"
 					value = 30
@@ -157,20 +166,20 @@
 			}
 		}
 	}
-
+	
 	wargoal = {
 		execution_priority = 21
-
+		
 		contestion_type = control_any_target_country_state
-
+		
 		maneuvers = {
 			value = 0
-
+			
 			add = {
 				desc = "MANEUVERS_BASE_VALUE"
 				value = 2.5
 			}
-
+			
 			scope:target_country = {
 				multiply = {
 					desc = "MANEUVERS_TARGET_COUNTRY_POPULATION_FACTOR"
@@ -181,15 +190,15 @@
 				}
 			}
 		}
-
+		
 		infamy = {
 			value = 0
-
+			
 			add = {
 				desc = "INFAMY_BASE_VALUE"
 				value = 0.25
 			}
-
+			
 			scope:target_country = {
 				multiply = {
 					desc = "INFAMY_TARGET_COUNTRY_POPULATION_FACTOR"
@@ -201,6 +210,6 @@
 			}
 		}
 	}
-
-
+	
+	
 }

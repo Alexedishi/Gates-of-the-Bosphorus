@@ -42,6 +42,7 @@
 	}
 }
 
+## Black Mountain Raiding Income Effects ##
 eqfm_weekly_black_mountain_effect = {
 	# Ok look bruv, I don't like this either. You got a problem, email the complaint line. A pipebomb will be delivered to your mailbox within 7 to 12 Bosnian business days.
 	if = {
@@ -88,69 +89,10 @@ eqfm_weekly_black_mountain_effect = {
 			remove_variable = mon_less_raiding
 			remove_variable = eqfm_raiding_status_cooldown_var
 		}
-
+		
 		## IP3 Raiding Income Effects ##
 		eqfm_check_raiding_target_effect = yes
 		eqfm_update_raiding_income_effect = yes
-
-		## IP3 Raiding Event Script ##
-		#Higher odds of ottoman Retribution Depending on Raiding Income. Note max Raiding income is 2500
-		#Note that montenegrin_raiding.1 can only fire once, after which montenegrin_raiding.2 fires from then on.
-		if = { #playing Russian Roulette each week
-			limit = {
-				eqfm_raiding_income_value > 4200
-			}
-			random_list = {
-				150 = { trigger_event = { id = montenegrin_raiding.1 popup = yes} } # Ottoman Attack
-				100 = { trigger_event = { id = montenegrin_raiding.2 popup = yes } }
-				600 = { } # nothing happens this week
-			}
-		}
-		else_if = {
-			limit = {
-				eqfm_raiding_income_value > 3500
-			}
-			random_list = {
-				150 = { trigger_event = { id = montenegrin_raiding.1 popup = yes} } # Ottoman Attack
-				100 = { trigger_event = { id = montenegrin_raiding.2 popup = yes } } # Ottoman Attack
-				2000 = { } # nothing happens this week
-			}
-		}
-		else_if = {
-			limit = {
-				eqfm_raiding_income_value > 2800
-			}
-			random_list = {
-				150 = { trigger_event = { id = montenegrin_raiding.1 popup = yes} } # Ottoman Attack
-				100 = { trigger_event = { id = montenegrin_raiding.2 popup = yes } } # Ottoman Attack
-				5000 = { } # nothing happens this week
-			}
-		}
-		else_if = {
-			limit = {
-				eqfm_raiding_income_value > 2000
-			}
-			random_list = {
-				150 = { trigger_event = { id = montenegrin_raiding.1 popup = yes} } # Ottoman Attack
-				100 = { trigger_event = { id = montenegrin_raiding.2 popup = yes } } # Ottoman Attack
-				10000 = { } # nothing happens this week
-			}
-		}
-		else_if = {
-			limit = {
-				eqfm_raiding_income_value > 1200
-			}
-			random_list = {
-				150 = { trigger_event = { id = montenegrin_raiding.1 popup = yes} } # Ottoman Attack
-				100 = { trigger_event = { id = montenegrin_raiding.2 popup = yes } } # Ottoman Attack
-				20000 = { } # nothing happens this week
-			}
-		}
-		else = {
-			random_list = {
-				20000 = { } # nothing happens this week
-			}
-		}
 	}
 	if = {
 		limit = {
@@ -232,6 +174,8 @@ eqfm_update_raiding_income_effect = {
 	}
 }
 
+
+## Black Mountain Expedition Effects ##
 eqfm_update_black_mountain_characters_effect = {
 	je:je_eqfm_the_black_mountain = {
 		clear_variable_list = com_journal_characters
@@ -298,26 +242,6 @@ eqfm_update_black_mountain_characters_effect = {
 	}
 }
 
-eqfm_cleanup_black_mountain_effect = {
-	if = {
-		limit = {
-			c:MON ?= this
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_montenegrin_raiding
-			}
-			eqfm_cease_raiding_effect = yes
-		}
-	}
-	else_if = {
-		limit = {
-			c:TUR ?= this
-		}
-	}
-	eqfm_cancel_black_mountain_expedition_effect = yes
-}
-
 eqfm_cease_raiding_effect = {
 	custom_tooltip = {
 		text = montenegrin_raiding_stop_tt
@@ -363,9 +287,7 @@ eqfm_raiding_settlement_effect = {
 			name = modifier_montenegrin_aid_plus
 		}
 	}
-	add_modifier = {
-		name = modifier_mon_gold_reserves_plus
-	}
+	remove_modifier = modifier_no_minting
 }
 
 eqfm_major_raiding_increase_effect = {
@@ -407,7 +329,7 @@ eqfm_black_mountain_scopes_effect = {
 				save_scope_as = eqfm_black_mountain_mon_leader
 			}
 		}
-
+		
 	}
 	if = {
 		limit = {
@@ -420,6 +342,20 @@ eqfm_black_mountain_scopes_effect = {
 				save_scope_as = eqfm_black_mountain_tur_leader
 			}
 		}
+	}
+}
+
+
+## Black Mountain Expedition Janitor Effects ##
+eqfm_start_black_mountain_expedition_effect = {
+	set_variable = eqfm_black_mountain_expedition_var
+	set_variable = {
+		name = eqfm_black_mountain_expedition_progress_var
+		value = 0
+	}
+	set_variable = {
+		name = eqfm_black_mountain_expedition_peril_var
+		value = 0
 	}
 }
 
@@ -436,18 +372,6 @@ eqfm_dismiss_tribal_chief_effect = {
 		remove_variable = eqfm_black_mountain_expedition_var
 	}
 	eqfm_update_expedition_costs_effect = yes
-}
-
-eqfm_start_black_mountain_expedition_effect = {
-	set_variable = eqfm_black_mountain_expedition_var
-	set_variable = {
-		name = eqfm_black_mountain_expedition_progress_var
-		value = 0
-	}
-	set_variable = {
-		name = eqfm_black_mountain_expedition_peril_var
-		value = 0
-	}
 }
 
 eqfm_fail_black_mountain_expedition_effect = {
@@ -478,7 +402,7 @@ eqfm_cancel_black_mountain_expedition_effect = {
 		remove_modifier = modifier_eqfm_leading_black_mountain_expedition
 		set_character_busy_and_immortal = no
 	}
-    remove_variable = eqfm_black_mountain_expedition_var
+	remove_variable = eqfm_black_mountain_expedition_var
 	eqfm_update_expedition_costs_effect = yes
 }
 
@@ -487,42 +411,40 @@ eqfm_clear_black_mountain_expedition_variables_effect = {
 	remove_variable = eqfm_black_mountain_expedition_peril_var
 }
 
-eqfm_generate_captive_effect = {
-	random_list = {
-		5 = { # Bosnian Noble
-			trigger = {
-				OR = {
-					c:TUR = {
-						has_state_in_state_region = STATE_BOSNIA
-					}
-					c:BOS = {
-						has_state_in_state_region = STATE_BOSNIA
-					}
-				}
-			}
-			create_character = {
-				template = template_eqfm_captive_bosnian
+eqfm_cleanup_black_mountain_expedition_variables_effect = {
+	remove_variable = eqfm_black_mountain_expedition_var
+	remove_variable = eqfm_black_mountain_expedition_progress_var
+	remove_variable = eqfm_black_mountain_expedition_peril_var
+}
+
+eqfm_cleanup_black_mountain_effect = {
+	if = {
+		limit = {
+			NOT = {
+				has_global_variable = eqfm_montenegrin_raiding_settled
 			}
 		}
-		5 = { # Albanian Noble
-			trigger = {
-				c:TUR = {
-					has_state_in_state_region = STATE_ALBANIA
+		c:MON ?= {
+			every_scope_character = {
+				limit = {
+					has_modifier = modifier_eqfm_leading_raids
 				}
+				remove_modifier = modifier_eqfm_leading_raids
+				set_character_busy_and_immortal = no
 			}
-			create_character = {
-				template = template_eqfm_captive_albanian
-			}
+			eqfm_cleanup_black_mountain_expedition_variables_effect = yes
+			eqfm_cease_raiding_effect = yes
 		}
-		5 = { # Serbian Noble
-			trigger = {
-				c:TUR = {
-					has_state_in_state_region = STATE_WESTERN_SERBIA
+		c:TUR ?= {
+			every_scope_character = {
+				limit = {
+					has_modifier = modifier_eqfm_leading_black_mountain_expedition
 				}
+				remove_modifier = modifier_eqfm_leading_black_mountain_expedition
+				set_character_busy_and_immortal = no
 			}
-			create_character = {
-				template = template_eqfm_captive_serbian
-			}
+			eqfm_cleanup_black_mountain_expedition_variables_effect = yes
+			eqfm_update_expedition_costs_effect = yes
 		}
 	}
 }
