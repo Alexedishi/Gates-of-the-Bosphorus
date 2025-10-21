@@ -303,56 +303,68 @@ eqfm_cleanup_black_mountain_effect = {
 		limit = {
 			c:MON ?= this
 		}
-		turkfm_settle_raiding_effect = yes
-
+		if = {
+			limit = {
+				has_modifier = modifier_montenegrin_raiding
+			}
+			eqfm_cease_raiding_effect = yes
+		}
 	}
 	else_if = {
 		limit = {
 			c:TUR ?= this
 		}
 	}
-	hidden_effect = {
-		eqfm_cancel_black_mountain_expedition_effect = yes
-	}
+	eqfm_cancel_black_mountain_expedition_effect = yes
 }
 
-turkfm_settle_raiding_effect = {
+eqfm_cease_raiding_effect = {
 	custom_tooltip = {
 		text = montenegrin_raiding_stop_tt
-		set_global_variable = eqfm_montenegrin_raiding_settled
-		remove_variable = raiding_intensity
-		remove_variable = last_week_raiding_income
-
-		remove_modifier = modifier_montenegrin_raiding
-		remove_modifier = modifier_montenegrin_disobedience
-		remove_modifier = modifier_eqfm_practicing_headtaking_mon
-		remove_modifier = modifier_eqfm_practicing_headtaking_tur
-		remove_modifier = modifier_eqfm_need_tribal_leader
-
-		c:RUS ?= {
-			remove_diplomatic_pact = {
-				country = root
-				type = disapproval_pact
-			}
-		}
-		c:TUR ?= {
-			remove_diplomatic_pact = {
-				country = root
-				type = raiding_pact
-			}
-		}
 		c:MON ?= {
 			je:je_eqfm_the_black_mountain ?= {
 				remove_modifier = modifier_eqfm_border_raids
 			}
+			remove_variable = raiding_intensity
+			remove_variable = last_week_raiding_income
+			remove_modifier = modifier_montenegrin_raiding
+			remove_modifier = modifier_montenegrin_disobedience
+			remove_modifier = modifier_eqfm_practicing_headtaking_mon
+			remove_modifier = modifier_eqfm_need_tribal_leader
 		}
-
+		c:TUR ?= {
+			remove_diplomatic_pact = {
+				country = c:MON
+				type = raiding_pact
+			}
+			remove_modifier = modifier_eqfm_practicing_headtaking_tur
+		}
+		c:RUS ?= {
+			remove_diplomatic_pact = {
+				country = c:MON
+				type = disapproval_pact
+			}
+		}
 		every_state = {
 			limit = {
 				has_modifier = raid_target
 			}
 			remove_modifier = raid_target
 		}
+		set_global_variable = eqfm_montenegrin_raiding_settled
+	}
+}
+
+eqfm_raiding_settlement_effect = {
+	custom_tooltip = {
+		text = mon_stop_aid_deal_tt
+		remove_modifier = modifier_montenegrin_aid
+		add_modifier = {
+			name = modifier_montenegrin_aid_plus
+		}
+	}
+	add_modifier = {
+		name = modifier_mon_gold_reserves_plus
 	}
 }
 
