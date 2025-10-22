@@ -19,13 +19,12 @@ namespace = grefm_hybrid_empire
 
 #001-009 - Hybrid Empire Restoration Events
 #	001 - The New Greece Rises
-#	002 - Across the Hellespont
-#	003 - The Wonders of the Nile
-#	004 - The Greek Realm
+#	002 - The Eternal City
+#	009 - The Greek Realm
 
 ####################
 
-## Hybrid Empire Restoration Events33
+##  ##
 grefm_hybrid_empire.001 = { # The New Greece Rises
 	type = country_event
 	placement = ROOT
@@ -49,7 +48,7 @@ grefm_hybrid_empire.001 = { # The New Greece Rises
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by je_grefm_purple_pheonix
+		# triggered by je_grefm_byzantine_restoration
 	}
 
 	immediate = {
@@ -71,9 +70,34 @@ grefm_hybrid_empire.001 = { # The New Greece Rises
 	option = {
 		name = grefm_hybrid_empire.001.a
 		default_option = yes
-		trigger_event = {
-			id = grefm_hybrid_empire.002 # Across the Hellespont
-			days = 30
+		if = {
+			limit = {
+				capital = {
+					state_region != s:STATE_EASTERN_THRACE
+				}
+			}
+			set_capital = STATE_EASTERN_THRACE
+		}
+		every_state_region = {
+			limit = {
+				OR = {
+					region = sr:region_anatolia
+					region = sr:region_balkans
+				}
+				any_scope_state = {
+					NOT = { owner = ROOT }
+					NOT = { has_claim_by = ROOT }
+				}
+			}
+			add_claim = ROOT
+		}
+		grefm_add_levant_claims_effect = yes
+	}
+
+	option = {
+		custom_tooltip = {
+			text = je_grefm_byzantine_restoration_rejected_effect
+			set_variable = grefm_byzantine_restoration_rejected
 		}
 		add_modifier = {
 			name = modifier_grefm_rebirth
@@ -83,7 +107,7 @@ grefm_hybrid_empire.001 = { # The New Greece Rises
 
 }
 
-grefm_hybrid_empire.002 = { # Across the Hellespont
+grefm_hybrid_empire.002 = { # The Eternal City
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
@@ -103,21 +127,40 @@ grefm_hybrid_empire.002 = { # Across the Hellespont
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by grefm.300
+		OR = {
+			has_modifier = modifier_grefm_reclaimed_balkans
+			has_modifier = modifier_grefm_reclaimed_anatolia
+			has_modifier = modifier_grefm_reclaimed_levant
+			has_modifier = modifier_grefm_reclaimed_egypt
+		}
+		NOR = {
+			has_variable = grefm_embraced_roman_reconquest
+			has_variable = grefm_rejected_roman_reconquest
+		}
 	}
 
 	immediate = {
+		random_country = {
+			limit = {
+				capital = {
+					region = sr:region_italy
+				}
+			}
+			save_scope_as = italy_incident_scope
+		}
 	}
 
 	option = {
 		name = grefm_hybrid_empire.002.a
 		default_option = yes
-		set_capital = STATE_EASTERN_THRACE
+		create_incident = { 
+			country = scope:italy_incident_scope
+			value = 10
+		}
 		every_state_region = {
 			limit = {
 				OR = {
-					region = sr:region_anatolia
-					region = sr:region_balkans
+					region = sr:region_italy
 				}
 				any_scope_state = {
 					NOT = { owner = ROOT }
@@ -126,107 +169,49 @@ grefm_hybrid_empire.002 = { # Across the Hellespont
 			}
 			add_claim = ROOT
 		}
+		custom_tooltip = {
+			text = grefm_embraced_roman_reconquest
+			set_variable = grefm_embraced_roman_reconquest
+		}
 	}
 
+	option = {
+		name = grefm_hybrid_empire.002.b
+		custom_tooltip = {
+			text = grefm_rejected_roman_reconquest
+			set_variable = grefm_rejected_roman_reconquest
+		}
+	}
+	
 }
 
-grefm_hybrid_empire.003 = { # The Wonders of the Nile
+grefm_hybrid_empire.009 = { # The Greek Realm
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+	duration = 3
+	dlc = dlc_grefm
 
-	title = grefm_hybrid_empire.003.t
-	desc = grefm_hybrid_empire.003.d
-	flavor = grefm_hybrid_empire.003.f
+	title = grefm_hybrid_empire.009.t
+	desc = grefm_hybrid_empire.009.d
+	flavor = grefm_hybrid_empire.009.f
 
 	event_image = {
 		video = "unspecific_military_parade"
 	}
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = { # triggered by grefm_hybrid_empire.003
+	trigger = {
+		# triggered by je_grefm_byzantine_restoration
 	}
 
 	immediate = {
-		capital = {
-			save_scope_as = byzantium_capital_state
-		}
-	}
 
-	option = { # reclaim the east
-		name = grefm_hybrid_empire.003.a
-		default_option = yes
-		add_journal_entry = {
-			type = je_grefm_wonders_of_the_nile
-		}
-		grefm_add_levant_claims_effect = yes
-	}
-
-	option = { # nah bro, shits for the birds
-		name = grefm_hybrid_empire.003.b
-		change_infamy = -20
-		scope:byzantium_capital_state = {
-			add_modifier = {
-				name = modifier_grefm_capital_assimiliation_boost
-				months = gbbf_duration_5_years
-			}
-			add_modifier = {
-				name = modifier_grefm_heartland_reclaimed
-				months = gbbf_duration_5_years
-			}
-		}
-		custom_tooltip = {
-			text = grefm_weaksauce
-			hidden_effect = {
-				set_variable = grefm_weaksauce
-			}
-		}
-	}
-
-}
-
-grefm_hybrid_empire.004 = { # The Greek Realm
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
-
-	title = grefm_hybrid_empire.004.t
-	desc = grefm_hybrid_empire.004.d
-	flavor = grefm_hybrid_empire.004.f
-
-	event_image = {
-		video = "europenorthamerica_before_the_battle"
-	}
-
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-		# Triggered by JE
 	}
 
 	option = {
-		name = grefm_hybrid_empire.004.a
+		name = grefm_hybrid_empire.009.a
 		default_option = yes
-		add_modifier = {
-			name = modifier_grefm_imperial_glory
-		}
-		s:STATE_EASTERN_THRACE = {
-			random_scope_state = {
-				add_modifier = {
-					name = modifier_grefm_the_queen_of_cities
-					months = gbbf_duration_10_years
-				}
-			}
-		}
 	}
 
 }

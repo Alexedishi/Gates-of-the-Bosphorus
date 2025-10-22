@@ -86,6 +86,29 @@ turkfm_tanzimat_reformist_progress_value = {
 	value = 0
 	add = {
 		value = {
+			add = government_legitimacy
+			subtract = 75
+			multiply = 0.01
+		}
+		desc = turkfm_value_from_legitimacy
+	}
+	add = {
+		value = literacy_rate
+		desc = turkfm_value_from_literacy
+	}
+	add = {
+		value = {
+			every_interest_group = {
+				limit = {
+					turkfm_has_pro_reform_ideology = yes
+				}
+				add = ig_clout
+			}
+		}
+		desc = turkfm_value_from_pro_reform_clout
+	}
+	add = {
+		value = {
 			every_scope_building = {
 				limit = {
 					is_building_type = building_government_administration
@@ -187,34 +210,12 @@ turkfm_tanzimat_conservatist_progress_value = {
 		value = {
 			every_interest_group = {
 				limit = {
-					law_stance = {
-						law = law_type:law_state_religion
-						value > neutral
-					}
-					NOR = {
-						law_stance = {
-							law = law_type:law_landed_voting
-							value > neutral
-						}
-						law_stance = {
-							law = law_type:law_wealth_voting
-							value > neutral
-						}
-						law_stance = {
-							law = law_type:law_census_voting
-							value > neutral
-						}
-						law_stance = {
-							law = law_type:law_universal_suffrage
-							value > neutral
-						}
-					}
+					turkfm_has_pro_reform_ideology = yes
 				}
 				add = ig_clout
 			}
-			round_to = 0.01
 		}
-		desc = turkfm_value_from_islamism
+		desc = turkfm_value_from_pro_conservatism_clout
 	}
 	add = {
 		value = {
@@ -236,6 +237,7 @@ turkfm_tanzimat_conservatist_progress_value = {
 					add = investment
 				}
 			}
+			multiply = 0.1
 		}
 		desc = turkfm_value_from_institution_levels
 	}
@@ -269,13 +271,13 @@ turkfm_tanzimat_conservatist_progress_value = {
 				limit = {
 					has_law = law_type:law_millet_system
 				}
-				add = 2
+				add = 1
 			}
 			else_if = {
 				limit = {
 					has_law_or_variant = law_type:law_state_religion
 				}
-				add = 1
+				add = 2
 			}
 			else_if = {
 				limit = {

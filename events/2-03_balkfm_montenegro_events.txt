@@ -806,7 +806,7 @@ balkfm_montenegro.013 = {
 
 }
 
-balkfm_montenegro.017 = { # Building The Biljarda
+balkfm_montenegro.016 = { # Building The Biljarda
 	#
 	type = country_event
 	placement = root
@@ -830,6 +830,7 @@ balkfm_montenegro.017 = { # Building The Biljarda
 		capital = {
 			any_scope_building = {
 				is_building_type = gbbf_building_biljarda
+				is_under_construction = no
 			}
 		}
 	}
@@ -888,6 +889,44 @@ balkfm_montenegro.017 = { # Building The Biljarda
 
 }
 
+balkfm_montenegro.017 = { # 
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = mon_state_formation.1.t
+	desc = balkfm_montenegro.009.d
+	flavor = mon_state_formation.1.f
+
+	event_image = {
+		video = "ep1_cossacks"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by je_balkfm_mon_prince_bishopric if Raiding is already settled
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = balkfm_montenegro.009.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_montenegrin_recognition
+		}
+		remove_modifier = mon_taxes_what_are
+		add_modifier = modifier_mon_gold_reserves_plus
+		add_loyalists = {
+			value = large_radicals
+		}
+	}
+
+}
+
 balkfm_montenegro.018 = {
 	# A New Life (IP3 Imported Event)
 	type = country_event
@@ -906,10 +945,7 @@ balkfm_montenegro.018 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
-	}
-
-	cooldown = {
-		years = 5
+		# triggered by je_balkfm_mon_prince_bishopric if Raiding is not settled yet
 	}
 
 	immediate = {
@@ -929,17 +965,8 @@ balkfm_montenegro.018 = {
 		s:STATE_MONTENEGRO.region_state:TUR = {
 			set_state_owner = c:MON
 		}
-		turkfm_settle_raiding_effect = yes
-		custom_tooltip = {
-			text = mon_stop_aid_deal_tt
-			remove_modifier = modifier_montenegrin_aid
-			add_modifier = {
-				name = modifier_montenegrin_aid_plus
-			}
-		}
-		add_modifier = {
-			name = modifier_mon_gold_reserves_plus
-		}
+		eqfm_cease_raiding_effect = yes
+		eqfm_raiding_settlement_effect = yes
 	}
 
 	option = {
@@ -988,6 +1015,14 @@ balkfm_montenegro.018 = {
 			}
 		}
 		russia_breaks_independence_pact = yes
+	}
+
+	after = {
+		add_modifier = {
+			name = modifier_montenegrin_recognition
+		}
+		remove_modifier = mon_taxes_what_are
+		add_modifier = modifier_mon_gold_reserves_plus
 	}
 
 }
