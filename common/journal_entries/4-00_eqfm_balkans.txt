@@ -367,8 +367,33 @@ je_eqfm_eastern_question = {
 	scripted_button = eqfm_declare_loyalty_button
 	scripted_button = eqfm_greek_gunrunners_button
 	
+	is_shown_when_inactive = {
+		NOT = {
+			has_global_variable = eqfm_balkan_situation_resolved
+		}
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = eqfm_balkan_situation_resolved_NOT
+			NOT = {
+				has_global_variable = eqfm_balkan_situation_resolved
+			}
+			c:TUR ?= {
+				has_journal_entry = je_eqfm_balkan_situation_main
+			}
+		}
+	}
+	
 	should_be_involved = {
-		always = no
+		OR = {
+			eqfm_balkans_involved_trigger = yes
+			eqfm_balkans_interloper_trigger = yes
+		}
+	}
+	
+	should_show_when_not_involved = {
+		always = yes
 	}
 	
 	immediate = {
@@ -412,6 +437,7 @@ je_eqfm_eastern_question = {
 	
 	on_complete = {
 		eqfm_cleanup_eqfm_effect = yes
+		set_global_variable = eqfm_balkan_situation_resolved
 	}
 	
 	fail = {
@@ -428,6 +454,7 @@ je_eqfm_eastern_question = {
 	
 	on_fail = {
 		eqfm_cleanup_eqfm_effect = yes
+		set_global_variable = eqfm_balkan_situation_resolved
 	}
 	
 	on_weekly_pulse = {
