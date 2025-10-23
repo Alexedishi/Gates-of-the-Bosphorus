@@ -147,7 +147,7 @@ eqfm_libyan_desert.005 = { # Securing the Desert
 
 	immediate = {
 		set_variable = {
-			name = eqfm_desert_expedition_cooldown_var
+			name = eqfm_desert_event_cooldown_var
 			months = 4
 		}
 		random_scope_character = {
@@ -279,6 +279,10 @@ eqfm_libyan_desert.005 = { # Securing the Desert
 				days = { 15 30 }
 			}
 			set_variable = eqfm_expedition_desert_transit_var
+			set_variable = {
+				name = eqfm_desert_event_cooldown_var
+				months = 4
+			}
 		}
 		eqfm_update_desert_variables_effect = yes
 	}
@@ -350,7 +354,7 @@ eqfm_libyan_desert.007 = { # Expedition Withdraws from the Desert
 		has_variable = eqfm_desert_expedition_progress_var
 		var:eqfm_desert_expedition_peril_var >= 5
 		NOT = {
-			has_variable = eqfm_desert_expedition_cooldown_var
+			has_variable = eqfm_desert_event_cooldown_var
 		}
 	}
 
@@ -392,7 +396,7 @@ eqfm_libyan_desert.008 = { # Expedition Leader Has Died!
 	trigger = {
 		eqfm_has_desert_expedition_trigger = yes
 		NOR = {
-			has_variable = eqfm_desert_expedition_cooldown_var
+			has_variable = eqfm_desert_event_cooldown_var
 			exists = var:eqfm_desert_expedition_leader_var
 		}
 	}
@@ -479,6 +483,9 @@ eqfm_libyan_desert.010 = { #
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
 		has_journal_entry = je_turkfm_senusiyya_main
 		s:STATE_LIBYAN_DESERT = {
 			any_scope_state = {
@@ -507,6 +514,10 @@ eqfm_libyan_desert.010 = { #
 				}
 			}
 			save_scope_as = eqfm_senussi_marabout_state
+		}
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 6
 		}
 	}
 
@@ -547,6 +558,9 @@ eqfm_libyan_desert.011 = { # Insecure Desert Routes
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
 		s:STATE_LIBYAN_DESERT = {
 			any_scope_state = {
 				owner ?= {
@@ -578,6 +592,10 @@ eqfm_libyan_desert.011 = { # Insecure Desert Routes
 				is_under_colonization = yes
 			}
 			save_scope_as = eqfm_desert_event_state
+		}
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 4
 		}
 	}
 
@@ -655,9 +673,20 @@ eqfm_libyan_desert.012 = { # Issues with Taxation
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
 		any_scope_state = {
 			state_region = s:STATE_LIBYAN_DESERT
 			is_under_colonization = yes
+		}
+		s:STATE_LIBYAN_DESERT = {
+			any_scope_state = {
+				owner = {
+					is_country_type = decentralized
+					tension:root >= tension_threshold:tense
+				}
+			}
 		}
 	}
 
@@ -672,13 +701,26 @@ eqfm_libyan_desert.012 = { # Issues with Taxation
 	}
 
 	immediate = {
-		random_scope_state = {
-			limit = {
-				state_region = s:STATE_LIBYAN_DESERT
-				is_under_colonization = yes
+		s:STATE_LIBYAN_DESERT = {
+			random_scope_state = {
+				limit = {
+					is_under_colonization = yes
+				}
+				save_scope_as = eqfm_desert_event_state
+			}
+			random_scope_state = {
+				limit = {
+					owner = {
+						is_country_type = decentralized
+					}
+				}
+				save_scope_as = eqfm_desert_event_tribal_state
 			}
 		}
-		save_scope_as = eqfm_desert_event_state
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 4
+		}
 	}
 
 	option = {
@@ -740,6 +782,9 @@ eqfm_libyan_desert.020 = { # A Storm of Sand
 
 	trigger = {
 		eqfm_has_desert_expedition_trigger = yes
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
 	}
 
 	cancellation_trigger = {
@@ -752,7 +797,7 @@ eqfm_libyan_desert.020 = { # A Storm of Sand
 
 	immediate = {
 		set_variable = {
-			name = eqfm_desert_expedition_cooldown_var
+			name = eqfm_desert_event_cooldown_var
 			months = 6
 		}
 		eqfm_update_desert_variables_effect = yes
@@ -792,6 +837,9 @@ eqfm_libyan_desert.021 = { # Sand, Sand, and More Sand
 
 	trigger = {
 		eqfm_has_desert_expedition_trigger = yes
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
 	}
 
 	cancellation_trigger = {
@@ -804,7 +852,7 @@ eqfm_libyan_desert.021 = { # Sand, Sand, and More Sand
 
 	immediate = {
 		set_variable = {
-			name = eqfm_desert_expedition_cooldown_var
+			name = eqfm_desert_event_cooldown_var
 			months = 6
 		}
 		eqfm_update_desert_variables_effect = yes
