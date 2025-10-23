@@ -957,3 +957,94 @@ eqfm_libyan_desert.021 = { # Sand, Sand, and More Sand
 		}
 	}
 }
+
+eqfm_libyan_desert.022 = { # A Welcome Respite
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_libyan_desert.022.t
+	desc = eqfm_libyan_desert.022.d
+	flavor = eqfm_libyan_desert.022.f
+	
+	gui_window = event_window
+	left_icon = scope:left_icon
+	center_icon = scope:center_icon
+	right_icon = scope:right_icon
+	
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_desert_oasis.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+	
+	trigger = {
+		eqfm_has_desert_expedition_trigger = yes
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
+		var:eqfm_desert_expedition_peril_var >= 3
+		var:eqfm_desert_expedition_progress_var >= 2
+	}
+	
+	cancellation_trigger = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+	
+	cooldown = {
+		years = 5
+	}
+	
+	immediate = {
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 4
+		}
+		eqfm_update_desert_variables_effect = yes
+	}
+	
+	option = {
+		name = eqfm_libyan_desert.022.a
+		default_option = yes
+		eqfm_remove_medium_peril_effect = {
+			type = desert
+		}
+	}
+	
+	option = {
+		name = eqfm_libyan_desert.022.b
+		eqfm_remove_large_peril_effect = {
+			type = desert
+		}
+		eqfm_remove_small_progress_effect = {
+			type = desert
+		}
+	}
+	
+	option = {
+		name = eqfm_libyan_desert.022.c
+		trigger = {
+			scope:eqfm_desert_expedition_leader_scope = {
+				OR = {
+					has_trait = plains_commander
+					has_trait = resupply_commander
+				}
+			}
+			NOT = {
+				has_modifier = modifier_eqfm_resupplied_desert_expedition
+			}
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		eqfm_remove_all_peril_effect = {
+			type = desert
+		}
+		add_modifier = {
+			name = modifier_eqfm_resupplied_desert_expedition
+			months = gbbf_duration_2_plus_half_years
+			multiplier = money_amount_multiplier_small
+		}
+	}
+}
