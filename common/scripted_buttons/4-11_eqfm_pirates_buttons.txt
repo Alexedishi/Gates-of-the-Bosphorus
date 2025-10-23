@@ -6,7 +6,6 @@ eqfm_hire_retired_pirates_button = {
 	visible = {
 		c:TUR ?= this
 	}
-
 	possible = {
 		NOR = {
 			has_modifier = modifier_eqfm_hired_pirates
@@ -15,7 +14,6 @@ eqfm_hire_retired_pirates_button = {
 			}
 		}
 	}
-
 	effect = {
 		trigger_event = {
 			id = eqfm_pirates.080 # Treating with Corsairs
@@ -26,7 +24,6 @@ eqfm_hire_retired_pirates_button = {
 			months = 3
 		}
 	}
-
 	ai_chance = {
 		value = 0
 	}
@@ -40,14 +37,12 @@ eqfm_deploy_adriatic_expedition_button = {
 	visible = {
 		eqfm_has_any_expedition_trigger = no
 	}
-
 	possible = {
 		eqfm_no_expedition_trigger = yes
 		NOT = {
 			has_modifier = modifier_eqfm_failed_adriatic_expedition_country
 		}
 	}
-
 	effect = {
 		trigger_event = {
 			id = eqfm_pirates.002 # Pacifying the Adriatic
@@ -55,9 +50,8 @@ eqfm_deploy_adriatic_expedition_button = {
 		}
 		set_variable = eqfm_adriatic_expedition_var
 	}
-
 	ai_chance = {
-		value = 0
+		value = 5
 	}
 }
 
@@ -67,18 +61,82 @@ eqfm_recall_adriatic_expedition_button = {
 
 	visible = {
 		eqfm_has_adriatic_expedition_trigger = yes
+		NOT = {
+			hidden_trigger = {
+				has_variable = eqfm_expedition_piracy_transit_var
+			}
+		}
 	}
-
 	possible = {
 		eqfm_has_adriatic_expedition_trigger = yes
 	}
-
 	effect = {
 		eqfm_cancel_piracy_expedition_effect = yes
 		eqfm_clear_piracy_expedition_variables_effect = yes
 	}
-
 	ai_chance = {
 		value = 0
+		if = {
+			limit = {
+				OR = {
+					has_modifier = declared_bankruptcy
+					in_default = yes
+				}
+			}
+			add = 1000
+		}
+	}
+}
+
+eqfm_resupply_adriatic_expedition_button = {
+	name = "eqfm_resupply_adriatic_expedition_button"
+	desc = "eqfm_resupply_adriatic_expedition_button_desc"
+	
+	visible = {
+		eqfm_has_adriatic_expedition_trigger = yes
+	}
+	possible = {
+		NOR = {
+			has_modifier = modifier_eqfm_resupplied_adriatic_expedition
+			custom_tooltip = {
+				text = eqfm_resupply_adriatic_expedition_button_possible_1
+				has_variable = eqfm_piracy_chase_var
+			}
+			hidden_trigger = {
+				has_variable = eqfm_expedition_piracy_transit_var
+			}
+		}
+		custom_tooltip = {
+			text = eqfm_resupply_adriatic_expedition_button_possible_2
+			var:eqfm_adriatic_expedition_peril_var >= 3
+		}
+		
+	}
+	effect = {
+		add_modifier = {
+			name = modifier_eqfm_resupplied_adriatic_expedition
+			months = gbbf_duration_2_plus_half_years
+			multiplier = money_amount_multiplier_small
+		}
+		custom_tooltip = {
+			text = eqfm_resupply_adriatic_expedition_button_effect
+			change_variable = {
+				name = eqfm_adriatic_expedition_peril_var
+				subtract = 3
+			}
+		}
+	}
+	ai_chance = {
+		value = 5
+		if = {
+			limit = {
+				var:eqfm_adriatic_expedition_peril_var >= 4
+				in_default = no
+				NOT = {
+					has_modifier = declared_bankruptcy
+				}
+			}
+			add = 25
+		}
 	}
 }

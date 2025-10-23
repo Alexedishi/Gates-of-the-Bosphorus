@@ -314,12 +314,6 @@ eqfm_pirates.002 = { # Pacifying the Adriatic
 	}
 
 	after = {
-		scope:eqfm_cutler_beckett_scope = {
-			set_variable = {
-				name = com_opinion
-				value = flag:eqfm_cutler_beckett_opinion
-			}
-		}
 		trigger_event = {
 			id = eqfm_pirates.003 # Cutler Beckett Arrives in the Adriatic
 			days = { 15 45 }
@@ -497,10 +491,11 @@ eqfm_pirates.006 = { # Pirate Hideout Located
 
 	trigger = {
 		eqfm_has_adriatic_expedition_trigger = yes
-		var:eqfm_adriatic_expedition_progress_var >= 8
-		NOT = {
+		NOR = {
 			has_variable = eqfm_piracy_chase_var
+			has_variable = eqfm_expedition_piracy_transit_var
 		}
+		var:eqfm_adriatic_expedition_progress_var >= 8
 	}
 
 	cancellation_trigger = {
@@ -550,8 +545,11 @@ eqfm_pirates.007 = { # Pirate Fleet Destroyed
 
 	trigger = {
 		eqfm_has_adriatic_expedition_trigger = yes
-		var:eqfm_adriatic_expedition_progress_var >= 8
 		has_variable = eqfm_piracy_chase_var
+		NOT = {
+			has_variable = eqfm_expedition_piracy_transit_var
+		}
+		var:eqfm_adriatic_expedition_progress_var >= 8
 	}
 
 	cancellation_trigger = {
@@ -2445,6 +2443,7 @@ eqfm_pirates.028 = { # Emergency Repairs
 		NOT = {
 			has_variable = eqfm_expedition_cooldown_var
 		}
+		has_variable = eqfm_adriatic_expedition_peril_var
 		var:eqfm_adriatic_expedition_peril_var > 3
 	}
 
@@ -2615,6 +2614,7 @@ eqfm_pirates.030 = { # Pirates Spotted!
 		NOT = {
 			has_variable = eqfm_piracy_chase_var
 		}
+		has_variable = eqfm_adriatic_expedition_progress_var
 		var:eqfm_adriatic_expedition_progress_var >= 2
 		var:eqfm_adriatic_expedition_progress_var < 6
 	}
