@@ -487,6 +487,7 @@ eqfm_libyan_desert.010 = { #
 			has_variable = eqfm_desert_event_cooldown_var
 		}
 		has_journal_entry = je_turkfm_senusiyya_main
+		var:turkfm_senussi_var < 75
 		s:STATE_LIBYAN_DESERT = {
 			any_scope_state = {
 				owner ?= {
@@ -500,6 +501,7 @@ eqfm_libyan_desert.010 = { #
 		NOT = {
 			has_journal_entry = je_eqfm_libyan_desert
 		}
+		var:turkfm_senussi_var >= 90
 	}
 
 	cooldown = {
@@ -519,11 +521,47 @@ eqfm_libyan_desert.010 = { #
 			name = eqfm_desert_event_cooldown_var
 			months = 6
 		}
+		if = {
+			limit = {
+				exists = c:TUR
+				is_subject_of = c:TUR
+			}
+			c:TUR = {
+				save_scope_as = eqfm_ottoman_scope
+			}
+		}
 	}
 
 	option = {
 		name = eqfm_libyan_desert.010.a
 		default_option = yes
+		custom_tooltip = {
+			text = turkfm_senussi_gain_10
+			change_variable = {
+				name = turkfm_senussi_var
+				add = 10
+			}
+			clamp_variable = {
+				name = turkfm_senussi_var
+				max = 100
+				min = 0
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_ottoman_scope
+			}
+			change_relations = {
+				country = c:TUR
+				value = -15
+			}
+			c:TUR = {
+				create_diplomatic_catalyst = {
+					type = catalyst_event_negative
+					target = root
+				}
+			}
+		}
 	}
 
 	option = {
@@ -537,6 +575,39 @@ eqfm_libyan_desert.010 = { #
 		}
 		show_as_unavailable = { always = yes }
 		highlighted_option = yes
+		custom_tooltip = {
+			text = turkfm_senussi_lose_20
+			change_variable = {
+				name = turkfm_senussi_var
+				subtract = 20
+			}
+			clamp_variable = {
+				name = turkfm_senussi_var
+				max = 100
+				min = 0
+			}
+		}
+		scope:eqfm_senussi_marabout_state = {
+			add_radicals_in_state = {
+				pop_type = clergymen
+				value = medium_radicals
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_ottoman_scope
+			}
+			change_relations = {
+				country = c:TUR
+				value = 15
+			}
+			c:TUR = {
+				create_diplomatic_catalyst = {
+					type = catalyst_event_positive
+					target = root
+				}
+			}
+		}
 	}
 
 }
