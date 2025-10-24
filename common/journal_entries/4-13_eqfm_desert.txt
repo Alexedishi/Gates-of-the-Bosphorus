@@ -28,6 +28,10 @@
 		trigger_event = {
 			id = eqfm_libyan_desert.001 # An Untamed Frontier
 		}
+		set_variable = {
+			name = eqfm_expedition_ticker_var
+			value = 0
+		}
 	}
 	
 	complete = {
@@ -40,6 +44,7 @@
 		trigger_event = {
 			id = eqfm_libyan_desert.009 # The Libyan Deserts
 		}
+		eqfm_cleanup_libyan_desert_effect = yes
 	}
 	
 	fail = {
@@ -69,6 +74,38 @@
 				remove_modifier = modifier_turkfm_desert_raids
 				post_notification = notification_eqfm_desert_raids_halted
 			}
+			if = {
+				limit = {
+					eqfm_has_desert_expedition_trigger = yes
+					var:eqfm_desert_expedition_progress_var < 8
+				}
+				if = {
+					limit = {
+						var:eqfm_expedition_ticker_var < 32
+					}
+					change_variable = {
+						name = eqfm_expedition_ticker_var
+						add = 1
+					}
+				}
+				else = {
+					set_variable = {
+						name = eqfm_expedition_ticker_var
+						value = 0
+					}
+					change_variable = {
+						name = eqfm_desert_expedition_progress_var
+						add = 1
+					}
+					post_notification = notification_eqfm_yearly_progress
+				}
+			}
+			else = {
+				set_variable = {
+					name = eqfm_expedition_ticker_var
+					value = 0
+				}
+			}
 		}
 	}
 	
@@ -86,21 +123,10 @@
 			50 = eqfm_libyan_desert.023
 			50 = eqfm_libyan_desert.024
 			25 = eqfm_libyan_desert.025
-		}
-	}
-	
-	on_yearly_pulse = {
-		effect = {
-			if = {
-				limit = {
-					eqfm_has_desert_expedition_trigger = yes
-				}
-				change_variable = {
-					name = eqfm_desert_expedition_progress_var
-					add = 1
-				}
-			}
-			post_notification = notification_eqfm_yearly_progress
+			25 = eqfm_libyan_desert.026
+			25 = eqfm_libyan_desert.027
+			25 = eqfm_libyan_desert.028
+			25 = eqfm_libyan_desert.029
 		}
 	}
 	
