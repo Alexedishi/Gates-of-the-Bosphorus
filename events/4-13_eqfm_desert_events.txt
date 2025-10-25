@@ -1167,7 +1167,7 @@ eqfm_libyan_desert.024 = { # Charting the Desert
 	left_icon = scope:eqfm_desert_expedition_leader_scope
 	
 	event_image = {
-		texture = "gfx/event_pictures/gbbf_backgrounds/ck3_desert.dds"
+		texture = "gfx/event_pictures/gbbf_backgrounds/ck3_desert_nomad.dds"
 	}
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
@@ -1337,6 +1337,91 @@ eqfm_libyan_desert.025 = {
 		add_radicals = {
 			culture = cu:bedouin
 			value = medium_radicals
+		}
+	}
+}
+
+ eqfm_libyan_desert.026 = {
+	 # Tribal Justice
+	type = country_event
+	placement = scope:eqfm_desert_event_tribal_state
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title =  eqfm_libyan_desert.026.t
+	desc =  eqfm_libyan_desert.026.d
+	flavor =  eqfm_libyan_desert.026.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_desert_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/event_pictures/gbbf_backgrounds/ck3_desert_settlement.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+
+	 trigger = {
+		 eqfm_has_desert_expedition_trigger = yes
+		 NOT = {
+			 has_variable = eqfm_desert_event_cooldown_var
+		 }
+	 }
+
+	 cancellation_trigger = {
+		 eqfm_has_desert_expedition_trigger = no
+	 }
+
+	 cooldown = {
+		 years = 4
+	 }
+
+	 immediate = {
+		 set_variable = {
+			 name = eqfm_desert_event_cooldown_var
+			 months = 4
+		 }
+		 eqfm_update_desert_variables_effect = yes
+		 eqfm_desert_scopes_effect = yes
+	 }
+
+	option = {
+		name =  eqfm_libyan_desert.026.a
+		default_option = yes
+		eqfm_add_small_peril_effect = {
+			type = desert
+		}
+		eqfm_add_medium_progress_effect = {
+			type = desert
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_desert_event_tribal_country
+			}
+			change_tension = {
+				country = scope:eqfm_desert_event_tribal_country
+				value = 15
+			}
+		}
+		scope:eqfm_desert_event_tribal_state = {
+			add_radicals_in_state = {
+				culture = cu:bedouin
+				value = medium_radicals
+			}
+		}
+		scope:eqfm_desert_expedition_leader_scope = {
+			add_modifier = {
+				name = modifier_eqfm_desert_diplomat
+				months = gbbf_duration_25_years
+			}
+		}
+	}
+
+	option = {
+		name =  eqfm_libyan_desert.026.b
+		eqfm_remove_medium_progress_effect = {
+			type = desert
 		}
 	}
 }
