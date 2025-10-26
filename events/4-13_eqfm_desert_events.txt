@@ -47,7 +47,7 @@ namespace = eqfm_libyan_desert
 #	023 - Desert Diplomacy
 #	024 - Charting the Desert
 #	025 - A Clash on Camel-back
-#	026 - ##Tribal Justice
+#	026 - Tribal Justice
 #	027 - ##Welcome Rains
 #	028 - ##Safe Passages Mapped
 #	029 - ##Unexpected Recruits
@@ -1437,7 +1437,7 @@ eqfm_libyan_desert.026 = {
 eqfm_libyan_desert.027 = {
 	# Welcome Rains
 	type = country_event
-	placement = root
+	placement = scope:eqfm_desert_event_state
 	icon = "gfx/interface/icons/event_icons/event_map.dds"
 	duration = 3
 	dlc = dlc_grefm
@@ -1460,6 +1460,7 @@ eqfm_libyan_desert.027 = {
 		NOT = {
 			has_variable = eqfm_desert_event_cooldown_var
 		}
+		var:eqfm_desert_expedition_peril_var > 0
 	}
 
 	cancellation_trigger = {
@@ -1482,9 +1483,231 @@ eqfm_libyan_desert.027 = {
 	option = {
 		name = eqfm_libyan_desert.027.a
 		default_option = yes
+		eqfm_remove_medium_peril_effect = {
+			type = desert
+		}
+	}
+}
+
+eqfm_libyan_desert.028 = {
+	# Safe Passages Mapped
+	type = country_event
+	placement = scope:eqfm_desert_event_state
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_libyan_desert.028.t
+	desc = eqfm_libyan_desert.028.d
+	flavor = eqfm_libyan_desert.028.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_desert_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_drylands.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+
+	trigger = {
+		eqfm_has_desert_expedition_trigger = yes
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
+		var:eqfm_desert_expedition_peril_var > 0
+	}
+
+	cancellation_trigger = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+
+	cooldown = {
+		years = 4
+	}
+
+	immediate = {
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 4
+		}
+		eqfm_update_desert_variables_effect = yes
+		eqfm_desert_scopes_effect = yes
 	}
 
 	option = {
-		name = eqfm_libyan_desert.027.b
+		name = eqfm_libyan_desert.028.a
+		default_option = yes
+		eqfm_add_medium_progress_effect = {
+			type = desert
+		}
+		scope:eqfm_desert_event_state = {
+			add_modifier = { 
+				name = modifier_eqfm_desert_routes_mapped
+				months = gbbf_duration_2_years
+			}
+		}
+	}
+
+	option = {
+		name = eqfm_libyan_desert.028.b
+		eqfm_add_medium_progress_effect = {
+			type = desert
+		}
+		eqfm_add_medium_peril_effect = {
+			type = desert
+		}
+		scope:eqfm_desert_event_state = {
+			add_modifier = {
+				name = modifier_eqfm_desert_routes_thoroughly_mapped
+				months = gbbf_duration_2_years
+			}
+		}
+	}
+}
+
+eqfm_libyan_desert.029 = {
+	# Unexpected Recruits
+	type = country_event
+	placement = scope:eqfm_desert_event_state
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_libyan_desert.029.t
+	desc = eqfm_libyan_desert.029.d
+	flavor = eqfm_libyan_desert.029.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_desert_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_settlement.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+
+	trigger = {
+		eqfm_has_desert_expedition_trigger = yes
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
+		var:eqfm_desert_expedition_progress_var > 0
+	}
+
+	cancellation_trigger = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+
+	cooldown = {
+		years = 15
+	}
+
+	immediate = {
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 4
+		}
+		eqfm_update_desert_variables_effect = yes
+		eqfm_desert_scopes_effect = yes
+		create_character = {
+			template = template_eqfm_desert_nomad
+			on_created = {
+				place_character_in_void = 4
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_eqfm_desert_nomad
+			}
+			save_scope_as = eqfm_desert_event_tribal_character
+		}
+	}
+
+	option = {
+		name = eqfm_libyan_desert.029.a
+		default_option = yes
+		eqfm_add_medium_progress_effect = {
+			type = desert
+		}
+	}
+
+	option = {
+		name = eqfm_libyan_desert.029.b
+		eqfm_add_small_progress_effect = {
+			type = desert
+		}
+		scope:eqfm_desert_event_state = {
+			add_modifier = {
+				name = modifier_eqfm_nomad_recruits_state
+				months = gbbf_duration_10_years
+				is_decaying = yes
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_nomad_recruits_country
+			months = gbbf_duration_10_years
+			is_decaying = yes
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_desert_event_tribal_country
+			}
+			change_tension = {
+				country = scope:eqfm_desert_event_tribal_country
+				value = 15
+			}
+		}
+	}
+
+	option = {
+		name = eqfm_libyan_desert.029.c
+		eqfm_add_small_progress_effect = {
+			type = desert
+		}
+		scope:eqfm_desert_expedition_leader_scope = {
+			add_modifier = {
+				name = modifier_eqfm_nomad_recruits_character
+				months = gbbf_duration_10_years
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_nomad_recruits_country
+			months = gbbf_duration_10_years
+			is_decaying = yes
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_desert_event_tribal_country
+			}
+			change_tension = {
+				country = scope:eqfm_desert_event_tribal_country
+				value = -10
+			}
+		}
+	}
+
+	option = {
+		name = eqfm_libyan_desert.029.e
+		eqfm_add_small_progress_effect = {
+			type = desert
+		}
+		scope:eqfm_desert_event_tribal_character = {
+			gbbf_free_from_void_general = yes
+		}
+		add_modifier = {
+			name = modifier_eqfm_nomad_recruits_country
+			months = gbbf_duration_10_years
+			is_decaying = yes
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_desert_event_tribal_country
+			}
+			change_tension = {
+				country = scope:eqfm_desert_event_tribal_country
+				value = 15
+			}
+		}
 	}
 }
