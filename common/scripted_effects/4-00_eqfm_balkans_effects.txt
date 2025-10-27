@@ -413,6 +413,7 @@ eqfm_check_balkan_situation_phase_effect = {
 				every_country = {
 					limit = {
 						has_journal_entry = je_eqfm_eastern_question
+						c:TUR != this
 					}
 					trigger_event = {
 						id = eqfm_balkans.021 # A Crisis in Rumelia
@@ -588,11 +589,11 @@ eqfm_update_balkan_situation_progressbar_effect = {
 		}
 		je:je_eqfm_eastern_question = {
 			set_bar_progress = {
-				name = eqfm_balkfm_escalation_progress_bar
+				name = eqfm_balkans_escalation_progress_bar
 				value = global_var:eqfm_escalation_var
 			}
 			set_bar_progress = {
-				name = eqfm_balkfm_deescalation_progress_bar
+				name = eqfm_balkans_deescalation_progress_bar
 				value = global_var:eqfm_deescalation_var
 			}
 		}
@@ -2104,7 +2105,7 @@ eqfm_cleanup_tension_main_effect = {
 eqfm_initialize_crisis_effect = {
 	set_global_variable = {
 		name = eqfm_crisis_var
-		value = 0
+		value = 125
 	}
 	set_global_variable = {
 		name = eqfm_crisis_progress_var
@@ -2125,10 +2126,11 @@ eqfm_initialize_crisis_effect = {
 
 eqfm_crisis_success_effect = {
 	# Stolen from chris_scripted_effects
+	# TODO replace with GotB-specific scripting once ready
 	c:TUR ?= {
 		add_modifier = {
 			name = eastern_crisis_controlled
-			months = gbbf_duration_15_years
+			months = gbbf_duration_5_years
 		}
 		every_country = {
 			limit = {
@@ -2151,7 +2153,7 @@ eqfm_crisis_success_effect = {
 			add_fervor_target_modifier = {
 				#changes target
 				culture = cu:albanian
-				months = gbbf_duration_20_years
+				months = gbbf_duration_5_years
 				multiplier = eastern_crisis_fervor_loss
 			}
 		}
@@ -2164,7 +2166,7 @@ eqfm_crisis_success_effect = {
 			add_fervor_target_modifier = {
 				#changes target
 				culture = cu:bosniak
-				months = gbbf_duration_20_years
+				months = gbbf_duration_5_years
 				multiplier = eastern_crisis_fervor_loss
 			}
 		}
@@ -2177,7 +2179,7 @@ eqfm_crisis_success_effect = {
 			add_fervor_target_modifier = {
 				#changes target
 				culture = cu:bulgarian
-				months = gbbf_duration_20_years
+				months = gbbf_duration_5_years
 				multiplier = eastern_crisis_fervor_loss
 			}
 		}
@@ -2190,7 +2192,7 @@ eqfm_crisis_success_effect = {
 			add_fervor_target_modifier = {
 				#changes target
 				culture = cu:croat
-				months = gbbf_duration_20_years
+				months = gbbf_duration_5_years
 				multiplier = eastern_crisis_fervor_loss
 			}
 		}
@@ -2203,7 +2205,20 @@ eqfm_crisis_success_effect = {
 			add_fervor_target_modifier = {
 				#changes target
 				culture = cu:greek
-				months = gbbf_duration_20_years
+				months = gbbf_duration_5_years
+				multiplier = eastern_crisis_fervor_loss
+			}
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					culture = cu:rhomaios
+				}
+			}
+			add_fervor_target_modifier = {
+				#changes target
+				culture = cu:rhomaios
+				months = gbbf_duration_5_years
 				multiplier = eastern_crisis_fervor_loss
 			}
 		}
@@ -2216,7 +2231,7 @@ eqfm_crisis_success_effect = {
 			add_fervor_target_modifier = {
 				#changes target
 				culture = cu:romanian
-				months = gbbf_duration_20_years
+				months = gbbf_duration_5_years
 				multiplier = eastern_crisis_fervor_loss
 			}
 		}
@@ -2229,7 +2244,7 @@ eqfm_crisis_success_effect = {
 			add_fervor_target_modifier = {
 				#changes target
 				culture = cu:serb
-				months = gbbf_duration_20_years
+				months = gbbf_duration_5_years
 				multiplier = eastern_crisis_fervor_loss
 			}
 		}
@@ -2240,7 +2255,7 @@ eqfm_crisis_fail_effect = {
 	c:TUR ?= {
 		add_modifier = {
 			name = eastern_crisis_not_controlled
-			months = gbbf_duration_15_years
+			months = gbbf_duration_5_years
 		}
 		if = {
 			limit = {
@@ -2307,7 +2322,7 @@ eqfm_crisis_fail_effect = {
 				}
 				add_modifier = {
 					name = eastern_crisis_movement_attraction
-					months = gbbf_duration_10_years
+					months = gbbf_duration_5_years
 					is_decaying = yes
 				}
 			}
@@ -2320,6 +2335,7 @@ eqfm_crisis_fail_effect = {
 			}
 			add_fervor_target_modifier = { #changes target
 				culture = cu:albanian
+				months = gbbf_duration_5_years
 				multiplier = eastern_crisis_fervor_gain
 			}
 		}
@@ -2331,6 +2347,7 @@ eqfm_crisis_fail_effect = {
 			}
 			add_fervor_target_modifier = { #changes target
 				culture = cu:bosniak
+				months = gbbf_duration_5_years
 				multiplier = eastern_crisis_fervor_gain
 			}
 		}
@@ -2342,6 +2359,7 @@ eqfm_crisis_fail_effect = {
 			}
 			add_fervor_target_modifier = { #changes target
 				culture = cu:bulgarian
+				months = gbbf_duration_5_years
 				multiplier = eastern_crisis_fervor_gain
 			}
 		}
@@ -2353,6 +2371,7 @@ eqfm_crisis_fail_effect = {
 			}
 			add_fervor_target_modifier = { #changes target
 				culture = cu:croat
+				months = gbbf_duration_5_years
 				multiplier = eastern_crisis_fervor_gain
 			}
 		}
@@ -2364,6 +2383,19 @@ eqfm_crisis_fail_effect = {
 			}
 			add_fervor_target_modifier = { #changes target
 				culture = cu:greek
+				months = gbbf_duration_5_years
+				multiplier = eastern_crisis_fervor_gain
+			}
+		}
+		if = {
+			limit = {
+				any_scope_pop = {
+					culture = cu:rhomaios
+				}
+			}
+			add_fervor_target_modifier = { #changes target
+				culture = cu:rhomaios
+				months = gbbf_duration_5_years
 				multiplier = eastern_crisis_fervor_gain
 			}
 		}
@@ -2375,6 +2407,7 @@ eqfm_crisis_fail_effect = {
 			}
 			add_fervor_target_modifier = { #changes target
 				culture = cu:romanian
+				months = gbbf_duration_5_years
 				multiplier = eastern_crisis_fervor_gain
 			}
 		}
@@ -2386,6 +2419,7 @@ eqfm_crisis_fail_effect = {
 			}
 			add_fervor_target_modifier = { #changes target
 				culture = cu:serb
+				months = gbbf_duration_5_years
 				multiplier = eastern_crisis_fervor_gain
 			}
 		}

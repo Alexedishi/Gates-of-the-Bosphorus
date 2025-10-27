@@ -1409,7 +1409,7 @@ eqfm_black_mountain.021 = {
 			id = eqfm_black_mountain.022 # Expeditionary Force Arrives at the Border
 			days = { 15 45 }
 		}
-		set_variable = eqfm_expedition_piracy_transit_var
+		set_variable = eqfm_expedition_black_mountain_transit_var
 		eqfm_update_black_mountain_characters_effect = yes
 	}
 	
@@ -1428,15 +1428,15 @@ eqfm_black_mountain.022 = {
 	flavor = eqfm_black_mountain.022.f
 	
 	gui_window = event_window_1char_adventure
-	left_icon = scope:turkfm_raid_leader_scope
+	left_icon = scope:eqfm_black_mountain_tur_leader
 	
 	event_image = {
-		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_forest_day.dds"
+		texture = "gfx/interface/illustrations/event_backgrounds/gbbf_forest_day.dds"
 	}
 	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
 	
 	trigger = {
-		# triggered by eqfm_black_mountain.010
+		# triggered by eqfm_black_mountain.021
 	}
 	
 	cancellation_trigger = {
@@ -1444,6 +1444,7 @@ eqfm_black_mountain.022 = {
 	}
 	
 	immediate = {
+		remove_variable = eqfm_expedition_black_mountain_transit_var
 		eqfm_black_mountain_scopes_effect = yes
 		eqfm_start_black_mountain_expedition_effect = yes
 		c:MON ?= {
@@ -1475,7 +1476,7 @@ eqfm_black_mountain.023 = {
 	left_icon = scope:eqfm_black_mountain_tur_leader_scope
 	
 	event_image = {
-		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_forest_day.dds"
+		texture = "gfx/interface/illustrations/event_backgrounds/gbbf_forest_day.dds"
 	}
 	on_opened_soundeffect = "event:/SFX/Events/unspecific/iceberg_in_the_antartica"
 	
@@ -2779,14 +2780,21 @@ eqfm_black_mountain.043 = {
 	option = {
 		name = eqfm_black_mountain.043.a
 		default_option = yes
-		eqfm_add_small_peril_effect = {
+		eqfm_add_medium_peril_effect = {
 			type = black_mountain
 		}
 	}
 	
 	option = {
 		name = eqfm_black_mountain.043.b
-		eqfm_add_medium_peril_effect = {
+		trigger = {
+			scope:eqfm_black_mountain_tur_leader = {
+				has_trait = resupply_commander
+			}
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		eqfm_add_small_peril_effect = {
 			type = black_mountain
 		}
 		eqfm_add_small_progress_effect = {

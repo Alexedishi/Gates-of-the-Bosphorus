@@ -44,7 +44,38 @@
 
 ## Black Mountain Raiding Income Effects ##
 eqfm_weekly_black_mountain_effect = {
-	# Ok look bruv, I don't like this either. You got a problem, email the complaint line. A pipebomb will be delivered to your mailbox within 7 to 12 Bosnian business days.
+	# Checking for presence of expedition variables because I'm a poor boy
+	if = {
+		limit = {
+			eqfm_has_black_mountain_expedition_trigger = yes
+			NOR = {
+				has_variable = eqfm_expedition_black_mountain_transit_var
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_variable = eqfm_black_mountain_expedition_progress_var
+				}
+			}
+			set_variable = {
+				name = eqfm_black_mountain_expedition_progress_var
+				value = 0
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_variable = eqfm_black_mountain_expedition_peril_var
+				}
+			}
+			set_variable = {
+				name = eqfm_black_mountain_expedition_peril_var
+				value = 0
+			}
+		}
+	}
+	# Montenegro Raiding Math
 	if = {
 		limit = {
 			c:MON ?= this
@@ -89,16 +120,16 @@ eqfm_weekly_black_mountain_effect = {
 			remove_variable = mon_less_raiding
 			remove_variable = eqfm_raiding_status_cooldown_var
 		}
+		set_variable = {
+			name = eqfm_captured_nobles_var
+			value = eqfm_captured_nobles_value
+		}
 		
 		## IP3 Raiding Income Effects ##
 		eqfm_check_raiding_target_effect = yes
 		eqfm_update_raiding_income_effect = yes
 	}
-	if = {
-		limit = {
-			c:TUR ?= this
-		}
-	}
+
 }
 
 eqfm_check_raiding_target_effect = {

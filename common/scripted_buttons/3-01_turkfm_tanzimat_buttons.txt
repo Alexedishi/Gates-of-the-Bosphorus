@@ -86,7 +86,10 @@ turkfm_enforce_identity_button = {
 	desc = "turkfm_enforce_identity_button_desc"
 
 	visible = {
-		always = yes
+		NOR = {
+			has_variable = turkfm_ottomanist_identity_enforced
+			has_variable = turkfm_islamist_identity_enforced
+		}
 	}
 	possible = {
 		custom_tooltip = {
@@ -104,17 +107,32 @@ turkfm_enforce_identity_button = {
 				}
 			}
 		}
-		hidden_trigger = {
-			NOT = {
-				has_variable = turkfm_selecting_identity_var
-			}
+		NOT = {
+			has_law_or_variant = law_type:law_subjecthood
 		}
 	}
 	effect = {
-		trigger_event = {
-			id = turkfm_tanzimat.005 # The Identity of the Empire
+		if = {
+			limit = {
+				var:turkfm_tanzimat_identity_var > 900
+			}
+			custom_tooltip = {
+				text = turkfm_enforce_identity_ottomanist
+				set_variable = turkfm_ottomanist_identity_enforced
+			}
 		}
-		set_variable = turkfm_selecting_identity_var
+		else_if = {
+			limit = {
+				var:turkfm_tanzimat_identity_var < 100
+			}
+			custom_tooltip = {
+				text = turkfm_enforce_identity_button_islamist
+				set_variable = turkfm_islamist_identity_enforced
+			}
+		}
+		else = {
+			custom_tooltip = turkfm_ottomanist_identity_effect
+		}
 	}
 }
 

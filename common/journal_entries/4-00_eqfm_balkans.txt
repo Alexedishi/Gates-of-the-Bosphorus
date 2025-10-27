@@ -376,8 +376,8 @@ je_eqfm_eastern_question = {
 	can_revolution_inherit = yes
 	transferable = no
 	
-	scripted_progress_bar = eqfm_balkfm_escalation_progress_bar
-	scripted_progress_bar = eqfm_balkfm_deescalation_progress_bar
+	scripted_progress_bar = eqfm_balkans_escalation_progress_bar
+	scripted_progress_bar = eqfm_balkans_deescalation_progress_bar
 
 	scripted_button = eqfm_accelerate_tensions_button
 	scripted_button = eqfm_decelerate_tensions_button
@@ -530,7 +530,7 @@ je_eqfm_balkan_situation_crisis = {
 	complete = {
 		custom_tooltip = {
 			text = je_eqfm_balkan_situation_crisis_complete
-			global_var:eqfm_crisis_var >= 100
+			global_var:eqfm_crisis_var >= 250
 		}
 		has_any_secessionists_broken_out = no
 		has_any_secessionists_growing = no
@@ -545,6 +545,7 @@ je_eqfm_balkan_situation_crisis = {
 			every_country = {
 				limit = {
 					has_journal_entry = je_eqfm_eastern_question
+					c:TUR != this
 				}
 				trigger_event = {
 					id = eqfm_balkans.029 # Order Returns to Rumelia
@@ -614,6 +615,12 @@ je_eqfm_balkan_situation_crisis = {
 			change_global_variable = {
 				name = eqfm_crisis_duration_var
 				add = 1
+			}
+			je:je_eqfm_balkan_situation_crisis = {
+				set_bar_progress = {
+					name = eqfm_crisis_progress_bar
+					value = global_var:eqfm_crisis_var
+				}
 			}
 		}
 	}
