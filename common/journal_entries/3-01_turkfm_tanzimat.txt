@@ -37,7 +37,10 @@
 		custom_tooltip = {
 			text = je_turkfm_tanzimat_main_complete
 			hidden_trigger = {
-				var:turkfm_tanzimat_reform_var >= 1000
+				OR = {
+					has_variable = turkfm_ottomanist_identity_enforced
+					has_variable = turkfm_islamist_identity_enforced
+				}
 			}
 		}
 	}
@@ -111,6 +114,21 @@
 	on_weekly_pulse = {
 		effect = {
 			turkfm_calculate_tanzimat_variables_effect = yes
+			change_variable = {
+				name = turkfm_tanzimat_identity_var
+				add = var:turkfm_tanzimat_identity_progress_var
+			}
+			clamp_variable = {
+				name = turkfm_tanzimat_identity_var
+				max = 1000
+				min = 0
+			}
+			je:je_turkfm_tanzimat_main = {
+				set_bar_progress = {
+					name = turkfm_imperial_identity_progress_bar
+					value = owner.var:turkfm_tanzimat_identity_var
+				}
+			}
 		}
 	}
 
@@ -316,8 +334,8 @@ je_turkfm_tanzimat_bureaucracy = {
 		any_scope_building = {
 			is_building_type = building_university
 			NOR = {
-				has_active_production_method = pm_simple_organization
-				has_active_production_method = pm_religious_bureaucrats
+				has_active_production_method = pm_scholastic_education
+				has_active_production_method = pm_religious_academia
 			}
 			occupancy > 0.9
 			level >= 5
@@ -332,6 +350,7 @@ je_turkfm_tanzimat_bureaucracy = {
 				has_active_production_method = pm_religious_bureaucrats
 			}
 			occupancy >= 0.9
+			level >= 5
 		}
 		bureaucracy >= 0
 		approaching_bureaucracy_shortage = no
