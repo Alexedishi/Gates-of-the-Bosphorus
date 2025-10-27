@@ -1,9 +1,11 @@
-﻿## TANZIMAT EVENTS ##
+﻿############################################################
+## TURKISH FLAVOR MODULE: THE REORGANIZATION OF THE STATE ##
+############################################################
 
-# For Greek content, see the "grefm" module
+# For Greek & Byzantium content, see the "grefm" module
 # For Balkan Nations content, see the "balkfm" module
-# For Turkish content, see the "turkfm" module
-# For Orthodox Church content, see the "eocfm" module
+# For Ottoman & Turkish content, see the "turkfm" module
+# For Eastern Question & Expeditions content, see the "eqfm" module
 
 ####################
 
@@ -15,37 +17,65 @@ namespace = turkfm_tanzimat
 
 # The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
 
-#100-109 - Tanzimat Narrative Events
-#	101 - The Decaying Empire
-#	102 - Edict of Gülhane
-#	103 - The Men of the Tanzimat
-#	104 - 
-#	105 - 
-#	106 - 
-#	107 - ##The Three Pashas
-#	108 - The Eternal Caliphate
-#	109 - The Ottoman Motherland
+## Section 0: Tanzimat Mainline Events ##
+#001-009 - Tanzimat Narrative Events
+#	001 - ##
+#	002 - Edict of Gülhane
+#	003 - The Men of the Tanzimat
+#	004 - ##
+#	005 - ##
+#	006 - ##The Decaying Empire
+#	007 - ##The Three Pashas
+#	008 - The Eternal Caliphate
+#	009 - The Ottoman Motherland
 
-#110-119 - Tanzimat Reform Events
-#	110 - Modernized Agriculture
-#	111 - A Formidable Army
-#	112 - The Civic-Bureaucrats
-#	113 - Revitalizing the Economy
-#	114 - An Educated Populace
-#	115 - Equality Before the Law
-#	116 - Countrysides Secured
-#	117 - Slavery Abolished
-#	118 - 
-#	119 - 
+#010-019 - Tanzimat Reform Events
+#	010 - Modernized Agriculture
+#	011 - A Formidable Army
+#	012 - The Civic-Bureaucrats
+#	013 - Revitalizing the Economy
+#	014 - An Educated Populace
+#	015 - Equality Before the Law
+#	016 - Countrysides Secured
+#	017 - Slavery Abolished
+#	018 - ##
+#	019 - ##
 
-#120-129 - Imperial Challenger Events
-#	120 - The Sultan in Mostar
-#	121 - Ali Pasha Captured
+#020-029 - Imperial Challenger Events
+#	020 - The Sultan in Mostar
+#	021 - Ali Pasha Captured
+
+## Section 1: The Young Ottomans Events ##
+#100-109 - Emergence of the Young Ottomans Events
+#	100 - Yeni Osmanlılar
+#	101 - The Softas Take to the Streets
+#	102 - ##
+#	103 - ##
+#	104 - ##
+#	105 - ##
+#	106 - ##
+#	107 - The Tanzimat Uncontested
+#	108 - Sultanic Authority
+#	109 - A Bloodless Coup
+
+#110-119 - Young Ottomans Aftermath Events
+#	110 - A Broken Sultan
+#	111 - Renewed Momentum
+#	112 - Deposing an Invalid
+
+
+## Section 2: The Young Turks Events ##
+#200-209 - Emergence of the Young Turks Events
+#	200 - The Committee of Union and Progress
+
+#210-219 - Atatürk Events
+#	210 - ##
+
 
 ####################
 
 ## Tanzimat Narrative Events ##
-turkfm_tanzimat.001 = { # The Decaying Empire
+turkfm_tanzimat.001 = { # OPEN, removed for 3.3
 	type = country_event
 	placement = root
 
@@ -75,8 +105,10 @@ turkfm_tanzimat.001 = { # The Decaying Empire
 	option = {
 		name = turkfm_tanzimat.001.a
 		default_option = yes
-		custom_tooltip = turkfm_no_effects
+		custom_tooltip = gbbf_no_effects
 	}
+	
+	orphan = yes
 
 }
 
@@ -93,7 +125,7 @@ turkfm_tanzimat.002 = { # Edict of Gülhane
 	left_icon = scope:turkfm_ruler_scope
 
 	event_image = {
-		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_turkish_palace2.dds"
+		texture = "gfx/interface/illustrations/event_backgrounds/gbbf_turkish_palace2.dds"
 	}
 
 	icon = "gfx/interface/icons/event_icons/event_fez.dds"
@@ -128,7 +160,7 @@ turkfm_tanzimat.002 = { # Edict of Gülhane
 			years = 30
 		}
 		custom_tooltip = {
-			text = turkfm_reform_completed_tt
+			text = turkfm_reform_completed
 			change_variable = {
 				name = turkfm_tanzimat_completion_var
 				add = 1
@@ -161,26 +193,28 @@ turkfm_tanzimat.002 = { # Edict of Gülhane
 			}
 			add_modifier = {
 				name = modifier_turkfm_influence_questioned
-				days = long_modifier_time
+				months = gbbf_duration_10_years
 				is_decaying = yes
 			}
 		}
 		every_political_movement = {
 			limit = {
 				OR = {
-					is_political_movement_type = movement_religious_majority
+					is_political_movement_type = movement_gbbf_ottomanist
 					is_political_movement_type = movement_modernizer
+					is_political_movement_type = movement_liberal
 				}
 			}
 			add_modifier = {
 				name = modifier_turkfm_declared_reforms
 				years = 20
+				is_decaying = yes
 			}
 		}
 		hidden_effect = {
 			every_country = {
 				limit = {
-					has_journal_entry = je_turkfm_eastern_question
+					has_journal_entry = je_eqfm_eastern_question
 				}
 				post_notification = notification_turkfm_tanzimat_started
 			}
@@ -204,7 +238,7 @@ turkfm_tanzimat.003 = { # The Men of the Tanzimat
 	right_icon = scope:turkfm_tanzimat_character_3
 
 	event_image = {
-		texture = "gfx/event_pictures/gbbf_backgrounds/gbbf_turkish_palace1.dds"
+		texture = "gfx/interface/illustrations/event_backgrounds/gbbf_turkish_palace1.dds"
 	}
 
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
@@ -285,7 +319,7 @@ turkfm_tanzimat.003 = { # The Men of the Tanzimat
 		default_option = yes
 		add_modifier = {
 			name = modifier_turkfm_reorganizing_spirit
-			days = very_long_modifier_time
+			months = gbbf_duration_20_years
 		}
 		if = {
 			limit = {
@@ -294,31 +328,125 @@ turkfm_tanzimat.003 = { # The Men of the Tanzimat
 				}
 			}
 			scope:turkfm_tanzimat_character_1 = {
-				add_trait = trait_turkfm_master_bureaucrat
+				add_trait = gbbf_trait_master_bureaucrat
 			}
 		}
 		else = {
 			scope:turkfm_tanzimat_character_1 = {
 				add_character_role = agitator
-				hidden_effect = {
-					free_character_from_void = yes
-				}
+				gbbf_free_from_void = yes
 			}
 		}
 		scope:turkfm_tanzimat_character_2 = {
 			add_character_role = agitator
-			hidden_effect = {
-				free_character_from_void = yes
-			}
+			gbbf_free_from_void = yes
 		}
 		scope:turkfm_tanzimat_character_3 = {
 			add_character_role = agitator
-			hidden_effect = {
-				free_character_from_void = yes
-			}
+			gbbf_free_from_void = yes
+		}
+	}
+}
+
+turkfm_tanzimat.005 = { # The Identity of the Empire
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = turkfm_tanzimat.005.t
+	desc = turkfm_tanzimat.005.d
+	flavor = turkfm_tanzimat.005.f
+	
+	event_image = {
+		video = "ip3_official_reading_dictate"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by turkfm_enforce_identity_button
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_tanzimat_main
+		}
+	}
+	
+	immediate = {
+	}
+
+	option = {
+		name = turkfm_tanzimat.005.a
+		default_option = yes
+		custom_tooltip = {
+			text = turkfm_tanzimat.005.a.tt
+			set_variable = turkfm_ottomanist_identity_enforced
 		}
 	}
 
+	option = {
+		name = turkfm_tanzimat.005.b
+		custom_tooltip = {
+			text = turkfm_tanzimat.005.b.tt
+			set_variable = turkfm_islamist_identity_enforced
+		}
+	}
+	
+	option = {
+		name = turkfm_tanzimat.005.c
+		custom_tooltip = {
+			text = gbbf_no_effects
+		}
+	}
+
+	orphan = yes
+	
+}
+
+turkfm_tanzimat.006 = { # The Decaying Empire
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = turkfm_tanzimat.006.t
+	desc = turkfm_tanzimat.006.d
+	flavor = turkfm_tanzimat.006.f
+	
+	event_image = {
+		video = "ip3_angry_mob_raiding_minorities"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by je_turkfm_tanzimat_main
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = turkfm_tanzimat.006.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_tanzimat_failed_country
+			months = gbbf_duration_20_years
+		}
+		every_political_movement = {
+			limit = {
+				eqfm_cultural_minority_movement_trigger = yes
+			}
+			add_modifier = {
+				name = modifier_turkfm_tanzimat_failed_movement
+				months = gbbf_duration_20_years
+				is_decaying = yes
+			}
+		}
+	}
+	
 }
 
 turkfm_tanzimat.007 = { # The Three Pashas
@@ -351,8 +479,6 @@ turkfm_tanzimat.007 = { # The Three Pashas
 	option = {
 		name = turkfm_tanzimat.007.a
 		default_option = yes
-		turkfm_cleanup_tanzimat_effect = yes
-
 	}
 
 }
@@ -387,10 +513,11 @@ turkfm_tanzimat.008 = { # The Eternal Caliphate
 	option = {
 		name = turkfm_tanzimat.008.a
 		default_option = yes
-		turkfm_cleanup_tanzimat_effect = yes
+		# This represents the Triumph of Turkish Sunni jurisprudence over all other schools of thought
+		activate_law = law_type:law_state_religion
 		add_modifier = {
 			name = modifier_turkfm_eternal_caliphate
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 		add_loyalists = {
 			pop_type = clergymen
@@ -434,10 +561,35 @@ turkfm_tanzimat.009 = { # The Ottoman Motherland
 	option = {
 		name = turkfm_tanzimat.009.a
 		default_option = yes
-		turkfm_cleanup_tanzimat_effect = yes
+		remove_primary_culture = cu:turkish
+		add_primary_culture = cu:ottoman
+		custom_tooltip = {
+			text = turkfm_turkish_assimilation
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = turkish
+				}
+				change_pop_culture = {
+					target = cu:ottoman
+					value = 0.90
+				}
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_balkan_assimilation
+			every_scope_pop = {
+				limit = {
+					gbbf_balkans_pop_culture_trigger = yes
+				}
+				change_pop_culture = {
+					target = cu:ottoman
+					value = 0.25
+				}
+			}
+		}
 		add_modifier = {
 			name = modifier_turkfm_ottoman_motherland
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 		add_loyalists = {
 			pop_type = bureaucrats
@@ -477,7 +629,7 @@ turkfm_tanzimat.010 = { # Modernized Agriculture
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by je_turkfm_tanzimat_argiculture
+		# triggered by je_turkfm_tanzimat_agriculture
 	}
 
 	immediate = {
@@ -488,7 +640,7 @@ turkfm_tanzimat.010 = { # Modernized Agriculture
 		default_option = yes
 		add_modifier = {
 			name = modifier_turkfm_modernized_agriculture
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 		turkfm_advance_ottomanism1_effect = yes
 		turkfm_complete_reform_effect = yes
@@ -528,7 +680,7 @@ turkfm_tanzimat.011 = { # A Formidable Army
 		default_option = yes
 		add_modifier = {
 			name = modifier_turkfm_modernized_army
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 		turkfm_advance_ottomanism1_effect = yes
 		turkfm_complete_reform_effect = yes
@@ -568,12 +720,12 @@ turkfm_tanzimat.012 = { # Stately Governance
 		default_option = yes
 		add_modifier = {
 			name = modifier_turkfm_modernized_bureaucracy
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 		turkfm_advance_ottomanism1_effect = yes
 		turkfm_complete_reform_effect = yes
 		ig:ig_intelligentsia = {
-			remove_ideology = ideology_turkfm_scribalistic
+			remove_ideology = ideology_gbbf_scribalist
 			remove_ideology = ideology_moralist
 			add_ideology = ideology_anti_clerical
 			set_interest_group_name = turkfm_ig_ottoman_intelligentsia
@@ -614,7 +766,7 @@ turkfm_tanzimat.013 = { # Revitalizing the Economy
 		default_option = yes
 		add_modifier = {
 			name = modifier_turkfm_modernized_economy
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 		turkfm_advance_ottomanism1_effect = yes
 		turkfm_complete_reform_effect = yes
@@ -654,7 +806,7 @@ turkfm_tanzimat.014 = { # An Educated Populace
 		default_option = yes
 		add_modifier = {
 			name = modifier_turkfm_modernized_education
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 		turkfm_advance_ottomanism1_effect = yes
 		turkfm_complete_reform_effect = yes
@@ -683,10 +835,15 @@ turkfm_tanzimat.015 = { # Equality Before the Law
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by je_turkfm_tanzimat_millet_reform
+		NOR = {
+			has_variable = turkfm_millets_abolished
+			has_law = law_type:law_millet_system
+		}
+		has_journal_entry = je_turkfm_tanzimat_main
 	}
 
 	immediate = {
+		set_variable = turkfm_millets_abolished
 	}
 
 	option = {
@@ -704,7 +861,7 @@ turkfm_tanzimat.015 = { # Equality Before the Law
 			religion = rel:oriental_orthodox
 			value = medium_radicals
 		}
-		#		turkfm_advance_ottomanism1_effect = yes
+		turkfm_advance_ottomanism1_effect = yes
 		turkfm_complete_reform_effect = yes
 	}
 
@@ -742,7 +899,7 @@ turkfm_tanzimat.016 = { # Countrysides Secured
 		default_option = yes
 		add_modifier = {
 			name = modifier_turkfm_modernized_policing
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 		turkfm_advance_ottomanism1_effect = yes
 		turkfm_complete_reform_effect = yes
@@ -782,7 +939,7 @@ turkfm_tanzimat.017 = { # Slavery Abolished
 		default_option = yes
 		add_modifier = {
 			name = modifier_turkfm_slavery_abolished
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 		turkfm_advance_ottomanism1_effect = yes
 		turkfm_complete_reform_effect = yes
@@ -816,7 +973,7 @@ turkfm_tanzimat.020 = { # The Sultan in Mostar
 	}
 
 	immediate = {
-		c:TUR_BOS ?= {
+		c:BOS ?= {
 			save_scope_as = hersek_scope
 		}
 	}
@@ -859,7 +1016,7 @@ turkfm_tanzimat.021 = { # Ali Pasha Detained
 	}
 
 	cancellation_trigger = {
-		c:TUR_BOS ?= {
+		c:BOS ?= {
 			OR = {
 				NOT = {
 					is_subject_of = root
@@ -874,7 +1031,7 @@ turkfm_tanzimat.021 = { # Ali Pasha Detained
 	}
 
 	immediate = {
-		c:TUR_BOS ?= {
+		c:BOS ?= {
 			save_scope_as = hersek_scope
 		}
 		if = {
@@ -905,7 +1062,7 @@ turkfm_tanzimat.021 = { # Ali Pasha Detained
 	option = { # Clip Him
 		name = turkfm_tanzimat.021.a
 		default_option = yes
-		c:TUR_BOS ?= {
+		c:BOS ?= {
 			set_variable = turkfm_ali_pasha_waxed
 			show_as_tooltip = {
 				ruler = {
@@ -917,7 +1074,7 @@ turkfm_tanzimat.021 = { # Ali Pasha Detained
 			}
 		}
 		hidden_effect = {
-			c:TUR_BOS ?= {
+			c:BOS ?= {
 				trigger_event = {
 					id = balkfm_bosnia.006 # Ali Pasha's Demise
 				}
@@ -932,7 +1089,7 @@ turkfm_tanzimat.021 = { # Ali Pasha Detained
 
 	option = { # Exile Him
 		name = turkfm_tanzimat.021.b
-		c:TUR_BOS ?= {
+		c:BOS ?= {
 			set_variable = turkfm_ali_pasha_waxed
 			show_as_tooltip = {
 				ruler = {
@@ -944,7 +1101,7 @@ turkfm_tanzimat.021 = { # Ali Pasha Detained
 			}
 		}
 		hidden_effect = {
-			c:TUR_BOS ?= {
+			c:BOS ?= {
 				trigger_event = {
 					id = balkfm_bosnia.006 # Ali Pasha's Demise
 				}
@@ -954,6 +1111,546 @@ turkfm_tanzimat.021 = { # Ali Pasha Detained
 					id = balkfm_bosnia.006 # Ali Pasha's Demise
 				}
 			}
+		}
+	}
+
+}
+
+## Young Ottomans Narrative Events ##
+turkfm_tanzimat.100 = { # Yeni Osmanlılar
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = turkfm_tanzimat.100.t
+	desc = turkfm_tanzimat.100.d
+	flavor = turkfm_tanzimat.100.f
+
+	gui_window = event_window_3char_selection
+	left_icon = scope:left_icon
+	center_icon = scope:center_icon
+	right_icon = scope:right_icon
+
+	event_image = {
+		video = "middleeast_middleclass_cafe"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by je_turkfm_tanzimat_young_ottomans
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_tanzimat_main
+		}
+	}
+
+	immediate = {
+		ig:ig_intelligentsia = {
+			leader = {
+				save_scope_as = left_icon
+			}
+		}
+		random_scope_character = {
+			limit = {
+				has_template = template_turkfm_kemal_namik
+			}
+			save_scope_as = center_icon
+		}
+		random_scope_character = {
+			limit = {
+				has_template = template_turkfm_sinasi_ibrahim
+			}
+			save_scope_as = right_icon
+		}
+		every_scope_character = {
+			limit = {
+				OR = {
+					has_ideology = ideology:ideology_gbbf_ottomanist
+					has_ideology = ideology:ideology_modernizer_leader
+					has_ideology = ideology:ideology_liberal_leader
+				}
+			}
+			custom_tooltip = {
+				text = turkfm_young_ottoman_member
+				set_variable = turkfm_young_ottoman_member
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_turkfm_murad_osmanoglu
+			}
+			save_scope_as = turkfm_murad_scope
+		}
+	}
+
+	option = {
+		name = turkfm_tanzimat.100.a
+		default_option = yes
+		custom_tooltip = turkfm_young_ottoman_warning
+	}
+
+}
+
+turkfm_tanzimat.101 = { # The Softas Take to the Streets
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = turkfm_tanzimat.101.t
+	desc = turkfm_tanzimat.101.d
+	flavor = turkfm_tanzimat.101.f
+
+	event_image = {
+		video = "europenorthamerica_sufferage"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		var:turkfm_young_ottomans_var >= 40
+		NOT = {
+			has_variable = turkfm_softas_happened
+		}
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_tanzimat_main
+		}
+	}
+
+	immediate = {
+		set_variable = turkfm_softas_happened
+	}
+
+	option = {
+		name = turkfm_tanzimat.101.a
+		default_option = yes
+		custom_tooltip = {
+			text = turkfm_young_ottomans_progress_add_20
+			change_variable = {
+				name = turkfm_young_ottomans_var
+				add = 20
+			}
+		}
+		capital = {
+			add_radicals_in_state = {
+				interest_group = ig:ig_landowners
+				value = medium_radicals
+			}
+			add_radicals_in_state = {
+				interest_group = ig:ig_devout
+				value = medium_radicals
+			}
+			add_modifier = {
+				name = modifier_turkfm_softas_protesting
+				months = gbbf_duration_5_years
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_tanzimat.101.b
+		trigger = {
+			has_law_or_variant = law_type:law_censorship
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		custom_tooltip = {
+			text = turkfm_young_ottomans_progress_add_5
+			change_variable = {
+				name = turkfm_young_ottomans_var
+				add = 5
+			}
+		}
+		capital = {
+			add_radicals_in_state = {
+				pop_type = academics
+				value = large_radicals
+			}
+			add_radicals_in_state = {
+				pop_type = bureaucrats
+				value = large_radicals
+			}
+			add_loyalists_in_state = {
+				pop_type = clergymen
+				value = medium_radicals
+			}
+			add_loyalists_in_state = {
+				pop_type = aristocrats
+				value = medium_radicals
+			}
+			add_modifier = {
+				name = modifier_turkfm_softas_protesting
+				months = gbbf_duration_5_years
+				is_decaying = yes
+			}
+		}
+		ig:ig_intelligentsia = {
+			add_modifier = {
+				name = modifier_turkfm_publications_shuttered
+				months = gbbf_duration_5_years
+				is_decaying = yes
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_tanzimat.101.c
+		trigger = {
+			has_law_or_variant = law_type:law_outlawed_dissent
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		custom_tooltip = {
+			text = turkfm_young_ottomans_progress_lose_10
+			change_variable = {
+				name = turkfm_young_ottomans_var
+				subtract = 10
+			}
+		}
+		add_radicals = {
+			pop_type = academics
+			value = very_large_radicals
+		}
+		add_radicals = {
+			pop_type = bureaucrats
+			value = very_large_radicals
+		}
+		add_loyalists = {
+			pop_type = clergymen
+			value = medium_radicals
+		}
+		add_loyalists = {
+			pop_type = aristocrats
+			value = medium_radicals
+		}
+		ig:ig_intelligentsia = {
+			add_modifier = {
+				name = modifier_turkfm_members_arrested
+				months = gbbf_duration_5_years
+				is_decaying = yes
+			}
+		}
+		capital = {
+			add_modifier = {
+				name = modifier_turkfm_protesters_arrested
+				months = gbbf_duration_5_years
+				is_decaying = yes
+			}
+		}
+	}
+
+}
+
+turkfm_tanzimat.107 = { # The Tanzimat Uncontested
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = turkfm_tanzimat.107.t
+	desc = turkfm_tanzimat.107.d
+	flavor = turkfm_tanzimat.107.f
+
+	event_image = {
+		video = "middleeast_middleclass_cafe"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by je_turkfm_tanzimat_young_ottomans
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = turkfm_tanzimat.107.a
+		default_option = yes
+		ruler = {
+			add_modifier = {
+				name = modifier_balkfm_popular_leader
+				months = gbbf_duration_10_years
+				is_decaying = yes
+			}
+		}
+		every_political_movement = {
+			limit = {
+				OR = {
+					is_political_movement_type = movement_gbbf_ottomanist
+					is_political_movement_type = movement_modernizer
+				}
+			}
+			add_modifier = {
+				name = initial_movement_enthusiasm
+				months = gbbf_duration_10_years
+				is_decaying = yes
+			}
+		}
+	}
+
+}
+
+turkfm_tanzimat.108 = { # Sultanic Authority
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = turkfm_tanzimat.108.t
+	desc = turkfm_tanzimat.108.d
+	flavor = turkfm_tanzimat.108.f
+
+	event_image = {
+		video = "middleeast_middleclass_cafe"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by je_turkfm_tanzimat_young_ottomans
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = turkfm_tanzimat.108.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_sultanic_authority
+			months = gbbf_duration_10_years
+		}
+		every_scope_character = {
+			limit = {
+				has_variable = turkfm_young_ottoman_member
+			}
+			exile_character = yes
+		}
+	}
+
+}
+
+turkfm_tanzimat.109 = { # A Bloodless Coup
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = turkfm_tanzimat.109.t
+	desc = turkfm_tanzimat.109.d
+	flavor = turkfm_tanzimat.109.f
+
+	event_image = {
+		video = "middleeast_middleclass_cafe"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by je_turkfm_tanzimat_young_ottomans
+	}
+
+	immediate = {
+		random_character_in_void = {
+			limit = {
+				has_template = template_turkfm_murad_osmanoglu
+			}
+			save_scope_as = turkfm_murad_scope
+		}
+	}
+
+	option = {
+		name = turkfm_tanzimat.109.a
+		default_option = yes
+		ruler = {
+			kill_character = yes
+		}
+		scope:turkfm_murad_scope = {
+			gbbf_free_from_void_ruler = yes
+		}
+		custom_tooltip = {
+			text = turkfm_murad_mental_break
+			random_list = {
+				5 = {
+					trigger_event = {
+						id = turkfm_tanzimat.110 # A Broken Sultan
+					}
+				}
+				5 = {
+					trigger_event = {
+						id = turkfm_tanzimat.111 # Renewed Momentum
+					}
+				}
+			}
+		}
+	}
+
+}
+
+## Young Ottomans Aftermath Events ##
+turkfm_tanzimat.110 = { # A Broken Sultan
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = turkfm_tanzimat.110.t
+	desc = turkfm_tanzimat.110.d
+	flavor = turkfm_tanzimat.110.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:turkfm_murad_scope
+
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/gbbf_turkish_palace1.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+
+	trigger = {
+		# triggered by turkfm_tanzimat.109
+	}
+
+	cancellation_trigger = {
+		ruler = {
+			NOT = {
+				has_template = template_turkfm_murad_osmanoglu
+			}
+		}
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = turkfm_murad_scope
+		}
+	}
+
+	option = {
+		name = turkfm_tanzimat.110.a
+		default_option = yes
+		scope:turkfm_murad_scope = {
+			add_trait = psychological_affliction
+			add_trait = gbbf_trait_incapable
+		}
+	}
+
+}
+
+turkfm_tanzimat.111 = { # Renewed Momentum
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = turkfm_tanzimat.111.t
+	desc = turkfm_tanzimat.111.d
+	flavor = turkfm_tanzimat.111.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:turkfm_murad_scope
+
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/gbbf_turkish_palace1.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+
+	trigger = {
+		# triggered by turkfm_tanzimat.109
+	}
+
+	cancellation_trigger = {
+		ruler = {
+			NOT = {
+				has_template = template_turkfm_murad_osmanoglu
+			}
+		}
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = turkfm_murad_scope
+		}
+	}
+
+	option = {
+		name = turkfm_tanzimat.110.a
+		default_option = yes
+		scope:turkfm_murad_scope = {
+			add_trait = erudite
+		}
+	}
+
+}
+
+turkfm_tanzimat.112 = { # Deposing an Invalid
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = turkfm_tanzimat.112.t
+	desc = turkfm_tanzimat.112.d
+	flavor = turkfm_tanzimat.112.f
+
+	event_image = {
+		video = "votp_conspiring"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by turkfm_depose_murad_button
+	}
+
+	cancellation_trigger = {
+		ruler = {
+			NOT = {
+				has_template = template_turkfm_murad_osmanoglu
+			}
+		}
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = turkfm_murad_scope
+		}
+		create_character = {
+			template = template_turkfm_osmanoglu_abdulhamid_ii
+			on_created = {
+				place_character_in_void = 12
+			}
+		}
+	}
+
+	option = {
+		name = turkfm_tanzimat.112.a
+		default_option = yes
+		random_character_in_void = {
+			limit = {
+				has_template = template_turkfm_osmanoglu_abdulhamid_ii
+			}
+			gbbf_free_from_void_ruler = yes
+		}
+		ruler = {
+			show_as_tooltip = {
+				exile_character = yes
+			}
+		}
+		add_modifier = {
+			name = modifier_turkfm_administrative_disarray
+			months = gbbf_duration_5_years
+			is_decaying = yes
 		}
 	}
 

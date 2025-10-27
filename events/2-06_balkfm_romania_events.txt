@@ -1,9 +1,11 @@
-﻿## ROMANIA FLAVOR EVENTS ##
+﻿#########################################################
+## BALKANS FLAVOR MODULE: ROMANIA & THE PRINCIPALITIES ##
+#########################################################
 
-# For Greek content, see the "grefm" module
+# For Greek & Byzantium content, see the "grefm" module
 # For Balkan Nations content, see the "balkfm" module
-# For Turkish content, see the "turkfm" module
-# For Orthodox Church content, see the "eocfm" module
+# For Ottoman & Turkish content, see the "turkfm" module
+# For Eastern Question & Expeditions content, see the "eqfm" module
 
 ####################
 
@@ -209,8 +211,7 @@ balkfm_romania.004 = { # Electing a Hospodar (MOL)
 	option = { # historical successor
 		name = balkfm_romania.004.b
 		scope:balkfm_hospodar_candidate_2 = {
-			free_character_from_void = yes
-			set_character_as_ruler = yes
+			gbbf_free_from_void_ruler = yes
 		}
 		hidden_effect = {
 			scope:balkfm_heir_scope ?= {
@@ -222,8 +223,7 @@ balkfm_romania.004 = { # Electing a Hospodar (MOL)
 	option = { # alternate successor
 		name = balkfm_romania.004.c
 		scope:balkfm_hospodar_candidate_3 = {
-			free_character_from_void = yes
-			set_character_as_ruler = yes
+			gbbf_free_from_void_ruler = yes
 		}
 		hidden_effect = {
 			scope:balkfm_heir_scope ?= {
@@ -294,7 +294,7 @@ balkfm_romania.005 = { # Electing a Hospodar (WAL)
 			}
 			save_scope_as = balkfm_hospodar_candidate_3
 		}
-		heir = {
+		heir ?= {
 			save_scope_as = balkfm_heir_scope
 		}
 	}
@@ -312,8 +312,7 @@ balkfm_romania.005 = { # Electing a Hospodar (WAL)
 	option = { # historical successor
 		name = balkfm_romania.005.b
 		scope:balkfm_hospodar_candidate_2 = {
-			free_character_from_void = yes
-			set_character_as_ruler = yes
+			gbbf_free_from_void_ruler = yes
 		}
 		hidden_effect = {
 			scope:balkfm_heir_scope ?= {
@@ -325,8 +324,7 @@ balkfm_romania.005 = { # Electing a Hospodar (WAL)
 	option = { # alternate successor
 		name = balkfm_romania.005.c
 		scope:balkfm_hospodar_candidate_3 = {
-			free_character_from_void = yes
-			set_character_as_ruler = yes
+			gbbf_free_from_void_ruler = yes
 		}
 		hidden_effect = {
 			scope:balkfm_heir_scope ?= {
@@ -381,7 +379,7 @@ balkfm_romania.006 = { # The Death of Feudalism
 		}
 		add_modifier = {
 			name = modifier_balkfm_outgrew_feudalist_roots
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 	}
 
@@ -463,12 +461,12 @@ balkfm_romania.008 = { # Mandate Secured
 		default_option = yes
 		add_modifier = {
 			name = modifier_balkfm_based_domnitor
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		scope:balkfm_ruler_scope = {
 			add_modifier = {
 				name = modifier_balkfm_popular_leader
-				days = very_long_modifier_time
+				months = gbbf_duration_20_years
 				is_decaying = yes
 			}
 		}
@@ -530,12 +528,8 @@ balkfm_romania.009 = { # A Monstrous Coalition
 		name = balkfm_romania.009.b
 		trigger = {
 			c:BEL ?= {
-				any_scope_treaty = {
-					binds = root
-					binds = c:BEL
-					any_scope_article = {
-						has_type = alliance
-					}
+				gbbf_has_alliance_trigger = {
+					country = c:BEL
 				}
 			}
 			NOT = {
@@ -702,13 +696,11 @@ balkfm_romania.101 = { # The Petition-Proclamation
 			set_ideology = ideology:ideology_royalist
 		}
 		scope:balkfm_alecsandri_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 			set_ideology = ideology:ideology_radical
 		}
 		scope:balkfm_isacescu_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 		add_radicals = {
 			pop_type = academics
@@ -725,13 +717,11 @@ balkfm_romania.101 = { # The Petition-Proclamation
 			set_ideology = ideology:ideology_authoritarian
 		}
 		scope:balkfm_alecsandri_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 			set_ideology = ideology:ideology_social_democrat
 		}
 		scope:balkfm_isacescu_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 		add_radicals = {
 			pop_type = aristocrats
@@ -833,18 +823,16 @@ balkfm_romania.103 = { # Kogălniceanu's Revolution
 		default_option = yes
 		add_modifier = {
 			name = modifier_balkfm_liberal_vanguard
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		scope:balkfm_kogalniceanu_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes # Vasile Alecsandri left Moldavia after the attempted revolution
-			set_character_as_ruler = yes
+			gbbf_free_from_void_ruler_leader = yes
 		}
 		if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_autocracy
-					has_law = law_type:law_oligarchy
+					has_law_or_variant = law_type:law_autocracy
+					has_law_or_variant = law_type:law_oligarchy
 				}
 			}
 			activate_law = law_type:law_landed_voting
@@ -899,7 +887,7 @@ balkfm_romania.104 = { # The Convention of Balta Liman
 		default_option = yes
 		add_modifier = {
 			name = modifier_balkfm_liberalism_crushed
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		every_scope_character = {
 			limit = {
@@ -953,11 +941,10 @@ balkfm_romania.105 = { # Constitutional Stalemate
 		default_option = yes
 		add_modifier = {
 			name = modifier_balkfm_political_disorder
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		scope:balkfm_kogalniceanu_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes # Vasile Alecsandri left Moldavia after the attempted revolution
+			gbbf_free_from_void_leader = yes # Vasile Alecsandri left Moldavia after the attempted revolution
 		}
 		set_variable = balkfm_1848_failed
 	}
@@ -1002,7 +989,7 @@ balkfm_romania.106 = { # Russian Troops Enter Moldavia
 		custom_tooltip = balkfm_romania.106.tt
 		add_modifier = {
 			name = modifier_balkfm_russian_occupation
-			days = short_modifier_time
+			months = gbbf_duration_2_plus_half_years
 		}
 	}
 
@@ -1153,24 +1140,20 @@ balkfm_romania.201 = { # Proclamation of Islaz
 		ruler = {
 			add_modifier = {
 				name = modifier_balkfm_receptive_domnitor
-				days = very_long_modifier_time
+				months = gbbf_duration_20_years
 			}
 		}
 		scope:balkfm_balcescu_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 		scope:balkfm_golsecu_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 		scope:balkfm_gianoglu_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 		scope:balkfm_tell_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 	}
 
@@ -1179,26 +1162,22 @@ balkfm_romania.201 = { # Proclamation of Islaz
 		ruler = {
 			add_modifier = {
 				name = modifier_balkfm_unreceptive_domnitor
-				days = very_long_modifier_time
+				months = gbbf_duration_20_years
 			}
 		}
 		scope:balkfm_balcescu_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 		scope:balkfm_golsecu_scope = {
 			set_ideology = ideology:ideology_radical
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 		scope:balkfm_gianoglu_scope = {
 			set_ideology = ideology:ideology_authoritarian
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 		scope:balkfm_tell_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 	}
 
@@ -1306,7 +1285,7 @@ balkfm_romania.203 = { # The Sword of the Revolution
 		default_option = yes
 		add_modifier = {
 			name = modifier_balkfm_liberal_vanguard
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		scope:balkfm_balcescu_scope = {
 			set_character_as_ruler = yes
@@ -1352,7 +1331,7 @@ balkfm_romania.204 = { # The Convention of Balta Liman
 		default_option = yes
 		add_modifier = {
 			name = modifier_balkfm_liberalism_crushed
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		every_scope_character = {
 			limit = {
@@ -1396,7 +1375,7 @@ balkfm_romania.205 = { # Constitutional Stalemate
 		default_option = yes
 		add_modifier = {
 			name = modifier_balkfm_political_disorder
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		set_variable = balkfm_1848_failed
 	}
@@ -1441,7 +1420,7 @@ balkfm_romania.206 = { # Russian Troops Enter Wallachia
 		custom_tooltip = balkfm_romania.206.tt
 		add_modifier = {
 			name = modifier_balkfm_russian_occupation
-			days = short_modifier_time
+			months = gbbf_duration_2_plus_half_years
 		}
 	}
 
@@ -1487,7 +1466,7 @@ balkfm_romania.400 = { # An Elected Domnitor
 		default_option = yes
 		add_modifier = {
 			name = modifier_balkfm_elected_domnitor
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		if = {
 			limit = {
@@ -1539,27 +1518,27 @@ balkfm_romania.401 = { # Liberalist Demands
 			limit = {
 				AND = {
 					OR = {
-						has_law = law_type:law_wealth_voting
-						has_law = law_type:law_census_voting
-						has_law = law_type:law_universal_suffrage
+						has_law_or_variant = law_type:law_wealth_voting
+						has_law_or_variant = law_type:law_census_voting
+						has_law_or_variant = law_type:law_universal_suffrage
 					}
 					OR = {
-						has_law = law_type:law_freedom_of_conscience
-						has_law = law_type:law_total_separation
+						has_law_or_variant = law_type:law_freedom_of_conscience
+						has_law_or_variant = law_type:law_total_separation
 					}
 					OR = {
-						has_law = law_type:law_right_of_assembly
-						has_law = law_type:law_protected_speech
+						has_law_or_variant = law_type:law_right_of_assembly
+						has_law_or_variant = law_type:law_protected_speech
 					}
 					OR = {
-						has_law = law_type:law_commercialized_agriculture
-						has_law = law_type:law_homesteading
+						has_law_or_variant = law_type:law_commercialized_agriculture
+						has_law_or_variant = law_type:law_homesteading
 					}
 				}
 			}
 			add_modifier = {
 				name = modifier_balkfm_democratic_constitution
-				days = long_modifier_time
+				months = gbbf_duration_10_years
 			}
 		}
 		else = {
@@ -1637,7 +1616,7 @@ balkfm_romania.402 = { # A Conspiracy in Ploiești
 		name = balkfm_romania.402.a
 		default_option = yes
 		scope:balkfm_candiano_scope = {
-			free_character_from_void = yes
+			gbbf_free_from_void = yes
 			exile_character = yes
 		}
 		custom_tooltip = {
@@ -1668,27 +1647,26 @@ balkfm_romania.402 = { # A Conspiracy in Ploiești
 	option = { # Cave to Their Demands
 		name = balkfm_romania.402.b
 		scope:balkfm_candiano_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 		add_modifier = {
 			name = modifier_balkfm_ploiesti_succeeded
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 		ruler = {
 			add_modifier = {
 				name = modifier_balkfm_impotent_ruler
-				days = long_modifier_time
+				months = gbbf_duration_10_years
 			}
 		}
 		if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_autocracy
-					has_law = law_type:law_oligarchy
-					has_law = law_type:law_landed_voting
-					has_law = law_type:law_wealth_voting
-					has_law = law_type:law_census_voting
+					has_law_or_variant = law_type:law_autocracy
+					has_law_or_variant = law_type:law_oligarchy
+					has_law_or_variant = law_type:law_landed_voting
+					has_law_or_variant = law_type:law_wealth_voting
+					has_law_or_variant = law_type:law_census_voting
 				}
 			}
 			activate_law = law_type:law_universal_suffrage
@@ -1696,8 +1674,8 @@ balkfm_romania.402 = { # A Conspiracy in Ploiești
 		if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_serfdom
-					has_law = law_type:law_tenant_farmers
+					has_law_or_variant = law_type:law_serfdom
+					has_law_or_variant = law_type:law_tenant_farmers
 				}
 			}
 			activate_law = law_type:law_homesteading
@@ -1705,8 +1683,8 @@ balkfm_romania.402 = { # A Conspiracy in Ploiești
 		if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_consumption_based_taxation
-					has_law = law_type:law_land_based_taxation
+					has_law_or_variant = law_type:law_consumption_based_taxation
+					has_law_or_variant = law_type:law_land_based_taxation
 				}
 			}
 			activate_law = law_type:law_per_capita_based_taxation
@@ -1716,8 +1694,13 @@ balkfm_romania.402 = { # A Conspiracy in Ploiești
 	option = { # Give This Moron a Job
 		name = balkfm_romania.402.c
 		scope:balkfm_candiano_scope = {
-			free_character_from_void = yes
-			transfer_character = root
+			gbbf_free_from_void = yes
+			if = {
+				limit = {
+					owner != root
+				}
+				transfer_character = root
+			}
 			add_character_role = general
 			set_ideology = ideology:ideology_reformer
 		}
@@ -1776,7 +1759,7 @@ balkfm_romania.403 = { # Ploiești Revolt Suppressed
 		default_option = yes
 		add_modifier = {
 			name = modifier_balkfm_secured_order
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		add_radicals = {
 			pop_type = academics
@@ -1928,8 +1911,7 @@ balkfm_romania.405 = { # The Candiano Republic
 		activate_law = law_type:law_universal_suffrage
 		activate_law = law_type:law_elected_bureaucrats
 		scope:balkfm_candiano_scope = {
-			free_character_from_void = yes
-			set_character_as_ruler = yes
+			gbbf_free_from_void_ruler = yes
 		}
 		call_election = {
 			months = 3
@@ -1970,7 +1952,7 @@ balkfm_romania.406 = { # Monarchism Secured
 		default_option = yes
 		add_modifier = {
 			name = modifier_balkfm_monarchism_secured
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 	}
 
@@ -2080,7 +2062,7 @@ balkfm_romania.500 = { # The Romanian Academy
 		}
 		add_modifier = {
 			name = modifier_balkfm_funding_national_university
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 			multiplier = money_amount_multiplier_small
 		}
 	}
@@ -2090,7 +2072,7 @@ balkfm_romania.500 = { # The Romanian Academy
 		scope:university_benefactor = {
 			add_modifier = {
 				name = modifier_balkfm_blocked_building_university
-				days = normal_modifier_time
+				months = gbbf_duration_5_years
 			}
 		}
 	}
@@ -2186,8 +2168,7 @@ balkfm_romania.600 = { # Forms Without Substance
 		name = balkfm_romania.600.a
 		default_option = yes
 		scope:balkfm_mairoescu_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 	}
 
@@ -2244,8 +2225,7 @@ balkfm_romania.601 = { # Etymologicum Magnum Romaniae
 		name = balkfm_romania.601.a
 		default_option = yes
 		scope:balkfm_hasdeu_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 	}
 
@@ -2312,7 +2292,7 @@ balkfm_romania.602 = { # A Romanian Identity
 		}
 		add_modifier = {
 			name = modifier_balkfm_junimist_society
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 		add_loyalists = {
 			pop_type = aristocrats
@@ -2327,7 +2307,7 @@ balkfm_romania.602 = { # A Romanian Identity
 		}
 		add_modifier = {
 			name = modifier_balkfm_dacianist_society
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 		add_loyalists = {
 			pop_type = academics
@@ -2386,9 +2366,9 @@ balkfm_romania.700 = { # Our Declaration of Union (romania.2, integrated into ba
 		}
 		if = { # this goes in the immediate because of the simplified variables
 			limit = {
-				has_law = law_type:law_monarchy
+				has_law_or_variant = law_type:law_monarchy
 				scope:romania_lesser_partner = {
-					has_law = law_type:law_monarchy
+					has_law_or_variant = law_type:law_monarchy
 				}
 			}
 			custom_tooltip = {
@@ -2416,9 +2396,9 @@ balkfm_romania.700 = { # Our Declaration of Union (romania.2, integrated into ba
 		show_as_tooltip = {
 			if = {
 				limit = {
-					has_law = law_type:law_monarchy
+					has_law_or_variant = law_type:law_monarchy
 					scope:romania_lesser_partner = {
-						has_law = law_type:law_monarchy
+						has_law_or_variant = law_type:law_monarchy
 					}
 				}
 				custom_tooltip = {
@@ -2681,9 +2661,9 @@ balkfm_romania.704 = { # Union with Transylvania
 		default_option = yes
 		if = {
 			limit = {
-				has_law = law_type:law_monarchy
+				has_law_or_variant = law_type:law_monarchy
 				c:TRS ?= {
-					has_law = law_type:law_monarchy
+					has_law_or_variant = law_type:law_monarchy
 				}
 			}
 			create_diplomatic_pact = {
@@ -2801,7 +2781,7 @@ balkfm_romania.706 = { # Romanian Agitation in State (ROM)
 						}
 						add_modifier = {
 							name = modifier_balkfm_separatist_tensions
-							days = normal_modifier_time
+							months = gbbf_duration_5_years
 						}
 					}
 					add_radicals_in_state = {
@@ -2862,7 +2842,7 @@ balkfm_romania.707 = { # Romanian Agitation in State (AUS)
 				}
 				add_modifier = {
 					name = modifier_balkfm_separatist_tensions
-					days = normal_modifier_time
+					months = gbbf_duration_5_years
 				}
 			}
 			add_radicals_in_state = {
@@ -3003,7 +2983,6 @@ balkfm_romania.709 = { # The Reunification of Romania
 	}
 
 	immediate = {
-		set_variable = balkfm_rom_unification_completed
 	}
 
 	option = {
@@ -3011,7 +2990,7 @@ balkfm_romania.709 = { # The Reunification of Romania
 		default_option = yes
 		add_modifier = {
 			name = modifier_balkfm_bulgarian_resurgence
-			days = very_long_modifier_time
+			months = gbbf_duration_20_years
 		}
 	}
 
@@ -3138,7 +3117,7 @@ balkfm_romania.711 = { # Romanian Provocation in Transylvania (AUS)
 			}
 			add_modifier = {
 				name = modifier_balkfm_spineless_overlord
-				days = long_modifier_time
+				months = gbbf_duration_10_years
 			}
 		}
 	}
@@ -3228,6 +3207,7 @@ balkfm_romania.721 = { # The Queen of Cities
 		change_tag = BYZ
 		hidden_effect = {
 			add_primary_culture = cu:romanian
+			remove_primary_culture = cu:greek
 			add_primary_culture = cu:rhomaios
 		}
 	}

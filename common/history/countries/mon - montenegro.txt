@@ -4,16 +4,120 @@
 		add_technology_researched = urban_planning
 		add_technology_researched = law_enforcement
 		add_technology_researched = currency_standards
-		
-        set_ruling_interest_groups = {
-        	ig_landowners
-        }
+
+		ig:ig_armed_forces = {
+			add_ruling_interest_group = yes
+		}
+		ig:ig_landowners = {
+			add_ruling_interest_group = yes
+		}
 		
 		activate_law = law_type:law_theocracy
 		activate_law = law_type:law_state_religion
 		activate_law = law_type:law_national_supremacy
+		activate_law = law_type:law_tenant_farmers
 		activate_law = law_type:law_traditionalism
 		activate_law = law_type:law_censorship
-		activate_law = law_type:law_land_based_taxation
+		activate_law = law_type:law_consumption_based_taxation
+		activate_law = law_type:law_women_in_the_fields # Not IP3 gated?
+		activate_law = law_type:law_chiefs_distribute_aid # Not IP3 gated?
+		set_institution_investment_level = {
+			institution = institution_social_security
+			level = 4
+		}
+		
+		add_journal_entry = {
+			type = je_balkfm_mon_prince_bishopric
+		}
+		add_journal_entry = {
+			type = je_eqfm_the_black_mountain
+		}
+
+		## IP3 Integration
+		if = {
+			limit = {
+				has_dlc_feature = ip3_content # National Awakening
+			}
+			# Initialize GOTB-harmonized raiding content
+			eqfm_initialize_black_mountain_effect = yes
+			add_journal_entry = {
+				type = je_montenegrin_raiding
+			}
+
+			# Initialize the State Formation content from IP3
+			add_journal_entry = {
+				type = je_mon_serb_unity
+			}
+			add_modifier = {
+				name = modifier_women_work_men_fight
+				months = gbbf_duration_50_years
+				is_decaying = yes
+			}
+			add_modifier = {
+				name = modifier_lonely_mountain
+				months = gbbf_duration_30_years
+				is_decaying = yes
+			}
+			add_modifier = {
+				name = modifier_no_minting
+				months = gbbf_duration_50_years
+			}
+			add_modifier = {
+				name = mon_taxes_what_are
+				months = gbbf_duration_20_years
+				is_decaying = yes
+			}
+			
+			# Set Taxes from IP3
+			set_tax_level = very_low
+			set_import_tariff_level = {
+				goods = g:merchant_marine
+				level = max_subventions
+			}
+			set_import_tariff_level = {
+				goods = g:small_arms
+				level = high_subventions
+			}
+			set_import_tariff_level = {
+				goods = g:artillery
+				level = high_subventions
+			}
+			set_import_tariff_level = {
+				goods = g:clothes
+				level = high_subventions
+			}
+			set_import_tariff_level = {
+				goods = g:liquor
+				level = high_subventions
+			}
+			set_import_tariff_level = {
+				goods = g:fruit
+				level = high_subventions
+			}
+			
+			# Assign IP3 modifier in place of Mountain Roadways building
+			s:STATE_MONTENEGRO.region_state:MON = {
+				add_modifier = {
+					name = mon_strong_backs
+					months = gbbf_duration_40_years
+					is_decaying = yes
+				}
+			}
+
+			# Add Serb Unity journal entry from IP3
+			add_journal_entry = {
+				type = je_mon_serb_unity
+			}
+
+			# Fire IP3-specific variant of balkfm_montenegro.001
+			trigger_event = {
+				id = balkfm_montenegro.019 # A Feudal Relic (IP3 Variant)
+			}
+		}
+		else = {
+			trigger_event = {
+				id = balkfm_montenegro.001 # A Feudal Relic
+			}
+		}
 	}
 }

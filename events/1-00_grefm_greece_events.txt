@@ -1,9 +1,11 @@
-﻿## GREEK STATE FLAVOR EVENTS ##
+﻿############################################################
+## GREEK FLAVOR MODULE: THE BAVAROCRACY & THE GREEK STATE ##
+############################################################
 
-# For Greek content, see the "grefm" module
-# For Turkish content, see the "turkfm" module
+# For Greek & Byzantium content, see the "grefm" module
 # For Balkan Nations content, see the "balkfm" module
-# For Orthodox Church content, see the "eocfm" module
+# For Ottoman & Turkish content, see the "turkfm" module
+# For Eastern Question & Expeditions content, see the "eqfm" module
 
 ####################
 
@@ -86,6 +88,18 @@ namespace = grefm_greece
 #060-069 - The National Schism
 #	060 - ##The Great Division
 
+#090-099 - IP3 Bavarocracy Variant Events
+#	090 - The Regency Council (IP3 Variant)
+#	091 - A Crisis Averted (IP3 Variant)
+#	092 - Long Live the Constitution! (IP3 Variant)
+#	093 - 
+#	094 -
+#	095 -
+#	096 - A Disgraced Tyrant (IP3 Variant)
+#	097 - The Downfall of King Otto
+#	098 - Othonian Renaissance
+#	099 - Civilizer-King of the Hellenes
+
 #100-109 - Industry Events (PM-based)
 #	100 - Fix Brewery
 #	101 - Hellenic Railways
@@ -147,7 +161,7 @@ grefm_greece.001 = { # Greece Starter Event
 	flavor = grefm_greece.001.f
 
 	event_image = {
-		video = "grefm_ottos_landing"
+		video = "gbbf_ottos_landing"
 	}
 
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
@@ -195,6 +209,7 @@ grefm_greece.001 = { # Greece Starter Event
 		}
 		show_as_tooltip = {
 			add_modifier = modifier_grefm_bavarocracy
+			add_modifier = modifier_grefm_westernized_thought
 		}
 	}
 
@@ -212,7 +227,7 @@ grefm_greece.002 = { # Revolution averted, Otto remains in power
 	event_image = {
 		video = "unspecific_military_parade"
 	}
-	
+
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	duration = 3
@@ -225,13 +240,13 @@ grefm_greece.002 = { # Revolution averted, Otto remains in power
 			has_modifier = modifier_grefm_armansperg_regency
 		}
 		OR = {
-			has_law = law_type:law_appointed_bureaucrats
-			has_law = law_type:law_elected_bureaucrats
+			has_law_or_variant = law_type:law_appointed_bureaucrats
+			has_law_or_variant = law_type:law_elected_bureaucrats
 		}
 		OR = {
-			has_law = law_type:law_wealth_voting
-			has_law = law_type:law_census_voting
-			has_law = law_type:law_universal_suffrage
+			has_law_or_variant = law_type:law_wealth_voting
+			has_law_or_variant = law_type:law_census_voting
+			has_law_or_variant = law_type:law_universal_suffrage
 		}
 	}
 
@@ -248,13 +263,7 @@ grefm_greece.002 = { # Revolution averted, Otto remains in power
 	option = {
 		name = grefm_greece.002.a
 		default_option = yes
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_plus_100
-			change_variable = {
-				name = grefm_bavarocracy_var
-				add = 100
-			}
-		}
+		grefm_bavarocracy_medium_support_effect = yes
 		set_variable = {
 			name = grefm_bavarocracy_instability_var
 			value = 0
@@ -308,7 +317,7 @@ grefm_greece.003 = { # 3 September 1843 Revolution
 		if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_hereditary_bureaucrats
+					has_law_or_variant = law_type:law_hereditary_bureaucrats
 				}
 			}
 			activate_law = law_type:law_appointed_bureaucrats
@@ -317,11 +326,11 @@ grefm_greece.003 = { # 3 September 1843 Revolution
 			limit = {
 				AND = {
 					OR = {
-						has_law = law_type:law_autocracy
-						has_law = law_type:law_oligarchy
-						has_law = law_type:law_landed_voting
-						has_law = law_type:law_wealth_voting
-						has_law = law_type:law_census_voting
+						has_law_or_variant = law_type:law_autocracy
+						has_law_or_variant = law_type:law_oligarchy
+						has_law_or_variant = law_type:law_landed_voting
+						has_law_or_variant = law_type:law_wealth_voting
+						has_law_or_variant = law_type:law_census_voting
 					}
 					has_technology_researched = egalitarianism
 				}
@@ -331,10 +340,10 @@ grefm_greece.003 = { # 3 September 1843 Revolution
 		else_if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_autocracy
-					has_law = law_type:law_oligarchy
-					has_law = law_type:law_landed_voting
-					has_law = law_type:law_wealth_voting
+					has_law_or_variant = law_type:law_autocracy
+					has_law_or_variant = law_type:law_oligarchy
+					has_law_or_variant = law_type:law_landed_voting
+					has_law_or_variant = law_type:law_wealth_voting
 				}
 			}
 			activate_law = law_type:law_census_voting
@@ -348,7 +357,7 @@ grefm_greece.003 = { # 3 September 1843 Revolution
 			}
 			add_modifier = {
 				name = modifier_grefm_constitution_enforced
-				days = normal_modifier_time
+				months = gbbf_duration_5_years
 				is_decaying = yes
 			}
 		}
@@ -367,13 +376,7 @@ grefm_greece.003 = { # 3 September 1843 Revolution
 		call_election = {
 			months = 1
 		}
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_plus_100
-			change_variable = {
-				name = grefm_bavarocracy_var
-				add = 100
-			}
-		}
+		grefm_bavarocracy_medium_support_effect = yes
 		set_variable = {
 			name = grefm_bavarocracy_instability_var
 			value = 0
@@ -385,7 +388,7 @@ grefm_greece.003 = { # 3 September 1843 Revolution
 		ruler = {
 			add_modifier = {
 				name = modifier_grefm_tyrant_king
-				days = long_modifier_time
+				months = gbbf_duration_10_years
 			}
 		}
 		every_interest_group = {
@@ -397,7 +400,7 @@ grefm_greece.003 = { # 3 September 1843 Revolution
 			}
 			add_modifier = {
 				name = modifier_grefm_constitution_refused
-				days = normal_modifier_time
+				months = gbbf_duration_5_years
 				is_decaying = yes
 			}
 		}
@@ -418,14 +421,14 @@ grefm_greece.003 = { # 3 September 1843 Revolution
 		}
 		if = {
 			limit = {
-				has_law = law_type:law_oligarchy
+				has_law_or_variant = law_type:law_oligarchy
 			}
 			activate_law = law_type:law_autocracy
 		}
 		else_if = {
 			limit = {
 				NOT = {
-					has_law = law_type:law_oligarchy
+					has_law_or_variant = law_type:law_oligarchy
 				}
 			}
 			activate_law = law_type:law_autocracy
@@ -469,7 +472,7 @@ grefm_greece.003 = { # 3 September 1843 Revolution
 		if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_hereditary_bureaucrats
+					has_law_or_variant = law_type:law_hereditary_bureaucrats
 				}
 			}
 			activate_law = law_type:law_appointed_bureaucrats
@@ -478,11 +481,11 @@ grefm_greece.003 = { # 3 September 1843 Revolution
 			limit = {
 				AND = {
 					OR = {
-						has_law = law_type:law_autocracy
-						has_law = law_type:law_oligarchy
-						has_law = law_type:law_landed_voting
-						has_law = law_type:law_wealth_voting
-						has_law = law_type:law_census_voting
+						has_law_or_variant = law_type:law_autocracy
+						has_law_or_variant = law_type:law_oligarchy
+						has_law_or_variant = law_type:law_landed_voting
+						has_law_or_variant = law_type:law_wealth_voting
+						has_law_or_variant = law_type:law_census_voting
 					}
 					has_technology_researched = egalitarianism
 				}
@@ -492,10 +495,10 @@ grefm_greece.003 = { # 3 September 1843 Revolution
 		else_if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_autocracy
-					has_law = law_type:law_oligarchy
-					has_law = law_type:law_landed_voting
-					has_law = law_type:law_wealth_voting
+					has_law_or_variant = law_type:law_autocracy
+					has_law_or_variant = law_type:law_oligarchy
+					has_law_or_variant = law_type:law_landed_voting
+					has_law_or_variant = law_type:law_wealth_voting
 				}
 			}
 			activate_law = law_type:law_census_voting
@@ -509,7 +512,7 @@ grefm_greece.003 = { # 3 September 1843 Revolution
 			}
 			add_modifier = {
 				name = modifier_grefm_constitution_enforced
-				days = normal_modifier_time
+				months = gbbf_duration_5_years
 				is_decaying = yes
 			}
 		}
@@ -559,8 +562,8 @@ grefm_greece.004 = { # lol you really thought that INCREASING autocracy was the 
 			has_modifier = modifier_grefm_armansperg_regency
 		}
 		AND = {
-			has_law = law_type:law_monarchy
-			has_law = law_type:law_autocracy
+			has_law_or_variant = law_type:law_monarchy
+			has_law_or_variant = law_type:law_autocracy
 		}
 	}
 
@@ -598,7 +601,7 @@ grefm_greece.004 = { # lol you really thought that INCREASING autocracy was the 
 			}
 			add_modifier = {
 				name = modifier_grefm_constitution_refused
-				days = normal_modifier_time
+				months = gbbf_duration_5_years
 				is_decaying = yes
 			}
 		}
@@ -637,7 +640,7 @@ grefm_greece.005 = { # The Bavarocracy Abolished
 	event_image = {
 		video = "europenorthamerica_political_extremism"
 	}
-	
+
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	duration = 3
@@ -647,7 +650,7 @@ grefm_greece.005 = { # The Bavarocracy Abolished
 	trigger = {
 		has_variable = grefm_bavarocracy
 		NOR = {
-			has_law = law_type:law_monarchy
+			has_law_or_variant = law_type:law_monarchy
 			has_modifier = modifier_grefm_armansperg_regency
 			has_variable = grefm_bavarocracy_completed
 		}
@@ -760,15 +763,15 @@ grefm_greece.006 = { # revolution of 1862
 		}
 		every_scope_character = {
 			limit = {
-				has_trait = trait_grefm_bavarocrat
+				has_trait = gbbf_trait_bavarocrat
 			}
 			exile_character = yes
 		}
 		if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_hereditary_bureaucrats
-					has_law = law_type:law_appointed_bureaucrats
+					has_law_or_variant = law_type:law_hereditary_bureaucrats
+					has_law_or_variant = law_type:law_appointed_bureaucrats
 				}
 			}
 			activate_law = law_type:law_elected_bureaucrats
@@ -776,11 +779,11 @@ grefm_greece.006 = { # revolution of 1862
 		if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_autocracy
-					has_law = law_type:law_oligarchy
-					has_law = law_type:law_landed_voting
-					has_law = law_type:law_wealth_voting
-					has_law = law_type:law_census_voting
+					has_law_or_variant = law_type:law_autocracy
+					has_law_or_variant = law_type:law_oligarchy
+					has_law_or_variant = law_type:law_landed_voting
+					has_law_or_variant = law_type:law_wealth_voting
+					has_law_or_variant = law_type:law_census_voting
 				}
 			}
 			activate_law = law_type:law_universal_suffrage
@@ -910,8 +913,8 @@ grefm_greece.008 = { # The Overthrow of the Bavarocracy
 		if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_hereditary_bureaucrats
-					has_law = law_type:law_appointed_bureaucrats
+					has_law_or_variant = law_type:law_hereditary_bureaucrats
+					has_law_or_variant = law_type:law_appointed_bureaucrats
 				}
 			}
 			activate_law = law_type:law_elected_bureaucrats
@@ -919,11 +922,11 @@ grefm_greece.008 = { # The Overthrow of the Bavarocracy
 		if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_autocracy
-					has_law = law_type:law_oligarchy
-					has_law = law_type:law_landed_voting
-					has_law = law_type:law_wealth_voting
-					has_law = law_type:law_census_voting
+					has_law_or_variant = law_type:law_autocracy
+					has_law_or_variant = law_type:law_oligarchy
+					has_law_or_variant = law_type:law_landed_voting
+					has_law_or_variant = law_type:law_wealth_voting
+					has_law_or_variant = law_type:law_census_voting
 				}
 			}
 			activate_law = law_type:law_universal_suffrage
@@ -933,7 +936,7 @@ grefm_greece.008 = { # The Overthrow of the Bavarocracy
 		}
 		every_scope_character = {
 			limit = {
-				has_trait = trait_grefm_bavarocrat
+				has_trait = gbbf_trait_bavarocrat
 				is_ruler = no
 			}
 			exile_character = yes
@@ -973,7 +976,7 @@ grefm_greece.009 = { # A Disgraced Tyrant
 		OR = {
 			var:grefm_bavarocracy_instability_var >= 200
 			NOT = {
-				has_law = law_type:law_autocracy
+				has_law_or_variant = law_type:law_autocracy
 			}
 		}
 	}
@@ -992,7 +995,7 @@ grefm_greece.009 = { # A Disgraced Tyrant
 		if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_hereditary_bureaucrats
+					has_law_or_variant = law_type:law_hereditary_bureaucrats
 				}
 			}
 			activate_law = law_type:law_appointed_bureaucrats
@@ -1001,11 +1004,11 @@ grefm_greece.009 = { # A Disgraced Tyrant
 			limit = {
 				AND = {
 					OR = {
-						has_law = law_type:law_autocracy
-						has_law = law_type:law_oligarchy
-						has_law = law_type:law_landed_voting
-						has_law = law_type:law_wealth_voting
-						has_law = law_type:law_census_voting
+						has_law_or_variant = law_type:law_autocracy
+						has_law_or_variant = law_type:law_oligarchy
+						has_law_or_variant = law_type:law_landed_voting
+						has_law_or_variant = law_type:law_wealth_voting
+						has_law_or_variant = law_type:law_census_voting
 					}
 					has_technology_researched = egalitarianism
 				}
@@ -1024,7 +1027,7 @@ grefm_greece.009 = { # A Disgraced Tyrant
 			}
 			add_modifier = {
 				name = modifier_grefm_constitution_enforced
-				days = normal_modifier_time
+				months = gbbf_duration_5_years
 				is_decaying = yes
 			}
 		}
@@ -1085,9 +1088,19 @@ grefm_greece.010 = { # Constitutional Promises
 	option = {
 		name = grefm_greece.010.a
 		default_option = yes
-		custom_tooltip = grefm_greece.010.tt1
-		custom_tooltip = grefm_greece.010.tt2
-		custom_tooltip = grefm_greece.010.tt3
+		if = {
+			limit = {
+				has_dlc_feature = ip3_content # National Awakening
+			}
+			custom_tooltip = grefm_bavarocracy_liberty_route
+			custom_tooltip = grefm_bavarocracy_autocracy_route
+		}
+		else = {
+			custom_tooltip = grefm_greece.010.tt1
+			custom_tooltip = grefm_greece.010.tt2
+			custom_tooltip = grefm_greece.010.tt3
+		}
+
 	}
 
 }
@@ -1137,7 +1150,7 @@ grefm_greece.011 = { # King Ludwig Visits Greece
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_bavarian_tour
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 	}
 
@@ -1183,7 +1196,7 @@ grefm_greece.012 = { # Otto Leaves for Bavaria
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_absent_monarch
-			months = 12
+			months = gbbf_duration_1_year
 		}
 	}
 
@@ -1236,7 +1249,7 @@ grefm_greece.013 = { # A Consort Fit for a Bavarian
 			limit = {
 				NOT = { THIS = ROOT }
 				NOT = { THIS ?= c:OLD }
-				has_law = law_type:law_monarchy
+				has_law_or_variant = law_type:law_monarchy
 				country_has_state_religion = rel:catholic
 				is_country_type = recognized
 				ruler = {
@@ -1258,7 +1271,7 @@ grefm_greece.013 = { # A Consort Fit for a Bavarian
 					NOT = { THIS = ROOT }
 					NOT = { THIS ?= c:OLD }
 					NOT = { THIS = scope:marriage_country_1 }
-					has_law = law_type:law_monarchy
+					has_law_or_variant = law_type:law_monarchy
 					country_has_state_religion = rel:catholic
 					is_country_type = recognized
 					ruler = {
@@ -1272,7 +1285,7 @@ grefm_greece.013 = { # A Consort Fit for a Bavarian
 					NOT = { THIS = ROOT }
 					NOT = { THIS ?= c:OLD }
 					NOT = { THIS = scope:marriage_country_1 }
-					has_law = law_type:law_monarchy
+					has_law_or_variant = law_type:law_monarchy
 					country_has_state_religion = rel:catholic
 					is_country_type = recognized
 					ruler = {
@@ -1295,7 +1308,7 @@ grefm_greece.013 = { # A Consort Fit for a Bavarian
 						NOT = { THIS ?= c:OLD }
 						NOT = { THIS = scope:marriage_country_1 }
 						NOT = { THIS = scope:marriage_country_2 }
-						has_law = law_type:law_monarchy
+						has_law_or_variant = law_type:law_monarchy
 						country_has_state_religion = rel:catholic
 						is_country_type = recognized
 						ruler = {
@@ -1311,7 +1324,7 @@ grefm_greece.013 = { # A Consort Fit for a Bavarian
 						NOT = { THIS = scope:marriage_country_1 }
 						NOT = { THIS = scope:marriage_country_2 }
 						relations:root >= 0
-						has_law = law_type:law_monarchy
+						has_law_or_variant = law_type:law_monarchy
 						country_has_state_religion = rel:catholic
 						is_country_type = recognized
 						ruler = {
@@ -1475,13 +1488,7 @@ grefm_greece.014 = { # Otto's Intellect Challenged
 		scope:king_otto_scope = {
 			add_modifier = modifier_grefm_feebleminded
 		}
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_minus_100
-			change_variable = {
-				name = grefm_bavarocracy_var
-				add = -100
-			}
-		}
+		grefm_bavarocracy_medium_opposition_effect = yes
 	}
 
 }
@@ -1545,13 +1552,13 @@ grefm_greece.015 = { # Discharging the Regency
 			exile_character = yes
 		}
 		scope:grefm_rudhart_scope = {
-			set_as_interest_group_leader = yes
-			free_character_from_void = yes
+			gbbf_free_from_void_leader = yes
 		}
 		trigger_event = {
 			id = grefm_greece.010 # Constitutional Promises
 			days = 30
 		}
+		grefm_bavarocracy_medium_support_effect = yes
 		remove_modifier = modifier_grefm_armansperg_regency
 		remove_variable = eocfm_ruler_conversion_considered
 	}
@@ -1560,20 +1567,14 @@ grefm_greece.015 = { # Discharging the Regency
 		name = grefm_greece.015.b
 		add_modifier = {
 			name = modifier_grefm_impotent_monarch
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 		scope:armansperg_scope = {
 			hidden_effect = {
 				disinherit_character = yes
 			}
 		}
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_minus_200
-			change_variable = {
-				name = grefm_bavarocracy_var
-				add = -200
-			}
-		}
+		grefm_bavarocracy_large_opposition_effect = yes
 		trigger_event = {
 			id = grefm_greece.010 # Constitutional Promises
 			days = 30
@@ -1604,6 +1605,7 @@ grefm_greece.016 = { # The Philorthodox Conspiracy; this is a grefm-specific var
 	dlc = dlc_grefm
 
 	trigger = {
+		kog_is_active_trigger = yes
 		NOT = {
 			has_variable = eocfm_ruler_conversion_considered
 		}
@@ -1648,19 +1650,13 @@ grefm_greece.016 = { # The Philorthodox Conspiracy; this is a grefm-specific var
 		}
 		add_modifier = {
 			name = modifier_eocfm_ruler_accepted_conversion
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		add_loyalists = {
 			religion = rel:orthodox
 			value = medium_radicals
 		}
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_plus_100
-			change_variable = {
-				name = grefm_bavarocracy_var
-				add = 100
-			}
-		}
+		grefm_bavarocracy_medium_support_effect = yes
 	}
 
 	option = { # Heir will convert
@@ -1668,7 +1664,7 @@ grefm_greece.016 = { # The Philorthodox Conspiracy; this is a grefm-specific var
 		scope:eocfm_ruler_scope = {
 			add_modifier = {
 				name = modifier_eocfm_refused_conversion
-				days = very_long_modifier_time
+				months = gbbf_duration_20_years
 			}
 		}
 		scope:eocfm_heir_scope = {
@@ -1679,13 +1675,7 @@ grefm_greece.016 = { # The Philorthodox Conspiracy; this is a grefm-specific var
 			religion = rel:orthodox
 			value = small_radicals
 		}
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_plus_50
-			change_variable = {
-				name = grefm_bavarocracy_var
-				add = 50
-			}
-		}
+		grefm_bavarocracy_small_support_effect = yes
 	}
 
 	option = { # 99 THESES GO BRRRRRRRRR
@@ -1693,30 +1683,24 @@ grefm_greece.016 = { # The Philorthodox Conspiracy; this is a grefm-specific var
 		scope:eocfm_ruler_scope = {
 			add_modifier = {
 				name = modifier_eocfm_refused_conversion
-				days = very_long_modifier_time
+				months = gbbf_duration_20_years
 			}
 		}
 		scope:eocfm_heir_scope = {
 			add_modifier = {
 				name = modifier_eocfm_refused_conversion
-				days = very_long_modifier_time
+				months = gbbf_duration_20_years
 			}
 		}
 		add_modifier = {
 			name = modifier_eocfm_ruler_refused_conversion
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		add_radicals = {
 			religion = rel:orthodox
 			value = medium_radicals
 		}
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_minus_50
-			change_variable = {
-				name = grefm_bavarocracy_var
-				add = -50
-			}
-		}
+		grefm_bavarocracy_small_opposition_effect = yes
 	}
 
 }
@@ -1749,15 +1733,16 @@ grefm_greece.017 = { # The Bavarian Auxiliary Corps
 	option = {
 		name = grefm_greece.017.a
 		default_option = yes
-		add_modifier = {
-			name = modifier_grefm_bavarian_auxiliaries
-			days = long_modifier_time
+		show_as_tooltip = {
+			add_modifier = {
+				name = modifier_grefm_bavarian_auxiliaries
+			}
+			add_modifier = {
+				name = modifier_grefm_funding_bavarian_auxiliaries
+				multiplier = money_amount_multiplier_medium
+			}
 		}
-		add_modifier = {
-			name = modifier_grefm_funding_bavarian_auxiliaries
-			days = long_modifier_time
-			multiplier = money_amount_multiplier_small
-		}
+
 	}
 
 }
@@ -1796,24 +1781,26 @@ grefm_greece.018 = { # Bavarian Auxiliaries Dismissed
 	option = {
 		name = grefm_greece.018.a
 		default_option = yes
+		remove_modifier = modifier_grefm_bavarian_auxiliaries
+		remove_modifier = modifier_grefm_funding_bavarian_auxiliaries
 		add_modifier = {
 			name = modifier_grefm_dismissed_bavarians
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 			is_decaying = yes
 		}
 		if = {
 			limit = {
-				exists = scope:bavaria_scope
+				exists = c:BAV
 			}
-			change_relations = {
-				country = scope:bavaria_scope
-				value = -15
+			create_incident = {
+				country = c:BAV
+				value = 5
 			}
 
 		}
 		else = {
 			custom_tooltip = {
-				text = grefm_dimiss_bavarians_tt
+				text = grefm_dismiss_auxilliaries_effect
 				hidden_effect = {
 					random_scope_pop = {
 						limit = {
@@ -1828,13 +1815,7 @@ grefm_greece.018 = { # Bavarian Auxiliaries Dismissed
 				}
 			}
 		}
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_plus_20
-			change_variable = {
-				name = grefm_bavarocracy_var
-				add = 20
-			}
-		}
+		grefm_bavarocracy_medium_support_effect = yes
 	}
 
 }
@@ -1872,16 +1853,10 @@ grefm_greece.019 = { # Nikitas released from jail
 		}
 		add_modifier = {
 			name = modifier_grefm_nikitas_released
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 			is_decaying = yes
 		}
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_plus_20
-			change_variable = {
-				name = grefm_bavarocracy_var
-				add = 20
-			}
-		}
+		grefm_bavarocracy_very_small_support_effect = yes
 	}
 
 }
@@ -1922,9 +1897,10 @@ grefm_greece.020 = { # Bavarianism in Greece
 		ruler = {
 			add_modifier = {
 				name = modifier_grefm_legitimized_rule
-				days = long_modifier_time
+				months = gbbf_duration_10_years
 			}
 		}
+		grefm_bavarocracy_small_support_effect = yes
 	}
 
 }
@@ -1954,7 +1930,7 @@ grefm_greece.021 = { # The Search for a King
 
 	cancellation_trigger = {
 		NOT = {
-			has_law = law_type:law_monarchy
+			has_law_or_variant = law_type:law_monarchy
 		}
 	}
 
@@ -2001,7 +1977,7 @@ grefm_greece.022 = { # A Hellene King
 
 	cancellation_trigger = {
 		NOT = {
-			has_law = law_type:law_monarchy
+			has_law_or_variant = law_type:law_monarchy
 		}
 	}
 
@@ -2164,7 +2140,7 @@ grefm_greece.023 = { # A Roman King
 
 	cancellation_trigger = {
 		NOT = {
-			has_law = law_type:law_monarchy
+			has_law_or_variant = law_type:law_monarchy
 		}
 	}
 
@@ -2370,7 +2346,6 @@ grefm_greece.030 = { # 1862 head of state referendum
 					}
 					on_created = {
 						set_character_as_ruler = yes
-						#						set_variable = grefm_is_glucksburg
 					}
 				}
 			}
@@ -2395,12 +2370,8 @@ grefm_greece.030 = { # 1862 head of state referendum
 		name = grefm_greece.030.2
 		trigger = {
 			exists = c:BEL
-			any_scope_treaty = {
-				binds = root
-				binds = c:BEL
-				any_scope_article = {
-					has_type = alliance
-				}
+			gbbf_has_alliance_trigger = {
+				country = c:BEL
 			}
 			NOT = {
 				has_global_variable = grefm_the_belgian_option
@@ -2690,11 +2661,10 @@ grefm_greece.031 = { # the king of the hellenes
 			}
 		}
 		ruler = {
-			add_trait = trait_grefm_elected_ruler
+			add_trait = gbbf_trait_elected_ruler
 		}
 		scope:grefm_trikoupis_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 	}
 
@@ -2707,11 +2677,10 @@ grefm_greece.031 = { # the king of the hellenes
 			}
 		}
 		ruler = {
-			add_trait = trait_grefm_absolutist_ruler
+			add_trait = gbbf_trait_absolutist_ruler
 		}
 		scope:grefm_trikoupis_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 	}
 
@@ -2722,11 +2691,10 @@ grefm_greece.031 = { # the king of the hellenes
 			has_variable = grefm_elected_greek_king
 		}
 		ruler = {
-			add_trait = trait_grefm_native_ruler
+			add_trait = gbbf_trait_native_ruler
 		}
 		scope:grefm_trikoupis_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 	}
 
@@ -2736,11 +2704,10 @@ grefm_greece.031 = { # the king of the hellenes
 			has_variable = byzfm_took_the_purple
 		}
 		ruler = {
-			add_trait = trait_grefm_porphyrogenitus
+			add_trait = gbbf_trait_porphyrogenitus
 		}
 		scope:grefm_trikoupis_scope = {
-			free_character_from_void = yes
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 	}
 
@@ -2769,7 +2736,7 @@ grefm_greece.032 = { # who is to blame
 		NOT = { has_variable = grefm_got_blamed }
 		has_variable = grefm_1862_election_held
 		has_technology_researched = egalitarianism
-		has_law = law_type:law_monarchy
+		has_law_or_variant = law_type:law_monarchy
 	}
 
 	immediate = {
@@ -2821,7 +2788,7 @@ grefm_greece.033 = { # a harmonious state
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_harmonious_state
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 		add_loyalists = {
 			culture = cu:greek
@@ -2866,7 +2833,7 @@ grefm_greece.034 = { # unfortunately we are bankrupt
 		remove_modifier = declared_bankruptcy
 		add_modifier = {
 			name = modifier_grefm_repudiated_loans
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 		change_infamy = {
 			add = 20
@@ -2878,7 +2845,7 @@ grefm_greece.034 = { # unfortunately we are bankrupt
 		remove_modifier = declared_bankruptcy
 		add_modifier = {
 			name = modifier_grefm_reorganized_finances
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 	}
 
@@ -2929,7 +2896,7 @@ grefm_greece.035 = { # A Perennial Problem
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_legacy_brigandage
-			days = short_modifier_time
+			months = gbbf_duration_2_plus_half_years
 			is_decaying = yes
 		}
 	}
@@ -2976,7 +2943,7 @@ grefm_greece.040 = { # Nationalist Fervor
 		default_option = yes
 		if = {
 			limit = {
-				has_law = law_type:law_monarchy
+				has_law_or_variant = law_type:law_monarchy
 				ig:ig_armed_forces = {
 					is_powerful = yes
 					law_stance = {
@@ -3071,7 +3038,7 @@ grefm_greece.041 = { # the military league
 		scope:coup_ig = {
 			add_modifier = {
 				name = coup_supported
-				days = long_modifier_time
+				months = gbbf_duration_10_years
 				is_decaying = yes
 			}
 		}
@@ -3091,7 +3058,7 @@ grefm_greece.041 = { # the military league
 		scope:coup_ig = {
 			add_modifier = {
 				name = coup_resisted
-				days = long_modifier_time
+				months = gbbf_duration_10_years
 				is_decaying = yes
 			}
 		}
@@ -3244,14 +3211,14 @@ grefm_greece.046 = { # the goudi coup
 			}
 			add_modifier = {
 				name = modifier_unrivaled_in_government
-				days = long_modifier_time
+				months = gbbf_duration_10_years
 				is_decaying = yes
 			}
 		}
 		if = {
 			limit = {
 				NOT = {
-					has_law = law_type:law_monarchy
+					has_law_or_variant = law_type:law_monarchy
 				}
 			}
 			scope:coup_ig = {
@@ -3262,7 +3229,7 @@ grefm_greece.046 = { # the goudi coup
 		}
 		else_if = {
 			limit = {
-				has_law = law_type:law_monarchy
+				has_law_or_variant = law_type:law_monarchy
 			}
 			if = {
 				limit = {
@@ -3382,7 +3349,7 @@ grefm_greece.047 = { # A Cretan Champion Alternate
 		scope:grefm_venizelos_scope = {
 			transfer_character = ROOT
 			add_character_role = agitator
-			add_trait = trait_grefm_ethnarch
+			add_trait = gbbf_trait_ethnarch
 		}
 		add_radicals = {
 			culture = cu:greek
@@ -3464,7 +3431,7 @@ grefm_greece.048 = { # venizelos has landed
 		scope:coup_ig = {
 			add_modifier = {
 				name = failed_coup
-				days = normal_modifier_time
+				months = gbbf_duration_5_years
 			}
 			set_variable = { name = coup_guilty days = 3650 }
 		}
@@ -3479,7 +3446,7 @@ grefm_greece.048 = { # venizelos has landed
 			}
 			add_modifier = {
 				name = coup_prevented
-				days = long_modifier_time
+				months = gbbf_duration_10_years
 				is_decaying = yes
 				# +2 approval
 			}
@@ -3616,7 +3583,7 @@ grefm_greece.050 = { # The Nature of the National Assembly
 	option = {
 		name = grefm_greece.050.b
 		trigger = {
-			has_law = law_type:law_monarchy
+			has_law_or_variant = law_type:law_monarchy
 		}
 		add_journal_entry = {
 			type = je_grefm_venizelism_main
@@ -3730,7 +3697,7 @@ grefm_greece.052 = { # A Competent Bureaucracy
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_competent_bureaucracy
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		add_loyalists = {
 			pop_type = bureaucrats
@@ -3815,7 +3782,7 @@ grefm_greece.054 = { # A Formidable Military
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_military_reorganized
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		add_loyalists = {
 			pop_type = officers
@@ -3900,7 +3867,7 @@ grefm_greece.056 = { # A Modern Society
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_society_modernized
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		add_loyalists = {
 			pop_type = shopkeepers
@@ -3985,7 +3952,7 @@ grefm_greece.058 = { # An Educated Populace
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_populace_educated
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		add_loyalists = {
 			pop_type = academics
@@ -4030,7 +3997,7 @@ grefm_greece.059 = { # The Cretan Triumphant
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_venizelist_triumph
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 		add_loyalists = {
 			value = small_radicals
@@ -4038,6 +4005,1063 @@ grefm_greece.059 = { # The Cretan Triumphant
 	}
 
 }
+
+## The Bavarocracy IP3 Events ##
+# Note, several variables from the default GotB journals are re-used here
+grefm_greece.090 = { # The Regency Council
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_otto.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_greece.090.t
+	desc = grefm_greece.090.d
+	flavor = grefm_greece.090.f
+
+	event_image = {
+		video = "gbbf_ottos_landing"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered from GLOBAL
+	}
+
+	immediate = {
+		trigger_event = {
+			id = grefm_greece.011 # King Ludwig Visits Greece
+			days = 40 # Mid-February
+		}
+		trigger_event = {
+			id = grefm_greece.017 # bavarian auxiliary corps
+			days = 90
+		}
+		trigger_event = {
+			id = grefm_greece.012 # Otto Leaves for Bavaria
+			days = 130 # Mid-May
+		}
+		trigger_event = {
+			id = grefm_greece.014 # Otto's Intellect Challenged
+			days = 270
+		}
+		trigger_event = {
+			id = grefm_greece.015 # Discharging the Regency
+			days = 390 # February 1837
+		}
+	}
+
+	option = {
+		name = grefm_greece.091.a
+		default_option = yes
+		show_as_tooltip = {
+			add_modifier = modifier_grefm_armansperg_regency
+		}
+		show_as_tooltip = {
+			add_modifier = modifier_foreign_administration
+			add_modifier = modifier_grefm_westernized_thought
+		}
+	}
+
+}
+
+grefm_greece.091 = { # A Crisis Averted
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_otto.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_greece.091.t
+	desc = grefm_greece.091.d
+	flavor = grefm_greece.091.f
+
+	event_image = {
+		video = "ip3_official_reading_dictate"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		NOR = {
+			has_variable = grefm_1843_revolution_happened
+			has_modifier = modifier_grefm_armansperg_regency
+		}
+		country_has_voting_franchise = yes
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = king_otto_scope
+		}
+		ig:ig_landowners = {
+			save_scope_as = ig_landowners_scope
+		}
+		set_variable = grefm_1843_revolution_happened
+	}
+
+	option = {
+		name = grefm_greece.091.a
+		default_option = yes
+		grefm_bavarocracy_large_support_effect = yes
+	}
+
+}
+
+grefm_greece.092 = { # Long Live the Constitution!
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_otto.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_greece.092.t
+	desc = grefm_greece.092.d
+	flavor = grefm_greece.092.f
+
+	event_image = {
+		video = "ip3_agitator_reading_manifesto"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		NOR = {
+			has_variable = grefm_1843_revolution_happened
+			has_modifier = modifier_grefm_armansperg_regency
+		}
+		country_has_voting_franchise = yes
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = king_otto_scope
+		}
+		set_variable = grefm_tyranny_var
+		set_variable = grefm_1843_revolution_happened
+	}
+
+	option = {
+		name = grefm_greece.092.a
+		default_option = yes
+		every_interest_group = {
+			limit = {
+				law_stance = {
+					law = law_type:law_autocracy
+					value < neutral
+				}
+			}
+			leader = {
+				set_ideology = ideology:ideology_republican_leader
+			}
+		}
+		every_interest_group = {
+			limit = {
+				law_stance = {
+					law = law_type:law_autocracy
+					value < neutral
+				}
+			}
+			add_modifier = {
+				name = modifier_grefm_constitution_refused
+				months = gbbf_duration_5_years
+				is_decaying = yes
+			}
+		}
+		add_loyalists = {
+			strata = upper
+			value = medium_radicals
+		}
+		add_radicals = {
+			strata = middle
+			value = medium_radicals
+		}
+		add_radicals = {
+			strata = lower
+			value = medium_radicals
+		}
+		scope:king_otto_scope = {
+			set_as_interest_group_leader = yes # Othonian Absolutism Moment
+		}
+		grefm_bavarocracy_medium_opposition_effect = yes
+	}
+
+}
+
+grefm_greece.093 = { # The True Faith of Greece
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_otto.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_greece.093.t
+	desc = grefm_greece.093.d
+	flavor = grefm_greece.093.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by grefm_bavarocracy_convert_button
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_greece.093.a
+		default_option = yes
+		ruler = {
+			change_character_religion = rel:orthodox
+			add_modifier = {
+				name = modifier_suspected_crypto_catholic
+				months = gbbf_duration_20_years
+				is_decaying = yes
+			}
+			random_list = {
+				1 = {
+					add_trait = psychological_affliction
+				}
+				9 = {
+				}
+			}
+		}
+		if = {
+			limit = {
+				exists = heir
+			}
+			heir = {
+				change_character_religion = rel:orthodox
+			}
+		}
+		add_loyalists = {
+			value = small_radicals
+			religion = rel:orthodox
+		}
+		add_radicals = {
+			value = medium_radicals
+			religion = rel:catholic
+		}
+		grefm_bavarocracy_medium_support_effect = yes
+		c:BAV ?= {
+			change_relations = {
+				country = root
+				value = -30
+			}
+			create_diplomatic_catalyst = {
+				type = catalyst_event_negative
+				target = root
+			}
+		}
+		c:PAP ?= {
+			change_relations = {
+				country = root
+				value = -30
+			}
+			create_diplomatic_catalyst = {
+				type = catalyst_event_negative
+				target = root
+			}
+		}
+		c:RUS ?= {
+			change_relations = {
+				country = root
+				value = 30
+			}
+			create_diplomatic_catalyst = {
+				type = catalyst_event_positive
+				target = root
+			}
+		}
+	}
+
+}
+
+grefm_greece.096 = { # A Disgraced Tyrant
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_otto.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_greece.096.t
+	desc = grefm_greece.096.d
+	flavor = grefm_greece.096.f
+
+	event_image = {
+		video = "europenorthamerica_political_extremism"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		has_variable = grefm_tyranny_var
+		NOR = {
+			has_variable = grefm_tyranny_busted
+			has_law_or_variant = law_type:law_autocracy
+		}
+	}
+
+	immediate = {
+		set_variable = grefm_tyranny_busted
+	}
+
+	option = {
+		name = grefm_greece.096.a
+		default_option = yes
+		every_interest_group = {
+			limit = {
+				law_stance = {
+					law = law_type:law_autocracy
+					value > neutral
+				}
+			}
+			add_modifier = {
+				name = modifier_grefm_constitution_enforced
+				months = gbbf_duration_5_years
+				is_decaying = yes
+			}
+		}
+		hidden_effect = {
+			every_interest_group = {
+				limit = {
+					has_modifier = modifier_grefm_constitution_refused
+				}
+				remove_modifier = modifier_grefm_constitution_refused
+			}
+		}
+		grefm_bavarocracy_large_support_effect = yes
+	}
+
+}
+
+grefm_greece.097 = { # The Downfall of King Otto
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_otto.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_greece.097.t
+	desc = grefm_greece.097.d
+	flavor = grefm_greece.097.f
+
+	event_image = {
+		video = "votp_barricade"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by je_grefm_bavarocracy_ip3
+	}
+
+	immediate = {
+		c:DEN ?= {
+			save_scope_as = denmark_scope
+		}
+		c:BEL ?= {
+			save_scope_as = belgium_scope
+		}
+		c:SWI ?= {
+			save_scope_as = swiss_scope
+		}
+		c:GBR ?= {
+			save_scope_as = uk_scope
+		}
+		c:FRA ?= {
+			save_scope_as = france_scope
+		}
+		c:RUS ?= {
+			save_scope_as = russia_scope
+		}
+	}
+
+	option = { # William of Denmark - the historical option
+		name = grefm_greece.097.1
+		trigger = {
+			c:DEN ?= {
+				has_law_or_variant = law_type:law_monarchy
+			}
+		}
+		highlighted_option = yes
+		show_as_unavailable = { always = yes }
+		default_option = yes
+		grefm_expel_bavarocracy_effect = yes
+		custom_tooltip = {
+			text = grefm_greece.097.1_tt
+			create_character = {
+				template = template_grefm_glucksburg_george
+			}
+		}
+		every_country = {
+			limit = {
+				has_law_or_variant = law_type:law_monarchy
+				country_rank >= rank_value:great_power
+				NOT = {
+					root = this
+				}
+			}
+			root = {
+				change_relations = {
+					country = prev
+					value = 10
+				}
+			}
+		}
+		if = {
+			limit = {
+				exists = c:DEN # error suppression
+			}
+			change_relations = {
+				country = c:DEN
+				value = 30
+			}
+			create_diplomatic_catalyst = {
+				type = catalyst_event_positive
+				target = c:DEN
+			}
+		}
+	}
+
+	option = { # Philippe de Flandre - the Belgian option
+		name = grefm_greece.097.2
+		trigger = {
+			c:BEL ?= {
+				has_law_or_variant = law_type:law_monarchy
+			}
+			custom_tooltip = {
+				text = grefm_has_belgian_alliance
+				gbbf_has_alliance_trigger = {
+					country = c:BEL
+				}
+			}
+		}
+		highlighted_option = yes
+		show_as_unavailable = { always = yes }
+		grefm_expel_bavarocracy_effect = yes
+		custom_tooltip = {
+			text = grefm_greece.097.2_tt
+			create_character = {
+				template = template_grefm_deflandre_philippe
+			}
+		}
+		every_country = {
+			limit = {
+				has_law_or_variant = law_type:law_monarchy
+				country_rank >= rank_value:great_power
+				NOT = {
+					root = this
+				}
+			}
+			root = {
+				change_relations = {
+					country = prev
+					value = 10
+				}
+			}
+		}
+		if = {
+			limit = {
+				exists = c:BEL # error suppression
+			}
+			change_relations = {
+				country = c:BEL
+				value = 30
+			}
+			create_diplomatic_catalyst = {
+				type = catalyst_event_positive
+				target = c:BEL
+			}
+		}
+	}
+
+	option = { # Eynard the Philhellene - got a few votes and was a major financier in the Greek War of Independence
+		name = grefm_greece.097.3
+		trigger = {
+			c:SWI ?= {
+				has_law_or_variant = law_type:law_monarchy
+			}
+			custom_tooltip = {
+				text = grefm_has_swiss_alliance
+				gbbf_has_alliance_trigger = {
+					country = c:SWI
+				}
+			}
+		}
+
+		highlighted_option = yes
+		show_as_unavailable = { always = yes }
+		grefm_expel_bavarocracy_effect = yes
+		custom_tooltip = {
+			text = grefm_greece.097.3_tt
+			create_character = {
+				template = template_grefm_eynard_jean
+			}
+		}
+		if = {
+			limit = {
+				exists = c:SWI # error suppression
+			}
+			change_relations = {
+				country = c:SWI
+				value = 30
+			}
+			create_diplomatic_catalyst = {
+				type = catalyst_event_positive
+				target = c:SWI
+			}
+		}
+	}
+
+	option = { # Alfred of Saxe-Coburg and Gotha, second son of Queen Victoria; won the election by a landslide
+		name = grefm_greece.097.4
+		trigger = {
+			c:GBR ?= {
+				owes_obligation_to = root
+				has_law_or_variant = law_type:law_monarchy
+			}
+		}
+		highlighted_option = yes
+		show_as_unavailable = { always = yes }
+		c:GBR = {
+			set_owes_obligation_to = {
+				country = root
+				setting = no
+			}
+		}
+		grefm_expel_bavarocracy_effect = yes
+		custom_tooltip = {
+			text = grefm_greece.097.4_tt
+
+		}
+		if = {
+			limit = {
+				exists = c:GBR # error suppression
+			}
+			change_relations = {
+				country = c:GBR
+				value = 30
+			}
+			create_diplomatic_catalyst = {
+				type = catalyst_event_positive
+				target = c:GBR
+			}
+		}
+	}
+
+	option = { # The Wild French Option
+		name = grefm_greece.097.5
+		trigger = {
+			c:FRA ?= {
+				owes_obligation_to = root
+				has_law_or_variant = law_type:law_monarchy
+			}
+		}
+		highlighted_option = yes
+		show_as_unavailable = { always = yes }
+		grefm_expel_bavarocracy_effect = yes
+		if = {
+			limit = {
+				c:FRA ?= {
+					ruler = {
+						has_variable = legitimist_leader
+					}
+				}
+			}
+			custom_tooltip = {
+				text = grefm_greece.097.5_tt_bourbon
+				create_character = {
+					template = template_grefm_bourbon_frank
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				c:FRA ?= {
+					ruler = {
+						has_variable = orleanist_leader
+					}
+				}
+			}
+			custom_tooltip = {
+				text = grefm_greece.097.5_tt_orleans
+				create_character = {
+					template = template_grefm_orleans_frank
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				c:FRA ?= {
+					ruler = {
+						has_variable = bonapartist_leader
+					}
+				}
+			}
+			custom_tooltip = {
+				text = grefm_greece.097.5_tt_bonaparte
+				create_character = {
+					template = template_grefm_bonaparte_frank
+				}
+			}
+		}
+		else = { # Fallback just in case
+			custom_tooltip = {
+				text = grefm_greece.097.5_tt
+				create_character = {
+					first_name = George
+					last_name = Theiler # I LITERALLY PICKED A RANDOM NAME, FIGHT ME
+					noble = yes
+					culture = cu:french
+					ideology = ideology_moderate
+					age = default
+					ruler = yes
+				}
+			}
+		}
+		if = {
+			limit = {
+				exists = c:FRA # error suppression
+			}
+			change_relations = {
+				country = c:FRA
+				value = 30
+			}
+			create_diplomatic_catalyst = {
+				type = catalyst_event_positive
+				target = c:FRA
+			}
+		}
+	}
+
+	option = { # Grand Duke Nicholas Nikolaevich, most voted Russian candidate
+		name = grefm_greece.097.6
+		trigger = {
+			c:RUS ?= {
+				owes_obligation_to = root
+				has_law_or_variant = law_type:law_monarchy
+			}
+			custom_tooltip = {
+				text = grefm_has_russian_alliance
+				gbbf_has_alliance_trigger = {
+					country = c:RUS
+				}
+			}
+		}
+		highlighted_option = yes
+		show_as_unavailable = { always = yes }
+		grefm_expel_bavarocracy_effect = yes
+		custom_tooltip = {
+			text = grefm_greece.097.6_tt
+			create_character = {
+				template = template_grefm_romanov_nicholas
+			}
+		}
+		if = {
+			limit = {
+				exists = c:RUS # error suppression
+			}
+			change_relations = {
+				country = c:RUS
+				value = 30
+			}
+			create_diplomatic_catalyst = {
+				type = catalyst_event_positive
+				target = c:RUS
+			}
+		}
+	}
+
+	option = { # Garbaldi, if he's in town - full send
+		name = grefm_greece.097.9
+		trigger = {
+			custom_tooltip = {
+				text = grefm_garibaldi_has_landed
+				any_scope_character = {
+					has_template = garibaldi_character_template
+				}
+			}
+		}
+		highlighted_option = yes
+		show_as_unavailable = { always = yes }
+		grefm_expel_bavarocracy_effect = yes
+		custom_tooltip = {
+			text = grefm_greece.097.9_tt
+			random_scope_character = {
+				limit = {
+					has_template = garibaldi_character_template
+				}
+				set_character_as_ruler = yes
+			}
+		}
+		every_country = {
+			limit = {
+				has_law_or_variant = law_type:law_monarchy
+				country_rank >= rank_value:great_power
+				NOT = {
+					root = this
+				}
+			}
+			root = {
+				change_relations = {
+					country = prev
+					value = -30
+				}
+			}
+		}
+		every_interest_group = {
+			limit = {
+				law_stance = {
+					law = law_type:law_monarchy
+					value > neutral
+				}
+			}
+			add_modifier = {
+				name = modifier_revolutionary_king
+				months = gbbf_duration_5_years
+			}
+		}
+		every_interest_group = {
+			limit = {
+				law_stance = {
+					law = law_type:law_presidential_republic
+					value < neutral
+				}
+			}
+			add_modifier = {
+				name = modifier_architects_of_the_second_republic
+				months = gbbf_duration_5_years
+			}
+		}
+	}
+
+	option = {
+		# Make it a republic - some voters wrote this in
+		name = grefm_greece.097.a
+		trigger = {
+			has_technology_researched = egalitarianism
+		}
+		highlighted_option = yes
+		show_as_unavailable = { always = yes }
+		grefm_expel_bavarocracy_effect = yes
+		activate_law = law_type:law_presidential_republic
+		every_interest_group = {
+			limit = {
+				law_stance = {
+					law = law_type:law_monarchy
+					value > neutral
+				}
+			}
+			add_modifier = {
+				name = modifier_an_inconvenient_republic
+				months = gbbf_duration_5_years
+			}
+		}
+		every_interest_group = {
+			limit = {
+				law_stance = {
+					law = law_type:law_presidential_republic
+					value < neutral
+				}
+			}
+			add_modifier = {
+				name = modifier_architects_of_the_second_republic
+				months = gbbf_duration_5_years
+			}
+		}
+		every_country = {
+			limit = {
+				has_law_or_variant = law_type:law_monarchy
+				country_rank >= rank_value:great_power
+				has_interest_marker_in_region = sr:region_balkans
+				NOT = {
+					root = this
+				}
+			}
+			root = { # I cannot undersell how wild of a take this would have been in 1862 Greece
+				create_incident = {
+					country = prev
+					value = 5
+				}
+			}
+		}
+	}
+
+	option = {
+		# Elect a Greek King
+		name = grefm_greece.097.b
+		trigger = {
+			has_technology_researched = nationalism
+		}
+		highlighted_option = yes
+		show_as_unavailable = { always = yes }
+		grefm_expel_bavarocracy_effect = yes
+		custom_tooltip = {
+			text = grefm_caretaker_government
+			ig:ig_intelligentsia = {
+				leader = {
+					set_character_as_ruler = yes
+				}
+			}
+		}
+		every_country = {
+			limit = {
+				has_law_or_variant = law_type:law_monarchy
+				country_rank >= rank_value:great_power
+				NOT = {
+					root = this
+				}
+			}
+			root = {
+				change_relations = {
+					country = prev
+					value = -10
+				}
+			}
+		}
+		trigger_event = {
+			id = grefm_greece.021 # The Search for a King
+			days = 30
+		}
+	}
+
+	after = {
+		set_variable = grefm_1862_election_held
+	}
+
+
+}
+
+grefm_greece.098 = { # The Othonian Realm
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_otto.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_greece.098.t
+	desc = grefm_greece.098.d
+	flavor = grefm_greece.098.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by je_grefm_bavarocracy_ip3
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = king_otto_scope
+		}
+		set_variable = grefm_bavarocracy_completed
+	}
+
+	option = {
+		name = grefm_greece.098.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_ottonian_renaissance
+			months = gbbf_duration_10_years
+		}
+		add_modifier = {
+			name = modifier_bavarocracy_democratic
+			months = gbbf_duration_10_years
+		}
+		ruler = {
+			if = {
+				limit = {
+					has_trait = inexperienced
+				}
+				remove_trait = inexperienced
+			}
+			if = {
+				limit = {
+					has_trait = political_appointee
+				}
+				remove_trait = political_appointee
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_trait = erudite
+					}
+				}
+				add_trait = erudite
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_trait = basic_political_operator
+					}
+				}
+				add_trait = basic_political_operator
+			}
+		}
+	}
+
+	option = {
+		name = grefm_greece.098.b
+		default_option = yes
+		add_modifier = {
+			name = modifier_ottonian_reforms
+			months = gbbf_duration_10_years
+		}
+		add_modifier = {
+			name = modifier_bavarocracy_democratic
+			months = gbbf_duration_10_years
+		}
+		ruler = {
+			if = {
+				limit = {
+					has_trait = inexperienced
+				}
+				remove_trait = inexperienced
+			}
+			if = {
+				limit = {
+					has_trait = political_appointee
+				}
+				remove_trait = political_appointee
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_trait = celebrity_commander
+					}
+				}
+				add_trait = celebrity_commander
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_trait = basic_offensive_planner
+					}
+				}
+				add_trait = basic_offensive_planner
+			}
+		}
+	}
+
+}
+
+grefm_greece.099 = { # 
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_otto.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_greece.099.t
+	desc = grefm_greece.099.d
+	flavor = grefm_greece.099.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by je_grefm_bavarocracy_ip3
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = king_otto_scope
+		}
+		set_variable = grefm_bavarocracy_completed
+	}
+
+	option = {
+		name = grefm_greece.099.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_ottonian_renaissance
+			months = gbbf_duration_10_years
+		}
+		add_modifier = {
+			name = modifier_bavarocracy_autocratic
+			months = gbbf_duration_10_years
+		}
+		ruler = {
+			if = {
+				limit = {
+					has_trait = inexperienced
+				}
+				remove_trait = inexperienced
+			}
+			if = {
+				limit = {
+					has_trait = political_appointee
+				}
+				remove_trait = political_appointee
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_trait = erudite
+					}
+				}
+				add_trait = erudite
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_trait = basic_political_operator
+					}
+				}
+				add_trait = basic_political_operator
+			}
+		}
+	}
+
+	option = {
+		name = grefm_greece.099.b
+		default_option = yes
+		add_modifier = {
+			name = modifier_ottonian_reforms
+			months = gbbf_duration_10_years
+		}
+		add_modifier = {
+			name = modifier_bavarocracy_autocratic
+			months = gbbf_duration_10_years
+		}
+		ruler = {
+			if = {
+				limit = {
+					has_trait = inexperienced
+				}
+				remove_trait = inexperienced
+			}
+			if = {
+				limit = {
+					has_trait = political_appointee
+				}
+				remove_trait = political_appointee
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_trait = celebrity_commander
+					}
+				}
+				add_trait = celebrity_commander
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_trait = basic_offensive_planner
+					}
+				}
+				add_trait = basic_offensive_planner
+			}
+		}
+	}
+
+}
+
 
 ## Greek Industry Events ##
 # events in this group trigger off of constructing buildings or activating PMs
@@ -4083,7 +5107,7 @@ grefm_greece.100 = { # fix brewery
 			random_scope_state = {
 				add_modifier = {
 					name = modifier_grefm_fix_brewery
-					days = very_long_modifier_time
+					months = gbbf_duration_20_years
 				}
 			}
 		}
@@ -4141,7 +5165,7 @@ grefm_greece.101 = { # Hellenic Railways event
 			random_scope_state = {
 				add_modifier = {
 					name = modifier_grefm_railway_production
-					days = normal_modifier_time
+					months = gbbf_duration_5_years
 				}
 			}
 		}
@@ -4149,7 +5173,7 @@ grefm_greece.101 = { # Hellenic Railways event
 			random_scope_state = {
 				add_modifier = {
 					name = modifier_grefm_railway_production
-					days = normal_modifier_time
+					months = gbbf_duration_5_years
 				}
 			}
 		}
@@ -4201,7 +5225,7 @@ grefm_greece.102 = { # Greek Aviation Event
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_aviation
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		scope:attica_scope = {
 			add_loyalists_in_state = {
@@ -4300,7 +5324,7 @@ grefm_greece.110 = { # The Decline of the Heptanese School
 		}
 		add_modifier = {
 			name = modifier_grefm_funding_royal_art_school
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 			multiplier = money_amount_multiplier_small
 		}
 	}
@@ -4344,7 +5368,7 @@ grefm_greece.112 = { # lake kopais drained
 		default_option = yes
 		add_modifier = {
 			name = land_reclamation_complete
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 	}
 
@@ -4360,7 +5384,7 @@ grefm_greece.113 = { # a citadel emerges
 	flavor = grefm_greece.113.f
 
 	event_image = {
-		video = "byzfm_ruins"
+		video = "gbbf_ruins_of_the_palace"
 	}
 
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
@@ -4611,12 +5635,12 @@ grefm_greece.121 = { # The University of Athens
 		scope:university_state = {
 			add_modifier = {
 				name = modifier_grefm_university_of_athens
-				days = long_modifier_time
+				months = gbbf_duration_10_years
 			}
 		}
 		add_modifier = {
 			name = modifier_grefm_funding_royal_university
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 			multiplier = money_amount_multiplier_small
 		}
 	}
@@ -4626,7 +5650,7 @@ grefm_greece.121 = { # The University of Athens
 		scope:university_benefactor = {
 			add_modifier = {
 				name = modifier_grefm_blocked_funding_university
-				days = long_modifier_time
+				months = gbbf_duration_10_years
 				is_decaying = yes
 			}
 		}
@@ -4693,7 +5717,7 @@ grefm_greece.122 = { # The Great School of the Nation
 		scope:university_benefactor.interest_group = {
 			add_modifier = {
 				name = modifier_university_built
-				days = normal_modifier_time
+				months = gbbf_duration_5_years
 			}
 		}
 	}
@@ -4708,7 +5732,7 @@ grefm_greece.122 = { # The Great School of the Nation
 		scope:university_state = {
 			add_modifier = {
 				name = modifier_grefm_great_school_of_the_nation
-				days = normal_modifier_time
+				months = gbbf_duration_5_years
 			}
 		}
 	}
@@ -4718,7 +5742,7 @@ grefm_greece.122 = { # The Great School of the Nation
 		scope:university_benefactor.interest_group = {
 			add_modifier = {
 				name = modifier_blocked_building_university
-				days = normal_modifier_time
+				months = gbbf_duration_5_years
 			}
 		}
 	}
@@ -4766,8 +5790,7 @@ grefm_greece.123 = { # the women's council
 			text= grefm_greece.123.tt
 		}
 		scope:kalliroi_scope = {
-			add_character_role = agitator
-			free_character_from_void = yes
+			gbbf_free_from_void_agitator = yes
 		}
 	}
 
@@ -4826,12 +5849,11 @@ grefm_greece.124 = { # national council of greek women
 			empty_agitator_slots > 0
 		}
 		scope:theodoropoulou_scope = {
-			free_character_from_void = yes
-			add_character_role = agitator
+			gbbf_free_from_void_agitator = yes
 		}
 		add_modifier = {
 			name = modifier_grefm_greek_feminism
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 	}
 
@@ -4839,7 +5861,7 @@ grefm_greece.124 = { # national council of greek women
 		name = grefm_greece.124.b
 		add_modifier = {
 			name = modifier_grefm_greek_feminism
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 	}
 }
@@ -5160,7 +6182,7 @@ grefm_greece.161 = { # The Don Pacifico Affair
 		}
 		add_modifier = {
 			name = modifier_grefm_abandoned_don_pacifico
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		ai_chance = {
 			base = 1 # should almost never happen
@@ -5234,7 +6256,7 @@ grefm_greece.161 = { # The Don Pacifico Affair
 		}
 		add_modifier = {
 			name = modifier_grefm_chastized_mob
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		add_treasury = -35700 # Don Pacifico demanded £32,000 plus 10% interest for his property plus an additional £500 for physical mistreatment
 		add_radicals = {
@@ -5270,7 +6292,7 @@ grefm_greece.161 = { # The Don Pacifico Affair
 		}
 		add_modifier = {
 			name = modifier_grefm_rejected_compromise
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		add_loyalists = {
 			strata = lower
@@ -5409,7 +6431,7 @@ grefm_greece.181 = { # Speech before the Areopagus
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_ejected_jonas
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		add_radicals = {
 			religion = rel:protestant
@@ -5488,7 +6510,7 @@ grefm_greece.182 = { # Jonas King Returns
 		}
 		add_modifier = {
 			name = modifier_grefm_religious_deconfliction
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 	}
 
@@ -5536,7 +6558,7 @@ grefm_greece.183 = { # Foreign Intercession for Jonas King
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_religious_deconfliction
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		add_radicals = {
 			pop_type = clergymen
@@ -5548,7 +6570,7 @@ grefm_greece.183 = { # Foreign Intercession for Jonas King
 		name = grefm_greece.183.b
 		add_modifier = {
 			name = modifier_grefm_religious_witchhunt
-			days = normal_modifier_time
+			months = gbbf_duration_5_years
 		}
 		create_incident = {
 			country = c:USA

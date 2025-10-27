@@ -1,15 +1,22 @@
 ﻿je_balkfm_rom_regulamentul_organic = {
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-
-	group = je_group_balkfm_romania
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/invention_icons/bureaucracy.dds"
+	weight = 1000
 
 	should_be_pinned_by_default = yes
-
-	immediate = {
-	}
+	can_revolution_inherit = yes
+	transferable = no
 
 	scripted_progress_bar = balkfm_hospodar_progressbar
 	scripted_progress_bar = balkfm_regulamentul_progressbar
+
+	is_shown_in_lobby = {
+		country_has_primary_culture = cu:romanian
+	}
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	complete = {
 		custom_tooltip = {
@@ -30,7 +37,7 @@
 					NOR = {
 						has_ideology = ideology:ideology_radical
 						has_ideology = ideology:ideology_social_democrat
-						has_ideology = ideology:ideology_kogalnitchanism
+						has_ideology = ideology:ideology_gbbf_kogalnitchanism
 					}
 				}
 				NOT = { has_variable = balkfm_1848_succeeded }
@@ -60,6 +67,9 @@
 					}
 				}
 			}
+			NOT = {
+				has_law = law_type:law_organic_regulation
+			}
 		}
 	}
 
@@ -70,7 +80,7 @@
 					NOR = {
 						has_ideology = ideology:ideology_radical
 						has_ideology = ideology:ideology_social_democrat
-						has_ideology = ideology:ideology_kogalnitchanism
+						has_ideology = ideology:ideology_gbbf_kogalnitchanism
 					}
 				}
 				NOT = { has_variable = balkfm_1848_succeeded }
@@ -128,7 +138,7 @@
 		effect = {
 			if = {
 				limit = {
-					has_law = law_type:law_monarchy
+					has_law_or_variant = law_type:law_monarchy
 					NOT = { has_variable = balkfm_1848_rom_var }
 				}
 				change_variable = {
@@ -173,19 +183,24 @@
 			}
 		}
 	}
-
-	weight = 2000
-
 }
 
 je_balkfm_rom_1848 = {
+	group = je_group_internal_affairs
 	icon = "gfx/interface/icons/event_icons/event_protest.dds"
-
-	group = je_group_balkfm_romania
+	weight = 500
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = no
+	transferable = no
+
+	scripted_button = balkfm_mol_intervention_button
+	scripted_button = balkfm_wal_intervention_button
+
+	scripted_progress_bar = balkfm_romanian_liberalism_progressbar
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		set_variable = {
 			name = balkfm_1848_rom_var
 			value = 0
@@ -195,15 +210,6 @@ je_balkfm_rom_1848 = {
 			value = 0
 		}
 	}
-
-	modifiers_while_active = {
-	}
-
-	scripted_progress_bar = balkfm_romanian_liberalism_progressbar
-
-	scripted_button = balkfm_mol_intervention_button
-	scripted_button = balkfm_wal_intervention_button
-
 	complete = {
 		custom_tooltip = {
 			text = balkfm_1848_rom_success_tt
@@ -325,23 +331,31 @@ je_balkfm_rom_1848 = {
 		triggered_desc = {
 			desc = je_balkfm_rom_1848_status
 			trigger = {
-				always = yes
+				has_variable = balkfm_1848_rom_var
 			}
 		}
 	}
-
-	weight = 500
-
 }
 
 je_balkfm_rom_statutul_dezvoltator = {
+	group = je_group_internal_affairs
 	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
-
-	group = je_group_balkfm_romania
+	weight = 1000
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	progressbar = yes
+	goal_add_value = {
+		value = 200
+	}
+	current_value = {
+		value = root.var:balkfm_dezvoltator_var
+	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		set_variable = {
 			name = balkfm_dezvoltator_progress_var
 			value = balkfm_dezvoltator_progress_value
@@ -351,18 +365,18 @@ je_balkfm_rom_statutul_dezvoltator = {
 	complete = {
 		# Technically, Cuza's goal was to establish authoritarian rule, but with broad voting rights for the peasantry. This is cannot be represented by Victoria 3's current systems, hence the strange completion requirements
 		# TODO I've actually done more research here... this is really more complicated than I made it sound. Unfortunately, research in non-English language sources is slower than I would like; this has been tagged for a rework in the docket once I have more sources
-		has_law = law_type:law_monarchy
+		has_law_or_variant = law_type:law_monarchy
 		OR = {
-			has_law = law_type:law_autocracy
-			has_law = law_type:law_oligarchy
+			has_law_or_variant = law_type:law_autocracy
+			has_law_or_variant = law_type:law_oligarchy
 		}
 		OR = {
-			has_law = law_type:law_traditionalism
-			has_law = law_type:law_agrarianism
+			has_law_or_variant = law_type:law_traditionalism
+			has_law_or_variant = law_type:law_agrarianism
 		}
 		NOR = {
-			has_law = law_type:law_serfdom
-			has_law = law_type:law_tenant_farmers
+			has_law_or_variant = law_type:law_serfdom
+			has_law_or_variant = law_type:law_tenant_farmers
 		}
 		scope:journal_entry = { is_goal_complete = yes }
 	}
@@ -415,29 +429,19 @@ je_balkfm_rom_statutul_dezvoltator = {
 			}
 		}
 	}
-
-	current_value = {
-		value = root.var:balkfm_dezvoltator_var
-	}
-
-	goal_add_value = {
-		value = 200
-	}
-
-	progressbar = yes
-
-	weight = 1000
-
 }
 
 je_balkfm_rom_1866_1 = {
 	icon = "gfx/interface/icons/event_icons/event_romania.dds"
-
-	group = je_group_balkfm_romania
+	group = je_group_internal_affairs
+	weight = 500
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = no
+	transferable = no
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 	}
 
 	modifiers_while_active = {
@@ -445,29 +449,25 @@ je_balkfm_rom_1866_1 = {
 	}
 
 	complete = {
+		country_has_voting_franchise = yes
 		OR = {
-			has_law = law_type:law_wealth_voting
-			has_law = law_type:law_census_voting
-			has_law = law_type:law_universal_suffrage
+			has_law_or_variant = law_type:law_freedom_of_conscience
+			has_law_or_variant = law_type:law_total_separation
 		}
 		OR = {
-			has_law = law_type:law_freedom_of_conscience
-			has_law = law_type:law_total_separation
+			has_law_or_variant = law_type:law_right_of_assembly
+			has_law_or_variant = law_type:law_protected_speech
 		}
 		OR = {
-			has_law = law_type:law_right_of_assembly
-			has_law = law_type:law_protected_speech
-		}
-		OR = {
-			has_law = law_type:law_commercialized_agriculture
-			has_law = law_type:law_homesteading
+			has_law_or_variant = law_type:law_commercialized_agriculture
+			has_law_or_variant = law_type:law_homesteading
 		}
 	}
 
 	on_complete = {
 		add_modifier = {
 			name = modifier_balkfm_democratic_constitution
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 	}
 
@@ -476,26 +476,34 @@ je_balkfm_rom_1866_1 = {
 	on_timeout = {
 		add_modifier = {
 			name = modifier_balkfm_absent_reforms
-			days = long_modifier_time
+			months = gbbf_duration_10_years
 		}
 	}
 
 	invalid = {
-		NOT = { has_law = law_type:law_monarchy }
+		NOT = { has_law_or_variant = law_type:law_monarchy }
 	}
-
-	weight = 100
-
 }
 
 je_balkfm_rom_1866_2 = {
 	icon = "gfx/interface/icons/event_icons/event_romania.dds"
-
-	group = je_group_balkfm_romania
+	group = je_group_internal_affairs
+	weight = 500
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = no
+	transferable = no
+
+	progressbar = yes
+	goal_add_value = {
+		value = 100
+	}
+	current_value = {
+		value = var:balkfm_1866_var
+	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 	}
 
 	modifiers_while_active = {
@@ -544,7 +552,7 @@ je_balkfm_rom_1866_2 = {
 
 	invalid = {
 		OR = {
-			NOT = { has_law = law_type:law_monarchy }
+			NOT = { has_law_or_variant = law_type:law_monarchy }
 			has_modifier = modifier_balkfm_ploiesti_succeeded
 		}
 	}
@@ -579,16 +587,6 @@ je_balkfm_rom_1866_2 = {
 		}
 	}
 
-	current_value = {
-		value = var:balkfm_1866_var
-	}
-
-	goal_add_value = {
-		value = 100
-	}
-
-	progressbar = yes
-
 	status_desc = {
 		first_valid = {
 			triggered_desc = {
@@ -611,17 +609,20 @@ je_balkfm_rom_1866_2 = {
 			}
 		}
 	}
-
-	weight = 100
-
 }
 
 je_balkfm_rom_nationalism = {
+	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-
-	group = je_group_balkfm_romanian_nationalism
+	weight = 500
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	is_shown_in_lobby = {
+		country_has_primary_culture = cu:romanian
+	}
 
 	is_shown_when_inactive = {
 		NOT = { has_variable = balkfm_romanian_nationalism_started }
@@ -639,6 +640,7 @@ je_balkfm_rom_nationalism = {
 	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		trigger_event = {
 			id = balkfm_romania.600 # Forms Without Substance
 		}
@@ -650,8 +652,8 @@ je_balkfm_rom_nationalism = {
 
 	complete = {
 		OR = {
-			has_law = law_type:law_public_schools
-			has_law = law_type:law_private_schools
+			has_law_or_variant = law_type:law_public_schools
+			has_law_or_variant = law_type:law_private_schools
 		}
 		institution_investment_level = {
 			institution = institution_schools
@@ -753,17 +755,25 @@ je_balkfm_rom_nationalism = {
 			}
 		}
 	}
-
-	weight = 500
-
 }
 
 je_balkfm_rom_united_principalities = { # this journal integrates all vanilla unification content into one journal entry
+	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_romania.dds"
-
-	group = je_group_balkfm_romanian_nationalism
+	weight = 1000
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	is_shown_in_lobby = {
+		country_has_primary_culture = cu:romanian
+	}
+
+	scripted_button = balkfm_unite_principalities_button
+	scripted_button = balkfm_all_for_one_button
+	scripted_button = balkfm_bessarabian_retrocession_button
+	scripted_button = balkfm_marea_unire_button
 
 	is_shown_when_inactive = {
 		country_has_primary_culture = cu:romanian
@@ -779,12 +789,8 @@ je_balkfm_rom_united_principalities = { # this journal integrates all vanilla un
 	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 	}
-
-	scripted_button = balkfm_unite_principalities_button
-	scripted_button = balkfm_all_for_one_button
-	scripted_button = balkfm_bessarabian_retrocession_button
-	scripted_button = balkfm_marea_unire_button
 
 	complete = {
 		custom_tooltip = {
@@ -793,9 +799,6 @@ je_balkfm_rom_united_principalities = { # this journal integrates all vanilla un
 				c:ROM ?= this
 			}
 		}
-	}
-
-	on_complete = {
 	}
 
 	fail = {
@@ -861,20 +864,25 @@ je_balkfm_rom_united_principalities = { # this journal integrates all vanilla un
 
 	# timeout = 0 # no timeout. Romania is eternal. -- this comment stays. Toți în unu.
 
-	weight = 1000
-
 }
 
 je_balkfm_rom_greater_romania = {
+	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_romania.dds"
-
-	group = je_group_balkfm_romanian_nationalism
+	weight = 1000
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
 
 	is_shown_when_inactive = {
 		c:ROM ?= this
 	}
+
+	scripted_button = balkfm_trs_agitate_button
+	scripted_button = balkfm_trs_provoke_button
+	scripted_button = balkfm_bessarabian_retrocession_button
+	scripted_button = balkfm_marea_unire_button
 
 	possible = {
 		has_technology_researched = nationalism
@@ -892,15 +900,11 @@ je_balkfm_rom_greater_romania = {
 	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		trigger_event = {
 			id = balkfm_romania.708 # The Greater Romanian Lands
 		}
 	}
-
-	scripted_button = balkfm_trs_agitate_button
-	scripted_button = balkfm_trs_provoke_button
-	scripted_button = balkfm_bessarabian_retrocession_button
-	scripted_button = balkfm_marea_unire_button
 
 	complete = {
 		is_subject = no
@@ -921,17 +925,16 @@ je_balkfm_rom_greater_romania = {
 			id = balkfm_romania.709 # The Reunification of Romania
 		}
 	}
-
-	weight = 1000
-
 }
 
 je_balkfm_peles_castle = {
+	group = je_group_technology
 	icon = "gfx/interface/icons/event_icons/event_industry.dds"
-
-	group = je_group_balkfm_romania
+	weight = 500
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
 
 	is_shown_when_inactive = {
 		c:ROM ?= this
@@ -949,6 +952,7 @@ je_balkfm_peles_castle = {
 	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 	}
 
 	complete = {
@@ -966,13 +970,7 @@ je_balkfm_peles_castle = {
 	fail = {
 		NOR = {
 			owns_entire_state_region = STATE_WALLACHIA
-			has_law = law_type:law_monarchy
+			has_law_or_variant = law_type:law_monarchy
 		}
 	}
-
-	on_fail = {
-	}
-
-	weight = 100
-
 }

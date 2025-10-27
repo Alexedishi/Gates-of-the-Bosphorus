@@ -1,0 +1,182 @@
+﻿je_eqfm_libyan_desert = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	weight = 500
+	
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+	
+	is_shown_when_inactive = {
+		c:TRI ?= this
+		has_state_in_state_region = STATE_LIBYAN_DESERT
+		NOT = {
+			owns_entire_state_region = STATE_LIBYAN_DESERT
+		}
+	}
+	
+	scripted_button = eqfm_resupply_desert_expedition_button
+	scripted_button = eqfm_deploy_desert_expedition_button
+	scripted_button = eqfm_cancel_desert_expedition_button
+	
+	possible = {
+		has_technology_researched = colonization
+	}
+	
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		trigger_event = {
+			id = eqfm_libyan_desert.001 # An Untamed Frontier
+		}
+		set_variable = {
+			name = eqfm_expedition_ticker_var
+			value = 0
+		}
+	}
+	
+	complete = {
+		owns_entire_state_region = STATE_TRIPOLI
+		owns_entire_state_region = STATE_LIBYA
+		owns_entire_state_region = STATE_LIBYAN_DESERT
+	}
+	
+	on_complete = {
+		trigger_event = {
+			id = eqfm_libyan_desert.009 # The Libyan Deserts
+		}
+		eqfm_cleanup_libyan_desert_effect = yes
+	}
+	
+	fail = {
+		NOR = {
+			has_state_in_state_region = STATE_TRIPOLI
+			has_state_in_state_region = STATE_LIBYA
+			has_state_in_state_region = STATE_LIBYAN_DESERT
+		}
+	}
+	
+	on_weekly_pulse = {
+		events = {
+			eqfm_libyan_desert.007 # Expedition Withdraws from the Desert
+			eqfm_libyan_desert.008 # Expedition Leader Has Died!
+		}
+		effect = {
+			eqfm_update_desert_variables_effect = yes
+			eqfm_update_desert_modifier_effect = yes
+			if = {
+				limit = {
+					eqfm_has_desert_expedition_trigger = yes
+					NOR = {
+						has_variable = eqfm_expedition_desert_transit_var
+					}
+				}
+				if = {
+					limit = {
+						NOT = {
+							has_variable = eqfm_desert_expedition_progress_var
+						}
+					}
+					set_variable = {
+						name = eqfm_desert_expedition_progress_var
+						value = 0
+					}
+				}
+				if = {
+					limit = {
+						NOT = {
+							has_variable = eqfm_desert_expedition_peril_var
+						}
+					}
+					set_variable = {
+						name = eqfm_desert_expedition_peril_var
+						value = 0
+					}
+				}
+			}
+			if = {
+				limit = {
+					has_modifier = modifier_turkfm_desert_raids
+					eqfm_has_desert_expedition_trigger = no
+					NOT = {
+						owns_entire_state_region = STATE_LIBYAN_DESERT
+					}
+				}
+				remove_modifier = modifier_turkfm_desert_raids
+				post_notification = notification_eqfm_desert_raids_halted
+			}
+			if = {
+				limit = {
+					eqfm_has_desert_expedition_trigger = yes
+					var:eqfm_desert_expedition_progress_var < 8
+				}
+				if = {
+					limit = {
+						var:eqfm_expedition_ticker_var < 32
+					}
+					change_variable = {
+						name = eqfm_expedition_ticker_var
+						add = 1
+					}
+				}
+				else = {
+					set_variable = {
+						name = eqfm_expedition_ticker_var
+						value = 0
+					}
+					change_variable = {
+						name = eqfm_desert_expedition_progress_var
+						add = 1
+					}
+					post_notification = notification_eqfm_yearly_progress
+				}
+			}
+			else = {
+				set_variable = {
+					name = eqfm_expedition_ticker_var
+					value = 0
+				}
+			}
+		}
+	}
+	
+	on_monthly_pulse = {
+		random_events = {
+			# Expedition events should outweigh general desert events
+			chance_of_no_event = 90
+			25 = eqfm_libyan_desert.010
+			10 = eqfm_libyan_desert.011
+			25 = eqfm_libyan_desert.012
+			
+			1 = eqfm_libyan_desert.020
+			5 = eqfm_libyan_desert.021
+			75 = eqfm_libyan_desert.022
+			55 = eqfm_libyan_desert.023
+			55 = eqfm_libyan_desert.024
+			35 = eqfm_libyan_desert.025
+			35 = eqfm_libyan_desert.026
+			15 = eqfm_libyan_desert.027
+			25 = eqfm_libyan_desert.028
+			10 = eqfm_libyan_desert.029
+		}
+	}
+	
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_eqfm_libyan_desert_status_expedition
+				trigger = {
+					eqfm_has_desert_expedition_trigger = yes
+					NOT = {
+						has_variable = eqfm_expedition_desert_transit_var
+					}
+				}
+			}
+			triggered_desc = {
+				desc = je_eqfm_libyan_desert_status_default
+				trigger = {
+					has_journal_entry = je_eqfm_libyan_desert
+				}
+			}
+		}
+	}
+}

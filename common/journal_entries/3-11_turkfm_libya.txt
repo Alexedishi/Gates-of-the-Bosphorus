@@ -1,11 +1,18 @@
 ﻿je_turkfm_tri_centralization = {
+	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_fez.dds"
-
-	group = je_group_turkfm_libya
+	weight = 2000
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	is_shown_in_lobby = {
+		c:TRI ?= this
+	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 	}
 
 	modifiers_while_active = {
@@ -14,9 +21,9 @@
 
 	complete = {
 		NOR = {
-			has_law = law_type:law_hereditary_bureaucrats
-			has_law = law_type:law_peasant_levies
-			has_law = law_type:law_no_police
+			has_law_or_variant = law_type:law_hereditary_bureaucrats
+			has_law_or_variant = law_type:law_peasant_levies
+			has_law_or_variant = law_type:law_no_police
 		}
 		any_scope_building = {
 			is_building_type = building_university
@@ -47,60 +54,27 @@
 			id = turkfm_libya.009 # A Centralized State
 		}
 	}
-
-	weight = 4000
-
-}
-
-je_turkfm_tri_libyan_desert = {
-	icon = "gfx/interface/icons/event_icons/event_map.dds"
-
-	group = je_group_turkfm_libya
-
-	should_be_pinned_by_default = yes
-
-	is_shown_when_inactive = {
-		c:TRI ?= this
-		NOT = {
-			owns_entire_state_region = STATE_LIBYAN_DESERT
-		}
-	}
-
-	possible = {
-		has_technology_researched = colonization
-	}
-
-	immediate = {
-	}
-
-	complete = {
-		owns_entire_state_region = STATE_TRIPOLI
-		owns_entire_state_region = STATE_LIBYA
-		owns_entire_state_region = STATE_LIBYAN_DESERT
-	}
-
-	on_complete = {
-		trigger_event = {
-			id = turkfm_libya.008 # The Libyan Deserts
-		}
-	}
-
-	fail = {
-		NOR = {
-			has_state_in_state_region = STATE_TRIPOLI
-			has_state_in_state_region = STATE_LIBYA
-			has_state_in_state_region = STATE_LIBYAN_DESERT
-		}
-	}
-
-	weight = 500
-
 }
 
 je_turkfm_senusiyya_main = {
+	group = je_group_internal_affairs
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	group = je_group_turkfm_libya
+	weight = 1000
+	
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	is_shown_in_lobby = {
+		c:TRI ?= this
+	}
+	
+	scripted_progress_bar = turkfm_senussi_progressbar
+	
+	scripted_button = turkfm_embrace_senussi_button
+	scripted_button = turkfm_sweep_desert_button
+	scripted_button = turkfm_supress_senusiyya_button
+	scripted_button = turkfm_armed_delegation_button
 
 	is_shown_when_inactive = {
 		c:TRI ?= this
@@ -112,23 +86,17 @@ je_turkfm_senusiyya_main = {
 	}
 
 	possible = {
-		has_technology_researched = colonization
+		has_technology_researched = mass_communication
 	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		trigger_event = {
 			id = turkfm_libya.100 # The Senussi Order
 		}
 		turkfm_update_senussi_effect = yes
 		set_variable = turkfm_senussi_has_landed
 	}
-
-	scripted_progress_bar = turkfm_senussi_progressbar
-
-	scripted_button = turkfm_embrace_senussi_button
-	scripted_button = turkfm_sweep_desert_button
-	scripted_button = turkfm_supress_senusiyya_button
-	scripted_button = turkfm_armed_delegation_button
 
 	complete = {
 		custom_tooltip = {
@@ -168,8 +136,8 @@ je_turkfm_senusiyya_main = {
 
 	fail = {
 		OR = {
-			has_law = law_type:law_total_separation
-			has_law = law_type:law_state_atheism
+			has_law_or_variant = law_type:law_total_separation
+			has_law_or_variant = law_type:law_state_atheism
 		}
 	}
 
@@ -217,17 +185,25 @@ je_turkfm_senusiyya_main = {
 			}
 		}
 	}
-
-	weight = 1000
-
 }
 
 je_turkfm_senusiyya_sub = {
+	group = je_group_internal_affairs
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	group = je_group_turkfm_libya
+	weight = 1000
+	
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+	
+	scripted_progress_bar = turkfm_senussi_progressbar
+	
+	scripted_button = turkfm_embrace_senussi_button
+	scripted_button = turkfm_sweep_desert_button
+	scripted_button = turkfm_supress_senusiyya_button
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		if = {
 			limit = {
 				has_variable = turkfm_senussi_has_landed
@@ -243,12 +219,6 @@ je_turkfm_senusiyya_sub = {
 		turkfm_senussi_weekly_effect = yes
 		turkfm_update_senussi_effect = yes
 	}
-
-	scripted_progress_bar = turkfm_senussi_progressbar
-
-	scripted_button = turkfm_embrace_senussi_button
-	scripted_button = turkfm_sweep_desert_button
-	scripted_button = turkfm_supress_senusiyya_button
 
 	complete = {
 		custom_tooltip = {
@@ -288,8 +258,8 @@ je_turkfm_senusiyya_sub = {
 
 	fail = {
 		OR = {
-			has_law = law_type:law_total_separation
-			has_law = law_type:law_state_atheism
+			has_law_or_variant = law_type:law_total_separation
+			has_law_or_variant = law_type:law_state_atheism
 		}
 	}
 
@@ -330,7 +300,4 @@ je_turkfm_senusiyya_sub = {
 			}
 		}
 	}
-
-	weight = 1000
-
 }

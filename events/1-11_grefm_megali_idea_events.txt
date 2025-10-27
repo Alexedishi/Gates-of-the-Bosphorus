@@ -1,9 +1,11 @@
-﻿## MEGALI IDEA EVENTS ##
+﻿##########################################
+## GREEK FLAVOR MODULE: THE MEGALI IDEA ##
+##########################################
 
-# For Greek content, see the "grefm" module
-# For Turkish content, see the "turkfm" module
+# For Greek & Byzantium content, see the "grefm" module
 # For Balkan Nations content, see the "balkfm" module
-# For Orthodox Church content, see the "eocfm" module
+# For Ottoman & Turkish content, see the "turkfm" module
+# For Eastern Question & Expeditions content, see the "eqfm" module
 
 ####################
 
@@ -22,7 +24,6 @@ namespace = grefm_megali_idea
 #	004 - The Lands of Greater Greece
 #	005 - The Greek Realm
 
-
 #010-019 - Roman Revanchism Events
 #	010 - The Lands of the Rhomaios
 #	011 - The Legacy of Rhōmanía
@@ -30,6 +31,13 @@ namespace = grefm_megali_idea
 
 #020-029 - Urum Revanchism Events
 #	020 - The Last of the Romans
+
+#030-039 - Imperial Triumph Events
+#	030 - ##The Balkans Reclaimed
+#	031 - ##Anatolia Reclaimed
+#	032 - ##The Levant Reclaimed
+#	033 - ##Aegyptus Reclaimed
+#	034 - ##Italy Reclaimed
 
 #100-109 - Hellene Annexation Events
 #	100 - ION Annexation
@@ -135,7 +143,38 @@ grefm_megali_idea.002 = { # The Megali Idea
 	option = { # Vanilla Claims Option, merged into one event
 		name = grefm_megali_idea.002.a
 		default_option = yes
-		grefm_add_byzantium_claims_effect = yes
+		grefm_add_greece_claims_effect = yes
+		if = {
+			limit = {
+				exists = c:TUR
+				c:TUR ?= {
+					OR = {
+						owns_entire_state_region = STATE_MACEDONIA
+						owns_entire_state_region = STATE_WESTERN_THRACE
+						owns_entire_state_region = STATE_EAST_AEGEAN_ISLANDS
+						owns_entire_state_region = STATE_CRETE
+					}
+				}
+			}
+			change_relations = {
+				country = c:TUR
+				value = -10
+			}
+		}
+		if = {
+			limit = {
+				exists = c:RUS
+				any_scope_state = {
+					region = sr:region_balkans
+					has_claim_by = c:RUS
+				}
+			}
+			change_relations = {
+				country = c:RUS
+				value = 10
+			}
+		}
+		change_infamy = 10
 		if = {
 			limit = {
 				c:ION ?= this
@@ -145,6 +184,10 @@ grefm_megali_idea.002 = { # The Megali Idea
 				id = grefm_heptanese.020 # The Dream of Enosis
 				days = 30
 			}
+		}
+		custom_tooltip = {
+			text = grefm_embrace_megali_idea
+			set_variable = grefm_embraced_megali_idea
 		}
 	}
 
@@ -156,9 +199,35 @@ grefm_megali_idea.002 = { # The Megali Idea
 				set_variable = grefm_weaksauce
 			}
 		}
-		add_radicals = {
-			culture = cu:greek
-			value = large_radicals
+		if = {
+			limit = {
+				exists = c:TUR
+				c:TUR ?= {
+					OR = {
+						owns_entire_state_region = STATE_MACEDONIA
+						owns_entire_state_region = STATE_WESTERN_THRACE
+						owns_entire_state_region = STATE_EAST_AEGEAN_ISLANDS
+						owns_entire_state_region = STATE_CRETE
+					}
+				}
+			}
+			change_relations = {
+				country = c:TUR
+				value = 30
+			}
+		}
+		if = {
+			limit = {
+				exists = c:RUS
+				any_scope_state = {
+					region = sr:region_balkans
+					has_claim_by = c:RUS
+				}
+			}
+			change_relations = {
+				country = c:RUS
+				value = -10
+			}
 		}
 	}
 
@@ -187,47 +256,21 @@ grefm_megali_idea.003 = { # The Future of Greece
 		# triggered by je_grefm_megali_idea
 	}
 
-	cancellation_trigger = {
-		OR = {
-			c:BYZ ?= this
-			c:GRE_HEL ?= this
-		}
-	}
-
 	immediate = {
 	}
 
 	option = { # Become the Hellenic Empire
 		name = grefm_megali_idea.003.a
 		default_option = yes
-		if = {
-			limit = {
-				country_has_primary_culture = cu:greek
-			}
-			custom_tooltip = grefm_hemp_possible_tt
-		}
-		if = {
-			limit = {
-				country_has_primary_culture = cu:rhomaios
-			}
-			custom_tooltip = grefm_byz_possible_tt
-		}
-	}
-
-	option = { # Remain Greece
-		name = grefm_megali_idea.003.b
-		custom_tooltip = grefm_weaksauce
-		custom_tooltip = grefm_tzatzikisauce
 		add_modifier = {
-			name = greek_nationalism
-			days = long_modifier_time
+			name = modifier_grefm_greek_imperialism
+			months = gbbf_duration_10_years
 		}
-		set_variable = grefm_weaksauce
 	}
 
 }
 
-grefm_megali_idea.004 = { # Greater Greece
+grefm_megali_idea.004 = { # The Empire of the Greeks
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
@@ -237,7 +280,7 @@ grefm_megali_idea.004 = { # Greater Greece
 	flavor = grefm_megali_idea.004.f
 
 	event_image = {
-		video = "southamerica_aristocrats"
+		video = "unspecific_signed_contract"
 	}
 	
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
@@ -247,93 +290,79 @@ grefm_megali_idea.004 = { # Greater Greece
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by grefm_megali_idea.003
+		has_variable = grefm_embraced_megali_idea
+		NOR = {
+			has_variable = grefm_megali_idea_expansion_considered
+			has_variable = grefm_weaksauce
+		}
+		OR = {
+			var:grefm_megali_idea_counter_var >= 5
+			country_rank >= rank_value:major_power
+		}
 	}
 
 	immediate = {
+		set_variable = grefm_megali_idea_expansion_considered
 	}
 
-	option = {
+	option = { # Go all the way
 		name = grefm_megali_idea.004.a
 		default_option = yes
-		add_journal_entry = {
-			type = je_grefm_greater_greece
+		grefm_add_byzantium_claims_effect = yes
+		create_incident = {
+			country = c:TUR
+			value = 10
 		}
 		if = {
 			limit = {
-				NOT = { owns_entire_state_region = STATE_CRETE }
+				exists = c:RUS
+				any_scope_state = {
+					region = sr:region_balkans
+					has_claim_by = c:RUS
+				}
 			}
-			s:STATE_CRETE = {
-				add_claim = ROOT
-			}
-		}
-		if = {
-			limit = {
-				NOT = { owns_entire_state_region = STATE_CYPRUS }
-			}
-			s:STATE_CYPRUS = {
-				add_claim = ROOT
+			change_relations = {
+				country = c:RUS
+				value = 10
 			}
 		}
-		if = {
-			limit = {
-				NOT = { owns_entire_state_region = STATE_KASTAMONU }
-			}
-			s:STATE_KASTAMONU = {
-				add_claim = ROOT
-			}
-		}
-		if = {
-			limit = {
-				NOT = { owns_entire_state_region = STATE_TRABZON }
-			}
-			s:STATE_TRABZON = {
-				add_claim = ROOT
-			}
-		}
-		if = {
-			limit = {
-				NOT = { owns_entire_state_region = STATE_ADANA }
-			}
-			s:STATE_ADANA = {
-				add_claim = ROOT
-			}
+		change_infamy = 20
+		custom_tooltip = {
+			text = grefm_embrace_imperial_restoration
+			remove_variable = grefm_embraced_megali_idea
+			set_variable = grefm_embraced_imperial_restoration
 		}
 	}
 
-	option = {
+	option = { # Hold back
 		name = grefm_megali_idea.004.b
 		custom_tooltip = {
 			text = grefm_weaksauce
-			hidden_effect = {
-				set_variable = grefm_weaksauce
-				set_variable = grefm_super_weaksauce
-			}
+			set_variable = grefm_imperial_restoration_declined
 		}
 	}
 
 }
 
-grefm_megali_idea.005 = { # A Greek Domain
+
+grefm_megali_idea.005 = { # The Greek Lands Lost
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+	duration = 3
+	dlc = dlc_grefm
 
 	title = grefm_megali_idea.005.t
 	desc = grefm_megali_idea.005.d
 	flavor = grefm_megali_idea.005.f
 
 	event_image = {
-		video = "unspecific_military_parade"
+		video = "unspecific_signed_contract"
 	}
-	
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = { # triggered by JE
+	trigger = {
+		# triggered by je_grefm_megali_idea upon failure
 	}
 
 	immediate = {
@@ -342,14 +371,76 @@ grefm_megali_idea.005 = { # A Greek Domain
 	option = {
 		name = grefm_megali_idea.005.a
 		default_option = yes
-		add_modifier = {
-			name = modifier_grefm_greek_resurgence
-			days = long_modifier_time
+		if = {
+			limit = {
+				NOR = {
+					has_variable = grefm_embraced_imperial_restoration
+				}
+			}
+			add_modifier = {
+				name = modifier_grefm_failed_megali_idea
+				months = gbbf_duration_20_years
+				multiplier = 3
+			}
+			ruler = {
+				add_modifier = {
+					name = greek_ruler_negative_popularity_3
+					months = gbbf_duration_20_years
+				}
+			}
+			grefm_treaty_of_lausanne_effect = yes
+		}
+		else_if = {
+			limit = {
+				has_variable = grefm_embraced_megali_idea
+			}
+			add_modifier = {
+				name = modifier_grefm_failed_megali_idea
+				months = gbbf_duration_20_years
+				multiplier = 2
+			}
+			ruler = {
+				add_modifier = {
+					name = greek_ruler_negative_popularity_2
+					months = gbbf_duration_20_years
+				}
+			}
+		}
+		else = {
+			add_modifier = {
+				name = modifier_grefm_failed_megali_idea
+				months = gbbf_duration_20_years
+			}
+			ruler = {
+				add_modifier = {
+					name = greek_ruler_negative_popularity_1
+					months = gbbf_duration_20_years
+				}
+			}
+		}
+		every_interest_group = {
+			limit = {
+				is_in_government = yes
+			}
+			add_modifier = {
+				name = failed_greek_je_ig_attraction
+				months = gbbf_duration_20_years
+				is_decaying = yes
+			}
+		}
+		every_interest_group = {
+			limit = {
+				is_marginal = no
+				is_in_government = no
+			}
+			add_modifier = {
+				name = failed_greek_je_opposition_ig_pol_str
+				months = gbbf_duration_20_years
+				is_decaying = yes
+			}
 		}
 	}
-
 }
-
 
 ## Rhomaios Revanchism Events ##
 grefm_megali_idea.010 = { # The Lands of the Rhomaios
@@ -362,7 +453,7 @@ grefm_megali_idea.010 = { # The Lands of the Rhomaios
 	flavor = grefm_megali_idea.010.f
 
 	event_image = {
-		video = "grefm_ion_intro"
+		video = "gbbf_ionian_islands"
 	}
 
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
@@ -517,13 +608,6 @@ grefm_megali_idea.012 = { # The Throne of the East
 		# triggered by je_grefm_scions_of_rhomania
 	}
 
-	cancellation_trigger = {
-		OR = {
-			c:BYZ ?= this
-			c:GRE_HEL ?= this
-		}
-	}
-
 	immediate = {
 		set_global_variable = grefm_megali_idea_complete
 	}
@@ -531,36 +615,10 @@ grefm_megali_idea.012 = { # The Throne of the East
 	option = { # Become the Roman Empire
 		name = grefm_megali_idea.012.a
 		default_option = yes
-		if = {
-			limit = {
-				country_has_primary_culture = cu:greek
-			}
-			custom_tooltip = grefm_hemp_possible_tt
-		}
-		if = {
-			limit = {
-				country_has_primary_culture = cu:rhomaios
-			}
-			custom_tooltip = grefm_byz_possible_tt
-		}
-		if = {
-			limit = {
-				country_has_primary_culture = cu:urum
-			}
-			add_primary_culture = cu:rhomaios
-			custom_tooltip = grefm_byz_possible_tt
-		}
-	}
-
-	option = { # Remain Greece
-		name = grefm_megali_idea.012.b
-		custom_tooltip = grefm_weaksauce
-		custom_tooltip = grefm_tzatzikisauce
 		add_modifier = {
-			name = greek_nationalism
-			days = long_modifier_time
+			name = modifier_grefm_greek_imperialism
+			months = gbbf_duration_10_years
 		}
-		set_variable = grefm_weaksauce
 	}
 
 }
@@ -576,7 +634,7 @@ grefm_megali_idea.020 = { # The Last of the Romans
 	flavor = grefm_megali_idea.020.f
 
 	event_image = {
-		video = "grefm_ion_intro"
+		video = "gbbf_ionian_islands"
 	}
 
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
@@ -616,6 +674,187 @@ grefm_megali_idea.020 = { # The Last of the Romans
 		}
 	}
 
+}
+
+## Imperial Triumph Events ##
+grefm_megali_idea.030 = { # 
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_megali_idea.030.t
+	desc = grefm_megali_idea.030.d
+	flavor = grefm_megali_idea.030.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by grefm_balkans_triumph_button
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_megali_idea.030.a
+		default_option = yes
+		add_modifier = { 
+			name = modifier_grefm_reclaimed_balkans
+		}
+		add_loyalists = { 
+			value = small_radicals
+		}
+		remove_variable = grefm_triumph_var
+	}
+}
+
+grefm_megali_idea.031 = { # 
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_megali_idea.031.t
+	desc = grefm_megali_idea.031.d
+	flavor = grefm_megali_idea.031.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by grefm_anatolia_triumph_button
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_megali_idea.031.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_reclaimed_anatolia
+		}
+		add_loyalists = {
+			value = small_radicals
+		}
+		remove_variable = grefm_triumph_var
+	}
+}
+
+grefm_megali_idea.032 = { # 
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_megali_idea.032.t
+	desc = grefm_megali_idea.032.d
+	flavor = grefm_megali_idea.032.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by grefm_levant_triumph_button
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_megali_idea.032.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_reclaimed_levant
+		}
+		add_loyalists = {
+			value = small_radicals
+		}
+		remove_variable = grefm_triumph_var
+	}
+}
+
+grefm_megali_idea.033 = { # 
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_megali_idea.033.t
+	desc = grefm_megali_idea.033.d
+	flavor = grefm_megali_idea.033.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by grefm_egypt_triumph_button
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_megali_idea.033.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_reclaimed_egypt
+		}
+		add_loyalists = {
+			value = small_radicals
+		}
+		remove_variable = grefm_triumph_var
+	}
+}
+
+grefm_megali_idea.034 = { # 
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_megali_idea.034.t
+	desc = grefm_megali_idea.034.d
+	flavor = grefm_megali_idea.034.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by grefm_italy_triumph_button
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_megali_idea.034.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_reclaimed_italy
+		}
+		add_loyalists = {
+			value = small_radicals
+		}
+		remove_variable = grefm_triumph_var
+	}
 }
 
 ## Hellene Annexation Events ##
@@ -922,6 +1161,44 @@ grefm_megali_idea.110 = { # trabzon annexation
 	}
 }
 
+grefm_megali_idea.111 = { # trabzon annexation
+	type = country_event
+	placement = scope:cappadocia_capital
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	
+	title = grefm_megali_idea.111.t
+	desc = grefm_megali_idea.111.d
+	flavor = grefm_megali_idea.111.f
+	
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+	}
+	
+	immediate = {
+		c:BYZ_CAP = {
+			save_scope_as = cappadocia_scope
+			capital = {
+				save_scope_as = cappadocia_capital
+			}
+		}
+	}
+	
+	option = {
+		name = grefm_megali_idea.111.a
+		default_option = yes
+		annex = c:BYZ_CAP
+	}
+}
+
 ## Urum Annexation Events ##
 grefm_megali_idea.120 = { # theodoro annexation
 	type = country_event
@@ -1119,7 +1396,7 @@ grefm_megali_idea.201 = { # A Question of Homelands
 			}
 			add_culture_standard_of_living_modifier = {
 				culture = cu:turkish
-				days = very_long_modifier_time
+				months = gbbf_duration_20_years
 				multiplier = -2
 			}
 			state_region = {
@@ -1144,7 +1421,7 @@ grefm_megali_idea.201 = { # A Question of Homelands
 		scope:turkish_homeland_state = {
 			add_culture_standard_of_living_modifier = {
 				culture = cu:turkish
-				days = very_long_modifier_time
+				months = gbbf_duration_20_years
 				multiplier = 2
 			}
 			add_loyalists_in_state = {
@@ -1173,7 +1450,7 @@ grefm_megali_idea.201 = { # A Question of Homelands
 			}
 			add_culture_standard_of_living_modifier = {
 				culture = cu:turkish
-				days = very_long_modifier_time
+				months = gbbf_duration_20_years
 				multiplier = -2
 			}
 			state_region = {

@@ -1,0 +1,358 @@
+﻿balkfm_purchase_rail_button = {
+	name = "balkfm_purchase_rail"
+	desc = "balkfm_purchase_rail_desc"
+	
+	visible = {
+		NOT = { has_variable = balkfm_bought_out_rail }
+	}
+	
+	possible = {
+		has_technology_researched = railways
+	}
+	
+	effect = {
+		trigger_event = {
+			id = balkfm_bulgaria.013 # Extortionate Pricing
+		}
+		custom_tooltip = balkfm_countercoup_reduce_1
+		set_variable = balkfm_bought_out_rail
+	}
+}
+
+balkfm_annex_rumelia_button = {
+	name = "balkfm_annex_rumelia"
+	desc = "balkfm_annex_rumelia_desc"
+	
+	visible = {
+		NOT = { has_variable = balkfm_annex_rumelia_taken }
+		OR = {
+			AND = {
+				is_subject_of = c:TUR
+				c:BUL_RUM ?= {
+					is_ai = yes
+					is_subject_of = c:TUR
+				}
+			}
+			AND = {
+				is_subject = no
+				c:BUL_RUM ?= {
+					is_ai = yes
+					is_subject = no
+				}
+			}
+		}
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = balkfm_friend_with_all_great_powers_tt
+			hidden_trigger = {
+				any_country = {
+					country_rank >= rank_value:great_power
+					NOT = { c:TUR ?= this }
+					NOT = { has_war_with = ROOT }
+					has_interest_marker_in_region = ROOT.capital.region
+					relations:root > 0
+				}
+			}
+		}
+		c:BUL_RUM ?= {
+			relations:root >= relations_threshold:amicable
+			owns_entire_state_region = STATE_NORTHERN_THRACE
+			top_overlord = {
+				THIS = root.top_overlord
+			}
+		}
+		trigger_if = {
+			limit = {
+				is_subject = yes
+			}
+			top_overlord = {
+				relations:root <= relations_threshold:neutral
+			}
+		}
+	}
+	
+	effect = {
+		trigger_event = {
+			id = balkfm_bulgaria.211 # The Tophane Agreement
+		}
+		custom_tooltip = balkfm_countercoup_reduce_1
+		set_variable = balkfm_annex_rumelia_taken
+	}
+	
+	ai_chance = {
+		value = 100
+	}
+	
+}
+
+balkfm_declare_tsardom_button = {
+	name = "balkfm_declare_tsardom"
+	desc = "balkfm_declare_tsardom_desc"
+	
+	visible = {
+		NOT = { has_variable = balkfm_tsardom_declared }
+		c:BUL_RUM ?= {
+			is_subject_of = root
+		}
+		exists = c:TUR
+		is_subject_of = c:TUR
+	}
+	
+	possible = {
+		NOT = {
+			has_journal_entry = je_balkfm_bul_battenburg_monarchy
+		}
+		owns_entire_state_region = STATE_BULGARIA
+		country_or_subject_owns_entire_state_region = STATE_NORTHERN_THRACE
+	}
+	
+	effect = {
+		trigger_event = {
+			id = balkfm_bulgaria.212 # An Independent Bulgaria
+		}
+		custom_tooltip = balkfm_declare_tsardom_tt
+		set_variable = balkfm_tsardom_declared
+	}
+}
+
+balkfm_declare_tsardom_alternate_button = {
+	name = "balkfm_declare_tsardom_alternate"
+	desc = "balkfm_declare_tsardom_alternate_desc"
+	
+	visible = {
+		NOT = { has_variable = balkfm_tsardom_declared }
+		c:BUL_RUM ?= {
+			is_subject_of = root
+		}
+		trigger_if = {
+			limit = {
+				exists = c:TUR
+			}
+			NOT = {
+				is_subject_of = c:TUR
+			}
+		}
+	}
+	
+	possible = {
+		NOT = {
+			has_journal_entry = je_balkfm_bul_battenburg_monarchy
+		}
+		owns_entire_state_region = STATE_BULGARIA
+		country_or_subject_owns_entire_state_region = STATE_NORTHERN_THRACE
+	}
+	
+	effect = {
+		trigger_event = {
+			id = balkfm_bulgaria.227 # A United Bulgaria
+		}
+		set_variable = balkfm_tsardom_declared
+	}
+}
+
+balkfm_bulgarian_union_button = {
+	name = "balkfm_bulgarian_union"
+	desc = "balkfm_bulgarian_union_desc"
+	
+	visible = {
+		NOT = { has_variable = balkfm_annex_rumelia_taken }
+		OR = {
+			AND = {
+				is_subject_of = c:TUR
+				c:BUL ?= {
+					is_ai = yes
+					is_subject_of = c:TUR
+				}
+			}
+			AND = {
+				is_subject = no
+				c:BUL ?= {
+					is_ai = yes
+					is_subject = no
+				}
+			}
+		}
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = balkfm_friend_with_all_great_powers_tt
+			hidden_trigger = {
+				any_country = {
+					country_rank >= rank_value:great_power
+					NOT = { c:TUR ?= this }
+					NOT = { has_war_with = ROOT }
+					has_interest_marker_in_region = ROOT.capital.region
+					relations:root > 0
+				}
+			}
+		}
+		c:BUL ?= {
+			relations:root >= relations_threshold:amicable
+			owns_entire_state_region = STATE_NORTHERN_THRACE
+			top_overlord = {
+				THIS = root.top_overlord
+			}
+		}
+		trigger_if = {
+			limit = {
+				is_subject = yes
+			}
+			top_overlord = {
+				relations:root <= relations_threshold:neutral
+			}
+		}
+	}
+	
+	effect = {
+		trigger_event = {
+			id = balkfm_bulgaria.309 # Union with Bulgaria
+		}
+		custom_tooltip = balkfm_bulgarian_union_tt
+		set_variable = balkfm_annex_rumelia_taken
+	}
+	
+	ai_chance = {
+		value = 100
+	}
+	
+}
+
+balkfm_revivalist_support_button = {
+	name = "balkfm_revivalist_support"
+	desc = "balkfm_revivalist_support_desc"
+	
+	visible = {
+		country_has_primary_culture = cu:bulgarian
+		NOT = { has_variable = balkfm_revivalism_requested_var }
+	}
+	
+	possible = {
+		OR = {
+			c:AUS ?= {
+				relations:root >= relations_threshold:amicable
+				is_adjacent_to_country = root
+			}
+			c:RUS ?= {
+				relations:root >= relations_threshold:amicable
+				is_adjacent_to_country = root
+			}
+		}
+		trigger_if = {
+			limit = {
+				is_subject = yes
+			}
+			top_overlord = {
+				relations:root <= relations_threshold:neutral
+			}
+		}
+	}
+	
+	effect = {
+		trigger_event = {
+			id = balkfm_bulgaria.208 # Great Powers Support Bulgaria
+		}
+		set_variable = balkfm_revivalism_requested_var
+	}
+	
+	ai_chance = {
+		value = 100
+	}
+	
+}
+
+balkfm_agitate_rumelia_button = {
+	name = "balkfm_agitate_rumelia"
+	desc = "balkfm_agitate_rumelia_desc"
+	
+	visible = {
+		NOR = {
+			owns_entire_state_region = STATE_NORTHERN_THRACE
+			exists = c:BUL_RUM
+		}
+		c:TUR ?= {
+			owns_entire_state_region = STATE_NORTHERN_THRACE
+		}
+	}
+	
+	possible = {
+		c:TUR = {
+			relations:root <= relations_threshold:neutral
+		}
+		NOT = {
+			has_modifier = modifier_balkfm_nationalist_agitation
+		}
+	}
+	
+	effect = {
+		trigger_event = {
+			id = balkfm_bulgaria.307 # Bulgarian Agitation in Rumelia
+		}
+		c:TUR = {
+			trigger_event = {
+				id = balkfm_bulgaria.307 # Bulgarian Agitation in Rumelia
+			}
+		}
+		add_modifier = {
+			name = modifier_balkfm_nationalist_agitation
+			months = gbbf_duration_2_plus_half_years
+		}
+	}
+	
+	ai_chance = {
+		value = 100
+	}
+	
+}
+
+balkfm_uplift_rumelia_button = {
+	name = "balkfm_uplift_rumelia"
+	desc = "balkfm_uplift_rumelia_desc"
+	
+	visible = {
+		c:TUR ?= {
+			owns_entire_state_region = STATE_NORTHERN_THRACE
+		}
+		NOT = {
+			exists = c:BUL_RUM
+		}
+	}
+	
+	possible = {
+		c:TUR = {
+			relations:root <= relations_threshold:poor
+		}
+		NOR = {
+			has_modifier = modifier_balkfm_nationalist_agitation
+			has_truce_with = c:TUR
+			has_war_with = c:TUR # yeah, guess who got punk'd during testing
+		}
+		s:STATE_NORTHERN_THRACE = {
+			any_scope_state = {
+				radical_fraction = {
+					value >= 0.30
+					culture = cu:bulgarian
+				}
+			}
+		}
+	}
+	
+	effect = {
+		c:TUR = {
+			trigger_event = {
+				id = balkfm_bulgaria.308 # Eastern Rumelia Rebels!
+			}
+		}
+		add_modifier = {
+			name = modifier_balkfm_nationalist_agitation
+			months = gbbf_duration_5_years
+		}
+	}
+	
+	ai_chance = {
+		value = 100
+	}
+	
+}

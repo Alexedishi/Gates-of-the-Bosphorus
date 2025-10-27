@@ -1,0 +1,82 @@
+﻿turkfm_loyal_subject = {
+	groups = {
+		general
+	}
+
+	requires_approval = no
+	is_hostile = no
+	should_notify_third_parties = yes
+
+	show_in_lens = no
+
+	potential = { # Only created through scripted button
+		always = no
+	}
+
+	selectable = {
+		always = no
+	}
+
+	possible = {}
+
+	pact = {
+		cost = 75 # Only possible for subjects, so cost should be limited
+
+		is_two_sided_pact = no
+		show_in_outliner = yes
+
+		relations_progress_per_day = 1 # Shouldn't be particularly impactful on its own
+		relations_improvement_max = 25
+
+		first_modifier = {
+			country_pact_leverage_generation_add = 100
+		}
+
+		requirement_to_maintain = {
+			trigger = {
+				custom_tooltip = {
+					text = turkfm_balkfm_tensions_ongoing
+					scope:target_country = {
+						has_journal_entry = je_eqfm_balkan_situation_main
+					}
+				}
+			}
+		}
+
+		requirement_to_maintain = {
+			trigger = {
+				custom_tooltip = {
+					text = DIPLO_ACTION_RELATIONS_CORDIAL_OR_GREATER_NOT
+					scope:target_country.relations:root < relations_threshold:cordial
+				}
+			}
+
+			show_about_to_break_warning = {
+				scope:target_country.relations:root <= 23# this is: cordial + 3
+				scope:target_country.relations_change_rate:root < 0
+			}
+		}
+
+		requirement_to_maintain = {
+			trigger = {
+				custom_tooltip = {
+					text = "gbbf_diplomatic_pact_requirement_subject_relation"
+					is_subject_of = scope:target_country
+				}
+			}
+		}
+
+	}
+
+	ai = {
+		accept_score = {
+			value = 0
+		}
+		propose_score = {
+			value = 0
+		}
+		owe_obligation_chance = {
+			value = 0
+		}
+	}
+}

@@ -45,8 +45,8 @@ GBBF_CAP = { # Cappadocia
 
 GBBF_SIL = { # The Eyalet of Silistra
 	flag_definition = {
-		coa = TUR_SIL
-		subject_canton = TUR_SIL			
+		coa = BUL_SIL
+		subject_canton = BUL_SIL
 		priority = 1
 	}
 }
@@ -70,9 +70,9 @@ GBBF_TRB = { # Trabzon
 ###################
 # GREFM COUNTRIES #
 ###################
-
 ## VANILLA TAGS ##
-BYZ = { # Byzantium overwritting vanilla entry
+BYZ = {
+	# Dummy flag entry
 	flag_definition = {
 		coa = BYZ
 		allow_overlord_canton = yes
@@ -80,13 +80,173 @@ BYZ = { # Byzantium overwritting vanilla entry
 		overlord_canton_scale = { @canton_scale_cross_x @canton_scale_cross_y }
 		priority = 0
 	}
+
+	# Graia Flags
+	flag_definition = {
+		coa = GRA_MEG
+		subject_canton = GRA_MEG
+		priority = 1
+		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				country_has_primary_culture = cu:greek
+				country_has_primary_culture = cu:rhomaios
+				NOT = {
+					country_has_primary_culture = cu:australian
+				}
+			}
+		}
+	}
+	flag_definition = {
+		coa = GRA_MEG_athens
+		subject_canton = GRA_MEG_athens
+		priority = 2
+		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				country_has_primary_culture = cu:greek
+				country_has_primary_culture = cu:rhomaios
+				NOT = {
+					country_has_primary_culture = cu:australian
+				}
+				capital ?= {
+					state_region = s:STATE_ATTICA
+				}
+			}
+		}
+	}
+	flag_definition = {
+		coa = GRA_MEG_sarakatsani
+		subject_canton = GRA_MEG_sarakatsani
+		priority = 2
+		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				country_has_primary_culture = cu:greek
+				country_has_primary_culture = cu:rhomaios
+				NOT = {
+					country_has_primary_culture = cu:australian
+				}
+				capital ?= {
+					state_region = s:STATE_ALBANIA
+				}
+			}
+		}
+	}
+	flag_definition = {
+		coa = GRA_MEG_sparta
+		subject_canton = GRA_MEG_sparta
+		priority = 2
+		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				country_has_primary_culture = cu:greek
+				country_has_primary_culture = cu:rhomaios
+				NOT = {
+					country_has_primary_culture = cu:australian
+				}
+				capital ?= {
+					state_region = s:STATE_PELOPONNESE
+				}
+			}
+		}
+	}
+	flag_definition = {
+		coa = GRA_MEG_byzantion
+		subject_canton = GRA_MEG_byzantion
+		priority = 2
+		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				country_has_primary_culture = cu:greek
+				country_has_primary_culture = cu:rhomaios
+				NOT = {
+					country_has_primary_culture = cu:australian
+				}
+				capital ?= {
+					state_region = s:STATE_EASTERN_THRACE
+				}
+			}
+		}
+	}
+	flag_definition = {
+		coa = GRA_MEG_pontus
+		subject_canton = GRA_MEG_pontus
+		priority = 2
+		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				country_has_primary_culture = cu:greek
+				country_has_primary_culture = cu:rhomaios
+				NOT = {
+					country_has_primary_culture = cu:australian
+				}
+				capital ?= {
+					state_region = s:STATE_TRABZON
+				}
+			}
+		}
+	}
+
+	# Hellas Flags
+	flag_definition = {
+		coa = GRE_HEL
+		subject_canton = GRE_HEL
+		priority = 1
+		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				country_has_primary_culture = cu:greek
+				NOT = {
+					country_has_primary_culture = cu:rhomaios
+					country_has_primary_culture = cu:australian
+				}
+				capital ?= {
+					state_region = s:STATE_TRABZON
+				}
+			}
+		}
+	}
+
+	# Byzantium Flags
+	flag_definition = {
+		coa = BYZ_byzantine_base
+		allow_overlord_canton = yes
+		subject_canton = BYZ_byzantine_base
+		overlord_canton_scale = { @canton_scale_cross_x @canton_scale_cross_y }
+		priority = 1
+		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				country_has_primary_culture = cu:rhomaios
+				NOT = {
+					country_has_primary_culture = cu:greek
+					country_has_primary_culture = cu:australian
+				}
+			}
+			OR = {
+				coa_def_monarchy_flag_trigger = yes
+				coa_def_autocracy_flag_trigger = yes
+				coa_def_military_junta_flag_trigger = yes
+				coa_def_fascist_flag_trigger = yes
+			}
+		}
+	}
 	flag_definition = {
 		coa = BYZ_byzantine_empire
 		allow_overlord_canton = yes
 		subject_canton = BYZ_byzantine_empire
 		overlord_canton_scale = { @canton_scale_cross_x @canton_scale_cross_y }
-		priority = 1
+		priority = 2
 		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				country_has_primary_culture = cu:rhomaios
+				NOT = {
+					country_has_primary_culture = cu:greek
+					country_has_primary_culture = cu:australian
+				}
+			}
 			OR = {
 				coa_def_monarchy_flag_trigger = yes
 				coa_def_autocracy_flag_trigger = yes
@@ -99,8 +259,16 @@ BYZ = { # Byzantium overwritting vanilla entry
 		coa = BYZ_byzantine_republic
 		allow_overlord_canton = yes
 		subject_canton = BYZ_byzantine_republic
-		priority = 1
+		priority = 2
 		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				country_has_primary_culture = cu:rhomaios
+				NOT = {
+					country_has_primary_culture = cu:greek
+					country_has_primary_culture = cu:australian
+				}
+			}
 			coa_def_republic_flag_trigger = yes
 		}
 	}
@@ -108,8 +276,16 @@ BYZ = { # Byzantium overwritting vanilla entry
 		coa = BYZ_patriarchal_synod
 		allow_overlord_canton = yes
 		subject_canton = BYZ_patriarchal_synod
-		priority = 1
+		priority = 2
 		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				country_has_primary_culture = cu:rhomaios
+				NOT = {
+					country_has_primary_culture = cu:greek
+					country_has_primary_culture = cu:australian
+				}
+			}
 			coa_def_theocracy_flag_trigger = yes
 		}
 	}
@@ -117,8 +293,16 @@ BYZ = { # Byzantium overwritting vanilla entry
 		coa = ODXY_ecumene
 		allow_overlord_canton = yes
 		subject_canton = ODXY_ecumene
-		priority = 2
+		priority = 3
 		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				country_has_primary_culture = cu:rhomaios
+				NOT = {
+					country_has_primary_culture = cu:greek
+					country_has_primary_culture = cu:australian
+				}
+			}
 			AND = {
 				coa_def_theocracy_flag_trigger = yes
 				coa_def_autocracy_flag_trigger = yes
@@ -131,10 +315,71 @@ BYZ = { # Byzantium overwritting vanilla entry
 		subject_canton = BYZ_byzantine_peoples_republic
 		priority = 10000 # going right past DEFAULT lol wtf pdx
 		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				country_has_primary_culture = cu:rhomaios
+				NOT = {
+					country_has_primary_culture = cu:greek
+					country_has_primary_culture = cu:australian
+				}
+			}
 			OR = {
 				coa_def_communist_flag_trigger = yes
 				coa_def_anarchy_flag_trigger = yes
 			}
+		}
+	}
+
+	# Byzantine Emu Empire
+	flag_definition = {
+		coa = BYZ_EMU
+		allow_overlord_canton = yes
+		subject_canton = BYZ_EMU
+		overlord_canton_scale = { @canton_scale_cross_x @canton_scale_cross_y }
+		priority = 1
+		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				country_has_primary_culture = cu:australian
+			}
+			OR = {
+				coa_def_monarchy_flag_trigger = yes
+				coa_def_autocracy_flag_trigger = yes
+				coa_def_military_junta_flag_trigger = yes
+				coa_def_fascist_flag_trigger = yes
+			}
+		}
+	}
+	flag_definition = {
+		coa = BYZ_EMU_monarchy
+		allow_overlord_canton = yes
+		subject_canton = BYZ_EMU_monarchy
+		overlord_canton_scale = { @canton_scale_cross_x @canton_scale_cross_y }
+		priority = 2
+		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				country_has_primary_culture = cu:australian
+			}
+			OR = {
+				coa_def_monarchy_flag_trigger = yes
+				coa_def_autocracy_flag_trigger = yes
+				coa_def_military_junta_flag_trigger = yes
+				coa_def_fascist_flag_trigger = yes
+			}
+		}
+	}
+	flag_definition = {
+		coa = BYZ_EMU_republic
+		allow_overlord_canton = yes
+		subject_canton = BYZ_EMU_republic
+		priority = 2
+		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				country_has_primary_culture = cu:australian
+			}
+			coa_def_republic_flag_trigger = yes
 		}
 	}
 }
@@ -229,9 +474,7 @@ ION = { # Ionian Islands
 	}
 }
 
-
 ## GREEK VARIANT TAGS ##
-
 GRE_ATH = { # Athens
 	flag_definition = {
 		coa = GRE_ATH
@@ -243,13 +486,6 @@ GRE_EPI = { # Epirus
 	flag_definition = {
 		coa = GRE_EPI
 		subject_canton = GRE_EPI
-	}
-}
-
-GRE_HEL = { # Hellenic Empire
-	flag_definition = {
-		coa = GRE_HEL
-		subject_canton = GRE_HEL
 	}
 }
 
@@ -295,20 +531,11 @@ GRE_THR = { # Thrace
 	}
 }
 
-
 ## RHOMAIOS VARIANT TAGS ##
-
 BYZ_CAP = { # Cappadocia
 	flag_definition = {
 		coa = BYZ_CAP
 		subject_canton = BYZ_CAP
-	}
-}
-
-BYZ_EMU = { # Byzantine Emu Empire
-	flag_definition = {
-		coa = BYZ_EMU
-		subject_canton = BYZ_EMU
 	}
 }
 
@@ -320,75 +547,6 @@ BYZ_TRB = { # Trabzon
 }
 
 ## OTHER VARIANT TAGS ##
-
-GRA_MEG = { # Graia
-	flag_definition = {
-		coa = GRA_MEG
-		subject_canton = GRA_MEG
-		priority = 1
-	}
-	flag_definition = {
-		coa = GRA_MEG_athens
-		subject_canton = GRA_MEG_athens
-		priority = 2
-		trigger = {
-			scope:actor ?= {
-				capital ?= {
-					state_region = s:STATE_ATTICA
-				}
-			}
-		}
-	}
-	flag_definition = {
-		coa = GRA_MEG_sarakatsani
-		subject_canton = GRA_MEG_sarakatsani
-		priority = 2
-		trigger = {
-			scope:actor ?= {
-				capital ?= {
-					state_region = s:STATE_ALBANIA
-				}
-			}
-		}
-	}
-	flag_definition = {
-		coa = GRA_MEG_sparta
-		subject_canton = GRA_MEG_sparta
-		priority = 2
-		trigger = {
-			scope:actor ?= {
-				capital ?= {
-					state_region = s:STATE_PELOPONNESE
-				}
-			}
-		}
-	}
-	flag_definition = {
-		coa = GRA_MEG_byzantion
-		subject_canton = GRA_MEG_byzantion
-		priority = 2
-		trigger = {
-			scope:actor ?= {
-				capital ?= {
-					state_region = s:STATE_EASTERN_THRACE
-				}
-			}
-		}
-	}
-	flag_definition = {
-		coa = GRA_MEG_pontus
-		subject_canton = GRA_MEG_pontus
-		priority = 2
-		trigger = {
-			scope:actor ?= {
-				capital ?= {
-					state_region = s:STATE_TRABZON
-				}
-			}
-		}
-	}
-}
-
 GRA_THE = { # Theodoro
 	flag_definition = {
 		coa = GRA_THE
@@ -400,204 +558,6 @@ GRA_THE = { # Theodoro
 ####################
 # BALKFM COUNTRIES #
 ####################
-
-## VANILLA TAGS ##
-
-EGY = { # Egypt
-	flag_definition = {
-		coa = EGY
-		subject_canton = EGY
-		allow_overlord_canton = yes	
-		coa_with_overlord_canton = EGY_subject
-		priority = 1
-	}
-	flag_definition = {
-		coa = EGY_absolute_monarchy
-		subject_canton = EGY_absolute_monarchy
-		allow_overlord_canton = yes	
-		coa_with_overlord_canton = EGY_subject
-		priority = 20
-		trigger = { 
-			coa_def_absolute_monarchy_flag_trigger = yes
-		}
-	}	
-	flag_definition = {
-		coa = EGY_republic
-		subject_canton = EGY_republic
-		priority = 10
-		trigger = { 
-			coa_def_republic_flag_trigger = yes
-		}
-	}		
-	flag_definition = {
-		coa = EGY_dictatorship
-		subject_canton = EGY_dictatorship
-		priority = 20
-		trigger = {
-			coa_def_dictatorship_flag_trigger = yes
-		}
-	}	
-	flag_definition = {
-		coa = EGY_subject_GBR
-		allow_overlord_canton = yes		
-		priority = 50
-		trigger = { 
-			coa_def_british_ensign_trigger = yes
-		}
-	}		
-}
-
-TRI = { # Tripoli
-	flag_definition = {
-		coa = TRI
-		subject_canton = TRI
-		allow_overlord_canton = yes
-		overlord_canton_scale = { 0.428 0.428 }				
-		priority = 1
-	}
-	flag_definition = {
-		coa = TRI_TUR
-		subject_canton = TRI_TUR
-		priority = 50
-		trigger = { 
-			coa_def_turkish_ensign_trigger = yes
-		}
-	}		
-}
-
-TUN = { # Tunis
-	flag_definition = {
-		coa = TUN
-		allow_overlord_canton = yes			
-		subject_canton = TUN
-		overlord_canton_scale = { 0.402 0.402 }			
-		priority = 1
-	}
-}
-
-TUR = { # Turkey
-	flag_definition = {
-		coa = TUR
-		subject_canton = TUR
-		allow_overlord_canton = yes		
-		coa_with_overlord_canton = TUR_subject			
-		priority = 1
-	}	
-	flag_definition = {
-		coa = TUR_monarchy
-		subject_canton = TUR_monarchy
-		allow_overlord_canton = yes		
-		coa_with_overlord_canton = TUR_subject			
-		priority = 5
-		trigger = { 
-			coa_def_monarchy_flag_trigger = yes
-		}
-	}	
-	flag_definition = {
-		coa = TUR	
-		subject_canton = TUR
-		allow_overlord_canton = yes		
-		coa_with_overlord_canton = TUR_subject			
-		priority = 20
-		trigger = { 
-			coa_def_absolute_monarchy_flag_trigger = yes
-		}
-	}
-	flag_definition = {
-		coa = TUR_republic
-		allow_overlord_canton = yes		
-		coa_with_overlord_canton = TUR_republic_subject			
-		priority = 10
-		trigger = { 
-			coa_def_republic_flag_trigger = yes
-		}
-	}	
-	flag_definition = {
-		coa = TUR_dictatorship
-		subject_canton = TUR_dictatorship
-		allow_overlord_canton = yes		
-		coa_with_overlord_canton = TUR_republic_subject			
-		priority = 20
-		trigger = {
-			coa_def_dictatorship_flag_trigger = yes
-		}
-	}	
-	flag_definition = {
-		coa = TUR_theocracy
-		subject_canton = TUR_theocracy
-		priority = 20
-		trigger = { 
-			coa_def_theocracy_flag_trigger = yes
-		}
-	}	
-	flag_definition = {
-		coa = TUR_subject_GBR
-		allow_overlord_canton = yes		
-		priority = 50
-		trigger = { 
-			coa_def_british_ensign_trigger = yes
-		}
-	}	
-	flag_definition = {
-		coa = TUR_subject	
-		allow_overlord_canton = yes	
-		overlord_canton_offset = { 0.01 0.015 }
-		overlord_canton_scale = { 0.48 0.47 }			
-		priority = 50
-		trigger = { 
-			coa_def_french_ensign_trigger = yes
-		}
-	}	
-	flag_definition = {
-		coa = TUR_subject_GBR
-		subject_canton = TUR
-		allow_overlord_canton = yes			
-		priority = 50
-		trigger = { 
-			coa_def_spanish_ensign_trigger = yes
-		}
-	}	
-}
-
-
-## TURKISH VARIANT TAGS ##
-
-TUR_BOS = { # Hersek
-	flag_definition = {
-		coa = TUR_BOS
-		allow_overlord_canton = no
-		subject_canton = TUR_BOS
-	}
-}
-
-TUR_SIL = { # The Eyalet of Silistra, used for game-start Bulgaria content
-	flag_definition = {
-		coa = TUR_SIL
-		subject_canton = TUR_SIL
-		allow_overlord_canton = no	
-		coa_with_overlord_canton = TUR_SIL		
-		priority = 1
-	}
-}
-
-
-## LIBYA VARIANT TAGS ##
-
-LIB_KUF = { # Kufra
-	flag_definition = {
-		coa = LIB_KUF
-		subject_canton = LIB_KUF
-		allow_overlord_canton = no	
-		coa_with_overlord_canton = LIB_KUF		
-		priority = 1
-	}
-}
-
-
-####################
-# BALKFM COUNTRIES #
-####################
-
 ## YUGOSLAV TAGS ##
 YUG = { # Yugoslavia
 	flag_definition = {
@@ -614,7 +574,6 @@ YUG = { # Yugoslavia
 		}
 	}		
 }
-
 
 ## MONTENEGRO TAGS ##
 MON = { # Montenegro
@@ -679,7 +638,6 @@ MON_KOT = { # Kotor
 	}
 }
 
-
 ## SERBIA TAGS ##
 SER = { # Serbia
 	flag_definition = {
@@ -741,7 +699,6 @@ SER_VOJ = { # Vojvodina
 	}
 }
 
-
 ## BULGARIA TAGS ##
 BUL = { # Bulgaria
 	flag_definition = {
@@ -750,6 +707,18 @@ BUL = { # Bulgaria
 		allow_overlord_canton = yes		
 		coa_with_overlord_canton = BUL_subject			
 		priority = 1
+	}
+	flag_definition = {
+		coa = BUL_SIL
+		allow_overlord_canton = no
+		subject_canton = BUL_SIL
+		priority = 10000
+		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				is_subject_type = subject_type_turkfm_eyalet
+			}
+		}
 	}
 }
 
@@ -866,7 +835,6 @@ WAL = { # Wallachia
 	}	
 }	
 
-
 ## BOSNIAN TAGS ##
 BOS = { # Bosnia
 	flag_definition = {
@@ -876,8 +844,19 @@ BOS = { # Bosnia
 		coa_with_overlord_canton = BOS_subject
 		priority = 1
 	}
+	flag_definition = {
+		coa = BOS_HER
+		allow_overlord_canton = no
+		subject_canton = BOS_HER
+		priority = 10000
+		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				is_subject_type = subject_type_turkfm_eyalet
+			}
+		}
+	}
 }
-
 
 ## ALBANIAN TAGS ##
 ALB = { # Albania
@@ -888,13 +867,24 @@ ALB = { # Albania
 	}
 	flag_definition = {
 		coa = ALB_communist
+		subject_canton = ALB_communist
 		priority = 1500
 		trigger = { 
 			coa_def_communist_flag_trigger = yes
 		}
 	}
+	flag_definition = {
+		coa = ALB_YAN
+		subject_canton = ALB_YAN
+		priority = 10000
+		trigger = {
+			exists = scope:actor
+			scope:actor ?= {
+				is_subject_type = subject_type_turkfm_eyalet
+			}
+		}
+	}
 }
-
 
 ## CROATIAN TAGS ##
 CRO = { # Croatia
@@ -965,22 +955,131 @@ SLO_IST = { # Istria
 }
 
 
-###################
-# EOCFM COUNTRIES #
-###################
+####################
+# TURKFM COUNTRIES #
+####################
+## VANILLA TAGS ##
+# EGY
 
-EOC_ATH = { # Mount Athos
+TRI = { # Tripoli
 	flag_definition = {
-		coa = EOC_ATH
-		allow_overlord_canton = no
-		subject_canton = EOC_ATH
+		coa = TRI
+		subject_canton = TRI
+		allow_overlord_canton = yes
+		overlord_canton_scale = { 0.428 0.428 }
+		priority = 1
+	}
+	flag_definition = {
+		coa = TRI_TUR
+		subject_canton = TRI_TUR
+		priority = 50
+		trigger = {
+			coa_def_turkish_ensign_trigger = yes
+		}
 	}
 }
 
-EOC_ODX = { # Orthodox Commonwealth
+TUN = { # Tunis
 	flag_definition = {
-		coa = EOC_ODX
+		coa = TUN
+		allow_overlord_canton = yes
+		subject_canton = TUN
+		overlord_canton_scale = { 0.402 0.402 }
+		priority = 1
+	}
+}
+
+TUR = { # Turkey
+	flag_definition = {
+		coa = TUR
+		subject_canton = TUR
+		allow_overlord_canton = yes
+		coa_with_overlord_canton = TUR_subject
+		priority = 1
+	}
+	flag_definition = {
+		coa = TUR_monarchy
+		subject_canton = TUR_monarchy
+		allow_overlord_canton = yes
+		coa_with_overlord_canton = TUR_subject
+		priority = 5
+		trigger = {
+			coa_def_monarchy_flag_trigger = yes
+		}
+	}
+	flag_definition = {
+		coa = TUR
+		subject_canton = TUR
+		allow_overlord_canton = yes
+		coa_with_overlord_canton = TUR_subject
+		priority = 20
+		trigger = {
+			coa_def_absolute_monarchy_flag_trigger = yes
+		}
+	}
+	flag_definition = {
+		coa = TUR_republic
+		allow_overlord_canton = yes
+		coa_with_overlord_canton = TUR_republic_subject
+		priority = 10
+		trigger = {
+			coa_def_republic_flag_trigger = yes
+		}
+	}
+	flag_definition = {
+		coa = TUR_dictatorship
+		subject_canton = TUR_dictatorship
+		allow_overlord_canton = yes
+		coa_with_overlord_canton = TUR_republic_subject
+		priority = 20
+		trigger = {
+			coa_def_dictatorship_flag_trigger = yes
+		}
+	}
+	flag_definition = {
+		coa = TUR_theocracy
+		subject_canton = TUR_theocracy
+		priority = 20
+		trigger = {
+			coa_def_theocracy_flag_trigger = yes
+		}
+	}
+	flag_definition = {
+		coa = TUR_subject_GBR
+		allow_overlord_canton = yes
+		priority = 50
+		trigger = {
+			coa_def_british_ensign_trigger = yes
+		}
+	}
+	flag_definition = {
+		coa = TUR_subject
+		allow_overlord_canton = yes
+		overlord_canton_offset = { 0.01 0.015 }
+		overlord_canton_scale = { 0.48 0.47 }
+		priority = 50
+		trigger = {
+			coa_def_french_ensign_trigger = yes
+		}
+	}
+	flag_definition = {
+		coa = TUR_subject_GBR
+		subject_canton = TUR
+		allow_overlord_canton = yes
+		priority = 50
+		trigger = {
+			coa_def_spanish_ensign_trigger = yes
+		}
+	}
+}
+
+## LIBYA VARIANT TAGS ##
+TRI_KUF = { # Kufra
+	flag_definition = {
+		coa = TRI_KUF
+		subject_canton = TRI_KUF
 		allow_overlord_canton = no
-		subject_canton = EOC_ODX
+		coa_with_overlord_canton = TRI_KUF
+		priority = 1
 	}
 }

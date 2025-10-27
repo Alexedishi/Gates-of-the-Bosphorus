@@ -1,13 +1,15 @@
-﻿## HELLENIC EMPIRE RESTORATION EVENTS ##
+﻿##############################################
+## GREEK FLAVOR MODULE: THE HELLENIC EMPIRE ##
+##############################################
 
-# For Greek content, see the "grefm" module
-# For Turkish content, see the "turkfm" module
+# For Greek & Byzantium content, see the "grefm" module
 # For Balkan Nations content, see the "balkfm" module
-# For Orthodox Church content, see the "eocfm" module
+# For Ottoman & Turkish content, see the "turkfm" module
+# For Eastern Question & Expeditions content, see the "eqfm" module
 
 ####################
 
-namespace = grefm_greek_empire
+namespace = grefm_hellenic_empire
 
 ####################
 
@@ -21,43 +23,43 @@ namespace = grefm_greek_empire
 #	001 - The Vergina Sun Rises
 #	002 - The Revenge of the Greeks
 #	003 - The Shores of Phoenicia
-#	004 - The Lands of Arianōn
-#	005 - The Graveyard of Empires
-#	006 - The Empire of the Greeks
-#	007 - The Shores of the Hospitable Sea
-#	008 - The Lands of Magna Graecia
-#	009 - The Foundings of Alexander
 
-#010-019 - General Hellenic Empire Events
-#	010 - ##
+
+#010-019 - Hellenic Empire Expansion Events
+#	010 - The Lands of Arianōn
+#	011 - The Graveyard of Empires
+#	012 - The Empire of the Greeks
+#	013 - The Shores of the Hospitable Sea
+#	014 - The Lands of Magna Graecia
+#	015 - The Foundings of Alexander
 
 ####################
 
 ## The Revenge of the Greeks Events ##
-grefm_greek_empire.001 = { # The Vergina Sun Rises
+grefm_hellenic_empire.001 = { # The New Greece Rises
 	type = country_event
 	placement = ROOT
-	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
 
-	title = grefm_greek_empire.001.t
-	desc = grefm_greek_empire.001.d
-	flavor = grefm_greek_empire.001.f
+	title = grefm_hellenic_empire.001.t
+	desc = grefm_hellenic_empire.001.d
+	flavor = grefm_hellenic_empire.001.f
 
 	gui_window = event_window_widescreen_classic
 
 	event_image = {
-		texture = "gfx/event_pictures/gbbf_backgrounds/votp_monarch_holding_court.dds"
+		texture = "gfx/interface/illustrations/event_backgrounds/votp_monarch_holding_court.dds"
 	}
 
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	on_opened_soundeffect = "event:/gffb_thourios"
+	on_opened_soundeffect = "event:/epitaph_of_seikilos"
 
 	duration = 3
 
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by je_grefm_purple_pheonix
+		# triggered by je_grefm_byzantine_restoration
 	}
 
 	immediate = {
@@ -77,58 +79,16 @@ grefm_greek_empire.001 = { # The Vergina Sun Rises
 	}
 
 	option = {
-		name = grefm_greek_empire.001.a
+		name = grefm_hellenic_empire.001.a
 		default_option = yes
-		trigger_event = {
-			id = grefm_greek_empire.002 # The Revenge of the Greeks
-			days = 30
-		}
-		add_modifier = {
-			name = modifier_grefm_rebirth
-			days = very_long_modifier_time
-		}
 		if = {
 			limit = {
-				NOT = {
-					country_has_primary_culture = cu:greek
+				capital = {
+					state_region != s:STATE_EASTERN_THRACE
 				}
 			}
-			add_primary_culture = cu:greek
+			set_capital = STATE_EASTERN_THRACE
 		}
-	}
-
-}
-
-grefm_greek_empire.002 = { # The Revenge of the Greeks
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
-
-	title = grefm_greek_empire.002.t
-	desc = grefm_greek_empire.002.d
-	flavor = grefm_greek_empire.002.f
-
-	event_image = {
-		video = "byzfm_georgios_averof"
-	}
-
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-		# triggered by grefm_greek_empire.001
-	}
-
-	immediate = {
-	}
-
-	option = {
-		name = grefm_greek_empire.002.a
-		default_option = yes
-		set_capital = STATE_EASTERN_THRACE
 		every_state_region = {
 			limit = {
 				OR = {
@@ -142,21 +102,33 @@ grefm_greek_empire.002 = { # The Revenge of the Greeks
 			}
 			add_claim = ROOT
 		}
+		grefm_add_levant_claims_effect = yes
+	}
+
+	option = {
+		custom_tooltip = {
+			text = je_grefm_byzantine_restoration_rejected_effect
+			set_variable = grefm_byzantine_restoration_rejected
+		}
+		add_modifier = {
+			name = modifier_grefm_rebirth
+			months = gbbf_duration_20_years
+		}
 	}
 
 }
 
-grefm_greek_empire.003 = { # The Shores of Phoenicia
+grefm_hellenic_empire.002 = { # The Eternal City
 	type = country_event
 	placement = root
-	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
 
-	title = grefm_greek_empire.003.t
-	desc = grefm_greek_empire.003.d
-	flavor = grefm_greek_empire.003.f
+	title = grefm_hellenic_empire.002.t
+	desc = grefm_hellenic_empire.002.d
+	flavor = grefm_hellenic_empire.002.f
 
 	event_image = {
-		video = "unspecific_military_parade"
+		video = "gbbf_georgios_averof"
 	}
 
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
@@ -165,55 +137,105 @@ grefm_greek_empire.003 = { # The Shores of Phoenicia
 
 	dlc = dlc_grefm
 
-	trigger = { # triggered by grefm_greek_empire.003
+	trigger = {
+		OR = {
+			has_modifier = modifier_grefm_reclaimed_balkans
+			has_modifier = modifier_grefm_reclaimed_anatolia
+			has_modifier = modifier_grefm_reclaimed_levant
+			has_modifier = modifier_grefm_reclaimed_egypt
+		}
+		NOR = {
+			has_variable = grefm_embraced_roman_reconquest
+			has_variable = grefm_rejected_roman_reconquest
+		}
 	}
 
 	immediate = {
-		capital = {
-			save_scope_as = byzantium_capital_state
+		random_country = {
+			limit = {
+				capital = {
+					region = sr:region_italy
+				}
+			}
+			save_scope_as = italy_incident_scope
 		}
 	}
 
-	option = { # reclaim the east
-		name = grefm_greek_empire.003.a
+	option = {
+		name = grefm_hellenic_empire.002.a
 		default_option = yes
-		add_journal_entry = {
-			type = je_grefm_shores_of_phoenicia
+		create_incident = {
+			country = scope:italy_incident_scope
+			value = 10
 		}
-		grefm_add_levant_claims_effect = yes
-	}
-
-	option = { # nah bro, shits for the birds
-		name = grefm_greek_empire.003.b
-		change_infamy = -20
-		scope:byzantium_capital_state = {
-			add_modifier = {
-				name = modifier_grefm_capital_assimiliation_boost
-				days = normal_modifier_time
+		every_state_region = {
+			limit = {
+				OR = {
+					region = sr:region_italy
+				}
+				any_scope_state = {
+					NOT = { owner = ROOT }
+					NOT = { has_claim_by = ROOT }
+				}
 			}
-			add_modifier = {
-				name = modifier_grefm_heartland_reclaimed
-				days = normal_modifier_time
-			}
+			add_claim = ROOT
 		}
 		custom_tooltip = {
-			text = grefm_weaksauce
-			hidden_effect = {
-				set_variable = grefm_weaksauce
-			}
+			text = grefm_embraced_roman_reconquest
+			set_variable = grefm_embraced_roman_reconquest
+		}
+	}
+
+	option = {
+		name = grefm_hellenic_empire.002.b
+		custom_tooltip = {
+			text = grefm_rejected_roman_reconquest
+			set_variable = grefm_rejected_roman_reconquest
 		}
 	}
 
 }
 
-grefm_greek_empire.004 = { # The Lands of Arianōn
+grefm_hellenic_empire.009 = { # The Greek Realm
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_hellenic_empire.009.t
+	desc = grefm_hellenic_empire.009.d
+	flavor = grefm_hellenic_empire.009.f
+
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by je_grefm_byzantine_restoration
+	}
+
+	immediate = {
+
+	}
+
+	option = {
+		name = grefm_hellenic_empire.009.a
+		default_option = yes
+	}
+
+}
+
+## Hellenic Empire Expansion Events ##
+grefm_hellenic_empire.010 = { # The Lands of Arianōn
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
 
-	title = grefm_greek_empire.004.t
-	desc = grefm_greek_empire.004.d
-	flavor = grefm_greek_empire.004.f
+	title = grefm_hellenic_empire.010.t
+	desc = grefm_hellenic_empire.010.d
+	flavor = grefm_hellenic_empire.010.f
 
 	event_image = {
 		video = "ep1_persian_court"
@@ -232,11 +254,8 @@ grefm_greek_empire.004 = { # The Lands of Arianōn
 	}
 
 	option = { # Get My Horse
-		name = grefm_greek_empire.004.a
+		name = grefm_hellenic_empire.010.a
 		default_option = yes
-		add_journal_entry = {
-			type = je_grefm_lands_of_arianon
-		}
 		every_state_region = {
 			limit = {
 				OR = {
@@ -253,14 +272,14 @@ grefm_greek_empire.004 = { # The Lands of Arianōn
 
 }
 
-grefm_greek_empire.005 = { # The Graveyard of Empires
+grefm_hellenic_empire.011 = { # The Graveyard of Empires
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
 
-	title = grefm_greek_empire.005.t
-	desc = grefm_greek_empire.005.d
-	flavor = grefm_greek_empire.005.f
+	title = grefm_hellenic_empire.011.t
+	desc = grefm_hellenic_empire.011.d
+	flavor = grefm_hellenic_empire.011.f
 
 	event_image = {
 		video = "ep1_ca_mountain_pass_military"
@@ -277,7 +296,7 @@ grefm_greek_empire.005 = { # The Graveyard of Empires
 	}
 
 	option = {
-		name = grefm_greek_empire.005.a
+		name = grefm_hellenic_empire.011.a
 		default_option = yes
 		add_journal_entry = {
 			type = je_grefm_the_graveyard_of_empires
@@ -297,14 +316,14 @@ grefm_greek_empire.005 = { # The Graveyard of Empires
 	}
 }
 
-grefm_greek_empire.006 = { # The Empire of the Greeks
+grefm_hellenic_empire.012 = { # The Empire of the Greeks
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
 
-	title = grefm_greek_empire.006.t
-	desc = grefm_greek_empire.006.d
-	flavor = grefm_greek_empire.006.f
+	title = grefm_hellenic_empire.012.t
+	desc = grefm_hellenic_empire.012.d
+	flavor = grefm_hellenic_empire.012.f
 
 	event_image = {
 		video = "europenorthamerica_before_the_battle"
@@ -321,7 +340,7 @@ grefm_greek_empire.006 = { # The Empire of the Greeks
 	}
 
 	option = {
-		name = grefm_greek_empire.006.a
+		name = grefm_hellenic_empire.012.a
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_imperial_glory
@@ -330,7 +349,7 @@ grefm_greek_empire.006 = { # The Empire of the Greeks
 			random_scope_state = {
 				add_modifier = {
 					name = modifier_grefm_the_queen_of_cities
-					days = long_modifier_time
+					months = gbbf_duration_10_years
 				}
 			}
 		}
@@ -338,14 +357,14 @@ grefm_greek_empire.006 = { # The Empire of the Greeks
 
 }
 
-grefm_greek_empire.007 = { # The Shores of the Hospitable Sea
+grefm_hellenic_empire.013 = { # The Shores of the Hospitable Sea
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
 
-	title = grefm_greek_empire.007.t
-	desc = grefm_greek_empire.007.d
-	flavor = grefm_greek_empire.007.f
+	title = grefm_hellenic_empire.013.t
+	desc = grefm_hellenic_empire.013.d
+	flavor = grefm_hellenic_empire.013.f
 
 	event_image = {
 		video = "votp_gunboat_diplomacy"
@@ -365,7 +384,7 @@ grefm_greek_empire.007 = { # The Shores of the Hospitable Sea
 	}
 
 	option = {
-		name = grefm_greek_empire.007.a
+		name = grefm_hellenic_empire.013.a
 		default_option = yes
 		if = {
 			limit = {
@@ -415,14 +434,14 @@ grefm_greek_empire.007 = { # The Shores of the Hospitable Sea
 
 }
 
-grefm_greek_empire.008 = { # The Lands of Magna Graecia
+grefm_hellenic_empire.014 = { # The Lands of Magna Graecia
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
 
-	title = grefm_greek_empire.008.t
-	desc = grefm_greek_empire.008.d
-	flavor = grefm_greek_empire.008.f
+	title = grefm_hellenic_empire.014.t
+	desc = grefm_hellenic_empire.014.d
+	flavor = grefm_hellenic_empire.014.f
 
 	event_image = {
 		video = "europenorthamerica_before_the_battle"
@@ -442,7 +461,7 @@ grefm_greek_empire.008 = { # The Lands of Magna Graecia
 	}
 
 	option = {
-		name = grefm_greek_empire.008.a
+		name = grefm_hellenic_empire.014.a
 		default_option = yes
 		if = {
 			limit = {
@@ -492,14 +511,14 @@ grefm_greek_empire.008 = { # The Lands of Magna Graecia
 
 }
 
-grefm_greek_empire.009 = { # The Foundings of Alexander
+grefm_hellenic_empire.015 = { # The Foundings of Alexander
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
 
-	title = grefm_greek_empire.009.t
-	desc = grefm_greek_empire.009.d
-	flavor = grefm_greek_empire.009.f
+	title = grefm_hellenic_empire.015.t
+	desc = grefm_hellenic_empire.015.d
+	flavor = grefm_hellenic_empire.015.f
 
 	event_image = {
 		video = "unspecific_military_parade"
@@ -512,14 +531,14 @@ grefm_greek_empire.009 = { # The Foundings of Alexander
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by grefm_greek_empire.008
+		# triggered by grefm_hellenic_empire.014
 	}
 
 	immediate = {
 	}
 
 	option = {
-		name = grefm_greek_empire.009.a
+		name = grefm_hellenic_empire.015.a
 		default_option = yes
 		add_journal_entry = {
 			type = je_grefm_alexandria_oxus

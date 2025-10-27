@@ -56,7 +56,7 @@ gbbf_on_game_start = {
 			if = {
 				limit = {
 					NOT = {
-						exists = c:TUR_SIL
+						exists = c:BUL
 					}
 				}
 				gbbf_spawn_silistra_effect = yes
@@ -64,7 +64,7 @@ gbbf_on_game_start = {
 			if = {
 				limit = {
 					NOT = {
-						exists = c:TUR_YAN
+						exists = c:ALB
 					}
 				}
 				gbbf_spawn_yanya_effect = yes
@@ -72,6 +72,27 @@ gbbf_on_game_start = {
 		}
 		c:GRE ?= {
 			grefm_calculate_bavarocracy_variables_effect = yes
+		}
+		c:MON ?= {
+			add_treasury = {
+				value = -35000
+			}
+			create_character = {
+				template = template_balkfm_petrovic_joko
+			}
+			random_scope_character = {
+				limit = {
+					has_template = template_balkfm_petrovic_joko
+				}
+				set_character_busy_and_immortal = yes
+				add_modifier = modifier_eqfm_leading_black_mountain_expedition
+			}
+			set_variable = {
+				name = eqfm_tribal_chief_cooldown_var
+				months = 12
+			}
+			eqfm_start_black_mountain_expedition_effect = yes
+			eqfm_update_black_mountain_characters_effect = yes
 		}
 		c:SER ?= {
 			change_variable = {
@@ -83,11 +104,18 @@ gbbf_on_game_start = {
 				add = 50
 			}
 			balkfm_calculate_dynastic_rivalry_variables_effect = yes
+			balkfm_update_dynasty_character_scopes_effect = yes
 		}
 		c:TUR ?= {
 			turkfm_calculate_sick_man_effect = yes
 			turkfm_calculate_tanzimat_variables_effect = yes
-			turkfm_calculate_balkan_situation_variables_effect = yes
+			eqfm_calculate_balkan_situation_variables_effect = yes
+		}
+		every_country = {
+			limit = {
+				gbbf_country_has_greek_culture_trigger = yes
+			}
+			grefm_check_annexation_variables_effect = yes
 		}
 	}
 }

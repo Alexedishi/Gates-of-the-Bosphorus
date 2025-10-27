@@ -1,10 +1,26 @@
 ﻿je_grefm_greek_nationalism = {
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-
-	group = je_group_grefm_nationalism
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/invention_icons/nationalism.dds"
+	weight = 3000
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
 
+	scripted_progress_bar = grefm_hellenism_progress_bar
+	scripted_progress_bar = grefm_romanism_progress_bar
+
+	scripted_button = grefm_embrace_hellenic_identity_button
+	scripted_button = grefm_embrace_roman_identity_button
+	scripted_button = grefm_embrace_hybrid_identity_button
+
+	is_shown_in_lobby = {
+		OR = {
+			country_has_primary_culture = cu:greek
+			country_has_primary_culture = cu:rhomaios
+		}
+	}
+	
 	is_shown_when_inactive = {
 		OR = {
 			country_has_primary_culture = cu:greek
@@ -17,6 +33,7 @@
 	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		set_variable = {
 			name = grefm_hellene_culture_var
 			value = grefm_hellenism_value
@@ -30,18 +47,84 @@
 		}
 	}
 
-	scripted_progress_bar = grefm_hellenism_progress_bar
-	scripted_progress_bar = grefm_romanism_progress_bar
-
-	scripted_button = grefm_embrace_hellenic_identity_button
-	scripted_button = grefm_embrace_roman_identity_button
-	scripted_button = grefm_embrace_hybrid_identity_button
-
 	complete = {
+		OR = {
+			custom_tooltip = {
+				text = je_grefm_greek_nationalism_complete
+				hidden_trigger = {
+					has_variable = grefm_nationalism_complete
+				}
+			}
+			has_law_or_variant = law_type:law_ethnostate
+			has_law_or_variant = law_type:law_multicultural
+		}
+	}
+
+	on_complete = {
 		custom_tooltip = {
-			text = je_grefm_greek_nationalism_complete
-			hidden_trigger = {
-				has_variable = grefm_nationalism_complete
+			text = je_grefm_greek_nationalism_ethostate
+			if = {
+				limit = {
+					has_law_or_variant = law_type:law_ethnostate
+				}
+				if = {
+					limit = {
+						country_has_primary_culture = cu:greek
+						NOT = {
+							country_has_primary_culture = cu:rhomaios
+						}
+					}
+					set_variable = {
+						name = grefm_culture_var
+						value = 1
+					}
+					trigger_event = {
+						id = grefm_greek_nationalism.009 # The Greek Ethnogenesis
+					}
+				}
+				else_if = {
+					limit = {
+						country_has_primary_culture = cu:rhomaios
+						NOT = {
+							country_has_primary_culture = cu:greek
+						}
+					}
+					set_variable = {
+						name = grefm_culture_var
+						value = 2
+					}
+					trigger_event = {
+						id = grefm_greek_nationalism.009 # The Greek Ethnogenesis
+					}
+				}
+				else_if = {
+					limit = {
+						country_has_primary_culture = cu:greek
+						country_has_primary_culture = cu:rhomaios
+					}
+					set_variable = {
+						name = grefm_culture_var
+						value = 3
+					}
+					trigger_event = {
+						id = grefm_greek_nationalism.009 # The Greek Ethnogenesis
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			text = je_grefm_greek_nationalism_multicultural
+			if = {
+				limit = {
+					has_law_or_variant = law_type:law_multicultural
+				}
+				set_variable = {
+					name = grefm_culture_var
+					value = 3
+				}
+				trigger_event = {
+					id = grefm_greek_nationalism.009 # The Greek Ethnogenesis
+				}
 			}
 		}
 	}
@@ -70,18 +153,23 @@
 			}
 		}
 	}
-
-	on_monthly_pulse = {
-	}
-
-	weight = 3000 # third billing, behind je_grefm_megali_idea
-
 }
 
 je_grefm_national_language = {
-	icon = "gfx/interface/icons/event_icons/tutorial_icon.dds"
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/invention_icons/academia.dds"
+	weight = 2000
 
-	group = je_group_grefm_nationalism
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	scripted_progress_bar = grefm_dimotiki_progress_bar
+	scripted_progress_bar = grefm_katharevousa_progress_bar
+	scripted_progress_bar = grefm_khoine_progress_bar
+	scripted_progress_bar = grefm_rhomaiika_progress_bar
+
+	scripted_button = grefm_declare_national_language_button
 
 	is_shown_when_inactive = {
 		OR = {
@@ -96,17 +184,11 @@ je_grefm_national_language = {
 	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		trigger_event = {
 			id = grefm_greek_nationalism.006 # The Language Question
 		}
 	}
-
-	scripted_progress_bar = grefm_dimotiki_progress_bar
-	scripted_progress_bar = grefm_katharevousa_progress_bar
-	scripted_progress_bar = grefm_khoine_progress_bar
-	scripted_progress_bar = grefm_rhomaiika_progress_bar
-
-	scripted_button = grefm_declare_national_language_button
 
 	complete = {
 		custom_tooltip = {
@@ -124,16 +206,39 @@ je_grefm_national_language = {
 
 	on_complete = {
 	}
-
-	weight = 2997
 }
 
 je_grefm_archaeology = {
+	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-
-	group = je_group_grefm_nationalism
+	weight = 2000
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	scripted_button = grefm_archeaology_greek_sites_button
+	scripted_button = grefm_archeaology_roman_sites_button
+	scripted_button = grefm_archeaology_alternate_site_button
+	scripted_button = grefm_archeaology_cancel_button
+
+	scripted_button = grefm_archeaology_parthenon_button_1
+	scripted_button = grefm_archeaology_parthenon_button_2
+	scripted_button = grefm_archeaology_mycenae_button_1
+	scripted_button = grefm_archeaology_mycenae_button_2
+	scripted_button = grefm_archeaology_gla_button
+	scripted_button = grefm_archeaology_delos_button
+	scripted_button = grefm_archeaology_larissa_button
+	scripted_button = grefm_archeaology_rhodes_button
+
+	scripted_button = grefm_archeaology_corinth_button_1 # Hexamillion
+	scripted_button = grefm_archeaology_corinth_button_2 # Acrocorinth
+	scripted_button = grefm_archeaology_thessaloniki_button # Heptapyrgion
+	scripted_button = grefm_archeaology_thebes_button # Silk Workshops
+	scripted_button = grefm_archeaology_nicomedia_button
+	scripted_button = grefm_archeaology_smyrna_button
+	scripted_button = grefm_archeaology_tyana_button
+	scripted_button = grefm_archeaology_chios_button
 
 	is_shown_when_inactive = { ##TODO MGR Compatch
 		OR = {
@@ -150,6 +255,7 @@ je_grefm_archaeology = {
 	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		grefm_initialize_archaeology_effect = yes
 		trigger_event = {
 			id = grefm_greek_nationalism.040 # The Archaeological Society of Athens
@@ -185,30 +291,6 @@ je_grefm_archaeology = {
 		grefm_cleanup_archaeology_effect = yes
 	}
 
-	scripted_button = grefm_archeaology_greek_sites_button
-	scripted_button = grefm_archeaology_roman_sites_button
-	scripted_button = grefm_archeaology_alternate_site_button
-	scripted_button = grefm_archeaology_cancel_button
-
-	scripted_button = grefm_archeaology_parthenon_button_1
-	scripted_button = grefm_archeaology_parthenon_button_2
-	scripted_button = grefm_archeaology_mycenae_button_1
-	scripted_button = grefm_archeaology_mycenae_button_2
-	scripted_button = grefm_archeaology_gla_button
-	scripted_button = grefm_archeaology_delos_button
-	scripted_button = grefm_archeaology_larissa_button
-	scripted_button = grefm_archeaology_rhodes_button
-
-	scripted_button = grefm_archeaology_corinth_button_1 # Hexamillion
-	scripted_button = grefm_archeaology_corinth_button_2 # Acrocorinth
-	scripted_button = grefm_archeaology_thessaloniki_button # Heptapyrgion
-	scripted_button = grefm_archeaology_thebes_button # Silk Workshops
-	scripted_button = grefm_archeaology_nicomedia_button
-	scripted_button = grefm_archeaology_smyrna_button
-	scripted_button = grefm_archeaology_tyana_button
-	scripted_button = grefm_archeaology_chios_button
-
-
 	on_monthly_pulse = {
 		effect = {
 			if = {
@@ -222,7 +304,7 @@ je_grefm_archaeology = {
 				clamp_variable = {
 					name = grefm_excavation_var
 					min = 0
-					max = 24
+					max = 16
 				}
 			}
 		}
@@ -254,7 +336,4 @@ je_grefm_archaeology = {
 			}
 		}
 	}
-
-	weight = 2999
-
 }

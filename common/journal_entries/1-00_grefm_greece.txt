@@ -1,12 +1,27 @@
 ﻿## THE BAVAROCRACY
 je_grefm_bavarocracy_main = {
+	group = je_group_gbbf_greek_monarchism
 	icon = "gfx/interface/icons/event_icons/event_otto.dds"
-
-	group = je_group_grefm_monarchism
+	weight = 5000
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	scripted_progress_bar = grefm_bavarocracy_main_progressbar
+	scripted_progress_bar = grefm_bavarocracy_instability_progressbar
+
+	scripted_button = grefm_dismiss_auxilliaries_button
+	scripted_button = grefm_release_nikitaras_button
+	scripted_button = grefm_authorize_palace_button
+	scripted_button = grefm_philhellenic_loan_button
+
+	is_shown_in_lobby = {
+		c:GRE ?= this
+	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		set_variable = {
 			name = grefm_bavarocracy_progress_var
 			value = grefm_bavarocracy_progress_value
@@ -18,24 +33,18 @@ je_grefm_bavarocracy_main = {
 		modifier_grefm_westernized_thought
 	}
 
-	scripted_progress_bar = grefm_bavarocracy_main_progressbar
-	scripted_progress_bar = grefm_bavarocracy_instability_progressbar
-
-	scripted_button = grefm_dismiss_auxilliaries_button
-	scripted_button = grefm_release_nikitaras_button
-	scripted_button = grefm_authorize_palace_button
-	scripted_button = grefm_philhellenic_loan_button
-
 	complete = {
-		has_law = law_type:law_monarchy
 		OR = {
-			NOR = {
-				has_law = law_type:law_autocracy
-				has_law = law_type:law_oligarchy
-				has_law = law_type:law_landed_voting
+			AND = {
+				country_has_voting_franchise = yes
+				has_law_or_variant = law_type:law_elected_bureaucrats
 			}
-			has_law = law_type:law_autocracy
+			has_law_or_variant = law_type:law_autocracy
 		}
+		NOT = {
+			has_modifier = declared_bankruptcy
+		}
+		in_default = no
 		trigger_if = {
 			limit = {
 				has_variable = grefm_tyranny_var
@@ -52,7 +61,7 @@ je_grefm_bavarocracy_main = {
 			}
 		}
 		custom_tooltip = {
-			text = grefm_regency_discharged_tt
+			text = grefm_regency_discharged
 			hidden_trigger = {
 				NOT = {
 					has_modifier = modifier_grefm_armansperg_regency
@@ -65,9 +74,7 @@ je_grefm_bavarocracy_main = {
 		trigger_event = {
 			id = grefm_greece.007 # The Bavarocracy Secured
 		}
-		hidden_effect = {
-			grefm_cleanup_bavarocracy_effect = yes
-		}
+		grefm_cleanup_bavarocracy_effect = yes
 	}
 
 	fail = { # Without any interaction, this will fire in the 1860s. You have hella time... irl, Otto got to shit the bed for a while anyways
@@ -98,15 +105,13 @@ je_grefm_bavarocracy_main = {
 				}
 			}
 		}
-		hidden_effect = {
-			grefm_cleanup_bavarocracy_effect = yes
-		}
+		grefm_cleanup_bavarocracy_effect = yes
 	}
 
 	invalid = {
 		OR = {
 			NOT = {
-				has_law = law_type:law_monarchy
+				has_law_or_variant = law_type:law_monarchy
 			}
 			hidden_trigger = {
 				has_variable = grefm_bavarocracy_completed
@@ -118,16 +123,14 @@ je_grefm_bavarocracy_main = {
 		if = {
 			limit = {
 				NOT = {
-					has_law = law_type:law_monarchy
+					has_law_or_variant = law_type:law_monarchy
 				}
 			}
 			trigger_event = {
 				id = grefm_greece.005 # The Bavarocracy Abolished
 			}
 		}
-		hidden_effect = {
-			grefm_cleanup_bavarocracy_effect = yes
-		}
+		grefm_cleanup_bavarocracy_effect = yes
 	}
 
 	on_weekly_pulse = {
@@ -156,16 +159,6 @@ je_grefm_bavarocracy_main = {
 				name = grefm_bavarocracy_instability_var
 				add = var:grefm_bavarocracy_instability_progress_var
 			}
-			clamp_variable = {
-				name = grefm_bavarocracy_var
-				max = 2000
-				min = 0
-			}
-			clamp_variable = {
-				name = grefm_bavarocracy_instability_var
-				max = 200
-				min = 0
-			}
 			if = {
 				limit = {
 					has_variable = grefm_tyranny_var
@@ -176,6 +169,8 @@ je_grefm_bavarocracy_main = {
 					add = 1
 				}
 			}
+			grefm_calculate_bavarocracy_variables_effect = yes
+			grefm_update_bavarian_auxiliaries_effect = yes
 		}
 	}
 
@@ -212,22 +207,201 @@ je_grefm_bavarocracy_main = {
 			}
 		}
 	}
+}
 
-	weight = 5000
+je_grefm_bavarocracy_ip3 = {
+	# This is a Frakenjournal made of GotB's je_grefm_bavarocracy_main mashed with IP3's je_bavarocracy
+	group = je_group_gbbf_greek_monarchism
+	icon = "gfx/interface/icons/event_icons/event_otto.dds"
+	weight = 10000
 
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
 	transferable = no
+
+	scripted_progress_bar = grefm_bavarocracy_ip3_progressbar
+	scripted_progress_bar = grefm_bavarocracy_ip3_instability_progressbar
+
+	scripted_button = grefm_dismiss_auxilliaries_button
+	scripted_button = grefm_bavarocracy_convert_button
+	scripted_button = grefm_release_nikitaras_button
+	scripted_button = grefm_philhellenic_loan_button
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		set_variable = {
+			name = grefm_bavarocracy_progress_var
+			value = grefm_bavarocracy_progress_value
+		}
+		random_scope_character = {
+			limit = {
+				has_template = template_grefm_wittelsbach_otto
+			}
+			save_scope_as = king_otto_scope
+		}
+		scope:journal_entry = {
+			set_variable = com_double_bad_white_bar
+		}
+	}
+
+	modifiers_while_active = {
+		modifier_foreign_administration
+		modifier_grefm_westernized_thought
+	}
+
+	complete = {
+		OR = {
+			AND = {
+				has_law_or_variant = law_type:law_autocracy
+				institution_investment_level = {
+					institution = institution_home_affairs
+					value >= 1
+				}
+			}
+			AND = {
+				country_has_voting_franchise = yes
+				has_law_or_variant = law_type:law_elected_bureaucrats
+				OR = {
+					has_law_or_variant = law_type:law_right_of_assembly
+					has_law_or_variant = law_type:law_protected_speech
+				}
+			}
+		}
+		government_legitimacy >= 75
+		custom_tooltip = {
+			text = je_bavarocracy_complete_tt
+			var:grefm_bavarocracy_instability_var < 10
+		}
+	}
+
+	on_complete = {
+		custom_tooltip = {
+			text = je_grefm_bavarocracy_ip3_liberalism_complete
+			if = {
+				limit = {
+					country_has_voting_franchise = yes
+				}
+				trigger_event = {
+					id = grefm_greece.099 # Civilizer-King of the Hellenes
+				}
+			}
+		}
+		custom_tooltip = {
+			text = je_grefm_bavarocracy_ip3_autocracy_complete
+			if = {
+				limit = {
+					has_law_or_variant = law_type:law_autocracy
+				}
+				trigger_event = {
+					id = grefm_greece.098 # Othonian Renaissance
+				}
+			}
+		}
+	}
+
+	fail = {
+		custom_tooltip = {
+			text = je_grefm_bavarocracy_ip3_fail
+			var:grefm_bavarocracy_var >= 50
+		}
+	}
+
+	on_fail = {
+		trigger_event = {
+			id = grefm_greece.097 # The Downfall of King Otto
+		}
+	}
+
+	invalid = {
+		OR = {
+			NOT = {
+				has_law_or_variant = law_type:law_monarchy
+			}
+			hidden_trigger = {
+				has_variable = grefm_bavarocracy_completed
+			}
+		}
+	}
+
+	on_invalid = {
+		grefm_cleanup_bavarocracy_effect = yes
+	}
+
+	on_weekly_pulse = {
+		events = {
+			grefm_greece.091 # A Crisis Averted
+			grefm_greece.092 # Long Live the Constitution
+			grefm_greece.096 # A Disgraced Tyrant
+		}
+		effect = {
+			grefm_calculate_bavarocracy_variables_effect = yes
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			change_variable = {
+				name = grefm_bavarocracy_instability_var
+				add = var:grefm_bavarocracy_instability_progress_var
+			}
+			if = {
+				limit = {
+					var:grefm_bavarocracy_instability_var >= 80
+				}
+				change_variable = {
+					name = grefm_bavarocracy_var
+					add = 1
+				}
+			}
+			else = {
+				change_variable = {
+					name = grefm_bavarocracy_var
+					subtract = 0.1
+				}
+			}
+			clamp_variable = {
+				name = grefm_bavarocracy_var
+				max = 50
+				min = 0
+			}
+			grefm_calculate_bavarocracy_variables_effect = yes
+			grefm_update_bavarian_auxiliaries_effect = yes
+		}
+	}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_grefm_bavarocracy_ip3_status_regency
+				trigger = {
+					has_modifier = modifier_grefm_armansperg_regency
+				}
+			}
+			triggered_desc = {
+				desc = je_grefm_bavarocracy_ip3_status_tyranny
+				trigger = {
+					has_variable = grefm_tyranny_var
+					NOT = {
+						has_variable = grefm_tyranny_busted
+					}
+				}
+			}
+			triggered_desc = {
+				desc = je_grefm_bavarocracy_ip3_main_status
+			}
+		}
+	}
 }
 
 ## THE CONSTITUTIONAL MONARCHY
 je_grefm_greek_king = {
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-
-	group = je_group_grefm_monarchism
+	group = je_group_gbbf_greek_monarchism
+	weight = 5000
 
 	should_be_pinned_by_default = yes
-
-	immediate = {
-	}
+	can_revolution_inherit = yes
+	transferable = no
 
 	modifiers_while_active = {
 		modifier_grefm_custodian_government
@@ -240,6 +414,10 @@ je_grefm_greek_king = {
 	scripted_button = grefm_favor_roman_king_button
 	scripted_button = grefm_elect_hellene_king_button
 	scripted_button = grefm_elect_roman_king_button
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	complete = {
 		custom_tooltip = {
@@ -261,25 +439,31 @@ je_grefm_greek_king = {
 
 	fail = {
 		NOT = {
-			has_law = law_type:law_monarchy
+			has_law_or_variant = law_type:law_monarchy
 		}
 	}
-
-	invalid = {
-	}
-
-	weight = 5000
 
 }
 
 je_grefm_the_dedilomeni_principle = {
+	group = je_group_gbbf_greek_monarchism
 	icon = "gfx/interface/icons/event_icons/event_glucksburg.dds"
-
-	group = je_group_grefm_monarchism
+	weight = 4000
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	progressbar = yes
+	goal_add_value = {
+		value = 60
+	}
+	current_value = {
+		value = root.var:grefm_dedilomeni_var
+	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		if = {
 			limit = {
 				NOT = {
@@ -302,7 +486,7 @@ je_grefm_the_dedilomeni_principle = {
 				}
 			}
 		}
-		has_law = law_type:law_universal_suffrage
+		has_law_or_variant = law_type:law_universal_suffrage
 		government_legitimacy >= 80
 		ig:ig_landowners = {
 			is_in_government = no
@@ -318,16 +502,8 @@ je_grefm_the_dedilomeni_principle = {
 
 	invalid = {
 		NOT = {
-			has_law = law_type:law_monarchy
+			has_law_or_variant = law_type:law_monarchy
 		}
-	}
-
-	current_value = {
-		value = root.var:grefm_dedilomeni_var
-	}
-
-	goal_add_value = {
-		value = 60
 	}
 
 	on_monthly_pulse = {
@@ -335,7 +511,7 @@ je_grefm_the_dedilomeni_principle = {
 			if = {
 				limit = {
 					AND = {
-						has_law = law_type:law_universal_suffrage
+						has_law_or_variant = law_type:law_universal_suffrage
 						government_legitimacy >= 80
 					}
 				}
@@ -346,21 +522,28 @@ je_grefm_the_dedilomeni_principle = {
 			}
 		}
 	}
-
-	progressbar = yes
-
-	weight = 5000
-
 }
 
-je_grefm_the_military_league = { # this is a modified vanilla coup JE
+je_grefm_the_military_league = {
+	# This is a modifier coup JE
+	group = je_group_gbbf_greek_monarchism
 	icon = "gfx/interface/icons/event_icons/event_glucksburg.dds"
-
-	group = je_group_grefm_monarchism
+	weight = 1000
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = no
+	transferable = no
+
+	progressbar = yes
+	goal_add_value = {
+		add = 100
+	}
+	current_value = {
+		value = root.var:coup_var
+	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		random_interest_group = {
 			limit = {
 				has_variable = coup_ig_var
@@ -375,63 +558,6 @@ je_grefm_the_military_league = { # this is a modified vanilla coup JE
 			save_scope_as = coup_desired_law
 		}
 		remove_variable = coup_for_law
-	}
-
-	on_weekly_pulse = {
-		effect = {
-			if = {
-				limit = {
-					scope:coup_ig = {
-						OR = {
-							is_powerful = no
-						}
-					}
-				}
-				change_variable = {
-					name = coup_var
-					add = -1
-				}
-			}
-			if = {
-				limit = {
-					scope:coup_ig = {
-						is_powerful = yes
-						ig_approval < 0
-					}
-				}
-				change_variable = {
-					name = coup_var
-					add = 1
-				}
-			}
-		}
-	}
-
-	on_monthly_pulse = {
-		events = {
-			grefm_greece.045 # a cretan champion
-		}
-		random_events = {
-			130 = 0
-			10 = coup_pulse_events.1
-			10 = coup_pulse_events.2
-			10 = coup_pulse_events.3
-			10 = coup_pulse_events.4
-			10 = coup_pulse_events.5
-			10 = coup_pulse_events.6
-			10 = coup_pulse_events.7
-			10 = coup_pulse_events.8
-			10 = coup_pulse_events.9
-			10 = coup_pulse_events.10
-			25 = coup_pulse_events.11
-			25 = coup_pulse_events.12
-			25 = coup_pulse_events.13
-			25 = coup_pulse_events.14
-			25 = coup_pulse_events.15
-			25 = coup_pulse_events.16
-			25 = coup_pulse_events.17
-			25 = coup_pulse_events.18
-		}
 	}
 
 	complete = {
@@ -543,7 +669,7 @@ je_grefm_the_military_league = { # this is a modified vanilla coup JE
 			NOT = {
 				exists = scope:coup_ig
 			}
-			has_law = scope:coup_desired_law.type
+			has_law_or_variant = scope:coup_desired_law.type
 			hidden_trigger = {
 				has_variable = grefm_venizelos_has_landed
 			}
@@ -562,6 +688,63 @@ je_grefm_the_military_league = { # this is a modified vanilla coup JE
 					popup = yes
 				}
 			}
+		}
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			if = {
+				limit = {
+					scope:coup_ig = {
+						OR = {
+							is_powerful = no
+						}
+					}
+				}
+				change_variable = {
+					name = coup_var
+					add = -1
+				}
+			}
+			if = {
+				limit = {
+					scope:coup_ig = {
+						is_powerful = yes
+						ig_approval < 0
+					}
+				}
+				change_variable = {
+					name = coup_var
+					add = 1
+				}
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {
+			grefm_greece.045 # a cretan champion
+		}
+		random_events = {
+			130 = 0
+			10 = coup_pulse_events.1
+			10 = coup_pulse_events.2
+			10 = coup_pulse_events.3
+			10 = coup_pulse_events.4
+			10 = coup_pulse_events.5
+			10 = coup_pulse_events.6
+			10 = coup_pulse_events.7
+			10 = coup_pulse_events.8
+			10 = coup_pulse_events.9
+			10 = coup_pulse_events.10
+			25 = coup_pulse_events.11
+			25 = coup_pulse_events.12
+			25 = coup_pulse_events.13
+			25 = coup_pulse_events.14
+			25 = coup_pulse_events.15
+			25 = coup_pulse_events.16
+			25 = coup_pulse_events.17
+			25 = coup_pulse_events.18
 		}
 	}
 
@@ -588,32 +771,29 @@ je_grefm_the_military_league = { # this is a modified vanilla coup JE
 			}
 		}
 	}
-
-	current_value = {
-		value = root.var:coup_var
-	}
-
-	goal_add_value = {
-		add = 100
-	}
-
-	progressbar = yes
-
-	transferable = no
-
-	can_revolution_inherit = no
-
-	weight = 100
-
 }
 
 ## THAT NONSENSE WITH VENIZELOS
 je_grefm_venizelism_main = {
+	group = je_group_internal_affairs
 	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
-
-	group = je_group_grefm_venizelos
+	weight = 2000
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	is_shown_in_lobby = {
+		c:GRE ?= this
+	}
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
+
+	modifiers_while_active = {
+		modifier_grefm_venizelist_tilt
+	}
 
 	complete = {
 		custom_tooltip = {
@@ -657,38 +837,38 @@ je_grefm_venizelism_main = {
 
 	fail = {
 		OR = {
-			has_law = law_type:law_council_republic
-			has_law = law_type:law_anarchy
+			has_law_or_variant = law_type:law_council_republic
+			has_law_or_variant = law_type:law_anarchy
 		}
 	}
 
 	on_fail = {
 		set_variable = grefm_venizelism_completed
 	}
-
-	modifiers_while_active = {
-		modifier_grefm_venizelist_tilt # Ankyra! Ankyra! Ankyra!
-	}
-
-	weight = 2000
-
 }
 
 je_grefm_venizelism_civics = {
+	group = je_group_internal_affairs
 	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	weight = 500
 
-	group = je_group_grefm_venizelos
+	can_revolution_inherit = yes
+	transferable = no
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	complete = {
-		has_law = law_type:law_universal_suffrage
-		NOT = { has_law = law_type:law_hereditary_bureaucrats }
+		has_law_or_variant = law_type:law_universal_suffrage
+		NOT = { has_law_or_variant = law_type:law_hereditary_bureaucrats }
 		OR = {
-			has_law = law_type:law_commercialized_agriculture
-			has_law = law_type:law_homesteading
+			has_law_or_variant = law_type:law_commercialized_agriculture
+			has_law_or_variant = law_type:law_homesteading
 		}
 		OR = {
-			has_law = law_type:law_dedicated_police
-			has_law = law_type:law_militarized_police
+			has_law_or_variant = law_type:law_dedicated_police
+			has_law_or_variant = law_type:law_militarized_police
 		}
 		any_scope_building = {
 			is_building_type = building_government_administration
@@ -711,18 +891,32 @@ je_grefm_venizelism_civics = {
 			has_variable = grefm_venizelism_civics_completed
 		}
 	}
-
-	weight = 500
-
 }
 
-je_grefm_venizelism_military = { # The numbers used in this journal are not arbitrary. See the notes below.
-	icon = "gfx/interface/icons/event_icons/event_military.dds"
+je_grefm_venizelism_military = {
+	group = je_group_internal_affairs
+	icon = "gfx/interface/icons/invention_icons/army_reserves.dds"
+	weight = 100
 
-	group = je_group_grefm_venizelos
+	can_revolution_inherit = yes
+	transferable = no
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	complete = {
-		has_law = law_type:law_mass_conscription
+		## Some Notes on the completion requirements (drawn from Greek-language sources):
+		# The Greek Army during the First Balkan War consisted of roughly 130k men with no corps-level or higher structure in place until war was declared.
+		# The primary force was was the "Army of Thessaly", with roughly 100k men, of which 80k were organized into frontline units. The "Concise History of the Balkan Wars" states:
+		# 59 Infantry with 4 Evzones battalions
+		# 8 Cavalry Companies
+		# 32 Artillery Companies
+		# The Secondary force was of the "Army of Epirus" that varied from 10k to 13k men with various forms of organization.
+		# A third force the "Interior Army" is referenced in some sources with between 10k to 20k men, but doesn't seem to have been intended as a frontline formation.
+		# The Hellenic navy had around a dozen ships during the Balkan Wars with a rapid expansion of the Navy occurring after the outbreak of hostilities; They joined WWI with 22 surface combatants.
+		# I have contradicting sources about when exactly conscription was adopted and in which forms, but it was definitely in place as general conscription by 1917 when Greece joined WWI.
+		has_law_or_variant = law_type:law_mass_conscription
 		any_military_formation = {
 			any_combat_unit = {
 				count >= 80 # This is based on the frontline forces of the Army of Thessaly; see below.
@@ -751,17 +945,6 @@ je_grefm_venizelism_military = { # The numbers used in this journal are not arbi
 		}
 	}
 
-	## Some Notes on the completion requirements (drawn from Greek-language sources):
-	# The Greek Army during the First Balkan War consisted of roughly 130k men with no corps-level or higher structure in place until war was declared.
-	# The primary force was was the "Army of Thessaly", with roughly 100k men, of which 80k were organized into frontline units. The "Concise History of the Balkan Wars" states:
-	# 59 Infantry with 4 Evzones battalions
-	# 8 Cavalry Companies
-	# 32 Artillery Companies
-	# The Secondary force was of the "Army of Epirus" that varied from 10k to 13k men with various forms of organization.
-	# A third force the "Interior Army" is referenced in some sources with between 10k to 20k men, but doesn't seem to have been intended as a frontline formation.
-	# The Hellenic navy had around a dozen ships during the Balkan Wars with a rapid expansion of the Navy occurring after the outbreak of hostilities; They joined WWI with 22 surface combatants.
-	# I have contradicting sources about when exactly conscription was adopted and in which forms, but it was definitely in place as general conscription by 1917 when Greece joined WWI.
-
 	on_complete = {
 		trigger_event = {
 			id = grefm_greece.054 # A Formidable Military
@@ -774,20 +957,24 @@ je_grefm_venizelism_military = { # The numbers used in this journal are not arbi
 			has_variable = grefm_venizelism_military_completed
 		}
 	}
-
-	weight = 500
-
 }
 
 je_grefm_venizelism_society = {
-	icon = "gfx/interface/icons/event_icons/event_election.dds"
+	group = je_group_internal_affairs
+	icon = "gfx/interface/icons/invention_icons/romanticism.dds"
+	weight = 500
 
-	group = je_group_grefm_venizelos
+	can_revolution_inherit = yes
+	transferable = no
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	complete = {
-		NOT = { has_law = law_type:law_no_womens_rights }
-		NOT = { has_law = law_type:law_child_labor_allowed }
-		NOT = { has_law = law_type:law_no_workers_rights }
+		NOT = { has_law_or_variant = law_type:law_no_womens_rights }
+		NOT = { has_law_or_variant = law_type:law_child_labor_allowed }
+		NOT = { has_law_or_variant = law_type:law_no_workers_rights }
 	}
 
 	on_complete = {
@@ -802,19 +989,23 @@ je_grefm_venizelism_society = {
 			has_variable = grefm_venizelism_society_completed
 		}
 	}
-
-	weight = 500
-
 }
 
 je_grefm_venizelism_education = {
-	icon = "gfx/interface/icons/event_icons/tutorial_icon.dds"
+	group = je_group_internal_affairs
+	icon = "gfx/interface/icons/invention_icons/human_rights.dds"
+	weight = 500
 
-	group = je_group_grefm_venizelos
+	can_revolution_inherit = yes
+	transferable = no
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	complete = {
-		has_law = law_type:law_public_schools
-		has_law = law_type:law_compulsory_primary_school
+		has_law_or_variant = law_type:law_public_schools
+		has_law_or_variant = law_type:law_compulsory_primary_school
 		institution_investment_level = {
 			institution = institution_schools
 			value >= 4
@@ -834,18 +1025,22 @@ je_grefm_venizelism_education = {
 			has_variable = grefm_venizelism_education_completed
 		}
 	}
-
-	weight = 500
-
 }
 
 je_grefm_venizelism_constitution = {
-	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
+	group = je_group_internal_affairs
+	icon = "gfx/interface/icons/invention_icons/democracy.dds"
+	weight = 500
 
-	group = je_group_grefm_venizelos
+	can_revolution_inherit = yes
+	transferable = no
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	complete = {
-		NOT = { has_law = law_type:law_monarchy }
+		NOT = { has_law_or_variant = law_type:law_monarchy }
 	}
 
 	on_complete = {
@@ -856,18 +1051,16 @@ je_grefm_venizelism_constitution = {
 			has_variable = grefm_venizelism_completed
 		}
 	}
-
-	weight = 500
-
 }
 
 ## OTHER HELLENE FLAVOR
 je_grefm_the_womens_journal = {
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	group = je_group_internal_affairs
+	icon = "gfx/interface/icons/invention_icons/feminism.dds"
+	weight = 100
 
-	group = je_group_grefm_content
-
-	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
 
 	is_shown_when_inactive = {
 		country_has_primary_culture = cu:greek
@@ -877,7 +1070,7 @@ je_grefm_the_womens_journal = {
 
 	possible = {
 		has_technology_researched = feminism
-		NOT = { has_law = law_type:law_no_womens_rights }
+		NOT = { has_law_or_variant = law_type:law_no_womens_rights }
 	}
 
 	immediate = {
@@ -890,10 +1083,10 @@ je_grefm_the_womens_journal = {
 
 	complete = {
 		OR = {
-			has_law = law_type:law_women_in_the_workplace
-			has_law = law_type:law_womens_suffrage
+			has_law_or_variant = law_type:law_women_in_the_workplace
+			has_law_or_variant = law_type:law_womens_suffrage
 		}
-		NOT = { has_law = law_type:law_child_labor_allowed }
+		NOT = { has_law_or_variant = law_type:law_child_labor_allowed }
 	}
 
 	on_complete = {
@@ -903,7 +1096,7 @@ je_grefm_the_womens_journal = {
 	}
 
 	fail = {
-		has_law = law_type:law_no_womens_rights
+		has_law_or_variant = law_type:law_no_womens_rights
 	}
 
 	invalid = {
@@ -911,17 +1104,28 @@ je_grefm_the_womens_journal = {
 			has_variable = grefm_feminism_rejected
 		}
 	}
-
-	weight = 2996
-
 }
 
 je_grefm_corinth_canal_survey = {
-	icon = "gfx/interface/icons/event_icons/event_map.dds"
-
-	group = je_group_grefm_content
+	group = je_group_technology
+	icon = "gfx/interface/icons/invention_icons/hydraulic_cranes.dds"
+	weight = 1000
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = no
+	transferable = no
+
+	progressbar = yes
+	goal_add_value = {
+		value = 24
+	}
+	current_value = {
+		value = root.var:grefm_corinth_canal_var
+	}
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	modifiers_while_active = {
 		modifier_grefm_corinth_canal_survey
@@ -959,25 +1163,29 @@ je_grefm_corinth_canal_survey = {
 			}
 		}
 	}
-
-	current_value = {
-		value = root.var:grefm_corinth_canal_var
-	}
-
-	goal_add_value = {
-		value = 24
-	}
-
-	progressbar = yes
-
-	weight = 1000
-
 }
 
-je_grefm_land_reclaimation = { # literally the vanilla reclamation event in a trench coat
-	icon = "gfx/interface/icons/event_icons/event_map.dds"
+je_grefm_land_reclaimation = {
+	# literally the vanilla reclamation event in a trench coat
+	group = je_group_technology
+	icon = "gfx/interface/icons/invention_icons/hydraulic_cranes.dds"
+	weight = 100
 
-	group = je_group_grefm_content
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = no
+	transferable = no
+
+	progressbar = yes
+	goal_add_value = { # this is much smaller scale than the vanilla JE
+		add = 3
+	}
+	current_value = {
+		value = global_var:grefm_lake_kopais_var
+	}
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	modifiers_while_active = {
 		modifier_grefm_reclaiming_land
@@ -1016,14 +1224,6 @@ je_grefm_land_reclaimation = { # literally the vanilla reclamation event in a tr
 		remove_global_variable = grefm_lake_kopais_var
 	}
 
-	current_value = {
-		value = global_var:grefm_lake_kopais_var
-	}
-
-	goal_add_value = { # this is much smaller scale than the vanilla JE
-		add = 3
-	}
-
 	on_monthly_pulse = {
 		events = {
 			grefm_greece.113 # A Citadel Emerges
@@ -1047,7 +1247,4 @@ je_grefm_land_reclaimation = { # literally the vanilla reclamation event in a tr
 			}
 		}
 	}
-
-	weight = 1000
-
 }

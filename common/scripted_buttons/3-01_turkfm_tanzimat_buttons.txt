@@ -7,7 +7,6 @@
 			has_global_variable = turkfm_tanzimat_started
 		}
 	}
-
 	possible = {
 		custom_tooltip = {
 			text = turkfm_mahmud_dead_tt
@@ -18,7 +17,6 @@
 			}
 		}
 	}
-
 	effect = {
 		trigger_event = {
 			id = turkfm_tanzimat.002 # Edict of Gülhane
@@ -26,10 +24,10 @@
 		show_as_tooltip = {
 			add_modifier = {
 				name = modifier_turkfm_reorganizing_spirit
-				years = 30
+				months  = gbbf_duration_30_years
 			}
 			custom_tooltip = {
-				text = turkfm_reform_completed_tt
+				text = turkfm_tanzimat_declaration
 				change_variable = {
 					name = turkfm_tanzimat_completion_var
 					add = 1
@@ -62,7 +60,7 @@
 				}
 				add_modifier = {
 					name = modifier_turkfm_influence_questioned
-					days = long_modifier_time
+					months = gbbf_duration_10_years
 					is_decaying = yes
 				}
 			}
@@ -75,11 +73,92 @@
 				}
 				add_modifier = {
 					name = modifier_turkfm_declared_reforms
-					years = 20
+					months = gbbf_duration_20_years
 				}
 			}
 		}
 		set_global_variable = turkfm_tanzimat_started
 	}
+}
 
+turkfm_enforce_identity_button = {
+	name = "turkfm_enforce_identity_button"
+	desc = "turkfm_enforce_identity_button_desc"
+
+	visible = {
+		NOR = {
+			has_variable = turkfm_ottomanist_identity_enforced
+			has_variable = turkfm_islamist_identity_enforced
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			text = turkfm_enforce_identity_button_possible_1
+			hidden_trigger = {
+				var:turkfm_tanzimat_reform_var >= 1000
+			}
+		}
+		custom_tooltip = {
+			text = turkfm_enforce_identity_button_possible_2
+			hidden_trigger = {
+				OR = {
+					var:turkfm_tanzimat_identity_var < 100
+					var:turkfm_tanzimat_identity_var > 900
+				}
+			}
+		}
+		NOT = {
+			has_law_or_variant = law_type:law_subjecthood
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				var:turkfm_tanzimat_identity_var > 900
+			}
+			custom_tooltip = {
+				text = turkfm_enforce_identity_ottomanist
+				set_variable = turkfm_ottomanist_identity_enforced
+			}
+		}
+		else_if = {
+			limit = {
+				var:turkfm_tanzimat_identity_var < 100
+			}
+			custom_tooltip = {
+				text = turkfm_enforce_identity_button_islamist
+				set_variable = turkfm_islamist_identity_enforced
+			}
+		}
+		else = {
+			custom_tooltip = turkfm_ottomanist_identity_effect
+		}
+	}
+}
+
+turkfm_depose_murad_button = {
+    name = "turkfm_depose_murad_button"
+    desc = "turkfm_depose_murad_button_desc"
+
+    visible = {
+        ruler = {
+            has_trait = gbbf_trait_incapable
+        }
+    }
+    possible = {
+        ruler = {
+            has_trait = gbbf_trait_incapable
+        }
+        hidden_trigger = {
+            NOT = {
+                has_variable = turkfm_murad_deposed
+            }
+        }
+    }
+    effect = {
+        trigger_event = {
+            id = turkfm_tanzimat.112 # Deposing an Invalid
+        }
+        set_variable = turkfm_murad_deposed
+    }
 }

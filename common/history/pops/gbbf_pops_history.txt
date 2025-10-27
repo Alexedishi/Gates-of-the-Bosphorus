@@ -1,17 +1,18 @@
 ﻿POPS = {
-	## POP CONVERSION ##
+    debug_log = gbbf_pops_history_start
+    ## POP CONVERSION ##
 	# Greek Pop Conversions
 	every_state = {
 		limit = {
 			gbbf_demotic_greek_geography_trigger = yes
 		}
-		grefm_setup_hellene_pops_effect = yes
+		gbbf_setup_hellene_pops_effect = yes
 	}
 	every_state = {
 		limit = {
 			gbbf_demotic_greek_geography_trigger = no
 		}
-		grefm_setup_rhomaios_pops_effect = yes
+		gbbf_setup_rhomaios_pops_effect = yes
 	}
 
 	# Romaniote Jew Conversions
@@ -40,6 +41,36 @@
 			}
 		}
 	}
+
+	# Bavarian Officer Pops for Greece
+	c:GRE = {
+		every_scope_pop = {
+			limit = {
+				is_pop_type = aristocrats
+			}
+			change_pop_culture = {
+				target = cu:south_german
+				value = 0.05
+			}
+			change_pop_religion = {
+				target = rel:catholic
+				value = 0.05
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				is_pop_type = officers
+			}
+			change_pop_culture = {
+				target = cu:south_german
+				value = 1
+			}
+			change_pop_religion = {
+				target = rel:catholic
+				value = 1
+			}
+		}
+	}
 	
 	## POP RELOCATIONS ##
 	# Moving Bosniak pops into Hersek
@@ -49,7 +80,7 @@
 				limit = {
 					has_pop_culture = bosniak
 				}
-				move_pop = s:STATE_BOSNIA.region_state:TUR_BOS
+				move_pop = s:STATE_BOSNIA.region_state:BOS
 			}
 		}
 	}
@@ -62,7 +93,7 @@
 			move_pop = s:STATE_LIBYAN_DESERT.region_state:TBI
 		}
 	}
-	c:LIB_KUF = {
+	c:TRI_KUF = {
 		every_scope_pop = {
 			limit = {
 				has_pop_culture = teda
@@ -76,7 +107,7 @@
 			limit = {
 				has_pop_culture = bedouin
 			}
-			move_pop = s:STATE_LIBYAN_DESERT.region_state:LIB_KUF
+			move_pop = s:STATE_LIBYAN_DESERT.region_state:TRI_KUF
 		}
 	}
 	# Moving Iranian Pops into Kurdish Tribal States
@@ -119,7 +150,7 @@
 	}
 	# North Africa Pops
 	s:STATE_TRIPOLI = {
-		region_state:LIB_KUF = {
+		region_state:TRI_KUF = {
 			create_pop = {
 				culture = bedouin
 				size = 5000
@@ -144,6 +175,12 @@
 			create_pop = {
 				culture = kurdish
 				size = 75000
+			}
+		}
+		region_state:KUR_HAK = {
+			create_pop = {
+				culture = kurdish
+				size = 40000
 			}
 		}
 	}
@@ -207,4 +244,6 @@
 			}
 		}
 	}
+
+    debug_log = gbbf_pops_history_end
 }

@@ -15,24 +15,63 @@
 		add_taxed_goods = g:tobacco
 		add_taxed_goods = g:wine
 		add_taxed_goods = g:liquor
-		
+
 		activate_law = law_type:law_monarchy
-		activate_law = law_type:law_autocracy 
-		activate_law = law_type:law_state_religion
-		activate_law = law_type:law_national_supremacy
+		activate_law = law_type:law_autocracy
+		activate_law = law_type:law_millet_system
+		activate_law = law_type:law_subjecthood
 		activate_law = law_type:law_traditionalism
 		activate_law = law_type:law_censorship
-		activate_law = law_type:law_land_based_taxation	
+		activate_law = law_type:law_land_based_taxation
 		activate_law = law_type:law_slave_trade
 
-		activate_law = law_type:law_turkfm_religious_autonomy
-		set_variable = {
-			name = turkfm_millet_system_var
-			value = 1
+		# The Sick Man of Europe
+		add_journal_entry = {
+			type = je_turkfm_sick_man_main
 		}
-		set_variable = {
-			name = custom_social_hierarchy
-			value = active_law:lawgroup_grefm_millet_system
+		turkfm_initialize_sick_man = yes
+
+		# The Reorganization of the State
+		add_journal_entry = {
+			type = je_turkfm_tanzimat_main
+		}
+		turkfm_initialize_tanzimat_effect = yes
+
+		# The Rise of Nationalism
+		turkfm_initialize_balkan_situation_effect = yes
+		add_journal_entry = {
+			type = je_eqfm_balkan_situation_main
+		}
+
+		# The Lands of the Black Mountain
+		add_journal_entry = {
+			type = je_eqfm_the_black_mountain
+		}
+		add_journal_entry = {
+			type = je_tur_raided
+		}
+
+		add_journal_entry = {
+			type = je_eqfm_pirates_of_the_adriatic
+		}
+
+		# Starting Conditions
+		trigger_event = {
+			id = turkfm_sick_man.001 # The Sick Man of Europe
+		}
+		add_modifier = {
+			name = modifier_turkfm_imperial_aspiriations
+			months = gbbf_duration_5_years
+		}
+		# this is to insulate the Ottomans from the first month SoL cliff... I don't like it, but its the best tool I have rn
+		if = {
+			limit = {
+				has_game_rule = gbbf_six_month_grace
+			}
+			add_modifier = {
+				name = modifier_turkfm_ottoman_legacy
+				months = gbbf_duration_half_year
+			}
 		}
 	}
 }

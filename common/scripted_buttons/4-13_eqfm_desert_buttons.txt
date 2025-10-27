@@ -1,0 +1,97 @@
+﻿eqfm_deploy_desert_expedition_button = {
+	name = "eqfm_deploy_desert_expedition_button"
+	desc = "eqfm_deploy_desert_expedition_button_desc"
+	
+	visible = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+	possible = {
+		custom_tooltip = {
+			text = eqfm_deploy_desert_expedition_possible
+			any_scope_state = {
+				state_region = s:STATE_LIBYAN_DESERT
+				is_under_colonization = yes
+			}
+		}
+		eqfm_has_desert_expedition_trigger = no
+		NOR = {
+			has_modifier = modifier_eqfm_failed_desert_expedition_country
+			has_modifier = modifier_eqfm_cancelled_desert_expedition
+		}
+		any_scope_general = {
+			count > 0
+			is_busy = no
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = eqfm_libyan_desert.005 # Securing the Desert
+			popup = yes
+		}
+		set_variable = eqfm_desert_expedition_var
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_cancel_desert_expedition_button = {
+	name = "eqfm_cancel_desert_expedition_button"
+	desc = "eqfm_cancel_desert_expedition_button_desc"
+	
+	visible = {
+		eqfm_has_desert_expedition_trigger = yes
+	}
+	possible = {
+		eqfm_has_desert_expedition_trigger = yes
+		hidden_trigger = {
+			NOT = {
+				has_variable = eqfm_expedition_desert_transit_var
+			}
+		}
+	}
+	effect = {
+		eqfm_cancel_desert_expedition_effect = yes
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_resupply_desert_expedition_button = {
+	name = "eqfm_resupply_desert_expedition_button"
+	desc = "eqfm_resupply_desert_expedition_button_desc"
+	
+	visible = {
+		eqfm_has_desert_expedition_trigger = yes
+	}
+	possible = {
+		NOT = {
+			has_modifier = modifier_eqfm_resupplied_desert_expedition
+		}
+		custom_tooltip = {
+			text = eqfm_resupply_desert_expedition_possible
+			has_variable = eqfm_desert_expedition_peril_var
+			var:eqfm_desert_expedition_peril_var >= 3
+		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = eqfm_expedition_desert_transit_var
+			}
+		}
+	}
+	effect = {
+		add_modifier = {
+			name = modifier_eqfm_resupplied_desert_expedition
+			months = gbbf_duration_2_plus_half_years
+			multiplier = money_amount_multiplier_small
+		}
+		custom_tooltip = {
+			text = eqfm_resupply_desert_expedition_effect
+			change_variable = {
+				name = eqfm_desert_expedition_peril_var
+				subtract = 3
+			}
+		}
+	}
+}

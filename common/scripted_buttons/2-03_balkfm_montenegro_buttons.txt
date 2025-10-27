@@ -1,0 +1,161 @@
+﻿balkfm_visit_tsar_button = {
+	name = "balkfm_visit_tsar_button"
+	desc = "balkfm_visit_tsar_button_desc"
+	
+	visible = {
+		NOT = {
+			has_dlc_feature = ip3_content # National Awakening
+			has_variable = balkfm_visited_tsar
+		}
+		ruler = {
+			has_template = template_balkfm_petrovic_petar
+		}
+	}
+	
+	possible = {
+		c:RUS ?= {
+			relations:root >= relations_threshold:cordial
+		}
+	}
+	
+	effect = {
+		trigger_event = {
+			id = balkfm_montenegro.005 # The Court of the Tsar
+		}
+		set_variable = balkfm_visited_tsar
+	}
+	
+}
+
+je_montenegrin_visit_moscow = {
+	# Overriding IP3 entry for visibility
+	name = "je_montenegrin_visit_moscow"
+	desc = "je_montenegrin_visit_moscow_desc"
+
+	visible = {
+		has_dlc_feature = ip3_content # National Awakening
+	}
+
+	possible = {
+		custom_tooltip = {
+			text = mon_visiting_moscow_tt
+			ROOT.Ruler = {
+				NOT = {
+					is_busy = yes
+				}
+			}
+		}
+		custom_tooltip = {
+			text = mon_visited_moscow_tt
+			NOT = {
+				ROOT.Ruler = {
+					has_variable = mon_visited_moscow
+				}
+			}
+		}
+	}
+
+	effect = {
+		add_modifier = {
+			name = modifier_mon_no_passing_laws
+			months = gbbf_duration_2_years
+		}
+		ROOT.Ruler = {
+			set_variable = is_away #stops certain events, but character can still die in Moscow.
+			set_variable = {
+				name = mon_visited_moscow
+				months = 120
+			}
+		}
+		trigger_event = {
+			id = mon_state_formation.2
+			days = 730
+			popup = yes
+		}
+	}
+}
+
+balkfm_mon_principality_button = {
+	name = "balkfm_mon_principality_button"
+	desc = "balkfm_mon_principality_button_desc"
+	
+	visible = {
+		NOR = {
+			has_modifier = modifier_balkfm_declared_principality
+			has_modifier = modifier_balkfm_declared_kingdom
+		}
+	}
+	
+	possible = {
+		NOT = {
+			has_law_or_variant = law_type:law_theocracy
+		}
+		custom_tooltip = {
+			text = balkfm_mon_elevation_buttons_tt
+			NOT = {
+				any_country = {
+					country_rank >= rank_value:great_power
+					OR = {
+						country_has_state_religion = rel:catholic
+						country_has_state_religion = rel:orthodox
+					}
+					NOT = { has_war_with = ROOT }
+					has_interest_marker_in_region = ROOT.capital.region
+					relations:root < 0
+				}
+			}
+		}
+		is_diplomatic_play_committed_participant = no
+	}
+	
+	effect = {
+		add_modifier = modifier_balkfm_declared_principality
+	}
+	
+	ai_chance = {
+		value = 100
+	}
+}
+
+balkfm_mon_kingdom_button = {
+	name = "balkfm_mon_kingdom_button"
+	desc = "balkfm_mon_kingdom_button_desc"
+	
+	visible = {
+		has_modifier = modifier_balkfm_declared_principality
+		NOT = {
+			has_modifier = modifier_balkfm_declared_kingdom
+		}
+	}
+	
+	possible = {
+		owns_entire_state_region = STATE_MONTENEGRO
+		custom_tooltip = {
+			text = balkfm_mon_elevation_buttons_tt
+			NOT = {
+				any_country = {
+					country_rank >= rank_value:great_power
+					OR = {
+						country_has_state_religion = rel:catholic
+						country_has_state_religion = rel:orthodox
+					}
+					NOT = { has_war_with = ROOT }
+					has_interest_marker_in_region = ROOT.capital.region
+					relations:root < 0
+				}
+			}
+		}
+		is_diplomatic_play_committed_participant = no
+		is_subject = no
+		country_rank > rank_value:insignificant_power
+	}
+	
+	effect = {
+		remove_modifier = modifier_balkfm_declared_principality
+		add_modifier = modifier_balkfm_declared_kingdom
+	}
+	
+	ai_chance = {
+		value = 100
+	}
+}

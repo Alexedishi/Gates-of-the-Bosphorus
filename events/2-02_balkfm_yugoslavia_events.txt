@@ -1,9 +1,11 @@
-﻿## YUGOSLAVIA FLAVOR EVENTS ##
+﻿###############################################
+## BALKANS FLAVOR MODULE: THE YUGOSLAV STATE ##
+###############################################
 
-# For Greek content, see the "grefm" module
-# For Turkish content, see the "turkfm" module
+# For Greek & Byzantium content, see the "grefm" module
 # For Balkan Nations content, see the "balkfm" module
-# For Orthodox Church content, see the "eocfm" module
+# For Ottoman & Turkish content, see the "turkfm" module
+# For Eastern Question & Expeditions content, see the "eqfm" module
 
 ####################
 
@@ -63,7 +65,7 @@ balkfm_yugoslavia.001 = { # Yugoslavism Starter Event
 			triggered_desc = {
 				desc = balkfm_yugoslavia.001.t4
 				trigger = {
-					has_variable = balkfm_texas_left
+					has_variable = bul_pursued_greater_yugoslavism # Inherited from IP3
 				}
 			}
 			triggered_desc = {
@@ -91,7 +93,7 @@ balkfm_yugoslavia.001 = { # Yugoslavism Starter Event
 			triggered_desc = {
 				desc = balkfm_yugoslavia.001.d4
 				trigger = {
-					has_variable = balkfm_texas_left
+					has_variable = bul_pursued_greater_yugoslavism # Inherited from IP3
 				}
 			}
 			triggered_desc = {
@@ -119,7 +121,7 @@ balkfm_yugoslavia.001 = { # Yugoslavism Starter Event
 			triggered_desc = {
 				desc = balkfm_yugoslavia.001.f4
 				trigger = {
-					has_variable = balkfm_texas_left
+					has_variable = bul_pursued_greater_yugoslavism # Inherited from IP3
 				}
 			}
 			triggered_desc = {
@@ -132,7 +134,7 @@ balkfm_yugoslavia.001 = { # Yugoslavism Starter Event
 	}
 
 	event_image = {
-		video = "unspecific_ruler_speaking_to_people"
+		video = "ip3_agitator_reading_manifesto"
 	}
 
 	icon = "gfx/interface/icons/event_icons/event_flag_yug.dds"
@@ -144,9 +146,12 @@ balkfm_yugoslavia.001 = { # Yugoslavism Starter Event
 	dlc = dlc_grefm
 
 	trigger = {
+		# triggered by je_balkfm_nacertanije
 	}
 
 	immediate = {
+		# I'm not harmonizing that ruler immortality nonsense
+		save_scope_as = yugoslavia_seeker_scope
 		if = {
 			limit = {
 				NOT = {
@@ -176,7 +181,62 @@ balkfm_yugoslavia.001 = { # Yugoslavism Starter Event
 	option = {
 		name = balkfm_yugoslavia.001.a
 		default_option = yes
+		hidden_effect = {
+			every_country = {
+				limit = {
+					NOT = { THIS = ROOT }
+					OR = {
+						country_has_primary_culture = cu:croat
+						country_has_primary_culture = cu:serb
+						country_has_primary_culture = cu:slovene
+						country_has_primary_culture = cu:bosniak
+					}
+				}
+				post_notification = yugoslavia_seeking_warning
+			}
+		}
+		ordered_diplomatically_relevant_country = {
+			limit = {
+				NOT = { THIS = ROOT }
+				owner = {
+					OR = {
+						country_has_primary_culture = cu:croat
+						country_has_primary_culture = cu:serb
+						country_has_primary_culture = cu:slovene
+						country_has_primary_culture = cu:bosniak
+					}
+					relations:root < relations_threshold:cordial
+				}
+			}
+			order_by = country_rank
+			ROOT = {
+				create_incident = {
+					country = PREV
+					value = 10
+				}
+			}
+		}
+		add_modifier = {
+			name = seeking_yugoslavia
+			months = gbbf_duration_15_years
+		}
 		custom_tooltip = balkfm_yugoslavism_tt
+	}
+
+	option = {
+		name = balkfm_yugoslavia.001.b
+		every_country = {
+			limit = {
+				NOT = { THIS = ROOT }
+				OR = {
+					country_has_primary_culture = cu:croat
+					country_has_primary_culture = cu:serb
+					country_has_primary_culture = cu:slovene
+					country_has_primary_culture = cu:bosniak
+				}
+			}
+			change_relations = { country = ROOT value = 10 }
+		}
 	}
 
 }
@@ -457,7 +517,7 @@ balkfm_yugoslavia.015 = { # Yugoslav Country Seeks Union (Same Culture)
 		}
 		add_modifier = {
 			name = modifier_balkfm_established_union
-			days = short_modifier_time
+			months = gbbf_duration_2_plus_half_years
 		}
 		ai_chance = {
 			base = 100
@@ -544,7 +604,7 @@ balkfm_yugoslavia.016 = { # Yugoslav Country Seeks Union (Different Culture)
 		}
 		add_modifier = {
 			name = modifier_balkfm_established_union
-			days = short_modifier_time
+			months = gbbf_duration_2_plus_half_years
 		}
 		ai_chance = {
 			base = 100

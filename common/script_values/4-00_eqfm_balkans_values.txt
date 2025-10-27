@@ -1,0 +1,667 @@
+﻿## Primary Mechanic Values
+eqfm_escalation_progress_value = {
+	value = 0
+	add = {
+		value = 1
+		desc = turkfm_value_from_base_progress
+	}
+	add = {
+		value = {
+			every_political_movement = {
+				limit = {
+					OR = {
+						is_political_movement_type = movement_cultural_minority
+						is_political_movement_type = movement_religious_minority
+					}
+
+					gbbf_balkans_culture_trigger = yes
+				}
+				add = eqfm_movement_impact_value
+			}
+			multiply = 100 # This might be overkill, we'll find out soon
+			round_to = 0.01
+		}
+		desc = eqfm_value_from_movement_impact
+	}
+	add = {
+		value = {
+			every_country = {
+				limit = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_accelerate_tensions
+					}
+				}
+				save_temporary_scope_as = eqfm_accelerating_country
+				add = {
+					value = 2
+					desc = eqfm_value_from_accelerating_tensions
+				}
+			}
+		}
+		desc = eqfm_value_from_overall_accelerating_tensions
+	}
+	add = {
+		value = {
+			every_scope_state = {
+				limit = {
+					has_modifier = modifier_eqfm_race_riots
+				}
+				save_temporary_scope_as = eqfm_riot_state
+				add = {
+					value = radical_fraction
+					desc = eqfm_value_from_race_riots
+				}
+			}
+			round_to = 0.01
+		}
+		desc = eqfm_value_from_ongoing_riots
+	}
+	subtract = {
+		value = {
+			every_country = {
+				limit = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_decelerate_tensions
+					}
+				}
+				save_temporary_scope_as = eqfm_decelerating_country
+				add = {
+					value = 1
+					desc = eqfm_value_from_decelerating_tensions
+				}
+			}
+		}
+		desc = eqfm_value_from_overall_decelerating_tensions
+	}
+	if = {
+		limit = {
+			eqfm_can_escalate_tension_trigger = no
+		}
+		multiply = 0
+	}
+	min = 0
+}
+
+eqfm_deescalation_progress_value = {
+	value = 0
+	add = {
+		value = 1
+		desc = turkfm_value_from_base
+	}
+	add = {
+		value = {
+			every_country = {
+				limit = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_decelerate_tensions
+					}
+				}
+				save_temporary_scope_as = eqfm_decelerating_country
+				add = {
+					value = 2
+					desc = eqfm_value_from_decelerating_tensions
+				}
+			}
+		}
+		desc = eqfm_value_from_overall_decelerating_tensions
+	}
+	subtract = {
+		value = {
+			every_country = {
+				limit = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_accelerate_tensions
+					}
+				}
+				save_temporary_scope_as = eqfm_accelerating_country
+				add = {
+					value = 1
+					desc = eqfm_value_from_accelerating_tensions
+				}
+			}
+		}
+		desc = eqfm_value_from_overall_accelerating_tensions
+	}
+	if = {
+		limit = {
+			global_var:eqfm_balkans_phase_var = flag:eqfm_hostility
+			NOT = {
+				any_scope_state = {
+					has_modifier = modifier_eqfm_race_riots
+				}
+			}
+		}
+		add = {
+			value = 5
+			desc = eqfm_value_from_no_riots
+		}
+	}
+	if = {
+		limit = {
+			global_var:eqfm_balkans_phase_var = flag:eqfm_crisis
+			NOT = {
+				has_journal_entry = je_eqfm_balkan_situation_crisis
+			}
+			is_at_war = no
+		}
+		add = {
+			value = 50
+			desc = turkfm_value_from_base_progress
+		}
+		subtract = {
+			value = {
+				every_political_movement = {
+					limit = {
+						eqfm_eligible_minority_movement_trigger = yes
+						is_secessionist = yes
+					}
+				}
+			}
+			desc = eqfm_value_from_secessionist_movements
+		}
+	}
+	if = {
+		limit = {
+			global_var:eqfm_balkans_phase_var = flag:eqfm_crisis
+			has_journal_entry = je_eqfm_balkan_situation_crisis
+		}
+		multiply = {
+			value = 0
+			desc = eqfm_value_from_crisis
+		}
+	}
+	if = {
+		limit = {
+			eqfm_can_deescalate_tension_trigger = no
+		}
+		multiply = 0
+	}
+	min = 0
+}
+
+eqfm_tension_progress_value = {
+	value = 0
+	if = {
+		limit = {
+			global_var:eqfm_deescalation_var > global_var:eqfm_escalation_var
+		}
+		add = global_var:eqfm_deescalation_var
+	}
+	else = {
+		add = global_var:eqfm_escalation_var
+	}
+}
+
+## Race Riot Values
+eqfm_riot_counter_value = {
+	value = 0
+	add = {
+		value = {
+			every_scope_state = {
+				limit = {
+					has_modifier = modifier_eqfm_race_riots
+				}
+				add = {
+					value = 1
+					desc = eqfm_value_from_ongoing_riots
+				}
+			}
+		}
+		desc = eqfm_deescalation_var
+	}
+}
+
+eqfm_riot_potential_value = {
+	value = 0
+	add = {
+		value = 1
+		desc = turkfm_value_from_base
+	}
+	if = {
+		limit = {
+			has_technology_researched = nationalism
+		}
+		add = {
+			value = 1
+			desc = eqfm_value_from_nationalism
+		}
+	}
+	if = {
+		limit = {
+			has_technology_researched = pan-nationalism
+		}
+		add = {
+			value = 1
+			desc = eqfm_value_from_pan_nationalism
+		}
+	}
+}
+
+eqfm_riot_progress_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = eqfm_riot_state_1_var
+			has_variable = eqfm_riot_state_1_progress_var
+		}
+		add = {
+			value = {
+				add = var:eqfm_riot_state_1_progress_var
+				if = {
+					limit = {
+						var:eqfm_riot_state_1_var ?= {
+							has_decree = decree_violent_suppression
+						}
+					}
+					multiply = 0.5
+				}
+			}
+			desc = eqfm_value_from_riot_state_1
+		}
+	}
+	if = {
+		limit = {
+			has_variable = eqfm_riot_state_2_var
+			has_variable = eqfm_riot_state_2_progress_var
+		}
+		add = {
+			value = {
+				add = var:eqfm_riot_state_2_progress_var
+				if = {
+					limit = {
+						var:eqfm_riot_state_2_var ?= {
+							has_decree = decree_violent_suppression
+						}
+					}
+					multiply = 0.5
+				}
+			}
+			desc = eqfm_value_from_riot_state_2
+		}
+	}
+	if = {
+		limit = {
+			has_variable = eqfm_riot_state_3_var
+			has_variable = eqfm_riot_state_3_progress_var
+		}
+		add = {
+			value = {
+				add = var:eqfm_riot_state_3_progress_var
+				if = {
+					limit = {
+						var:eqfm_riot_state_3_var ?= {
+							has_decree = decree_violent_suppression
+						}
+					}
+					multiply = 0.5
+				}
+			}
+			desc = eqfm_value_from_riot_state_3
+		}
+	}
+	add = {
+		value = {
+			every_country = {
+				limit = {
+					has_diplomatic_pact = {
+						who = c:TUR
+						type = turkfm_accelerate_tensions
+					}
+				}
+				save_temporary_scope_as = eqfm_accelerating_country
+				add = {
+					value = 0.1
+					desc = eqfm_value_from_accelerating_tensions
+				}
+			}
+		}
+		desc = eqfm_value_from_overall_accelerating_tensions
+	}
+	if = {
+		limit = {
+			has_technology_researched = political_agitation
+		}
+		multiply = {
+			value = 0.2
+			desc = eqfm_value_from_political_agitation
+		}
+	}
+	subtract = {
+		value = {
+			add = government_legitimacy
+			subtract = 75
+			divide = 100
+		}
+		desc = turkfm_value_from_legitimacy
+	}
+	subtract = {
+		value = {
+			if = {
+				limit = {
+					has_institution = institution_police
+				}
+				institution:institution_police = {
+					add = investment
+				}
+			}
+			multiply = 0.1
+		}
+		desc = turkfm_value_from_policing
+	}
+	if = {
+		limit = {
+			NOT = {
+				any_scope_state = {
+					has_modifier = modifier_eqfm_race_riots
+				}
+			}
+		}
+		multiply = {
+			value = 0
+			desc = turkfm_value_from_no_riots
+		}
+	}
+	if = {
+		limit = {
+			has_variable = eqfm_riot_duration_var
+		}
+		subtract = {
+			value = var:eqfm_riot_duration_var
+			multiply = 0.01
+			desc = eqfm_value_from_riot_duration
+		}
+	}
+}
+
+eqfm_riot_1_progress_value = {
+	value = 0
+	scope:eqfm_riot_state_1_scope = {
+		every_scope_pop = {
+			limit = {
+				OR = {
+					has_pop_religion = orthodox
+					has_pop_religion = jewish
+				}
+			}
+			add = pop_radical_fraction
+		}
+		divide = {
+			every_scope_pop = {
+				limit = {
+					OR = {
+						has_pop_religion = orthodox
+						has_pop_religion = jewish
+					}
+				}
+				add = 1
+			}
+			min = 1
+		}
+	}
+	multiply = 0.1
+	round_to = 0.01
+}
+
+eqfm_riot_2_progress_value = {
+	value = 0
+	scope:eqfm_riot_state_2_scope = {
+		every_scope_pop = {
+			limit = {
+				OR = {
+					has_pop_religion = orthodox
+					has_pop_religion = jewish
+				}
+			}
+			add = pop_radical_fraction
+		}
+		divide = {
+			every_scope_pop = {
+				limit = {
+					OR = {
+						has_pop_religion = orthodox
+						has_pop_religion = jewish
+					}
+				}
+				add = 1
+			}
+			min = 1
+		}
+	}
+	multiply = 0.1
+	round_to = 0.01
+}
+
+eqfm_riot_3_progress_value = {
+	value = 0
+	scope:eqfm_riot_state_3_scope = {
+		every_scope_pop = {
+			limit = {
+				OR = {
+					has_pop_religion = orthodox
+					has_pop_religion = jewish
+				}
+			}
+			add = pop_radical_fraction
+		}
+		divide = {
+			every_scope_pop = {
+				limit = {
+					OR = {
+						has_pop_religion = orthodox
+						has_pop_religion = jewish
+					}
+				}
+				add = 1
+			}
+			min = 1
+		}
+	}
+	multiply = 0.1
+	round_to = 0.01
+}
+
+eqfm_riot_multiplier_value = {
+	value = 0
+	add = var:eqfm_riot_var
+	multiply = 0.01
+}
+
+## Crisis Values
+eqfm_crisis_progress_value = {
+	value = 0
+	if = {
+		limit = {
+			# No relevant movement can be >= 75 for the progress bar to advance
+			c:TUR ?= {
+				NOT = {
+					any_political_movement = {
+						AND  = {
+							is_secessionist = yes
+							NOT = {
+								political_movement_radicalism > define:NPolitics|MIN_RADICALISM_FOR_CIVIL_WAR_PROGRESSION
+							}
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				c:TUR ?= {
+					legitimacy >= control_eastern_crisis_legitimacy_min
+				}
+			}
+			add = {
+				desc = "progress_from_ottoman_legitimacy_tt"
+				value = 1
+			}
+		}
+		if = {
+			limit = {
+				c:TUR ?= {
+					is_at_war = no
+				}
+			}
+			add = {
+				desc = "progress_from_being_at_peace_tt"
+				value = 1
+			}
+		}
+		else = {
+			add = {
+				desc = "progress_from_being_at_war_tt"
+				value = -3
+			}
+		}
+		if = {
+			limit = {
+				c:TUR ?= {
+					has_any_secessionists_growing = no
+				}
+			}
+			add = {
+				desc = "progress_from_no_secessionists_growing"
+				value = 1
+			}
+		}
+		if = {
+			limit = {
+				c:TUR ?= {
+					has_variable = ottoman_crushed_secession
+				}
+			}
+			add = {
+				desc = "progress_from_crushed_secession"
+				value = 2
+			}
+		}
+	}
+}
+
+## Political Movement Values
+eqfm_movement_impact_value = {
+	value = 0
+	add = political_movement_support
+	multiply = political_movement_radicalism
+	round_to = 0.01
+}
+
+## Minority Movement Values (CMF Overrides)
+turkfm_target_fraction_of_states_value = {
+	value = 0
+	add = owner.modifier:country_minority_secession_size_add
+	divide = {
+		value = {
+			owner = {
+				every_scope_state = {
+					add = 1
+				}
+			}
+			min = 1
+		}
+	}
+}
+
+turkfm_movement_cultural_minority_secession_target_fraction_of_states_min = {
+	value = 0
+	add = owner.modifier:country_minority_secession_size_add
+	divide = {
+		value = {
+			owner = {
+				every_scope_state = {
+					add = 1
+				}
+			}
+			min = 1
+		}
+	}
+}
+
+turkfm_movement_religious_minority_secession_target_fraction_of_states_min = {
+	value = 0
+	add = owner.modifier:country_minority_secession_size_add
+	divide = {
+		value = {
+			owner = {
+				every_scope_state = {
+					add = 1
+				}
+			}
+			min = 1
+		}
+	}
+}
+
+## Minority Movement Values (Activism Adjustments)
+eqfm_movement_activism_target = {
+	value = 0
+	if = {
+		limit = {
+			eqfm_deconfliction_phase_trigger = yes
+		}
+		add = 0
+	}
+	if = {
+		limit = {
+			eqfm_stable_phase_trigger = yes
+		}
+		add = 10
+	}
+	else_if = {
+		limit = {
+			eqfm_unrest_phase_trigger = yes
+		}
+		add = 25
+	}
+	else_if = {
+		limit = {
+			eqfm_hostility_phase_trigger = yes
+		}
+		add = 50
+	}
+	else_if = {
+		limit = {
+			eqfm_crisis_phase_trigger = yes
+		}
+		add = 75
+	}
+}
+
+eqfm_movement_activism_adjustment_value = {
+	value = 0
+	if = {
+		limit = {
+			political_movement_radicalism < eqfm_movement_activism_target
+		}
+		add = eqfm_movement_activism_target
+		subtract = political_movement_radicalism
+		if = {
+			limit = {
+				has_variable = eqfm_previous_adjustment_var
+			}
+			subtract = var:eqfm_previous_adjustment_var
+		}
+	}
+	if = {
+		limit = {
+			political_movement_radicalism > eqfm_movement_activism_target
+		}
+		subtract = 1
+	}
+}
+
+eqfm_movement_activism_multiplier_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = eqfm_previous_adjustment_var
+		}
+		add = var:eqfm_previous_adjustment_var
+	}
+	add = eqfm_movement_activism_adjustment_value
+	min = 0
+}

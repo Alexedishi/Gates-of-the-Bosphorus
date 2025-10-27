@@ -1,5 +1,6 @@
 ﻿balkfm_obrenovic_progress_value = {
 	value = 0
+	# Apply these values if House Obrenovic is ruling
 	if = {
 		limit = {
 			balkfm_has_obrenovic_ruler_trigger = yes
@@ -16,8 +17,8 @@
 		if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_autocracy
-					has_law = law_type:law_oligarchy
+					has_law_or_variant = law_type:law_autocracy
+					has_law_or_variant = law_type:law_oligarchy
 				}
 			}
 			add = {
@@ -67,7 +68,7 @@
 		if = {
 			limit = {
 				NOT = {
-					has_law = law_type:law_no_police
+					has_law_or_variant = law_type:law_no_police
 				}
 			}
 			add = {
@@ -105,8 +106,8 @@
 		if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_serfdom
-					has_law = law_type:law_tenant_farmers
+					has_law_or_variant = law_type:law_serfdom
+					has_law_or_variant = law_type:law_tenant_farmers
 				}
 			}
 			add = {
@@ -152,7 +153,207 @@
 				desc = balkfm_value_from_land_reform
 			}
 		}
+
+		### IP3-Specific Values
+		if = {
+			limit = {
+				has_dlc_feature = ip3_content # National Awakening
+			}
+			## Radical Fraction
+			subtract = {
+				value = {
+					add = radical_fraction
+					multiply = 10
+				}
+				desc = "balkfm_value_from_radicals"
+			}
+			## Loyalist Fraction
+			add = {
+				value = {
+					add = loyalist_fraction
+					multiply = 10
+				}
+				desc = "balkfm_value_from_loyalists"
+			}
+			
+			# Stopping hajduk looting (serbian_throne.4)
+			if = {
+				limit = {
+					has_modifier = serbia_stopped_hajduks_armed_penalty
+				}
+				add = {
+					value = 0.4
+					desc = "balkfm_value_from_stopped_hajduks"
+				}
+			}
+			
+			# Clerical publicity - serbian_throne.1.b / balkfm_serbia.020
+			if = {
+				limit = {
+					has_modifier = serbia_clerical_publicity_mod
+				}
+				add = {
+					value = 0.75
+					desc = "balkfm_value_from_clerical_publicity"
+				}
+			}
+			# Clerical publicity - serbian_throne.1.b / balkfm_serbia.020
+			if = {
+				limit = {
+					has_modifier = serbia_funded_clerical_publicity_mod
+				}
+				add = {
+					desc = "balkfm_value_from_clerical_publicity"
+					value = 0.40
+				}
+			}
+			# Clerical publicity - serbian_throne.1.b / balkfm_serbia.020
+			if = {
+				limit = {
+					has_modifier = serbia_forced_clerical_publicity_mod
+				}
+				subtract = {
+					desc = "balkfm_value_from_clerical_publicity"
+					value = 0.40
+				}
+			}
+			
+			# Having one less hypocrite politician (serbian_throne.3.a)
+			if = {
+				limit = {
+					has_modifier = serbia_exposing_hypocrite_mod
+				}
+				add = {
+					desc = "balkfm_value_from_exposing_hypocrite"
+					value = 0.40
+				}
+			}
+			# Coerced politician (serbian_throne.3.b)
+			if = {
+				limit = {
+					has_modifier = serbia_exposing_hypocrite_forcing_to_work_mod
+				}
+				add = {
+					desc = "balkfm_value_from_exposing_hypocrite_forcing_to_work"
+					value = 0.40
+				}
+			}
+			# Failed assassination attempt (serbian_throne.3.a)
+			if = {
+				limit = {
+					has_modifier = serbia_exposing_hypocrite_fail_mod
+				}
+				subtract = {
+					desc = "balkfm_value_from_exposing_hypocrite_fail"
+					value = 0.40
+				}
+			}
+			# Slander pamphlet production (serbian_throne.2.a/b)
+			if = {
+				limit = {
+					OR = {
+						has_modifier = serbia_pamphlet_money_mod
+						has_modifier = serbia_pamphlet_auth_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_pamphlets"
+					value = 3
+					multiply = {
+						value = literacy_rate
+					}
+				}
+			}
+			# Quashed urban rebels (serbian_throne.5.a/c)
+			if = {
+				limit = {
+					OR = {
+						has_modifier = serbia_urban_rebels_killed_by_armed_forces_mod
+						has_modifier = serbia_urban_rebels_bribed_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_quashed_urban_rebels"
+					value = 0.35
+				}
+			}
+			# Quashed urban rebels (serbian_throne.5.b)
+			if = {
+				limit = {
+					has_modifier = serbia_urban_rebels_killed_by_loyalists_mod
+				}
+				add = {
+					desc = "balkfm_value_from_quashed_urban_rebels"
+					value = 0.60
+				}
+			}
+			
+			# Aided Maygarized Serbs (serbian_throne.6.a)
+			if = {
+				limit = {
+					has_modifier = serbia_aided_magyarized_serbs_mod
+				}
+				add = {
+					desc = "balkfm_value_from_aided_magyarized_serbs"
+					value = 0.25
+				}
+			}
+			# Aided Maygarized Serbs (serbian_throne.6.b)
+			if = {
+				limit = {
+					has_modifier = serbia_greatly_aided_magyarized_serbs_mod
+				}
+				add = {
+					desc = "balkfm_value_from_greatly_aided_magyarized_serbs"
+					value = 0.75
+				}
+			}
+
+			# + If SOL is higher than 7.5
+			add = {
+				desc = "balkfm_value_from_sol"
+				value = {
+					add = average_sol
+					subtract = 10
+					divide = 1.5
+					round_to = 0.01
+				}
+			}
+
+			# Negative bureaucracy
+			if = {
+				limit = {
+					bureaucracy < 0
+				}
+				add = {
+					desc = "balkfm_value_from_negative_bureaucracy"
+					value = -1
+				}
+			}
+
+			# Negative authority
+			if = {
+				limit = {
+					authority < 0
+				}
+				add = {
+					desc = "balkfm_value_from_negative_authority"
+					value = -1
+				}
+			}
+
+			# Legitimacy below 90
+			add = {
+				desc = "balkfm_value_from_legitimacy"
+				value = legitimacy
+				subtract = 80
+				divide = 30
+			}
+		}
+
 	}
+
+	# Apply these values if House Karadordevic is ruling
 	if = {
 		limit = {
 			balkfm_has_karadordevic_ruler_trigger = yes
@@ -161,8 +362,8 @@
 		if = {
 			limit = {
 				NOR = {
-					has_law = law_type:law_autocracy
-					has_law = law_type:law_oligarchy
+					has_law_or_variant = law_type:law_autocracy
+					has_law_or_variant = law_type:law_oligarchy
 				}
 			}
 			add = {
@@ -189,7 +390,7 @@
 		## Relevant IGs will support non-ruling Obrenovic if SER has no police
 		if = {
 			limit = {
-				has_law = law_type:law_no_police
+				has_law_or_variant = law_type:law_no_police
 			}
 			add = {
 				value = {
@@ -210,8 +411,8 @@
 		if = {
 			limit = {
 				NOR = {
-					has_law = law_type:law_serfdom
-					has_law = law_type:law_tenant_farmers
+					has_law_or_variant = law_type:law_serfdom
+					has_law_or_variant = law_type:law_tenant_farmers
 				}
 			}
 			add = {
@@ -236,6 +437,8 @@
 			}
 		}
 	}
+
+	# Always apply these values
 	## Consul Check
 	if = {
 		limit = {
@@ -285,7 +488,7 @@
 		limit = {
 			has_variable = balkfm_obrenovic_vojvodina_var
 			NOT = {
-				owns_entire_state_region = STATE_SOUTHERN_SERBIA
+				owns_entire_state_region = STATE_EASTERN_SERBIA
 			}
 		}
 		subtract = {
@@ -296,7 +499,7 @@
 	else_if = {
 		limit = {
 			has_variable = balkfm_karadordevic_vojvodina_var
-			owns_entire_state_region = STATE_SOUTHERN_SERBIA
+			owns_entire_state_region = STATE_EASTERN_SERBIA
 		}
 		add = {
 			value = 2
@@ -308,6 +511,8 @@
 
 balkfm_karadordevic_progress_value = {
 	value = 0
+
+	# Apply these values if House Karadordevic is ruling
 	if = {
 		limit = {
 			balkfm_has_karadordevic_ruler_trigger = yes
@@ -324,10 +529,10 @@ balkfm_karadordevic_progress_value = {
 		if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_landed_voting
-					has_law = law_type:law_wealth_voting
-					has_law = law_type:law_census_voting
-					has_law = law_type:law_universal_suffrage
+					has_law_or_variant = law_type:law_landed_voting
+					has_law_or_variant = law_type:law_wealth_voting
+					has_law_or_variant = law_type:law_census_voting
+					has_law_or_variant = law_type:law_universal_suffrage
 				}
 			}
 			add = {
@@ -362,10 +567,10 @@ balkfm_karadordevic_progress_value = {
 		else_if = {
 			limit = {
 				NOR = {
-					has_law = law_type:law_landed_voting
-					has_law = law_type:law_wealth_voting
-					has_law = law_type:law_census_voting
-					has_law = law_type:law_universal_suffrage
+					has_law_or_variant = law_type:law_landed_voting
+					has_law_or_variant = law_type:law_wealth_voting
+					has_law_or_variant = law_type:law_census_voting
+					has_law_or_variant = law_type:law_universal_suffrage
 				}
 			}
 			subtract = {
@@ -401,8 +606,8 @@ balkfm_karadordevic_progress_value = {
 		if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_right_of_assembly
-					has_law = law_type:law_protected_speech
+					has_law_or_variant = law_type:law_right_of_assembly
+					has_law_or_variant = law_type:law_protected_speech
 				}
 			}
 			add = {
@@ -429,8 +634,8 @@ balkfm_karadordevic_progress_value = {
 		else_if = {
 			limit = {
 				NOR = {
-					has_law = law_type:law_right_of_assembly
-					has_law = law_type:law_protected_speech
+					has_law_or_variant = law_type:law_right_of_assembly
+					has_law_or_variant = law_type:law_protected_speech
 				}
 			}
 			subtract = {
@@ -458,8 +663,8 @@ balkfm_karadordevic_progress_value = {
 		if = {
 			limit = {
 				NOR = {
-					has_law = law_type:law_serfdom
-					has_law = law_type:law_tenant_farmers
+					has_law_or_variant = law_type:law_serfdom
+					has_law_or_variant = law_type:law_tenant_farmers
 				}
 			}
 			subtract = {
@@ -505,7 +710,207 @@ balkfm_karadordevic_progress_value = {
 				desc = balkfm_value_from_land_reform
 			}
 		}
+
+		### IP3-Specific Values
+		if = {
+			limit = {
+				has_dlc_feature = ip3_content # National Awakening
+			}
+			## Radical Fraction
+			subtract = {
+				value = {
+					add = radical_fraction
+					multiply = 10
+				}
+				desc = "balkfm_value_from_radicals"
+			}
+			## Loyalist Fraction
+			add = {
+				value = {
+					add = loyalist_fraction
+					multiply = 10
+				}
+				desc = "balkfm_value_from_loyalists"
+			}
+
+			# Stopping hajduk looting (serbian_throne.4)
+			if = {
+				limit = {
+					has_modifier = serbia_stopped_hajduks_armed_penalty
+				}
+				add = {
+					value = 0.4
+					desc = "balkfm_value_from_stopped_hajduks"
+				}
+			}
+			
+			# Clerical publicity - serbian_throne.1.b / balkfm_serbia.020
+			if = {
+				limit = {
+					has_modifier = serbia_clerical_publicity_mod
+				}
+				add = {
+					value = 0.75
+					desc = "balkfm_value_from_clerical_publicity"
+				}
+			}
+			# Clerical publicity - serbian_throne.1.b / balkfm_serbia.020
+			if = {
+				limit = {
+					has_modifier = serbia_funded_clerical_publicity_mod
+				}
+				add = {
+					desc = "balkfm_value_from_clerical_publicity"
+					value = 0.40
+				}
+			}
+			# Clerical publicity - serbian_throne.1.b / balkfm_serbia.020
+			if = {
+				limit = {
+					has_modifier = serbia_forced_clerical_publicity_mod
+				}
+				subtract = {
+					desc = "balkfm_value_from_clerical_publicity"
+					value = 0.40
+				}
+			}
+
+			# Having one less hypocrite politician (serbian_throne.3.a)
+			if = {
+				limit = {
+					has_modifier = serbia_exposing_hypocrite_mod
+				}
+				add = {
+					desc = "balkfm_value_from_exposing_hypocrite"
+					value = 0.40
+				}
+			}
+			# Coerced politician (serbian_throne.3.b)
+			if = {
+				limit = {
+					has_modifier = serbia_exposing_hypocrite_forcing_to_work_mod
+				}
+				add = {
+					desc = "balkfm_value_from_exposing_hypocrite_forcing_to_work"
+					value = 0.40
+				}
+			}
+			# Failed assassination attempt (serbian_throne.3.a)
+			if = {
+				limit = {
+					has_modifier = serbia_exposing_hypocrite_fail_mod
+				}
+				subtract = {
+					desc = "balkfm_value_from_exposing_hypocrite_fail"
+					value = 0.40
+				}
+			}
+			# Slander pamphlet production (serbian_throne.2.a/b)
+			if = {
+				limit = {
+					OR = {
+						has_modifier = serbia_pamphlet_money_mod
+						has_modifier = serbia_pamphlet_auth_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_pamphlets"
+					value = 3
+					multiply = {
+						value = literacy_rate
+					}
+				}
+			}
+			# Quashed urban rebels (serbian_throne.5.a/c)
+			if = {
+				limit = {
+					OR = {
+						has_modifier = serbia_urban_rebels_killed_by_armed_forces_mod
+						has_modifier = serbia_urban_rebels_bribed_mod
+					}
+				}
+				add = {
+					desc = "balkfm_value_from_quashed_urban_rebels"
+					value = 0.35
+				}
+			}
+			# Quashed urban rebels (serbian_throne.5.b)
+			if = {
+				limit = {
+					has_modifier = serbia_urban_rebels_killed_by_loyalists_mod
+				}
+				add = {
+					desc = "balkfm_value_from_quashed_urban_rebels"
+					value = 0.60
+				}
+			}
+
+			# Aided Maygarized Serbs (serbian_throne.6.a)
+			if = {
+				limit = {
+					has_modifier = serbia_aided_magyarized_serbs_mod
+				}
+				add = {
+					desc = "balkfm_value_from_aided_magyarized_serbs"
+					value = 0.25
+				}
+			}
+			# Aided Maygarized Serbs (serbian_throne.6.b)
+			if = {
+				limit = {
+					has_modifier = serbia_greatly_aided_magyarized_serbs_mod
+				}
+				add = {
+					desc = "balkfm_value_from_greatly_aided_magyarized_serbs"
+					value = 0.75
+				}
+			}
+
+			# + If SOL is higher than 7.5
+			add = {
+				desc = "balkfm_value_from_sol"
+				value = {
+					add = average_sol
+					subtract = 10
+					divide = 1.5
+					round_to = 0.01
+				}
+			}
+
+			# Negative bureaucracy
+			if = {
+				limit = {
+					bureaucracy < 0
+				}
+				add = {
+					desc = "balkfm_value_from_negative_bureaucracy"
+					value = -1
+				}
+			}
+
+			# Negative authority
+			if = {
+				limit = {
+					authority < 0
+				}
+				add = {
+					desc = "balkfm_value_from_negative_authority"
+					value = -1
+				}
+			}
+
+			# Legitimacy below 90
+			add = {
+				desc = "balkfm_value_from_legitimacy"
+				value = legitimacy
+				subtract = 80
+				divide = 30
+			}
+		}
+
 	}
+
+	# Apply these values if House Obrenovic is ruling
 	if = {
 		limit = {
 			balkfm_has_obrenovic_ruler_trigger = yes
@@ -514,10 +919,10 @@ balkfm_karadordevic_progress_value = {
 		if = {
 			limit = {
 				NOR = {
-					has_law = law_type:law_landed_voting
-					has_law = law_type:law_wealth_voting
-					has_law = law_type:law_census_voting
-					has_law = law_type:law_universal_suffrage
+					has_law_or_variant = law_type:law_landed_voting
+					has_law_or_variant = law_type:law_wealth_voting
+					has_law_or_variant = law_type:law_census_voting
+					has_law_or_variant = law_type:law_universal_suffrage
 				}
 			}
 			add = {
@@ -553,8 +958,8 @@ balkfm_karadordevic_progress_value = {
 		if = {
 			limit = {
 				NOR = {
-					has_law = law_type:law_right_of_assembly
-					has_law = law_type:law_protected_speech
+					has_law_or_variant = law_type:law_right_of_assembly
+					has_law_or_variant = law_type:law_protected_speech
 				}
 			}
 			add = {
@@ -582,8 +987,8 @@ balkfm_karadordevic_progress_value = {
 		if = {
 			limit = {
 				OR = {
-					has_law = law_type:law_serfdom
-					has_law = law_type:law_tenant_farmers
+					has_law_or_variant = law_type:law_serfdom
+					has_law_or_variant = law_type:law_tenant_farmers
 				}
 			}
 			add = {
@@ -608,6 +1013,8 @@ balkfm_karadordevic_progress_value = {
 			}
 		}
 	}
+
+	# Always apply these values
 	## Consul Check
 	if = {
 		limit = {
@@ -657,7 +1064,7 @@ balkfm_karadordevic_progress_value = {
 		limit = {
 			has_variable = balkfm_karadordevic_vojvodina_var
 			NOT = {
-				owns_entire_state_region = STATE_SOUTHERN_SERBIA
+				owns_entire_state_region = STATE_EASTERN_SERBIA
 			}
 		}
 		subtract = {
@@ -668,7 +1075,7 @@ balkfm_karadordevic_progress_value = {
 	else_if = {
 		limit = {
 			has_variable = balkfm_karadordevic_vojvodina_var
-			owns_entire_state_region = STATE_SOUTHERN_SERBIA
+			owns_entire_state_region = STATE_EASTERN_SERBIA
 		}
 		add = {
 			value = 2

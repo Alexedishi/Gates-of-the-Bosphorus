@@ -1,0 +1,3603 @@
+﻿########################################################
+## EASTERN QUESTION FLAVOR MODULE: THE BLACK MOUNTAIN ##
+########################################################
+
+# For Greek & Byzantium content, see the "grefm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Ottoman & Turkish content, see the "turkfm" module
+# For Eastern Question & Expeditions content, see the "eqfm" module
+
+####################
+
+namespace = eqfm_black_mountain
+
+####################
+
+####	TABLE OF CONTENTS	####	#TOC
+
+# The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
+
+#000-009 - Black Mountain Narrative Events
+#	001 - The Battle of Grahovo
+#	002 - ##
+#	003 - ##
+#	004 - ##Montenegrin Lands Gained
+#	005 - ##Montenegrin Lands Lost
+#	006 - The Black Mountain Lost
+#	007 - The Black Mountain Subdued
+#	008 - International Indifference
+#	009 - The Lands of Montenegro
+
+#010-019 - Black Mountain Decision Events
+#	010 - Negotiations on Head-taking (Receiver)
+#	011 - Negotiations on Head-taking (Outcome)
+#	012 - Negotiations Over Cattaro (AUS Receiver)
+#	013 - Negotiations Over Cattaro (MON Outcome)
+#	014 - ##The Gaols of Cetinje
+#	015 - ##Montenegro Offers Ransom
+#	016 - ##Ottoman Reply to Ransom
+#	017 - ##Ottoman Noble Beheaded
+#	018 - ##
+#	019 - ##
+
+#020-029 - Black Mountain Expedition Narrative Events
+#	020 - Marauding in the Hinterlands
+#	021 - Defending the Hinterlands
+#	022 - Expeditionary Force Arrives at the Border
+#	023 - Expeditionary Force Withdraws from the Border
+#	024 - Expeditionary Force Leader Has Died!
+#	025 - ##
+#	026 - ##
+#	027 - ##Border Incursion Repulsed
+#	028 - ##Village Skirmish Escalates
+#	029 - ##Skirmish Fizzles Out
+
+#030-039 - Black Mountain Raiding Events (For MON)
+#	030 - >>Tax Evasion
+#	031 - ##Nobleman Held Captive (MON)
+#	032 - ##Nobleman Held Captive (Recipient)
+#	033 - ##Landslide in Neighboring State (TUR)
+#	034 - ##Raiding Party Ambushed
+#	035 - ##
+#	036 - ##
+#	037 - ##
+#	038 - ##
+#	039 - ##
+
+#040-049 - Black Mountain Expedition Random Events (For TUR)
+#	040 - ##Local Informants
+#	041 - ##Bear Sighted
+#	042 - ##Spoiled Rations
+#	043 - ##Logistics Train Raided
+#	044 - ##A Circular Expedition
+#	045 - ##Successful Scouting
+#	046 - ##Balkan Hospitality
+#	047 - ##
+#	048 - ##
+#	049 - ##
+
+#050-059 - Black Mountain Skirmish Events
+#	050 - ##Steady Grind
+#	051 - ##Village Outskirts Burned
+#	052 - ##Village Families Massacred
+#	053 - ##
+#	054 - ##
+#	055 - ##Pitched Battle
+#	056 - ##Sudden Breakthrough
+#	057 - ##
+#	058 - ##Ottoman Commander Captured
+#	059 - ##Montenegrin Leader Killed
+
+########################################
+#
+##
+#                     ______
+#                   .-"      "-.
+#                  /            \
+#                 |              |
+#                 |,  .-.  .-.  ,|
+#                 | )(__/  \__)( |
+#                 |/     /\     \|
+#       (@_       (_     ^^     _)
+#  _     ) \_______\__|IIIIII|__/__________________________
+# (_)@8@8{}<________|-\IIIIII/-|___________________________>
+#        )_/        \          /
+#       (@           `--------`
+##
+#
+########################################
+
+## Black Mountain Narrative Events ##
+eqfm_black_mountain.001 = {
+	# The Battle of Grahovo
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.001.t
+	desc = {
+		triggered_desc = {
+			trigger = {
+				c:MON ?= this
+			}
+			desc = eqfm_black_mountain.001.d1
+		}
+		triggered_desc = {
+			trigger = {
+				c:MON != this
+			}
+			desc = eqfm_black_mountain.001.d2
+		}
+	}
+	flavor = eqfm_black_mountain.001.f
+	
+	event_image = {
+		video = "southamerica_war_civilians"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered from GLOBAL
+	}
+	
+	immediate = {
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		c:MON = {
+			save_scope_as = montenegro_scope
+			random_scope_character = {
+				limit = {
+					has_template = template_balkfm_petrovic_joko
+				}
+				save_scope_as = balkfm_joko_scope
+			}
+		}
+		balkfm_hersek_scopes_effect = yes
+		eqfm_black_mountain_scopes_effect = yes
+	}
+	
+	option = {
+		# For Montenegro
+		name = eqfm_black_mountain.001.a
+		default_option = yes
+		trigger = {
+			c:MON ?= this
+		}
+		scope:balkfm_joko_scope = {
+			kill_character = yes
+		}
+		custom_tooltip = {
+			text = eqfm_dismiss_tribal_chief
+			remove_variable = eqfm_black_mountain_expedition_var
+			eqfm_update_expedition_costs_effect = yes
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.001.b
+		trigger = {
+			c:TUR ?= this
+		}
+		custom_tooltip = gbbf_no_effects
+	}
+	
+	option = {
+		name = eqfm_black_mountain.001.c
+		trigger = {
+			c:BOS ?= this
+		}
+		custom_tooltip = gbbf_no_effects
+	}
+	
+}
+
+eqfm_black_mountain.006 = {
+	# The Black Mountain Lost
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.006.t
+	desc = eqfm_black_mountain.006.d
+	flavor = eqfm_black_mountain.006.f
+	
+	event_image = {
+		video = "ep1_transfer_of_authority"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by je_eqfm_the_black_mountain
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = eqfm_black_mountain.006.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_eqfm_lost_black_mountain
+			months = gbbf_duration_10_years
+		}
+	}
+}
+
+eqfm_black_mountain.007 = {
+	# The Black Mountain Subdued
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.007.t
+	desc = eqfm_black_mountain.007.d
+	flavor = eqfm_black_mountain.007.f
+	
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by je_eqfm_the_black_mountain
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = eqfm_black_mountain.007.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_eqfm_reclaimed_black_mountain
+			months = gbbf_duration_10_years
+		}
+	}
+}
+
+eqfm_black_mountain.008 = {
+	# International Indifference
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.008.t
+	desc = eqfm_black_mountain.008.d
+	flavor = eqfm_black_mountain.008.f
+	
+	event_image = {
+		video = "southamerica_aristocrats"
+	}
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by je_eqfm_the_black_mountain
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		# take it on the chin
+		name = eqfm_black_mountain.008.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_eqfm_submission
+			months = gbbf_duration_10_years
+		}
+	}
+}
+
+eqfm_black_mountain.009 = {
+	# The Lands of Montenegro
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.009.t
+	desc = eqfm_black_mountain.009.d
+	flavor = eqfm_black_mountain.009.f
+	
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by je_eqfm_the_black_mountain
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = eqfm_black_mountain.009.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_eqfm_reclaimed_lovcen
+			months = gbbf_duration_10_years
+		}
+	}
+}
+
+## Black Mountain Decision Events ##
+eqfm_black_mountain.010 = {
+	# Negotiations On Head-taking (Receiver)
+	type = country_event
+	placement = scope:montenegro_scope
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 1
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.010.t
+	desc = eqfm_black_mountain.010.d
+	flavor = eqfm_black_mountain.010.f
+	
+	event_image = {
+		video = "asia_politician_parliament_motion"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_renounce_headtaking_button
+	}
+	
+	immediate = {
+		random_country = {
+			limit = {
+				has_variable = turkfm_negociated_headtaking
+			}
+			save_scope_as = turkfm_headtaking_negotiator
+		}
+		set_variable = {
+			name = turkfm_headtaking_recipient
+			months = 3
+		}
+	}
+	
+	option = {
+		# Reject headtaking offer
+		name = eqfm_black_mountain.010.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_eqfm_retained_headtaking
+			months = gbbf_duration_10_years
+		}
+		scope:turkfm_headtaking_negotiator = {
+			trigger_event = {
+				id = eqfm_black_mountain.011 # Negotiations On Head-taking
+			}
+			set_variable = turkfm_headtaking_rejected
+		}
+	}
+	
+	option = {
+		# Accept headtaking offer
+		name = eqfm_black_mountain.010.b
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_practicing_headtaking_mon
+			}
+			remove_modifier = modifier_eqfm_practicing_headtaking_mon
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_practicing_headtaking_tur
+			}
+			remove_modifier = modifier_eqfm_practicing_headtaking_tur
+		}
+		add_modifier = {
+			name = modifier_eqfm_abolished_headtaking
+			months = gbbf_duration_5_years
+		}
+		scope:turkfm_headtaking_negotiator = {
+			trigger_event = {
+				id = eqfm_black_mountain.011 # Negotiations On Head-taking
+			}
+		}
+	}
+}
+
+eqfm_black_mountain.011 = {
+	# Negotiations on Head-taking (MON)
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 2
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.011.t
+	desc = {
+		triggered_desc = {
+			desc = eqfm_black_mountain.011.d1
+			trigger = {
+				has_variable = turkfm_headtaking_rejected
+			}
+		}
+		triggered_desc = {
+			desc = eqfm_black_mountain.011.d2
+			trigger = {
+				NOT = {
+					has_variable = turkfm_headtaking_rejected
+				}
+			}
+		}
+	}
+	flavor = eqfm_black_mountain.011.f
+	
+	gui_window = event_window_2char_discussion
+	left_icon = scope:turkfm_ruler_scope
+	right_icon = scope:ottoman_ruler_scope
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+	
+	trigger = {
+		# triggered by eqfm_black_mountain.041
+	}
+	
+	immediate = {
+		random_country = {
+			limit = {
+				has_variable = turkfm_headtaking_recipient
+			}
+			save_scope_as = eqfm_headtaking_recipient_scope
+		}
+		ruler = {
+			save_scope_as = turkfm_ruler_scope
+		}
+	}
+	
+	option = {
+		# Head-taking offer rejected, retain headtaking
+		name = eqfm_black_mountain.011.a
+		default_option = yes
+		trigger = {
+			has_variable = turkfm_headtaking_rejected
+		}
+		add_modifier = {
+			name = modifier_eqfm_retained_headtaking
+			months = gbbf_duration_5_years
+		}
+		remove_variable = turkfm_headtaking_rejected
+	}
+	
+	option = {
+		# Head-taking offer rejected, abolish unilaterally
+		name = eqfm_black_mountain.011.b
+		trigger = {
+			has_variable = turkfm_headtaking_rejected
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_practicing_headtaking_mon
+			}
+			remove_modifier = modifier_eqfm_practicing_headtaking_mon
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_practicing_headtaking_tur
+			}
+			remove_modifier = modifier_eqfm_practicing_headtaking_tur
+		}
+		add_modifier = {
+			name = modifier_eqfm_unilaterally_abolished_headtaking
+			months = gbbf_duration_10_years
+		}
+		remove_variable = turkfm_headtaking_rejected
+	}
+	
+	option = {
+		# Head-taking offer accepted
+		name = eqfm_black_mountain.011.c
+		trigger = {
+			NOT = {
+				has_variable = turkfm_headtaking_rejected
+			}
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_practicing_headtaking_mon
+			}
+			remove_modifier = modifier_eqfm_practicing_headtaking_mon
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_practicing_headtaking_tur
+			}
+			remove_modifier = modifier_eqfm_practicing_headtaking_tur
+		}
+		add_modifier = {
+			name = modifier_eqfm_abolished_headtaking
+			months = gbbf_duration_5_years
+		}
+	}
+}
+
+eqfm_black_mountain.012 = {
+	# Negotiations Over Cattaro (Recipient)
+	type = country_event
+	placement = scope:turkfm_cattaro_scope
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	duration = 2
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.012.t
+	desc = eqfm_black_mountain.012.d
+	flavor = eqfm_black_mountain.012.f
+	
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_negotiate_kotor_button
+	}
+	
+	cancellation_trigger = {
+		c:MON ?= {
+			NOR = {
+				is_subject_of = c:AUS
+				is_in_same_power_bloc = c:AUS
+				gbbf_has_alliance_trigger = {
+					country = c:AUS
+				}
+				gbbf_has_defensive_pact_trigger = {
+					country = c:AUS
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		c:MON = {
+			save_scope_as = montenegro_scope
+		}
+		p:x90A0E0 = {
+			# Kotor
+			save_scope_as = turkfm_cattaro_scope
+		}
+	}
+	
+	option = {
+		# Accept the Deal
+		name = eqfm_black_mountain.012.a
+		default_option = yes
+		show_as_tooltip = {
+			s:STATE_MONTENEGRO = {
+				set_owner_of_provinces = {
+					country = scope:montenegro_scope
+					provinces = {
+						x90A0E0 # Kotor
+					}
+				}
+			}
+			c:MON = {
+				set_owes_obligation_to = {
+					country = root
+					setting = yes
+				}
+			}
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_relations_level_increased
+			target = scope:montenegro_scope
+		}
+		change_relations = {
+			country = c:MON
+			value = 25
+		}
+	}
+	
+	option = {
+		# Reject the Deal
+		name = eqfm_black_mountain.012.b
+		change_relations = {
+			country = c:MON
+			value = -25
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_relations_level_decreased
+			target = c:MON
+		}
+	}
+	
+	after = {
+		trigger_event = {
+			id = eqfm_black_mountain.013
+			days = { 5 15 }
+		}
+	}
+}
+
+eqfm_black_mountain.013 = {
+	# Negotiations Over Cattaro (Sender)
+	type = country_event
+	placement = scope:turkfm_cattaro_scope
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	duration = 2
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.013.t
+	desc = eqfm_black_mountain.013.d
+	flavor = eqfm_black_mountain.013.f
+	
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_black_mountain.012
+	}
+	
+	cancellation_trigger = {
+		c:MON ?= {
+			NOR = {
+				is_subject_of = c:AUS
+				is_in_same_power_bloc = c:AUS
+				gbbf_has_alliance_trigger = {
+					country = c:AUS
+				}
+				gbbf_has_defensive_pact_trigger = {
+					country = c:AUS
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		c:AUS = {
+			save_scope_as = austria_scope
+		}
+		p:x90A0E0 = {
+			# Kotor
+			save_scope_as = turkfm_cattaro_scope
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.013.a
+		default_option = yes
+		s:STATE_MONTENEGRO = {
+			set_owner_of_provinces = {
+				country = root
+				provinces = {
+					x90A0E0 # Kotor
+				}
+			}
+		}
+		set_owes_obligation_to = {
+			country = scope:austria_scope
+			setting = yes
+		}
+		change_relations = {
+			country = c:AUS
+			value = 25
+		}
+	}
+	
+	option = {
+		# Reject the Deal
+		name = eqfm_black_mountain.013.b
+		change_relations = {
+			country = c:AUS
+			value = -25
+		}
+	}
+}
+
+eqfm_black_mountain.014 = {
+	# The Gaols of Cetinje
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_black_mountain.014.t
+	desc = eqfm_black_mountain.014.d
+	flavor = eqfm_black_mountain.014.f
+
+	event_image = {
+		video = "votp_prison"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by eqfm_ransom_captives_button
+	}
+
+	cancellation_trigger = {
+		OR = {
+			eqfm_captured_nobles_value <= 0
+			NOT = {
+				has_variable = eqfm_ransom_var
+			}
+		}
+	}
+
+	immediate = {
+		random_character_in_void = {
+			limit = {
+				has_variable = eqfm_captive_var
+			}
+			save_scope_as = eqfm_captive_scope_1
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_captive_scope_1
+				any_character_in_void = {
+					has_variable = eqfm_captive_var
+					NOT = {
+						scope:eqfm_captive_scope_1 != this
+					}
+				}
+			}
+			random_character_in_void = { 
+				limit = {
+					has_variable = eqfm_captive_var
+					NOT = {
+						scope:eqfm_captive_scope_1 != this
+					}
+				}
+				save_scope_as = eqfm_captive_scope_2
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_captive_scope_2
+				any_character_in_void = {
+					has_variable = eqfm_captive_var
+					NOT = {
+						scope:eqfm_captive_scope_1 != this
+						scope:eqfm_captive_scope_2 != this
+					}
+				}
+			}
+			random_character_in_void = {
+				limit = {
+					has_variable = eqfm_captive_var
+					NOT = {
+						scope:eqfm_captive_scope_1 != this
+						scope:eqfm_captive_scope_2 != this
+					}
+				}
+				save_scope_as = eqfm_captive_scope_3
+			}
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.014.a
+		trigger = { 
+			exists = scope:eqfm_captive_scope_1
+		}
+		custom_tooltip = {
+			text = eqfm_black_mountain.014.a.tt
+			scope:eqfm_captive_scope_1 = {
+				set_variable = eqfm_ransom_target_var
+			}
+		}
+		c:TUR = {
+			trigger_event = {
+				id = eqfm_black_mountain.015 # Montenegro Offers Ransom
+			}
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.014.b
+		trigger = {
+			exists = scope:eqfm_captive_scope_2
+		}
+		custom_tooltip = {
+			text = eqfm_black_mountain.014.b.tt
+			scope:eqfm_captive_scope_2 = {
+				set_variable = eqfm_ransom_target_var
+			}
+		}
+		c:TUR = {
+			trigger_event = {
+				id = eqfm_black_mountain.015 # Montenegro Offers Ransom
+			}
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.014.c
+		trigger = {
+			exists = scope:eqfm_captive_scope_3
+		}
+		custom_tooltip = {
+			text = eqfm_black_mountain.014.c.tt
+			scope:eqfm_captive_scope_3 = {
+				set_variable = eqfm_ransom_target_var
+			}
+		}
+		c:TUR = {
+			trigger_event = {
+				id = eqfm_black_mountain.015 # Montenegro Offers Ransom
+			}
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.014.e
+		default_option = yes
+		custom_tooltip = {
+			text = gbbf_nothing_happens
+			remove_variable = eqfm_ransom_var
+		}
+	}
+
+}
+
+eqfm_black_mountain.015 = { # 
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_black_mountain.015.t
+	desc = eqfm_black_mountain.015.d
+	flavor = eqfm_black_mountain.015.f
+
+	event_image = {
+		video = "votp_hostile_court"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by eqfm_black_mountain.014
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			any_character_in_void = { 
+				has_variable = eqfm_ransom_target_var
+			}
+		}
+	}
+
+	immediate = {
+		random_character_in_void = {
+			limit = {
+				has_variable = eqfm_ransom_target_var
+			}
+			save_scope_as = eqfm_ransom_target_scope
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.015.a
+		default_option = yes
+		scope:eqfm_ransom_target_scope = {
+			set_variable = eqfm_ransom_accepted
+		}
+		add_modifier = { 
+			name = modifier_eqfm_accepted_ransom
+			months = gbbf_duration_2_plus_half_years
+		}
+		capital = {
+			add_radicals_in_state = { 
+				pop_type = officers
+				value = medium_radicals
+			}
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.015.b
+		scope:eqfm_ransom_target_scope = {
+			set_variable = eqfm_ransom_rejected
+		}
+		add_modifier = {
+			name = modifier_eqfm_refused_ransom
+			months = gbbf_duration_2_plus_half_years
+		}
+		capital = {
+			add_radicals_in_state = {
+				pop_type = aristocrats
+				value = medium_radicals
+			}
+		}
+	}
+	
+	after = {
+		c:MON = {
+			trigger_event = {
+				id = eqfm_black_mountain.016 # Ottoman Reply to Ransom
+				days = { 5 15 }
+			}
+		}
+	}
+
+}
+
+eqfm_black_mountain.016 = { # 
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_black_mountain.016.t
+	desc = {
+		triggered_desc = {
+			trigger = {
+				scope:eqfm_ransom_target_scope ?= {
+					has_variable = eqfm_ransom_accepted
+				}
+			}
+			desc = eqfm_black_mountain.016.d1
+		}
+		triggered_desc = {
+			trigger = {
+				scope:eqfm_ransom_target_scope ?= {
+					has_variable = eqfm_ransom_rejected
+				}
+			}
+			desc = eqfm_black_mountain.016.d2
+		}
+	}
+	flavor = eqfm_black_mountain.016.f
+
+	event_image = {
+		video = "africa_diplomats_negotiating"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# eqfm_black_mountain.015
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			any_character_in_void = {
+				has_variable = eqfm_ransom_target_var
+			}
+		}
+	}
+
+	immediate = {
+		random_character_in_void = {
+			limit = {
+				has_variable = eqfm_ransom_target_var
+			}
+			save_scope_as = eqfm_ransom_target_scope
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.016.a
+		default_option = yes
+		trigger = {
+			scope:eqfm_ransom_target_scope = {
+				has_variable = eqfm_ransom_accepted
+			}
+		}
+		custom_tooltip = {
+			text = eqfm_black_mountain.016.a.tt
+			scope:eqfm_ransom_target_scope = {
+				gbbf_free_from_void = yes
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_ransomed_noble
+			months = gbbf_duration_2_plus_half_years
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.016.b
+		trigger = {
+			scope:eqfm_ransom_target_scope = {
+				has_variable = eqfm_ransom_rejected
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_ransom_failed
+			months = gbbf_duration_5_years
+		}
+		custom_tooltip = {
+			text = eqfm_black_mountain.016.b.tt
+			scope:eqfm_ransom_target_scope = {
+				remove_variable = eqfm_ransom_target_var
+				remove_variable = eqfm_ransom_rejected
+			}
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.016.c
+		trigger = {
+			scope:eqfm_ransom_target_scope = {
+				has_variable = eqfm_ransom_rejected
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_executed_noble
+			months = gbbf_duration_5_years
+		}
+		scope:eqfm_ransom_target_scope = {
+			kill_character = yes
+		}
+		c:TUR = {
+			post_notification = notification_eqfm_noble_beheaded
+		}
+	}
+
+}
+
+## Black Mountain Expedition Narrative Events ##
+eqfm_black_mountain.020 = {
+	# Marauding in the Hinterlands
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.020.t
+	desc = eqfm_black_mountain.020.d
+	flavor = eqfm_black_mountain.020.f
+	
+	event_image = {
+		video = "ip3_officer_inspecting_peasant_conscripts"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_appoint_tribal_chief_button
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = eqfm_montenegrin_raiding_settled
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				any_scope_character = {
+					count < 1
+					has_role = general
+				}
+			}
+			create_character = {
+				traits = {
+					mountain_commander
+				}
+				on_created = {
+					place_character_in_void = 120
+					set_variable = turkfm_tribal_leader
+				}
+			}
+			create_character = {
+				traits = {
+					mountain_commander
+				}
+				on_created = {
+					place_character_in_void = 120
+					set_variable = turkfm_tribal_leader
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				any_scope_character = {
+					count < 2
+					has_role = general
+				}
+			}
+			create_character = {
+				traits = {
+					mountain_commander
+				}
+				on_created = {
+					place_character_in_void = 120
+					set_variable = turkfm_tribal_leader
+				}
+			}
+		}
+		random_scope_character = {
+			limit = {
+				is_busy = no
+				has_role = general
+				is_ruler = no
+			}
+			save_scope_as = expedition_leader_1
+		}
+		if = {
+			limit = {
+				any_scope_character = {
+					is_busy = no
+					is_ruler = no
+					has_role = general
+					OR = {
+						has_trait = surveyor
+						has_trait = mountain_commander
+						has_trait = basic_offensive_planner
+						has_trait = experienced_offensive_planner
+						has_trait = expert_offensive_planner
+					}
+					NOT = {
+						scope:expedition_leader_1 ?= this
+					}
+				}
+			}
+			random_scope_character = {
+				limit = {
+					is_busy = no
+					is_ruler = no
+					has_role = general
+					OR = {
+						has_trait = surveyor
+						has_trait = mountain_commander
+						has_trait = basic_offensive_planner
+						has_trait = experienced_offensive_planner
+						has_trait = expert_offensive_planner
+					}
+					NOT = {
+						scope:expedition_leader_1 ?= this
+					}
+				}
+				save_scope_as = expedition_leader_2
+			}
+		}
+		else = {
+			random_scope_character = {
+				limit = {
+					is_busy = no
+					is_ruler = no
+					has_role = general
+					NOT = {
+						scope:expedition_leader_1 ?= this
+					}
+				}
+				save_scope_as = expedition_leader_2
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_variable = turkfm_tribal_leader
+				NOR = {
+					scope:expedition_leader_1 ?= this
+					scope:expedition_leader_2 ?= this
+				}
+			}
+			save_scope_as = expedition_leader_3
+		}
+		random_character_in_void = {
+			limit = {
+				has_variable = turkfm_tribal_leader
+				NOR = {
+					scope:expedition_leader_1 ?= this
+					scope:expedition_leader_2 ?= this
+					scope:expedition_leader_3 ?= this
+				}
+			}
+			save_scope_as = expedition_leader_4
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.020.a
+		default_option = yes
+		trigger = {
+			exists = scope:expedition_leader_1
+		}
+		scope:expedition_leader_1 ?= {
+			set_character_busy_and_immortal = yes
+			add_modifier = modifier_eqfm_leading_black_mountain_expedition
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.020.b
+		trigger = {
+			exists = scope:expedition_leader_2
+		}
+		scope:expedition_leader_2 ?= {
+			set_character_busy_and_immortal = yes
+			add_modifier = modifier_eqfm_leading_black_mountain_expedition
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.020.c
+		trigger = {
+			exists = scope:expedition_leader_3
+		}
+		scope:expedition_leader_3 ?= {
+			set_character_busy_and_immortal = yes
+			add_modifier = modifier_eqfm_leading_black_mountain_expedition
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.020.e
+		trigger = {
+			exists = scope:expedition_leader_4
+		}
+		scope:expedition_leader_4 ?= {
+			set_character_busy_and_immortal = yes
+			add_modifier = modifier_eqfm_leading_black_mountain_expedition
+		}
+	}
+	
+	after = {
+		eqfm_update_black_mountain_characters_effect = yes
+		eqfm_update_raiding_income_effect = yes
+	}
+	
+}
+
+eqfm_black_mountain.021 = {
+	# Defending the Hinterlands
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.021.t
+	desc = eqfm_black_mountain.021.d
+	flavor = eqfm_black_mountain.021.f
+	
+	event_image = {
+		video = "africa_construction_colony"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by turkfm_border_raid_button
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_eqfm_the_black_mountain
+		}
+	}
+	
+	immediate = {
+		random_scope_character = {
+			limit = {
+				is_busy = no
+				has_role = general
+				is_ruler = no
+			}
+			save_scope_as = expedition_leader_1
+		}
+		if = {
+			limit = {
+				any_scope_character = {
+					is_busy = no
+					is_ruler = no
+					has_role = general
+					OR = {
+						has_trait = surveyor
+						has_trait = mountain_commander
+						has_trait = basic_offensive_planner
+						has_trait = experienced_offensive_planner
+						has_trait = expert_offensive_planner
+					}
+					NOT = {
+						scope:expedition_leader_1 ?= this
+					}
+				}
+			}
+			random_scope_character = {
+				limit = {
+					is_busy = no
+					is_ruler = no
+					has_role = general
+					OR = {
+						has_trait = surveyor
+						has_trait = mountain_commander
+						has_trait = basic_offensive_planner
+						has_trait = experienced_offensive_planner
+						has_trait = expert_offensive_planner
+					}
+					NOT = {
+						scope:expedition_leader_1 ?= this
+					}
+				}
+				save_scope_as = expedition_leader_2
+			}
+		}
+		else = {
+			random_scope_character = {
+				limit = {
+					is_busy = no
+					is_ruler = no
+					has_role = general
+					NOT = {
+						scope:expedition_leader_1 ?= this
+					}
+				}
+				save_scope_as = expedition_leader_2
+			}
+		}
+		random_scope_character = {
+			limit = {
+				is_busy = no
+				is_ruler = no
+				has_role = general
+				NOR = {
+					scope:expedition_leader_1 ?= this
+					scope:expedition_leader_2 ?= this
+				}
+			}
+			save_scope_as = expedition_leader_3
+		}
+		random_scope_character = {
+			limit = {
+				is_busy = no
+				is_ruler = no
+				has_role = general
+				NOR = {
+					scope:expedition_leader_1 ?= this
+					scope:expedition_leader_2 ?= this
+					scope:expedition_leader_3 ?= this
+				}
+			}
+			save_scope_as = expedition_leader_4
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.021.a
+		default_option = yes
+		trigger = {
+			exists = scope:expedition_leader_1
+		}
+		scope:expedition_leader_1 ?= {
+			set_character_busy_and_immortal = yes
+			add_modifier = modifier_eqfm_leading_black_mountain_expedition
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.021.b
+		trigger = {
+			exists = scope:expedition_leader_2
+		}
+		scope:expedition_leader_2 ?= {
+			set_character_busy_and_immortal = yes
+			add_modifier = modifier_eqfm_leading_black_mountain_expedition
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.021.c
+		trigger = {
+			exists = scope:expedition_leader_3
+		}
+		scope:expedition_leader_3 ?= {
+			set_character_busy_and_immortal = yes
+			add_modifier = modifier_eqfm_leading_black_mountain_expedition
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.021.e
+		trigger = {
+			exists = scope:expedition_leader_4
+		}
+		scope:expedition_leader_4 ?= {
+			set_character_busy_and_immortal = yes
+			add_modifier = modifier_eqfm_leading_black_mountain_expedition
+		}
+	}
+	
+	after = {
+		trigger_event = {
+			id = eqfm_black_mountain.022 # Expeditionary Force Arrives at the Border
+			days = { 15 45 }
+		}
+		set_variable = eqfm_expedition_black_mountain_transit_var
+		eqfm_update_black_mountain_characters_effect = yes
+	}
+	
+}
+
+eqfm_black_mountain.022 = {
+	# Expeditionary Force Arrives at the Border
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+	duration = 2
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.022.t
+	desc = eqfm_black_mountain.022.d
+	flavor = eqfm_black_mountain.022.f
+	
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_black_mountain_tur_leader
+	
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/gbbf_forest_day.dds"
+	}
+	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/gunboat_diplomacy"
+	
+	trigger = {
+		# triggered by eqfm_black_mountain.021
+	}
+	
+	cancellation_trigger = {
+		owns_entire_state_region = STATE_MONTENEGRO
+	}
+	
+	immediate = {
+		remove_variable = eqfm_expedition_black_mountain_transit_var
+		eqfm_black_mountain_scopes_effect = yes
+		eqfm_start_black_mountain_expedition_effect = yes
+		c:MON ?= {
+			post_notification = notification_eqfm_expeditionary_force_arrives
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.022.a
+		default_option = yes
+		custom_tooltip = gbbf_no_effects
+	}
+	
+}
+
+eqfm_black_mountain.023 = {
+	# Expeditionary Force Withdraws from the Border
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+	duration = 2
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.023.t
+	desc = eqfm_black_mountain.023.d
+	flavor = eqfm_black_mountain.023.f
+	
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_black_mountain_tur_leader_scope
+	
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/gbbf_forest_day.dds"
+	}
+	on_opened_soundeffect = "event:/SFX/Events/unspecific/iceberg_in_the_antartica"
+	
+	trigger = {
+		has_variable = eqfm_black_mountain_expedition_progress_var
+		var:eqfm_black_mountain_expedition_peril_var >= 5
+		NOR = {
+			has_variable = eqfm_expedition_cooldown_var
+			has_global_variable = eqfm_black_mountain_skirmish_var
+		}
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = eqfm_jack_sparrow_whacked
+	}
+	
+	immediate = {
+		eqfm_black_mountain_scopes_effect = yes
+		eqfm_clear_black_mountain_expedition_variables_effect = yes
+		if = {
+			limit = {
+				has_global_variable = eqfm_black_mountain_skirmish_var
+			}
+			remove_global_variable = eqfm_black_mountain_skirmish_var
+			c:MON ?= {
+				trigger_event = {
+					id = eqfm_black_mountain.026 # Border Incursion Repelled
+				}
+			}
+		}
+		else = {
+			c:MON ?= {
+				post_notification = notification_eqfm_expeditionary_force_withdraws
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.023.a
+		default_option = yes
+		eqfm_fail_black_mountain_expedition_effect = yes
+	}
+}
+
+eqfm_black_mountain.024 = {
+	# Expeditionary Force Leader Has Died!
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 2
+	dlc = dlc_grefm
+	
+	title = {
+		triggered_desc = {
+			trigger = {
+				c:MON ?= this
+			}
+			desc = eqfm_black_mountain.024.t1
+		}
+		triggered_desc = {
+			trigger = {
+				c:TUR ?= this
+			}
+			desc = eqfm_black_mountain.024.t2
+		}
+	}
+	desc = eqfm_black_mountain.024.d
+	flavor = eqfm_black_mountain.024.f
+	
+	event_image = {
+		video = "ep1_printing_press"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_variable = eqfm_black_mountain_expedition_var
+		NOR = {
+			has_variable = eqfm_expedition_cooldown_var
+			has_variable = eqfm_black_mountain_leader_var
+			exists = var:eqfm_black_mountain_leader_var
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_eqfm_the_black_mountain
+		}
+	}
+	
+	immediate = {
+		# TODO scope save effect
+		eqfm_clear_black_mountain_expedition_variables_effect = yes
+		c:MON ?= {
+			post_notification = notification_eqfm_expeditionary_force_withdraws
+		}
+		remove_global_variable = eqfm_black_mountain_skirmish_var
+	}
+	
+	option = {
+		name = eqfm_black_mountain.024.a
+		default_option = yes
+		eqfm_fail_black_mountain_expedition_effect = yes
+	}
+	
+}
+
+eqfm_black_mountain.026 = {
+	#
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.026.t
+	desc = eqfm_black_mountain.026.d
+	flavor = eqfm_black_mountain.026.f
+	
+	event_image = {
+		video = "ep1_redcoats"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = eqfm_montenegrin_raiding_settled
+	}
+	
+	immediate = {
+		# triggered by eqfm_black_mountain.029
+	}
+	
+	option = {
+		name = eqfm_black_mountain.026.a
+		default_option = yes
+		custom_tooltip = eqfm_black_mountain_skirmish_end
+	}
+	
+}
+
+eqfm_black_mountain.027 = {
+	# Village Skirmish Escalates
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_raiding.dds"
+	duration = 1
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.027.t
+	desc = eqfm_black_mountain.027.d
+	flavor = eqfm_black_mountain.027.f
+	
+	event_image = {
+		video = "ip3_angry_mob_raiding_minorities"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		c:MON ?= this # Evaluate this once per pulse because I'm too lazy to make two journal entries
+		NOR = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+			has_global_variable = eqfm_black_mountain_skirmish_var
+		}
+		OR = {
+			AND = {
+				c:MON ?= {
+					eqfm_has_black_mountain_expedition_trigger = yes
+					# Progress? What progress? I didn't know Montenegrins could read...
+				}
+				c:TUR ?= {
+					eqfm_has_black_mountain_expedition_trigger = yes
+					var:eqfm_black_mountain_expedition_progress_var >= 5
+				}
+			}
+			has_variable = eqfm_village_skirmish_event_var
+		}
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = eqfm_montenegrin_raiding_settled
+	}
+	
+	immediate = {
+		eqfm_black_mountain_scopes_effect = yes
+		set_global_variable = {
+			name = eqfm_black_mountain_skirmish_var
+			value = 0
+		}
+		set_global_variable = {
+			name = eqfm_black_mountain_skirmish_duration_var
+			value = 0
+		}
+		c:TUR ?= {
+			# I AM NOT MAKING TWO EVENTS TO GET AROUND THE TRIGGER, FUCK YOU JOHN PARADOX, I'M IN CONTROL OF MY LIFE, I'M A BIG BOY WHO CAN MAKE BIG BOY DECISIONS, I WILL NOT BE DENIED
+			# That said, this is gross and makes me want to shower
+			set_variable = eqfm_village_skirmish_event_var
+			trigger_event = {
+				id = eqfm_black_mountain.027
+			}
+			remove_variable = eqfm_village_skirmish_event_var
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.027.a
+		default_option = yes
+		custom_tooltip = eqfm_black_mountain_skirmish_start
+		if = {
+			limit = {
+				c:MON ?= this
+			}
+			custom_tooltip = eqfm_black_mountain_skirmish_penalty
+		}
+	}
+	
+}
+
+eqfm_black_mountain.028 = {
+	# Skirmish Fizzles Out
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_raiding.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.028.t
+	desc = eqfm_black_mountain.028.d
+	flavor = eqfm_black_mountain.028.f
+	
+	event_image = {
+		video = "middleeast_battlefield_trenches"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_black_mountain.029
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = eqfm_montenegrin_raiding_settled
+	}
+	
+	immediate = {
+		eqfm_black_mountain_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_black_mountain.028.a
+		default_option = yes
+		custom_tooltip = eqfm_black_mountain_skirmish_end
+	}
+	
+}
+
+eqfm_black_mountain.029 = {
+	# Village Skirmish Monitor
+	# I don't feel like making this into a scripted effect to embed in an on_action
+	# DLZ, I profusely apologize for this egregious affront to civilized practices, pls don't take away my modding license
+	type = country_event
+	hidden = yes
+	
+	trigger = {
+		OR = {
+			c:MON ?= this # EVALUATE THIS ONLY ONCE PER PULSE, ASK ME HOW I FIGURED THIS OUT
+			has_global_variable = eqfm_black_mountain_skirmish_var
+		}
+	}
+	
+	immediate = {
+		eqfm_black_mountain_scopes_effect = yes
+		if = {
+			limit = {
+				has_global_variable = eqfm_black_mountain_skirmish_var
+				global_var:eqfm_black_mountain_skirmish_var > 0
+				global_var:eqfm_black_mountain_skirmish_var < 9
+			}
+			change_global_variable = {
+				name = eqfm_black_mountain_skirmish_duration_var
+				add = 1
+			}
+			if = {
+				limit = {
+					global_var:eqfm_black_mountain_skirmish_duration_var >= 24
+				}
+				c:MON = {
+					trigger_event = {
+						id = eqfm_black_mountain.028 # Skirmish Fizzles Out
+					}
+				}
+				c:TUR = {
+					trigger_event = {
+						id = eqfm_black_mountain.028 # Skirmish Fizzles Out
+					}
+				}
+				remove_global_variable = eqfm_black_mountain_skirmish_var
+				remove_global_variable = eqfm_black_mountain_skirmish_duration_var
+			}
+			else = {
+				random_list = {
+					# Steady Grind
+					25 = {
+						c:MON = {
+							trigger_event = {
+								id = eqfm_black_mountain.050 # Steady Grind
+							}
+						}
+						c:TUR = {
+							trigger_event = {
+								id = eqfm_black_mountain.050 # Steady Grind
+							}
+						}
+						change_global_variable = {
+							name = eqfm_black_mountain_skirmish_var
+							add = 1
+						}
+					}
+					
+					# Village Outskirts Burned
+					20 = {
+						random_list = {
+							5 = {
+								modifier = {
+									if = {
+										limit = {
+											scope:eqfm_black_mountain_mon_leader ?= {
+												OR = {
+													has_trait = pillager
+													has_trait = bandit
+													has_trait = social_bandit
+												}
+											}
+										}
+										add = 10
+									}
+									if = {
+										limit = {
+											scope:eqfm_black_mountain_mon_leader ?= {
+												OR = {
+													has_trait = war_criminal
+													has_trait = cruel
+												}
+											}
+										}
+										add = 25
+									}
+								}
+								c:MON = {
+									trigger_event = {
+										id = eqfm_black_mountain.051
+									}
+								}
+							}
+							5 = {
+								modifier = {
+									if = {
+										limit = {
+											scope:eqfm_black_mountain_tur_leader ?= {
+												OR = {
+													has_trait = pillager
+													has_trait = bandit
+													has_trait = social_bandit
+												}
+											}
+										}
+										add = 10
+									}
+									if = {
+										limit = {
+											scope:eqfm_black_mountain_tur_leader ?= {
+												OR = {
+													has_trait = war_criminal
+													has_trait = cruel
+												}
+											}
+										}
+										add = 25
+									}
+								}
+								c:TUR = {
+									trigger_event = {
+										id = eqfm_black_mountain.051
+									}
+								}
+							}
+						}
+					}
+					
+					# Village Families Massacred
+					5 = {
+						trigger = {
+							NOT = {
+								s:STATE_MONTENEGRO = {
+									any_scope_state = {
+										has_modifier = modifier_eqfm_civilians_massacred
+									}
+								}
+							}
+						}
+						modifier = {
+							if = {
+								limit = {
+									scope:eqfm_black_mountain_tur_leader ?= {
+										OR = {
+											has_trait = reserved
+											has_trait = tactful
+										}
+									}
+								}
+								add = -5
+							}
+						}
+						c:TUR = {
+							trigger_event = {
+								id = eqfm_black_mountain.052
+							}
+						}
+					}
+					
+					# Bora Disrupts Operations
+					5 = {
+						trigger = {
+							NOT = {
+								has_global_variable = eqfm_adriatic_windstorm_cooldown_var
+							}
+						}
+						c:MON = {
+							trigger_event = {
+								id = eqfm_black_mountain.053
+							}
+						}
+						c:TUR = {
+							trigger_event = {
+								id = eqfm_black_mountain.053
+							}
+						}
+						change_global_variable = {
+							name = eqfm_black_mountain_skirmish_var
+							subtract = 1
+						}
+					}
+					
+					# event 54
+					
+					# Pitched Battle
+					5 = {
+						modifier = {
+							if = {
+								limit = {
+									scope:eqfm_black_mountain_mon_leader ?= {
+										OR = {
+											has_trait = basic_defensive_strategist
+											has_trait = experienced_defensive_strategist
+											has_trait = expert_defensive_strategist
+											has_trait = cautious
+										}
+									}
+								}
+								add = 10
+							}
+							if = {
+								limit = {
+									scope:eqfm_black_mountain_tur_leader ?= {
+										OR = {
+											has_trait = basic_defensive_strategist
+											has_trait = experienced_defensive_strategist
+											has_trait = expert_defensive_strategist
+											has_trait = cautious
+										}
+									}
+								}
+								add = 10
+							}
+						}
+						c:MON ?= {
+							trigger_event = {
+								id = eqfm_black_mountain.055
+							}
+						}
+						c:TUR ?= {
+							trigger_event = {
+								id = eqfm_black_mountain.055
+							}
+						}
+						change_global_variable = {
+							name = eqfm_black_mountain_skirmish_var
+							add = 2
+						}
+					}
+					
+					# Sudden Breakthrough
+					0 = {
+						modifier = {
+							if = {
+								limit = {
+									scope:eqfm_black_mountain_mon_leader ?= {
+										OR = {
+											has_trait = basic_offensive_planner
+											has_trait = experienced_offensive_planner
+											has_trait = expert_offensive_planner
+										}
+									}
+								}
+								add = 10
+							}
+							if = {
+								limit = {
+									scope:eqfm_black_mountain_tur_leader ?= {
+										OR = {
+											has_trait = basic_offensive_planner
+											has_trait = experienced_offensive_planner
+											has_trait = expert_offensive_planner
+										}
+									}
+								}
+								add = 10
+							}
+						}
+						c:MON ?= {
+							trigger_event = {
+								id = eqfm_black_mountain.056
+							}
+						}
+						c:TUR ?= {
+							trigger_event = {
+								id = eqfm_black_mountain.056
+							}
+						}
+						change_global_variable = {
+							name = eqfm_black_mountain_skirmish_var
+							add = 3
+						}
+					}
+					
+					# event 57
+				}
+				s:STATE_MONTENEGRO = {
+					add_devastation = 1
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				has_global_variable = eqfm_black_mountain_skirmish_var
+				global_var:eqfm_black_mountain_skirmish_var >= 9
+			}
+			c:MON ?= {
+				trigger_event = {
+					id = eqfm_black_mountain.059
+				}
+			}
+			c:TUR ?= {
+				trigger_event = {
+					id = eqfm_black_mountain.059
+				}
+			}
+			remove_global_variable = eqfm_black_mountain_skirmish_var
+		}
+		else_if = {
+			limit = {
+				has_global_variable = eqfm_black_mountain_skirmish_var
+				global_var:eqfm_black_mountain_skirmish_var <= 1
+			}
+			c:MON ?= {
+				trigger_event = {
+					id = eqfm_black_mountain.058
+				}
+			}
+			remove_global_variable = eqfm_black_mountain_skirmish_var
+		}
+		else = {
+			remove_global_variable = eqfm_black_mountain_skirmish_var
+		}
+	}
+}
+
+## Black Mountain Raiding Events ##
+# These events are triggered for MON and notify TUR if relevant
+eqfm_black_mountain.030 = {
+	# Tax Evasion
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_trade.dds"
+	duration = 2
+	dlc = dlc_grefm
+	
+	title = {
+		triggered_desc = {
+			trigger = {
+				NOT = {
+					has_variable = gbbf_enter_the_meme_zone
+				}
+			}
+			desc = eqfm_black_mountain.030.t
+		}
+		triggered_desc = {
+			trigger = {
+				has_variable = gbbf_enter_the_meme_zone
+			}
+			desc = eqfm_black_mountain.030.t2
+		}
+	}
+	desc = {
+		triggered_desc = {
+			trigger = {
+				NOT = {
+					has_variable = gbbf_enter_the_meme_zone
+				}
+			}
+			desc = eqfm_black_mountain.030.d
+		}
+		triggered_desc = {
+			trigger = {
+				has_variable = gbbf_enter_the_meme_zone
+			}
+			desc = eqfm_black_mountain.030.d2
+		}
+	}
+	flavor = {
+		triggered_desc = {
+			trigger = {
+				NOT = {
+					has_variable = gbbf_enter_the_meme_zone
+				}
+			}
+			desc = eqfm_black_mountain.030.f
+		}
+		triggered_desc = {
+			trigger = {
+				has_variable = gbbf_enter_the_meme_zone
+			}
+			desc = eqfm_black_mountain.030.f2
+		}
+	}
+	
+	event_image = {
+		video = "ip3_official_reading_dictate"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		c:MON ?= this
+		NOR = {
+			has_variable = eqfm_expedition_cooldown_var
+			has_modifier = modifier_eqfm_threw_yoshi_in_jail
+			has_modifier = modifier_eqfm_white_collar_crime
+		}
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = eqfm_montenegrin_raiding_settled
+	}
+	
+	cooldown = {
+		years = 5
+	}
+	
+	immediate = {
+		set_variable = {
+			name = eqfm_expedition_cooldown_var
+			days = 45
+		}
+		eqfm_black_mountain_scopes_effect = yes
+		s:STATE_MONTENEGRO.region_state:MON = {
+			save_scope_as = montenegro_state_scope
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.030.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_eqfm_white_collar_crime
+			months = gbbf_duration_3_years
+		}
+		scope:montenegro_state_scope = {
+			add_modifier = {
+				name = modifier_eqfm_white_collar_crime_state
+				months = gbbf_duration_3_years
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.030.b
+		trigger = {
+			OR = {
+				eqfm_has_black_mountain_expedition_trigger = yes
+				army_size >= 10
+			}
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		add_modifier = {
+			name = modifier_eqfm_threw_yoshi_in_jail
+			months = gbbf_duration_3_years
+		}
+		scope:montenegro_state_scope = {
+			add_modifier = {
+				name = modifier_eqfm_yoshi_got_pinched_state
+				months = gbbf_duration_3_years
+			}
+			add_radicals_in_state = {
+				pop_type = aristocrats
+				value = large_radicals
+			}
+		}
+		ig:ig_landowners = {
+			add_modifier = {
+				name = modifier_eqfm_yoshi_got_pinched_ig
+				months = gbbf_duration_3_years
+			}
+		}
+	}
+	
+}
+
+eqfm_black_mountain.031 = {
+	# Foreign Nobleman Held Captive (for MON)
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_raiding.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.031.t
+	desc = eqfm_black_mountain.031.d
+	flavor = eqfm_black_mountain.031.f
+	
+	event_image = {
+		video = "rp1_social_banditry"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		c:MON ?= this
+		NOR = {
+			has_variable = eqfm_black_mountain_cooldown_var
+			has_global_variable = eqfm_black_mountain_skirmish_var
+		}
+		any_country = {
+			country_rank >= rank_value:great_power
+			relations:root >= relations_threshold:neutral
+		}
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = eqfm_montenegrin_raiding_settled
+	}
+	
+	cooldown = {
+		years = 10
+	}
+	
+	immediate = {
+		random_country = {
+			limit = {
+				country_rank >= rank_value:great_power
+				relations:root >= relations_threshold:neutral
+			}
+			save_scope_as = turkfm_hostage_nation
+		}
+		eqfm_black_mountain_scopes_effect = yes
+		set_variable = {
+			name = eqfm_expedition_cooldown_var
+			days = 45
+		}
+	}
+	
+	option = {
+		# Broker their release
+		name = eqfm_black_mountain.031.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_eqfm_brokered_noble_release
+			months = gbbf_duration_2_years
+			multiplier = money_amount_multiplier_very_small
+		}
+		add_modifier = {
+			name = modifier_eqfm_negotiated_with_tribes
+			months = gbbf_duration_5_years
+		}
+		change_relations = {
+			country = scope:turkfm_hostage_nation
+			value = 15
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_event_positive
+			target = scope:turkfm_hostage_nation
+		}
+	}
+	
+	option = {
+		# Do nothing
+		name = eqfm_black_mountain.031.b
+		create_incident = {
+			country = scope:turkfm_hostage_nation
+			value = 5
+		}
+		add_modifier = {
+			name = modifier_eqfm_abandoned_noble
+			months = gbbf_duration_5_years
+			is_decaying = yes
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_event_negative
+			target = scope:turkfm_hostage_nation
+		}
+	}
+	
+	option = {
+		# Arrest them
+		name = eqfm_black_mountain.031.c
+		trigger = {
+			institution_investment_level = {
+				institution = institution_police
+				value >= 2
+			}
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		add_modifier = {
+			name = modifier_eqfm_arrested_hostage_takers
+			months = gbbf_duration_5_years
+		}
+		add_radicals = {
+			value = medium_radicals
+		}
+		change_relations = {
+			country = scope:turkfm_hostage_nation
+			value = 15
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_event_positive
+			target = scope:turkfm_hostage_nation
+		}
+	}
+	
+	option = {
+		# Bust them out
+		name = eqfm_black_mountain.031.e
+		trigger = {
+			eqfm_has_black_mountain_expedition_trigger = yes
+		}
+		add_modifier = {
+			name = modifier_eqfm_executed_hostage_takers
+			months = gbbf_duration_5_years
+		}
+		add_radicals = {
+			value = small_radicals
+		}
+		change_relations = {
+			country = scope:turkfm_hostage_nation
+			value = 15
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_event_positive
+			target = scope:turkfm_hostage_nation
+		}
+	}
+	
+	after = {
+		scope:turkfm_hostage_nation = {
+			trigger_event = {
+				id = eqfm_black_mountain.032 # Nobleman Held Captive Abroad (for Recipient)
+			}
+		}
+	}
+}
+
+eqfm_black_mountain.032 = {
+	# Nobleman Held Captive Abroad (for Recipient)
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_raiding.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.032.t
+	desc = {
+		triggered_desc = {
+			trigger = {
+				c:MON = {
+					NOT = {
+						has_modifier = modifier_eqfm_abandoned_noble
+					}
+				}
+			}
+			desc = eqfm_black_mountain.032.d1
+		}
+		triggered_desc = {
+			trigger = {
+				c:MON = {
+					has_modifier = modifier_eqfm_abandoned_noble
+				}
+			}
+			desc = eqfm_black_mountain.032.d2
+		}
+	}
+	flavor = eqfm_black_mountain.032.f
+	
+	event_image = {
+		video = "ep1_octopus"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_black_mountain.031
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = eqfm_montenegrin_raiding_settled
+	}
+	
+	immediate = {
+		c:MON = {
+			save_scope_as = montenegro_scope
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.032.a
+		default_option = yes
+		trigger = {
+			c:MON = {
+				NOT = {
+					has_modifier = modifier_eqfm_abandoned_noble
+				}
+			}
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_event_positive
+			target = c:MON
+		}
+		show_as_tooltip = {
+			change_relations = {
+				country = c:MON
+				value = 15
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.032.b
+		trigger = {
+			c:MON = {
+				has_modifier = modifier_eqfm_abandoned_noble
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_noble_kidnapped
+			months = gbbf_duration_5_years
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_event_negative
+			target = c:MON
+		}
+		show_as_tooltip = {
+			change_relations = {
+				country = c:MON
+				value = -15
+			}
+		}
+	}
+	
+}
+
+eqfm_black_mountain.033 = {
+	# Landslide Across the Border
+	type = country_event
+	placement = scope:ottoman_montenegro_state_scope
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.033.t
+	desc = eqfm_black_mountain.033.d
+	flavor = eqfm_black_mountain.033.f
+	
+	event_image = {
+		video = "southamerica_war_civilians"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		c:MON ?= this
+		c:TUR ?= {
+			has_state_in_state_region = STATE_MONTENEGRO
+		}
+		NOR = {
+			has_variable = eqfm_black_mountain_cooldown_var
+			has_global_variable = eqfm_black_mountain_skirmish_var
+		}
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = eqfm_montenegrin_raiding_settled
+	}
+	
+	cooldown = {
+		years = 5
+	}
+	
+	immediate = {
+		s:STATE_MONTENEGRO.region_state:MON ?= {
+			save_scope_as = montenegro_state_scope
+		}
+		s:STATE_MONTENEGRO.region_state:TUR ?= {
+			save_scope_as = ottoman_montenegro_state_scope
+		}
+		set_variable = {
+			name = eqfm_expedition_cooldown_var
+			days = 45
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.033.a
+		default_option = yes
+		scope:montenegro_state_scope ?= {
+			add_modifier = {
+				name = modifier_eqfm_landslide_crossings
+				months = gbbf_duration_1_year
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.033.b
+		scope:montenegro_state_scope ?= {
+			add_modifier = {
+				name = modifier_eqfm_landslide_aid_state
+				months = gbbf_duration_1_year
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_landslide_aid_state_country
+			months = gbbf_duration_1_year
+			multiplier = money_amount_multiplier_small
+		}
+		add_loyalists = {
+			value = medium_radicals
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.033.c
+		trigger = {
+			OR = {
+				eqfm_has_black_mountain_expedition_trigger = yes
+				army_size >= 10
+			}
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		scope:montenegro_state_scope ?= {
+			add_modifier = {
+				name = modifier_eqfm_landslide_aid_blocked_state
+				months = gbbf_duration_2_years
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_landslide_aid_blocked_country
+			months = gbbf_duration_2_years
+		}
+		add_radicals = {
+			value = medium_radicals
+		}
+	}
+	
+}
+
+
+## Black Mountain Expedition Random Events ##
+# These events are triggered for TUR and notify MON if relevant
+eqfm_black_mountain.040 = {
+	# Local Informants
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+	duration = 2
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.040.t
+	desc = eqfm_black_mountain.040.d
+	flavor = eqfm_black_mountain.040.f
+	
+	event_image = {
+		video = "votp_conspiring"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		c:TUR ?= this
+		eqfm_has_black_mountain_expedition_trigger = yes
+		NOR = {
+			has_variable = eqfm_black_mountain_cooldown_var
+			has_global_variable = eqfm_black_mountain_skirmish_var
+		}
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = eqfm_montenegrin_raiding_settled
+	}
+	
+	cooldown = {
+		years = 2
+	}
+	
+	immediate = {
+		set_variable = {
+			name = eqfm_black_mountain_cooldown_var
+			months = 2
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.040.a
+		default_option = yes
+		eqfm_add_medium_progress_effect = {
+			type = black_mountain
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.040.b
+		eqfm_add_large_progress_effect = {
+			type = black_mountain
+		}
+		s:STATE_MONTENEGRO.region_state:TUR ?= {
+			add_radicals_in_state = {
+				culture = cu:serb
+				value = medium_radicals
+			}
+		}
+	}
+	
+}
+
+eqfm_black_mountain.041 = {
+	# Bear Sighted
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 2
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.041.t
+	desc = eqfm_black_mountain.041.d
+	flavor = eqfm_black_mountain.041.f
+	
+	event_image = {
+		video = "europenorthamerica_gold_prospectors"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		c:TUR ?= this
+		eqfm_has_black_mountain_expedition_trigger = yes
+		NOR = {
+			has_variable = eqfm_black_mountain_cooldown_var
+			has_global_variable = eqfm_black_mountain_skirmish_var
+		}
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = eqfm_montenegrin_raiding_settled
+	}
+	
+	cooldown = {
+		years = 5
+	}
+	
+	immediate = {
+		eqfm_black_mountain_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_black_mountain.041.a
+		default_option = yes
+		custom_tooltip = gbbf_nothing_happens
+	}
+	
+	option = {
+		name = eqfm_black_mountain.041.b
+		eqfm_add_small_peril_effect = {
+			type = black_mountain
+		}
+		add_loyalists = {
+			pop_type = soldiers
+			value = small_radicals
+		}
+	}
+	
+}
+
+eqfm_black_mountain.042 = {
+	# Spoiled Rations
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 2
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.042.t
+	desc = eqfm_black_mountain.042.d
+	flavor = eqfm_black_mountain.042.f
+	
+	event_image = {
+		video = "middleeast_battlefield_trenches"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		c:TUR ?= this
+		eqfm_has_black_mountain_expedition_trigger = yes
+		NOR = {
+			has_variable = eqfm_black_mountain_cooldown_var
+			has_global_variable = eqfm_black_mountain_skirmish_var
+		}
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = eqfm_montenegrin_raiding_settled
+	}
+	
+	cooldown = {
+		years = 5
+	}
+	
+	immediate = {
+		eqfm_black_mountain_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_black_mountain.042.a
+		default_option = yes
+		eqfm_add_medium_peril_effect = {
+			type = black_mountain
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.042.b
+		trigger = {
+			scope:eqfm_black_mountain_tur_leader = {
+				has_trait = resupply_commander
+			}
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		eqfm_add_small_peril_effect = {
+			type = black_mountain
+		}
+		eqfm_remove_small_progress_effect = {
+			type = black_mountain
+		}
+	}
+	
+}
+
+eqfm_black_mountain.043 = {
+	# Logistics Train Raided
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_raiding.dds"
+	duration = 2
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.043.t
+	desc = eqfm_black_mountain.043.d
+	flavor = eqfm_black_mountain.043.f
+	
+	event_image = {
+		video = "ep1_redcoats"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		c:TUR ?= this
+		eqfm_has_black_mountain_expedition_trigger = yes
+		NOR = {
+			has_variable = eqfm_black_mountain_cooldown_var
+			has_global_variable = eqfm_black_mountain_skirmish_var
+		}
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = eqfm_montenegrin_raiding_settled
+	}
+	
+	cooldown = {
+		years = 4
+	}
+	
+	immediate = {
+		eqfm_black_mountain_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_black_mountain.043.a
+		default_option = yes
+		eqfm_add_medium_peril_effect = {
+			type = black_mountain
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.043.b
+		trigger = {
+			scope:eqfm_black_mountain_tur_leader = {
+				has_trait = resupply_commander
+			}
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		eqfm_add_small_peril_effect = {
+			type = black_mountain
+		}
+		eqfm_add_small_progress_effect = {
+			type = black_mountain
+		}
+	}
+	
+}
+
+eqfm_black_mountain.044 = {
+	# A Circular Expedition
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 2
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.044.t
+	desc = eqfm_black_mountain.044.d
+	flavor = eqfm_black_mountain.044.f
+	
+	event_image = {
+		video = "ep1_ca_mountain_pass_military"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		c:TUR ?= this
+		eqfm_has_black_mountain_expedition_trigger = yes
+		NOR = {
+			has_variable = eqfm_black_mountain_cooldown_var
+			has_global_variable = eqfm_black_mountain_skirmish_var
+		}
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = eqfm_montenegrin_raiding_settled
+	}
+	
+	cooldown = {
+		years = 2
+	}
+	
+	immediate = {
+		eqfm_black_mountain_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_black_mountain.044.a
+		default_option = yes
+		eqfm_add_medium_peril_effect = {
+			type = black_mountain
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.044.b
+		trigger = {
+			scope:eqfm_black_mountain_tur_leader = {
+				has_trait = mountain_commander
+			}
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		eqfm_add_small_peril_effect = {
+			type = black_mountain
+		}
+	}
+	
+}
+
+eqfm_black_mountain.045 = {
+	# Successful Scouting
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	duration = 2
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.045.t
+	desc = eqfm_black_mountain.045.d
+	flavor = eqfm_black_mountain.045.f
+	
+	event_image = {
+		video = "ep1_cossacks"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		c:TUR ?= this
+		eqfm_has_black_mountain_expedition_trigger = yes
+		NOR = {
+			has_variable = eqfm_black_mountain_cooldown_var
+			has_global_variable = eqfm_black_mountain_skirmish_var
+		}
+		var:eqfm_black_mountain_expedition_peril_var < 4
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = eqfm_montenegrin_raiding_settled
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+		eqfm_black_mountain_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_black_mountain.045.a
+		default_option = yes
+		eqfm_add_medium_progress_effect = {
+			type = black_mountain
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.045.b
+		trigger = {
+			scope:eqfm_black_mountain_tur_leader = {
+				has_trait = mountain_commander
+			}
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		eqfm_add_large_progress_effect = {
+			type = black_mountain
+		}
+		eqfm_add_small_peril_effect = {
+			type = black_mountain
+		}
+	}
+	
+}
+
+eqfm_black_mountain.046 = {
+	# Balkan Hospitality
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 2
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.046.t
+	desc = eqfm_black_mountain.046.d
+	flavor = eqfm_black_mountain.046.f
+	
+	event_image = {
+		video = "votp_realist_household"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		c:TUR ?= this
+		eqfm_has_black_mountain_expedition_trigger = yes
+		NOR = {
+			has_variable = eqfm_black_mountain_cooldown_var
+			has_global_variable = eqfm_black_mountain_skirmish_var
+		}
+		c:TUR ?= {
+			var:eqfm_black_mountain_expedition_peril_var >= 3
+		}
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = eqfm_montenegrin_raiding_settled
+	}
+	
+	cooldown = {
+		years = 3
+	}
+	
+	immediate = {
+		eqfm_black_mountain_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_black_mountain.046.a
+		default_option = yes
+		eqfm_remove_medium_peril_effect = {
+			type = black_mountain
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.046.b
+		trigger = {
+			scope:eqfm_black_mountain_tur_leader = {
+				OR = {
+					has_trait = bigoted
+					has_trait = cruel
+					has_trait = ruthless
+					has_trait = war_criminal
+					has_trait = pillager
+					has_trait = bandit
+					has_trait = social_bandit
+				}
+			}
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		eqfm_remove_large_peril_effect = {
+			type = black_mountain
+		}
+	}
+	
+}
+
+## Black Mountain Skirmish Events ##
+# These events are triggered for participants when a village skirmish occurs
+eqfm_black_mountain.050 = {
+	# Steady Grind
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_raiding.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.050.t
+	desc = eqfm_black_mountain.050.d
+	flavor = eqfm_black_mountain.050.f
+	
+	event_image = {
+		video = "ip3_angry_mob_raiding_minorities"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_black_mountain.029
+	}
+	
+	cancellation_trigger = {
+		OR = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+			NOT = {
+				has_global_variable = eqfm_black_mountain_skirmish_var
+			}
+		}
+	}
+	
+	immediate = {
+		eqfm_black_mountain_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_black_mountain.050.a
+		default_option = yes
+		custom_tooltip = eqfm_skirmish_no_progress
+		show_as_tooltip = {
+			s:STATE_MONTENEGRO = {
+				add_devastation = 5
+			}
+		}
+	}
+	
+}
+
+eqfm_black_mountain.051 = {
+	# Village Outskirts Burned
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_raiding.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.051.t
+	desc = eqfm_black_mountain.051.d
+	flavor = eqfm_black_mountain.051.f
+	
+	event_image = {
+		video = "ip3_angry_mob_raiding_minorities"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_black_mountain.029
+	}
+	
+	cancellation_trigger = {
+		OR = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+			NOT = {
+				has_global_variable = eqfm_black_mountain_skirmish_var
+			}
+		}
+	}
+	
+	immediate = {
+		eqfm_black_mountain_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_black_mountain.051.a
+		default_option = yes
+		custom_tooltip = eqfm_skirmish_progress_tur_1
+		show_as_tooltip = {
+			s:STATE_MONTENEGRO = {
+				add_devastation = 5
+			}
+		}
+		custom_tooltip = eqfm_skirmish_progress_tur_1
+	}
+	
+}
+
+eqfm_black_mountain.052 = {
+	# Village Families Massacred
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_raiding.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.052.t
+	desc = eqfm_black_mountain.052.d
+	flavor = eqfm_black_mountain.052.f
+	
+	event_image = {
+		video = "ip3_angry_mob_raiding_minorities"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_black_mountain.029
+	}
+	
+	cancellation_trigger = {
+		OR = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+			NOT = {
+				has_global_variable = eqfm_black_mountain_skirmish_var
+			}
+		}
+	}
+	
+	immediate = {
+		eqfm_black_mountain_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_black_mountain.052.a
+		default_option = yes
+		if = {
+			limit = {
+				c:MON ?= this
+			}
+			s:STATE_MONTENEGRO = {
+				add_devastation = 2
+				region_state:TUR = {
+					kill_population_in_state = {
+						culture = cu:serb
+						value = 20
+					}
+				}
+			}
+			c:TUR = {
+				post_notification = notification_eqfm_villages_burned
+			}
+			custom_tooltip = {
+				text = eqfm_skirmish_progress_mon_1
+				change_global_variable = {
+					name = eqfm_black_mountain_skirmish_var
+					subtract = 1
+				}
+			}
+		}
+		if = {
+			limit = {
+				c:TUR ?= this
+			}
+			s:STATE_MONTENEGRO = {
+				add_devastation = 2
+				region_state:MON = {
+					kill_population_in_state = {
+						culture = cu:serb
+						value = 20
+					}
+				}
+			}
+			c:MON = {
+				post_notification = notification_eqfm_villages_burned
+			}
+			custom_tooltip = {
+				text = eqfm_skirmish_progress_tur_1
+				change_global_variable = {
+					name = eqfm_black_mountain_skirmish_var
+					add = 1
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.052.b
+		if = {
+			limit = {
+				c:MON ?= this
+			}
+			s:STATE_MONTENEGRO = {
+				add_devastation = 2
+				region_state:TUR = {
+					kill_population_in_state = {
+						culture = cu:serb
+						value = 100
+					}
+				}
+			}
+			c:TUR = {
+				post_notification = notification_eqfm_villages_burned
+			}
+			custom_tooltip = {
+				text = eqfm_skirmish_progress_mon_2
+				change_global_variable = {
+					name = eqfm_black_mountain_skirmish_var
+					subtract = 2
+				}
+			}
+		}
+		if = {
+			limit = {
+				c:TUR ?= this
+			}
+			s:STATE_MONTENEGRO = {
+				add_devastation = 2
+				region_state:MON = {
+					kill_population_in_state = {
+						culture = cu:serb
+						value = 100
+					}
+				}
+			}
+			c:MON = {
+				post_notification = notification_eqfm_villages_burned
+			}
+			custom_tooltip = {
+				text = eqfm_skirmish_progress_tur_2
+				change_global_variable = {
+					name = eqfm_black_mountain_skirmish_var
+					add = 2
+				}
+			}
+		}
+		
+	}
+	
+}
+
+eqfm_black_mountain.053 = {
+	# Bora Disrupts Operations
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.053.t
+	desc = eqfm_black_mountain.053.d
+	flavor = eqfm_black_mountain.053.f
+	
+	event_image = {
+		video = "unspecific_naval_battle"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_black_mountain.029
+	}
+	
+	cancellation_trigger = {
+		OR = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+			NOT = {
+				has_global_variable = eqfm_black_mountain_skirmish_var
+			}
+		}
+	}
+	
+	immediate = {
+		eqfm_black_mountain_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_black_mountain.053.a
+		default_option = yes
+		custom_tooltip = eqfm_skirmish_progress_mon_1
+	}
+	
+}
+
+eqfm_black_mountain.055 = {
+	# Pitched Battle
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_raiding.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.055.t
+	desc = eqfm_black_mountain.055.d
+	flavor = eqfm_black_mountain.055.f
+	
+	event_image = {
+		video = "europenorthamerica_before_the_battle"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_black_mountain.029
+	}
+	
+	cancellation_trigger = {
+		OR = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+			NOT = {
+				has_global_variable = eqfm_black_mountain_skirmish_var
+			}
+		}
+	}
+	
+	immediate = {
+		eqfm_black_mountain_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_black_mountain.055.a
+		default_option = yes
+		trigger = {
+			c:MON ?= this
+		}
+		custom_tooltip = eqfm_skirmish_progress_tur_2
+	}
+	
+	option = {
+		name = eqfm_black_mountain.055.b
+		default_option = yes
+		trigger = {
+			c:TUR ?= this
+		}
+		custom_tooltip = eqfm_skirmish_progress_tur_2
+	}
+	
+}
+
+eqfm_black_mountain.056 = {
+	# Pitched Battle
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_raiding.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.056.t
+	desc = eqfm_black_mountain.056.d
+	flavor = eqfm_black_mountain.056.f
+	
+	event_image = {
+		video = "ep1_redcoats"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_black_mountain.029
+	}
+	
+	cancellation_trigger = {
+		OR = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+			NOT = {
+				has_global_variable = eqfm_black_mountain_skirmish_var
+			}
+		}
+	}
+	
+	immediate = {
+		eqfm_black_mountain_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_black_mountain.056.a
+		default_option = yes
+		trigger = {
+			c:MON ?= this
+		}
+		custom_tooltip = eqfm_skirmish_progress_tur_3
+	}
+	
+	option = {
+		name = eqfm_black_mountain.056.b
+		default_option = yes
+		trigger = {
+			c:TUR ?= this
+		}
+		custom_tooltip = eqfm_skirmish_progress_tur_3
+	}
+	
+}
+
+eqfm_black_mountain.058 = {
+	# Ottoman Commander Captured
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_raiding.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.058.t
+	desc = {
+		triggered_desc = {
+			trigger = {
+				c:MON ?= this
+			}
+			desc = eqfm_black_mountain.058.d
+		}
+		triggered_desc = {
+			trigger = {
+				c:TUR ?= this
+				has_variable = eqfm_karadag_commander_captured
+			}
+			desc = eqfm_black_mountain.058.d
+		}
+		triggered_desc = {
+			trigger = {
+				c:TUR ?= this
+				has_variable = eqfm_karadag_commander_returned
+			}
+			desc = eqfm_black_mountain.058.d
+		}
+	}
+	flavor = eqfm_black_mountain.058.f
+	
+	event_image = {
+		video = "ip3_angry_mob_raiding_minorities"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_black_mountain.029
+	}
+	
+	cancellation_trigger = {
+		has_global_variable = eqfm_montenegrin_raiding_settled
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				c:MON ?= this
+			}
+			eqfm_black_mountain_scopes_effect = yes
+		}
+		if = {
+			limit = {
+				c:TUR ?= this
+			}
+			if = {
+				limit = {
+					has_variable = eqfm_karadag_commander_captured
+				}
+				random_character_in_void = {
+					limit = {
+						has_variable = eqfm_captive_commander_var
+					}
+					save_scope_as = eqfm_black_mountain_tur_leader
+				}
+				eqfm_fail_black_mountain_expedition_effect = yes
+			}
+			else = {
+				eqfm_black_mountain_scopes_effect = yes
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.058.a
+		trigger = {
+			c:MON ?= this
+		}
+		default_option = yes
+		custom_tooltip = {
+			text = eqfm_karadag_commander_imprisoned
+			scope:eqfm_black_mountain_tur_leader = {
+				transfer_character = root
+				remove_modifier = modifier_eqfm_leading_black_mountain_expedition
+				set_character_busy_and_immortal = no
+				add_modifier = {
+					name = modifier_eqfm_failed_black_mountain_expedition_character
+					months = gbbf_duration_10_years
+				}
+				set_variable = {
+					name = eqfm_captive_commander_var
+					months = 6
+				}
+				set_variable = eqfm_captive_var
+				place_character_in_void = 120 # 10 years
+			}
+		}
+		c:TUR ?= {
+			set_variable = eqfm_karadag_commander_captured
+			trigger_event = {
+				id = eqfm_black_mountain.058
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_black_mountain.058.b
+		trigger = {
+			c:MON ?= this
+		}
+		custom_tooltip = {
+			text = eqfm_karadag_commander_released
+			scope:eqfm_black_mountain_tur_leader = {
+				set_variable = {
+					name = eqfm_captive_commander_var
+					months = 6
+				}
+			}
+		}
+		c:TUR ?= {
+			set_variable = eqfm_karadag_commander_returned
+			trigger_event = {
+				id = eqfm_black_mountain.058
+			}
+		}
+	}
+
+	option = {
+		name = eqfm_black_mountain.058.c
+		trigger = {
+			c:MON ?= this
+			always = no # TODO enable once beheading event is ready
+		}
+	}
+
+	option = {
+		trigger = {
+			c:TUR ?= this
+			has_variable = eqfm_karadag_commander_captured
+		}
+		custom_tooltip = {
+			text = eqfm_karadag_commander_captured
+			eqfm_fail_black_mountain_expedition_effect = yes
+		}
+	}
+
+	option = {
+		trigger = {
+			c:TUR ?= this
+			has_variable = eqfm_karadag_commander_returned
+		}
+		eqfm_fail_black_mountain_expedition_effect = yes
+	}
+
+	after = {
+		remove_variable = eqfm_karadag_commander_captured
+		remove_variable = eqfm_karadag_commander_returned
+	}
+	
+}
+
+eqfm_black_mountain.059 = {
+	# Montenegrin Leader Killed
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_raiding.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_black_mountain.059.t
+	desc = eqfm_black_mountain.059.d
+	flavor = eqfm_black_mountain.059.f
+	
+	event_image = {
+		video = "ip3_angry_mob_raiding_minorities"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_black_mountain.029
+	}
+	
+	cancellation_trigger = {
+		OR = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+			NOT = {
+				has_global_variable = eqfm_black_mountain_skirmish_var
+			}
+		}
+	}
+	
+	immediate = {
+		eqfm_black_mountain_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_black_mountain.059.a
+		default_option = yes
+	}
+	
+	option = {
+		name = eqfm_black_mountain.059.b
+	}
+	
+}

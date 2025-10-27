@@ -1,11 +1,42 @@
 ﻿je_balkfm_mon_prince_bishopric = {
+	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_montenegro.dds"
-
-	group = je_group_balkfm_montenegro
+	weight = 1000
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	scripted_button = balkfm_visit_tsar_button
+	scripted_button = je_montenegrin_visit_moscow
+	scripted_button = je_montenegrin_make_saint
+	scripted_button = balkfm_mon_principality_button
+
+	is_shown_in_lobby = {
+		c:MON ?= this
+	}
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		if = {
+			limit = {
+				has_dlc_feature = ip3_content # National Awakening
+			}
+			set_variable = {
+				name = rus_relations
+				value = c:RUS.relations:ROOT
+			}
+			add_modifier = {
+				name = modifier_montenegrin_aid
+				multiplier = russian_aid_income
+			}
+			c:RUS ?= {
+				save_scope_as = russia
+			}
+			c:TUR ?= {
+				save_scope_as = ottoman
+			}
+		}
 	}
 
 	modifiers_while_active = {
@@ -13,72 +44,244 @@
 		modifier_balkfm_spartan_existence
 	}
 
-	scripted_button = balkfm_visit_tsar_button
-	scripted_button = balkfm_mon_principality_button
-
 	complete = {
-		custom_tooltip = {
-			text = je_balkfm_mon_prince_bishopric_tt1
-			hidden_trigger = {
-				has_variable = balkfm_mon_soc_completed
+		has_law_or_variant = law_type:law_monarchy
+		government_legitimacy > 50
+		trigger_if = {
+			limit = {
+				has_dlc_feature = ip3_content # National Awakening
+			}
+			custom_tooltip = {
+				text = has_taxation_law_tt
+				NOT = {
+					has_law_or_variant = law_type:law_consumption_based_taxation
+				}
+			}
+			custom_tooltip = {
+				text = has_police_law_tt
+				NOT = {
+					has_law_or_variant = law_type:law_no_police
+				}
+			}
+			custom_tooltip = {
+				text = balkfm_biljarda_built
+				capital = {
+					any_scope_building = {
+						is_building_type = gbbf_building_biljarda
+					}
+				}
+			}
+			NOR = {
+				in_default = yes
+				has_modifier = declared_bankruptcy
 			}
 		}
-		custom_tooltip = {
-			text = je_balkfm_mon_prince_bishopric_tt2
-			hidden_trigger = {
-				has_variable = balkfm_mon_gov_completed
+		trigger_else = {
+			custom_tooltip = {
+				text = je_balkfm_mon_prince_bishopric_tt1
+				hidden_trigger = {
+					has_variable = balkfm_mon_soc_completed
+				}
 			}
-		}
-		custom_tooltip = {
-			text = je_balkfm_mon_prince_bishopric_tt3
-			hidden_trigger = {
-				has_variable = balkfm_mon_mil_completed
+			custom_tooltip = {
+				text = je_balkfm_mon_prince_bishopric_tt2
+				hidden_trigger = {
+					has_variable = balkfm_mon_gov_completed
+				}
 			}
-		}
-		custom_tooltip = {
-			text = je_balkfm_mon_prince_bishopric_tt4
-			hidden_trigger = {
-				OR = {
-					has_modifier = modifier_balkfm_declared_principality
-					has_modifier = modifier_balkfm_declared_kingdom
+			custom_tooltip = {
+				text = je_balkfm_mon_prince_bishopric_tt3
+				hidden_trigger = {
+					has_variable = balkfm_mon_mil_completed
+				}
+			}
+			custom_tooltip = {
+				text = je_balkfm_mon_prince_bishopric_tt4
+				hidden_trigger = {
+					OR = {
+						has_modifier = modifier_balkfm_declared_principality
+						has_modifier = modifier_balkfm_declared_kingdom
+					}
 				}
 			}
 		}
 	}
 
 	on_complete = {
-		trigger_event = {
-			id = balkfm_montenegro.009 # The Light of Modernity
+		if = {
+			limit = {
+				has_dlc_feature = ip3_content # National Awakening
+				NOT = {
+					has_global_variable = eqfm_montenegrin_raiding_settled
+				}
+			}
+			show_as_tooltip = {
+				add_modifier = {
+					name = modifier_montenegrin_recognition
+				}
+			}
+			custom_tooltip = {
+				text = montenegrin_compromise_tt
+				trigger_event = {
+					id = balkfm_montenegro.018
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				has_dlc_feature = ip3_content # National Awakening
+				has_global_variable = eqfm_montenegrin_raiding_settled
+			}
+			trigger_event = {
+				id = balkfm_montenegro.017
+			}
+			show_as_tooltip = {
+				add_modifier = {
+					name = modifier_montenegrin_recognition
+				}
+			}
+		}
+		else = {
+			trigger_event = {
+				id = balkfm_montenegro.009 # The Light of Modernity
+			}
 		}
 		set_variable = balkfm_prince_bishopric_completed
+	}
+
+	fail = {
+		trigger_if = {
+			limit = {
+				has_dlc_feature = ip3_content # National Awakening
+			}
+			OR = {
+				is_subject_of = c:TUR
+				c:RUS ?= {
+					relations:root < relations_threshold:cold
+				}
+			}
+		}
+	}
+
+	on_fail = {
+		if = {
+			limit = {
+				has_dlc_feature = ip3_content # National Awakening
+			}
+			if = {
+				limit = {
+					exists = c:MON
+					c:RUS ?= {
+						any_scope_treaty = {
+							binds = c:MON
+							any_scope_article = {
+								has_type = guarantee_independence
+							}
+						}
+					}
+				}
+				c:RUS ?= {
+					random_scope_treaty = {
+						limit = {
+							binds = c:MON
+							any_scope_article = {
+								has_type = guarantee_independence
+							}
+						}
+						withdraw = {
+							country = c:RUS
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				text = mon_rus_aid_stop_tt
+				remove_modifier = modifier_montenegrin_aid
+			}
+			mon_failure_events = yes
+		}
 	}
 
 	invalid = {
 		has_variable = balkfm_prince_bishopric_completed
 	}
 
-	status_desc = {
-		triggered_desc = {
-			desc = je_balkfm_mon_prince_bishopric_status
+	on_weekly_pulse = {
+		effect = {
+			if = {
+				limit = {
+					has_dlc_feature = ip3_content # National Awakening
+				}
+				if = {
+					limit = {
+						var:rus_relations != c:RUS.relations:ROOT
+					}
+					set_variable = {
+						name = rus_relations
+						value = c:RUS.relations:ROOT
+					}
+					remove_modifier = modifier_montenegrin_aid
+					add_modifier = {
+						name = modifier_montenegrin_aid
+						multiplier = russian_aid_income
+					}
+				}
+				if = {
+					limit = {
+						NOR = {
+							has_global_variable = eqfm_montenegrin_raiding_settled
+							has_modifier = modifier_eqfm_need_tribal_leader
+						}
+						eqfm_has_black_mountain_expedition_trigger = no
+					}
+					add_modifier = modifier_eqfm_need_tribal_leader
+				}
+				else = {
+					remove_modifier = modifier_eqfm_need_tribal_leader
+				}
+			}
+			else = {
+				remove_modifier = modifier_montenegrin_aid
+				remove_modifier = modifier_eqfm_need_tribal_leader
+			}
 		}
 	}
 
-	weight = 1000
-
+	status_desc = {
+		triggered_desc = {
+			trigger = {
+				NOT = {
+					has_dlc_feature = ip3_content # National Awakening
+				}
+			}
+			desc = je_balkfm_mon_prince_bishopric_status
+		}
+		triggered_desc = {
+			trigger = {
+				has_dlc_feature = ip3_content # National Awakening
+			}
+			desc = je_montenegrin_russian_aid_income
+		}
+	}
 }
 
 je_balkfm_mon_societal_reform = {
+	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	weight = 500
 
-	group = je_group_balkfm_montenegro
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 	}
 
 	complete = {
-		NOT = { has_law = law_type:law_hereditary_bureaucrats }
-		NOT = { has_law = law_type:law_traditionalism }
-		NOT = { has_law = law_type:law_serfdom }
+		NOT = { has_law_or_variant = law_type:law_hereditary_bureaucrats }
+		NOT = { has_law_or_variant = law_type:law_traditionalism }
+		NOT = { has_law_or_variant = law_type:law_serfdom }
 	}
 
 	on_complete = {
@@ -90,21 +293,23 @@ je_balkfm_mon_societal_reform = {
 	invalid = {
 		has_variable = balkfm_prince_bishopric_completed
 	}
-
-	weight = 500
-
 }
 
 je_balkfm_mon_administration = {
+	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	weight = 500
 
-	group = je_group_balkfm_montenegro
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 	}
 
 	complete = {
-		NOT = { has_law = law_type:law_land_based_taxation }
+		NOT = { has_law_or_variant = law_type:law_land_based_taxation }
 		any_scope_state = {
 			has_building = building_government_administration
 		}
@@ -121,21 +326,23 @@ je_balkfm_mon_administration = {
 	invalid = {
 		has_variable = balkfm_prince_bishopric_completed
 	}
-
-	weight = 500
-
 }
 
 je_balkfm_mon_military_reform = {
+	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	weight = 500
 
-	group = je_group_balkfm_montenegro
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 	}
 
 	complete = {
-		NOT = { has_law = law_type:law_peasant_levies }
+		NOT = { has_law_or_variant = law_type:law_peasant_levies }
 		army_size >= 4
 	}
 
@@ -148,17 +355,24 @@ je_balkfm_mon_military_reform = {
 	invalid = {
 		has_variable = balkfm_prince_bishopric_completed
 	}
-
-	weight = 500
-
 }
 
 je_balkfm_mon_ali_pasha = {
+	group = je_group_foreign_affairs
 	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
-
-	group = je_group_balkfm_montenegro
+	weight = 100
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	is_shown_in_lobby = {
+		c:MON ?= this
+	}
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
 
 	modifiers_while_active = {
 		modifier_balkfm_ali_pasha
@@ -175,14 +389,14 @@ je_balkfm_mon_ali_pasha = {
 
 	on_complete = {
 		add_modifier = {
-			name = modifier_turkfm_weathered_the_storm
-			days = normal_modifier_time
+			name = modifier_eqfm_weathered_the_storm
+			months = gbbf_duration_5_years
 		}
 	}
 
 	invalid = {
 		hidden_trigger = {
-			c:TUR_BOS ?= {
+			c:BOS ?= {
 				NOT = {
 					ruler = {
 						has_template = template_balkfm_rizvanbegovic_ali
@@ -197,25 +411,25 @@ je_balkfm_mon_ali_pasha = {
 			balkfm_montenegro.032 # Knives in the Dark
 		}
 	}
-
-	weight = 400
-
 }
 
 je_balkfm_mon_nationalism = {
-	icon = "gfx/interface/icons/event_icons/event_montenegro2.dds"
-
-	group = je_group_balkfm_montenegro
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	weight = 100
 
 	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	scripted_button = balkfm_mon_kingdom_button
 
 	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
 		trigger_event = {
 			id = balkfm_montenegro.200 # The Montenegrin Identity
 		}
 	}
-
-	scripted_button = balkfm_mon_kingdom_button
 
 	complete = {
 		has_modifier = modifier_balkfm_declared_kingdom
@@ -232,7 +446,126 @@ je_balkfm_mon_nationalism = {
 			c:MON ?= this
 		}
 	}
+}
 
-	weight = 1000
+je_balkfm_mon_austria_alliance = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	weight = 500
+	
+	should_be_pinned_by_default = yes
+	transferable = no
+	can_revolution_inherit = yes
+	
+	is_shown_when_inactive = {
+		has_dlc_feature = ip3_content # National Awakening
+		c:MON ?= this
+		exists = c:AUS
+		p:x90A0E0 = {
+			owner = c:AUS
+		}
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = je_balkfm_mon_austria_alliance_possible
+			p:x90A0E0 = {
+				owner = c:AUS
+			}
+		}
+		NOT = {
+			has_journal_entry = je_eqfm_the_black_mountain
+		}
+	}
+	
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		c:RUS ?= {
+			save_scope_as = russia
+		}
+		c:TUR ?= {
+			save_scope_as = ottoman
+		}
+		c:AUS = {
+			save_scope_as = austria
+		}
+	}
+	
+	complete = {
+		government_legitimacy > 50
+		c:RUS ?= {
+			relations:root <= relations_threshold:poor
+		}
+		c:AUS = {
+			relations:root >= relations_threshold:friendly
+		}
+		trigger_if = {
+			limit = {
+				has_journal_entry = je_montenegrin_raiding
+			}
+			custom_tooltip = {
+				text = raiding_income_greater_tt
+				eqfm_raiding_income_value < 700
+			}
+		}
+	}
+	
+	on_complete = {
+		s:STATE_MONTENEGRO = {
+			set_owner_of_provinces = {
+				country = root
+				provinces = { x90A0E0 }
+			}
+		}
+		trigger_event = {
+			id = mon_state_formation.4
+			popup = yes
+		}
+		set_variable = turkfm_negotiated_kotor
+	}
+	
+	event_outcome_completed_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = event_effects_mon_state_formation.4_tt
+			}
+		}
+	}
+	
+	fail = {
+		OR = {
+			is_subject_of = c:TUR
+			has_war_with = c:AUS
+			any_diplomatic_play = {
+				initiator_is = root
+			}
+		}
+	}
+	
+	on_fail = { #use same barbarian event.
+		mon_failure_events = yes
+		c:AUS = {
+			change_relations = {
+				country = root
+				value = -30
+			}
+			create_diplomatic_catalyst = {
+				type = catalyst_event_negative
+				target = root
+			}
+		}
+	}
 
+	invalid = { #p:x90A0E0.state.owner might work better
+		NOT = {
+			exists = c:AUS
+			p:x90A0E0 = {
+				owner = c:AUS
+			}
+		}
+	}
+
+	status_desc = {
+		desc = je_mon_austria_status_desc
+	}
 }
