@@ -21,7 +21,7 @@ namespace = eqfm_balkans
 #	001 - The Peoples of the Empire
 #	002 - The Rise of Nationalism
 #	003 - Nationalist Movements Intensify
-#	004 - [TECH] Adds je_eqfm_balkan_situation_main
+#	004 - [TECH] Adds je_eqfm_balkan_situation
 #	005 - Riots Break Out in State
 #	006 - Balkan Country Rebellion
 #	007 - Riots in State Suppressed
@@ -379,17 +379,9 @@ eqfm_balkans.005 = { # Riots Break Out in State
 			value = eqfm_riot_counter_value
 		}
 		if = {
-			limit = {
-				NOT = {
-					has_journal_entry = je_eqfm_balkan_situation_riots
-				}
-			}
-			add_journal_entry = {
-				type = je_eqfm_balkan_situation_riots
-			}
 			every_country = {
 				limit = {
-					has_journal_entry = je_eqfm_eastern_question
+					is_involved_in_journal_entry = je_eqfm_balkan_situation
 				}
 				post_notification = notification_eqfm_race_riots
 			}
@@ -397,7 +389,7 @@ eqfm_balkans.005 = { # Riots Break Out in State
 		else = {
 			every_country = {
 				limit = {
-					has_journal_entry = je_eqfm_eastern_question
+					is_involved_in_journal_entry = je_eqfm_balkan_situation
 				}
 				post_notification = notification_eqfm_race_riots_worsen
 			}
@@ -440,7 +432,7 @@ eqfm_balkans.006 = { # Balkan Country Rebellion
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by turkfm_secession_start on_action
+		# triggered by eqfm_secession_start on_action
 	}
 
 	immediate = {
@@ -486,7 +478,7 @@ eqfm_balkans.006 = { # Balkan Country Rebellion
 		custom_tooltip = turkfm_play_continues
 		every_country = {
 			limit = {
-				has_journal_entry = je_eqfm_eastern_question
+				is_involved_in_journal_entry = je_eqfm_balkan_situation
 			}
 			post_notification = notification_eqfm_revolt_seccession
 		}
@@ -516,7 +508,7 @@ eqfm_balkans.006 = { # Balkan Country Rebellion
 		hidden_effect = {
 			every_country = {
 				limit = {
-					has_journal_entry = je_eqfm_eastern_question
+					is_involved_in_journal_entry = je_eqfm_balkan_situation
 				}
 				post_notification = notification_eqfm_revolt_protectorate
 			}
@@ -586,7 +578,7 @@ eqfm_balkans.007 = { # State Rebellion Suppressed
 		eqfm_add_very_large_deescalation_effect = yes
 		every_country = {
 			limit = {
-				has_journal_entry = je_eqfm_eastern_question
+				is_involved_in_journal_entry = je_eqfm_balkan_situation
 			}
 			post_notification = notification_eqfm_riot_suppressed
 		}
@@ -1012,18 +1004,11 @@ eqfm_balkans.019 = { # Adds the Eastern Question JE
 	hidden = yes
 	
 	trigger = {
-		exists = c:TUR
-		c:TUR ?= {
-			has_diplomatic_relevance = root
-			any_scope_state = {
-				region = sr:region_balkans
-			}
-		}
 		NOR = {
-			has_global_variable = eqfm_separatism_complete
-			has_journal_entry = je_eqfm_eastern_question
-			has_journal_entry = je_eqfm_balkan_situation_main
+			has_global_variable = eqfm_balkan_situation_resolved
+			is_involved_in_journal_entry = je_eqfm_balkan_situation
 		}
+		eqfm_balkans_involved_trigger = yes
 	}
 	
 	cooldown = {
@@ -1035,14 +1020,14 @@ eqfm_balkans.019 = { # Adds the Eastern Question JE
 			limit = {
 				has_variable = eqfm_eqfm_started
 			}
-			add_journal_entry = {
-				type = je_eqfm_eastern_question
+			je:je_eqfm_balkan_situation = {
+				add_involved_country = root
 			}
 		}
 		else = {
 			set_variable = eqfm_eqfm_started
-			add_journal_entry = {
-				type = je_eqfm_eastern_question
+			je:je_eqfm_balkan_situation = {
+				add_involved_country = root
 			}
 			trigger_event = {
 				id = eqfm_balkans.011 # The Eastern Question
@@ -6286,7 +6271,7 @@ eqfm_balkans.192 = { # Ottoman Alliance Monitor Event
 
 }
 
-eqfm_balkans.199 = { # Adds je_eqfm_balkan_situation_main
+eqfm_balkans.199 = { # Adds je_eqfm_balkan_situation
 	type = country_event
 	hidden = yes
 
@@ -6294,7 +6279,7 @@ eqfm_balkans.199 = { # Adds je_eqfm_balkan_situation_main
 		c:TUR ?= this
 		NOR = {
 			has_global_variable = eqfm_separatism_complete
-			has_journal_entry = je_eqfm_balkan_situation_main
+			has_journal_entry = je_eqfm_balkan_situation
 		}
 		any_scope_state = {
 			region = sr:region_balkans
@@ -6307,12 +6292,12 @@ eqfm_balkans.199 = { # Adds je_eqfm_balkan_situation_main
 				has_variable = eqfm_balkan_situation_starter_var
 			}
 			add_journal_entry = {
-				type = je_eqfm_balkan_situation_main
+				type = je_eqfm_balkan_situation
 			}
 		}
 		else = {
 			add_journal_entry = {
-				type = je_eqfm_balkan_situation_main
+				type = je_eqfm_balkan_situation
 			}
 			trigger_event = {
 				id = eqfm_balkans.001 # The Peoples of the Empire

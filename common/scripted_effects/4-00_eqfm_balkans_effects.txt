@@ -1,5 +1,5 @@
 ﻿## General Situation Effects
-turkfm_initialize_balkan_situation_effect = {
+eqfm_initialize_balkan_variables_effect = {
 	set_global_variable = {
 		name = eqfm_balkans_phase_var
 		value = flag:eqfm_stable # We start in the stable phase
@@ -17,13 +17,25 @@ turkfm_initialize_balkan_situation_effect = {
 		value = 0
 	}
 	set_global_variable = {
+		name = eqfm_crisis_var
+		value = 250
+	}
+	set_global_variable = {
+		name = eqfm_crisis_progress_var
+		value = 0
+	}
+	set_global_variable = {
+		name = eqfm_crisis_duration_var
+		value = 0
+	}
+	set_global_variable = {
 		name = eqfm_crisis_counter_var
 		value = 0
 	}
 	add_modifier = modifier_eqfm_stable_phase
 }
 
-eqfm_initialize_eastern_question_effect = {
+eqfm_create_balkan_situation_effect = {
 	if = {
 		limit = {
 			has_global_variable = turkfm_balkans_situation_var
@@ -242,6 +254,11 @@ turkfm_clamp_balkan_situation_variables_effect = {
 		max = 500
 		min = 0
 	}
+	clamp_global_variable = {
+		name = eqfm_crisis_var
+		max = 250
+		min = 0
+	}
 }
 
 eqfm_calculate_balkan_situation_variables_effect = {
@@ -257,6 +274,21 @@ eqfm_calculate_balkan_situation_variables_effect = {
 		name = eqfm_riot_counter_var
 		value = eqfm_riot_counter_value
 	}
+	if = {
+		limit = {
+			eqfm_crisis_phase_trigger = yes
+		}
+		set_global_variable = {
+			name = eqfm_crisis_progress_var
+			value = eqfm_crisis_progress_value
+		}
+		change_global_variable = {
+			name = eqfm_crisis_duration_var
+			add = 1
+		}
+	}
+	turkfm_clamp_balkan_situation_variables_effect = yes
+	eqfm_update_balkan_situation_progressbar_effect = yes
 }
 
 eqfm_advance_balkan_situation_variables_effect = {
@@ -268,18 +300,75 @@ eqfm_advance_balkan_situation_variables_effect = {
 		name = eqfm_deescalation_var
 		add = global_var:eqfm_deescalation_progress_var
 	}
+	if = {
+		limit = {
+			eqfm_crisis_phase_trigger = yes
+		}
+		change_global_variable = {
+			name = eqfm_crisis_var
+			add = global_var:eqfm_crisis_progress_var
+		}
+		clamp_global_variable = {
+			name = eqfm_crisis_var
+			max = 250
+			min = 0
+		}
+	}
 	turkfm_clamp_balkan_situation_variables_effect = yes
+	eqfm_update_balkan_situation_progressbar_effect = yes
 }
 
 eqfm_check_balkan_situation_phase_effect = {
+	# Run Crisis logic check first
 	if = {
+		limit = {
+			eqfm_crisis_phase_trigger = yes
+		}
+		if = {
+			# Check for crisis success first
+			limit = {
+				c:TUR ?= {
+					global_var:eqfm_crisis_var >= 250
+					has_any_secessionists_broken_out = no
+					has_any_secessionists_growing = no
+					is_at_war = no
+				}
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_balkan_situation
+				}
+				trigger_event = {
+					id = eqfm_balkans.029 # Order Returns to Rumelia
+				}
+			}
+			eqfm_cleanup_crisis_effect = yes
+			eqfm_force_deconfliction_effect = yes
+		}
+		# Next attempt to check for crisis failure
+		else_if = {
+			limit = {
+				global_var:eqfm_crisis_var <= 0
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_balkan_situation
+				}
+				trigger_event = {
+					id = eqfm_balkans.028 # Rumelia in Disarray
+				}
+			}
+			eqfm_cleanup_crisis_effect = yes
+			eqfm_force_deconfliction_effect = yes
+		}
+	}
+	else_if = {
 		limit = {
 			OR = {
 				global_var:eqfm_escalation_var >= 500
 				global_var:eqfm_deescalation_var >= 500
 			}
 		}
-
 		## Attempt to Deescalate First
 		if = {
 			limit = {
@@ -296,7 +385,7 @@ eqfm_check_balkan_situation_phase_effect = {
 				}
 				every_country = {
 					limit = {
-						eqfm_balkans_party_trigger = yes
+						is_involved_in_journal_entry = je_eqfm_balkan_situation
 					}
 					post_notification = notification_eqfm_transition_deconfliction
 				}
@@ -312,7 +401,7 @@ eqfm_check_balkan_situation_phase_effect = {
 				}
 				every_country = {
 					limit = {
-						eqfm_balkans_party_trigger = yes
+						is_involved_in_journal_entry = je_eqfm_balkan_situation
 					}
 					post_notification = notification_eqfm_transition_deconfliction
 				}
@@ -333,11 +422,15 @@ eqfm_check_balkan_situation_phase_effect = {
 				}
 				every_country = {
 					limit = {
-						eqfm_balkans_party_trigger = yes
+						is_involved_in_journal_entry = je_eqfm_balkan_situation
+						c:TUR != this
 					}
 					post_notification = notification_eqfm_transition_deconfliction
 				}
 				custom_tooltip = eqfm_transition_deconfliction_tt
+			}
+			c:TUR ?= {
+				eqfm_cleanup_riots_effect = yes
 			}
 			set_global_variable = {
 				name = eqfm_escalation_var
@@ -365,7 +458,7 @@ eqfm_check_balkan_situation_phase_effect = {
 				}
 				every_country = {
 					limit = {
-						eqfm_balkans_party_trigger = yes
+						is_involved_in_journal_entry = je_eqfm_balkan_situation
 					}
 					post_notification = notification_eqfm_transition_unrest
 				}
@@ -381,7 +474,7 @@ eqfm_check_balkan_situation_phase_effect = {
 				}
 				every_country = {
 					limit = {
-						eqfm_balkans_party_trigger = yes
+						is_involved_in_journal_entry = je_eqfm_balkan_situation
 					}
 					post_notification = notification_eqfm_transition_hostility
 				}
@@ -396,6 +489,7 @@ eqfm_check_balkan_situation_phase_effect = {
 					name = eqfm_balkans_phase_var
 					value = flag:eqfm_crisis
 				}
+				eqfm_initialize_crisis_effect = yes
 				c:TUR ?= {
 					trigger_event = {
 						id = eqfm_balkans.020 # A Crisis in Rumelia
@@ -406,18 +500,13 @@ eqfm_check_balkan_situation_phase_effect = {
 				}
 				every_country = {
 					limit = {
-						eqfm_balkans_party_trigger = yes
-					}
-					post_notification = notification_eqfm_transition_crisis
-				}
-				every_country = {
-					limit = {
-						has_journal_entry = je_eqfm_eastern_question
+						is_involved_in_journal_entry = je_eqfm_balkan_situation
 						c:TUR != this
-					}
+					} s
 					trigger_event = {
 						id = eqfm_balkans.021 # A Crisis in Rumelia
 					}
+					post_notification = notification_eqfm_transition_crisi
 				}
 				custom_tooltip = eqfm_transition_crisis_tt
 			}
@@ -431,7 +520,7 @@ eqfm_check_balkan_situation_phase_effect = {
 				}
 				every_country = {
 					limit = {
-						eqfm_balkans_party_trigger = yes
+						is_involved_in_journal_entry = je_eqfm_balkan_situation
 					}
 					post_notification = notification_eqfm_transition_stable
 				}
@@ -447,10 +536,13 @@ eqfm_check_balkan_situation_phase_effect = {
 			}
 		}
 	}
-	turkfm_check_modifiers_effect = yes
+	c:TUR ?= {
+		eqfm_check_modifiers_effect = yes
+	}
+
 }
 
-turkfm_check_modifiers_effect = {
+eqfm_check_modifiers_effect = {
 	hidden_effect = {
 		remove_modifier = modifier_eqfm_stable_phase
 		remove_modifier = modifier_eqfm_unrest_phase
@@ -583,18 +675,28 @@ turkfm_check_modifiers_effect = {
 }
 
 eqfm_update_balkan_situation_progressbar_effect = {
-	every_country = {
-		limit = {
-			has_journal_entry = je_eqfm_eastern_question
+	je:je_eqfm_balkan_situation = {
+		set_bar_progress = {
+			name = eqfm_balkans_escalation_progress_bar
+			value = global_var:eqfm_escalation_var
 		}
-		je:je_eqfm_eastern_question = {
-			set_bar_progress = {
-				name = eqfm_balkans_escalation_progress_bar
-				value = global_var:eqfm_escalation_var
+		set_bar_progress = {
+			name = eqfm_balkans_deescalation_progress_bar
+			value = global_var:eqfm_deescalation_var
+		}
+		if = {
+			limit = {
+				eqfm_crisis_phase_trigger = yes
 			}
 			set_bar_progress = {
-				name = eqfm_balkans_deescalation_progress_bar
-				value = global_var:eqfm_deescalation_var
+				name = eqfm_crisis_progress_bar
+				value = global_var:eqfm_crisis_var
+			}
+		}
+		else = {
+			set_bar_progress = {
+				name = eqfm_crisis_progress_bar
+				value = 250
 			}
 		}
 	}
@@ -620,7 +722,7 @@ eqfm_force_stable_effect = {
 		value = 0
 	}
 	c:TUR ?= {
-		turkfm_check_modifiers_effect = yes
+		eqfm_check_modifiers_effect = yes
 	}
 }
 
@@ -644,7 +746,7 @@ eqfm_force_unrest_effect = {
 		value = 0
 	}
 	c:TUR ?= {
-		turkfm_check_modifiers_effect = yes
+		eqfm_check_modifiers_effect = yes
 	}
 }
 
@@ -668,7 +770,7 @@ eqfm_force_hostility_effect = {
 		value = 0
 	}
 	c:TUR ?= {
-		turkfm_check_modifiers_effect = yes
+		eqfm_check_modifiers_effect = yes
 	}
 }
 
@@ -692,7 +794,7 @@ eqfm_force_deconfliction_effect = {
 		value = 0
 	}
 	c:TUR ?= {
-		turkfm_check_modifiers_effect = yes
+		eqfm_check_modifiers_effect = yes
 	}
 }
 
@@ -716,7 +818,7 @@ eqfm_force_crisis_effect = {
 		value = 0
 	}
 	c:TUR ?= {
-		turkfm_check_modifiers_effect = yes
+		eqfm_check_modifiers_effect = yes
 	}
 }
 
@@ -1951,115 +2053,6 @@ turkfm_massacre_effect = {
 	}
 }
 
-eqfm_update_riot_variables_effect = {
-	# Step 1, clear all variables
-	remove_variable = eqfm_riot_state_1_var
-	remove_variable = eqfm_riot_state_1_progress_var
-	remove_variable = eqfm_riot_state_2_var
-	remove_variable = eqfm_riot_state_2_progress_var
-	remove_variable = eqfm_riot_state_3_var
-	remove_variable = eqfm_riot_state_3_progress_var
-
-	# Step 2, Recapture states and set appropriate progress variables
-	random_scope_state = {
-		limit = {
-			has_modifier = modifier_eqfm_race_riots
-		}
-		save_scope_as = eqfm_riot_state_1_scope
-	}
-	set_variable = {
-		name = eqfm_riot_state_1_var
-		value = scope:eqfm_riot_state_1_scope
-	}
-	set_variable = {
-		name = eqfm_riot_state_1_progress_var
-		value = eqfm_riot_1_progress_value
-	}
-	if = {
-		limit = {
-			exists = scope:eqfm_riot_state_1_scope
-		}
-		random_scope_state = {
-			limit = {
-				has_modifier = modifier_eqfm_race_riots
-				NOT = {
-					scope:eqfm_riot_state_1_scope ?= this
-				}
-			}
-			save_scope_as = eqfm_riot_state_2_scope
-		}
-		if = {
-			limit = {
-				exists = scope:eqfm_riot_state_2_scope
-			}
-			set_variable = {
-				name = eqfm_riot_state_2_var
-				value = scope:eqfm_riot_state_2_scope
-			}
-			set_variable = {
-				name = eqfm_riot_state_2_progress_var
-				value = eqfm_riot_2_progress_value
-			}
-			random_scope_state = {
-				limit = {
-					has_modifier = modifier_eqfm_race_riots
-					NOR = {
-						scope:eqfm_riot_state_1_scope ?= this
-						scope:eqfm_riot_state_2_scope ?= this
-					}
-				}
-				save_scope_as = eqfm_riot_state_3_scope
-			}
-			if = {
-				limit = {
-					exists = scope:eqfm_riot_state_2_scope
-				}
-				set_variable = {
-					name = eqfm_riot_state_3_var
-					value = scope:eqfm_riot_state_3_scope
-				}
-				set_variable = {
-					name = eqfm_riot_state_3_progress_var
-					value = eqfm_riot_3_progress_value
-				}
-			}
-		}
-	}
-	
-	# Step 3, Update math variables
-	change_variable = {
-		name = eqfm_riot_duration_var
-		add = 1
-	}
-	set_variable = {
-		name = eqfm_riot_progress_var
-		value = eqfm_riot_progress_value
-	}
-}
-
-eqfm_update_riot_modifiers_effect = {
-	# Step 1, Remove modifiers
-	remove_modifier = modifier_eqfm_nationalist_insurrection
-	every_political_movement = {
-		remove_modifier = modifier_eqfm_nationalist_insurrection_movement
-	}
-
-	# Step 2, Add modifiers
-	add_modifier = {
-		name = modifier_eqfm_nationalist_insurrection
-		multiplier = eqfm_riot_multiplier_value
-	}
-	every_political_movement = {
-		limit = {
-			eqfm_eligible_minority_movement_trigger = yes
-		}
-		add_modifier = {
-			name = modifier_eqfm_nationalist_insurrection_movement
-			multiplier = eqfm_riot_multiplier_value
-		}
-	}
-}
-
 eqfm_cleanup_riots_effect = {
 	hidden_effect = {
 		remove_modifier = modifier_eqfm_nationalist_insurrection
@@ -2073,15 +2066,6 @@ eqfm_cleanup_riots_effect = {
 			remove_modifier = modifier_eqfm_nationalist_insurrection_movement
 		}
 	}
-	remove_variable = eqfm_riot_var
-	remove_variable = eqfm_riot_progress_var
-	remove_variable = eqfm_riot_duration_var
-	remove_variable = eqfm_riot_state_1_var
-	remove_variable = eqfm_riot_state_2_var
-	remove_variable = eqfm_riot_state_3_var
-	remove_variable = eqfm_riot_state_1_progress_var
-	remove_variable = eqfm_riot_state_2_progress_var
-	remove_variable = eqfm_riot_state_3_progress_var
 }
 
 eqfm_cleanup_tension_main_effect = {
@@ -2119,8 +2103,10 @@ eqfm_initialize_crisis_effect = {
 		name = eqfm_crisis_counter_var
 		add = 1
 	}
-	add_journal_entry = {
-		type = je_great_eastern_crisis
+	c:TUR ?= {
+		add_journal_entry = {
+			type = je_great_eastern_crisis
+		}
 	}
 }
 
@@ -2427,9 +2413,24 @@ eqfm_crisis_fail_effect = {
 }
 
 eqfm_cleanup_crisis_effect = {
-	remove_global_variable = eqfm_crisis_var
-	remove_global_variable = eqfm_crisis_progress_var
-	remove_global_variable = eqfm_crisis_duration_var
+	set_global_variable = {
+		name = eqfm_crisis_var
+		value = 250
+	}
+	set_global_variable = {
+		name = eqfm_crisis_progress_var
+		value = 0
+	}
+	set_global_variable = {
+		name = eqfm_crisis_duration_var
+		value = 0
+	}
+	je:je_eqfm_balkan_situation = {
+		set_bar_progress = {
+			name = eqfm_crisis_progress_bar
+			value = 250
+		}
+	}
 }
 
 ## Separatism Effects ##
