@@ -5138,42 +5138,52 @@ grefm_greece.101 = { # Hellenic Railways event
 	trigger = {
 		NOT = { has_variable = grefm_hellenic_railways_event }
 		owns_entire_state_region = STATE_ATTICA
-		owns_entire_state_region = STATE_THESSALIA
 		s:STATE_ATTICA = {
-			any_scope_building = {
-				is_building_type = building_railway
-				occupancy > 0.9
+			any_scope_state = {
+				any_scope_building = {
+					is_building_type = building_railway
+					occupancy > 0.9
+				}
 			}
 		}
+		owns_entire_state_region = STATE_THESSALIA
 		s:STATE_THESSALIA = {
-			any_scope_building = {
-				is_building_type = building_railway
-				occupancy > 0.9
+			any_scope_state = {
+				any_scope_building = {
+					is_building_type = building_railway
+					occupancy > 0.9
+				}
 			}
 		}
 	}
 
 	immediate = {
 		set_variable = grefm_hellenic_railways_event
+		s:STATE_ATTICA = {
+			random_scope_state = {
+				save_scope_as = attica_state_scope
+			}
+		}
+		s:STATE_THESSALIA = {
+			random_scope_state = {
+				save_scope_as = grefm_thessaly_scope
+			}
+		}
 	}
 
 	option = {
 		name = grefm_greece.101.a
 		default_option = yes
-		s:STATE_ATTICA = {
-			random_scope_state = {
-				add_modifier = {
-					name = modifier_grefm_railway_production
-					months = gbbf_duration_5_years
-				}
+		scope:attica_state_scope = {
+			add_modifier = {
+				name = modifier_grefm_railway_production
+				months = gbbf_duration_5_years
 			}
 		}
-		s:STATE_THESSALIA = {
-			random_scope_state = {
-				add_modifier = {
-					name = modifier_grefm_railway_production
-					months = gbbf_duration_5_years
-				}
+		scope:grefm_thessaly_scope = {
+			add_modifier = {
+				name = modifier_grefm_railway_production
+				months = gbbf_duration_5_years
 			}
 		}
 	}
@@ -5215,9 +5225,7 @@ grefm_greece.102 = { # Greek Aviation Event
 	immediate = {
 		set_variable = grefm_greek_aviation
 		capital = {
-			random_scope_state = {
-				save_scope_as = attica_scope
-			}
+			save_scope_as = attica_scope
 		}
 	}
 
