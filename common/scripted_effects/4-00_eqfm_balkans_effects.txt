@@ -32,7 +32,6 @@ eqfm_initialize_balkan_variables_effect = {
 		name = eqfm_crisis_counter_var
 		value = 0
 	}
-	add_modifier = modifier_eqfm_stable_phase
 }
 
 eqfm_create_balkan_situation_effect = {
@@ -143,6 +142,37 @@ eqfm_create_balkan_situation_effect = {
 		}
 	}
 
+}
+
+eqfm_validate_journal_involvement = {
+	every_country = {
+		limit = {
+			OR = {
+				is_involved_in_journal_entry = je_eqfm_balkan_situation
+				eqfm_balkans_involved_trigger = yes
+			}
+		}
+		if = {
+			limit = {
+				eqfm_balkans_involved_trigger = no
+				is_involved_in_journal_entry = je_eqfm_balkan_situation
+			}
+			je:je_eqfm_balkan_situation = {
+				remove_involved_country = prev
+			}
+		}
+		if = {
+			limit = {
+				eqfm_balkans_involved_trigger = yes
+				NOT = {
+					is_involved_in_journal_entry = je_eqfm_balkan_situation
+				}
+			}
+			je:je_eqfm_balkan_situation = {
+				add_involved_country = prev
+			}
+		}
+	}
 }
 
 eqfm_update_balkan_situation_lists_effect = {
@@ -319,48 +349,22 @@ eqfm_advance_balkan_situation_variables_effect = {
 }
 
 eqfm_check_balkan_situation_phase_effect = {
-	# Run Crisis logic check first
+	# Run Crisis Failure logic check first
 	if = {
 		limit = {
 			eqfm_crisis_phase_trigger = yes
+			global_var:eqfm_crisis_var <= 0
 		}
-		if = {
-			# Check for crisis success first
+		every_country = {
 			limit = {
-				c:TUR ?= {
-					global_var:eqfm_crisis_var >= 250
-					has_any_secessionists_broken_out = no
-					has_any_secessionists_growing = no
-					is_at_war = no
-				}
+				is_involved_in_journal_entry = je_eqfm_balkan_situation
 			}
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_situation
-				}
-				trigger_event = {
-					id = eqfm_balkans.029 # Order Returns to Rumelia
-				}
+			trigger_event = {
+				id = eqfm_balkans.028 # Rumelia in Disarray
 			}
-			eqfm_cleanup_crisis_effect = yes
-			eqfm_force_deconfliction_effect = yes
 		}
-		# Next attempt to check for crisis failure
-		else_if = {
-			limit = {
-				global_var:eqfm_crisis_var <= 0
-			}
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_situation
-				}
-				trigger_event = {
-					id = eqfm_balkans.028 # Rumelia in Disarray
-				}
-			}
-			eqfm_cleanup_crisis_effect = yes
-			eqfm_force_deconfliction_effect = yes
-		}
+		eqfm_cleanup_crisis_effect = yes
+		eqfm_force_deconfliction_effect = yes
 	}
 	else_if = {
 		limit = {
@@ -494,19 +498,16 @@ eqfm_check_balkan_situation_phase_effect = {
 					trigger_event = {
 						id = eqfm_balkans.020 # A Crisis in Rumelia
 					}
-					add_journal_entry = {
-						type = je_eqfm_balkan_situation_crisis
-					}
 				}
 				every_country = {
 					limit = {
 						is_involved_in_journal_entry = je_eqfm_balkan_situation
 						c:TUR != this
-					} s
+					}
 					trigger_event = {
 						id = eqfm_balkans.021 # A Crisis in Rumelia
 					}
-					post_notification = notification_eqfm_transition_crisi
+					post_notification = notification_eqfm_transition_crisis
 				}
 				custom_tooltip = eqfm_transition_crisis_tt
 			}
@@ -2073,9 +2074,10 @@ eqfm_cleanup_tension_main_effect = {
 	remove_global_variable = eqfm_escalation_var
 	remove_global_variable = eqfm_deescalation_var
 	remove_global_variable = eqfm_crisis_counter_var
+}
 
+eqfm_cleanup_tension_local_effect = {
 	remove_variable = eqfm_balkans_cooldown_var
-
 	hidden_effect = {
 		remove_modifier = modifier_eqfm_stable_phase
 		remove_modifier = modifier_eqfm_unrest_phase

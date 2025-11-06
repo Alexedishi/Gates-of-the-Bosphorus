@@ -57,6 +57,7 @@
 		eqfm_initialize_balkan_variables_effect = yes
 		c:TUR ?= {
 			save_scope_as = ottoman_scope
+			add_modifier = modifier_eqfm_stable_phase
 		}
 #		eqfm_create_balkan_situation_effect = yes
 	}
@@ -65,6 +66,22 @@
 		trigger_event = {
 			id = eqfm_balkans.011 # The Eastern Question
 			days = 5
+		}
+	}
+	
+	on_become_involved_after_activation = {
+		if = {
+			limit = {
+				NOT = {
+					has_variable = eqfm_eqfm_started
+				}
+			}
+			trigger_event = {
+				id = eqfm_balkans.011 # The Eastern Question
+			}
+		}
+		else = {
+			post_notification = notitication_eqfm_balkans_involved
 		}
 	}
 
@@ -216,7 +233,14 @@
 		set_global_variable = eqfm_separatism_complete
 		eqfm_cleanup_tension_main_effect = yes
 	}
-
+	
+	on_complete_all_involved = {
+		eqfm_cleanup_tension_local_effect = yes
+		trigger_event = {
+			id = eqfm_balkans.009 # Dominion Over Rumelia
+		}
+	}
+	
 	fail = {
 		c:TUR ?= {
 			OR = {
@@ -250,10 +274,17 @@
 		set_global_variable = eqfm_separatism_complete
 		eqfm_cleanup_tension_main_effect = yes
 	}
+	
+	on_fail_all_involved = {
+		eqfm_cleanup_tension_local_effect = yes
+		trigger_event = {
+			id = eqfm_balkans.008 # Rumelia Lost
+		}
+	}
 
 	invalid = {
 		custom_tooltip = {
-			text = eqfm_ottomans_exist_NOT
+			text = je_eqfm_balkan_situation_invalid
 			NOT = {
 				exists = c:TUR
 			}
@@ -261,7 +292,17 @@
 	}
 
 	on_invalid = {
-		# TODO add invalidation event
+		set_global_variable = eqfm_separatism_complete
+		eqfm_cleanup_tension_main_effect = yes
+	}
+	
+	on_invalid_all_involved = {
+		eqfm_cleanup_tension_local_effect = yes
+	}
+	
+	on_no_longer_involved = {
+		eqfm_cleanup_tension_local_effect = yes
+		post_notification = notification_eqfm_balkans_not_involved
 	}
 
 	on_weekly_pulse = {
@@ -274,6 +315,7 @@
 
 	on_monthly_pulse = {
 		effect = {
+			eqfm_validate_journal_involvement = yes
 			eqfm_advance_balkan_situation_variables_effect = yes
 		}
 	}

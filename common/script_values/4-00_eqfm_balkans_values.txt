@@ -1,79 +1,81 @@
 ﻿## Primary Mechanic Values
 eqfm_escalation_progress_value = {
 	value = 0
-	add = {
-		value = 1
-		desc = turkfm_value_from_base_progress
-	}
-	add = {
-		value = {
-			every_political_movement = {
-				limit = {
-					OR = {
-						is_political_movement_type = movement_cultural_minority
-						is_political_movement_type = movement_religious_minority
+	c:TUR ?= {
+		add = {
+			value = 1
+			desc = turkfm_value_from_base_progress
+		}
+		add = {
+			value = {
+				every_political_movement = {
+					limit = {
+						OR = {
+							is_political_movement_type = movement_cultural_minority
+							is_political_movement_type = movement_religious_minority
+						}
+						
+						gbbf_balkans_culture_trigger = yes
 					}
-
-					gbbf_balkans_culture_trigger = yes
+					add = eqfm_movement_impact_value
 				}
-				add = eqfm_movement_impact_value
+				multiply = 100 # This might be overkill, we'll find out soon
+				round_to = 0.01
 			}
-			multiply = 100 # This might be overkill, we'll find out soon
-			round_to = 0.01
+			desc = eqfm_value_from_movement_impact
 		}
-		desc = eqfm_value_from_movement_impact
-	}
-	add = {
-		value = {
-			every_country = {
-				limit = {
-					has_diplomatic_pact = {
-						who = c:TUR
-						type = turkfm_accelerate_tensions
+		add = {
+			value = {
+				every_country = {
+					limit = {
+						has_diplomatic_pact = {
+							who = c:TUR
+							type = turkfm_accelerate_tensions
+						}
 					}
-				}
-				save_temporary_scope_as = eqfm_accelerating_country
-				add = {
-					value = 2
-					desc = eqfm_value_from_accelerating_tensions
-				}
-			}
-		}
-		desc = eqfm_value_from_overall_accelerating_tensions
-	}
-	add = {
-		value = {
-			every_scope_state = {
-				limit = {
-					has_modifier = modifier_eqfm_race_riots
-				}
-				save_temporary_scope_as = eqfm_riot_state
-				add = {
-					value = radical_fraction
-					desc = eqfm_value_from_race_riots
-				}
-			}
-			round_to = 0.01
-		}
-		desc = eqfm_value_from_ongoing_riots
-	}
-	subtract = {
-		value = {
-			every_country = {
-				limit = {
-					has_diplomatic_pact = {
-						who = c:TUR
-						type = turkfm_decelerate_tensions
+					save_temporary_scope_as = eqfm_accelerating_country
+					add = {
+						value = 2
+						desc = eqfm_value_from_accelerating_tensions
 					}
 				}
-				save_temporary_scope_as = eqfm_decelerating_country
-				add = {
-					value = 1
-					desc = eqfm_value_from_decelerating_tensions
+			}
+			desc = eqfm_value_from_overall_accelerating_tensions
+		}
+		add = {
+			value = {
+				every_scope_state = {
+					limit = {
+						has_modifier = modifier_eqfm_race_riots
+					}
+					save_temporary_scope_as = eqfm_riot_state
+					add = {
+						value = radical_fraction
+						desc = eqfm_value_from_race_riots
+					}
+				}
+				round_to = 0.01
+			}
+			desc = eqfm_value_from_ongoing_riots
+		}
+		subtract = {
+			value = {
+				every_country = {
+					limit = {
+						has_diplomatic_pact = {
+							who = c:TUR
+							type = turkfm_decelerate_tensions
+						}
+					}
+					save_temporary_scope_as = eqfm_decelerating_country
+					add = {
+						value = 1
+						desc = eqfm_value_from_decelerating_tensions
+					}
 				}
 			}
+			desc = eqfm_value_from_overall_decelerating_tensions
 		}
-		desc = eqfm_value_from_overall_decelerating_tensions
 	}
 	if = {
 		limit = {
@@ -86,92 +88,94 @@ eqfm_escalation_progress_value = {
 
 eqfm_deescalation_progress_value = {
 	value = 0
-	add = {
-		value = 1
-		desc = turkfm_value_from_base
-	}
-	add = {
-		value = {
-			every_country = {
-				limit = {
-					has_diplomatic_pact = {
-						who = c:TUR
-						type = turkfm_decelerate_tensions
-					}
-				}
-				save_temporary_scope_as = eqfm_decelerating_country
-				add = {
-					value = 2
-					desc = eqfm_value_from_decelerating_tensions
-				}
-			}
-		}
-		desc = eqfm_value_from_overall_decelerating_tensions
-	}
-	subtract = {
-		value = {
-			every_country = {
-				limit = {
-					has_diplomatic_pact = {
-						who = c:TUR
-						type = turkfm_accelerate_tensions
-					}
-				}
-				save_temporary_scope_as = eqfm_accelerating_country
-				add = {
-					value = 1
-					desc = eqfm_value_from_accelerating_tensions
-				}
-			}
-		}
-		desc = eqfm_value_from_overall_accelerating_tensions
-	}
-	if = {
-		limit = {
-			global_var:eqfm_balkans_phase_var = flag:eqfm_hostility
-			NOT = {
-				any_scope_state = {
-					has_modifier = modifier_eqfm_race_riots
-				}
-			}
+	c:TUR ?= {
+		add = {
+			value = 1
+			desc = turkfm_value_from_base
 		}
 		add = {
-			value = 5
-			desc = eqfm_value_from_no_riots
-		}
-	}
-	if = {
-		limit = {
-			global_var:eqfm_balkans_phase_var = flag:eqfm_crisis
-			NOT = {
-				has_journal_entry = je_eqfm_balkan_situation_crisis
+			value = {
+				every_country = {
+					limit = {
+						has_diplomatic_pact = {
+							who = c:TUR
+							type = turkfm_decelerate_tensions
+						}
+					}
+					save_temporary_scope_as = eqfm_decelerating_country
+					add = {
+						value = 2
+						desc = eqfm_value_from_decelerating_tensions
+					}
+				}
 			}
-			is_at_war = no
-		}
-		add = {
-			value = 50
-			desc = turkfm_value_from_base_progress
+			desc = eqfm_value_from_overall_decelerating_tensions
 		}
 		subtract = {
 			value = {
-				every_political_movement = {
+				every_country = {
 					limit = {
-						eqfm_eligible_minority_movement_trigger = yes
-						is_secessionist = yes
+						has_diplomatic_pact = {
+							who = c:TUR
+							type = turkfm_accelerate_tensions
+						}
+					}
+					save_temporary_scope_as = eqfm_accelerating_country
+					add = {
+						value = 1
+						desc = eqfm_value_from_accelerating_tensions
 					}
 				}
 			}
-			desc = eqfm_value_from_secessionist_movements
+			desc = eqfm_value_from_overall_accelerating_tensions
 		}
-	}
-	if = {
-		limit = {
-			global_var:eqfm_balkans_phase_var = flag:eqfm_crisis
-			has_journal_entry = je_eqfm_balkan_situation_crisis
+		if = {
+			limit = {
+				global_var:eqfm_balkans_phase_var = flag:eqfm_hostility
+				NOT = {
+					any_scope_state = {
+						has_modifier = modifier_eqfm_race_riots
+					}
+				}
+			}
+			add = {
+				value = 5
+				desc = eqfm_value_from_no_riots
+			}
 		}
-		multiply = {
-			value = 0
-			desc = eqfm_value_from_crisis
+		if = {
+			limit = {
+				global_var:eqfm_balkans_phase_var = flag:eqfm_crisis
+				global_var:eqfm_crisis_var >= 250
+				c:TUR ?= {
+					is_at_war = no
+				}
+			}
+			add = {
+				value = 50
+				desc = turkfm_value_from_base_progress
+			}
+			subtract = {
+				value = {
+					every_political_movement = {
+						limit = {
+							eqfm_eligible_minority_movement_trigger = yes
+							is_secessionist = yes
+						}
+					}
+				}
+				desc = eqfm_value_from_secessionist_movements
+			}
+		}
+		if = {
+			limit = {
+				global_var:eqfm_balkans_phase_var = flag:eqfm_crisis
+				global_var:eqfm_crisis_var < 250
+			}
+			multiply = {
+				value = 0
+				desc = eqfm_value_from_crisis
+			}
 		}
 	}
 	if = {
@@ -239,235 +243,6 @@ eqfm_riot_potential_value = {
 			desc = eqfm_value_from_pan_nationalism
 		}
 	}
-}
-
-eqfm_riot_progress_value = {
-	value = 0
-	if = {
-		limit = {
-			has_variable = eqfm_riot_state_1_var
-			has_variable = eqfm_riot_state_1_progress_var
-		}
-		add = {
-			value = {
-				add = var:eqfm_riot_state_1_progress_var
-				if = {
-					limit = {
-						var:eqfm_riot_state_1_var ?= {
-							has_decree = decree_violent_suppression
-						}
-					}
-					multiply = 0.5
-				}
-			}
-			desc = eqfm_value_from_riot_state_1
-		}
-	}
-	if = {
-		limit = {
-			has_variable = eqfm_riot_state_2_var
-			has_variable = eqfm_riot_state_2_progress_var
-		}
-		add = {
-			value = {
-				add = var:eqfm_riot_state_2_progress_var
-				if = {
-					limit = {
-						var:eqfm_riot_state_2_var ?= {
-							has_decree = decree_violent_suppression
-						}
-					}
-					multiply = 0.5
-				}
-			}
-			desc = eqfm_value_from_riot_state_2
-		}
-	}
-	if = {
-		limit = {
-			has_variable = eqfm_riot_state_3_var
-			has_variable = eqfm_riot_state_3_progress_var
-		}
-		add = {
-			value = {
-				add = var:eqfm_riot_state_3_progress_var
-				if = {
-					limit = {
-						var:eqfm_riot_state_3_var ?= {
-							has_decree = decree_violent_suppression
-						}
-					}
-					multiply = 0.5
-				}
-			}
-			desc = eqfm_value_from_riot_state_3
-		}
-	}
-	add = {
-		value = {
-			every_country = {
-				limit = {
-					has_diplomatic_pact = {
-						who = c:TUR
-						type = turkfm_accelerate_tensions
-					}
-				}
-				save_temporary_scope_as = eqfm_accelerating_country
-				add = {
-					value = 0.1
-					desc = eqfm_value_from_accelerating_tensions
-				}
-			}
-		}
-		desc = eqfm_value_from_overall_accelerating_tensions
-	}
-	if = {
-		limit = {
-			has_technology_researched = political_agitation
-		}
-		multiply = {
-			value = 0.2
-			desc = eqfm_value_from_political_agitation
-		}
-	}
-	subtract = {
-		value = {
-			add = government_legitimacy
-			subtract = 75
-			divide = 100
-		}
-		desc = turkfm_value_from_legitimacy
-	}
-	subtract = {
-		value = {
-			if = {
-				limit = {
-					has_institution = institution_police
-				}
-				institution:institution_police = {
-					add = investment
-				}
-			}
-			multiply = 0.1
-		}
-		desc = turkfm_value_from_policing
-	}
-	if = {
-		limit = {
-			NOT = {
-				any_scope_state = {
-					has_modifier = modifier_eqfm_race_riots
-				}
-			}
-		}
-		multiply = {
-			value = 0
-			desc = turkfm_value_from_no_riots
-		}
-	}
-	if = {
-		limit = {
-			has_variable = eqfm_riot_duration_var
-		}
-		subtract = {
-			value = var:eqfm_riot_duration_var
-			multiply = 0.01
-			desc = eqfm_value_from_riot_duration
-		}
-	}
-}
-
-eqfm_riot_1_progress_value = {
-	value = 0
-	scope:eqfm_riot_state_1_scope = {
-		every_scope_pop = {
-			limit = {
-				OR = {
-					has_pop_religion = orthodox
-					has_pop_religion = jewish
-				}
-			}
-			add = pop_radical_fraction
-		}
-		divide = {
-			every_scope_pop = {
-				limit = {
-					OR = {
-						has_pop_religion = orthodox
-						has_pop_religion = jewish
-					}
-				}
-				add = 1
-			}
-			min = 1
-		}
-	}
-	multiply = 0.1
-	round_to = 0.01
-}
-
-eqfm_riot_2_progress_value = {
-	value = 0
-	scope:eqfm_riot_state_2_scope = {
-		every_scope_pop = {
-			limit = {
-				OR = {
-					has_pop_religion = orthodox
-					has_pop_religion = jewish
-				}
-			}
-			add = pop_radical_fraction
-		}
-		divide = {
-			every_scope_pop = {
-				limit = {
-					OR = {
-						has_pop_religion = orthodox
-						has_pop_religion = jewish
-					}
-				}
-				add = 1
-			}
-			min = 1
-		}
-	}
-	multiply = 0.1
-	round_to = 0.01
-}
-
-eqfm_riot_3_progress_value = {
-	value = 0
-	scope:eqfm_riot_state_3_scope = {
-		every_scope_pop = {
-			limit = {
-				OR = {
-					has_pop_religion = orthodox
-					has_pop_religion = jewish
-				}
-			}
-			add = pop_radical_fraction
-		}
-		divide = {
-			every_scope_pop = {
-				limit = {
-					OR = {
-						has_pop_religion = orthodox
-						has_pop_religion = jewish
-					}
-				}
-				add = 1
-			}
-			min = 1
-		}
-	}
-	multiply = 0.1
-	round_to = 0.01
-}
-
-eqfm_riot_multiplier_value = {
-	value = 0
-	add = var:eqfm_riot_var
-	multiply = 0.01
 }
 
 ## Crisis Values
