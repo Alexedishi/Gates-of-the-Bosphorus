@@ -1,5 +1,5 @@
 ﻿je_eqfm_pirates_of_the_adriatic = {
-	group = je_group_expeditions
+	group = je_group_global_international_situations
 	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
 	weight = 1000
 
@@ -7,12 +7,37 @@
 	can_revolution_inherit = yes
 	transferable = no
 
+	is_shown_in_lobby = {
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_adriatic
+		}
+	}
+
 	scripted_progress_bar = eqfm_jack_sparrow_progress_bar
 
 	scripted_button = eqfm_deploy_adriatic_expedition_button
 	scripted_button = eqfm_recall_adriatic_expedition_button
 	scripted_button = eqfm_hire_retired_pirates_button
 	scripted_button = eqfm_resupply_adriatic_expedition_button
+
+	should_be_involved = {
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_adriatic
+		}
+	}
+
+	immediate_all_involved = {
+		if = {
+			limit = {
+				NOT = {
+					has_variable = eqfm_piracy_started
+				}
+			}
+			trigger_event = {
+				id = eqfm_pirates.001 # The Pirates of the Adriatic
+			}
+		}
+	}
 
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
@@ -55,71 +80,37 @@
 		eqfm_update_expedition_costs_effect = yes
 	}
 
-	on_weekly_pulse = {
-		effect = {
-			eqfm_jack_sparrow_effect = yes
-		}
-		events = {
-			eqfm_pirates.004 # Cutler Beckett Withdraws from the Adriatic
-			eqfm_pirates.005 # Cutler Beckett Has Died!
-			eqfm_pirates.006 # Pirate Hideout Located
-			eqfm_pirates.007 # Pirate Fleet Destroyed
-		}
-		random_events = { # Chase Events
-			15 = eqfm_pirates.031 # Man Overboard!
-			35 = eqfm_pirates.032 # The Pillagers' Wake
-			# 5 = eqfm_pirates.033 #
-			5 = eqfm_pirates.034 # Without a Trace
-			45 = eqfm_pirates.035 # Bearing Down
-			10 = eqfm_pirates.036 # Cut and Run
-			30 = eqfm_pirates.037 # Action Along the Coast
-			10 = eqfm_pirates.038 # Naval Duel on the High Seas!
-		}
-	}
-
 	on_monthly_pulse = {
-		events = {}
-		random_events = { # Expedition Events
-			# Weight for Roughly 95% against General Events and 50% against Expedition Events
-			1200 = 0
-
-			# General Piracy Events - Balance to a total weight of 100 Max
-			20 = eqfm_pirates.010 # Coastal Village Raided!
-			20 = eqfm_pirates.011 # Merchant Vessels Raided!
-			5 = eqfm_pirates.012 # Nobleman Held Hostage
-			1 = eqfm_pirates.013 # A Pirate's Booty
-			1 = eqfm_pirates.014 # Diplomatic Communiques Intercepted
-			10 = eqfm_pirates.015 # Slavers Intercepted
-			5 = eqfm_pirates.016 # Greener Pastures
-			10 = eqfm_pirates.017 # The Goods Smugglers
-			20 = eqfm_pirates.018 # The Peasant's Pirate
-
-			# Adriatic Expedition Events - Balance to a total weight of 900 Min
-			150 = eqfm_pirates.020 # Local Informants
-			150 = eqfm_pirates.021 # A Suspicious Inlet
-			50 = eqfm_pirates.022 # The Runaway
-			75 = eqfm_pirates.023 # Spoiled Provisions
-			50 = eqfm_pirates.024 # Circular Bearing
-			50 = eqfm_pirates.025 # Windstorms in the Adriatic
-			50 = eqfm_pirates.026 # Foul Waters
-			150 = eqfm_pirates.027 # Scouts Pick Up Leads
-			75 = eqfm_pirates.028 # Emergency Repairs
-			125 = eqfm_pirates.029 # Port of Call
-			100 = eqfm_pirates.030 # Pirates Spotted!
-		}
-	}
-
-	on_yearly_pulse = {
 		effect = {
-			if = {
+			every_country = {
 				limit = {
-					has_variable = eqfm_adriatic_expedition_var
+					OR = {
+						is_involved_in_journal_entry = je_eqfm_pirates_of_the_adriatic
+						any_scope_state = {
+							is_in_geographic_region = geographic_region_adriatic
+						}
+					}
 				}
-				change_variable = {
-					name = eqfm_adriatic_expedition_progress_var
-					add = 1
+				if = {
+					limit = {
+						is_involved_in_journal_entry = je_eqfm_pirates_of_the_adriatic
+						NOT = {
+							any_scope_state = {
+								is_in_geographic_region = geographic_region_adriatic
+							}
+						}
+					}
 				}
-				post_notification = notification_eqfm_piracy_yearly_progress
+				if = {
+					limit = {
+						NOT = {
+							is_involved_in_journal_entry = je_eqfm_pirates_of_the_adriatic
+						}
+						any_scope_state = {
+							is_in_geographic_region = geographic_region_adriatic
+						}
+					}
+				}
 			}
 		}
 	}

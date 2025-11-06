@@ -33,7 +33,6 @@ gbbf_monthly_pulse = {
 	# These events are monitored from all scopes
 	events = {
 		eqfm_balkans.019 # Adds country to the global Balkan JE
-		eqfm_pirates.019 # Adds the Piracy JE
 		gbbf_technical.020 # Places Yugoslav Secession Variable
 		balkfm_serbia.204 # May Assembly
 		balkfm_bulgaria.228 # The Bulgarian State
@@ -337,19 +336,20 @@ eqfm_monthly_pulse = {
 		is_involved_in_journal_entry = je_eqfm_balkan_situation
 	}
 	on_actions = {
-		eqfm_main_pulse
-		eqfm_involved_pulse
+		eqfm_balkans_pulse
+		eqfm_balkans_involved_pulse
+		eqfm_pirates_pulse
 	}
 
 }
 
-eqfm_main_pulse = {
+eqfm_balkans_pulse = {
 	# These are drawn from the former je_eqfm_balkan_situation je
 	trigger = {
 		c:TUR ?= this
 	}
 	on_actions = {
-		eqfm_riot_pulse
+		eqfm_balkans_riot_pulse
 	}
 	events = {
 		eqfm_balkans.002 # The Rise of Nationalism
@@ -405,7 +405,7 @@ eqfm_main_pulse = {
 	}
 }
 
-eqfm_riot_pulse = {
+eqfm_balkans_riot_pulse = {
 	# These are drawn from the former je_eqfm_riots je
 	trigger = {
 		eqfm_hostility_phase_trigger = yes
@@ -424,7 +424,7 @@ eqfm_riot_pulse = {
 	}
 }
 
-eqfm_involved_pulse = {
+eqfm_balkans_involved_pulse = {
 	# These are drawn from the former je_eqfm_eastern_question je
 	trigger = {
 		c:TUR != this
@@ -438,6 +438,83 @@ eqfm_involved_pulse = {
 	random_events = {
 		500 = 0
 		5 = eqfm_balkans.182 # Diplomat Offers Mediation
+	}
+}
+
+eqfm_pirates_pulse = {
+	# These have been relocated from je_eqfm_pirates_of_the_adriatic
+	trigger = {
+		is_involved_in_journal_entry = je_eqfm_pirates_of_the_adriatic
+	}
+	on_actions = {
+		eqfm_pirates_chase_pulse
+	}
+	events = {
+		eqfm_pirates.004 # Cutler Beckett Withdraws from the Adriatic
+		eqfm_pirates.005 # Cutler Beckett Has Died!
+		eqfm_pirates.006 # Pirate Hideout Located
+		eqfm_pirates.007 # Pirate Fleet Destroyed
+	}
+	random_events = { # Expedition Events
+		# Weight for Roughly 95% against General Events and 50% against Expedition Events
+		1200 = 0
+
+		# General Piracy Events - Balance to a total weight of 100 Max
+		20 = eqfm_pirates.010 # Coastal Village Raided!
+		20 = eqfm_pirates.011 # Merchant Vessels Raided!
+		5 = eqfm_pirates.012 # Nobleman Held Hostage
+		1 = eqfm_pirates.013 # A Pirate's Booty
+		1 = eqfm_pirates.014 # Diplomatic Communiques Intercepted
+		10 = eqfm_pirates.015 # Slavers Intercepted
+		5 = eqfm_pirates.016 # Greener Pastures
+		10 = eqfm_pirates.017 # The Goods Smugglers
+		20 = eqfm_pirates.018 # The Peasant's Pirate
+
+		# Adriatic Expedition Events - Balance to a total weight of 900 Min
+		150 = eqfm_pirates.020 # Local Informants
+		150 = eqfm_pirates.021 # A Suspicious Inlet
+		50 = eqfm_pirates.022 # The Runaway
+		75 = eqfm_pirates.023 # Spoiled Provisions
+		50 = eqfm_pirates.024 # Circular Bearing
+		50 = eqfm_pirates.025 # Windstorms in the Adriatic
+		50 = eqfm_pirates.026 # Foul Waters
+		150 = eqfm_pirates.027 # Scouts Pick Up Leads
+		75 = eqfm_pirates.028 # Emergency Repairs
+		125 = eqfm_pirates.029 # Port of Call
+		100 = eqfm_pirates.030 # Pirates Spotted!
+	}
+	effect = {
+		eqfm_jack_sparrow_effect = yes
+		if = {
+			limit = {
+				has_variable = eqfm_adriatic_expedition_var
+				NOT = {
+					has_variable = eqfm_expedition_piracy_transit_var
+				}
+				month = 6
+			}
+			change_variable = {
+				name = eqfm_adriatic_expedition_progress_var
+				add = 1
+			}
+			post_notification = notification_eqfm_piracy_yearly_progress
+		}
+	}
+}
+
+eqfm_pirates_chase_pulse = {
+	trigger = {
+
+	}
+	random_events = { # Chase Events
+		15 = eqfm_pirates.031 # Man Overboard!
+		35 = eqfm_pirates.032 # The Pillagers' Wake
+		# 5 = eqfm_pirates.033 #
+		5 = eqfm_pirates.034 # Without a Trace
+		45 = eqfm_pirates.035 # Bearing Down
+		10 = eqfm_pirates.036 # Cut and Run
+		30 = eqfm_pirates.037 # Action Along the Coast
+		10 = eqfm_pirates.038 # Naval Duel on the High Seas!
 	}
 }
 
