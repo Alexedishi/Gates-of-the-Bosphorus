@@ -5086,6 +5086,7 @@ grefm_greece.100 = { # fix brewery
 
 	trigger = {
 		NOT = { has_global_variable = grefm_fix_brewery_considered }
+		has_state_in_state_region = STATE_ATTICA
 		s:STATE_ATTICA = {
 			any_scope_state = {
 				is_production_method_active = {
@@ -5136,20 +5137,18 @@ grefm_greece.101 = { # Hellenic Railways event
 
 	trigger = {
 		NOT = { has_variable = grefm_hellenic_railways_event }
-		c:GRE ?= this
 		owns_entire_state_region = STATE_ATTICA
 		owns_entire_state_region = STATE_THESSALIA
-		any_scope_state = {
-			has_building = building_motor_industry
-		}
 		s:STATE_ATTICA = {
-			any_scope_state = {
-				has_building = building_railway
+			any_scope_building = {
+				is_building_type = building_railway
+				occupancy > 0.9
 			}
 		}
 		s:STATE_THESSALIA = {
-			any_scope_state = {
-				has_building = building_railway
+			any_scope_building = {
+				is_building_type = building_railway
+				occupancy > 0.9
 			}
 		}
 	}
@@ -5201,8 +5200,10 @@ grefm_greece.102 = { # Greek Aviation Event
 	dlc = dlc_grefm
 
 	trigger = {
-		NOT = { has_variable = grefm_greek_aviation }
-		NOT = { has_variable = first_flight_achievement_check }
+		NOR = {
+			has_variable = grefm_greek_aviation
+			has_variable = first_flight_achievement_check
+		}
 		any_scope_state = {
 			is_production_method_active = {
 				building_type = building_automotive_industry
@@ -5213,7 +5214,7 @@ grefm_greece.102 = { # Greek Aviation Event
 
 	immediate = {
 		set_variable = grefm_greek_aviation
-		s:STATE_ATTICA = {
+		capital = {
 			random_scope_state = {
 				save_scope_as = attica_scope
 			}
@@ -5239,6 +5240,7 @@ grefm_greece.102 = { # Greek Aviation Event
 grefm_greece.103 = { # greek shipping event
 	type = country_event
 	placement = root
+	hidden = yes
 	icon = "gfx/interface/icons/event_icons/event_trade.dds"
 
 	title = grefm_greece.103.t
@@ -5256,8 +5258,9 @@ grefm_greece.103 = { # greek shipping event
 	dlc = dlc_grefm
 
 	trigger = {
-		country_has_primary_culture = cu:greek
-		NOT = { has_modifier = modifier_grefm_greek_shipping }
+		NOT = {
+			has_modifier = modifier_grefm_greek_shipping
+		}
 	}
 
 	immediate = {
@@ -5297,9 +5300,9 @@ grefm_greece.110 = { # The Decline of the Heptanese School
 
 	trigger = {
 		year >= 1838
+		year <= 1843
 		NOT = { has_global_variable = grefm_heptanese_school_event }
 		has_technology_researched = romanticism
-		country_has_primary_culture = cu:greek
 		owns_entire_state_region = STATE_ATTICA
 	}
 
@@ -5331,6 +5334,7 @@ grefm_greece.110 = { # The Decline of the Heptanese School
 
 	option = { # just in case you don't feel like bankrupting the nation like Otto did
 		name = grefm_greece.110.b
+		custom_tooltip = gbbf_nothing_happens
 	}
 
 }
@@ -5431,7 +5435,12 @@ grefm_greece.114 = { # Mercantile Rivalries
 	dlc = dlc_grefm
 
 	trigger = {
-		NOT = { has_variable = grefm_national_port_considered }
+		NOR = {
+			has_variable = grefm_national_port_considered
+			any_scope_state = {
+				has_modifier = modifier_grefm_national_port
+			}
+		}
 		has_technology_researched = gantry_cranes
 		owns_entire_state_region = STATE_ATTICA
 		owns_entire_state_region = STATE_PELOPONNESE
@@ -5605,11 +5614,14 @@ grefm_greece.121 = { # The University of Athens
 
 	trigger = {
 		morgenrote_is_active = no
-		NOT = { has_variable = grefm_athens_university_considered }
+		NOT = {
+			has_variable = grefm_athens_university_considered
+		}
 		capital = {
 			state_region = {
 				s:STATE_ATTICA = this
 			}
+			is_split_state = no
 			any_scope_building = {
 				is_building_type = building_university
 				has_active_production_method = pm_philosophy_department
@@ -5621,10 +5633,8 @@ grefm_greece.121 = { # The University of Athens
 		ruler = {
 			save_scope_as = university_benefactor
 		}
-		s:STATE_ATTICA = {
-			random_scope_state = {
-				save_scope_as = university_state
-			}
+		capital = {
+			save_scope_as = university_state
 		}
 		set_variable = grefm_athens_university_considered
 	}
@@ -5679,8 +5689,9 @@ grefm_greece.122 = { # The Great School of the Nation
 	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
 	
 	trigger = {
-		country_has_primary_culture = cu:greek
-		NOT = { has_variable = grefm_university_considered }
+		NOT = {
+			has_variable = grefm_university_considered
+		}
 		has_technology_researched = romanticism
 		owns_entire_state_region = STATE_EASTERN_THRACE
 	}
