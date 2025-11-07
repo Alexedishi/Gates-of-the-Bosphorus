@@ -959,11 +959,17 @@ grefm_greek_nationalism.043 = { # Hellenic Excavation Completed
 	trigger = {
 		var:grefm_excavation_var >= 16
 		grefm_has_hellenic_exacavation_trigger = yes
+		NOT = {
+			has_variable = grefm_excavation_cooldown_var
+		}
 	}
 
 	cancellation_trigger = {
-		NOT = {
-			has_journal_entry = je_grefm_archaeology
+		OR = {
+			NOT = {
+				has_journal_entry = je_grefm_archaeology
+			}
+			var:grefm_excavation_var < 16
 		}
 	}
 
@@ -973,6 +979,10 @@ grefm_greek_nationalism.043 = { # Hellenic Excavation Completed
 				has_variable = grefm_excavation_target
 			}
 			remove_variable = grefm_excavation_target
+		}
+		set_variable = {
+			name = grefm_excavation_cooldown_var
+			months = 3
 		}
 	}
 
