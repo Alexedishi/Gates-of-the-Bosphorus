@@ -2,11 +2,11 @@
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
 	weight = 10000
-
+	
 	should_be_pinned_by_default = yes
 	can_revolution_inherit = yes
 	transferable = no
-
+	
 	is_shown_when_inactive = {
 		c:BYZ ?= this
 		country_has_primary_culture = cu:greek
@@ -15,25 +15,22 @@
 			country_has_primary_culture = cu:australian
 		}
 	}
-
+	
 	possible = {
-		custom_tooltip = {
-			text = grefm_byzantium_restored_trigger
-			has_global_variable = grefm_byzantium_restored
-		}
+		grefm_byzantine_restoration_completed_trigger = yes
 	}
-
+	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
 		trigger_event = {
 			id = grefm_hellenic_empire.010
 		}
 	}
-
+	
 	modifiers_while_active = {
 		modifier_grefm_hellenic_aspiriations
 	}
-
+	
 	complete = {
 		country_or_subject_owns_entire_state_region = STATE_ERZURUM
 		country_or_subject_owns_entire_state_region = STATE_DIYARBAKIR
@@ -53,7 +50,7 @@
 		country_or_subject_owns_entire_state_region = STATE_KERMAN
 		country_or_subject_owns_entire_state_region = STATE_SISTAN
 	}
-
+	
 	on_complete = {
 		trigger_event = {
 			id = grefm_hellenic_empire.011 # The Graveyard of Empires
@@ -71,19 +68,19 @@ je_grefm_the_graveyard_of_empires = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
 	weight = 10000
-
+	
 	should_be_pinned_by_default = yes
 	can_revolution_inherit = yes
 	transferable = no
-
+	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
 	}
-
+	
 	modifiers_while_active = {
 		modifier_grefm_hellenic_aspiriations
 	}
-
+	
 	complete = {
 		country_or_subject_owns_entire_state_region = STATE_HERAT
 		country_or_subject_owns_entire_state_region = STATE_CENTRAL_HIGHLANDS
@@ -94,7 +91,7 @@ je_grefm_the_graveyard_of_empires = {
 		country_or_subject_owns_entire_state_region = STATE_NORTHERN_BALUCHISTAN
 		country_or_subject_owns_entire_state_region = STATE_BALUCHISTAN
 	}
-
+	
 	on_complete = {
 		trigger_event = {
 			id = grefm_hellenic_empire.012 # The Empire of the Greeks
@@ -106,42 +103,48 @@ je_grefm_black_sea = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
 	weight = 100
-
+	
 	should_be_pinned_by_default = yes
 	can_revolution_inherit = yes
 	transferable = no
-
+	
 	is_shown_when_inactive = {
 		c:BYZ ?= this
 		country_has_primary_culture = cu:greek
 		NOR = {
 			country_has_primary_culture = cu:rhomaios
 			country_has_primary_culture = cu:australian
-			has_variable = grefm_weaksauce
+			grefm_reconquest_rejected_trigger = yes
 		}
 	}
-
+	
 	possible = {
-		owns_entire_state_region = STATE_EASTERN_THRACE
-		owns_entire_state_region = STATE_NORTHERN_THRACE
-		owns_entire_state_region = STATE_HUDAVENDIGAR
-		owns_entire_state_region = STATE_KASTAMONU
-		owns_entire_state_region = STATE_TRABZON
+		grefm_byzantine_restoration_completed_trigger = yes
+		calc_true_if = {
+			amount >= 5
+			owns_entire_state_region = STATE_EASTERN_THRACE
+			owns_entire_state_region = STATE_NORTHERN_THRACE
+			owns_entire_state_region = STATE_HUDAVENDIGAR
+			owns_entire_state_region = STATE_KASTAMONU
+			owns_entire_state_region = STATE_TRABZON
+			owns_entire_state_region = STATE_BULGARIA
+			owns_entire_state_region = STATE_DOBRUDJA
+		}
 	}
-
+	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
 		trigger_event = {
 			id = grefm_hellenic_empire.013 # The Shores of the Hospitable Sea
 		}
 	}
-
+	
 	complete = {
 		owns_entire_state_region = STATE_KARS
 		owns_entire_state_region = STATE_GREATER_CAUCASUS
 		owns_entire_state_region = STATE_CRIMEA
 	}
-
+	
 	on_complete = {
 		s:STATE_KARS = {
 			every_scope_state = {
@@ -168,9 +171,9 @@ je_grefm_black_sea = {
 			}
 		}
 	}
-
+	
 	invalid = {
-		has_variable = grefm_weaksauce
+		grefm_reconquest_rejected_trigger = yes
 	}
 }
 
@@ -178,42 +181,53 @@ je_grefm_magna_graecia = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
 	weight = 100
-
+	
 	should_be_pinned_by_default = yes
 	can_revolution_inherit = yes
 	transferable = no
-
+	
 	is_shown_when_inactive = {
 		c:BYZ ?= this
 		country_has_primary_culture = cu:greek
 		NOR = {
 			country_has_primary_culture = cu:rhomaios
 			country_has_primary_culture = cu:australian
-			has_variable = grefm_weaksauce
+			grefm_reconquest_rejected_trigger = yes
 		}
 	}
-
+	
+	possible = {
+		grefm_byzantine_restoration_completed_trigger = yes
+		OR = {
+			calc_true_if = {
+				amount >= 4
+				owns_entire_state_region = STATE_ATTICA
+				owns_entire_state_region = STATE_THESSALIA
+				owns_entire_state_region = STATE_IONIAN_ISLANDS
+				owns_entire_state_region = STATE_ALBANIA
+				owns_entire_state_region = STATE_MONTENEGRO
+				owns_entire_state_region = STATE_MALTA
+			}
+			any_scope_state = {
+				region = sr:region_italy
+			}
+		}
+	}
+	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
 		trigger_event = {
 			id = grefm_hellenic_empire.014 # The Lands of Magna Graecia
 		}
 	}
-
-	possible = {
-		owns_entire_state_region = STATE_ATTICA
-		owns_entire_state_region = STATE_THESSALIA
-		owns_entire_state_region = STATE_IONIAN_ISLANDS
-		owns_entire_state_region = STATE_ALBANIA
-	}
-
+	
 	complete = {
 		owns_entire_state_region = STATE_APULIA
 		owns_entire_state_region = STATE_CALABRIA
 		owns_entire_state_region = STATE_CAMPANIA
 		owns_entire_state_region = STATE_SICILY
 	}
-
+	
 	on_complete = {
 		s:STATE_APULIA = {
 			every_scope_state = {
@@ -248,9 +262,9 @@ je_grefm_magna_graecia = {
 			}
 		}
 	}
-
+	
 	invalid = {
-		has_variable = grefm_weaksauce
+		grefm_reconquest_rejected_trigger = yes
 	}
 }
 
@@ -258,20 +272,20 @@ je_grefm_alexandria_oxus = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
 	weight = 100
-
+	
 	should_be_pinned_by_default = yes
 	can_revolution_inherit = yes
 	transferable = no
-
+	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
 	}
-
+	
 	complete = {
 		country_or_subject_owns_entire_state_region = STATE_MERZ
 		country_or_subject_owns_entire_state_region = STATE_UZBEKIA
 	}
-
+	
 	on_complete = {
 		s:STATE_MERZ = {
 			every_scope_state = {
@@ -290,9 +304,9 @@ je_grefm_alexandria_oxus = {
 			}
 		}
 	}
-
+	
 	invalid = {
-		has_variable = grefm_weaksauce
+		grefm_reconquest_rejected_trigger = yes
 	}
 }
 
@@ -300,21 +314,21 @@ je_grefm_alexandria_merv = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
 	weight = 100
-
+	
 	should_be_pinned_by_default = yes
 	can_revolution_inherit = yes
 	transferable = no
-
+	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
 	}
-
+	
 	complete = {
 		country_or_subject_owns_entire_state_region = STATE_FERGANA
 		country_or_subject_owns_entire_state_region = STATE_KIRGHIZIA
 		country_or_subject_owns_entire_state_region = STATE_TAJIKISTAN
 	}
-
+	
 	on_complete = {
 		s:STATE_FERGANA = {
 			every_scope_state = {
@@ -341,9 +355,9 @@ je_grefm_alexandria_merv = {
 			}
 		}
 	}
-
+	
 	invalid = {
-		has_variable = grefm_weaksauce
+		grefm_reconquest_rejected_trigger = yes
 	}
 }
 
@@ -351,21 +365,21 @@ je_grefm_alexandria_indus = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
 	weight = 100
-
+	
 	should_be_pinned_by_default = yes
 	can_revolution_inherit = yes
 	transferable = no
-
+	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
 	}
-
+	
 	complete = {
 		country_or_subject_owns_entire_state_region = STATE_PUNJAB
 		country_or_subject_owns_entire_state_region = STATE_SINDH
 		country_or_subject_owns_entire_state_region = STATE_KASHMIR
 	}
-
+	
 	on_complete = {
 		s:STATE_PUNJAB = {
 			every_scope_state = {
@@ -392,9 +406,9 @@ je_grefm_alexandria_indus = {
 			}
 		}
 	}
-
+	
 	invalid = {
-		has_variable = grefm_weaksauce
+		grefm_reconquest_rejected_trigger = yes
 	}
 }
 
@@ -402,21 +416,21 @@ je_grefm_alexandria_susiana = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_vergina_sun.dds"
 	weight = 100
-
+	
 	should_be_pinned_by_default = yes
 	can_revolution_inherit = yes
 	transferable = no
-
+	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
 	}
-
+	
 	complete = {
 		country_or_subject_owns_entire_state_region = STATE_KHUZESTAN
 		country_or_subject_owns_entire_state_region = STATE_BASRA
 		country_or_subject_owns_entire_state_region = STATE_BAGHDAD
 	}
-
+	
 	on_complete = {
 		s:STATE_KHUZESTAN = {
 			every_scope_state = {
@@ -443,8 +457,8 @@ je_grefm_alexandria_susiana = {
 			}
 		}
 	}
-
+	
 	invalid = {
-		has_variable = grefm_weaksauce
+		grefm_reconquest_rejected_trigger = yes
 	}
 }
