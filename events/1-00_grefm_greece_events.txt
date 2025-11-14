@@ -2996,73 +2996,17 @@ grefm_greece.041 = { # the military league
 	}
 
 	immediate = {
-		remove_variable = coup_aftermath_event_fired
-		ig:ig_armed_forces = { # modified from vanilla coup event
-			set_variable = coup_ig_var
-			save_scope_as = coup_ig
-			leader = {
-				set_ideology = ideology:ideology_republican_leader
-			}
-		}
-		set_variable = {
-			name = coup_for_law
-			value = 6
-		}
-		random_law = {
-			limit = {
-				type = law_type:law_parliamentary_republic
-			}
-			save_scope_as = coup_desired_law
-		}
-		scope:coup_ig = {
-			leader = {
-				save_scope_as = coup_leader
-			}
-		}
-		set_variable = {
-			name = coup_var
-			value = 0
-		}
-		remove_variable = grefm_glucksburg_era
 	}
 
 	option = { # Advance the coup
 		name = grefm_greece.041.a
 		add_journal_entry = { type = je_grefm_the_military_league }
-		custom_tooltip = {
-			text = coup_advance_25_tt
-			set_variable = {
-				name = coup_var
-				value = 25
-			}
-		}
-		scope:coup_ig = {
-			add_modifier = {
-				name = coup_supported
-				months = gbbf_duration_10_years
-				is_decaying = yes
-			}
-		}
 	}
 
 	option = { # Resist the coup
 		name = grefm_greece.041.b
 		default_option = yes
 		add_journal_entry = { type = je_grefm_the_military_league }
-		custom_tooltip = {
-			text = coup_advance_10_tt
-			set_variable = {
-				name = coup_var
-				value = 10
-			}
-		}
-		scope:coup_ig = {
-			add_modifier = {
-				name = coup_resisted
-				months = gbbf_duration_10_years
-				is_decaying = yes
-			}
-		}
 	}
 }
 
@@ -3159,37 +3103,6 @@ grefm_greece.046 = { # the goudi coup
 	}
 
 	immediate = {
-		if = {
-			limit = {
-				AND = {
-					ROOT = {
-						has_variable = owes_sponsor_obligation
-					}
-					any_country = {
-						has_variable = coup_sponsor
-						var:coup_sponsor = root
-					}
-				}
-			}
-			ROOT = {
-				remove_variable = owes_sponsor_obligation
-			}
-			random_country = {
-				limit = {
-					AND = {
-						has_variable = coup_sponsor
-						this.var:coup_sponsor = root
-					}
-				}
-				save_scope_as = coup_sponsor_obligation_target
-			}
-		}
-		ig:ig_armed_forces = {
-			save_scope_as = ig_armed_forces_scope
-		}
-		set_variable = government_couped
-		activate_law = law_type:law_parliamentary_republic
-		activate_law = law_type:law_autocracy
 	}
 
 	option = {
