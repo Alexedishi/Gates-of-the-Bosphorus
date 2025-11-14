@@ -1,147 +1,39 @@
 ﻿## General Situation Effects
 eqfm_initialize_balkan_variables_effect = {
-	set_global_variable = {
-		name = eqfm_balkans_phase_var
-		value = flag:eqfm_stable # We start in the stable phase
-	}
-	set_global_variable = {
-		name = eqfm_escalation_var
-		value = 0
-	}
-	set_global_variable = {
-		name = eqfm_deescalation_var
-		value = 0
-	}
-	set_global_variable = {
-		name = eqfm_riot_counter_var
-		value = 0
-	}
-	set_global_variable = {
-		name = eqfm_crisis_var
-		value = 250
-	}
-	set_global_variable = {
-		name = eqfm_crisis_progress_var
-		value = 0
-	}
-	set_global_variable = {
-		name = eqfm_crisis_duration_var
-		value = 0
-	}
-	set_global_variable = {
-		name = eqfm_crisis_counter_var
-		value = 0
-	}
-}
-
-eqfm_create_balkan_situation_effect = {
-	if = {
-		limit = {
-			has_global_variable = turkfm_balkans_situation_var
-			exists = global_var:turkfm_balkans_situation_var
+	scope:journal_entry = {
+		set_variable = {
+			name = eqfm_balkans_phase_var
+			value = flag:eqfm_stable # We start in the stable phase
 		}
-		random_in_global_list = {
-			variable = com_situation_cache
-			limit = {
-				var:com_id ?= flag:eqfm_balkan_situation
-			}
-			save_scope_as = com_situation
+		set_variable = {
+			name = eqfm_escalation_var
+			value = 0
 		}
-		scope:journal_entry = {
-			set_variable = {
-				name = com_situation
-				value = scope:com_situation
-			}
+		set_variable = {
+			name = eqfm_deescalation_var
+			value = 0
+		}
+		set_variable = {
+			name = eqfm_riot_counter_var
+			value = 0
+		}
+		set_variable = {
+			name = eqfm_crisis_var
+			value = 250
+		}
+		set_variable = {
+			name = eqfm_crisis_progress_var
+			value = 0
+		}
+		set_variable = {
+			name = eqfm_crisis_duration_var
+			value = 0
+		}
+		set_variable = {
+			name = eqfm_crisis_counter_var
+			value = 0
 		}
 	}
-	else = {
-		create_com_situation = {
-			situation_id = eqfm_balkan_situation
-			icon = gbbf_eastern_question
-
-			side_leader_country_left = c:TUR
-			side_name_left = je_eqfm_eastern_question_porte
-			side_desc_left = je_eqfm_eastern_question_porte_desc
-
-			side_leader_country_right = c:RUS
-			side_name_right = je_eqfm_eastern_question_balkans
-			side_desc_right = je_eqfm_eastern_question_balkans_desc
-		}
-		set_com_situation_header = {
-			text = je_eqfm_eastern_question_header
-		}
-
-		# Create Porte faction
-		create_com_situation_faction = {
-			side = left
-			name = je_eqfm_eastern_question_faction_porte
-			desc = je_eqfm_eastern_question_faction_porte_desc
-		}
-		add_com_situation_faction_country = {
-			side = left
-			name = je_eqfm_eastern_question_faction_porte
-			country = c:GBR
-		}
-		add_com_situation_faction_country = {
-			side = left
-			name = je_eqfm_eastern_question_faction_porte
-			country = c:FRA
-		}
-
-		# Create Balkans Faction
-		create_com_situation_faction = {
-			side = right
-			name = je_eqfm_eastern_question_faction_balkans
-			desc = je_eqfm_eastern_question_faction_balkans_desc
-		}
-		add_com_situation_faction_country = {
-			side = right
-			name = je_eqfm_eastern_question_faction_balkans
-			country = c:MON
-		}
-		add_com_situation_faction_country = {
-			side = right
-			name = je_eqfm_eastern_question_faction_balkans
-			country = c:SER
-		}
-		add_com_situation_faction_country = {
-			side = right
-			name = je_eqfm_eastern_question_faction_balkans
-			country = c:MOL
-		}
-		add_com_situation_faction_country = {
-			side = right
-			name = je_eqfm_eastern_question_faction_balkans
-			country = c:WAL
-		}
-		add_com_situation_faction_country = {
-			side = right
-			name = je_eqfm_eastern_question_faction_balkans
-			country = c:BOS
-		}
-		add_com_situation_faction_country = {
-			side = right
-			name = je_eqfm_eastern_question_faction_balkans
-			country = c:GRE
-		}
-		add_com_situation_faction_country = {
-			side = right
-			name = je_eqfm_eastern_question_faction_balkans
-			country = c:ION
-		}
-		add_com_situation_faction_country = {
-			side = right
-			name = je_eqfm_eastern_question_faction_balkans
-			country = c:GRE_SAM
-		}
-
-		# Save the Struct Scope for future reference
-		set_global_variable = {
-			name = turkfm_balkans_situation_var
-			value = scope:com_situation
-		}
-	}
-
 }
 
 eqfm_validate_journal_involvement = {
@@ -175,150 +67,67 @@ eqfm_validate_journal_involvement = {
 	}
 }
 
-eqfm_update_balkan_situation_lists_effect = {
-	if = {
-		limit = {
-			NOT = {
-				has_global_variable = turkfm_faction_lists_cooldown
-			}
-		}
-	}
-	else = {
-		set_global_variable = {
-			name = turkfm_faction_lists_cooldown
-			days = 20
-		}
-		clear_global_variable_list = eqfm_balkan_situation_porte_side_list
-		clear_global_variable_list = eqfm_balkan_situation_balkan_side_list
-		every_country = {
-			limit = {
-				eqfm_balkan_situation_porte_side_trigger = yes
-			}
-			add_to_variable_list = {
-				name = eqfm_balkan_situation_porte_side_list
-				target = this
-			}
-		}
-		every_country = {
-			limit = {
-				eqfm_balkan_situation_balkan_side_trigger = yes
-			}
-			add_to_variable_list = {
-				name = eqfm_balkan_situation_balkan_side_list
-				target = this
-			}
-		}
-		sort_global_variable_list = {
-			name = eqfm_balkan_situation_porte_side_list
-			order = prestige
-		}
-		sort_global_variable_list = {
-			name = eqfm_balkan_situation_balkan_side_list
-			order = prestige
-		}
-	}
-}
-
-turkfm_update_balkan_situation_factions_effect = {
-	# Starting from any country as root
-	save_com_situation_scope = {
-		situation_id = eqfm_balkan_situation
-	}
-
-	# Ensure lists are up to date and sorted
-	eqfm_update_balkan_situation_lists_effect = yes
-
-	# Reset factions
-	clear_com_situation_factions_all = yes
-
-	# Update Ottoman Side Faction Members
-	create_com_situation_faction = {
-		side = left
-		name = je_eqfm_eastern_question_faction_porte
-		desc = je_eqfm_eastern_question_faction_porte_desc
-	}
-	every_in_global_list = {
-		variable = eqfm_balkan_situation_porte_side_list
-		add_com_situation_faction_country = {
-			side = left
-			name = je_eqfm_eastern_question_faction_porte
-			country = this
-		}
-	}
-
-	# Update Balkan Side Faction Leader
-	ordered_in_global_list = {
-		variable = eqfm_balkan_situation_balkan_side_list
-		order_by = prestige
-		position = 0
-		change_com_situation_leader = {
-			side = right
-			leader = this
-		}
-	}
-
-	# Update Balkan Side Faction Members
-	create_com_situation_faction = {
-		side = right
-		name = je_eqfm_eastern_question_faction_balkans
-		desc = je_eqfm_eastern_question_faction_balkans_desc
-	}
-	every_in_global_list = {
-		variable = je_eqfm_eastern_question_faction_balkans
-		add_com_situation_faction_country = {
-			side = left
-			name = je_eqfm_eastern_question_faction_porte
-			country = this
-		}
-	}
-}
-
-turkfm_clamp_balkan_situation_variables_effect = {
-	clamp_global_variable = {
-		name = eqfm_escalation_var
-		max = 500
-		min = 0
-	}
-	clamp_global_variable = {
-		name = eqfm_deescalation_var
-		max = 500
-		min = 0
-	}
-	clamp_global_variable = {
-		name = eqfm_crisis_var
-		max = 250
-		min = 0
-	}
-}
-
 eqfm_calculate_balkan_situation_variables_effect = {
-	set_global_variable = {
-		name = eqfm_escalation_progress_var
-		value = eqfm_escalation_progress_value
-	}
-	set_global_variable = {
-		name = eqfm_deescalation_progress_var
-		value = eqfm_deescalation_progress_value
-	}
-	set_global_variable = {
-		name = eqfm_riot_counter_var
-		value = eqfm_riot_counter_value
+	je:je_eqfm_balkan_situation = {
+		set_variable = {
+			name = eqfm_escalation_progress_var
+			value = eqfm_escalation_progress_value
+		}
+		set_variable = {
+			name = eqfm_deescalation_progress_var
+			value = eqfm_deescalation_progress_value
+		}
+		set_variable = {
+			name = eqfm_riot_counter_var
+			value = eqfm_riot_counter_value
+		}
 	}
 	if = {
 		limit = {
 			eqfm_crisis_phase_trigger = yes
 		}
-		set_global_variable = {
-			name = eqfm_crisis_progress_var
-			value = eqfm_crisis_progress_value
-		}
-		change_global_variable = {
-			name = eqfm_crisis_duration_var
-			add = 1
+		je:je_eqfm_balkan_situation = {
+			set_variable = {
+				name = eqfm_crisis_progress_var
+				value = eqfm_crisis_progress_value
+			}
+			change_variable = {
+				name = eqfm_crisis_duration_var
+				add = 1
+			}
 		}
 	}
-	turkfm_clamp_balkan_situation_variables_effect = yes
+	if = {
+		limit = {
+			OR = {
+				eqfm_hostility_phase_trigger = yes
+				eqfm_crisis_phase_trigger = yes
+			}
+		}
+		eqfm_update_riot_variables = yes
+	}
+	eqfm_clamp_balkan_situation_variables_effect = yes
 	eqfm_update_balkan_situation_progressbar_effect = yes
+}
+
+eqfm_clamp_balkan_situation_variables_effect = {
+	je:je_eqfm_balkan_situation = {
+		clamp_variable = {
+			name = eqfm_escalation_var
+			max = 500
+			min = 0
+		}
+		clamp_variable = {
+			name = eqfm_deescalation_var
+			max = 500
+			min = 0
+		}
+		clamp_variable = {
+			name = eqfm_crisis_var
+			max = 250
+			min = 0
+		}
+	}
 }
 
 eqfm_advance_balkan_situation_variables_effect = {
@@ -344,346 +153,19 @@ eqfm_advance_balkan_situation_variables_effect = {
 			min = 0
 		}
 	}
-	turkfm_clamp_balkan_situation_variables_effect = yes
+	eqfm_clamp_balkan_situation_variables_effect = yes
 	eqfm_update_balkan_situation_progressbar_effect = yes
-}
-
-eqfm_check_balkan_situation_phase_effect = {
-	# Run Crisis Failure logic check first
-	if = {
-		limit = {
-			eqfm_crisis_phase_trigger = yes
-			global_var:eqfm_crisis_var <= 0
-		}
-		every_country = {
-			limit = {
-				is_involved_in_journal_entry = je_eqfm_balkan_situation
-			}
-			trigger_event = {
-				id = eqfm_balkans.028 # Rumelia in Disarray
-			}
-		}
-		eqfm_cleanup_crisis_effect = yes
-		eqfm_force_deconfliction_effect = yes
-	}
-	else_if = {
-		limit = {
-			OR = {
-				global_var:eqfm_escalation_var >= 500
-				global_var:eqfm_deescalation_var >= 500
-			}
-		}
-		## Attempt to Deescalate First
-		if = {
-			limit = {
-				eqfm_can_deescalate_tension_trigger = yes
-				global_var:eqfm_deescalation_var >= 500
-			}
-			if = { # From Unrest to Deconfliction
-				limit = {
-					global_var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
-				}
-				set_global_variable = {
-					name = eqfm_balkans_phase_var
-					value = flag:eqfm_deconfliction
-				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_balkan_situation
-					}
-					post_notification = notification_eqfm_transition_deconfliction
-				}
-				custom_tooltip = eqfm_transition_deconfliction_tt
-			}
-			else_if = { # From Hostility to Deconfliction
-				limit = {
-					global_var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
-				}
-				set_global_variable = {
-					name = eqfm_balkans_phase_var
-					value = flag:eqfm_deconfliction
-				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_balkan_situation
-					}
-					post_notification = notification_eqfm_transition_deconfliction
-				}
-				custom_tooltip = eqfm_transition_deconfliction_tt
-			}
-			else_if = { # From Crisis to Deconfliction
-				limit = {
-					global_var:eqfm_balkans_phase_var ?= flag:eqfm_crisis
-				}
-				set_global_variable = {
-					name = eqfm_balkans_phase_var
-					value = flag:eqfm_deconfliction
-				}
-				c:TUR = {
-					trigger_event = {
-						id = eqfm_balkans.029 # Order Returns to Rumelia
-					}
-				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_balkan_situation
-						c:TUR != this
-					}
-					post_notification = notification_eqfm_transition_deconfliction
-				}
-				custom_tooltip = eqfm_transition_deconfliction_tt
-			}
-			c:TUR ?= {
-				eqfm_cleanup_riots_effect = yes
-			}
-			set_global_variable = {
-				name = eqfm_escalation_var
-				value = 0
-			}
-			set_global_variable = {
-				name = eqfm_deescalation_var
-				value = 0
-			}
-		}
-
-		## Ignore this if we deescalated
-		else_if = { # Ignore this if we deescalated
-			limit = {
-				eqfm_can_escalate_tension_trigger = yes
-				global_var:eqfm_escalation_var >= 500
-			}
-			if = { # From Stable to Unrest
-				limit = {
-					global_var:eqfm_balkans_phase_var ?= flag:eqfm_stable
-				}
-				set_global_variable = {
-					name = eqfm_balkans_phase_var
-					value = flag:eqfm_unrest
-				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_balkan_situation
-					}
-					post_notification = notification_eqfm_transition_unrest
-				}
-				custom_tooltip = eqfm_transition_unrest_tt
-			}
-			else_if = { # From Unrest to Hostility
-				limit = {
-					global_var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
-				}
-				set_global_variable = {
-					name = eqfm_balkans_phase_var
-					value = flag:eqfm_hostility
-				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_balkan_situation
-					}
-					post_notification = notification_eqfm_transition_hostility
-				}
-				custom_tooltip = eqfm_transition_hostility_tt
-			}
-			else_if = { # From Hostility to Crisis
-				limit = {
-					eqfm_crisis_possible_trigger = yes
-					global_var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
-				}
-				set_global_variable = {
-					name = eqfm_balkans_phase_var
-					value = flag:eqfm_crisis
-				}
-				eqfm_initialize_crisis_effect = yes
-				c:TUR ?= {
-					trigger_event = {
-						id = eqfm_balkans.020 # A Crisis in Rumelia
-					}
-				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_balkan_situation
-						c:TUR != this
-					}
-					trigger_event = {
-						id = eqfm_balkans.021 # A Crisis in Rumelia
-					}
-					post_notification = notification_eqfm_transition_crisis
-				}
-				custom_tooltip = eqfm_transition_crisis_tt
-			}
-			else_if = { # From Deconfliction to Stable
-				limit = {
-					global_var:eqfm_balkans_phase_var ?= flag:eqfm_deconfliction
-				}
-				set_global_variable = {
-					name = eqfm_balkans_phase_var
-					value = flag:eqfm_stable
-				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_balkan_situation
-					}
-					post_notification = notification_eqfm_transition_stable
-				}
-				custom_tooltip = eqfm_transition_stable_tt
-			}
-			set_global_variable = {
-				name = eqfm_escalation_var
-				value = 0
-			}
-			set_global_variable = {
-				name = eqfm_deescalation_var
-				value = 0
-			}
-		}
-	}
-	c:TUR ?= {
-		eqfm_check_modifiers_effect = yes
-	}
-
-}
-
-eqfm_check_modifiers_effect = {
-	hidden_effect = {
-		remove_modifier = modifier_eqfm_stable_phase
-		remove_modifier = modifier_eqfm_unrest_phase
-		remove_modifier = modifier_eqfm_hostility_phase
-		remove_modifier = modifier_eqfm_deconfliction_phase
-		remove_modifier = modifier_eqfm_crisis_phase
-		every_political_movement = {
-			remove_modifier = modifier_eqfm_stable_phase_movement
-			remove_modifier = modifier_eqfm_unrest_phase_movement
-			remove_modifier = modifier_eqfm_hostility_phase_movement
-			remove_modifier = modifier_eqfm_deconfliction_phase_movement
-			remove_modifier = modifier_eqfm_crisis_phase_movement
-		}
-		if = {
-			limit = {
-				global_var:eqfm_balkans_phase_var = flag:eqfm_stable
-			}
-			add_modifier = modifier_eqfm_stable_phase
-			every_political_movement = {
-				limit = {
-					eqfm_eligible_minority_movement_trigger = yes
-				}
-				set_local_variable = {
-					name = eqfm_current_adjustment_var
-					value = eqfm_movement_activism_multiplier_value
-				}
-				add_modifier = {
-					name = modifier_eqfm_stable_phase_movement
-					multiplier = local_var:eqfm_current_adjustment_var
-				}
-				set_variable = {
-					name = eqfm_previous_adjustment_var
-					value = local_var:eqfm_current_adjustment_var
-				}
-			}
-		}
-		else_if = {
-			limit = {
-				global_var:eqfm_balkans_phase_var = flag:eqfm_unrest
-			}
-			add_modifier = modifier_eqfm_unrest_phase
-			every_political_movement = {
-				limit = {
-					eqfm_eligible_minority_movement_trigger = yes
-				}
-				set_local_variable = {
-					name = eqfm_current_adjustment_var
-					value = eqfm_movement_activism_multiplier_value
-				}
-				add_modifier = {
-					name = modifier_eqfm_unrest_phase_movement
-					multiplier = local_var:eqfm_current_adjustment_var
-				}
-				set_variable = {
-					name = eqfm_previous_adjustment_var
-					value = local_var:eqfm_current_adjustment_var
-				}
-			}
-		}
-		else_if = {
-			limit = {
-				global_var:eqfm_balkans_phase_var = flag:eqfm_hostility
-			}
-			add_modifier = modifier_eqfm_hostility_phase
-			every_political_movement = {
-				limit = {
-					eqfm_eligible_minority_movement_trigger = yes
-				}
-				set_local_variable = {
-					name = eqfm_current_adjustment_var
-					value = eqfm_movement_activism_multiplier_value
-				}
-				add_modifier = {
-					name = modifier_eqfm_hostility_phase_movement
-					multiplier = local_var:eqfm_current_adjustment_var
-				}
-				set_variable = {
-					name = eqfm_previous_adjustment_var
-					value = local_var:eqfm_current_adjustment_var
-				}
-			}
-		}
-		else_if = {
-			limit = {
-				global_var:eqfm_balkans_phase_var = flag:eqfm_deconfliction
-			}
-			add_modifier = modifier_eqfm_deconfliction_phase
-			every_political_movement = {
-				limit = {
-					eqfm_eligible_minority_movement_trigger = yes
-				}
-				set_local_variable = {
-					name = eqfm_current_adjustment_var
-					value = eqfm_movement_activism_multiplier_value
-				}
-				add_modifier = {
-					name = modifier_eqfm_deconfliction_phase_movement
-					multiplier = local_var:eqfm_current_adjustment_var
-				}
-				set_variable = {
-					name = eqfm_previous_adjustment_var
-					value = local_var:eqfm_current_adjustment_var
-				}
-			}
-		}
-		else_if = {
-			limit = {
-				global_var:eqfm_balkans_phase_var = flag:eqfm_crisis
-			}
-			add_modifier = modifier_eqfm_crisis_phase
-			every_political_movement = {
-				limit = {
-					eqfm_eligible_minority_movement_trigger = yes
-				}
-				set_local_variable = {
-					name = eqfm_current_adjustment_var
-					value = eqfm_movement_activism_multiplier_value
-				}
-				add_modifier = {
-					name = modifier_eqfm_crisis_phase_movement
-					multiplier = local_var:eqfm_current_adjustment_var
-				}
-				set_variable = {
-					name = eqfm_previous_adjustment_var
-					value = local_var:eqfm_current_adjustment_var
-				}
-			}
-		}
-	}
 }
 
 eqfm_update_balkan_situation_progressbar_effect = {
 	je:je_eqfm_balkan_situation = {
 		set_bar_progress = {
 			name = eqfm_balkans_escalation_progress_bar
-			value = global_var:eqfm_escalation_var
+			value = var:eqfm_escalation_var
 		}
 		set_bar_progress = {
 			name = eqfm_balkans_deescalation_progress_bar
-			value = global_var:eqfm_deescalation_var
+			value = var:eqfm_deescalation_var
 		}
 		if = {
 			limit = {
@@ -691,7 +173,7 @@ eqfm_update_balkan_situation_progressbar_effect = {
 			}
 			set_bar_progress = {
 				name = eqfm_crisis_progress_bar
-				value = global_var:eqfm_crisis_var
+				value = var:eqfm_crisis_var
 			}
 		}
 		else = {
@@ -703,122 +185,536 @@ eqfm_update_balkan_situation_progressbar_effect = {
 	}
 }
 
-eqfm_force_stable_effect = {
-	set_global_variable = {
-		name = eqfm_balkans_phase_var
-		value = flag:eqfm_stable
-	}
-	every_country = {
-		limit = {
-			eqfm_balkans_party_trigger = yes
+eqfm_check_balkan_situation_phase_effect = {
+	je:je_eqfm_balkan_situation = {
+		# Run Crisis Failure logic check first
+		if = {
+			limit = {
+				eqfm_crisis_phase_trigger = yes
+				var:eqfm_crisis_var <= 0
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_balkan_situation
+				}
+				trigger_event = {
+					id = eqfm_balkans.028 # Rumelia in Disarray
+				}
+			}
+			eqfm_cleanup_crisis_effect = yes
+			eqfm_force_deconfliction_effect = yes
 		}
-		post_notification = notification_eqfm_transition_stable
-	}
-	set_global_variable = {
-		name = eqfm_escalation_var
-		value = 0
-	}
-	set_global_variable = {
-		name = eqfm_deescalation_var
-		value = 0
-	}
-	c:TUR ?= {
+		else_if = {
+			limit = {
+				OR = {
+					var:eqfm_escalation_var >= 500
+					var:eqfm_deescalation_var >= 500
+				}
+			}
+			## Attempt to Deescalate First
+			if = {
+				limit = {
+					eqfm_can_deescalate_tension_trigger = yes
+					var:eqfm_deescalation_var >= 500
+				}
+				if = { # From Unrest to Deconfliction
+					limit = {
+						var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
+					}
+					set_variable = {
+						name = eqfm_balkans_phase_var
+						value = flag:eqfm_deconfliction
+					}
+					every_country = {
+						limit = {
+							is_involved_in_journal_entry = je_eqfm_balkan_situation
+						}
+						post_notification = notification_eqfm_transition_deconfliction
+					}
+					custom_tooltip = eqfm_transition_deconfliction_tt
+				}
+				else_if = { # From Hostility to Deconfliction
+					limit = {
+						var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
+					}
+					set_variable = {
+						name = eqfm_balkans_phase_var
+						value = flag:eqfm_deconfliction
+					}
+					every_country = {
+						limit = {
+							is_involved_in_journal_entry = je_eqfm_balkan_situation
+						}
+						post_notification = notification_eqfm_transition_deconfliction
+					}
+					custom_tooltip = eqfm_transition_deconfliction_tt
+				}
+				else_if = { # From Crisis to Deconfliction
+					limit = {
+						var:eqfm_balkans_phase_var ?= flag:eqfm_crisis
+					}
+					set_variable = {
+						name = eqfm_balkans_phase_var
+						value = flag:eqfm_deconfliction
+					}
+					c:TUR = {
+						trigger_event = {
+							id = eqfm_balkans.029 # Order Returns to Rumelia
+						}
+					}
+					every_country = {
+						limit = {
+							is_involved_in_journal_entry = je_eqfm_balkan_situation
+							c:TUR != this
+						}
+						post_notification = notification_eqfm_transition_deconfliction
+					}
+					custom_tooltip = eqfm_transition_deconfliction_tt
+				}
+				c:TUR ?= {
+					eqfm_cleanup_riots_effect = yes
+				}
+				set_variable = {
+					name = eqfm_escalation_var
+					value = 0
+				}
+				set_variable = {
+					name = eqfm_deescalation_var
+					value = 0
+				}
+			}
+			
+			## Ignore this if we deescalated
+			else_if = { # Ignore this if we deescalated
+				limit = {
+					eqfm_can_escalate_tension_trigger = yes
+					var:eqfm_escalation_var >= 500
+				}
+				if = { # From Stable to Unrest
+					limit = {
+						var:eqfm_balkans_phase_var ?= flag:eqfm_stable
+					}
+					set_variable = {
+						name = eqfm_balkans_phase_var
+						value = flag:eqfm_unrest
+					}
+					every_country = {
+						limit = {
+							is_involved_in_journal_entry = je_eqfm_balkan_situation
+						}
+						post_notification = notification_eqfm_transition_unrest
+					}
+					custom_tooltip = eqfm_transition_unrest_tt
+				}
+				else_if = { # From Unrest to Hostility
+					limit = {
+						var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
+					}
+					set_variable = {
+						name = eqfm_balkans_phase_var
+						value = flag:eqfm_hostility
+					}
+					every_country = {
+						limit = {
+							is_involved_in_journal_entry = je_eqfm_balkan_situation
+						}
+						post_notification = notification_eqfm_transition_hostility
+					}
+					custom_tooltip = eqfm_transition_hostility_tt
+				}
+				else_if = { # From Hostility to Crisis
+					limit = {
+						eqfm_crisis_possible_trigger = yes
+						var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
+					}
+					set_variable = {
+						name = eqfm_balkans_phase_var
+						value = flag:eqfm_crisis
+					}
+					eqfm_initialize_crisis_effect = yes
+					c:TUR ?= {
+						trigger_event = {
+							id = eqfm_balkans.020 # A Crisis in Rumelia
+						}
+					}
+					every_country = {
+						limit = {
+							is_involved_in_journal_entry = je_eqfm_balkan_situation
+							c:TUR != this
+						}
+						trigger_event = {
+							id = eqfm_balkans.021 # A Crisis in Rumelia
+						}
+						post_notification = notification_eqfm_transition_crisis
+					}
+					custom_tooltip = eqfm_transition_crisis_tt
+				}
+				else_if = { # From Deconfliction to Stable
+					limit = {
+						var:eqfm_balkans_phase_var ?= flag:eqfm_deconfliction
+					}
+					set_variable = {
+						name = eqfm_balkans_phase_var
+						value = flag:eqfm_stable
+					}
+					every_country = {
+						limit = {
+							is_involved_in_journal_entry = je_eqfm_balkan_situation
+						}
+						post_notification = notification_eqfm_transition_stable
+					}
+					custom_tooltip = eqfm_transition_stable_tt
+				}
+				set_variable = {
+					name = eqfm_escalation_var
+					value = 0
+				}
+				set_variable = {
+					name = eqfm_deescalation_var
+					value = 0
+				}
+			}
+		}
 		eqfm_check_modifiers_effect = yes
 	}
 }
 
-eqfm_force_unrest_effect = {
-	set_global_variable = {
-		name = eqfm_balkans_phase_var
-		value = flag:eqfm_unrest
-	}
-	every_country = {
-		limit = {
-			eqfm_balkans_party_trigger = yes
-		}
-		post_notification = notification_eqfm_transition_unrest
-	}
-	set_global_variable = {
-		name = eqfm_escalation_var
-		value = 0
-	}
-	set_global_variable = {
-		name = eqfm_deescalation_var
-		value = 0
-	}
+eqfm_check_modifiers_effect = {
 	c:TUR ?= {
+		hidden_effect = {
+			remove_modifier = modifier_eqfm_stable_phase
+			remove_modifier = modifier_eqfm_unrest_phase
+			remove_modifier = modifier_eqfm_hostility_phase
+			remove_modifier = modifier_eqfm_deconfliction_phase
+			remove_modifier = modifier_eqfm_crisis_phase
+			every_political_movement = {
+				remove_modifier = modifier_eqfm_stable_phase_movement
+				remove_modifier = modifier_eqfm_unrest_phase_movement
+				remove_modifier = modifier_eqfm_hostility_phase_movement
+				remove_modifier = modifier_eqfm_deconfliction_phase_movement
+				remove_modifier = modifier_eqfm_crisis_phase_movement
+			}
+		}
+	}
+	je:je_eqfm_balkan_situation = {
+		if = {
+			limit = {
+				var:eqfm_balkans_phase_var = flag:eqfm_stable
+			}
+			c:TUR ?= {
+				hidden_effect = {
+					add_modifier = modifier_eqfm_stable_phase
+					every_political_movement = {
+						limit = {
+							eqfm_eligible_minority_movement_trigger = yes
+						}
+						set_local_variable = {
+							name = eqfm_current_adjustment_var
+							value = eqfm_movement_activism_multiplier_value
+						}
+						add_modifier = {
+							name = modifier_eqfm_stable_phase_movement
+							multiplier = local_var:eqfm_current_adjustment_var
+						}
+						set_variable = {
+							name = eqfm_previous_adjustment_var
+							value = local_var:eqfm_current_adjustment_var
+						}
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				var:eqfm_balkans_phase_var = flag:eqfm_unrest
+			}
+			c:TUR ?= {
+				add_modifier = modifier_eqfm_unrest_phase
+				every_political_movement = {
+					limit = {
+						eqfm_eligible_minority_movement_trigger = yes
+					}
+					set_local_variable = {
+						name = eqfm_current_adjustment_var
+						value = eqfm_movement_activism_multiplier_value
+					}
+					add_modifier = {
+						name = modifier_eqfm_unrest_phase_movement
+						multiplier = local_var:eqfm_current_adjustment_var
+					}
+					set_variable = {
+						name = eqfm_previous_adjustment_var
+						value = local_var:eqfm_current_adjustment_var
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				var:eqfm_balkans_phase_var = flag:eqfm_hostility
+			}
+			c:TUR ?= {
+				add_modifier = modifier_eqfm_hostility_phase
+				every_political_movement = {
+					limit = {
+						eqfm_eligible_minority_movement_trigger = yes
+					}
+					set_local_variable = {
+						name = eqfm_current_adjustment_var
+						value = eqfm_movement_activism_multiplier_value
+					}
+					add_modifier = {
+						name = modifier_eqfm_hostility_phase_movement
+						multiplier = local_var:eqfm_current_adjustment_var
+					}
+					set_variable = {
+						name = eqfm_previous_adjustment_var
+						value = local_var:eqfm_current_adjustment_var
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				var:eqfm_balkans_phase_var = flag:eqfm_deconfliction
+			}
+			c:TUR ?= {
+				add_modifier = modifier_eqfm_deconfliction_phase
+				every_political_movement = {
+					limit = {
+						eqfm_eligible_minority_movement_trigger = yes
+					}
+					set_local_variable = {
+						name = eqfm_current_adjustment_var
+						value = eqfm_movement_activism_multiplier_value
+					}
+					add_modifier = {
+						name = modifier_eqfm_deconfliction_phase_movement
+						multiplier = local_var:eqfm_current_adjustment_var
+					}
+					set_variable = {
+						name = eqfm_previous_adjustment_var
+						value = local_var:eqfm_current_adjustment_var
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				var:eqfm_balkans_phase_var = flag:eqfm_crisis
+			}
+			c:TUR ?= {
+				add_modifier = modifier_eqfm_crisis_phase
+				every_political_movement = {
+					limit = {
+						eqfm_eligible_minority_movement_trigger = yes
+					}
+					set_local_variable = {
+						name = eqfm_current_adjustment_var
+						value = eqfm_movement_activism_multiplier_value
+					}
+					add_modifier = {
+						name = modifier_eqfm_crisis_phase_movement
+						multiplier = local_var:eqfm_current_adjustment_var
+					}
+					set_variable = {
+						name = eqfm_previous_adjustment_var
+						value = local_var:eqfm_current_adjustment_var
+					}
+				}
+			}
+		}
+	}
+}
+
+eqfm_update_riot_variables = {
+	je:je_eqfm_balkan_situation = {
+		remove_variable = eqfm_riot_state_1_var
+		remove_variable = eqfm_riot_state_2_var
+		remove_variable = eqfm_riot_state_3_var
+		# Try to find state 1 and set variable
+		c:TUR ?= {
+			random_scope_state = {
+				limit = {
+					has_modifier = modifier_eqfm_race_riots
+				}
+				save_scope_as = eqfm_riot_state_1_scope
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_riot_state_1_scope
+			}
+			set_variable = {
+				name = eqfm_riot_state_1_var
+				value = scope:eqfm_riot_state_1_scope
+			}
+			# Try to find state 2 and set variable
+			c:TUR ?= {
+				random_scope_state = {
+					limit = {
+						NOT = {
+							scope:eqfm_riot_state_1_scope ?= this
+						}
+						has_modifier = modifier_eqfm_race_riots
+					}
+					save_scope_as = eqfm_riot_state_2_scope
+				}
+			}
+			if = {
+				limit = {
+					exists = scope:eqfm_riot_state_2_scope
+				}
+				set_variable = {
+					name = eqfm_riot_state_2_var
+					value = scope:eqfm_riot_state_2_scope
+				}
+				# Try to find state 3 and set variable
+				c:TUR ?= {
+					random_scope_state = {
+						limit = {
+							NOR = {
+								scope:eqfm_riot_state_1_scope ?= this
+								scope:eqfm_riot_state_2_scope ?= this
+							}
+							has_modifier = modifier_eqfm_race_riots
+						}
+						save_scope_as = eqfm_riot_state_3_scope
+					}
+				}
+				if = {
+					limit = {
+						exists = scope:eqfm_riot_state_3_scope
+					}
+					set_variable = {
+						name = eqfm_riot_state_3_var
+						value = scope:eqfm_riot_state_3_scope
+					}
+				}
+			}
+		}
+	}
+	
+	
+}
+
+eqfm_force_stable_effect = {
+	je:je_eqfm_balkan_situation = {
+		set_variable = {
+			name = eqfm_balkans_phase_var
+			value = flag:eqfm_stable
+		}
+		every_country = {
+			limit = {
+				eqfm_balkans_party_trigger = yes
+			}
+			post_notification = notification_eqfm_transition_stable
+		}
+		set_variable = {
+			name = eqfm_escalation_var
+			value = 0
+		}
+		set_variable = {
+			name = eqfm_deescalation_var
+			value = 0
+		}
+		eqfm_check_modifiers_effect = yes
+	}
+
+}
+
+eqfm_force_unrest_effect = {
+	je:je_eqfm_balkan_situation = {
+		set_variable = {
+			name = eqfm_balkans_phase_var
+			value = flag:eqfm_unrest
+		}
+		every_country = {
+			limit = {
+				eqfm_balkans_party_trigger = yes
+			}
+			post_notification = notification_eqfm_transition_unrest
+		}
+		set_variable = {
+			name = eqfm_escalation_var
+			value = 0
+		}
+		set_variable = {
+			name = eqfm_deescalation_var
+			value = 0
+		}
 		eqfm_check_modifiers_effect = yes
 	}
 }
 
 eqfm_force_hostility_effect = {
-	set_global_variable = {
-		name = eqfm_balkans_phase_var
-		value = flag:eqfm_hostility
-	}
-	every_country = {
-		limit = {
-			eqfm_balkans_party_trigger = yes
+	je:je_eqfm_balkan_situation = {
+		set_variable = {
+			name = eqfm_balkans_phase_var
+			value = flag:eqfm_hostility
 		}
-		post_notification = notification_eqfm_transition_hostility
-	}
-	set_global_variable = {
-		name = eqfm_escalation_var
-		value = 0
-	}
-	set_global_variable = {
-		name = eqfm_deescalation_var
-		value = 0
-	}
-	c:TUR ?= {
+		every_country = {
+			limit = {
+				eqfm_balkans_party_trigger = yes
+			}
+			post_notification = notification_eqfm_transition_hostility
+		}
+		set_variable = {
+			name = eqfm_escalation_var
+			value = 0
+		}
+		set_variable = {
+			name = eqfm_deescalation_var
+			value = 0
+		}
 		eqfm_check_modifiers_effect = yes
 	}
 }
 
 eqfm_force_deconfliction_effect = {
-	set_global_variable = {
-		name = eqfm_balkans_phase_var
-		value = flag:eqfm_deconfliction
-	}
-	every_country = {
-		limit = {
-			eqfm_balkans_party_trigger = yes
+	je:je_eqfm_balkan_situation = {
+		set_variable = {
+			name = eqfm_balkans_phase_var
+			value = flag:eqfm_deconfliction
 		}
-		post_notification = notification_eqfm_transition_deconfliction
-	}
-	set_global_variable = {
-		name = eqfm_escalation_var
-		value = 0
-	}
-	set_global_variable = {
-		name = eqfm_deescalation_var
-		value = 0
-	}
-	c:TUR ?= {
+		every_country = {
+			limit = {
+				eqfm_balkans_party_trigger = yes
+			}
+			post_notification = notification_eqfm_transition_deconfliction
+		}
+		set_variable = {
+			name = eqfm_escalation_var
+			value = 0
+		}
+		set_variable = {
+			name = eqfm_deescalation_var
+			value = 0
+		}
 		eqfm_check_modifiers_effect = yes
 	}
 }
 
 eqfm_force_crisis_effect = {
-	set_global_variable = {
-		name = eqfm_balkans_phase_var
-		value = flag:eqfm_crisis
-	}
-	every_country = {
-		limit = {
-			eqfm_balkans_party_trigger = yes
+	je:je_eqfm_balkan_situation = {
+		set_variable = {
+			name = eqfm_balkans_phase_var
+			value = flag:eqfm_crisis
 		}
-		post_notification = notification_eqfm_transition_crisis
-	}
-	set_global_variable = {
-		name = eqfm_escalation_var
-		value = 0
-	}
-	set_global_variable = {
-		name = eqfm_deescalation_var
-		value = 0
-	}
-	c:TUR ?= {
+		every_country = {
+			limit = {
+				eqfm_balkans_party_trigger = yes
+			}
+			post_notification = notification_eqfm_transition_crisis
+		}
+		set_variable = {
+			name = eqfm_escalation_var
+			value = 0
+		}
+		set_variable = {
+			name = eqfm_deescalation_var
+			value = 0
+		}
 		eqfm_check_modifiers_effect = yes
 	}
 }
@@ -826,10 +722,12 @@ eqfm_force_crisis_effect = {
 eqfm_tension_cooldown_effect = {
 	if = {
 		limit = {
-			OR = {
-				global_var:eqfm_balkans_phase_var ?= flag:eqfm_stable
-				global_var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
-				global_var:eqfm_balkans_phase_var ?= flag:eqfm_deconfliction
+			je:je_eqfm_balkan_situation = {
+				OR = {
+					var:eqfm_balkans_phase_var ?= flag:eqfm_stable
+					var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
+					var:eqfm_balkans_phase_var ?= flag:eqfm_deconfliction
+				}
 			}
 		}
 		set_global_variable = {
@@ -839,11 +737,14 @@ eqfm_tension_cooldown_effect = {
 	}
 	if = {
 		limit = {
-			OR = {
-				global_var:eqfm_balkans_phase_var ?= flag:eqfm_stable
-				global_var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
-				global_var:eqfm_balkans_phase_var ?= flag:eqfm_deconfliction
+			je:je_eqfm_balkan_situation = {
+				OR = {
+					var:eqfm_balkans_phase_var ?= flag:eqfm_stable
+					var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
+					var:eqfm_balkans_phase_var ?= flag:eqfm_deconfliction
+				}
 			}
+			
 		}
 		set_global_variable = {
 			name = eqfm_balkans_cooldown_var
@@ -852,9 +753,11 @@ eqfm_tension_cooldown_effect = {
 	}
 	else_if = {
 		limit = {
-			OR = {
-				global_var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
-				global_var:eqfm_balkans_phase_var ?= flag:eqfm_crisis
+			je:je_eqfm_balkan_situation = {
+				OR = {
+					var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
+					var:eqfm_balkans_phase_var ?= flag:eqfm_crisis
+				}
 			}
 		}
 		set_global_variable = {
@@ -865,317 +768,102 @@ eqfm_tension_cooldown_effect = {
 }
 
 ## Situation Escalation Effects
-turkfm_add_small_escalation_effect = {
-	if = {
-		limit = {
-			has_variable = eqfm_riot_var
-		}
-		custom_tooltip = {
-			text = eqfm_add_small_riot_progress
-			change_variable = {
-				name = eqfm_riot_var
-				add = 5
-			}
-			clamp_variable = {
-				name = eqfm_riot_var
-				max = 200
-				min = 0
-			}
-		}
-	}
+turkfm_add_escalation_effect = {
 	if = {
 		limit = {
 			eqfm_can_escalate_tension_trigger = yes
 		}
-		c:TUR = {
-			custom_tooltip = {
-				text = eqfm_add_small_escalation
-				hidden_effect = {
-					change_global_variable = {
-						name = eqfm_escalation_var
-						add = 10
-					}
+		custom_tooltip = {
+			text = eqfm_add_escalation
+			set_local_var = {
+				name = eqfm_escalation_loc
+				value = $escalation_value$
+			}
+			je:je_eqfm_balkan_situation = {
+				change_variable = {
+					name = eqfm_escalation_var
+					add = $escalation_value$
 				}
 			}
-			eqfm_check_balkan_situation_phase_effect = yes
 		}
+		eqfm_check_balkan_situation_phase_effect = yes
+	}
+}
+
+turkfm_add_small_escalation_effect = {
+	turkfm_add_escalation_effect = {
+		escalation_value = 10
 	}
 }
 
 turkfm_add_medium_escalation_effect = {
-	if = {
-		limit = {
-			has_variable = eqfm_riot_var
-		}
-		custom_tooltip = {
-			text = eqfm_add_medium_riot_progress
-			change_variable = {
-				name = eqfm_riot_var
-				add = 10
-			}
-			clamp_variable = {
-				name = eqfm_riot_var
-				max = 200
-				min = 0
-			}
-		}
-	}
-	if = {
-		limit = {
-			eqfm_can_escalate_tension_trigger = yes
-		}
-		c:TUR = {
-			custom_tooltip = {
-				text = eqfm_add_medium_escalation
-				hidden_effect = {
-					change_global_variable = {
-						name = eqfm_escalation_var
-						add = 25
-					}
-				}
-			}
-			eqfm_check_balkan_situation_phase_effect = yes
-		}
+	turkfm_add_escalation_effect = {
+		escalation_value = 25
 	}
 }
 
 turkfm_add_large_escalation_effect = {
-	if = {
-		limit = {
-			has_variable = eqfm_riot_var
-		}
-		custom_tooltip = {
-			text = eqfm_add_large_riot_progress
-			change_variable = {
-				name = eqfm_riot_var
-				add = 15
-			}
-			clamp_variable = {
-				name = eqfm_riot_var
-				max = 200
-				min = 0
-			}
-		}
-	}
-	if = {
-		limit = {
-			eqfm_can_escalate_tension_trigger = yes
-		}
-		c:TUR = {
-			custom_tooltip = {
-				text = eqfm_add_large_escalation
-				hidden_effect = {
-					change_global_variable = {
-						name = eqfm_escalation_var
-						add = 50
-					}
-				}
-			}
-			eqfm_check_balkan_situation_phase_effect = yes
-		}
+	turkfm_add_escalation_effect = {
+		escalation_value = 50
 	}
 }
 
 turkfm_add_very_large_escalation_effect = {
-	if = {
-		limit = {
-			has_variable = eqfm_riot_var
-		}
-		custom_tooltip = {
-			text = eqfm_add_very_large_riot_progress
-			change_variable = {
-				name = eqfm_riot_var
-				add = 25
-			}
-			clamp_variable = {
-				name = eqfm_riot_var
-				max = 200
-				min = 0
-			}
-		}
+	turkfm_add_escalation_effect = {
+		escalation_value = 100
 	}
+}
+
+## Situation Deescalation Effects
+turkfm_add_deescalation_effect = {
 	if = {
 		limit = {
 			eqfm_can_escalate_tension_trigger = yes
 		}
-		c:TUR = {
-			custom_tooltip = {
-				text = eqfm_add_very_large_escalation
-				hidden_effect = {
-					change_global_variable = {
-						name = eqfm_escalation_var
-						add = 100
-					}
+		custom_tooltip = {
+			text = eqfm_add_deescalation
+			set_local_var = {
+				name = eqfm_deescalation_loc
+				value = $deescalation_value$
+			}
+			je:je_eqfm_balkan_situation = {
+				change_variable = {
+					name = eqfm_deescalation_var
+					add = $deescalation_value$
 				}
 			}
-			eqfm_check_balkan_situation_phase_effect = yes
 		}
+		eqfm_check_balkan_situation_phase_effect = yes
 	}
 }
 
 eqfm_add_small_deescalation_effect = {
-	if = {
-		limit = {
-			has_variable = eqfm_riot_var
-		}
-		custom_tooltip = {
-			text = eqfm_remove_small_riot_progress
-			change_variable = {
-				name = eqfm_riot_var
-				subtract = 5
-			}
-			clamp_variable = {
-				name = eqfm_riot_var
-				max = 200
-				min = 0
-			}
-		}
-	}
-	if = {
-		limit = {
-			eqfm_can_deescalate_tension_trigger = yes
-		}
-		c:TUR = {
-			custom_tooltip = {
-				text = eqfm_add_small_deescalation
-				hidden_effect = {
-					change_global_variable = {
-						name = eqfm_deescalation_var
-						add = 10
-					}
-				}
-			}
-			eqfm_check_balkan_situation_phase_effect = yes
-		}
+	turkfm_add_deescalation_effect = {
+		deescalation_value = 10
 	}
 }
 
 eqfm_add_medium_deescalation_effect = {
-	if = {
-		limit = {
-			has_variable = eqfm_riot_var
-		}
-		custom_tooltip = {
-			text = eqfm_remove_medium_riot_progress
-			change_variable = {
-				name = eqfm_riot_var
-				subtract = 10
-			}
-			clamp_variable = {
-				name = eqfm_riot_var
-				max = 200
-				min = 0
-			}
-		}
-	}
-	if = {
-		limit = {
-			eqfm_can_deescalate_tension_trigger = yes
-		}
-		c:TUR = {
-			custom_tooltip = {
-				text = eqfm_add_medium_deescalation
-				hidden_effect = {
-					change_global_variable = {
-						name = eqfm_deescalation_var
-						add = 25
-					}
-				}
-			}
-			eqfm_check_balkan_situation_phase_effect = yes
-		}
+	turkfm_add_deescalation_effect = {
+		deescalation_value = 25
 	}
 }
 
 eqfm_add_large_deescalation_effect = {
-	if = {
-		limit = {
-			has_variable = eqfm_riot_var
-		}
-		custom_tooltip = {
-			text = eqfm_remove_large_riot_progress
-			change_variable = {
-				name = eqfm_riot_var
-				subtract = 15
-			}
-			clamp_variable = {
-				name = eqfm_riot_var
-				max = 200
-				min = 0
-			}
-		}
-	}
-	if = {
-		limit = {
-			eqfm_can_deescalate_tension_trigger = yes
-		}
-		c:TUR = {
-			custom_tooltip = {
-				text = eqfm_add_large_deescalation
-				hidden_effect = {
-					change_global_variable = {
-						name = eqfm_deescalation_var
-						add = 50
-					}
-				}
-			}
-			eqfm_check_balkan_situation_phase_effect = yes
-		}
+	turkfm_add_deescalation_effect = {
+		deescalation_value = 50
 	}
 }
 
 eqfm_add_very_large_deescalation_effect = {
-	if = {
-		limit = {
-			has_variable = eqfm_riot_var
-		}
-		custom_tooltip = {
-			text = eqfm_remove_very_large_riot_progress
-			change_variable = {
-				name = eqfm_riot_var
-				subtract = 25
-			}
-			clamp_variable = {
-				name = eqfm_riot_var
-				max = 200
-				min = 0
-			}
-		}
-	}
-	if = {
-		limit = {
-			eqfm_can_deescalate_tension_trigger = yes
-		}
-		c:TUR = {
-			custom_tooltip = {
-				text = eqfm_add_very_large_deescalation
-				hidden_effect = {
-					change_global_variable = {
-						name = eqfm_deescalation_var
-						add = 100
-					}
-				}
-			}
-			eqfm_check_balkan_situation_phase_effect = yes
-		}
+	turkfm_add_deescalation_effect = {
+		deescalation_value = 100
 	}
 }
 
-eqfm_add_extremely_large_deescalation = {
-	if = {
-		limit = {
-			eqfm_can_deescalate_tension_trigger = yes
-		}
-		c:TUR = {
-			custom_tooltip = {
-				text = eqfm_add_extremely_large_deescalation
-				change_global_variable = {
-					name = eqfm_deescalation_var
-					add = 250
-				}
-			}
-			eqfm_check_balkan_situation_phase_effect = yes
-		}
+eqfm_add_extremely_large_deescalation_effect = {
+	turkfm_add_deescalation_effect = {
+		deescalation_value = 250
 	}
 }
 
@@ -2089,21 +1777,23 @@ eqfm_cleanup_tension_local_effect = {
 
 ## Situation Crisis Effects
 eqfm_initialize_crisis_effect = {
-	set_global_variable = {
-		name = eqfm_crisis_var
-		value = 125
-	}
-	set_global_variable = {
-		name = eqfm_crisis_progress_var
-		value = eqfm_crisis_progress_value
-	}
-	set_global_variable = {
-		name = eqfm_crisis_duration_var
-		value = 0
-	}
-	change_global_variable = {
-		name = eqfm_crisis_counter_var
-		add = 1
+	je:je_eqfm_balkan_situation = {
+		set_variable = {
+			name = eqfm_crisis_var
+			value = 125
+		}
+		set_variable = {
+			name = eqfm_crisis_progress_var
+			value = eqfm_crisis_progress_value
+		}
+		set_variable = {
+			name = eqfm_crisis_duration_var
+			value = 0
+		}
+		change_variable = {
+			name = eqfm_crisis_counter_var
+			add = 1
+		}
 	}
 	c:TUR ?= {
 		add_journal_entry = {
@@ -2415,19 +2105,19 @@ eqfm_crisis_fail_effect = {
 }
 
 eqfm_cleanup_crisis_effect = {
-	set_global_variable = {
-		name = eqfm_crisis_var
-		value = 250
-	}
-	set_global_variable = {
-		name = eqfm_crisis_progress_var
-		value = 0
-	}
-	set_global_variable = {
-		name = eqfm_crisis_duration_var
-		value = 0
-	}
 	je:je_eqfm_balkan_situation = {
+		set_variable = {
+			name = eqfm_crisis_var
+			value = 250
+		}
+		set_variable = {
+			name = eqfm_crisis_progress_var
+			value = 0
+		}
+		set_variable = {
+			name = eqfm_crisis_duration_var
+			value = 0
+		}
 		set_bar_progress = {
 			name = eqfm_crisis_progress_bar
 			value = 250
