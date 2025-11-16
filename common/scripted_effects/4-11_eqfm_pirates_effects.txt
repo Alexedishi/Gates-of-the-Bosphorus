@@ -1,13 +1,22 @@
-﻿eqfm_awaken_jack_sparrow_effect = {
-	create_character = {
-		template = template_eqfm_jack_sparrow
-		first_name = Rafil
-		last_name = Bey
-		on_created = {
-			place_character_in_void = 300
-			set_variable = {
-				name = com_opinion
-				value = flag:eqfm_jack_sparrow_opinion_1
+﻿eqfm_initialize_pirates_effect = {
+	scope:journal_entry = {
+		save_scope_as = eqfm_pirates_situation
+	}
+	set_global_variable = {
+		name = eqfm_pirates_situation
+		value = scope:eqfm_pirates_situation
+	}
+	c:TUR ?= {
+		create_character = {
+			template = template_eqfm_jack_sparrow
+			first_name = Rafil
+			last_name = Bey
+			on_created = {
+				place_character_in_void = 300
+				set_variable = {
+					name = com_opinion
+					value = flag:eqfm_jack_sparrow_opinion_1
+				}
 			}
 		}
 	}
@@ -17,21 +26,14 @@
 		}
 		save_scope_as = eqfm_jack_sparrow_scope
 	}
-	set_variable = {
-		name = eqfm_jack_sparrow_var
-		value = scope:eqfm_jack_sparrow_scope
-	}
 	global_var:eqfm_pirates_situation = {
+		set_variable = {
+			name = eqfm_jack_sparrow_var
+			value = scope:eqfm_jack_sparrow_scope
+		}
 		add_to_variable_list = {
 			name = com_journal_characters
 			target = scope:eqfm_jack_sparrow_scope
-		}
-	}
-	if = {
-		limit = {
-			NOT = {
-				has_global_variable = eqfm_pirates_var
-			}
 		}
 		set_global_variable = {
 			name = eqfm_pirates_var
@@ -40,8 +42,108 @@
 	}
 }
 
-eqfm_jack_sparrow_effect = {
-	## Step 0, Check for Expedition variables
+eqfm_update_piracy_variables_effect = {
+	## Step 1, Check for pirate leader
+	if = {
+		limit = {
+			any_character_in_void = {
+				has_template = template_eqfm_jack_sparrow
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_eqfm_jack_sparrow
+			}
+			save_scope_as = eqfm_jack_sparrow_scope
+		}
+	}
+	else = {
+		random_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_pirates_of_the_adriatic
+			}
+			create_character = {
+				template = template_eqfm_jack_sparrow
+				on_created = {
+					place_character_in_void = 300
+				}
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_eqfm_jack_sparrow
+			}
+			save_scope_as = eqfm_jack_sparrow_scope
+		}
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_pirates_of_the_adriatic
+			}
+			post_notification = notification_eqfm_jack_sparrow_reincarnated
+		}
+	}
+	
+	## Step 2, Update Lists and progress bars
+	global_var:eqfm_pirates_situation = {
+		set_bar_progress = {
+			name = eqfm_jack_sparrow_progress_bar
+			value = var:eqfm_pirates_var
+		}
+		clear_variable_list = com_journal_characters
+		add_to_variable_list = {
+			name = com_journal_characters
+			target = scope:eqfm_jack_sparrow_scope
+		}
+	}
+	scope:eqfm_jack_sparrow_scope ?= {
+		set_variable = {
+			name = com_opinion
+			value = flag:eqfm_jack_sparrow_opinion_1
+		}
+	}
+}
+
+eqfm_validate_piracy_involvement = {
+	every_country = {
+		limit = {
+			OR = {
+				is_involved_in_journal_entry = je_eqfm_pirates_of_the_adriatic
+				any_scope_state = {
+					is_in_geographic_region = geographic_region_adriatic
+				}
+			}
+		}
+		if = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_pirates_of_the_adriatic
+				NOT = {
+					any_scope_state = {
+						is_in_geographic_region = geographic_region_adriatic
+					}
+				}
+			}
+			global_var:eqfm_pirates_situation = {
+				remove_involved_country = prev
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					is_involved_in_journal_entry = je_eqfm_pirates_of_the_adriatic
+				}
+				any_scope_state = {
+					is_in_geographic_region = geographic_region_adriatic
+				}
+			}
+			global_var:eqfm_pirates_situation = {
+				add_involved_country = prev
+			}
+		}
+	}
+}
+
+eqfm_update_adriatic_expedition_variables_effect = {
+	## Step 1, Check for Expedition variables
 	if = {
 		limit = {
 			eqfm_has_adriatic_expedition_trigger = yes
@@ -72,48 +174,8 @@ eqfm_jack_sparrow_effect = {
 			}
 		}
 	}
-
-	## Step 1, Check for pirate leader
-	if = {
-		limit = {
-			any_character_in_void = {
-				has_template = template_eqfm_jack_sparrow
-			}
-
-		}
-		random_character_in_void = {
-			limit = {
-				has_template = template_eqfm_jack_sparrow
-			}
-			save_scope_as = eqfm_jack_sparrow_scope
-		}
-	}
-	else = {
-		create_character = {
-			template = template_eqfm_jack_sparrow
-			on_created = {
-				place_character_in_void = 300
-			}
-		}
-		random_character_in_void = {
-			limit = {
-				has_template = template_eqfm_jack_sparrow
-			}
-			save_scope_as = eqfm_jack_sparrow_scope
-		}
-		every_country = {
-			limit = {
-				has_journal_entry = je_eqfm_pirates_of_the_adriatic
-			}
-			post_notification = notification_eqfm_jack_sparrow_reincarnated
-		}
-	}
-	set_variable = {
-		name = eqfm_jack_sparrow_var
-		value = scope:eqfm_jack_sparrow_scope
-	}
-
-	## Step 2, Check for ongoing expedition
+	
+	## Step 2, Check for Expedition Leader
 	if = {
 		limit = {
 			any_scope_character = {
@@ -139,18 +201,9 @@ eqfm_jack_sparrow_effect = {
 	else = {
 		remove_variable = eqfm_cutler_beckett_var
 	}
-
+	
 	## Step 3, Update Lists and progress bars
-	global_var:eqfm_pirates_situation = {
-		set_bar_progress = {
-			name = eqfm_jack_sparrow_progress_bar
-			value = global_var:eqfm_pirates_var
-		}
-		clear_variable_list = com_journal_characters
-		add_to_variable_list = {
-			name = com_journal_characters
-			target = scope:eqfm_jack_sparrow_scope
-		}
+	scope:journal_entry = {
 		if = {
 			limit = {
 				exists = scope:eqfm_cutler_beckett_scope
@@ -159,20 +212,12 @@ eqfm_jack_sparrow_effect = {
 				name = com_journal_characters
 				target = scope:eqfm_cutler_beckett_scope
 			}
-		}
-	}
-
-	## Step 4, Set Opinion Flags
-	scope:eqfm_jack_sparrow_scope ?= {
-		set_variable = {
-			name = com_opinion
-			value = flag:eqfm_jack_sparrow_opinion_1
-		}
-	}
-	scope:eqfm_cutler_beckett_scope ?= {
-		set_variable = {
-			name = com_opinion
-			value = flag:eqfm_cutler_beckett_opinion
+			scope:eqfm_cutler_beckett_scope ?= {
+				set_variable = {
+					name = com_opinion
+					value = flag:eqfm_cutler_beckett_opinion
+				}
+			}
 		}
 	}
 }
@@ -192,25 +237,8 @@ eqfm_piracy_scopes_effect = {
 	}
 }
 
-eqfm_cleanup_piracy_effect = {
-	every_scope_character = {
-		limit = {
-			has_modifier = modifier_eqfm_leading_adriatic_expedition
-		}
-		remove_modifier = modifier_eqfm_leading_adriatic_expedition
-		set_character_busy_and_immortal = no
-	}
-	eqfm_update_expedition_costs_effect = yes
-	remove_variable = eqfm_jack_sparrow_var
-	remove_variable = eqfm_cutler_beckett_var
-	remove_variable = eqfm_expedition_piracy_transit_var
-	remove_variable = eqfm_adriatic_expedition_progress_var
-	remove_variable = eqfm_adriatic_expedition_peril_var
-}
-
 eqfm_start_piracy_expedition_effect = {
 	remove_variable = eqfm_expedition_piracy_transit_var
-	set_variable = eqfm_adriatic_expedition_var
 	set_variable = {
 		name = eqfm_adriatic_expedition_progress_var
 		value = 0
@@ -219,21 +247,74 @@ eqfm_start_piracy_expedition_effect = {
 		name = eqfm_adriatic_expedition_peril_var
 		value = 0
 	}
+	set_variable = {
+		name = eqfm_expedition_progress_timeout
+		months = 6
+	}
 }
 
-eqfm_fail_piracy_expedition_effect = {
+eqfm_clear_piracy_expedition_variables_effect = {
+	remove_variable = eqfm_adriatic_expedition_progress_var
+	remove_variable = eqfm_adriatic_expedition_peril_var
+	remove_variable = eqfm_piracy_chase_var
+}
+
+eqfm_clear_piracy_expedition_effect = {
 	every_scope_character = {
 		limit = {
 			has_modifier = modifier_eqfm_leading_adriatic_expedition
 		}
 		remove_modifier = modifier_eqfm_leading_adriatic_expedition
 		set_character_busy_and_immortal = no
+	}
+	remove_variable = eqfm_adriatic_expedition_var
+	remove_variable = eqfm_adriatic_expedition_progress_var
+	remove_variable = eqfm_adriatic_expedition_peril_var
+	remove_variable = eqfm_piracy_chase_var
+	remove_variable = eqfm_cutler_beckett_var
+}
+
+eqfm_complete_piracy_expedition_effect = {
+	eqfm_piracy_scopes_effect = yes
+	eqfm_clear_piracy_expedition_effect = yes
+	scope:eqfm_cutler_beckett_scope ?= {
+		add_modifier = {
+			name = modifier_eqfm_completed_adriatic_expedition
+			months = gbbf_duration_10_years
+		}
+	}
+	custom_tooltip = {
+		text = eqfm_piracy_advance_1
+		global_var:eqfm_pirates_situation = {
+			change_variable = {
+				name = eqfm_pirates_var
+				add = 1
+			}
+			set_bar_progress = {
+				name = eqfm_jack_sparrow_progress_bar
+				value = var:eqfm_pirates_var
+			}
+		}
+		if = {
+			limit = {
+				global_var:eqfm_pirates_situation.var:eqfm_pirates_var = 4
+			}
+			set_variable = eqfm_jack_sparrow_captor
+		}
+		set_variable = eqfm_completed_pirate_expedition
+	}
+	eqfm_update_expedition_costs_effect = yes
+}
+
+eqfm_fail_piracy_expedition_effect = {
+	eqfm_piracy_scopes_effect = yes
+	eqfm_clear_piracy_expedition_effect = yes
+	scope:eqfm_cutler_beckett_scope ?= {
 		add_modifier = {
 			name = modifier_eqfm_failed_adriatic_expedition_character
 			months = gbbf_duration_10_years
 		}
 	}
-	remove_variable = eqfm_adriatic_expedition_var
 	add_modifier = {
 		name = modifier_eqfm_failed_adriatic_expedition_country
 		months = gbbf_duration_2_plus_half_years
@@ -241,75 +322,11 @@ eqfm_fail_piracy_expedition_effect = {
 	eqfm_update_expedition_costs_effect = yes
 }
 
-eqfm_complete_piracy_expedition_effect = {
-	every_scope_character = {
-		limit = {
-			has_modifier = modifier_eqfm_leading_adriatic_expedition
-		}
-		remove_modifier = modifier_eqfm_leading_adriatic_expedition
-		set_character_busy_and_immortal = no
-		add_modifier = {
-			name = modifier_eqfm_completed_adriatic_expedition
-			months = gbbf_duration_10_years
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_eqfm_failed_adriatic_expedition_character
-			}
-			remove_modifier = modifier_eqfm_failed_adriatic_expedition_character
-		}
-	}
-	remove_variable = eqfm_adriatic_expedition_var
-	eqfm_update_expedition_costs_effect = yes
-	custom_tooltip = {
-		text = eqfm_piracy_advance_1
-		change_global_variable = {
-			name = eqfm_pirates_var
-			add = 1
-		}
-		if = {
-			limit = {
-				global_var:eqfm_pirates_var >= 4
-			}
-			set_variable = eqfm_jack_sparrow_captor
-			hidden_effect = {
-				trigger_event = {
-					id = eqfm_pirates.008 # Jack Sparrow Clapped in Irons!
-					days = 7
-				}
-			}
-		}
-	}
-	set_variable = eqfm_completed_pirate_expedition
-	every_country = {
-		limit = {
-			has_journal_entry = je_eqfm_pirates_of_the_adriatic
-		}
-		global_var:eqfm_pirates_situation = {
-			set_bar_progress = {
-				name = eqfm_jack_sparrow_progress_bar
-				value = global_var:eqfm_pirates_var
-			}
-		}
-	}
-}
-
 eqfm_cancel_piracy_expedition_effect = {
-	every_scope_character = {
-		limit = {
-			has_modifier = modifier_eqfm_leading_adriatic_expedition
-		}
-		remove_modifier = modifier_eqfm_leading_adriatic_expedition
-		set_character_busy_and_immortal = no
-	}
-	remove_variable = eqfm_adriatic_expedition_var
+	eqfm_clear_piracy_expedition_effect = yes
 	add_modifier = {
 		name = modifier_eqfm_cancelled_adriatic_expedition
 		months = gbbf_duration_2_plus_half_years
 	}
-}
-
-eqfm_clear_piracy_expedition_variables_effect = {
-	remove_variable = eqfm_adriatic_expedition_progress_var
-	remove_variable = eqfm_adriatic_expedition_peril_var
+	eqfm_update_expedition_costs_effect = yes
 }
