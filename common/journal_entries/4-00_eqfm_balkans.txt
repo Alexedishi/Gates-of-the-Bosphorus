@@ -14,7 +14,7 @@
 
 	scripted_progress_bar = eqfm_balkans_escalation_progress_bar
 	scripted_progress_bar = eqfm_balkans_deescalation_progress_bar
-	scripted_progress_bar = eqfm_crisis_progress_bar
+	scripted_progress_bar = eqfm_balkans_crisis_progress_bar
 
 	scripted_button = eqfm_accelerate_tensions_button
 	scripted_button = eqfm_decelerate_tensions_button
@@ -23,6 +23,15 @@
 	scripted_button = eqfm_greek_gunrunners_button
 
 	is_shown_when_inactive = {
+		custom_tooltip = {
+			text = eqfm_balkan_situation_resolved_NOT
+			NOT = {
+				has_global_variable = eqfm_balkan_situation_resolved
+			}
+		}
+	}
+	
+	possible = {
 		custom_tooltip = {
 			text = eqfm_balkan_situation_resolved_NOT
 			NOT = {
@@ -43,21 +52,15 @@
 		}
 	}
 
-	possible = {
-		custom_tooltip = {
-			text = eqfm_balkan_situation_resolved_NOT
-			NOT = {
-				has_global_variable = eqfm_balkan_situation_resolved
-			}
-		}
-	}
-
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
 		eqfm_initialize_balkan_variables_effect = yes
 		c:TUR ?= {
 			save_scope_as = ottoman_scope
 			add_modifier = modifier_eqfm_stable_phase
+		}
+		scope:journal_entry = {
+			set_variable = com_double_bad_gold_bar
 		}
 	}
 
@@ -230,11 +233,10 @@
 
 	on_complete = {
 		set_global_variable = eqfm_separatism_complete
-		eqfm_cleanup_tension_main_effect = yes
 	}
 	
 	on_complete_all_involved = {
-		eqfm_cleanup_tension_local_effect = yes
+		eqfm_cleanup_balkans_situation_effect = yes
 		trigger_event = {
 			id = eqfm_balkans.009 # Dominion Over Rumelia
 		}
@@ -271,11 +273,10 @@
 
 	on_fail = {
 		set_global_variable = eqfm_separatism_complete
-		eqfm_cleanup_tension_main_effect = yes
 	}
 	
 	on_fail_all_involved = {
-		eqfm_cleanup_tension_local_effect = yes
+		eqfm_cleanup_balkans_situation_effect = yes
 		trigger_event = {
 			id = eqfm_balkans.008 # Rumelia Lost
 		}
@@ -292,15 +293,14 @@
 
 	on_invalid = {
 		set_global_variable = eqfm_separatism_complete
-		eqfm_cleanup_tension_main_effect = yes
 	}
 	
 	on_invalid_all_involved = {
-		eqfm_cleanup_tension_local_effect = yes
+		eqfm_cleanup_balkans_situation_effect = yes
 	}
 	
 	on_no_longer_involved = {
-		eqfm_cleanup_tension_local_effect = yes
+		eqfm_cleanup_balkans_situation_effect = yes
 		post_notification = notification_eqfm_balkans_not_involved
 	}
 
@@ -308,7 +308,6 @@
 		effect = {
 			eqfm_calculate_balkan_situation_variables_effect = yes
 			eqfm_check_balkan_situation_phase_effect = yes
-#			eqfm_update_balkan_situation_lists_effect = yes
 		}
 	}
 
@@ -323,7 +322,15 @@
 		triggered_desc = {
 			desc = je_eqfm_balkan_situation_status
 			trigger = {
-				has_global_variable = eqfm_balkans_phase_var
+				always = yes
+			}
+		}
+		triggered_desc = {
+			desc = je_eqfm_balkan_situation_crisis_status
+			trigger = {
+				scope:journal_entry ?= {
+					var:eqfm_balkans_phase_var ?= flag:eqfm_crisis
+				}
 			}
 		}
 	}

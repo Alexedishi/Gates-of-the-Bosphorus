@@ -131,28 +131,31 @@ eqfm_clamp_balkan_situation_variables_effect = {
 }
 
 eqfm_advance_balkan_situation_variables_effect = {
-	change_global_variable = {
-		name = eqfm_escalation_var
-		add = global_var:eqfm_escalation_progress_var
-	}
-	change_global_variable = {
-		name = eqfm_deescalation_var
-		add = global_var:eqfm_deescalation_progress_var
-	}
-	if = {
-		limit = {
-			eqfm_crisis_phase_trigger = yes
+	je:je_eqfm_balkan_situation = {
+		change_variable = {
+			name = eqfm_escalation_var
+			add = var:eqfm_escalation_progress_var
 		}
-		change_global_variable = {
-			name = eqfm_crisis_var
-			add = global_var:eqfm_crisis_progress_var
+		change_variable = {
+			name = eqfm_deescalation_var
+			add = var:eqfm_deescalation_progress_var
 		}
-		clamp_global_variable = {
-			name = eqfm_crisis_var
-			max = 250
-			min = 0
+		if = {
+			limit = {
+				eqfm_crisis_phase_trigger = yes
+			}
+			change_variable = {
+				name = eqfm_crisis_var
+				add = var:eqfm_crisis_progress_var
+			}
+			clamp_variable = {
+				name = eqfm_crisis_var
+				max = 250
+				min = 0
+			}
 		}
 	}
+	
 	eqfm_clamp_balkan_situation_variables_effect = yes
 	eqfm_update_balkan_situation_progressbar_effect = yes
 }
@@ -172,13 +175,13 @@ eqfm_update_balkan_situation_progressbar_effect = {
 				eqfm_crisis_phase_trigger = yes
 			}
 			set_bar_progress = {
-				name = eqfm_crisis_progress_bar
+				name = eqfm_balkans_crisis_progress_bar
 				value = var:eqfm_crisis_var
 			}
 		}
 		else = {
 			set_bar_progress = {
-				name = eqfm_crisis_progress_bar
+				name = eqfm_balkans_crisis_progress_bar
 				value = 250
 			}
 		}
@@ -1755,14 +1758,7 @@ eqfm_cleanup_riots_effect = {
 	}
 }
 
-eqfm_cleanup_tension_main_effect = {
-	remove_global_variable = eqfm_balkans_phase_var
-	remove_global_variable = eqfm_escalation_var
-	remove_global_variable = eqfm_deescalation_var
-	remove_global_variable = eqfm_crisis_counter_var
-}
-
-eqfm_cleanup_tension_local_effect = {
+eqfm_cleanup_balkans_situation_effect = {
 	remove_variable = eqfm_balkans_cooldown_var
 	hidden_effect = {
 		remove_modifier = modifier_eqfm_stable_phase
@@ -2117,7 +2113,7 @@ eqfm_cleanup_crisis_effect = {
 			value = 0
 		}
 		set_bar_progress = {
-			name = eqfm_crisis_progress_bar
+			name = eqfm_balkans_crisis_progress_bar
 			value = 250
 		}
 	}
