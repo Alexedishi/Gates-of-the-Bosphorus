@@ -21,16 +21,19 @@
 	scripted_button = eqfm_resupply_adriatic_expedition_button
 	
 	is_shown_when_inactive = {
+		NOT = {
+			has_global_variable = eqfm_jack_sparrow_whacked
+		}
+	}
+	
+	possible = {
+		year >= 1837
 		custom_tooltip = {
 			text = je_eqfm_pirates_of_the_adriatic_possible
 			NOT = {
 				has_global_variable = eqfm_jack_sparrow_whacked
 			}
 		}
-	}
-	
-	possible = {
-		year >= 1837
 	}
 
 	should_be_involved = {
@@ -39,18 +42,23 @@
 		}
 	}
 	
+	should_show_when_not_involved = {
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_europe
+		}
+	}
+	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
-		if = {
-			limit = {
-				NOT = {
-					has_global_variable = eqfm_pirates_var
-				}
-			}
-			set_global_variable = {
-				name = eqfm_pirates_var
-				value = 0
-			}
+		scope:journal_entry = {
+			save_scope_as = eqfm_pirates_situation
+		}
+		set_global_variable = {
+			name = eqfm_pirates_situation
+			value = scope:eqfm_pirates_situation
+		}
+		global_var:eqfm_pirates_situation = {
+			eqfm_awaken_jack_sparrow_effect = yes
 		}
 	}
 
@@ -113,6 +121,7 @@
 							}
 						}
 					}
+					
 				}
 				if = {
 					limit = {
@@ -123,6 +132,7 @@
 							is_in_geographic_region = geographic_region_adriatic
 						}
 					}
+					
 				}
 			}
 		}
@@ -169,4 +179,8 @@
 			}
 		}
 	}
+}
+
+je_eqfm_expedition_to_the_adriatic = {
+
 }
