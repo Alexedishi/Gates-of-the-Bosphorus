@@ -41,7 +41,7 @@
 	}
 
 	should_be_involved = {
-		eqfm_balkans_involved_trigger = yes
+		eqfm_balkans_should_be_involved_trigger = yes
 	}
 
 	should_show_when_not_involved = {
@@ -61,13 +61,33 @@
 		}
 		scope:journal_entry = {
 			set_variable = com_double_bad_gold_bar
+			set_variable = {
+				name = ottoman_scope
+				value = scope:ottoman_scope
+			}
+			save_scope_as = eqfm_balkan_situation
+		}
+		set_global_variable = {
+			name = eqfm_balkan_situation
+			value = scope:eqfm_balkan_situation
 		}
 	}
 
 	immediate_all_involved = {
-		trigger_event = {
-			id = eqfm_balkans.011 # The Eastern Question
-			days = 5
+		if = {
+			limit = {
+				c:TUR ?= this
+			}
+			trigger_event = {
+				id = eqfm_balkans.001 # The Peoples of the Empire
+				days = 5
+			}
+		}
+		else = {
+			trigger_event = {
+				id = eqfm_balkans.011 # The Eastern Question
+				days = 5
+			}
 		}
 	}
 	
@@ -232,7 +252,8 @@
 	}
 
 	on_complete = {
-		set_global_variable = eqfm_separatism_complete
+		set_global_variable = eqfm_balkan_situation_resolved
+		remove_global_variable = ottoman_scope
 	}
 	
 	on_complete_all_involved = {
@@ -272,7 +293,8 @@
 	}
 
 	on_fail = {
-		set_global_variable = eqfm_separatism_complete
+		set_global_variable = eqfm_balkan_situation_resolved
+		remove_global_variable = ottoman_scope
 	}
 	
 	on_fail_all_involved = {
@@ -292,7 +314,8 @@
 	}
 
 	on_invalid = {
-		set_global_variable = eqfm_separatism_complete
+		set_global_variable = eqfm_balkan_situation_resolved
+		remove_global_variable = ottoman_scope
 	}
 	
 	on_invalid_all_involved = {
@@ -306,19 +329,15 @@
 
 	on_weekly_pulse = {
 		effect = {
-			c:TUR ?= {
-				eqfm_calculate_balkan_situation_variables_effect = yes
-				eqfm_check_balkan_situation_phase_effect = yes
-			}
+			eqfm_calculate_balkan_situation_variables_effect = yes
+			eqfm_check_balkan_situation_phase_effect = yes
 		}
 	}
 
 	on_monthly_pulse = {
 		effect = {
-			c:TUR ?= {
-				eqfm_validate_journal_involvement = yes
-				eqfm_advance_balkan_situation_variables_effect = yes
-			}
+			eqfm_validate_journal_involvement = yes
+			eqfm_advance_balkan_situation_variables_effect = yes
 		}
 	}
 
@@ -326,7 +345,7 @@
 		triggered_desc = {
 			desc = je_eqfm_balkan_situation_status
 			trigger = {
-				always = yes
+				has_global_variable = eqfm_balkan_situation
 			}
 		}
 		triggered_desc = {

@@ -1,7 +1,7 @@
 ﻿eqfm_stable_phase_trigger = {
 	custom_tooltip = { 
 		text = eqfm_stable_phase_trigger
-		je:je_eqfm_balkan_situation = {
+		global_var:eqfm_balkan_situation = {
 			var:eqfm_balkans_phase_var ?= flag:eqfm_stable
 		}
 	}
@@ -10,7 +10,7 @@
 eqfm_unrest_phase_trigger = {
 	custom_tooltip = {
 		text = eqfm_unrest_phase_trigger
-		je:je_eqfm_balkan_situation = {
+		global_var:eqfm_balkan_situation = {
 			var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
 		}
 	}
@@ -19,7 +19,7 @@ eqfm_unrest_phase_trigger = {
 eqfm_hostility_phase_trigger = {
 	custom_tooltip = {
 		text = eqfm_hostility_phase_trigger
-		je:je_eqfm_balkan_situation = {
+		global_var:eqfm_balkan_situation = {
 			var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
 		}
 	}
@@ -28,7 +28,7 @@ eqfm_hostility_phase_trigger = {
 eqfm_deconfliction_phase_trigger = {
 	custom_tooltip = {
 		text = eqfm_deconfliction_phase_trigger
-		je:je_eqfm_balkan_situation = {
+		global_var:eqfm_balkan_situation = {
 			var:eqfm_balkans_phase_var ?= flag:eqfm_deconfliction
 		}
 	}
@@ -37,18 +37,23 @@ eqfm_deconfliction_phase_trigger = {
 eqfm_crisis_phase_trigger = {
 	custom_tooltip = {
 		text = eqfm_crisis_phase_trigger
-		je:je_eqfm_balkan_situation = {
+		global_var:eqfm_balkan_situation = {
 			var:eqfm_balkans_phase_var ?= flag:eqfm_crisis
 		}
 	}
 }
 
-eqfm_balkans_involved_trigger = {
+eqfm_balkans_should_be_involved_trigger = {
 	custom_tooltip = {
-		text = eqfm_balkans_involved_trigger
+		text = eqfm_balkans_should_be_involved_trigger
 		OR = {
 			c:TUR ?= this
-			is_subject_of = c:TUR
+			AND = {
+				is_subject_of = c:TUR
+				capital ?= {
+					region = sr:region_balkans
+				}
+			}
 			any_scope_state = {
 				region = sr:region_balkans
 				is_capital = yes
@@ -79,32 +84,7 @@ eqfm_balkans_involved_trigger = {
 eqfm_balkans_interloper_trigger = {
 	custom_tooltip = {
 		text = eqfm_balkans_interloper_trigger
-		NOR = {
-			c:TUR ?= this
-			is_subject_of = c:TUR
-			capital = {
-				region = sr:region_balkans
-			}
-			gbbf_has_alliance_trigger = {
-				country = c:TUR
-			}
-			gbbf_has_defensive_pact_trigger = {
-				country = c:TUR
-			}
-			gbbf_has_military_assistance_trigger = {
-				country = c:TUR
-			}
-			gbbf_has_rivalry_trigger = {
-				country = c:TUR
-			}
-			gbbf_has_embargo_trigger = {
-				country = c:TUR
-			}
-			AND = {
-				country_rank >= rank_value:great_power
-				has_interest_marker_in_region = region_balkans
-			}
-		}
+		eqfm_balkans_should_be_involved_trigger = no
 		OR = {
 			has_diplomatic_relevance = c:TUR
 			any_scope_state = {
@@ -115,6 +95,12 @@ eqfm_balkans_interloper_trigger = {
 					region = sr:region_balkans
 				}
 			}
+			AND = {
+				is_subject_of = c:TUR
+				capital ?= {
+					region != sr:region_balkans
+				}
+			}
 		}
 	}
 }
@@ -122,47 +108,14 @@ eqfm_balkans_interloper_trigger = {
 eqfm_balkans_uninvolved_trigger = {
 	custom_tooltip = {
 		text = eqfm_balkans_uninvolved_trigger
-		NOR = {
-			c:TUR ?= this
-			is_subject_of = c:TUR
-			capital = {
-				region = sr:region_balkans
-			}
-			gbbf_has_alliance_trigger = {
-				country = c:TUR
-			}
-			gbbf_has_defensive_pact_trigger = {
-				country = c:TUR
-			}
-			gbbf_has_military_assistance_trigger = {
-				country = c:TUR
-			}
-			gbbf_has_rivalry_trigger = {
-				country = c:TUR
-			}
-			gbbf_has_embargo_trigger = {
-				country = c:TUR
-			}
-			AND = {
-				country_rank >= rank_value:great_power
-				has_interest_marker_in_region = region_balkans
-			}
-			has_diplomatic_relevance = c:TUR
-			any_scope_state = {
-				region = sr:region_balkans
-			}
-			any_subject_or_below = {
-				capital = {
-					region = sr:region_balkans
-				}
-			}
-		}
+		eqfm_balkans_should_be_involved_trigger = no
+		eqfm_balkans_interloper_trigger = no
 	}
 }
 
 eqfm_balkans_party_trigger = {
 	OR = {
-		eqfm_balkans_involved_trigger = yes
+		is_involved_in_journal_entry = je_eqfm_balkan_situation
 		eqfm_balkans_interloper_trigger = yes
 	}
 }
@@ -171,7 +124,7 @@ eqfm_neutral_events_trigger = {
 	NOT = {
 		has_global_variable = eqfm_balkans_cooldown_var
 	}
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		OR = {
 			var:eqfm_balkans_phase_var ?= flag:eqfm_stable
 			var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
@@ -185,7 +138,7 @@ eqfm_unrest_events_trigger = {
 	NOT = {
 		has_global_variable = eqfm_balkans_cooldown_var
 	}
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		OR = {
 			var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
 			var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
@@ -198,7 +151,7 @@ eqfm_hostility_events_trigger = {
 	NOT = {
 		has_global_variable = eqfm_balkans_cooldown_var
 	}
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
 	}
 }
@@ -207,7 +160,7 @@ eqfm_deconfliction_events_trigger = {
 	NOT = {
 		has_global_variable = eqfm_balkans_cooldown_var
 	}
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		OR = {
 			var:eqfm_balkans_phase_var ?= flag:eqfm_stable
 			var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
@@ -221,13 +174,13 @@ eqfm_crisis_events_trigger = {
 	NOT = {
 		has_global_variable = eqfm_balkans_cooldown_var
 	}
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		var:eqfm_balkans_phase_var ?= flag:eqfm_crisis
 	}
 }
 
 eqfm_can_escalate_tension_trigger = {
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		OR = {
 			var:eqfm_balkans_phase_var ?= flag:eqfm_stable
 			var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
@@ -241,7 +194,7 @@ eqfm_can_escalate_tension_trigger = {
 }
 
 eqfm_can_deescalate_tension_trigger = {
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		OR = {
 			var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
 			var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
@@ -329,7 +282,7 @@ REPLACE:eqfm_minority_revolt_possible_trigger = {
 		c:TUR ?= this
 		is_involved_in_journal_entry = je_eqfm_balkan_situation
 	}
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		OR = {
 			var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
 			var:eqfm_balkans_phase_var ?= flag:eqfm_crisis

@@ -1,4 +1,4 @@
-﻿turkfm_awaken_jack_sparrow_effect = {
+﻿eqfm_awaken_jack_sparrow_effect = {
 	create_character = {
 		template = template_eqfm_jack_sparrow
 		first_name = Rafil
@@ -21,10 +21,21 @@
 		name = eqfm_jack_sparrow_var
 		value = scope:eqfm_jack_sparrow_scope
 	}
-	je:je_eqfm_pirates_of_the_adriatic = {
+	global_var:eqfm_pirates_situation = {
 		add_to_variable_list = {
 			name = com_journal_characters
 			target = scope:eqfm_jack_sparrow_scope
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_global_variable = eqfm_pirates_var
+			}
+		}
+		set_global_variable = {
+			name = eqfm_pirates_var
+			value = 0
 		}
 	}
 }
@@ -130,7 +141,7 @@ eqfm_jack_sparrow_effect = {
 	}
 
 	## Step 3, Update Lists and progress bars
-	je:je_eqfm_pirates_of_the_adriatic = {
+	global_var:eqfm_pirates_situation = {
 		set_bar_progress = {
 			name = eqfm_jack_sparrow_progress_bar
 			value = global_var:eqfm_pirates_var
@@ -274,7 +285,7 @@ eqfm_complete_piracy_expedition_effect = {
 		limit = {
 			has_journal_entry = je_eqfm_pirates_of_the_adriatic
 		}
-		je:je_eqfm_pirates_of_the_adriatic = {
+		global_var:eqfm_pirates_situation = {
 			set_bar_progress = {
 				name = eqfm_jack_sparrow_progress_bar
 				value = global_var:eqfm_pirates_var

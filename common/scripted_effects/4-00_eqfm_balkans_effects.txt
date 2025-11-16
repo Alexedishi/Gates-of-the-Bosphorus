@@ -41,26 +41,26 @@ eqfm_validate_journal_involvement = {
 		limit = {
 			OR = {
 				is_involved_in_journal_entry = je_eqfm_balkan_situation
-				eqfm_balkans_involved_trigger = yes
+				eqfm_balkans_should_be_involved_trigger = yes
 			}
 		}
 		if = {
 			limit = {
-				eqfm_balkans_involved_trigger = no
 				is_involved_in_journal_entry = je_eqfm_balkan_situation
+				eqfm_balkans_should_be_involved_trigger = no
 			}
-			je:je_eqfm_balkan_situation = {
+			global_var:eqfm_balkan_situation = {
 				remove_involved_country = prev
 			}
 		}
 		if = {
 			limit = {
-				eqfm_balkans_involved_trigger = yes
 				NOT = {
 					is_involved_in_journal_entry = je_eqfm_balkan_situation
 				}
+				eqfm_balkans_should_be_involved_trigger = yes
 			}
-			je:je_eqfm_balkan_situation = {
+			global_var:eqfm_balkan_situation = {
 				add_involved_country = prev
 			}
 		}
@@ -68,7 +68,7 @@ eqfm_validate_journal_involvement = {
 }
 
 eqfm_calculate_balkan_situation_variables_effect = {
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		set_variable = {
 			name = eqfm_escalation_progress_var
 			value = eqfm_escalation_progress_value
@@ -86,7 +86,7 @@ eqfm_calculate_balkan_situation_variables_effect = {
 		limit = {
 			eqfm_crisis_phase_trigger = yes
 		}
-		je:je_eqfm_balkan_situation = {
+		global_var:eqfm_balkan_situation = {
 			set_variable = {
 				name = eqfm_crisis_progress_var
 				value = eqfm_crisis_progress_value
@@ -111,7 +111,7 @@ eqfm_calculate_balkan_situation_variables_effect = {
 }
 
 eqfm_clamp_balkan_situation_variables_effect = {
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		clamp_variable = {
 			name = eqfm_escalation_var
 			max = 500
@@ -131,7 +131,7 @@ eqfm_clamp_balkan_situation_variables_effect = {
 }
 
 eqfm_advance_balkan_situation_variables_effect = {
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		change_variable = {
 			name = eqfm_escalation_var
 			add = var:eqfm_escalation_progress_var
@@ -161,7 +161,7 @@ eqfm_advance_balkan_situation_variables_effect = {
 }
 
 eqfm_update_balkan_situation_progressbar_effect = {
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		set_bar_progress = {
 			name = eqfm_balkans_escalation_progress_bar
 			value = var:eqfm_escalation_var
@@ -189,7 +189,7 @@ eqfm_update_balkan_situation_progressbar_effect = {
 }
 
 eqfm_check_balkan_situation_phase_effect = {
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		# Run Crisis Failure logic check first
 		if = {
 			limit = {
@@ -399,7 +399,7 @@ eqfm_check_modifiers_effect = {
 			}
 		}
 	}
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		if = {
 			limit = {
 				var:eqfm_balkans_phase_var = flag:eqfm_stable
@@ -531,7 +531,7 @@ eqfm_check_modifiers_effect = {
 }
 
 eqfm_update_riot_variables = {
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		remove_variable = eqfm_riot_state_1_var
 		remove_variable = eqfm_riot_state_2_var
 		remove_variable = eqfm_riot_state_3_var
@@ -600,7 +600,7 @@ eqfm_update_riot_variables = {
 }
 
 eqfm_force_stable_effect = {
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		set_variable = {
 			name = eqfm_balkans_phase_var
 			value = flag:eqfm_stable
@@ -625,7 +625,7 @@ eqfm_force_stable_effect = {
 }
 
 eqfm_force_unrest_effect = {
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		set_variable = {
 			name = eqfm_balkans_phase_var
 			value = flag:eqfm_unrest
@@ -649,7 +649,7 @@ eqfm_force_unrest_effect = {
 }
 
 eqfm_force_hostility_effect = {
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		set_variable = {
 			name = eqfm_balkans_phase_var
 			value = flag:eqfm_hostility
@@ -673,7 +673,7 @@ eqfm_force_hostility_effect = {
 }
 
 eqfm_force_deconfliction_effect = {
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		set_variable = {
 			name = eqfm_balkans_phase_var
 			value = flag:eqfm_deconfliction
@@ -697,7 +697,7 @@ eqfm_force_deconfliction_effect = {
 }
 
 eqfm_force_crisis_effect = {
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		set_variable = {
 			name = eqfm_balkans_phase_var
 			value = flag:eqfm_crisis
@@ -723,7 +723,7 @@ eqfm_force_crisis_effect = {
 eqfm_tension_cooldown_effect = {
 	if = {
 		limit = {
-			je:je_eqfm_balkan_situation = {
+			global_var:eqfm_balkan_situation = {
 				OR = {
 					var:eqfm_balkans_phase_var ?= flag:eqfm_stable
 					var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
@@ -738,7 +738,7 @@ eqfm_tension_cooldown_effect = {
 	}
 	if = {
 		limit = {
-			je:je_eqfm_balkan_situation = {
+			global_var:eqfm_balkan_situation = {
 				OR = {
 					var:eqfm_balkans_phase_var ?= flag:eqfm_stable
 					var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
@@ -754,7 +754,7 @@ eqfm_tension_cooldown_effect = {
 	}
 	else_if = {
 		limit = {
-			je:je_eqfm_balkan_situation = {
+			global_var:eqfm_balkan_situation = {
 				OR = {
 					var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
 					var:eqfm_balkans_phase_var ?= flag:eqfm_crisis
@@ -780,7 +780,7 @@ turkfm_add_escalation_effect = {
 				name = eqfm_escalation_loc
 				value = $escalation_value$
 			}
-			je:je_eqfm_balkan_situation = {
+			global_var:eqfm_balkan_situation = {
 				change_variable = {
 					name = eqfm_escalation_var
 					add = $escalation_value$
@@ -827,7 +827,7 @@ turkfm_add_deescalation_effect = {
 				name = eqfm_deescalation_loc
 				value = $deescalation_value$
 			}
-			je:je_eqfm_balkan_situation = {
+			global_var:eqfm_balkan_situation = {
 				change_variable = {
 					name = eqfm_deescalation_var
 					add = $deescalation_value$
@@ -1771,7 +1771,7 @@ eqfm_cleanup_balkans_situation_effect = {
 
 ## Situation Crisis Effects
 eqfm_initialize_crisis_effect = {
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		set_variable = {
 			name = eqfm_crisis_var
 			value = 125
@@ -2099,7 +2099,7 @@ eqfm_crisis_fail_effect = {
 }
 
 eqfm_cleanup_crisis_effect = {
-	je:je_eqfm_balkan_situation = {
+	global_var:eqfm_balkan_situation = {
 		set_variable = {
 			name = eqfm_crisis_var
 			value = 250
