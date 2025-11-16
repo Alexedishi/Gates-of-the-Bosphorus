@@ -1,14 +1,12 @@
 ﻿l_english:
  # Journal Entries
- aaa: "GetPlayer.GetJournalEntry('je_eqfm_balkan_situation').Var"
- 
  je_eqfm_balkan_situation: "The Eastern Question"
  je_eqfm_balkan_situation_reason: "[GetPlayer.GetCustom('eqfm_balkans_journal_type')]"
  je_eqfm_balkan_situation_complete: "The base [concept_acceptance]#o s#! of #bold all#! of the following [concept_culture]#o s#! are #bold 80 or Greater with the [SCOPE.sCountry('ottoman_scope').GetNameNoFlag]#!:\n•[GetCulture('greek').GetName]\n•[GetCulture('rhomaios').GetName]\n•[GetCulture('serb').GetName]\n•[GetCulture('bulgarian').GetName]\n•[GetCulture('bosniak').GetName]\n•[GetCulture('albanian').GetName]\n•[GetCulture('croat').GetName]\n•[GetCulture('slovene').GetName]"
  
  je_eqfm_balkan_situation_invalid: "The [SCOPE.sCountry('ottoman_scope').GetName] does not exist"
  je_eqfm_balkan_situation_status: "#bold #white Current Phase#!:#! [GetPlayer.GetCustom('eqfm_balkans_phase_type')]\n[GetPlayer.GetNameNoFlag] is [GetPlayer.GetCustom('eqfm_tension_involvement_type')]"
- je_eqfm_balkan_situation_crisis_status: "[concept_ottoman_integrity] is at #v [GetGlobalVariable('eqfm_crisis_var').GetValue]/250#!"
+ je_eqfm_balkan_situation_crisis_status: "\n[concept_ottoman_integrity] is at #v [JournalEntry.MakeScope.Var('eqfm_crisis_var').GetValue]/250#!"
  je_eqfm_balkan_situation_crisis_breakdown: "[GetPlayer.MakeScope.GetScriptValueDesc('eqfm_crisis_progress_value')]"
  
  je_eqfm_journal_body_base: "$je_eqfm_balkan_situation_flavor_base$$gbbf_linebreak_normal$$je_eqfm_balkan_situation_details_base$"
@@ -17,7 +15,7 @@
  
  je_eqfm_journal_body_crisis: "$je_eqfm_balkan_situation_flavor_crisis$$gbbf_linebreak_normal$$je_eqfm_balkan_situation_details_crisis$"
  je_eqfm_balkan_situation_flavor_crisis: "#lore A $eqfm_crisis$ is brewing in the [GetStrategicRegion('region_balkans').GetName], and the $turkfm_porte$ must assert its authority over Rumelia as [Concept('concept_secession','$concept_secessionists$')] jeopardize [ROOT.GetCountry.GetAdjective] rule. Before the situation becomes dire, this current uptick of unrest needs to be stabilized before it spreads across the region.#!"
- je_eqfm_balkan_situation_details_crisis: "#bold #white Current Phase#!:#! [GetPlayer.GetCustom('eqfm_balkans_phase_details_type')]\n@information! [concept_ottoman_integrity] is at #v [GetGlobalVariable('eqfm_crisis_var').GetValue]/250#!. This is expected to change by #tooltippable;tooltip:[Country.GetTooltipTag],je_eqfm_balkan_situation_crisis_breakdown [GetGlobalVariable('eqfm_crisis_progress_var').GetValue|+=]#! next month.\n\n[GetPlayer.GetCustom('eqfm_balkans_next_phase_progress_type')]\n$TOOLTIP_DELIMITER$\n[GetPlayer.GetCustom('eqfm_balkans_next_phase_factors_type')]"
+ je_eqfm_balkan_situation_details_crisis: "#bold #white Current Phase#!:#! [GetPlayer.GetCustom('eqfm_balkans_phase_details_type')]\n@information! [concept_ottoman_integrity] is at #v [JournalEntry.MakeScope.Var('eqfm_crisis_var').GetValue]/250#!. This is expected to change by #tooltippable;tooltip:[Country.GetTooltipTag],je_eqfm_balkan_situation_crisis_breakdown [JournalEntry.MakeScope.Var('eqfm_crisis_progress_var').GetValue|+=]#! next month.\n\n[GetPlayer.GetCustom('eqfm_balkans_next_phase_progress_type')]\n$TOOLTIP_DELIMITER$\n[GetPlayer.GetCustom('eqfm_balkans_next_phase_factors_type')]"
 
  eqfm_escalation_factors: "#tooltippable #tooltip:[GetRawTextTooltipTag('eqfm_escalation_factors_desc')] Escalation Factors#!#!"
  eqfm_escalation_factors_desc: "#white #bold Monthly Sources:#!#!\n•#bold #red +1#!:#! Base Monthly Progress\n•#bold #red +0.1#!x:#! Average [concept_radical] [concept_pop]#o s#! of $eqfm_balkan_cultures$ (Max +8)\n•#bold #red +0.1#!x:#! Per Ottoman [concept_legitimacy] below 70 (max +3)\n•#bold #red +1#!x:#! Number of [concept_great_power]#o s#! #bold Accelerating Tensions#!\n•#bold #red +3#!:#! Per Month if [GetTechnology('nationalism').GetName] is present in any [GetStrategicRegion('region_balkans').GetName] [concept_subject]\n#white #bold Instant Sources:#!#!\n•#bold #red +3#!:#! Enforce a [concept_war_goal] on the Ottomans\n•#bold #red +3#!:#! Expel Diplomats as a non-[concept_great_power]\n•#bold #red +10#!:#! Reduce [concept_autonomy] of a [GetStrategicRegion('region_balkans').GetName] [concept_subject]\n•#bold #red +10#!:#! Expel Ottoman Diplomats as a [concept_great_power]\n•#bold #red +10#!:#! Enforce a [concept_humiliation] [concept_war_goal] on the Ottomans\n•#bold #red +10#!:#! Declare a [concept_rivalry] against the Ottomans as a [concept_great_power]"
@@ -41,12 +39,12 @@
  eqfm_custom_deconfliction_desc: "$eqfm_deconfliction$, providing the following effects:\n[GetStaticModifier('modifier_eqfm_deconfliction_phase').GetDesc]"
  eqfm_custom_crisis_desc: "$eqfm_crisis$, providing the following effects:\n[GetStaticModifier('modifier_eqfm_crisis_phase').GetDesc]"
 
- eqfm_custom_stable_next: "#bold #white Next Phase Progress#!:#!\n#italic Tensions will eventually transition into Unrest#!\n#bold Progress Towards#! $eqfm_unrest$: [GetGlobalVariable('eqfm_escalation_var').GetValue]/500"
- eqfm_custom_unrest_next: "#bold #white Next Phase Progress#!:#!\n#italic Tensions will eventually transition into Hostility or Deconfliction#!\n#bold Progress Towards#! $eqfm_hostility$: [GetGlobalVariable('eqfm_escalation_var').GetValue]/500 \n#bold Progress Towards#! $eqfm_deconfliction$: [GetGlobalVariable('eqfm_deescalation_var').GetValue]/500"
- eqfm_custom_hostility_next: "#bold #white Next Phase Progress#!:#!\n#italic Tensions will eventually transition into Deconfliction#!\n#bold Progress Towards#! $eqfm_deconfliction$: [GetGlobalVariable('eqfm_deescalation_var').GetValue]/500"
- eqfm_custom_hostility_crisis_next: "#bold #white Next Phase Progress#!:#!\n#italic Tensions will eventually transition into Crisis or Deconfliction#!\n#bold Progress Towards#! $eqfm_crisis$: [GetGlobalVariable('eqfm_escalation_var').GetValue]/500 \n#bold Progress Towards#! $eqfm_deconfliction$: [GetGlobalVariable('eqfm_deescalation_var').GetValue]/500"
- eqfm_custom_crisis_next: "#bold #white Next Phase Progress#!:#!\n#italic Tensions will eventually transition into Deconfliction#!\n#bold Progress Towards#! $eqfm_deconfliction$: [GetGlobalVariable('eqfm_deescalation_var').GetValue]/500"
- eqfm_custom_deconfliction_next: "#bold #white Next Phase Progress#!:#!\n#italic Tensions will eventually transition into Stable#!\n#bold Progress Towards#! $eqfm_stable$: [GetGlobalVariable('eqfm_escalation_var').GetValue]/500"
+ eqfm_custom_stable_next: "#bold #white Next Phase Progress#!:#!\n#italic Tensions will eventually transition into Unrest#!\n#bold Progress Towards#! $eqfm_unrest$: [JournalEntry.MakeScope.Var('eqfm_escalation_var').GetValue]/500"
+ eqfm_custom_unrest_next: "#bold #white Next Phase Progress#!:#!\n#italic Tensions will eventually transition into Hostility or Deconfliction#!\n#bold Progress Towards#! $eqfm_hostility$: [JournalEntry.MakeScope.Var('eqfm_escalation_var').GetValue]/500 \n#bold Progress Towards#! $eqfm_deconfliction$: [JournalEntry.MakeScope.Var('eqfm_deescalation_var').GetValue]/500"
+ eqfm_custom_hostility_next: "#bold #white Next Phase Progress#!:#!\n#italic Tensions will eventually transition into Deconfliction#!\n#bold Progress Towards#! $eqfm_deconfliction$: [JournalEntry.MakeScope.Var('eqfm_deescalation_var').GetValue]/500"
+ eqfm_custom_hostility_crisis_next: "#bold #white Next Phase Progress#!:#!\n#italic Tensions will eventually transition into Crisis or Deconfliction#!\n#bold Progress Towards#! $eqfm_crisis$: [JournalEntry.MakeScope.Var('eqfm_escalation_var').GetValue]/500 \n#bold Progress Towards#! $eqfm_deconfliction$: [JournalEntry.MakeScope.Var('eqfm_deescalation_var').GetValue]/500"
+ eqfm_custom_crisis_next: "#bold #white Next Phase Progress#!:#!\n#italic Tensions will eventually transition into Deconfliction#!\n#bold Progress Towards#! $eqfm_deconfliction$: [JournalEntry.MakeScope.Var('eqfm_deescalation_var').GetValue]/500"
+ eqfm_custom_deconfliction_next: "#bold #white Next Phase Progress#!:#!\n#italic Tensions will eventually transition into Stable#!\n#bold Progress Towards#! $eqfm_stable$: [JournalEntry.MakeScope.Var('eqfm_escalation_var').GetValue]/500"
 
  eqfm_custom_stable_factors: "@information!Catalysts towards the $eqfm_stable$ Phase\n$eqfm_escalation_factors_desc$"
  eqfm_custom_unrest_factors: "@information!Catalysts towards the $eqfm_unrest$ Phase\n$eqfm_escalation_factors_desc$"
@@ -65,9 +63,9 @@
  eqfm_custom_cannot_deescalate: "@information! #italic De-escalation not possible!"
  eqfm_custom_cannot_deescalate_crisis: "@warning! #italic The Empire is in #tooltippable #tooltip:[GetRawTextTooltipTag('eqfm_crisis_criteria')] Crisis#!#!#!!"
 
- eqfm_custom_riot_1: "\n@warning!Rioting in [GetPlayer.MakeScope.Var('eqfm_riot_state_1_var').GetState.GetName] is contributing [GetPlayer.MakeScope.Var('eqfm_riot_state_1_progress_var').GetValue] Insurrection Progress."
- eqfm_custom_riot_2: "\n@warning!Rioting in [GetPlayer.MakeScope.Var('eqfm_riot_state_2_var').GetName] is contributing [GetPlayer.MakeScope.Var('eqfm_riot_state_2_progress_var').GetState.GetValue] Insurrection Progress."
- eqfm_custom_riot_3: "\n@warning!Rioting in [GetPlayer.MakeScope.Var('eqfm_riot_state_3_var').GetName] is contributing [GetPlayer.MakeScope.Var('eqfm_riot_state_3_progress_var').GetState.GetValue] Insurrection Progress."
+ eqfm_custom_riot_1: "\n@warning!Rioting in [JournalEntry.MakeScope.Var'eqfm_riot_state_1_var').GetState.GetName] is contributing [JournalEntry.MakeScope.Var('eqfm_riot_state_1_progress_var').GetValue] Insurrection Progress."
+ eqfm_custom_riot_2: "\n@warning!Rioting in [JournalEntry.MakeScope.Var('eqfm_riot_state_2_var').GetState.GetName] is contributing [JournalEntry.MakeScope.Var('eqfm_riot_state_2_progress_var').GetValue] Insurrection Progress."
+ eqfm_custom_riot_3: "\n@warning!Rioting in [JournalEntry.MakeScope.Var('eqfm_riot_state_3_var').GetState.GetName] is contributing [JournalEntry.MakeScope.Var('eqfm_riot_state_3_progress_var').GetValue] Insurrection Progress."
 
  # Modifiers
  modifier_eqfm_stable_phase: "$eqfm_balkan_situation_no_icon$: Stable Phase"
@@ -358,17 +356,17 @@
  eqfm_loyalty_button_effect: "#red [ROOT.GetCountry.GetName] will not be able to withdraw their declaration of Loyalty or Disloyalty for 2 years!#!"
 
  # Scripted Progress Bar
- eqfm_balkans_escalation_progress_bar: "Progress Towards Escalation#!\n$TOOLTIP_DELIMITER$\n[GetPlayer.MakeScope.GetScriptValueDesc('eqfm_escalation_progress_value')]\n$TOOLTIP_DELIMITER$\n#red #bold +[GetGlobalVariable('eqfm_escalation_progress_var').GetValue|0]#!#! #italic #bold monthly"
- eqfm_balkans_escalation_progress_bar_desc: "Progress Towards Escalation: #red #bold [GetGlobalVariable('eqfm_escalation_var').GetValue|0]#!#!/#bold 500#! [GetPlayer.GetCustom('eqfm_escalation_possible_type')]"
+ eqfm_balkans_escalation_progress_bar: "Progress Towards Escalation#!\n$TOOLTIP_DELIMITER$\n[GetPlayer.MakeScope.GetScriptValueDesc('eqfm_escalation_progress_value')]\n$TOOLTIP_DELIMITER$\n#red #bold +[JournalEntry.MakeScope.Var('eqfm_escalation_progress_var').GetValue|0]#!#! #italic #bold monthly"
+ eqfm_balkans_escalation_progress_bar_desc: "Progress Towards Escalation: #red #bold [JournalEntry.MakeScope.Var('eqfm_escalation_var').GetValue|0]#!#!/#bold 500#! [GetPlayer.GetCustom('eqfm_escalation_possible_type')]"
 
- eqfm_balkans_deescalation_progress_bar: "Progress Towards De-escalation#!\n$TOOLTIP_DELIMITER$\n[GetPlayer.MakeScope.GetScriptValueDesc('eqfm_deescalation_progress_value')]\n$TOOLTIP_DELIMITER$\n#greece #bold +[GetGlobalVariable('eqfm_deescalation_progress_var').GetValue|0]#!#! #italic #bold monthly"
- eqfm_balkans_deescalation_progress_bar_desc: "Progress Towards De-escalation: #greece #bold [GetGlobalVariable('eqfm_deescalation_var').GetValue|0]#!#!/#bold 500#! [GetPlayer.GetCustom('eqfm_deescalation_possible_type')]"
+ eqfm_balkans_deescalation_progress_bar: "Progress Towards De-escalation#!\n$TOOLTIP_DELIMITER$\n[GetPlayer.MakeScope.GetScriptValueDesc('eqfm_deescalation_progress_value')]\n$TOOLTIP_DELIMITER$\n#greece #bold +[JournalEntry.MakeScope.Var('eqfm_deescalation_progress_var').GetValue|0]#!#! #italic #bold monthly"
+ eqfm_balkans_deescalation_progress_bar_desc: "Progress Towards De-escalation: #greece #bold [JournalEntry.MakeScope.Var('eqfm_deescalation_var').GetValue|0]#!#!/#bold 500#! [GetPlayer.GetCustom('eqfm_deescalation_possible_type')]"
 
  eqfm_riot_progress_bar: "#![GetPlayer.MakeScope.GetScriptValueDesc('eqfm_riot_progress_value')]\n$TOOLTIP_DELIMITER$\n#white #bold [GetPlayer.MakeScope.Var('eqfm_riot_progress_var').GetValue|-=] weekly"
  eqfm_riot_progress_bar_desc: "Insurrectionist Momentum"
-
- eqfm_crisis_progress_bar: "#! #header [concept_ottoman_integrity]: #v [GetGlobalVariable('eqfm_crisis_var').GetValue]/250#!#!\n$TOOLTIP_DELIMITER$\n[GetPlayer.MakeScope.GetScriptValueDesc('eqfm_crisis_progress_value')]\n$TOOLTIP_DELIMITER$\n#white #bold [GetGlobalVariable('eqfm_crisis_progress_var').GetValue|+=] monthly"
- eqfm_crisis_progress_bar_desc: "[concept_ottoman_integrity]"
+ 
+ eqfm_balkans_crisis_progress_bar: "#! #header [concept_ottoman_integrity]: #v [JournalEntry.MakeScope.Var('eqfm_crisis_var').GetValue]/250#!#!\n$TOOLTIP_DELIMITER$\n[GetPlayer.MakeScope.GetScriptValueDesc('eqfm_crisis_progress_value')]\n$TOOLTIP_DELIMITER$\n#white #bold [JournalEntry.MakeScope.Var('eqfm_crisis_progress_var').GetValue|+=] monthly"
+ eqfm_balkans_crisis_progress_bar_desc: "[concept_ottoman_integrity]"
 
  # Script Value Breakdowns
  eqfm_value_from_movement_impact: "From the $eqfm_impact$ of [concept_culture] and [concept_religion] Minority [concept_political_movement]#o s#!"
@@ -457,7 +455,7 @@
  eqfm_tension_status: "#bold #white Current Phase#!:#! [GetPlayer.GetCustom('eqfm_balkans_phase_type')]"
  eqfm_tension_status_short: "[GetPlayer.GetCustom('eqfm_balkans_phase_type')]"
  eqfm_tension_status_long: "The [GetStrategicRegion('region_balkans').GetName] are currently experiencing the following phase: [GetPlayer.GetCustom('eqfm_balkans_phase_details_type')]"
- eqfm_tension_crisis_status: "#white #bold $eqfm_crisis$ Progress: [GetGlobalVariable('eqfm_crisis_var').GetValue]/100[GetPlayer.GetCustom('eqfm_crisis_team_type')]"
+ eqfm_tension_crisis_status: "#white #bold $eqfm_crisis$ Progress: [JournalEntry.MakeScope.Var('eqfm_crisis_var').GetValue]/100[GetPlayer.GetCustom('eqfm_crisis_team_type')]"
  eqfm_crisis_defender: "[ROOT.GetCountry.GetNameNoFlag] is #o #tooltip:[GetRawTextTooltipTag('eqfm_crisis_defender_tt')] supporting#!#! the Ottomans"
  eqfm_crisis_defender_tt: "If #bold Crisis Progress#! reaches #bold 100#!, [ROOT.GetCountry.GetNameNoFlag] will join the war supporting the Ottomans."
  eqfm_crisis_attacker: "[ROOT.GetCountry.GetNameNoFlag] is  #o #tooltip:[GetRawTextTooltipTag('eqfm_crisis_attacker_tt')] opposing#!#! the Ottomans"
@@ -475,12 +473,16 @@
 
  eqfm_nationalism_warning: "The arrival of [GetTechnology('nationalism').GetName] will increase the maximum number of simultaneous $eqfm_balkan_situation$ revolts by #bold #red 1#!#! during the $eqfm_hostility$ phase."
  eqfm_pan_nationalism_warning: "The arrival of [GetTechnology('pan-nationalism').GetName] will increase the maximum number of simultaneous $eqfm_balkan_situation$ revolts by #bold #red 1#!#! during the $eqfm_hostility$ phase."
+ 
+ eqfm_add_escalation: ""
  eqfm_add_tiny_escalation: "$eqfm_balkan_situation$ will advance towards [GetPlayer.GetCustom('eqfm_escalation_type')] by #bold 3#!."
  eqfm_add_very_small_escalation: "$eqfm_balkan_situation$ will advance towards [GetPlayer.GetCustom('eqfm_escalation_type')] by #bold 5#!."
  eqfm_add_small_escalation: "$eqfm_balkan_situation$ will advance towards [GetPlayer.GetCustom('eqfm_escalation_type')] by #bold 10#!."
  eqfm_add_medium_escalation: "$eqfm_balkan_situation$ will advance towards [GetPlayer.GetCustom('eqfm_escalation_type')] by #bold 25#!."
  eqfm_add_large_escalation: "$eqfm_balkan_situation$ will advance towards [GetPlayer.GetCustom('eqfm_escalation_type')] by #bold 50#!."
  eqfm_add_very_large_escalation: "$eqfm_balkan_situation$ will advance towards [GetPlayer.GetCustom('eqfm_escalation_type')] by #bold 100#!."
+ 
+ eqfm_add_deescalation: ""
  eqfm_add_tiny_deescalation: "$eqfm_balkan_situation$ will advance towards [GetPlayer.GetCustom('eqfm_deescalation_type')] by #bold 3#!."
  eqfm_add_very_small_deescalation: "$eqfm_balkan_situation$ will advance towards [GetPlayer.GetCustom('eqfm_deescalation_type')] by #bold 5#!."
  eqfm_add_small_deescalation: "$eqfm_balkan_situation$ will advance towards [GetPlayer.GetCustom('eqfm_deescalation_type')] by #bold 10#!."
