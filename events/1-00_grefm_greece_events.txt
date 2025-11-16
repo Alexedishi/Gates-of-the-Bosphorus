@@ -3014,6 +3014,7 @@ grefm_greece.045 = { # a cretan champion
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
+	orphan = yes
 
 	title = grefm_greece.045.t
 	desc = grefm_greece.045.d
@@ -3031,7 +3032,7 @@ grefm_greece.045 = { # a cretan champion
 	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
 
 	trigger = {
-		always = no
+		always = no # TODO enable once refactored
 		NOT = { has_variable = grefm_venizelos_considered }
 		has_journal_entry = je_grefm_the_military_league
 	}
@@ -3079,6 +3080,7 @@ grefm_greece.046 = { # the goudi coup
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	orphan = yes
 
 	title = grefm_greece.046.t
 	desc = grefm_greece.046.d
@@ -3104,90 +3106,6 @@ grefm_greece.046 = { # the goudi coup
 		name = grefm_greece.046.a
 		default_option = yes
 		trigger = {
-			scope:coup_desired_law = {
-				type = law_type:law_parliamentary_republic
-			}
-		}
-		scope:coup_ig = {
-			hidden_effect = {
-				if = {
-					limit = {
-						has_modifier = modifier_unrivaled_in_government
-					}
-					remove_modifier = modifier_unrivaled_in_government
-				}
-
-			}
-			add_modifier = {
-				name = modifier_unrivaled_in_government
-				months = gbbf_duration_10_years
-				is_decaying = yes
-			}
-		}
-		if = {
-			limit = {
-				NOT = {
-					has_law_or_variant = law_type:law_monarchy
-				}
-			}
-			scope:coup_ig = {
-				leader = {
-					set_character_as_ruler = yes
-				}
-			}
-		}
-		else_if = {
-			limit = {
-				has_law_or_variant = law_type:law_monarchy
-			}
-			if = {
-				limit = {
-					ruler.interest_group = {
-						is_same_interest_group_type = scope:coup_ig
-					}
-				}
-				#Do nothing
-			}
-			else_if = {
-				limit = {
-					ruler.interest_group ?= {
-						NOT = {
-							is_same_interest_group_type = scope:coup_ig
-						}
-					}
-					heir ?= {
-						THIS.interest_group = {
-							is_same_interest_group_type = scope:coup_ig
-						}
-					}
-				}
-				ruler = {
-					kill_character = yes
-				}
-				#Do nothing
-			}
-			else = {
-				hidden_effect = {
-					heir ?= {
-						kill_character = yes
-					}
-					ruler ?= {
-						kill_character = yes
-					}
-				}
-				create_character = {
-					ruler = yes
-					interest_group = scope:coup_ig
-				}
-			}
-		}
-		if = {
-			limit = {
-				any_country = {
-					has_variable = coup_sponsor
-					this.var:coup_sponsor = root
-				}
-			}
 		}
 	}
 
@@ -3240,8 +3158,7 @@ grefm_greece.047 = { # A Cretan Champion Alternate
 		default_option = yes
 		set_variable = grefm_venizelos_has_landed
 		scope:grefm_venizelos_scope = {
-			transfer_character = ROOT
-			set_as_interest_group_leader = yes
+			gbbf_free_from_void_leader = yes
 		}
 		trigger_event = {
 			id = grefm_greece.049 # The Rise of the Ethnarch (Alternate)
@@ -3268,6 +3185,7 @@ grefm_greece.048 = { # venizelos has landed
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
+	orphan = yes
 
 	title = grefm_greece.048.t
 	desc = grefm_greece.048.d
@@ -3294,31 +3212,6 @@ grefm_greece.048 = { # venizelos has landed
 				save_scope_as = grefm_venizelos_scope
 			}
 		}
-		scope:coup_ig = {
-			leader = {
-				save_scope_as = coup_leader
-			}
-		}
-		capital = {
-			save_scope_as = capital_scope
-		}
-		if = {
-			limit = {
-				any_country = {
-					has_variable = coup_sponsor
-					this.var:coup_sponsor = root
-				}
-			}
-			random_country = {
-				limit = {
-					AND = {
-						has_variable = coup_sponsor
-						this.var:coup_sponsor = root
-					}
-				}
-				remove_variable = coup_sponsor
-			}
-		}
 		create_character = {
 			template = template_grefm_metaxas_ioannis
 		}
@@ -3333,37 +3226,6 @@ grefm_greece.048 = { # venizelos has landed
 	option = {
 		name = grefm_greece.048.a
 		default_option = yes
-		scope:coup_ig = {
-			add_modifier = {
-				name = failed_coup
-				months = gbbf_duration_5_years
-			}
-			set_variable = { name = coup_guilty days = 3650 }
-		}
-		every_interest_group = {
-			limit = {
-				NOT = { THIS = scope:coup_ig }
-				is_marginal = no
-				law_stance = {
-					law = scope:coup_desired_law.type
-					value < approve
-				}
-			}
-			add_modifier = {
-				name = coup_prevented
-				months = gbbf_duration_10_years
-				is_decaying = yes
-				# +2 approval
-			}
-		}
-		if = {
-			limit = {
-				exists = scope:coup_leader
-			}
-			scope:coup_leader = {
-				exile_character = yes
-			}
-		}
 		scope:ioannis_metaxas_scope = {
 			transfer_character = ROOT
 			set_as_interest_group_leader = yes
