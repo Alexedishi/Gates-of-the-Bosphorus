@@ -2,7 +2,7 @@
  # Journal Entries
  je_eqfm_balkan_situation: "The Eastern Question"
  je_eqfm_balkan_situation_reason: "[GetPlayer.GetCustom('eqfm_balkans_journal_type')]"
- je_eqfm_balkan_situation_complete: "The base [concept_acceptance]#o s#! of #bold all#! of the following [concept_culture]#o s#! are #bold 80 or Greater with the [SCOPE.sCountry('ottoman_scope').GetNameNoFlag]#!:\n•[GetCulture('greek').GetName]\n•[GetCulture('rhomaios').GetName]\n•[GetCulture('serb').GetName]\n•[GetCulture('bulgarian').GetName]\n•[GetCulture('bosniak').GetName]\n•[GetCulture('albanian').GetName]\n•[GetCulture('croat').GetName]\n•[GetCulture('slovene').GetName]"
+ je_eqfm_balkan_situation_complete: "The base [concept_acceptance]#o s#! of #bold all#! of the following [concept_culture]#o s#! are #bold 80 or Greater with the [GetGlobalVariable('eqfm_balkan_situation').Var('ottoman_scope').GetCountry.GetNameNoFlag]#!:\n•[GetCulture('greek').GetName]\n•[GetCulture('rhomaios').GetName]\n•[GetCulture('serb').GetName]\n•[GetCulture('bulgarian').GetName]\n•[GetCulture('bosniak').GetName]\n•[GetCulture('albanian').GetName]\n•[GetCulture('croat').GetName]\n•[GetCulture('slovene').GetName]"
  
  je_eqfm_balkan_situation_invalid: "The [SCOPE.sCountry('ottoman_scope').GetName] does not exist"
  je_eqfm_balkan_situation_status: "#bold #white Current Phase#!:#! [GetPlayer.GetCustom('eqfm_balkans_phase_type')]\n[GetPlayer.GetNameNoFlag] is [GetPlayer.GetCustom('eqfm_tension_involvement_type')]"
@@ -10,11 +10,11 @@
  je_eqfm_balkan_situation_crisis_breakdown: "[GetPlayer.MakeScope.GetScriptValueDesc('eqfm_crisis_progress_value')]"
  
  je_eqfm_journal_body_base: "$je_eqfm_balkan_situation_flavor_base$$gbbf_linebreak_normal$$je_eqfm_balkan_situation_details_base$"
- je_eqfm_balkan_situation_flavor_base: "#lore The subjects of the [SCOPE.sCountry('ottoman_scope').GetName] grow ever more rebellious as the ideals of [GetTechnology('nationalism').GetName] take root across the Empire. Already the Empire has been shaken by rebellions in $GRE$ and $SER$, and the $RUS_ADJ$ Empire has secured seniority in the $ROM_ADJ$ Principalities. All eyes now turn to the $turkfm_porte$ to bring our [GetReligion('orthodox').GetName] subjects to heel.#!"
+ je_eqfm_balkan_situation_flavor_base: "#lore The subjects of the [GetGlobalVariable('eqfm_balkan_situation').Var('ottoman_scope').GetCountry.GetNameNoFlag] grow ever more rebellious as the ideals of [GetTechnology('nationalism').GetName] take root across the Empire. Already the Empire has been shaken by rebellions in $GRE$ and $SER$, and the $RUS_ADJ$ Empire has secured seniority in the $ROM_ADJ$ Principalities. All eyes now turn to the $turkfm_porte$ to bring our [GetReligion('orthodox').GetName] subjects to heel.#!"
  je_eqfm_balkan_situation_details_base: "#bold #white Current Phase#!:#! [GetPlayer.GetCustom('eqfm_balkans_phase_details_type')]\n\n[GetPlayer.GetCustom('eqfm_balkans_next_phase_progress_type')]\n$TOOLTIP_DELIMITER$\n[GetPlayer.GetCustom('eqfm_balkans_next_phase_factors_type')]"
  
  je_eqfm_journal_body_crisis: "$je_eqfm_balkan_situation_flavor_crisis$$gbbf_linebreak_normal$$je_eqfm_balkan_situation_details_crisis$"
- je_eqfm_balkan_situation_flavor_crisis: "#lore A $eqfm_crisis$ is brewing in the [GetStrategicRegion('region_balkans').GetName], and the $turkfm_porte$ must assert its authority over Rumelia as [Concept('concept_secession','$concept_secessionists$')] jeopardize [ROOT.GetCountry.GetAdjective] rule. Before the situation becomes dire, this current uptick of unrest needs to be stabilized before it spreads across the region.#!"
+ je_eqfm_balkan_situation_flavor_crisis: "#lore A $eqfm_crisis$ is brewing in the [GetStrategicRegion('region_balkans').GetName], and the [GetGlobalVariable('eqfm_balkan_situation').Var('ottoman_scope').GetCountry.GetNameNoFlag] must assert its authority over Rumelia as [Concept('concept_secession','$concept_secessionists$')] jeopardize [ROOT.GetCountry.GetAdjective] rule. Before the situation becomes dire, this current uptick of unrest needs to be stabilized before it spreads across the region.#!"
  je_eqfm_balkan_situation_details_crisis: "#bold #white Current Phase#!:#! [GetPlayer.GetCustom('eqfm_balkans_phase_details_type')]\n@information! [concept_ottoman_integrity] is at #v [JournalEntry.MakeScope.Var('eqfm_crisis_var').GetValue]/250#!. This is expected to change by #tooltippable;tooltip:[Country.GetTooltipTag],je_eqfm_balkan_situation_crisis_breakdown [JournalEntry.MakeScope.Var('eqfm_crisis_progress_var').GetValue|+=]#! next month.\n\n[GetPlayer.GetCustom('eqfm_balkans_next_phase_progress_type')]\n$TOOLTIP_DELIMITER$\n[GetPlayer.GetCustom('eqfm_balkans_next_phase_factors_type')]"
 
  eqfm_escalation_factors: "#tooltippable #tooltip:[GetRawTextTooltipTag('eqfm_escalation_factors_desc')] Escalation Factors#!#!"
@@ -177,6 +177,11 @@
  modifier_eqfm_protected_balance: "Protected Balance of Power"
 
  # Notifications
+ notification_notitication_eqfm_balkans_involved_name: "[ROOT.GetCountry.GetNameNoFlag] Becomes $eqfm_involved$ in the $eqfm_balkan_situation$"
+ notification_notitication_eqfm_balkans_involved_desc: "Due to meeting the criteria, [ROOT.GetCountry.GetNameNoFlag] is now $eqfm_involved$ in the $eqfm_balkan_situation$ and may now influence its outcome."
+ notification_notification_eqfm_balkans_not_involved_name: "[ROOT.GetCountry.GetNameNoFlag] No Longer $eqfm_involved$ in the $eqfm_balkan_situation$"
+ notification_notification_eqfm_balkans_not_involved_desc: "Due to meeting the criteria, [ROOT.GetCountry.GetNameNoFlag] is #bold no longer#! $eqfm_involved$ in the $eqfm_balkan_situation$."
+ 
  notification_notification_eqfm_secession_start_name: "Uprising in the Balkans!"
  notification_notification_eqfm_secession_start_desc: "Radicals in the Balkans have ejected the local administration and declared an uprising against the $turkfm_porte$!"
  notification_notification_eqfm_greek_revolt_name: ""
@@ -356,10 +361,10 @@
  eqfm_loyalty_button_effect: "#red [ROOT.GetCountry.GetName] will not be able to withdraw their declaration of Loyalty or Disloyalty for 2 years!#!"
 
  # Scripted Progress Bar
- eqfm_balkans_escalation_progress_bar: "Progress Towards Escalation#!\n$TOOLTIP_DELIMITER$\n[GetPlayer.MakeScope.GetScriptValueDesc('eqfm_escalation_progress_value')]\n$TOOLTIP_DELIMITER$\n#red #bold +[JournalEntry.MakeScope.Var('eqfm_escalation_progress_var').GetValue|0]#!#! #italic #bold monthly"
+ eqfm_balkans_escalation_progress_bar: "Progress Towards Escalation#!\n$TOOLTIP_DELIMITER$\n[GetPlayer.MakeScope.GetScriptValueDesc('eqfm_escalation_progress_value')]\n$TOOLTIP_DELIMITER$\n#red #bold +[GetGlobalVariable('eqfm_balkan_situation').Var('eqfm_escalation_progress_var').GetValue|0]#!#! #italic #bold monthly"
  eqfm_balkans_escalation_progress_bar_desc: "Progress Towards Escalation: #red #bold [JournalEntry.MakeScope.Var('eqfm_escalation_var').GetValue|0]#!#!/#bold 500#! [GetPlayer.GetCustom('eqfm_escalation_possible_type')]"
 
- eqfm_balkans_deescalation_progress_bar: "Progress Towards De-escalation#!\n$TOOLTIP_DELIMITER$\n[GetPlayer.MakeScope.GetScriptValueDesc('eqfm_deescalation_progress_value')]\n$TOOLTIP_DELIMITER$\n#greece #bold +[JournalEntry.MakeScope.Var('eqfm_deescalation_progress_var').GetValue|0]#!#! #italic #bold monthly"
+ eqfm_balkans_deescalation_progress_bar: "Progress Towards De-escalation#!\n$TOOLTIP_DELIMITER$\n[GetPlayer.MakeScope.GetScriptValueDesc('eqfm_deescalation_progress_value')]\n$TOOLTIP_DELIMITER$\n#greece #bold +[GetGlobalVariable('eqfm_balkan_situation').Var('eqfm_deescalation_progress_var').GetValue|0]#!#! #italic #bold monthly"
  eqfm_balkans_deescalation_progress_bar_desc: "Progress Towards De-escalation: #greece #bold [JournalEntry.MakeScope.Var('eqfm_deescalation_var').GetValue|0]#!#!/#bold 500#! [GetPlayer.GetCustom('eqfm_deescalation_possible_type')]"
 
  eqfm_riot_progress_bar: "#![GetPlayer.MakeScope.GetScriptValueDesc('eqfm_riot_progress_value')]\n$TOOLTIP_DELIMITER$\n#white #bold [GetPlayer.MakeScope.Var('eqfm_riot_progress_var').GetValue|-=] weekly"
@@ -391,7 +396,6 @@
  eqfm_value_from_riot_duration: "From the duration of the $eqfm_hostility$ phase"
  eqfm_value_from_no_riots: "From not [concept_state] having the #bold Race Riots#! [concept_timed_modifier]"
  eqfm_value_from_crisis: "Deescalation is not possible while [GetPlayer.GetNameNoFlag] has an active #bold $je_eqfm_balkan_situation_crisis$#! [concept_journal_entry]"
-
  
  # Triggers
  eqfm_stable_phase_trigger: "The $eqfm_balkan_situation$ is in the $eqfm_stable$ phase"
@@ -400,7 +404,7 @@
  eqfm_deconfliction_phase_trigger: "The $eqfm_balkan_situation$ is in the $eqfm_deconfliction$ phase"
  eqfm_crisis_phase_trigger: "The $eqfm_balkan_situation$ is in the $eqfm_crisis$ phase"
 
- eqfm_balkans_involved_trigger: "[ROOT.GetCountry.GetNameNoFlag] is $eqfm_involved$ in the $eqfm_balkan_situation$"
+ eqfm_balkans_should_be_involved_trigger: "[ROOT.GetCountry.GetNameNoFlag] is $eqfm_involved$ in the $eqfm_balkan_situation$"
  eqfm_balkans_interloper_trigger: "[ROOT.GetCountry.GetNameNoFlag] is an $eqfm_interloper$ in the $eqfm_balkan_situation$"
  eqfm_balkans_uninvolved_trigger: "[ROOT.GetCountry.GetNameNoFlag] is $eqfm_uninvolved$ in the $eqfm_balkan_situation$"
 
