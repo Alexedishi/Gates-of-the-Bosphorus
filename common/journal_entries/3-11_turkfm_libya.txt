@@ -13,6 +13,12 @@
 
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
+		scope:journal_entry = {
+			set_variable = {
+				name = turkfm_institution_investment_var
+				value = owner.turkfm_total_institution_investment_value
+			}
+		}
 	}
 
 	modifiers_while_active = {
@@ -25,26 +31,22 @@
 			has_law_or_variant = law_type:law_peasant_levies
 			has_law_or_variant = law_type:law_no_police
 		}
-		any_scope_building = {
-			is_building_type = building_university
-			occupancy > 0.9
-		}
-		any_scope_building = {
-			is_building_type = building_government_administration
-			NOT = {
-				has_active_production_method = pm_simple_organization
-			}
-			occupancy >= 0.9
+		government_legitimacy >= 75
+		custom_tooltip = {
+			text = je_turkfm_tri_centralization_complete
+			scope:journal_entry.var:turkfm_institution_investment_var >= 10
 		}
 		bureaucracy >= 0
 		approaching_bureaucracy_shortage = no
 		ig:ig_intelligentsia = {
 			is_marginal = no
 		}
-		OR = {
-			owns_entire_state_region = STATE_LIBYAN_DESERT
-			NOT = {
-				has_state_in_state_region = STATE_LIBYAN_DESERT
+		NOT = {
+			any_interest_group = {
+				OR = {
+					is_insurrectionary = yes
+					is_revolutionary = yes
+				}
 			}
 		}
 	}
@@ -52,6 +54,17 @@
 	on_complete = {
 		trigger_event = {
 			id = turkfm_libya.009 # A Centralized State
+		}
+	}
+	
+	on_weekly_pulse = {
+		effect = {
+			scope:journal_entry = {
+				set_variable = {
+					name = turkfm_institution_investment_var
+					value = owner.turkfm_total_institution_investment_value
+				}
+			}
 		}
 	}
 }
