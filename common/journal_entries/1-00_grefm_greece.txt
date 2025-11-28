@@ -77,7 +77,8 @@ je_grefm_bavarocracy_main = {
 		grefm_cleanup_bavarocracy_effect = yes
 	}
 
-	fail = { # Without any interaction, this will fire in the 1860s. You have hella time... irl, Otto got to shit the bed for a while anyways
+	fail = {
+		# Without any interaction, this will fire in the 1860s. You have hella time... irl, Otto got to shit the bed for a while anyways
 		custom_tooltip = {
 			text = je_grefm_bavarocracy_main_fail_1
 			hidden_trigger = {
@@ -462,32 +463,46 @@ je_grefm_the_dedilomeni_principle = {
 		value = root.var:grefm_dedilomeni_var
 	}
 
+	is_shown_when_inactive = {
+		has_law_or_variant = law_type:law_monarchy
+	}
+
+	possible = {
+		has_variable = grefm_1862_election_held
+		has_technology_researched = egalitarianism
+		custom_tooltip = {
+			text = je_grefm_the_dedilomeni_principle_possible
+			NOR = {
+				has_journal_entry = je_grefm_bavarocracy_main
+				has_journal_entry = je_grefm_bavarocracy_ip3
+			}
+		}
+	}
+
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
-		if = {
-			limit = {
-				NOT = {
-					has_variable = grefm_dedilomeni_var
-				}
-			}
+		scope:journal_entry = {
 			set_variable = {
 				name = grefm_dedilomeni_var
 				value = 0
 			}
 		}
+		trigger_event = {
+			id = grefm_greece.032 # Who is to Blame
+		}
+	}
+
+	modifiers_while_active = {
+		modifier_grefm_unproven_democracy
 	}
 
 	complete = {
 		custom_tooltip = {
 			text = je_grefm_the_dedilomeni_principle_complete
-			hidden_trigger = {
-				scope:journal_entry = {
-					is_goal_complete = yes
-				}
-			}
+			scope:journal_entry.var:grefm_dedilomeni_var >= 60
 		}
-		has_law_or_variant = law_type:law_universal_suffrage
-		government_legitimacy >= 80
+		country_has_voting_franchise = yes
+		government_legitimacy >= 75
 		ig:ig_landowners = {
 			is_in_government = no
 		}
@@ -497,7 +512,6 @@ je_grefm_the_dedilomeni_principle = {
 		trigger_event = {
 			id = grefm_greece.033 # A Harmonious State
 		}
-		remove_variable = grefm_dedilomeni_var
 	}
 
 	invalid = {
@@ -510,14 +524,14 @@ je_grefm_the_dedilomeni_principle = {
 		effect = {
 			if = {
 				limit = {
-					AND = {
-						has_law_or_variant = law_type:law_universal_suffrage
-						government_legitimacy >= 80
-					}
+					country_has_voting_franchise = yes
+					government_legitimacy >= 75
 				}
-				change_variable = {
-					name = grefm_dedilomeni_var
-					add = 1
+				scope:journal_entry = {
+					change_variable = {
+						name = grefm_dedilomeni_var
+						add = 1
+					}
 				}
 			}
 		}
@@ -525,17 +539,176 @@ je_grefm_the_dedilomeni_principle = {
 }
 
 je_grefm_the_military_league = {
-	# This is a modifier coup JE
 	group = je_group_gbbf_greek_monarchism
 	icon = "gfx/interface/icons/event_icons/event_glucksburg.dds"
-	weight = 1000
+	weight = 100
 
 	should_be_pinned_by_default = yes
-	can_revolution_inherit = no
+	can_revolution_inherit = yes
 	transferable = no
+	can_deactivate = no
+
+	scripted_progress_bar = grefm_military_league_progress_bar
+
+	scripted_button =
+
+	is_shown_when_inactive = {
+		grefm_venizelos_has_landed_trigger = no
+		NOR = {
+			has_variable = grefm_military_league_happened
+			has_variable = grefm_weaksauce
+		}
+		has_journal_entry = je_grefm_megali_idea
+	}
+
+	possible = {
+		has_technology_researched = pan-nationalism
+		grefm_venizelos_has_landed_trigger = yes
+		custom_tooltip = {
+			text = je_grefm_the_military_league_possible_1
+			NOR = {
+				has_journal_entry = je_grefm_bavarocracy_main
+				has_journal_entry = je_grefm_bavarocracy_ip3
+			}
+		}
+		OR = {
+			custom_tooltip = {
+				text = je_grefm_the_military_league_possible_2
+				has_variable = grefm_embraced_megali_idea
+			}
+			custom_tooltip = {
+				text = je_grefm_the_military_league_possible_3
+				has_variable = grefm_embraced_imperial_restoration
+			}
+		}
+		custom_tooltip = {
+			text = lost_war_tt
+			OR = {
+				has_variable = recently_lost_war
+				AND = {
+					has_variable = recently_had_war
+					NOT = {
+						has_variable = recently_won_war
+					}
+				}
+			}
+		}
+		NOR = {
+			has_journal_entry = je_ip4_coup
+			has_free_government_reform = yes
+			hidden_trigger = {
+				has_variable = coup_event_active
+			}
+		}
+	}
 
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
+		grefm_initialize_military_league_effect = yes
+		trigger_event = {
+			id = grefm_greece.041 # The Military League
+		}
+	}
+
+	modifiers_while_active = {
+		modifier_grefm_disloyal_military
+	}
+
+	complete = {
+		custom_tooltip = {
+			text = coup_progress_reached_100_tt
+			scope:journal_entry.var:grefm_coup_var >= 100
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = grefm_greece.041 # The Military League
+		}
+		scope:golpista_general = {
+			gbbf_free_from_void_leader = yes
+		}
+		grefm_cleanup_military_league_effect = yes
+	}
+
+	fail = {
+		OR = {
+			scope:golpista_general ?= {
+				is_character_alive = no
+			}
+			custom_tooltip = {
+				text = coup_progress_reached_0_tt
+				scope:journal_entry.var:grefm_coup_var <= 0
+			}
+		}
+	}
+
+	on_fail = {
+		trigger_event = {
+			id =
+		}
+		grefm_cleanup_military_league_effect = yes
+		scope:golpista_general = {
+			free_character_from_void = yes
+		}
+	}
+
+	timeout = 730
+
+	on_timeout = {
+		trigger_event = {
+			id =
+		}
+		grefm_cleanup_military_league_effect = yes
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable = grefm_intercontinental_ballistic_venizelos_var # Ankyra! Ankyra!
+		}
+	}
+
+	on_invalid = {
+		grefm_cleanup_military_league_effect = yes
+	}
+
+	on_weekly_pulse = {
+		events = {
+
+		}
+		effect = {
+			scope:journal_entry = {
+				set_variable = {
+					name = grefm_coup_progress_var
+					value = owner.grefm_coup_progress_value
+				}
+				change_variable = {
+					name = grefm_coup_var
+					add = owner.var:grefm_coup_progress_var
+				}
+				set_bar_progress = {
+					name = grefm_military_league_progress_bar
+					value = owner.var:grefm_coup_var
+
+				}
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {
+		}
+		random_events = {
+		}
+	}
+
+	status_desc = {
+		triggered_desc = {
+			desc = je_grefm_the_military_league_status
+			trigger = {
+				has_journal_entry = je_grefm_the_military_league
+			}
+		}
 	}
 }
 
@@ -596,7 +769,7 @@ je_grefm_venizelism_main = {
 
 	on_complete = {
 		trigger_event = {
-			id = grefm_greece.059 # The Greek State Resurgent
+			id = grefm_greece.069 # The Greek State Resurgent
 		}
 		set_variable = grefm_venizelism_completed
 	}
@@ -647,7 +820,7 @@ je_grefm_venizelism_civics = {
 
 	on_complete = {
 		trigger_event = {
-			id = grefm_greece.052 # A Competent Bureaucracy
+			id = grefm_greece.062 # A Competent Bureaucracy
 		}
 	}
 
@@ -713,7 +886,7 @@ je_grefm_venizelism_military = {
 
 	on_complete = {
 		trigger_event = {
-			id = grefm_greece.054 # A Formidable Military
+			id = grefm_greece.064 # A Formidable Military
 		}
 	}
 
@@ -745,7 +918,7 @@ je_grefm_venizelism_society = {
 
 	on_complete = {
 		trigger_event = {
-			id = grefm_greece.056 # A Modern Society
+			id = grefm_greece.066 # A Modern Society
 		}
 	}
 
@@ -781,7 +954,7 @@ je_grefm_venizelism_education = {
 
 	on_complete = {
 		trigger_event = {
-			id = grefm_greece.058 # An Educated Populace
+			id = grefm_greece.068 # An Educated Populace
 		}
 	}
 
@@ -942,7 +1115,8 @@ je_grefm_land_reclaimation = {
 	transferable = no
 
 	progressbar = yes
-	goal_add_value = { # this is much smaller scale than the vanilla JE
+	goal_add_value = {
+		# this is much smaller scale than the vanilla JE
 		add = 3
 	}
 	current_value = {

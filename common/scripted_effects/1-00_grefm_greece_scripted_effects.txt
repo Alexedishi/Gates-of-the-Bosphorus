@@ -148,7 +148,6 @@ grefm_update_bavarian_auxiliaries_effect = {
 	}
 }
 
-
 grefm_bavarocracy_very_small_support_effect = {
 	if = {
 		limit = {
@@ -517,5 +516,36 @@ grefm_create_epirus_characters_effect = {
 			persistent
 			brave
 		}
+	}
+}
+
+## Goudi Coup Effects ##
+grefm_initialize_military_league_effect = {
+	set_variable = {
+		name = coup_event_active
+		months = gbbf_duration_2_years
+	}
+	scope:journal_entry = {
+		set_variable = {
+			name = grefm_coup_var
+			value = 120
+		}
+	}
+	create_character = {
+		template = template_grefm_zorbas_nikolas
+		on_created = {
+			place_character_in_void = 100
+		}
+	}
+}
+
+grefm_cleanup_military_league_effect = {
+	remove_variable = coup_event_active
+	scope:golpista_general = {
+		free_character_from_void = yes
+	}
+	set_variable = {
+		name = coup_cooldown_var
+		days = short_modifier_time
 	}
 }
