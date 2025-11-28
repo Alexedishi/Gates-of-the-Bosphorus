@@ -28,7 +28,7 @@ namespace = grefm_greece
 #	008 - The Overthrow of the Bavarocracy
 #	009 - A Disgraced Tyrant
 
-#010-019 - Bavarocracy Support Events
+#010-019 - Bavarocracy Support Events I
 #	010 - Constitutional Promises
 #	011 - King Ludwig Visits Greece
 #	012 - Otto Departs for Bavaria
@@ -66,7 +66,7 @@ namespace = grefm_greece
 
 #040-049 - The Military League Narrative Events
 #	040 - The Military League
-#	041 - 
+#	041 - ##Military Lobbyists
 #	042 - 
 #	043 - 
 #	044 - A Cretan Champion
@@ -74,19 +74,19 @@ namespace = grefm_greece
 #	046 - The Rise of the Ethnarch
 #	047 - The Rise of the Ethnarch (Alternate)
 #	048 - The Goudi Coup
-#	049 - Nationalist Fervor
+#	049 - ##
 
 #050-059 - The Military League Support Events
-#	050 -
-#	051 -
-#	052 -
-#	053 -
-#	054 -
-#	055 -
-#	056 -
-#	057 -
-#	058 -
-#	059 -
+#	050 - ##
+#	051 - ##
+#	052 - ##
+#	053 - ##
+#	054 - ##
+#	055 - ##
+#	056 - ##
+#	057 - ##
+#	058 - ##
+#	059 - ##
 
 #060-069 - That Nonsense with Venizelos
 #	060 - The Nature of the National Assembly
@@ -2929,10 +2929,10 @@ grefm_greece.040 = { # The Military League
 	flavor = grefm_greece.040.f
 
 	gui_window = event_window_1char_adventure
-	left_icon = scope:left_icon
+	left_icon = scope:grefm_goudi_leader_scope
 
 	event_image = {
-		video = "unspecific_politicians_arguing"
+		video = "votp_conspiring"
 	}
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
@@ -2941,7 +2941,7 @@ grefm_greece.040 = { # The Military League
 	}
 
 	immediate = {
-		grefm_save_goudi_scopes_effect
+		grefm_save_goudi_scopes_effect = yes
 	}
 
 	option = {
@@ -2952,12 +2952,63 @@ grefm_greece.040 = { # The Military League
 	option = {
 		name = grefm_greece.040.b
 	}
+
+	after = {
+		hidden_effect = {
+			trigger_event = {
+				id = grefm_greece.041
+				days = { 20 30 }
+			}
+		}
+	}
 }
 
+grefm_greece.041 = { # Military Lobbyists
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+	dlc = dlc_grefm
 
+	title = grefm_greece.041.t
+	desc = grefm_greece.041.d
+	flavor = grefm_greece.041.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:grefm_goudi_leader_scope
+
+	event_image = {
+		video = "unspecific_politicians_arguing"
+	}
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+
+	trigger = {
+		# triggered by grefm_greece.040
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_grefm_the_military_league
+		}
+	}
+
+	immediate = {
+		grefm_save_goudi_scopes_effect = yes
+	}
+
+	option = {
+		name = grefm_greece.041.a
+		default_option = yes
+	}
+
+	option = {
+		name = grefm_greece.041.b
+	}
+}
 
 ####---------- The Military League Support Events ----------####
 # //
+
 
 ####---------- That Nonsense with Venizelos ----------####
 grefm_greece.060 = { # The Nature of the National Assembly
