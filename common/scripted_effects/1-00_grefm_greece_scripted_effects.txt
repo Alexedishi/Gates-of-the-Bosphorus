@@ -525,23 +525,51 @@ grefm_initialize_military_league_effect = {
 		name = coup_event_active
 		months = gbbf_duration_2_years
 	}
-	scope:journal_entry = {
-		set_variable = {
-			name = grefm_coup_var
-			value = 120
-		}
-	}
 	create_character = {
 		template = template_grefm_zorbas_nikolas
 		on_created = {
 			place_character_in_void = 100
 		}
 	}
+	scope:journal_entry = {
+		set_variable = {
+			name = grefm_coup_var
+			value = 120
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_grefm_zorbas_nikolas
+			}
+			save_scope_as = grefm_goudi_leader_scope
+			interest_group = {
+				set_variable = grefm_goudi_ig_var
+				save_scope_as = grefm_goudi_ig_scope
+			}
+		}
+	}
+}
+
+grefm_save_goudi_scopes_effect = {
+	random_character_in_void = {
+		limit = {
+			has_template = template_grefm_zorbas_nikolas
+		}
+		save_scope_as = grefm_goudi_leader_scope
+		interest_group = {
+			save_scope_as = grefm_goudi_ig_scope
+		}
+	}
+	random_character_in_void = {
+		limit = {
+			has_template = template_grefm_venizelos_eleftherios
+		}
+		save_scope_as = grefm_venizelos_scope
+	}
 }
 
 grefm_cleanup_military_league_effect = {
 	remove_variable = coup_event_active
-	scope:golpista_general = {
+	scope:grefm_goudi_leader_scope = {
 		free_character_from_void = yes
 	}
 	set_variable = {
