@@ -710,3 +710,47 @@ grefm_bavarocractic_ire_progress_value = {
 
 	round_to = 0.01
 }
+
+grefm_coup_progress_value = {
+	value = 0
+	if = { # Does the general actually want to coup the government?
+		limit = {
+			any_interest_group = {
+				has_variable = golpista_ig_var
+				ig_approval > 0
+			}
+		}
+		subtract = {
+			desc = "appeased_golpista_igs_tt"
+			every_interest_group = {
+				limit = {
+					has_variable = golpista_ig_var
+					ig_approval > 0
+				}
+				value = ig_approval
+			}
+		}
+	}
+	add = {
+		desc = "commander_coup_strength_tt"
+		every_scope_character = {
+			limit = {
+				has_variable = golpista_var
+			}
+			value = commander_coup_strength
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_grefm_zorbas_nikolas
+			}
+			value = commander_coup_strength
+		}
+	}
+	subtract = {
+		desc = "country_coup_resistance_tt"
+		value = owner.country_coup_resistance
+	}
+	round_to = 0.01
+	min = 0
+	max = 100
+}
