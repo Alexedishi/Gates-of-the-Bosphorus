@@ -64,29 +64,41 @@ namespace = grefm_greece
 #	038 - ##A King of Valour (Assassination Attempt)
 #	039 - ##Silver Jubilee
 
-#040-049 - Rise of Venizelos Events
-#	040 - Nationalist Fervor
-#	041 - The Military League
-#	045 - A Cretan Champion
-#	046 - The Goudi Coup
-#	047 - A Cretan Champion (Alternate)
-#	048 - The Rise of the Ethnarch
-#	049 - The Rise of the Ethnarch (Alternate)
+#040-049 - The Military League Narrative Events
+#	040 - The Military League
+#	041 - 
+#	042 - 
+#	043 - 
+#	044 - A Cretan Champion
+#	045 - A Cretan Champion (Alternate)
+#	046 - The Rise of the Ethnarch
+#	047 - The Rise of the Ethnarch (Alternate)
+#	048 - The Goudi Coup
+#	049 - Nationalist Fervor
 
-#050-059 - That Nonsense with Venizelos
-#	050 - The Nature of the National Assembly
-#	051 - Rejuvenating the State
-#	052 - A Competent Bureaucracy
-#	053 - Reorganizing the Military
-#	054 - A Formidable Military
-#	055 - Advancing Society
-#	056 - A Modern Society
-#	057 - The Ignorant Masses
-#	058 - An Educated Populace
-#	059 - The Greek State Resurgent
+#050-059 - The Military League Support Events
+#	050 -
+#	051 -
+#	052 -
+#	053 -
+#	054 -
+#	055 -
+#	056 -
+#	057 -
+#	058 -
+#	059 -
 
-#060-069 - The National Schism
-#	060 - ##The Great Division
+#060-069 - That Nonsense with Venizelos
+#	060 - The Nature of the National Assembly
+#	061 - Rejuvenating the State
+#	062 - A Competent Bureaucracy
+#	063 - Reorganizing the Military
+#	064 - A Formidable Military
+#	066 - Advancing Society
+#	066 - A Modern Society
+#	067 - The Ignorant Masses
+#	068 - An Educated Populace
+#	069 - The Greek State Resurgent
 
 #090-099 - IP3 Bavarocracy Variant Events
 #	090 - The Regency Council (IP3 Variant)
@@ -150,7 +162,7 @@ namespace = grefm_greece
 
 ####################
 
-## The Bavarocracy Main Events ##
+####---------- The Bavarocracy Narrative Events ----------####
 grefm_greece.001 = { # Greece Starter Event
 	type = country_event
 	placement = root
@@ -1058,7 +1070,8 @@ grefm_greece.009 = { # A Disgraced Tyrant
 
 }
 
-## The Bavarocracy Support Events I ##
+
+####---------- The Bavarocracy Support Events I ----------####
 grefm_greece.010 = { # Constitutional Promises
 	type = country_event
 	placement = root
@@ -1861,7 +1874,8 @@ grefm_greece.019 = { # Nikitas released from jail
 
 }
 
-## The Bavarocracy Support Events II ##
+
+####---------- The Bavarocracy Support Events II ----------####
 grefm_greece.020 = { # Bavarianism in Greece
 	type = country_event
 	placement = root
@@ -2278,7 +2292,8 @@ grefm_greece.023 = { # A Roman King
 
 }
 
-## Constitutional Monarchy Events ##
+
+####---------- Constitutional Monarchy Events ----------####
 grefm_greece.030 = { # 1862 head of state referendum
 	type = country_event
 	placement = root
@@ -2733,10 +2748,7 @@ grefm_greece.032 = { # who is to blame
 	dlc = dlc_grefm
 
 	trigger = {
-		NOT = { has_variable = grefm_got_blamed }
-		has_variable = grefm_1862_election_held
-		has_technology_researched = egalitarianism
-		has_law_or_variant = law_type:law_monarchy
+		# triggered by je_grefm_the_dedilomeni_principle
 	}
 
 	immediate = {
@@ -2745,7 +2757,6 @@ grefm_greece.032 = { # who is to blame
 				save_scope_as = intelligentsia_leader_scope
 			}
 		}
-		set_variable = grefm_got_blamed
 	}
 
 	option = {
@@ -2786,6 +2797,7 @@ grefm_greece.033 = { # a harmonious state
 	option = {
 		name = grefm_greece.033.a
 		default_option = yes
+		add_modifier = modifier_grefm_dedilomeni_principle
 		add_modifier = {
 			name = modifier_grefm_harmonious_state
 			months = gbbf_duration_10_years
@@ -2903,409 +2915,22 @@ grefm_greece.035 = { # A Perennial Problem
 
 }
 
-## The Rise of Venizelos Events ##
-grefm_greece.040 = { # Nationalist Fervor
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
 
-	title = grefm_greece.040.t
-	desc = grefm_greece.040.d
-	flavor = grefm_greece.040.f
+####---------- The Military League Narrative Events ----------####
+# //
 
-	event_image = {
-		video = "unspecific_politicians_arguing"
-	}
+####---------- The Military League Support Events ----------####
+# //
 
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-		always = no # TODO enable once refactored
-		NOT = { has_variable = grefm_military_league_happened }
-		has_journal_entry = je_grefm_megali_idea
-		has_technology_researched = pan-nationalism
-		has_technology_researched = political_agitation
-		OR = {
-			has_variable = grefm_glucksburg_era
-			has_variable = grefm_bavarocracy_secured
-		}
-	}
-
-	immediate = {
-		set_variable = grefm_military_league_happened
-	}
-
-	option = {
-		name = grefm_greece.040.a
-		default_option = yes
-		if = {
-			limit = {
-				has_law_or_variant = law_type:law_monarchy
-				ig:ig_armed_forces = {
-					is_powerful = yes
-					law_stance = {
-						law = law_type:law_parliamentary_republic
-						value > neutral
-					}
-					law_stance = {
-						law = law_type:law_autocracy
-						value > neutral
-					}
-					ig_approval < 5
-				}
-			}
-			trigger_event = {
-				id = grefm_greece.041 # The Military League
-				days = 120
-			}
-		}
-		else = {
-			trigger_event = {
-				id = grefm_greece.047 # A Cretan Champion (Alternate)
-				days = 120
-			}
-		}
-	}
-
-}
-
-grefm_greece.041 = { # the military league
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
-
-	title = grefm_greece.041.t
-	desc = grefm_greece.041.d
-	flavor = grefm_greece.041.f
-
-	event_image = {
-		video = "ep1_clandestine_meeting"
-	}
-
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-	}
-
-	immediate = {
-	}
-
-	option = { # Advance the coup
-		name = grefm_greece.041.a
-		add_journal_entry = { type = je_grefm_the_military_league }
-	}
-
-	option = { # Resist the coup
-		name = grefm_greece.041.b
-		default_option = yes
-		add_journal_entry = { type = je_grefm_the_military_league }
-	}
-}
-
-grefm_greece.045 = { # a cretan champion
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
-	orphan = yes
-
-	title = grefm_greece.045.t
-	desc = grefm_greece.045.d
-	flavor = grefm_greece.045.f
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	gui_window = event_window_1char_tabloid
-
-	left_icon = scope:grefm_venizelos_scope
-
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
-
-	trigger = {
-		always = no # TODO enable once refactored
-		NOT = { has_variable = grefm_venizelos_considered }
-		has_journal_entry = je_grefm_the_military_league
-	}
-
-	immediate = {
-		create_character = {
-			template = template_grefm_venizelos_eleftherios
-		}
-		random_character_in_void = {
-			limit = {
-				has_template = template_grefm_venizelos_eleftherios
-			}
-			save_scope_as = grefm_venizelos_scope
-		}
-		random_scope_state = {
-			limit = {
-				is_capital = yes
-			}
-			save_scope_as = grefm_capital_scope
-		}
-		set_variable = grefm_venizelos_considered
-	}
-
-	option = { # accept the cretan
-		name = grefm_greece.045.a
-		default_option = yes
-		set_variable = grefm_venizelos_has_landed
-		scope:grefm_venizelos_scope = {
-			transfer_character = ROOT
-			set_as_interest_group_leader = yes
-		}
-	}
-
-	option = { # honestly, just let it burn
-		name = grefm_greece.045.b
-		add_radicals = {
-			culture = cu:greek
-			value = medium_radicals
-		}
-		custom_tooltip = coup_advance_15_tt
-	}
-}
-
-grefm_greece.046 = { # the goudi coup
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-	orphan = yes
-
-	title = grefm_greece.046.t
-	desc = grefm_greece.046.d
-	flavor = grefm_greece.046.f
-
-	event_image = {
-		video = "votp_agitator_speaking"
-	}
-
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = { # triggered by JE
-	}
-
-	immediate = {
-	}
-
-	option = {
-		name = grefm_greece.046.a
-		default_option = yes
-		trigger = {
-		}
-	}
-
-}
-
-grefm_greece.047 = { # A Cretan Champion Alternate
+####---------- That Nonsense with Venizelos ----------####
+grefm_greece.060 = { # The Nature of the National Assembly
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
 
-	title = grefm_greece.047.t
-	desc = grefm_greece.047.d
-	flavor = grefm_greece.047.f
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	gui_window = event_window_1char_tabloid
-
-	left_icon = scope:grefm_venizelos_scope
-
-	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
-
-	trigger = {
-	}
-
-	immediate = {
-		create_character = {
-			template = template_grefm_venizelos_eleftherios
-		}
-		random_character_in_void = {
-			limit = {
-				has_template = template_grefm_venizelos_eleftherios
-			}
-			save_scope_as = grefm_venizelos_scope
-		}
-		random_scope_state = {
-			limit = {
-				is_capital = yes
-			}
-			save_scope_as = grefm_capital_scope
-		}
-		set_variable = grefm_military_league_happened
-		set_variable = grefm_venizelos_considered
-	}
-
-	option = { # accept the cretan
-		name = grefm_greece.047.a
-		default_option = yes
-		set_variable = grefm_venizelos_has_landed
-		scope:grefm_venizelos_scope = {
-			gbbf_free_from_void_leader = yes
-		}
-		trigger_event = {
-			id = grefm_greece.049 # The Rise of the Ethnarch (Alternate)
-			days = 30
-		}
-	}
-
-	option = { # reject his ass
-		name = grefm_greece.047.b
-		scope:grefm_venizelos_scope = {
-			transfer_character = ROOT
-			add_character_role = agitator
-			add_trait = gbbf_trait_ethnarch
-		}
-		add_radicals = {
-			culture = cu:greek
-			value = medium_radicals
-		}
-	}
-
-}
-
-grefm_greece.048 = { # venizelos has landed
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
-	orphan = yes
-
-	title = grefm_greece.048.t
-	desc = grefm_greece.048.d
-	flavor = grefm_greece.048.f
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	gui_window = event_window_1char_tabloid
-
-	left_icon = scope:grefm_venizelos_scope
-
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
-
-	trigger = {
-		# triggered by JE
-	}
-
-	immediate = {
-		ig:ig_intelligentsia = {
-			leader = {
-				save_scope_as = grefm_venizelos_scope
-			}
-		}
-		create_character = {
-			template = template_grefm_metaxas_ioannis
-		}
-		random_character_in_void = {
-			limit = {
-				has_template = template_grefm_metaxas_ioannis
-			}
-			save_scope_as = ioannis_metaxas_scope
-		}
-	}
-
-	option = {
-		name = grefm_greece.048.a
-		default_option = yes
-		scope:ioannis_metaxas_scope = {
-			transfer_character = ROOT
-			set_as_interest_group_leader = yes
-		}
-		trigger_event = {
-			id = grefm_greece.050 # The Nature of the National Assembly
-			days = 90
-		}
-	}
-
-}
-
-grefm_greece.049 = { #  Rise of the Ethnarch (Alternate)
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
-
-	title = grefm_greece.049.t
-	desc = grefm_greece.049.d
-	flavor = grefm_greece.049.f
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	gui_window = event_window_1char_tabloid
-
-	left_icon = scope:grefm_venizelos_scope
-
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
-
-	trigger = {
-		# triggered by JE
-	}
-
-	immediate = {
-		ig:ig_intelligentsia = {
-			leader = {
-				save_scope_as = grefm_venizelos_scope
-			}
-		}
-		capital = {
-			save_scope_as = capital_scope
-		}
-		create_character = {
-			template = template_grefm_metaxas_ioannis
-		}
-		random_character_in_void = {
-			limit = {
-				has_template = template_grefm_metaxas_ioannis
-			}
-			save_scope_as = ioannis_metaxas_scope
-		}
-	}
-
-	option = {
-		name = grefm_greece.049.a
-		default_option = yes
-		scope:ioannis_metaxas_scope = {
-			transfer_character = ROOT
-			set_as_interest_group_leader = yes
-		}
-		trigger_event = {
-			id = grefm_greece.050 # The Nature of the National Assembly
-			days = 90
-		}
-	}
-
-}
-
-## Venizelism Events ##
-grefm_greece.050 = { # The Nature of the National Assembly
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
-
-	title = grefm_greece.050.t
-	desc = grefm_greece.050.d
-	flavor = grefm_greece.050.f
+	title = grefm_greece.060.t
+	desc = grefm_greece.060.d
+	flavor = grefm_greece.060.f
 
 	event_image = {
 		video = "unspecific_politicians_arguing"
@@ -3329,7 +2954,7 @@ grefm_greece.050 = { # The Nature of the National Assembly
 	}
 
 	option = {
-		name = grefm_greece.050.a
+		name = grefm_greece.060.a
 		default_option = yes
 		add_journal_entry = {
 			type = je_grefm_venizelism_main
@@ -3348,7 +2973,7 @@ grefm_greece.050 = { # The Nature of the National Assembly
 	}
 
 	option = {
-		name = grefm_greece.050.b
+		name = grefm_greece.060.b
 		trigger = {
 			has_law_or_variant = law_type:law_monarchy
 		}
@@ -3374,19 +2999,19 @@ grefm_greece.050 = { # The Nature of the National Assembly
 	after = {
 		hidden_effect = { # the National Assembly conlcuded its reforms much more quickly than this, but gameplay lol
 			trigger_event = {
-				id = grefm_greece.051 # Rejuventating the State
+				id = grefm_greece.061 # Rejuventating the State
 				days = 60
 			}
 			trigger_event = {
-				id = grefm_greece.053 # Reorganzing the Military
+				id = grefm_greece.063 # Reorganzing the Military
 				days = 90
 			}
 			trigger_event = {
-				id = grefm_greece.055 # Advancing Society
+				id = grefm_greece.065 # Advancing Society
 				days = 120
 			}
 			trigger_event = {
-				id = grefm_greece.057 # The Ignorant Masses
+				id = grefm_greece.067 # The Ignorant Masses
 				days = 150
 			}
 		}
@@ -3394,14 +3019,14 @@ grefm_greece.050 = { # The Nature of the National Assembly
 
 }
 
-grefm_greece.051 = { # Rejuventating the State
+grefm_greece.061 = { # Rejuventating the State
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_scales.dds"
 
-	title = grefm_greece.051.t
-	desc = grefm_greece.051.d
-	flavor = grefm_greece.051.f
+	title = grefm_greece.061.t
+	desc = grefm_greece.061.d
+	flavor = grefm_greece.061.f
 
 	event_image = {
 		video = "southamerica_aristocrats"
@@ -3425,7 +3050,7 @@ grefm_greece.051 = { # Rejuventating the State
 	}
 
 	option = {
-		name = grefm_greece.051.a
+		name = grefm_greece.061.a
 		default_option = yes
 		add_journal_entry = {
 			type = je_grefm_venizelism_civics
@@ -3434,14 +3059,14 @@ grefm_greece.051 = { # Rejuventating the State
 
 }
 
-grefm_greece.052 = { # A Competent Bureaucracy
+grefm_greece.062 = { # A Competent Bureaucracy
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_scales.dds"
 
-	title = grefm_greece.052.t
-	desc = grefm_greece.052.d
-	flavor = grefm_greece.052.f
+	title = grefm_greece.062.t
+	desc = grefm_greece.062.d
+	flavor = grefm_greece.062.f
 
 	event_image = {
 		video = "southamerica_election"
@@ -3460,7 +3085,7 @@ grefm_greece.052 = { # A Competent Bureaucracy
 	}
 
 	option = {
-		name = grefm_greece.052.a
+		name = grefm_greece.062.a
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_competent_bureaucracy
@@ -3479,14 +3104,14 @@ grefm_greece.052 = { # A Competent Bureaucracy
 
 }
 
-grefm_greece.053 = { # Reorganizing the Military
+grefm_greece.063 = { # Reorganizing the Military
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
 
-	title = grefm_greece.053.t
-	desc = grefm_greece.053.d
-	flavor = grefm_greece.053.f
+	title = grefm_greece.063.t
+	desc = grefm_greece.063.d
+	flavor = grefm_greece.063.f
 
 	event_image = {
 		video = "middleeast_battlefield_trenches"
@@ -3510,7 +3135,7 @@ grefm_greece.053 = { # Reorganizing the Military
 	}
 
 	option = {
-		name = grefm_greece.053.a
+		name = grefm_greece.063.a
 		default_option = yes
 		add_journal_entry = {
 			type = je_grefm_venizelism_military
@@ -3519,14 +3144,14 @@ grefm_greece.053 = { # Reorganizing the Military
 
 }
 
-grefm_greece.054 = { # A Formidable Military
+grefm_greece.064 = { # A Formidable Military
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
 
-	title = grefm_greece.054.t
-	desc = grefm_greece.054.d
-	flavor = grefm_greece.054.f
+	title = grefm_greece.064.t
+	desc = grefm_greece.064.d
+	flavor = grefm_greece.064.f
 
 	event_image = {
 		video = "unspecific_military_parade"
@@ -3545,7 +3170,7 @@ grefm_greece.054 = { # A Formidable Military
 	}
 
 	option = {
-		name = grefm_greece.054.a
+		name = grefm_greece.064.a
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_military_reorganized
@@ -3564,14 +3189,14 @@ grefm_greece.054 = { # A Formidable Military
 
 }
 
-grefm_greece.055 = { # Advancing Society
+grefm_greece.065 = { # Advancing Society
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_election.dds"
 
-	title = grefm_greece.055.t
-	desc = grefm_greece.055.d
-	flavor = grefm_greece.055.f
+	title = grefm_greece.065.t
+	desc = grefm_greece.065.d
+	flavor = grefm_greece.065.f
 
 	event_image = {
 		video = "europenorthamerica_sufferage"
@@ -3595,7 +3220,7 @@ grefm_greece.055 = { # Advancing Society
 	}
 
 	option = {
-		name = grefm_greece.055.a
+		name = grefm_greece.065.a
 		default_option = yes
 		add_journal_entry = {
 			type = je_grefm_venizelism_society
@@ -3604,14 +3229,14 @@ grefm_greece.055 = { # Advancing Society
 
 }
 
-grefm_greece.056 = { # A Modern Society
+grefm_greece.066 = { # A Modern Society
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_election.dds"
 
-	title = grefm_greece.056.t
-	desc = grefm_greece.056.d
-	flavor = grefm_greece.056.f
+	title = grefm_greece.066.t
+	desc = grefm_greece.066.d
+	flavor = grefm_greece.066.f
 
 	event_image = {
 		video = "europenorthamerica_london_center"
@@ -3630,7 +3255,7 @@ grefm_greece.056 = { # A Modern Society
 	}
 
 	option = {
-		name = grefm_greece.056.a
+		name = grefm_greece.066.a
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_society_modernized
@@ -3649,14 +3274,14 @@ grefm_greece.056 = { # A Modern Society
 
 }
 
-grefm_greece.057 = { # The Ignorant Masses
+grefm_greece.067 = { # The Ignorant Masses
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
 
-	title = grefm_greece.057.t
-	desc = grefm_greece.057.d
-	flavor = grefm_greece.057.f
+	title = grefm_greece.067.t
+	desc = grefm_greece.067.d
+	flavor = grefm_greece.067.f
 
 	event_image = {
 		video = "europenorthamerica_rich_and_poor"
@@ -3680,7 +3305,7 @@ grefm_greece.057 = { # The Ignorant Masses
 	}
 
 	option = {
-		name = grefm_greece.057.a
+		name = grefm_greece.067.a
 		default_option = yes
 		add_journal_entry = {
 			type = je_grefm_venizelism_education
@@ -3689,14 +3314,14 @@ grefm_greece.057 = { # The Ignorant Masses
 
 }
 
-grefm_greece.058 = { # An Educated Populace
+grefm_greece.068 = { # An Educated Populace
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
 
-	title = grefm_greece.058.t
-	desc = grefm_greece.058.d
-	flavor = grefm_greece.058.f
+	title = grefm_greece.068.t
+	desc = grefm_greece.068.d
+	flavor = grefm_greece.068.f
 
 	event_image = {
 		video = "unspecific_world_fair"
@@ -3715,7 +3340,7 @@ grefm_greece.058 = { # An Educated Populace
 	}
 
 	option = {
-		name = grefm_greece.058.a
+		name = grefm_greece.068.a
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_populace_educated
@@ -3734,14 +3359,14 @@ grefm_greece.058 = { # An Educated Populace
 
 }
 
-grefm_greece.059 = { # The Cretan Triumphant
+grefm_greece.069 = { # The Cretan Triumphant
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
 
-	title = grefm_greece.059.t
-	desc = grefm_greece.059.d
-	flavor = grefm_greece.059.f
+	title = grefm_greece.069.t
+	desc = grefm_greece.069.d
+	flavor = grefm_greece.069.f
 
 	event_image = {
 		video = "unspecific_signed_contract"
@@ -3760,7 +3385,7 @@ grefm_greece.059 = { # The Cretan Triumphant
 	}
 
 	option = {
-		name = grefm_greece.059.a
+		name = grefm_greece.069.a
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_venizelist_triumph
@@ -3773,7 +3398,8 @@ grefm_greece.059 = { # The Cretan Triumphant
 
 }
 
-## The Bavarocracy IP3 Events ##
+
+####---------- Bavarocracy IP3 Events ----------####
 # Note, several variables from the default GotB journals are re-used here
 grefm_greece.090 = { # The Regency Council
 	type = country_event
@@ -4830,7 +4456,7 @@ grefm_greece.099 = { #
 }
 
 
-## Greek Industry Events ##
+####---------- Greek Industry Events ----------####
 # events in this group trigger off of constructing buildings or activating PMs
 grefm_greece.100 = { # fix brewery
 	type = country_event
@@ -5026,7 +4652,8 @@ grefm_greece.103 = { # greek shipping event
 	}
 }
 
-## Greek Technology Events ##
+
+####---------- Greek Technology Events ----------####
 # events in this group trigger from researching technologies
 grefm_greece.110 = { # The Decline of the Heptanese School
 	type = country_event
@@ -5087,8 +4714,6 @@ grefm_greece.110 = { # The Decline of the Heptanese School
 	}
 
 }
-
-# grefm_greece.111
 
 grefm_greece.112 = { # lake kopais drained
 	type = country_event
@@ -5340,7 +4965,8 @@ grefm_greece.119 = { # Land Reclaimed in Kopaida
 
 }
 
-## Greek Cultural Events ##
+
+####---------- Greek Cultural Events ----------####
 grefm_greece.121 = { # The University of Athens
 	type = country_event
 	placement = scope:university_state
@@ -5626,7 +5252,8 @@ grefm_greece.124 = { # national council of greek women
 	}
 }
 
-## Greek Monument Events ##
+
+####---------- Greek Monument Events ----------####
 # events in this group will allow certain monuments to be constructed
 grefm_greece.130 = { # Corinth Canal Surveyed
 	type = country_event
@@ -5772,6 +5399,7 @@ grefm_greece.132 = { # The Royal Palace of Athens
 	}
 
 }
+
 
 ## Greek Interational Events ##
 grefm_greece.160 = { # A Bulgarian Visitor
@@ -6069,6 +5697,7 @@ grefm_greece.161 = { # The Don Pacifico Affair
 	}
 
 }
+
 
 ## Greek Orthodox Church Events ##
 grefm_greece.180 = { #  The Defence of Jonas King
