@@ -67,26 +67,26 @@ namespace = grefm_greece
 #040-049 - The Military League Narrative Events
 #	040 - The Military League
 #	041 - ##Military Lobbyists
-#	042 - 
-#	043 - 
+#	042 - ##
+#	043 - ##The Military League Disbands
 #	044 - A Cretan Champion
 #	045 - A Cretan Champion (Alternate)
 #	046 - The Rise of the Ethnarch
 #	047 - The Rise of the Ethnarch (Alternate)
 #	048 - The Goudi Coup
-#	049 - ##
+#	049 - ##A Loyalist Victory
 
-#050-059 - The Military League Support Events
-#	050 - ##
-#	051 - ##
-#	052 - ##
-#	053 - ##
-#	054 - ##
-#	055 - ##
-#	056 - ##
-#	057 - ##
-#	058 - ##
-#	059 - ##
+#050-059 - The Military League Support Events (IP4 Imported)
+#	050 - General Accused of Joining Plot
+#	051 - ##A Growing Split
+#	052 - ##Critical Support
+#	053 - ##Fear Amongst Investors
+#	054 - ##The Smoky Backroom
+#	055 - ##Crowded Streets
+#	056 - ##A Shot in the Dark
+#	057 - ##The Enemy's Enemy
+#	058 - ##The Informant
+#	059 - ##Up In Arms
 
 #060-069 - That Nonsense with Venizelos
 #	060 - The Nature of the National Assembly
@@ -2980,7 +2980,7 @@ grefm_greece.041 = { # Military Lobbyists
 	event_image = {
 		video = "unspecific_politicians_arguing"
 	}
-	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
 		# triggered by grefm_greece.040
@@ -3007,7 +3007,139 @@ grefm_greece.041 = { # Military Lobbyists
 }
 
 ####---------- The Military League Support Events ----------####
-# //
+# These events are duped from coup_pulse_events to provide support for je_grefm_the_military_league
+
+grefm_greece.050 = { # General Accused of Joining Plot
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/bicorne_hat.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_greece.050.t
+	desc = grefm_greece.050.d
+	flavor = grefm_greece.050.f
+
+	gui_window = event_window_2char_dicussion
+	left_icon = scope:grefm_goudi_leader_scope
+	right_icon = scope:accused_general
+
+	event_image = {
+		video = "middleeast_courtroom_upheaval"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		any_scope_character = {
+			has_role = general
+			is_ruler = no
+			NOT = {
+				has_variable = grefm_goudi_participant_var
+			}
+		}
+	}
+
+	cancellation_trigger = {
+		OR = {
+			scope:accused_general ?= {
+				is_character_alive = no
+			}
+			NOT = {
+				exists = scope:accused_general
+			}
+			NOT = {
+				has_journal_entry = je_grefm_the_military_league
+			}
+		}
+	}
+
+	cooldown = {
+		years = 5
+	}
+
+	immediate = {
+		grefm_save_goudi_scopes_effect = yes
+		random_scope_character = {
+			limit = {
+				has_role = general
+				is_ruler = no
+				NOT = {
+					has_variable = grefm_goudi_participant_var
+				}
+			}
+			save_scope_as = accused_general
+			interest_group = {
+				save_scope_as = accused_general_ig
+			}
+		}
+	}
+
+	option = {
+		name = grefm_greece.050.a
+		default_option = yes
+		scope:accused_general_ig = {
+			add_modifier = {
+				name = modifier_persecuted_general
+				days = normal_modifier_time
+			}
+		}
+		custom_tooltip = {
+			text = coup_pulse_events.1.a.tt
+			scope:accused_general = {
+				kill_character = {
+					hidden = yes
+				}
+			}
+		}
+		if = {
+			limit = {
+				scope:accused_general_ig = {
+					is_same_interest_group_type = scope:grefm_goudi_ig_scope
+				}
+			}
+			grefm_regress_goudi_effect = {
+				value = 10
+			}
+		}
+		else = {
+			grefm_advance_goudi_effect = {
+				value = 10
+			}
+		}
+	}
+
+	option = {
+		name = grefm_greece.050.b
+		add_modifier = {
+			name = modifier_uncertain_loyalties_country
+			days = normal_modifier_time
+		}
+		if = {
+			limit = {
+				scope:accused_general = {
+					interest_group = {
+						is_same_interest_group_type = scope:grefm_goudi_ig_scope
+					}
+				}
+			}
+			grefm_advance_goudi_effect = {
+				value = 10
+			}
+		}
+		else = {
+			grefm_regress_goudi_effect = {
+				value = 10
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
 
 
 ####---------- That Nonsense with Venizelos ----------####
