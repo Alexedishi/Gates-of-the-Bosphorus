@@ -65,19 +65,19 @@ namespace = grefm_greece
 #	038 - ##A King of Valour (Assassination Attempt)
 #	039 - ##Silver Jubilee
 
-#040-049 - The Military League Narrative Events
+#040-049 - The Rise of Venizelos Narrative Events
 #	040 - The Military League
 #	041 - Military Lobbyists
 #	042 - ##
 #	043 - ##
-#	044 - ##A Cretan Champion
-#	045 - ##A Cretan Champion (Alternate)
-#	046 - ##The Rise of the Ethnarch
-#	047 - ##The Rise of the Ethnarch (Alternate)
+#	044 - ##
+#	045 - A Cretan Champion
+#	046 - A Cretan Champion (Alternate)
+#	047 - ##A Loyalist Victory
 #	048 - ##The Goudi Coup
-#	049 - ##A Loyalist Victory
+#	049 - ##The Rise of the Ethnarch
 
-#050-059 - The Military League Support Events (IP4 Imported)
+#050-059 - The Rise of Venizelos Support Events (IP4 Imported)
 #	050 - General Accused of Joining Plot
 #	051 - A Growing Split
 #	052 - Critical Support
@@ -3114,6 +3114,270 @@ grefm_greece.041 = {
 		}
 		grefm_remove_goudi_progress_effect = {
 			value = 20
+		}
+	}
+}
+
+grefm_greece.045 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_greece.045.t
+	desc = grefm_greece.045.d
+	flavor = grefm_greece.045.f
+
+	gui_window = event_window_2char_adventure
+	left_icon = scope:grefm_goudi_leader_scope
+	right_icon = scope:grefm_venizelos_scope
+
+	event_image = {
+		video = "ip3_agitator_reading_manifesto"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		var:grefm_goudi_coup_var >= 70
+		NOT = {
+			has_global_variable = grefm_venizelos_has_landed
+		}
+	}
+
+	immediate = {
+		set_global_variable = grefm_venizelos_has_landed
+		if = {
+			limit = {
+				any_character_in_void = {
+					has_template = template_grefm_venizelos_eleftherios
+				}
+			}
+			random_character_in_void = {
+				limit = {
+					has_template = template_grefm_venizelos_eleftherios
+				}
+				save_scope_as = grefm_venizelos_scope
+			}
+		}
+		else = {
+			create_character = {
+				template = template_grefm_venizelos_eleftherios
+				on_created = {
+					place_character_in_void = 240
+				}
+			}
+			random_character_in_void = {
+				limit = {
+					has_template = template_grefm_venizelos_eleftherios
+				}
+				save_scope_as = grefm_venizelos_scope
+			}
+		}
+		capital = {
+			save_scope_as = grefm_capital_scope
+		}
+		grefm_save_goudi_scopes_effect = yes
+	}
+
+	option = {
+		name = grefm_greece.045.a
+		default_option = yes
+		scope:grefm_venizelos_scope = {
+			gbbf_free_from_void_leader = yes
+		}
+		grefm_remove_goudi_progress_effect = {
+			value = 20
+		}
+		set_variable = grefm_intercontinental_ballistic_venizelos_var
+	}
+
+	option = { # honestly, just let it burn
+		name = grefm_greece.045.b
+		add_radicals = {
+			culture = cu:greek
+			value = medium_radicals
+		}
+		grefm_add_goudi_progress_effect = {
+			value = 10
+		}
+		scope:grefm_venizelos_scope = {
+			gbbf_free_from_void_agitator = yes
+		}
+	}
+}
+
+grefm_greece.046 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_greece.046.t
+	desc = grefm_greece.046.d
+	flavor = grefm_greece.046.f
+
+	event_image = {
+		video = "ip3_agitator_reading_manifesto"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		NOR = {
+			has_global_variable = grefm_venizelos_has_landed
+			has_journal_entry = je_grefm_the_military_league
+		}
+		country_has_primary_culture = cu:greek
+		has_journal_entry = je_grefm_megali_idea
+		has_technology_researched = pan-nationalism
+		has_technology_researched = political_agitation
+		capital = {
+			state_region = s:STATE_ATTICA
+		}
+	}
+
+	immediate = {
+		set_global_variable = grefm_venizelos_has_landed
+		if = {
+			limit = {
+				any_character_in_void = {
+					has_template = template_grefm_venizelos_eleftherios
+				}
+			}
+			random_character_in_void = {
+				limit = {
+					has_template = template_grefm_venizelos_eleftherios
+				}
+				save_scope_as = grefm_venizelos_scope
+			}
+		}
+		else = {
+			create_character = {
+				template = template_grefm_venizelos_eleftherios
+				on_created = {
+					place_character_in_void = 240
+				}
+			}
+			random_character_in_void = {
+				limit = {
+					has_template = template_grefm_venizelos_eleftherios
+				}
+				save_scope_as = grefm_venizelos_scope
+			}
+		}
+	}
+
+	option = {
+		name = grefm_greece.046.a
+		default_option = yes
+		scope:grefm_venizelos_scope = {
+			gbbf_free_from_void_leader = yes
+		}
+		set_variable = grefm_intercontinental_ballistic_venizelos_var
+	}
+
+	option = {
+		name = grefm_greece.046.b
+		add_radicals = {
+			culture = cu:greek
+			value = medium_radicals
+		}
+		scope:grefm_venizelos_scope = {
+			gbbf_free_from_void_agitator = yes
+		}
+	}
+}
+
+grefm_greece.047 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_greece.047.t
+	desc = grefm_greece.047.d
+	flavor = grefm_greece.047.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by je_grefm_the_military_league
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_greece.047.a
+		default_option = yes
+	}
+}
+
+grefm_greece.048 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_greece.048.t
+	desc = grefm_greece.048.d
+	flavor = grefm_greece.048.f
+
+	event_image = {
+		video = "ip4_abdication"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+	}
+
+	immediate = {
+		# triggered by je_grefm_the_military_league
+	}
+
+	option = {
+		name = grefm_greece.048.a
+		default_option = yes
+	}
+
+	after = {
+	}
+}
+
+grefm_greece.049 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = grefm_greece.049.t
+	desc = grefm_greece.049.d
+	flavor = grefm_greece.049.f
+
+	event_image = {
+		video = "ip3_agitator_reading_manifesto"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = grefm_greece.049.a
+		default_option = yes
+		trigger_event = {
+			id = grefm_greece.060
+			days = 30
 		}
 	}
 }
