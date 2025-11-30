@@ -1,8 +1,8 @@
 ﻿##########################
 # GATES OF THE BOSPHORUS #
 ##########################
-Mod Version: 3.0
-Game Version: 1.8.X
+Mod Version: 3.4.0
+Game Version: 1.12.x
 
 Mod Author: Alexedishi
 
@@ -11,24 +11,28 @@ Community Mod Framework: https://steamcommunity.com/sharedfiles/filedetails/?id=
 
 ####################
 
-This mod is broadly divided into three "modules" which can be identified by their prefixes:
+This mod is broadly divided into the following "modules" which can be identified by their prefixes:
 grefm_: Contains content for Greece, Byzantium, and other Hellene, Rhomaios, and Urum countries
 turkfm_: Contains content for the Ottoman Empire and its associated subjects
 balkfm_: Contains content for the Southern Slav, Romanian, and Albanian countries
+eqfm_: Contains content for the Eastern Question and Expeditions; was formerly merged with turkfm
+haykfm_: Contains content for Kurdistan, Armenia, and Assyria
 
-Common files shared by all modules are prefixed with gbbf_
+These are other prefixing conventions used in this mod:
+*Generic and shared files are prefixed with "gbbf_"
+*Script imported from Community Mod Framework is prefixed with "com_"
+*Script imported from Morgenrote: Dawn of Flavor is prefixed with "mgr_" regardless of Morgenrote content pack origin
+*Script imported from This Land is Mine is prefixed with "tlim_" regardless of TLIM content pack origin
 
 There are leftover references to older modules that you might find:
 eocfm_: Once contained content for the Eastern Orthodox Church; has been superseded by Kingdom of God (kog_)
 byzfm_: Once contained content for Byzantium; has been merged with grefm
 bulfm_: Once contained content for Bulgaria; has been merged with balkfm
-eqfm_: Once contained content for the Eastern Question; has been merged with turkfm
 
 **Notes:
--Arab & Iranian flavor are OUT OF SCOPE for this mod
--The current mod acronym is GotB; my common prefix is gbbf and will not change
--The CMF trigger uses the older grefm acronym; this will not change
--The ##STUB comments are for my purposes if you happen to see them; I will not explain if asked
+-Arab & Iranian (Persia) flavor are OUT OF SCOPE for this mod
+-The current mod acronym is GotB; my common prefix is "gbbf_" and will not change
+-The CMF trigger uses the older "grefm_" generic acronym; this will not change
 
 ####################
 
@@ -95,16 +99,12 @@ Eastern Orthodox Flavor, showcasing the pervasive role of the Orthodox Church in
 Yugoslavism: Foster unity between the Slavic peoples of the Balkans to form Yugoslavia.
 The Triune Dream: Minor journal entry for Slovenia and Croatia to form the Triune Kingdom.
 
-
-What to expect in 2025:
-First Phase of Turkish Flavor from the Tanzimat to the First Constitutional Era with Mechanics to simulate the slow centralization of the Ottoman state.
+What to expect in the future:
 Extension of Greek Flavor into the National Schism and self-coup by Metaxas.
-Extension of Turkish Flavor, from the İstibdat Era, through to the Young Turks, and ending with Ataturk's reforms.
+Extension of Turkish Flavor, from the İstibdat Era, through to the Young Turks, and ending with Atatürk's reforms.
 Extensions of Montenegrin, Serbian, and Bulgarian Flavor at least into the 1910s.
-Bosnian Flavor from the Austrian Campaign in 1878 up to it's union with Yugoslavia.
+Bosnian Flavor from the Austrian Campaign in 1878 up to its union with Yugoslavia.
 Albanian Flavor from the League of Prizren in 1878 at least into the 1910s.
-
-What to expect further into the future:
 Mechanics for the Macedonian Question, turning it into a three-way political struggle between Greece, Serbia, and Bulgaria.
 A struggle-like journal featuring the Russo-Ottoman fight over the Caucasus.
 
