@@ -558,7 +558,6 @@ je_grefm_the_military_league = {
 
 	is_shown_when_inactive = {
 		has_dlc_feature = voice_of_the_people_content
-		grefm_venizelos_has_landed_trigger = no
 		NOR = {
 			has_variable = grefm_military_league_happened
 			has_variable = grefm_weaksauce
@@ -743,8 +742,40 @@ je_grefm_venizelism_main = {
 		c:GRE ?= this
 	}
 
+	is_shown_when_inactive = {
+		grefm_venizelos_has_landed_trigger = yes
+	}
+
+	possible = {
+		trigger_if = {
+			limit = {
+				has_variable = grefm_military_league_happened
+			}
+			NOT = {
+				has_journal_entry = je_grefm_the_military_league
+			}
+		}
+		custom_tooltip = {
+			text = je_grefm_venizelism_possible
+			OR = {
+				ig:ig_intelligentsia = {
+					leader = {
+						has_template = template_grefm_venizelos_eleftherios
+					}
+				}
+				any_scope_character = {
+					has_role = agitator
+					has_template = template_grefm_venizelos_eleftherios
+				}
+			}
+		}
+	}
+
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
+		trigger_event = {
+			id = grefm_greece.060
+		}
 	}
 
 	modifiers_while_active = {
