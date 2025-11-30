@@ -2991,15 +2991,18 @@ grefm_greece.040 = {
 		default_option = yes
 	}
 
-	option = {
-		name = grefm_greece.040.b
-	}
-
 	after = {
 		hidden_effect = {
-			trigger_event = {
-				id = grefm_greece.041
-				days = { 20 30 }
+			if = {
+				limit = {
+					ig:ig_armed_forces = {
+						is_in_government = yes
+					}
+				}
+				trigger_event = {
+					id = grefm_greece.041
+					days = { 20 30 }
+				}
 			}
 		}
 	}
@@ -3029,22 +3032,89 @@ grefm_greece.041 = {
 	}
 
 	cancellation_trigger = {
-		NOT = {
-			has_journal_entry = je_grefm_the_military_league
+		OR = {
+			NOT = {
+				has_journal_entry = je_grefm_the_military_league
+			}
+			ig:ig_armed_forces = {
+				is_in_government = no
+			}
 		}
+
 	}
 
 	immediate = {
 		grefm_save_goudi_scopes_effect = yes
+		ig:ig_armed_forces = {
+			save_scope_as = armed_forces_scope
+			leader = {
+				save_scope_as = armed_forces_leader_scope
+			}
+		}
 	}
 
 	option = {
 		name = grefm_greece.041.a
 		default_option = yes
+		scope:armed_forces_scope = {
+			if = {
+				limit = {
+					NOT = {
+						has_ideology = ideology:ideology_jingoist_leader
+					}
+				}
+				set_ideology = ideology:ideology_jingoist_leader
+			}
+			interest_group = {
+				add_modifier = {
+					name = we_are_listened_to
+					months = gbbf_duration_2_years
+				}
+			}
+		}
+		grefm_add_goudi_progress_effect = {
+			value = 5
+		}
 	}
 
 	option = {
 		name = grefm_greece.041.b
+		add_radicals = {
+			pop_type = officers
+			value = medium_radicals
+		}
+		grefm_remove_goudi_progress_effect = {
+			value = 5
+		}
+	}
+
+	option = {
+		name = grefm_greece.041.c
+		scope:armed_forces_leader_scope = {
+			custom_tooltip = {
+				text = grefm_greece.041.tt
+				kill_character = {
+					hidden = yes
+				}
+			}
+			interest_group = {
+				add_modifier = {
+					name = membership_arrested
+					months = gbbf_duration_2_months
+				}
+			}
+		}
+		add_radicals = {
+			pop_type = officers
+			value = very_large_radicals
+		}
+		add_radicals = {
+			pop_type = soldiers
+			value = medium_radicals
+		}
+		grefm_remove_goudi_progress_effect = {
+			value = 20
+		}
 	}
 }
 
