@@ -164,9 +164,26 @@ je_balkfm_ser_defenders = {
 		set_variable = balkfm_defenders_completed
 	}
 
-	timeout = 3650 # mod's been out for over a year and this my first timeout journal since the Bavarocracy journals... anyway, this number is based on the "Defenders" being dominant in Serbian politics from roughly 1838-1858
+	fail = {
+		OR = {
+			balkfm_has_obrenovic_ruler_trigger = yes
+			NOT = {
+				any_scope_character = {
+					has_role = agitator
+					law_stance = {
+						law = law_type:law_autocracy
+						value < neutral
+					}
+					law_stance = {
+						law = law_type:law_oligarchy
+						value < neutral
+					}
+				}
+			}
+		}
+	}
 
-	on_timeout = {
+	on_fail = {
 		trigger_event = {
 			id = balkfm_serbia.008 # Absent Reform
 		}
@@ -176,9 +193,14 @@ je_balkfm_ser_defenders = {
 	invalid = {
 		OR = {
 			NOT = {
+				has_journal_entry = je_balkfm_ser_monarchism
+			}
+			NOT = {
 				has_law_or_variant = law_type:law_monarchy
 			}
-			has_variable = balkfm_defenders_completed
+			hidden_trigger = {
+				has_variable = balkfm_defenders_completed
+			}
 		}
 	}
 
