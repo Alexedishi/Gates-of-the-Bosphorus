@@ -3064,6 +3064,7 @@ grefm_greece.041 = {
 					}
 				}
 				set_ideology = ideology:ideology_jingoist_leader
+				set_variable = grefm_goudi_participant_var
 			}
 			interest_group = {
 				add_modifier = {
@@ -3164,6 +3165,8 @@ grefm_greece.045 = {
 			create_character = {
 				template = template_grefm_venizelos_eleftherios
 				on_created = {
+					set_variable = memento_mori_immunity
+					set_character_immortal = yes
 					place_character_in_void = 240
 				}
 			}
@@ -3200,6 +3203,17 @@ grefm_greece.045 = {
 		}
 		grefm_add_goudi_progress_effect = {
 			value = 10
+		}
+		if = {
+			limit = {
+				empty_agitator_slots < 1
+			}
+			hidden_effect = {
+				add_modifier = {
+					name = modifier_gbbf_extra_agitator_1
+					months = gbbf_duration_10_years
+				}
+			}
 		}
 		scope:grefm_venizelos_scope = {
 			gbbf_free_from_void_agitator = yes
@@ -3255,6 +3269,8 @@ grefm_greece.046 = {
 			create_character = {
 				template = template_grefm_venizelos_eleftherios
 				on_created = {
+					set_variable = memento_mori_immunity
+					set_character_immortal = yes
 					place_character_in_void = 240
 				}
 			}
@@ -3281,6 +3297,17 @@ grefm_greece.046 = {
 		add_radicals = {
 			culture = cu:greek
 			value = medium_radicals
+		}
+		if = {
+			limit = {
+				empty_agitator_slots < 1
+			}
+			hidden_effect = {
+				add_modifier = {
+					name = modifier_gbbf_extra_agitator_1
+					months = gbbf_duration_10_years
+				}
+			}
 		}
 		scope:grefm_venizelos_scope = {
 			gbbf_free_from_void_agitator = yes
@@ -3466,33 +3493,29 @@ grefm_greece.050 = {
 	option = {
 		name = grefm_greece.050.a
 		default_option = yes
-		scope:accused_general_ig = {
-			add_modifier = {
-				name = modifier_persecuted_general
-				days = normal_modifier_time
+		scope:accused_general = {
+			custom_tooltip = {
+				text = coup_pulse_events.1.a.tt
+				kill_character = yes
 			}
-		}
-		custom_tooltip = {
-			text = coup_pulse_events.1.a.tt
-			scope:accused_general = {
-				kill_character = {
-					hidden = yes
+			interest_group = {
+				add_modifier = {
+					name = modifier_persecuted_general
+					days = normal_modifier_time
 				}
-			}
-		}
-		if = {
-			limit = {
-				scope:accused_general_ig = {
-					is_same_interest_group_type = scope:grefm_goudi_ig_scope
+				if = {
+					limit = {
+						is_same_interest_group_type = scope:grefm_goudi_ig_scope
+					}
+					grefm_remove_goudi_progress_effect = {
+						value = 10
+					}
 				}
-			}
-			grefm_remove_goudi_progress_effect = {
-				value = 10
-			}
-		}
-		else = {
-			grefm_add_goudi_progress_effect = {
-				value = 10
+				else = {
+					grefm_add_goudi_progress_effect = {
+						value = 10
+					}
+				}
 			}
 		}
 	}
@@ -3503,21 +3526,22 @@ grefm_greece.050 = {
 			name = modifier_uncertain_loyalties_country
 			days = normal_modifier_time
 		}
-		if = {
-			limit = {
-				scope:accused_general = {
+		scope:accused_general = {
+			set_variable = grefm_goudi_participant_var
+			if = {
+				limit = {
 					interest_group = {
 						is_same_interest_group_type = scope:grefm_goudi_ig_scope
 					}
 				}
+				grefm_add_goudi_progress_effect = {
+					value = 10
+				}
 			}
-			grefm_add_goudi_progress_effect = {
-				value = 10
-			}
-		}
-		else = {
-			grefm_remove_goudi_progress_effect = {
-				value = 10
+			else = {
+				grefm_remove_goudi_progress_effect = {
+					value = 10
+				}
 			}
 		}
 	}
