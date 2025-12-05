@@ -22,26 +22,8 @@
 	scripted_button = eqfm_declare_loyalty_button
 	scripted_button = eqfm_greek_gunrunners_button
 
-	is_shown_when_inactive = {
-		custom_tooltip = {
-			text = eqfm_balkan_situation_resolved_NOT
-			NOT = {
-				has_global_variable = eqfm_balkan_situation_resolved
-			}
-		}
-	}
-	
-	possible = {
-		custom_tooltip = {
-			text = eqfm_balkan_situation_resolved_NOT
-			NOT = {
-				has_global_variable = eqfm_balkan_situation_resolved
-			}
-		}
-	}
-
 	should_be_involved = {
-		eqfm_balkans_should_be_involved_trigger = yes
+		c:TUR ?= this
 	}
 
 	should_show_when_not_involved = {
@@ -70,6 +52,18 @@
 		set_global_variable = {
 			name = eqfm_balkan_situation
 			value = scope:eqfm_balkan_situation
+		}
+		every_country = {
+			limit = {
+				NOR = {
+					c:TUR ?= this # error supression
+					is_involved_in_journal_entry = je_eqfm_balkan_situation
+				}
+				eqfm_balkans_should_be_involved_trigger = yes
+			}
+			scope:journal_entry = {
+				add_involved_country = prev
+			}
 		}
 	}
 

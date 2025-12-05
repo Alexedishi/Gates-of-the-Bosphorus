@@ -1,1 +1,210 @@
-﻿
+﻿je_haykfm_highlands = {
+	group = je_group_global_international_situations
+	icon = "gfx/interface/icons/invention_icons/wargaming.dds"
+	weight = 1000
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	is_shown_in_lobby = {
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_middle_east_highlands
+		}
+	}
+
+	scripted_progress_bar = haykfm_higlands_progress_bar
+
+	should_be_involved = {
+		c:TUR ?= this
+	}
+
+	should_show_when_not_involved = {
+		has_interest_marker_in_region = region_anatolia
+		has_interest_marker_in_region = region_caucasus
+		has_interest_marker_in_region = region_arabic
+		has_interest_marker_in_region = region_persia
+	}
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		c:RUS = {
+			save_scope_as = russia_scope
+		}
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+		scope:journal_entry = {
+			set_variable = {
+				name = haykfm_highlands_var
+				value = haykfm_highlands_value
+			}
+			set_bar_progress = {
+				name = haykfm_higlands_progress_bar
+				value = var:haykfm_highlands_var
+			}
+			set_variable = com_moon_moon_on_deck
+		}
+		every_country = {
+			limit = {
+				NOR = {
+					c:TUR ?= this # error supression
+					is_involved_in_journal_entry = je_haykfm_highlands
+				}
+				any_scope_state = {
+					is_in_geographic_region = geographic_region_middle_east_highlands
+				}
+			}
+			scope:journal_entry = {
+				add_involved_country = prev
+			}
+		}
+	}
+
+	complete = {
+		OR = {
+			custom_tooltip = {
+				text = je_haykfm_highlands_complete_tur
+				scope:journal_entry = {
+					var:haykfm_highlands_var >= 10
+				}
+			}
+			custom_tooltip = {
+				text = je_haykfm_highlands_complete_rus
+				scope:journal_entry = {
+					var:haykfm_highlands_var <= 0
+				}
+			}
+			custom_tooltip = {
+				text = je_haykfm_highlands_complete_tie
+				scope:journal_entry = {
+					any_state = {
+						filter = {
+							is_in_geographic_region = geographic_region_middle_east_highlands
+						}
+						count = all
+						is_incorporated = yes
+					}
+				}
+			}
+		}
+	}
+
+	on_complete_all_involved = {
+		custom_tooltip = {
+			text = je_haykfm_highlands_on_complete_tur
+			if = {
+				limit = {
+					scope:journal_entry = {
+						var:haykfm_highlands_var >= 10
+					}
+
+				}
+			}
+		}
+		custom_tooltip = {
+			text = je_haykfm_highlands_on_complete_rus
+			if = {
+				limit = {
+					scope:journal_entry = {
+						var:haykfm_highlands_var <= 0
+					}
+
+				}
+			}
+		}
+		custom_tooltip = {
+			text = je_haykfm_highlands_on_complete_tie
+			if = {
+				limit = {
+					scope:journal_entry = {
+						NOR = {
+							var:haykfm_highlands_var >= 10
+							var:haykfm_highlands_var <= 0
+						}
+					}
+
+				}
+			}
+		}
+	}
+
+	fail = {
+		OR = {
+			custom_tooltip = {
+				text = je_haykfm_highlands_fail_tur_dead
+				NOT = {
+					exists = c:TUR
+				}
+			}
+			custom_tooltip = {
+				text = je_haykfm_highlands_fail_tur_loss
+				c:TUR ?= {
+					NOR = {
+						any_scope_state = {
+							is_in_geographic_region = geographic_region_middle_east_highlands
+						}
+						any_subject_or_below = {
+							is_in_geographic_region = geographic_region_middle_east_highlands
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				text = je_haykfm_highlands_fail_rus_dead
+				NOT = {
+					exists = c:RUS
+				}
+			}
+			custom_tooltip = {
+				text = je_haykfm_highlands_fail_rus_loss
+				c:RUS ?= {
+					NOR = {
+						any_scope_state = {
+							is_in_geographic_region = geographic_region_middle_east_highlands
+						}
+						any_subject_or_below = {
+							is_in_geographic_region = geographic_region_middle_east_highlands
+						}
+					}
+				}
+			}
+		}
+	}
+
+	on_fail_all_involved = {
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			every_country = {
+				if = {
+					limit = {
+						is_involved_in_journal_entry = je_haykfm_highlands
+						NOT = {
+							any_scope_state = {
+								is_in_geographic_region = geographic_region_middle_east_highlands
+							}
+						}
+					}
+					scope:journal_entry = {
+						remove_involved_country = prev
+					}
+				}
+				if = {
+					limit = {
+						any_scope_state = {
+							is_in_geographic_region = geographic_region_middle_east_highlands
+						}
+						NOT = {
+							is_involved_in_journal_entry = je_haykfm_highlands
+						}
+					}
+					scope:journal_entry = {
+						add_involved_country = prev
+					}
+				}
+			}
+		}
+	}
+}
