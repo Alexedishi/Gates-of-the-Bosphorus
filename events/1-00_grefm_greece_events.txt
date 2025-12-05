@@ -6806,84 +6806,32 @@ grefm_greece.132 = {
 
 
 ## Greek Interational Events ##
-grefm_greece.160 = {
+grefm_greece.160 = { # hidden event triggering the Don Pacifico Affair
 	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
-
-	title = grefm_greece.160.t
-	desc = grefm_greece.160.d
-	flavor = grefm_greece.160.f
-
-	event_image = {
-		video = "southamerica_aristocrats"
-	}
-
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
+	hidden = yes
 
 	trigger = {
-		# triggered by balkfm_bulgaria.015
+		has_variable = grefm_don_pacifico_var
+		has_diplomatic_relevance = c:POR
+		has_diplomatic_relevance = c:GBR
 	}
 
 	immediate = {
-		c:BUL = {
-			save_scope_as = bulgaria_scope
-			ruler = {
-				save_scope_as = bulgaria_ruler_scope
-			}
-		}
-		capital = {
-			save_scope_as = greece_capital_scope
-		}
-	}
-
-	option = {
-		name = grefm_greece.160.a
-		default_option = yes
-		c:BUL = {
-			set_variable = grefm_warm_reception
-		}
-		change_relations = {
-			country = c:BUL
-			value = 15
-		}
-		ai_chance = {
-			base = 5
-			modifier = {
-				trigger = {
-					c:BUL = {
-						relations:root > relations_threshold:neutral
-					}
+		if = {
+			limit = {
+				AND = {
+					exists = c:GRE
+					exists = c:GBR
+					exists = c:POR
 				}
-				add = 50
 			}
-		}
-	}
-
-	option = {
-		name = grefm_greece.160.b
-		c:BUL = {
-			set_variable = grefm_cold_reception
-		}
-		change_relations = {
-			country = c:TUR
-			value = 15
-		}
-		ai_chance = {
-			base = 5
-			modifier = {
-				trigger = {
-					c:BUL = {
-						relations:root <= relations_threshold:neutral
-					}
+			c:POR = {
+				trigger_event = {
+					id = grefm_greece.161 # The Don Pacifico Affair
 				}
-				add = 20
 			}
 		}
+		remove_variable = grefm_don_pacifico_var
 	}
 
 }
@@ -7108,6 +7056,87 @@ grefm_greece.161 = {
 
 }
 
+grefm_greece.162 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	title = grefm_greece.162.t
+	desc = grefm_greece.162.d
+	flavor = grefm_greece.162.f
+
+	event_image = {
+		video = "southamerica_aristocrats"
+	}
+
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by balkfm_bulgaria.015
+	}
+
+	immediate = {
+		c:BUL = {
+			save_scope_as = bulgaria_scope
+			ruler = {
+				save_scope_as = bulgaria_ruler_scope
+			}
+		}
+		capital = {
+			save_scope_as = greece_capital_scope
+		}
+	}
+
+	option = {
+		name = grefm_greece.162.a
+		default_option = yes
+		c:BUL = {
+			set_variable = grefm_warm_reception
+		}
+		change_relations = {
+			country = c:BUL
+			value = 15
+		}
+		ai_chance = {
+			value = 5
+			if = {
+				limit = {
+					c:BUL = {
+						relations:root > relations_threshold:neutral
+					}
+				}
+				add = 50
+			}
+		}
+	}
+
+	option = {
+		name = grefm_greece.162.b
+		c:BUL = {
+			set_variable = grefm_cold_reception
+		}
+		change_relations = {
+			country = c:TUR
+			value = 15
+		}
+		ai_chance = {
+			value = 5
+			if = {
+				limit = {
+					c:BUL = {
+						relations:root <= relations_threshold:neutral
+					}
+				}
+				add = 20
+			}
+		}
+	}
+
+}
 
 ## Greek Orthodox Church Events ##
 grefm_greece.180 = {
