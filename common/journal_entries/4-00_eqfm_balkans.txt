@@ -9,7 +9,9 @@
 	can_deactivate = no
 
 	is_shown_in_lobby = {
-		c:TUR ?= this
+		any_scope_state = {
+			region = sr:region_balkans
+		}
 	}
 
 	scripted_progress_bar = eqfm_balkans_escalation_progress_bar
@@ -23,15 +25,11 @@
 	scripted_button = eqfm_greek_gunrunners_button
 
 	should_be_involved = {
-		c:TUR ?= this
+		eqfm_balkans_should_be_involved_trigger = yes
 	}
 
 	should_show_when_not_involved = {
-		OR = {
-			eqfm_balkans_interloper_trigger = yes
-			is_country_type = recognized
-			is_country_type = colonial
-		}
+		eqfm_balkans_interloper_trigger = yes
 	}
 
 	immediate = {
@@ -52,18 +50,6 @@
 		set_global_variable = {
 			name = eqfm_balkan_situation
 			value = scope:eqfm_balkan_situation
-		}
-		every_country = {
-			limit = {
-				NOR = {
-					c:TUR ?= this # error supression
-					is_involved_in_journal_entry = je_eqfm_balkan_situation
-				}
-				eqfm_balkans_should_be_involved_trigger = yes
-			}
-			scope:journal_entry = {
-				add_involved_country = prev
-			}
 		}
 	}
 
@@ -94,6 +80,7 @@
 			}
 			trigger_event = {
 				id = eqfm_balkans.011 # The Eastern Question
+				days = 5
 			}
 		}
 		else = {
