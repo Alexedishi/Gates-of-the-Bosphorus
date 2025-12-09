@@ -152,16 +152,10 @@ je_eqfm_expedition_to_the_adriatic = {
 	}
 	
 	complete = {
-		trigger_if = {
-			limit = {
-				NOT = {
-					has_variable = eqfm_expedition_piracy_transit_var
-				}
-			}
-			custom_tooltip = {
-				text = je_eqfm_expedition_to_the_adriatic_complete
-				var:eqfm_adriatic_expedition_progress_var >= 8
-			}
+		custom_tooltip = {
+			text = je_eqfm_expedition_to_the_adriatic_complete
+			has_variable = eqfm_adriatic_expedition_progress_var
+			var:eqfm_adriatic_expedition_progress_var >= 8
 		}
 	}
 	
@@ -199,6 +193,11 @@ je_eqfm_expedition_to_the_adriatic = {
 				}
 			}
 		}
+		trigger_else = {
+			hidden_trigger = {
+				always = no
+			}
+		}
 	}
 	
 	on_fail = {
@@ -219,9 +218,14 @@ je_eqfm_expedition_to_the_adriatic = {
 	}
 	
 	invalid = {
-		custom_tooltip = {
-			text = je_eqfm_pirates_of_the_adriatic_complete
-			has_global_variable = eqfm_jack_sparrow_whacked
+		OR = {
+			NOT = {
+				is_involved_in_journal_entry = je_eqfm_pirates_of_the_adriatic
+			}
+			custom_tooltip = {
+				text = je_eqfm_pirates_of_the_adriatic_complete
+				has_global_variable = eqfm_jack_sparrow_whacked
+			}
 		}
 	}
 	
