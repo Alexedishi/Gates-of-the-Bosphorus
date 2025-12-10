@@ -1244,25 +1244,28 @@ grefm_greece.013 = {
 	}
 
 	immediate = {
-		# wedding.2 effects, with extra scripting for Queen Amalia and Oldenburg
-		create_character = {
-			template = template_grefm_oldenburg_amalia
-			on_created = {
-				place_character_in_void = 300
-			}
-		}
-		random_character_in_void = {
+		# Extra scripting for Queen Amalia and Oldenburg
+		if = {
 			limit = {
-				has_template = template_grefm_oldenburg_amalia
+				exists = c:OLD
 			}
-			save_scope_as = queen_amalia_scope
-		}
-		random_scope_character = {
-			limit = {
-				has_variable = spouse_seeker
+			c:OLD = {
+				save_scope_as = oldenburg_scope
 			}
-			save_scope_as = royal_marriage_character
+			create_character = {
+				template = template_grefm_oldenburg_amalia
+				on_created = {
+					place_character_in_void = 300
+				}
+			}
+			random_character_in_void = {
+				limit = {
+					has_template = template_grefm_oldenburg_amalia
+				}
+				save_scope_as = queen_amalia_scope
+			}
 		}
+		# basegame wedding.2 effects
 		random_country = {
 			limit = {
 				NOT = { THIS = ROOT }
@@ -1360,8 +1363,11 @@ grefm_greece.013 = {
 				}
 			}
 		}
-		c:OLD = {
-			save_scope_as = oldenburg_scope
+		random_scope_character = {
+			limit = {
+				has_variable = spouse_seeker
+			}
+			save_scope_as = royal_marriage_character
 		}
 	}
 
@@ -1462,6 +1468,10 @@ grefm_greece.013 = {
 		ruler = {
 			set_variable = is_married
 			remove_variable = spouse_seeker
+		}
+		set_variable = {
+			name = no_heirs
+			years = 10 # You ain't getting out of it that easy
 		}
 	}
 }

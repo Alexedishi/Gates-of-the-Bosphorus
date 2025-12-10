@@ -265,6 +265,60 @@ grefm_bavarocracy_convert_button = {
 
 }
 
+grefm_seek_royal_wedding_button = {
+	name = "grefm_seek_royal_wedding_button"
+	desc = "grefm_seek_royal_wedding_button_desc"
+	
+	visible = {
+		has_dlc_feature = ip3_content
+		has_variable = no_heirs
+		NOT = {
+			exists = heir
+		}
+		ruler = {
+			NOT = {
+				has_variable = is_married
+			}
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			text = grefm_regency_discharged
+			NOT = {
+				has_modifier = modifier_grefm_armansperg_regency
+			}
+		}
+		any_country = {
+			NOT = { THIS = scope:actor }
+			NOT = { is_subject_type = subject_type_personal_union }
+			has_law = law_type:law_monarchy
+			religion = scope:actor.religion
+			ruler = {
+				age > 36
+				hidden_trigger = {
+					NOT = {
+						has_variable = marriage_target
+					}
+				}
+			}
+		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = grefm_royal_wedding_var
+			}
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = grefm_greece.013
+		}
+		set_variable = {
+			name = grefm_royal_wedding_var
+			months = 6
+		}
+	}
+}
+
 grefm_favor_hellene_king_button = {
 	name = "grefm_favor_hellene_king_button"
 	desc = "grefm_favor_hellene_king_button_desc"
