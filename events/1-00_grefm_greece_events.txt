@@ -1244,25 +1244,28 @@ grefm_greece.013 = {
 	}
 
 	immediate = {
-		# wedding.2 effects, with extra scripting for Queen Amalia and Oldenburg
-		create_character = {
-			template = template_grefm_oldenburg_amalia
-			on_created = {
-				place_character_in_void = 300
-			}
-		}
-		random_character_in_void = {
+		# Extra scripting for Queen Amalia and Oldenburg
+		if = {
 			limit = {
-				has_template = template_grefm_oldenburg_amalia
+				exists = c:OLD
 			}
-			save_scope_as = queen_amalia_scope
-		}
-		random_scope_character = {
-			limit = {
-				has_variable = spouse_seeker
+			c:OLD = {
+				save_scope_as = oldenburg_scope
 			}
-			save_scope_as = royal_marriage_character
+			create_character = {
+				template = template_grefm_oldenburg_amalia
+				on_created = {
+					place_character_in_void = 300
+				}
+			}
+			random_character_in_void = {
+				limit = {
+					has_template = template_grefm_oldenburg_amalia
+				}
+				save_scope_as = queen_amalia_scope
+			}
 		}
+		# basegame wedding.2 effects
 		random_country = {
 			limit = {
 				NOT = { THIS = ROOT }
@@ -1360,8 +1363,11 @@ grefm_greece.013 = {
 				}
 			}
 		}
-		c:OLD = {
-			save_scope_as = oldenburg_scope
+		random_scope_character = {
+			limit = {
+				has_variable = spouse_seeker
+			}
+			save_scope_as = royal_marriage_character
 		}
 	}
 
@@ -1462,6 +1468,10 @@ grefm_greece.013 = {
 		ruler = {
 			set_variable = is_married
 			remove_variable = spouse_seeker
+		}
+		set_variable = {
+			name = no_heirs
+			years = 10 # You ain't getting out of it that easy
 		}
 	}
 }
@@ -2801,8 +2811,8 @@ grefm_greece.032 = {
 	option = {
 		name = grefm_greece.032.a
 		default_option = yes
-		add_journal_entry = {
-			type = je_grefm_the_dedilomeni_principle
+		show_as_tooltip = {
+			add_modifier = modifier_grefm_unproven_democracy
 		}
 	}
 
@@ -2828,7 +2838,7 @@ grefm_greece.033 = {
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by JE
+		# triggered by je_grefm_the_dedilomeni_principle
 	}
 
 	immediate = {
@@ -3140,6 +3150,7 @@ grefm_greece.045 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
+		has_variable = grefm_goudi_coup_var
 		var:grefm_goudi_coup_var >= 70
 		NOT = {
 			has_global_variable = grefm_venizelos_has_landed
@@ -5315,7 +5326,21 @@ grefm_greece.097 = {
 		grefm_expel_bavarocracy_effect = yes
 		custom_tooltip = {
 			text = grefm_greece.097.4_tt
-
+			if = {
+				limit = {
+					year < 1845
+				}
+				create_character = {
+					template = template_grefm_saxe-coburg_alfred
+					age = 1
+				}
+			}
+			else = {
+				create_character = {
+					template = template_grefm_saxe-coburg_alfred
+					birth_date = 1844.8.6
+				}
+			}
 		}
 		if = {
 			limit = {
@@ -5525,9 +5550,6 @@ grefm_greece.097 = {
 	option = {
 		# Make it a republic - some voters wrote this in
 		name = grefm_greece.097.a
-		trigger = {
-			has_technology_researched = egalitarianism
-		}
 		highlighted_option = yes
 		show_as_unavailable = { always = yes }
 		grefm_expel_bavarocracy_effect = yes
@@ -5578,11 +5600,7 @@ grefm_greece.097 = {
 	option = {
 		# Elect a Greek King
 		name = grefm_greece.097.b
-		trigger = {
-			has_technology_researched = nationalism
-		}
 		highlighted_option = yes
-		show_as_unavailable = { always = yes }
 		grefm_expel_bavarocracy_effect = yes
 		custom_tooltip = {
 			text = grefm_caretaker_government

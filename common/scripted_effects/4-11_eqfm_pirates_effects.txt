@@ -85,14 +85,18 @@ eqfm_update_piracy_variables_effect = {
 	
 	## Step 2, Update Lists and progress bars
 	global_var:eqfm_pirates_situation = {
-		set_bar_progress = {
-			name = eqfm_jack_sparrow_progress_bar
-			value = var:eqfm_pirates_var
+		set_variable = {
+			name = eqfm_jack_sparrow_var
+			value = scope:eqfm_jack_sparrow_scope
 		}
 		clear_variable_list = com_journal_characters
 		add_to_variable_list = {
 			name = com_journal_characters
 			target = scope:eqfm_jack_sparrow_scope
+		}
+		set_bar_progress = {
+			name = eqfm_jack_sparrow_progress_bar
+			value = var:eqfm_pirates_var
 		}
 	}
 	scope:eqfm_jack_sparrow_scope ?= {
@@ -147,7 +151,7 @@ eqfm_update_adriatic_expedition_variables_effect = {
 	if = {
 		limit = {
 			eqfm_has_adriatic_expedition_trigger = yes
-			NOR = {
+			NOT = {
 				has_variable = eqfm_expedition_piracy_transit_var
 			}
 		}
@@ -218,14 +222,14 @@ eqfm_update_adriatic_expedition_variables_effect = {
 					value = flag:eqfm_cutler_beckett_opinion
 				}
 			}
-		}
-		set_bar_progress = {
-			name = eqfm_cutler_beckett_progress_bar
-			value = owner.var:eqfm_adriatic_expedition_progress_var
-		}
-		set_bar_progress = {
-			name = eqfm_cutler_beckett_peril_bar
-			value = owner.var:eqfm_adriatic_expedition_peril_var
+			set_bar_progress = {
+				name = eqfm_cutler_beckett_progress_bar
+				value = owner.var:eqfm_adriatic_expedition_progress_var
+			}
+			set_bar_progress = {
+				name = eqfm_cutler_beckett_peril_bar
+				value = owner.var:eqfm_adriatic_expedition_peril_var
+			}
 		}
 	}
 }

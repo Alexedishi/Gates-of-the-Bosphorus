@@ -110,8 +110,10 @@
 			name = grefm_megali_idea_counter_var
 			value = grefm_megali_idea_counter_value
 		}
-		add_journal_entry = {
-			type = je_greek_nationalism
+		hidden_effect = {
+			add_journal_entry = {
+				type = je_greek_nationalism
+			}
 		}
 	}
 
@@ -128,12 +130,8 @@
 				}
 			}
 			custom_tooltip = {
-				text = greek_state_complete_tt
-				any_scope_state = {
-					is_greek_homeland = yes
-					count >= greek_homeland_states_owned_to_complete_min
-					owner = root
-				}
+				text = je_grefm_megali_idea_complete_default
+				var:grefm_megali_idea_counter_var >= greek_homeland_states_owned_to_complete_min
 			}
 			country_rank >= rank_value:minor_power
 		}
@@ -143,12 +141,8 @@
 				has_variable = grefm_weaksauce
 			}
 			custom_tooltip = {
-				text = greek_state_complete_tt_2
-				any_scope_state = {
-					is_greek_homeland = yes
-					count >= greek_homeland_states_owned_to_complete_max
-					owner = root
-				}
+				text = je_grefm_megali_idea_complete_megali_idea
+				var:grefm_megali_idea_counter_var >= greek_homeland_states_owned_to_complete_max
 			}
 			country_rank >= rank_value:minor_power
 		}
@@ -162,12 +156,8 @@
 				c:BYZ ?= this
 			}
 			custom_tooltip = {
-				text = greek_state_complete_tt_3
-				any_scope_state = {
-					is_byzantium_state_region = yes
-					count >= byzantium_state_region_owned_to_complete
-					owner = root
-				}
+				text = je_grefm_megali_idea_complete_imperial_restoration
+				var:grefm_megali_idea_counter_var >= byzantium_state_region_owned_to_complete
 			}
 			country_rank >= rank_value:major_power
 		}
@@ -277,8 +267,6 @@
 	
 	on_weekly_pulse = {
 		effect = {
-			# Dude, WHY THE FUCK is this cluttering the monthly on_action in base game when you can just wedge it here???
-			# COMPLETE WITH THROWING THE VARIABLE CHECKS INTO THE SCRIPT VALUE ITSELF?!?!?!
 			set_variable = {
 				name = grefm_megali_idea_counter_var
 				value = grefm_megali_idea_counter_value

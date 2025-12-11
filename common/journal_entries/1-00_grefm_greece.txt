@@ -222,7 +222,8 @@ je_grefm_bavarocracy_ip3 = {
 
 	scripted_progress_bar = grefm_bavarocracy_ip3_progressbar
 	scripted_progress_bar = grefm_bavarocracy_ip3_instability_progressbar
-
+	
+	scripted_button = grefm_seek_royal_wedding_button
 	scripted_button = grefm_dismiss_auxilliaries_button
 	scripted_button = grefm_bavarocracy_convert_button
 	scripted_button = grefm_release_nikitaras_button
@@ -246,7 +247,7 @@ je_grefm_bavarocracy_ip3 = {
 	}
 
 	modifiers_while_active = {
-		modifier_foreign_administration
+		modifier_grefm_bavarocracy_ip3
 		modifier_grefm_westernized_thought
 	}
 
@@ -298,6 +299,7 @@ je_grefm_bavarocracy_ip3 = {
 				}
 			}
 		}
+		grefm_cleanup_bavarocracy_effect = yes
 	}
 
 	fail = {
@@ -311,6 +313,7 @@ je_grefm_bavarocracy_ip3 = {
 		trigger_event = {
 			id = grefm_greece.097 # The Downfall of King Otto
 		}
+		grefm_cleanup_bavarocracy_effect = yes
 	}
 
 	invalid = {
@@ -467,6 +470,11 @@ je_grefm_the_dedilomeni_principle = {
 		country_has_primary_culture = cu:greek
 		has_variable = grefm_bavarocracy_started
 		has_law_or_variant = law_type:law_monarchy
+		NOT = {
+			active_law:lawgroup_distribution_of_power ?= {
+				has_amendment = amendment_tradition_of_free_elections
+			}
+		}
 	}
 
 	possible = {
@@ -508,12 +516,25 @@ je_grefm_the_dedilomeni_principle = {
 		ig:ig_landowners = {
 			is_in_government = no
 		}
+		OR = {
+			custom_tooltip = {
+				text = je_grefm_the_dedilomeni_principle_complete
+				scope:journal_entry.var:grefm_dedilomeni_var >= 60
+			}
+			active_law:lawgroup_distribution_of_power ?= {
+				has_amendment = amendment_tradition_of_free_elections
+			}
+		}
 	}
 
 	on_complete = {
 		trigger_event = {
 			id = grefm_greece.033 # A Harmonious State
 		}
+	}
+
+	fail = {
+		country_has_voting_franchise = no
 	}
 
 	invalid = {
@@ -556,10 +577,7 @@ je_grefm_the_military_league = {
 
 	scripted_progress_bar = grefm_military_league_progress_bar
 
-	#	scripted_button =
-
 	is_shown_when_inactive = {
-		has_dlc_feature = voice_of_the_people_content
 		has_journal_entry = je_grefm_megali_idea
 		has_variable = grefm_bavarocracy_started
 		NOR = {
