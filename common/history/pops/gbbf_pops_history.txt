@@ -1,79 +1,6 @@
 ﻿POPS = {
     debug_log = gbbf_pops_history_start
-
-	####---------- Pop Culture Conversions ----------####
-	# Greek Pop Conversions
-	every_state = {
-		limit = {
-			gbbf_demotic_greek_geography_trigger = yes
-		}
-		gbbf_setup_hellene_pops_effect = yes
-	}
-	every_state = {
-		limit = {
-			gbbf_demotic_greek_geography_trigger = no
-		}
-		gbbf_setup_rhomaios_pops_effect = yes
-	}
-
-	# Romaniote Jew Conversions
-	every_state = {
-		limit = {
-			gbbf_demotic_greek_geography_trigger = yes
-		}
-		every_scope_pop = {
-			limit = {
-				has_pop_culture = sephardic
-			}
-			change_pop_culture = {
-				target = cu:romanyotim
-				value = 1
-			}
-		}
-	}
-	c:ION = {
-		every_scope_pop = {
-			limit = {
-				has_pop_culture = sephardic
-			}
-			change_pop_culture = {
-				target = cu:romanyotim
-				value = 1
-			}
-		}
-	}
-
-	# Bavarian Officer Pops for Greece
-	c:GRE = {
-		every_scope_pop = {
-			limit = {
-				is_pop_type = aristocrats
-			}
-			change_pop_culture = {
-				target = cu:south_german
-				value = 0.05
-			}
-			change_pop_religion = {
-				target = rel:catholic
-				value = 0.05
-			}
-		}
-		every_scope_pop = {
-			limit = {
-				is_pop_type = officers
-			}
-			change_pop_culture = {
-				target = cu:south_german
-				value = 1
-			}
-			change_pop_religion = {
-				target = rel:catholic
-				value = 1
-			}
-		}
-	}
-
-
+	
 	####---------- Pop Relocations ----------####
 	# Moving Bosniak pops into Hersek
 	s:STATE_BOSNIA = {
@@ -110,8 +37,8 @@
 			}
 		}
 	}
-
-
+	
+	
 	####---------- New Pop Creation ----------####
 	# Balkans Region
 	s:STATE_ALBANIA = {
@@ -178,6 +105,10 @@
 			create_pop = {
 				culture = aromanian
 				size = 4412
+			}
+			create_pop = {
+				culture = greek
+				size = 5118
 			}
 		}
 	}
@@ -416,6 +347,14 @@
 	}
 
 	# Danubia Region
+	s:STATE_BESSARABIA = {
+		region_state:RUS = {
+			create_pop = {
+				culture = greek
+				size = 16000
+			}
+		}
+	}
 	s:STATE_DOBRUDJA = {
 		region_state:TUR = {
 			create_pop = {
@@ -485,6 +424,36 @@
 	}
 
 	# Arabia Region
+	s:STATE_ALEPPO = {
+		region_state:EGY = {
+			create_pop = {
+				culture = greek
+				size = 2400
+			}
+		}
+	}
+	s:STATE_BAGHDAD = {
+		region_state:TUR = {
+			create_pop = {
+				culture = romani
+				size = 2400
+			}
+		}
+		region_state:KUR_BAB = {
+			create_pop = {
+				culture = kurdish
+				size = 40000
+			}
+		}
+	}
+	s:STATE_LEBANON = {
+		region_state:EGY = {
+			create_pop = {
+				culture = greek
+				size = 9000
+			}
+		}
+	}
 	s:STATE_MOSUL = {
 		region_state:KUR_BAB = {
 			create_pop = {
@@ -505,27 +474,170 @@
 			}
 		}
 	}
-	s:STATE_BAGHDAD = {
-		region_state:TUR = {
-			create_pop = {
-				culture = romani
-				size = 2400
+
+	# Nile Region
+	s:STATE_LOWER_EGYPT = {
+		region_state:EGY = {
+			kill_population_percent_in_state = {
+				culture = cu:greek
+				percent = 1
 			}
-		}
-		region_state:KUR_BAB = {
 			create_pop = {
-				culture = kurdish
-				size = 40000
+				culture = greek
+				size = 83424
 			}
 		}
 	}
-
-	# Other States
+	
+	# Caucasus Region
+	s:STATE_GREATER_CAUCASUS = {
+		region_state:RUS = {
+			create_pop = {
+				culture = greek
+				size = 10400
+			}
+		}
+	}
+	s:STATE_KUBAN = {
+		region_state:RUS = {
+			create_pop = {
+				culture = greek
+				size = 4000
+			}
+		}
+	}
+	s:STATE_KUBAN = {
+		region_state:RUS = {
+			create_pop = {
+				culture = greek
+				size = 3000
+			}
+		}
+	}
+	
+	# Dnieper Region
 	s:STATE_CRIMEA = {
 		region_state:RUS = {
 			create_pop = {
 				culture = urum
-				size = 12354
+				size = 7272
+			}
+		}
+	}
+	s:STATE_CHERSON = {
+		region_state:RUS = {
+			create_pop = {
+				culture = greek
+				size = 4600
+			}
+		}
+	}
+	s:STATE_TAURIDA = {
+		region_state:RUS = {
+			create_pop = {
+				culture = greek
+				size = 17268
+			}
+		}
+	}
+	
+	
+	####---------- Pop Culture Conversions ----------####
+	# Greek Pop Conversions
+	every_state = {
+		limit = {
+			gbbf_demotic_greek_geography_trigger = yes
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = greek
+				NOR = {
+					is_pop_type = aristocrats
+					is_pop_type = capitalists
+					is_pop_type = clergymen
+					is_pop_type = academics
+					is_pop_type = bureaucrats
+					is_pop_type = engineers
+					is_pop_type = shopkeepers
+					is_pop_type = clerks
+					is_pop_type = machinists
+					is_pop_type = farmers
+				}
+			}
+			change_pop_culture = {
+				target = cu:rhomaios
+				value = 0.4
+			}
+		}
+	}
+	every_state = {
+		limit = {
+			gbbf_demotic_greek_geography_trigger = no
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = greek
+			}
+			change_pop_culture = {
+				target = cu:rhomaios
+				value = 0.90
+			}
+		}
+	}
+	
+	# Romaniote Jew Conversions
+	every_state = {
+		limit = {
+			gbbf_demotic_greek_geography_trigger = yes
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = sephardic
+			}
+			change_pop_culture = {
+				target = cu:romanyotim
+				value = 1
+			}
+		}
+	}
+	c:ION = {
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = sephardic
+			}
+			change_pop_culture = {
+				target = cu:romanyotim
+				value = 1
+			}
+		}
+	}
+	
+	# Bavarian Officer Pops for Greece
+	c:GRE = {
+		every_scope_pop = {
+			limit = {
+				is_pop_type = aristocrats
+			}
+			change_pop_culture = {
+				target = cu:south_german
+				value = 0.05
+			}
+			change_pop_religion = {
+				target = rel:catholic
+				value = 0.05
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				is_pop_type = officers
+			}
+			change_pop_culture = {
+				target = cu:south_german
+				value = 1
+			}
+			change_pop_religion = {
+				target = rel:catholic
+				value = 1
 			}
 		}
 	}

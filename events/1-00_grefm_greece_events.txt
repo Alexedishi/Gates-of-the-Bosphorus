@@ -193,10 +193,6 @@ grefm_greece.001 = {
 			days = 40 # Mid-February
 		}
 		trigger_event = {
-			id = grefm_greece.017 # bavarian auxiliary corps
-			days = 90
-		}
-		trigger_event = {
 			id = grefm_greece.012 # Otto Leaves for Bavaria
 			days = 130 # Mid-May
 		}
@@ -851,8 +847,10 @@ grefm_greece.007 = {
 		scope:king_otto_scope = {
 			remove_trait = arrogant
 			remove_trait = romantic
-			add_trait = basic_political_operator
+			remove_trait = political_appointee
+			add_trait = experienced_political_operator
 			add_trait = demagogue
+			add_trait = ambitious
 		}
 		trigger_event = {
 			id = grefm_greece.031 # the king of the hellenes
@@ -1743,48 +1741,7 @@ grefm_greece.016 = {
 
 }
 
-grefm_greece.017 = {
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_otto.dds"
-
-	title = grefm_greece.017.t
-	desc = grefm_greece.017.d
-	flavor = grefm_greece.017.f
-
-	event_image = {
-		video = "unspecific_military_parade"
-	}
-
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-		# triggered by grefm_greece.1
-	}
-
-	immediate = {
-	}
-
-	option = {
-		name = grefm_greece.017.a
-		default_option = yes
-		show_as_tooltip = {
-			add_modifier = {
-				name = modifier_grefm_bavarian_auxiliaries
-			}
-			add_modifier = {
-				name = modifier_grefm_funding_bavarian_auxiliaries
-				multiplier = money_amount_multiplier_medium
-			}
-		}
-
-	}
-
-}
+# grefm_greece.017
 
 grefm_greece.018 = {
 	type = country_event
@@ -1891,6 +1848,16 @@ grefm_greece.019 = {
 		default_option = yes
 		create_character = {
 			template = template_grefm_nikitaras
+			on_created = {
+				if = {
+					limit = {
+						owner = {
+							empty_agitator_slots > 0
+						}
+					}
+					add_character_role = agitator
+				}
+			}
 		}
 		add_modifier = {
 			name = modifier_grefm_nikitas_released
@@ -2032,11 +1999,8 @@ grefm_greece.022 = {
 		default_option = yes
 		custom_tooltip = {
 			text = grefm_greece.022.tt1
-			hidden_effect = {
-				create_character = {
-					template = template_grefm_hellene_king
-					last_name = Kapodistrias
-				}
+			create_character = {
+				template = template_grefm_kapodistrias_noble
 			}
 		}
 		c:GBR ?= {
@@ -2064,11 +2028,8 @@ grefm_greece.022 = {
 		name = grefm_greece.022.2
 		custom_tooltip = {
 			text = grefm_greece.022.tt2
-			hidden_effect = {
-				create_character = {
-					template = template_grefm_hellene_king
-					last_name = Mavrocordatos
-				}
+			create_character = {
+				template = template_grefm_mavrokordatos_noble
 			}
 		}
 		c:GBR ?= {
@@ -2096,11 +2057,8 @@ grefm_greece.022 = {
 		name = grefm_greece.022.3
 		custom_tooltip = {
 			text = grefm_greece.022.tt3
-			hidden_effect = {
-				create_character = {
-					template = template_grefm_hellene_king
-					last_name = Metaxas
-				}
+			create_character = {
+				template = template_grefm_metaxas_noble
 			}
 		}
 		c:GBR ?= {
@@ -2128,11 +2086,8 @@ grefm_greece.022 = {
 		name = grefm_greece.022.4
 		custom_tooltip = {
 			text = grefm_greece.022.tt4
-			hidden_effect = {
-				create_character = {
-					template = template_grefm_hellene_king
-					last_name = Ypsilantis
-				}
+			create_character = {
+				template = template_grefm_ypsilantis_noble
 			}
 		}
 		c:GBR ?= {
@@ -2157,6 +2112,11 @@ grefm_greece.022 = {
 
 	after = {
 		set_variable = grefm_elected_greek_king
+		hidden_effect = {
+			heir ?= {
+				kill_character = yes
+			}
+		}
 	}
 
 }
@@ -2199,11 +2159,8 @@ grefm_greece.023 = {
 		default_option = yes
 		custom_tooltip = {
 			text = grefm_greece.023.tt1
-			hidden_effect = {
-				create_character = {
-					template = template_grefm_roman_king
-					last_name = Angelos
-				}
+			create_character = {
+				template = template_grefm_angelos_noble
 			}
 		}
 		c:GBR ?= {
@@ -2231,11 +2188,8 @@ grefm_greece.023 = {
 		name = grefm_greece.023.2
 		custom_tooltip = {
 			text = grefm_greece.023.tt2
-			hidden_effect = {
-				create_character = {
-					template = template_grefm_roman_king
-					last_name = Doukas
-				}
+			create_character = {
+				template = template_grefm_doukas_noble
 			}
 		}
 		c:GBR ?= {
@@ -2263,11 +2217,8 @@ grefm_greece.023 = {
 		name = grefm_greece.023.3
 		custom_tooltip = {
 			text = grefm_greece.023.tt3
-			hidden_effect = {
-				create_character = {
-					template = template_grefm_roman_king
-					last_name = Kantakouzenos
-				}
+			create_character = {
+				template = template_grefm_kantakouzenos_noble
 			}
 		}
 		c:GBR ?= {
@@ -2295,11 +2246,8 @@ grefm_greece.023 = {
 		name = grefm_greece.023.4
 		custom_tooltip = {
 			text = grefm_greece.023.tt4
-			hidden_effect = {
-				create_character = {
-					template = template_grefm_roman_king
-					last_name = Palaiologos
-				}
+			create_character = {
+				template = template_grefm_palaiologos_noble
 			}
 		}
 		c:GBR ?= {
@@ -2324,6 +2272,11 @@ grefm_greece.023 = {
 
 	after = {
 		set_variable = byzfm_took_the_purple
+		hidden_effect = {
+			heir ?= {
+				kill_character = yes
+			}
+		}
 	}
 
 }
@@ -2381,42 +2334,27 @@ grefm_greece.030 = {
 		}
 		custom_tooltip = {
 			text = grefm_greece.030.1.tt
-			hidden_effect = {
-				create_character = {
-					first_name = George
-					last_name = Glucksburg
-					noble = yes
-					historical = yes
-					age = 17
-					dna = mr_gre_george_i
-					culture = cu:danish
-					religion = rel:catholic
-					interest_group = ig_landowners
-					ideology = ideology_royalist
-					traits = {
-						direct
-						charismatic
-						basic_diplomat
-					}
-					on_created = {
-						set_character_as_ruler = yes
-					}
+			create_character = {
+				template = template_grefm_glucksburg_noble
+				first_name = George
+				last_name = Glucksburg
+				ruler = yes
+				historical = yes
+				age = 18
+				dna = mr_gre_george_i
+				religion = rel:catholic
+				interest_group = ig_landowners
+				ideology = ideology_royalist
+				traits = {
+					direct
+					charismatic
+					basic_diplomat
 				}
 			}
 		}
 		trigger_event = {
 			id = grefm_greece.031 # the king of the hellenes
 			days = 30
-		}
-		hidden_effect = {
-			if = {
-				limit = {
-					exists = scope:grefm_heir_scope
-				}
-				scope:grefm_heir_scope = {
-					kill_character = yes
-				}
-			}
 		}
 	}
 
@@ -2434,40 +2372,24 @@ grefm_greece.030 = {
 		}
 		custom_tooltip = {
 			text = grefm_greece.030.2.tt
-			hidden_effect = {
-				create_character = {
-					first_name = Philippe
-					last_name = de_Flandre
-					noble = yes
-					historical = yes
-					age = 25
-					culture = cu:flemish
-					religion = rel:catholic
-					interest_group = ig_landowners
-					ideology = ideology_royalist
-					traits = {
-						basic_political_operator
-						arrogant
-					}
-					on_created = {
-						set_character_as_ruler = yes
-					}
+			create_character = {
+				template = template_grefm_deflandre_noble
+				first_name = Philippe
+				age = 25
+				historical = yes
+				ruler = yes
+				religion = rel:catholic
+				interest_group = ig_landowners
+				ideology = ideology_royalist
+				traits = {
+					basic_political_operator
+					arrogant
 				}
 			}
 		}
 		trigger_event = {
 			id = grefm_greece.031 # the king of the hellenes
 			days = 30
-		}
-		hidden_effect = {
-			if = {
-				limit = {
-					exists = scope:grefm_heir_scope
-				}
-				scope:grefm_heir_scope = {
-					kill_character = yes
-				}
-			}
 		}
 		set_global_variable = grefm_the_belgian_option # blocks this option on the balkfm side
 	}
@@ -2480,23 +2402,18 @@ grefm_greece.030 = {
 		}
 		custom_tooltip = {
 			text = grefm_greece.030.3.tt
-			hidden_effect = {
-				create_character = {
-					first_name = Jean_Gabriel
-					last_name = Eynard
-					historical = yes
-					age = 87
-					culture = cu:alemannic
-					religion = rel:catholic
-					interest_group = ig_petty_bourgeoisie
-					ideology = ideology_moderate
-					traits = {
-						basic_political_operator
-						arrogant
-					}
-					on_created = {
-						set_character_as_ruler = yes
-					}
+			create_character = {
+				template = template_grefm_eynard_noble
+				first_name = Jean_Gabriel
+				age = 87
+				historical = yes
+				ruler = yes
+				religion = rel:catholic
+				interest_group = ig_petty_bourgeoisie
+				ideology = ideology_moderate
+				traits = {
+					basic_political_operator
+					arrogant
 				}
 			}
 		}
@@ -2539,16 +2456,6 @@ grefm_greece.030 = {
 			id = grefm_greece.021 # The Search for a King
 			days = 30
 		}
-		hidden_effect = {
-			if = {
-				limit = {
-					exists = scope:grefm_heir_scope
-				}
-				scope:grefm_heir_scope = {
-					kill_character = yes
-				}
-			}
-		}
 	}
 
 	option = {
@@ -2559,16 +2466,6 @@ grefm_greece.030 = {
 		}
 		scope:grefm_garibaldi_scope = {
 			set_character_as_ruler = yes
-		}
-		hidden_effect = {
-			if = {
-				limit = {
-					exists = scope:grefm_heir_scope
-				}
-				scope:grefm_heir_scope = {
-					kill_character = yes
-				}
-			}
 		}
 	}
 
@@ -2591,20 +2488,16 @@ grefm_greece.030 = {
 			country = c:RUS
 			value = 5
 		}
-		hidden_effect = {
-			if = {
-				limit = {
-					exists = scope:grefm_heir_scope
-				}
-				scope:grefm_heir_scope = {
-					kill_character = yes
-				}
-			}
-		}
 	}
 
 	after = {
 		set_variable = grefm_1862_election_held
+		hidden_effect = {
+			heir ?= {
+				kill_character = yes
+			}
+		}
+		
 	}
 
 }
@@ -4824,10 +4717,6 @@ grefm_greece.090 = {
 			days = 40 # Mid-February
 		}
 		trigger_event = {
-			id = grefm_greece.017 # bavarian auxiliary corps
-			days = 90
-		}
-		trigger_event = {
 			id = grefm_greece.012 # Otto Leaves for Bavaria
 			days = 130 # Mid-May
 		}
@@ -5182,6 +5071,19 @@ grefm_greece.097 = {
 			text = grefm_greece.097.1_tt
 			create_character = {
 				template = template_grefm_glucksburg_george
+				first_name = George
+				historical = yes
+				dna = mr_gre_george_i
+				birth_date = 1845.12.24
+				religion = rel:protestant
+				ruler = yes
+				interest_group = ig_armed_forces
+				ideology = ideology_reformer
+				traits = {
+					romantic
+					charismatic
+					basic_diplomat
+				}
 			}
 		}
 		every_country = {
@@ -5234,7 +5136,18 @@ grefm_greece.097 = {
 		custom_tooltip = {
 			text = grefm_greece.097.2_tt
 			create_character = {
-				template = template_grefm_deflandre_philippe
+				template = template_grefm_deflandre_noble
+				first_name = George
+				birth_date = 1837.3.24
+				ruler = yes
+				historical = yes
+				religion = rel:catholic
+				interest_group = ig_landowners
+				ideology = ideology_modernizer_leader
+				traits = {
+					basic_political_operator
+					arrogant
+				}
 			}
 		}
 		every_country = {
@@ -5288,7 +5201,18 @@ grefm_greece.097 = {
 		custom_tooltip = {
 			text = grefm_greece.097.3_tt
 			create_character = {
-				template = template_grefm_eynard_jean
+				template = template_grefm_eynard_noble
+				first_name = Ioannis
+				historical = yes
+				ruler = yes
+				birth_date = 1775.12.28
+				religion = rel:catholic
+				interest_group = ig_petty_bourgeoisie
+				ideology = ideology_moderate
+				traits = {
+					basic_political_operator
+					arrogant
+				}
 			}
 		}
 		if = {
@@ -5332,13 +5256,21 @@ grefm_greece.097 = {
 				}
 				create_character = {
 					template = template_grefm_saxe-coburg_alfred
+					first_name = George
 					age = 1
+					ruler = yes
+					interest_group = ig_landowners
+					ideology = ideology_market_liberal
 				}
 			}
 			else = {
 				create_character = {
 					template = template_grefm_saxe-coburg_alfred
+					first_name = George
 					birth_date = 1844.8.6
+					ruler = yes
+					interest_group = ig_landowners
+					ideology = ideology_market_liberal
 				}
 			}
 		}
@@ -5380,7 +5312,12 @@ grefm_greece.097 = {
 			custom_tooltip = {
 				text = grefm_greece.097.5_tt_bourbon
 				create_character = {
-					template = template_grefm_bourbon_frank
+					template = template_grefm_bourbon_noble
+					first_name = George
+					ruler = yes
+					age = 35
+					interest_group = ig_landowners
+					ideology = ideology_traditionalist
 				}
 			}
 		}
@@ -5395,7 +5332,12 @@ grefm_greece.097 = {
 			custom_tooltip = {
 				text = grefm_greece.097.5_tt_orleans
 				create_character = {
-					template = template_grefm_orleans_frank
+					template = template_grefm_orleans_noble
+					first_name = George
+					ruler = yes
+					age = 35
+					interest_group = ig_industrialists
+					ideology = ideology_market_liberal
 				}
 			}
 		}
@@ -5410,7 +5352,12 @@ grefm_greece.097 = {
 			custom_tooltip = {
 				text = grefm_greece.097.5_tt_bonaparte
 				create_character = {
-					template = template_grefm_bonaparte_frank
+					template = template_grefm_bonaparte_noble
+					first_name = George
+					ruler = yes
+					age = 35
+					interest_group = ig_armed_forces
+					ideology = ideology_reformer
 				}
 			}
 		}
@@ -5419,8 +5366,7 @@ grefm_greece.097 = {
 			custom_tooltip = {
 				text = grefm_greece.097.5_tt
 				create_character = {
-					first_name = George
-					last_name = Theiler # I LITERALLY PICKED A RANDOM NAME, FIGHT ME
+					first_name = George# I LITERALLY PICKED A RANDOM NAME, FIGHT ME
 					noble = yes
 					culture = cu:french
 					ideology = ideology_moderate
@@ -5465,7 +5411,12 @@ grefm_greece.097 = {
 		custom_tooltip = {
 			text = grefm_greece.097.6_tt
 			create_character = {
-				template = template_grefm_romanov_nicholas
+				template = template_grefm_romanov_noble
+				first_name = George
+				noble = yes
+				birth_date = 1831.8.8
+				interest_group = ig_landowners
+				ideology = ideology_royalist
 			}
 		}
 		if = {
@@ -5700,10 +5651,18 @@ grefm_greece.098 = {
 			if = {
 				limit = {
 					NOT = {
-						has_trait = basic_political_operator
+						has_trait = experienced_political_operator
 					}
 				}
-				add_trait = basic_political_operator
+				add_trait = experienced_political_operator
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_trait = ambitious
+					}
+				}
+				add_trait = ambitious
 			}
 		}
 	}
@@ -5743,10 +5702,18 @@ grefm_greece.098 = {
 			if = {
 				limit = {
 					NOT = {
-						has_trait = basic_offensive_planner
+						has_trait = experienced_offensive_planner
 					}
 				}
-				add_trait = basic_offensive_planner
+				add_trait = experienced_offensive_planner
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_trait = ambitious
+					}
+				}
+				add_trait = ambitious
 			}
 		}
 	}
@@ -5815,10 +5782,18 @@ grefm_greece.099 = {
 			if = {
 				limit = {
 					NOT = {
-						has_trait = basic_political_operator
+						has_trait = experienced_political_operator
 					}
 				}
-				add_trait = basic_political_operator
+				add_trait = experienced_political_operator
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_trait = ambitious
+					}
+				}
+				add_trait = ambitious
 			}
 		}
 	}
@@ -5862,6 +5837,14 @@ grefm_greece.099 = {
 					}
 				}
 				add_trait = basic_offensive_planner
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_trait = ambitious
+					}
+				}
+				add_trait = ambitious
 			}
 		}
 	}

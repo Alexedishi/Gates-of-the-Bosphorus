@@ -271,15 +271,12 @@ grefm_seek_royal_wedding_button = {
 	
 	visible = {
 		has_dlc_feature = ip3_content
-		has_variable = no_heirs
-		NOT = {
-			exists = heir
-		}
 		ruler = {
 			NOT = {
 				has_variable = is_married
 			}
 		}
+		has_variable = no_heirs
 	}
 	possible = {
 		custom_tooltip = {
@@ -289,11 +286,15 @@ grefm_seek_royal_wedding_button = {
 			}
 		}
 		any_country = {
-			NOT = { THIS = scope:actor }
-			NOT = { is_subject_type = subject_type_personal_union }
+			hidden_trigger = {
+				this != root
+			}
 			has_law = law_type:law_monarchy
-			religion = scope:actor.religion
+			NOT = {
+				is_subject_type = subject_type_personal_union
+			}
 			ruler = {
+				religion = root.ruler.religion
 				age > 36
 				hidden_trigger = {
 					NOT = {
