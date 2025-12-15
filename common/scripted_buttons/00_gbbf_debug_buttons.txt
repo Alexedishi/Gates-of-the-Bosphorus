@@ -1,12 +1,51 @@
-﻿gbbf_disable_debug_button = {
-	name = "gbbf_disable_debug_button"
-	desc = "gbbf_disable_debug_button_desc"
-
+﻿gbbf_debug_money_button = {
+	name = "gbbf_debug_money_button"
+	desc = "gbbf_debug_money_button_desc"
+	
 	visible = {
-		has_variable = gbbf_debug_var
+		always = yes
 	}
 	possible = {
-		hidden_trigger = {
+		custom_tooltip = {
+			text = gbbf_debug_active_trigger
+			has_variable = gbbf_debug_var
+		}
+	}
+	effect = {
+		add_treasury = 1000000
+	}
+}
+
+gbbf_debug_loyalists_button = {
+	name = "gbbf_debug_loyalists_button"
+	desc = "gbbf_debug_loyalists_button_desc"
+	
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = gbbf_debug_active_trigger
+			has_variable = gbbf_debug_var
+		}
+	}
+	effect = {
+		add_loyalists = {
+			value = 0.25
+		}
+	}
+}
+
+gbbf_debug_close_button = {
+	name = "gbbf_debug_close_button"
+	desc = "gbbf_debug_close_button_desc"
+	
+	visible = {
+		always = yes
+	}
+	possible = {
+		custom_tooltip = {
+			text = gbbf_debug_active_trigger
 			has_variable = gbbf_debug_var
 		}
 	}
@@ -15,9 +54,9 @@
 	}
 }
 
-gbbf_test_tag_button = {
-	name = "gbbf_test_tag_button"
-	desc = "gbbf_test_tag_button_desc"
+gbbf_debug_tag_button = {
+	name = "gbbf_debug_tag_button"
+	desc = "gbbf_debug_tag_button_desc"
 	
 	visible = {
 		NOT = {
@@ -25,6 +64,10 @@ gbbf_test_tag_button = {
 		}
 	}
 	possible = {
+		custom_tooltip = {
+			text = gbbf_debug_active_trigger
+			has_variable = gbbf_debug_var
+		}
 		NOT = {
 			exists = c:GBBF
 		}
@@ -49,9 +92,33 @@ gbbf_activate_highlands_button = {
 		}
 	}
 	possible = {
-		always = yes
+		custom_tooltip = {
+			text = gbbf_debug_active_trigger
+			has_variable = gbbf_debug_var
+		}
 	}
 	effect = {
 		add_contextless_journal_entry = je_haykfm_highlands
+	}
+}
+
+gbbf_clear_quest_modifiers = {
+	name = "gbbf_clear_quest_modifiers"
+	desc = "gbbf_clear_quest_modifiers_desc"
+	
+	visible = {
+		has_modifier = negotiation_failed_quest_legit
+	}
+	possible = {
+		has_modifier = negotiation_failed_quest_legit
+	}
+	effect = {
+		remove_modifier = negotiation_failed_quest_legit
+		every_interest_group = {
+			limit = {
+				has_modifier = negotiation_failed_quest
+			}
+			remove_modifier = negotiation_failed_quest
+		}
 	}
 }
