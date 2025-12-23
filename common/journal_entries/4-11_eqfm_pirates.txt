@@ -17,23 +17,6 @@
 	
 	scripted_button = eqfm_hire_retired_pirates_button
 	scripted_button = eqfm_deploy_adriatic_expedition_button
-	
-	is_shown_when_inactive = {
-		NOT = {
-			has_global_variable = eqfm_jack_sparrow_whacked
-		}
-		year >= 1837
-		exists = c:TUR
-	}
-	
-	possible = {
-		custom_tooltip = {
-			text = je_eqfm_pirates_of_the_adriatic_possible
-			NOT = {
-				has_global_variable = eqfm_jack_sparrow_whacked
-			}
-		}
-	}
 
 	should_be_involved = {
 		any_scope_state = {
@@ -55,6 +38,7 @@
 	immediate_all_involved = {
 		trigger_event = {
 			id = eqfm_pirates.001 # The Pirates of the Adriatic
+			days = 15
 		}
 	}
 	
@@ -181,32 +165,33 @@ je_eqfm_expedition_to_the_adriatic = {
 	}
 	
 	fail = {
-		trigger_if = {
-			limit = {
-				has_variable = eqfm_cutler_beckett_var
-				NOT = {
-					has_variable = eqfm_expedition_piracy_transit_var
-				}
+		OR = {
+			custom_tooltip = {
+				text = je_eqfm_expedition_to_the_adriatic_fail_1
+				has_variable = eqfm_adriatic_expedition_peril_var
+				var:eqfm_adriatic_expedition_peril_var >= 5
 			}
-			OR = {
-				custom_tooltip = {
-					text = je_eqfm_expedition_to_the_adriatic_fail_1
-					has_variable = eqfm_adriatic_expedition_peril_var
-					var:eqfm_adriatic_expedition_peril_var >= 5
-				}
-				custom_tooltip = {
-					text = je_eqfm_expedition_to_the_adriatic_fail_2
-					NOT = {
-						exists = var:eqfm_cutler_beckett_var
-					}
-				}
-			}
-		}
-		trigger_else = {
 			custom_tooltip = {
 				text = je_eqfm_expedition_to_the_adriatic_fail_2
 				NOT = {
-					has_variable = eqfm_cutler_beckett_var
+					has_variable = eqfm_expedition_piracy_transit_var
+				}
+				OR = {
+					AND = {
+						has_variable = eqfm_cutler_beckett_var
+						NOT = {
+							exists = var:eqfm_cutler_beckett_var
+						}
+					}
+					NOT = {
+						has_variable = eqfm_cutler_beckett_var
+					}
+				}
+			}
+			custom_tooltip = {
+				text = eqfm_has_adriatic_expedition_NOT
+				NOT = {
+					has_variable = eqfm_adriatic_expedition_var
 				}
 			}
 		}
