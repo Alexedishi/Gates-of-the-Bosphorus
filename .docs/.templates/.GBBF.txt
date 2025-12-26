@@ -688,51 +688,95 @@ je_loc_breakdown: "[Country.MakeScope.GetScriptValueDesc('value_key')]"
 [GetPlayer.MakeScope.Var('var').GetValue]
 [GetGlobalVariable('global_var').GetValue]
 
- alert_<alert_key>_name: "" # This is the alert name
- alert_<alert_key>_hint: "" # This is the alert desc 
- alert_<alert_key>_action: "" # This is what will happen if you click the alert
- <alert_key>_setting_name: "" # This is shown in the alert settings
- 
+alert_<alert_key>_name: "" # This is the alert name
+alert_<alert_key>_hint: "" # This is the alert desc
+alert_<alert_key>_action: "" # This is what will happen if you click the alert
+<alert_key>_setting_name: "" # This is shown in the alert settings
+
+## Dynamic State/Hub Name Effects ##
+if = {
+	limit = {
+		state_region = {
+			s:STATE_temp ?= this
+		}
+	}
+	STATE_temp_state_name_assign = yes
+}
+
+REPLACE_OR_CREATE:STATE_temp_state_name_assign = {
+	if = {
+		limit = { # Greek
+			owner = {
+				gbbf_country_has_greek_culture_trigger = yes
+			}
+		}
+		set_state_name = STATE_temp_greek
+		set_hub_name = {
+			type = city
+			name = HUB_NAME_STATE_temp_city_greek
+		}
+		set_hub_name = {
+			type = farm
+			name = HUB_NAME_STATE_temp_farm_greek
+		}
+		set_hub_name = {
+			type = wood
+			name = HUB_NAME_STATE_temp_wood_greek
+		}
+		set_hub_name = {
+			type = mine
+			name = HUB_NAME_STATE_temp_mine_greek
+		}
+		set_hub_name = {
+			type = port
+			name = HUB_NAME_STATE_temp_port_greek
+		}
+	}
+	else = {
+		reset_state_name = yes
+		reset_hub_names = yes
+	}
+}
 
 # Acceptance Modifier Types
-	state_radicals_and_loyalists_from_sol_change_mult
+state_radicals_and_loyalists_from_sol_change_mult
 
-	country_loyalism_increases_full_acceptance_mult = 
-	country_loyalism_increases_second_rate_citizen_mult = 
-	country_loyalism_increases_open_prejudice_mult = 
-	country_loyalism_increases_cultural_erasure_mult = 
-	country_loyalism_increases_violent_hostility_mult = 
+country_loyalism_increases_full_acceptance_mult =
+country_loyalism_increases_second_rate_citizen_mult =
+country_loyalism_increases_open_prejudice_mult =
+country_loyalism_increases_cultural_erasure_mult =
+country_loyalism_increases_violent_hostility_mult =
 
-	country_radicalism_increases_full_acceptance_mult = 
-	country_radicalism_increases_second_rate_citizen_mult = 
-	country_radicalism_increases_open_prejudice_mult = 
-	country_radicalism_increases_cultural_erasure_mult = 
-	country_radicalism_increases_violent_hostility_mult = 
+country_radicalism_increases_full_acceptance_mult =
+country_radicalism_increases_second_rate_citizen_mult =
+country_radicalism_increases_open_prejudice_mult =
+country_radicalism_increases_cultural_erasure_mult =
+country_radicalism_increases_violent_hostility_mult =
 
-	country_qualification_growth_full_acceptance_mult = 
-	country_qualification_growth_second_rate_citizen_mult = 
-	country_qualification_growth_open_prejudice_mult = 
-	country_qualification_growth_cultural_erasure_mult = 
-	country_qualification_growth_violent_hostility_mult = 
-	
-	
-	state_loyalism_increases_full_acceptance_mult = 
-	state_loyalism_increases_second_rate_citizen_mult = 
-	state_loyalism_increases_open_prejudice_mult = 
-	state_loyalism_increases_cultural_erasure_mult = 
-	state_loyalism_increases_violent_hostility_mult = 
+country_qualification_growth_full_acceptance_mult =
+country_qualification_growth_second_rate_citizen_mult =
+country_qualification_growth_open_prejudice_mult =
+country_qualification_growth_cultural_erasure_mult =
+country_qualification_growth_violent_hostility_mult =
 
-	state_radicalism_increases_full_acceptance_mult = 
-	state_radicalism_increases_second_rate_citizen_mult = 
-	state_radicalism_increases_open_prejudice_mult = 
-	state_radicalism_increases_cultural_erasure_mult = 
-	state_radicalism_increases_violent_hostility_mult = 
 
-	state_qualification_growth_full_acceptance_mult = 
-	state_qualification_growth_second_rate_citizen_mult = 
-	state_qualification_growth_open_prejudice_mult = 
-	state_qualification_growth_cultural_erasure_mult = 
-	state_qualification_growth_violent_hostility_mult = 
+state_loyalism_increases_full_acceptance_mult =
+state_loyalism_increases_second_rate_citizen_mult =
+state_loyalism_increases_open_prejudice_mult =
+state_loyalism_increases_cultural_erasure_mult =
+state_loyalism_increases_violent_hostility_mult =
+
+state_radicalism_increases_full_acceptance_mult =
+state_radicalism_increases_second_rate_citizen_mult =
+state_radicalism_increases_open_prejudice_mult =
+state_radicalism_increases_cultural_erasure_mult =
+state_radicalism_increases_violent_hostility_mult =
+
+state_qualification_growth_full_acceptance_mult =
+state_qualification_growth_second_rate_citizen_mult =
+state_qualification_growth_open_prejudice_mult =
+state_qualification_growth_cultural_erasure_mult =
+state_qualification_growth_violent_hostility_mult =
 
 # Social Class Modifier Template
 
