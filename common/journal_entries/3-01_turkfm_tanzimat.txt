@@ -171,6 +171,7 @@ je_turkfm_tanzimat_argiculture = {
 		NOT = {
 			has_global_variable = turkfm_tanzimat_complete
 		}
+		has_modifier = modifier_turkfm_feudal_argiculture
 	}
 	
 	immediate = {
@@ -182,17 +183,12 @@ je_turkfm_tanzimat_argiculture = {
 			text = turkfm_tanzimat_started
 			has_global_variable = turkfm_tanzimat_started
 		}
-		has_modifier = modifier_turkfm_feudal_argiculture
 	}
 
 	complete = {
 		NOR = {
 			has_law_or_variant = law_type:law_traditionalism
 			has_law_or_variant = law_type:law_agrarianism
-		}
-		NOR = {
-			has_law_or_variant = law_type:law_serfdom
-			has_law_or_variant = law_type:law_tenant_farmers
 		}
 		any_scope_building = {
 			is_building_type = building_wheat_farm
@@ -212,6 +208,29 @@ je_turkfm_tanzimat_argiculture = {
 		show_as_tooltip = {
 			turkfm_advance_ottomanism1_effect = yes
 			turkfm_complete_reform_effect = yes
+			every_political_movement = {
+				limit = {
+					OR = {
+						law_stance = {
+							law = law_type:law_traditionalism
+							value < neutral
+						}
+						law_stance = {
+							law = law_type:law_agrarianism
+							value < neutral
+						}
+					}
+				}
+				add_modifier = {
+					name = modifier_turkfm_modernized_agriculture_movement
+					months = gbbf_duration_15_years
+					is_decaying = yes
+				}
+			}
+			add_modifier = {
+				name = modifier_turkfm_modernized_agriculture
+				months = gbbf_duration_10_years
+			}
 		}
 	}
 
@@ -237,6 +256,7 @@ je_turkfm_tanzimat_army = {
 		NOT = {
 			has_global_variable = turkfm_tanzimat_complete
 		}
+		has_modifier = modifier_turkfm_cizye_tax
 	}
 	
 	immediate = {
@@ -248,7 +268,6 @@ je_turkfm_tanzimat_army = {
 			text = turkfm_tanzimat_started
 			has_global_variable = turkfm_tanzimat_started
 		}
-		has_modifier = modifier_turkfm_cizye_tax
 	}
 
 	complete = {
@@ -288,6 +307,12 @@ je_turkfm_tanzimat_army = {
 		show_as_tooltip = {
 			turkfm_advance_ottomanism1_effect = yes
 			turkfm_complete_reform_effect = yes
+			every_interest_group = {
+				limit = {
+					has_modifier = modifier_turkfm_janissary_legacy
+				}
+				remove_modifier = modifier_turkfm_janissary_legacy
+			}
 		}
 	}
 
@@ -313,6 +338,7 @@ je_turkfm_tanzimat_bureaucracy = {
 		NOT = {
 			has_global_variable = turkfm_tanzimat_complete
 		}
+		has_modifier = modifier_turkfm_outmoded_bureaucracy
 	}
 	
 	immediate = {
@@ -324,7 +350,6 @@ je_turkfm_tanzimat_bureaucracy = {
 			text = turkfm_tanzimat_started
 			has_global_variable = turkfm_tanzimat_started
 		}
-		has_modifier = modifier_turkfm_outmoded_bureaucracy
 	}
 
 	complete = {
@@ -397,6 +422,7 @@ je_turkfm_tanzimat_economy = {
 		NOT = {
 			has_global_variable = turkfm_tanzimat_complete
 		}
+		has_modifier = modifier_turkfm_stagnant_economy
 	}
 	
 	immediate = {
@@ -408,7 +434,7 @@ je_turkfm_tanzimat_economy = {
 			text = turkfm_tanzimat_started
 			has_global_variable = turkfm_tanzimat_started
 		}
-		has_modifier = modifier_turkfm_stagnant_economy
+
 	}
 
 	complete = {
@@ -495,6 +521,7 @@ je_turkfm_tanzimat_education = {
 		NOT = {
 			has_global_variable = turkfm_tanzimat_complete
 		}
+		has_modifier = modifier_turkfm_illiterate_populace
 	}
 	
 	immediate = {
@@ -506,7 +533,6 @@ je_turkfm_tanzimat_education = {
 			text = turkfm_tanzimat_started
 			has_global_variable = turkfm_tanzimat_started
 		}
-		has_modifier = modifier_turkfm_illiterate_populace
 	}
 
 	complete = {
@@ -550,9 +576,7 @@ je_turkfm_tanzimat_education = {
 	invalid = {
 		custom_tooltip = {
 			text = turkfm_tanzimat_completed_or_failed
-			hidden_trigger = {
-				has_global_variable = turkfm_tanzimat_complete
-			}
+			has_global_variable = turkfm_tanzimat_complete
 		}
 	}
 }
@@ -571,6 +595,7 @@ je_turkfm_tanzimat_security = {
 		NOT = {
 			has_global_variable = turkfm_tanzimat_complete
 		}
+		has_modifier = modifier_turkfm_insecure_countryside
 	}
 	
 	immediate = {
@@ -582,7 +607,7 @@ je_turkfm_tanzimat_security = {
 			text = turkfm_tanzimat_started
 			has_global_variable = turkfm_tanzimat_started
 		}
-		has_modifier = modifier_turkfm_insecure_countryside
+
 	}
 
 	complete = {
@@ -632,8 +657,9 @@ je_turkfm_tanzimat_slavery = {
 	
 	is_shown_when_inactive = {
 		c:TUR ?= this
-		NOT = {
+		NOR = {
 			has_global_variable = turkfm_tanzimat_complete
+			has_law_or_variant = law_type:law_slavery_banned
 		}
 	}
 	
@@ -645,9 +671,6 @@ je_turkfm_tanzimat_slavery = {
 		custom_tooltip = {
 			text = turkfm_tanzimat_started
 			has_global_variable = turkfm_tanzimat_started
-		}
-		NOT = {
-			has_law_or_variant = law_type:law_slavery_banned
 		}
 	}
 
