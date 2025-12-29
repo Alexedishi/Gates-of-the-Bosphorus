@@ -171,10 +171,16 @@ je_turkfm_tanzimat_argiculture = {
 		NOT = {
 			has_global_variable = turkfm_tanzimat_complete
 		}
+		has_modifier = modifier_turkfm_feudal_argiculture
 	}
 	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
+		remove_modifier = modifier_turkfm_feudal_argiculture
+	}
+
+	modifiers_while_active = {
+		modifier_turkfm_feudal_argiculture
 	}
 
 	possible = {
@@ -182,17 +188,12 @@ je_turkfm_tanzimat_argiculture = {
 			text = turkfm_tanzimat_started
 			has_global_variable = turkfm_tanzimat_started
 		}
-		has_modifier = modifier_turkfm_feudal_argiculture
 	}
 
 	complete = {
 		NOR = {
 			has_law_or_variant = law_type:law_traditionalism
 			has_law_or_variant = law_type:law_agrarianism
-		}
-		NOR = {
-			has_law_or_variant = law_type:law_serfdom
-			has_law_or_variant = law_type:law_tenant_farmers
 		}
 		any_scope_building = {
 			is_building_type = building_wheat_farm
@@ -212,15 +213,36 @@ je_turkfm_tanzimat_argiculture = {
 		show_as_tooltip = {
 			turkfm_advance_ottomanism1_effect = yes
 			turkfm_complete_reform_effect = yes
+			every_political_movement = {
+				limit = {
+					OR = {
+						law_stance = {
+							law = law_type:law_traditionalism
+							value < neutral
+						}
+						law_stance = {
+							law = law_type:law_agrarianism
+							value < neutral
+						}
+					}
+				}
+				add_modifier = {
+					name = modifier_turkfm_modernized_agriculture_movement
+					months = gbbf_duration_15_years
+					is_decaying = yes
+				}
+			}
+			add_modifier = {
+				name = modifier_turkfm_modernized_agriculture
+				months = gbbf_duration_10_years
+			}
 		}
 	}
 
 	invalid = {
 		custom_tooltip = {
 			text = turkfm_tanzimat_completed_or_failed
-			hidden_trigger = {
-				has_global_variable = turkfm_tanzimat_complete
-			}
+			has_global_variable = turkfm_tanzimat_complete
 		}
 	}
 }
@@ -239,10 +261,16 @@ je_turkfm_tanzimat_army = {
 		NOT = {
 			has_global_variable = turkfm_tanzimat_complete
 		}
+		has_modifier = modifier_turkfm_cizye_tax
 	}
 	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
+		remove_modifier = modifier_turkfm_cizye_tax
+	}
+
+	modifiers_while_active = {
+		modifier_turkfm_cizye_tax
 	}
 
 	possible = {
@@ -250,7 +278,6 @@ je_turkfm_tanzimat_army = {
 			text = turkfm_tanzimat_started
 			has_global_variable = turkfm_tanzimat_started
 		}
-		has_modifier = modifier_turkfm_cizye_tax
 	}
 
 	complete = {
@@ -260,21 +287,25 @@ je_turkfm_tanzimat_army = {
 			filter = {
 				is_building_type = building_barrack
 			}
+			count = all
 			NOR = {
 				building_has_goods_shortage = yes
 				has_active_production_method = pm_no_organization
 			}
-			percent = 1
 		}
-		NOT = {
-			any_military_formation = {
-				filter = {
-					is_army = yes
-				}
+		any_military_formation = {
+			filter = {
+				is_army = yes
+			}
+			count = all
+			NOT = {
 				any_combat_unit = {
-					has_unit_type = unit_type:combat_unit_type_irregular_infantry
+					OR = {
+						has_unit_type = unit_type:combat_unit_type_irregular_infantry
+						has_unit_type = unit_type:combat_unit_type_cannon_artillery
+						has_unit_type = unit_type:combat_unit_type_hussars
+					}
 				}
-				percent >= 0.25
 			}
 		}
 	}
@@ -286,15 +317,19 @@ je_turkfm_tanzimat_army = {
 		show_as_tooltip = {
 			turkfm_advance_ottomanism1_effect = yes
 			turkfm_complete_reform_effect = yes
+			every_interest_group = {
+				limit = {
+					has_modifier = modifier_turkfm_janissary_legacy
+				}
+				remove_modifier = modifier_turkfm_janissary_legacy
+			}
 		}
 	}
 
 	invalid = {
 		custom_tooltip = {
 			text = turkfm_tanzimat_completed_or_failed
-			hidden_trigger = {
-				has_global_variable = turkfm_tanzimat_complete
-			}
+			has_global_variable = turkfm_tanzimat_complete
 		}
 	}
 }
@@ -313,10 +348,16 @@ je_turkfm_tanzimat_bureaucracy = {
 		NOT = {
 			has_global_variable = turkfm_tanzimat_complete
 		}
+		has_modifier = modifier_turkfm_outmoded_bureaucracy
 	}
 	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
+		remove_modifier = modifier_turkfm_outmoded_bureaucracy
+	}
+
+	modifiers_while_active = {
+		modifier_turkfm_outmoded_bureaucracy
 	}
 
 	possible = {
@@ -324,7 +365,6 @@ je_turkfm_tanzimat_bureaucracy = {
 			text = turkfm_tanzimat_started
 			has_global_variable = turkfm_tanzimat_started
 		}
-		has_modifier = modifier_turkfm_outmoded_bureaucracy
 	}
 
 	complete = {
@@ -397,10 +437,16 @@ je_turkfm_tanzimat_economy = {
 		NOT = {
 			has_global_variable = turkfm_tanzimat_complete
 		}
+		has_modifier = modifier_turkfm_stagnant_economy
 	}
 	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
+		remove_modifier = modifier_turkfm_stagnant_economy
+	}
+
+	modifiers_while_active = {
+		modifier_turkfm_stagnant_economy
 	}
 
 	possible = {
@@ -408,13 +454,13 @@ je_turkfm_tanzimat_economy = {
 			text = turkfm_tanzimat_started
 			has_global_variable = turkfm_tanzimat_started
 		}
-		has_modifier = modifier_turkfm_stagnant_economy
+
 	}
 
 	complete = {
 		NOR = {
 			has_law_or_variant = law_type:law_traditionalism
-			has_law_or_variant = law_type:law_land_based_taxation
+			has_law_or_variant = law_type:law_serfdom
 			has_law_or_variant = law_type:law_consumption_based_taxation
 			has_law_or_variant = law_type:law_isolationism
 		}
@@ -433,15 +479,50 @@ je_turkfm_tanzimat_economy = {
 		show_as_tooltip = {
 			turkfm_advance_ottomanism1_effect = yes
 			turkfm_complete_reform_effect = yes
+			if = {
+				limit = {
+					NOT = {
+						any_political_movement = {
+							is_political_movement_type = movement_land_reform
+						}
+					}
+				}
+				create_political_movement = {
+					type = movement_land_reform
+				}
+				hidden_effect = {
+					random_political_movement = {
+						limit = {
+							is_political_movement_type = movement_land_reform
+						}
+						add_modifier = {
+							name = initial_movement_enthusiasm
+							months = gbbf_duration_25_years
+							is_decaying = yes
+						}
+					}
+				}
+			}
+			every_political_movement = {
+				limit = {
+					OR = {
+						is_political_movement_type = movement_land_reform
+						is_political_movement_type = movement_modernizer
+					}
+				}
+				add_modifier = {
+					name = modifier_turkfm_modernized_economy
+					months = gbbf_duration_15_years
+					is_decaying = yes
+				}
+			}
 		}
 	}
 
 	invalid = {
 		custom_tooltip = {
 			text = turkfm_tanzimat_completed_or_failed
-			hidden_trigger = {
-				has_global_variable = turkfm_tanzimat_complete
-			}
+			has_global_variable = turkfm_tanzimat_complete
 		}
 	}
 }
@@ -460,10 +541,16 @@ je_turkfm_tanzimat_education = {
 		NOT = {
 			has_global_variable = turkfm_tanzimat_complete
 		}
+		has_modifier = modifier_turkfm_illiterate_populace
 	}
 	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
+		remove_modifier = modifier_turkfm_illiterate_populace
+	}
+
+	modifiers_while_active = {
+		modifier_turkfm_illiterate_populace
 	}
 
 	possible = {
@@ -471,14 +558,12 @@ je_turkfm_tanzimat_education = {
 			text = turkfm_tanzimat_started
 			has_global_variable = turkfm_tanzimat_started
 		}
-		has_modifier = modifier_turkfm_illiterate_populace
 	}
 
 	complete = {
-		any_scope_building = {
-			is_building_type = building_university
-			occupancy > 0.9
-			level >= 5
+		country_has_building_group_levels = {
+			type = bg_technology
+			value >= 15
 		}
 		any_scope_building = {
 			filter = {
@@ -515,9 +600,7 @@ je_turkfm_tanzimat_education = {
 	invalid = {
 		custom_tooltip = {
 			text = turkfm_tanzimat_completed_or_failed
-			hidden_trigger = {
-				has_global_variable = turkfm_tanzimat_complete
-			}
+			has_global_variable = turkfm_tanzimat_complete
 		}
 	}
 }
@@ -536,10 +619,16 @@ je_turkfm_tanzimat_security = {
 		NOT = {
 			has_global_variable = turkfm_tanzimat_complete
 		}
+		has_modifier = modifier_turkfm_insecure_countryside
 	}
 	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
+		remove_modifier = modifier_turkfm_insecure_countryside
+	}
+
+	modifiers_while_active = {
+		modifier_turkfm_insecure_countryside
 	}
 
 	possible = {
@@ -547,7 +636,7 @@ je_turkfm_tanzimat_security = {
 			text = turkfm_tanzimat_started
 			has_global_variable = turkfm_tanzimat_started
 		}
-		has_modifier = modifier_turkfm_insecure_countryside
+
 	}
 
 	complete = {
@@ -579,9 +668,7 @@ je_turkfm_tanzimat_security = {
 	invalid = {
 		custom_tooltip = {
 			text = turkfm_tanzimat_completed_or_failed
-			hidden_trigger = {
-				has_global_variable = turkfm_tanzimat_complete
-			}
+			has_global_variable = turkfm_tanzimat_complete
 		}
 	}
 }
@@ -597,8 +684,9 @@ je_turkfm_tanzimat_slavery = {
 	
 	is_shown_when_inactive = {
 		c:TUR ?= this
-		NOT = {
+		NOR = {
 			has_global_variable = turkfm_tanzimat_complete
+			has_law_or_variant = law_type:law_slavery_banned
 		}
 	}
 	
@@ -610,9 +698,6 @@ je_turkfm_tanzimat_slavery = {
 		custom_tooltip = {
 			text = turkfm_tanzimat_started
 			has_global_variable = turkfm_tanzimat_started
-		}
-		NOT = {
-			has_law_or_variant = law_type:law_slavery_banned
 		}
 	}
 

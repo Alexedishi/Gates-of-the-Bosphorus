@@ -770,7 +770,7 @@ turkfm_sick_man.018 = { # A Consuming Sickness
 		}
 		trigger_event = {
 			id = turkfm_sick_man.019 # The Ascent of Abdulmecid
-			months = { 6 12 }
+			months = { 2 4 }
 		}
 	}
 
@@ -843,5 +843,83 @@ turkfm_sick_man.019 = { # The Ascent of Abdulmecid
 			}
 		}
 	}
-
+	
+	option = {
+		name = turkfm_sick_man.019.b
+		heir ?= {
+			set_character_as_ruler = yes
+		}
+		ruler ?= {
+			kill_character = yes
+		}
+		hidden_effect = {
+			create_character = {
+				template = template_turfkm_osmanoglu_abdulaziz
+			}
+		}
+		trigger_event = {
+			id = turkfm_tanzimat.002 # Edict of Gülhane
+			popup = yes
+		}
+		show_as_tooltip = {
+			add_modifier = {
+				name = modifier_turkfm_reorganizing_spirit
+				months  = gbbf_duration_30_years
+			}
+			custom_tooltip = {
+				text = turkfm_tanzimat_declaration
+				change_variable = {
+					name = turkfm_tanzimat_completion_var
+					add = 1
+				}
+			}
+			ig:ig_intelligentsia = {
+				add_ideology = ideology_anti_slavery
+			}
+			every_interest_group = {
+				limit = {
+					law_stance = {
+						law = law_type:law_state_religion
+						value > neutral
+					}
+					NOR = {
+						law_stance = {
+							law = law_type:law_landed_voting
+							value > neutral
+						}
+						law_stance = {
+							law = law_type:law_wealth_voting
+							value > neutral
+						}
+						law_stance = {
+							law = law_type:law_census_voting
+							value > neutral
+						}
+						law_stance = {
+							law = law_type:law_universal_suffrage
+							value > neutral
+						}
+					}
+				}
+				add_modifier = {
+					name = modifier_turkfm_influence_questioned
+					months = gbbf_duration_10_years
+					is_decaying = yes
+				}
+			}
+			every_political_movement = {
+				limit = {
+					OR = {
+						is_political_movement_type = movement_religious_majority
+						is_political_movement_type = movement_modernizer
+					}
+				}
+				add_modifier = {
+					name = modifier_turkfm_declared_reforms
+					months = gbbf_duration_20_years
+				}
+			}
+		}
+		set_global_variable = turkfm_tanzimat_started
+	}
 }
