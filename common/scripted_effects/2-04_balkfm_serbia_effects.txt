@@ -23,6 +23,49 @@
 		name = balkfm_karadordevic_counter_var
 		value = 1
 	}
+	set_variable = {
+		name = balkfm_ruling_dynasty_var
+		value = flag:balkfm_house_obrenovic
+	}
+	set_variable = com_no_regencies
+}
+
+balkfm_validate_ruler_character = {
+		if = {
+		limit = {
+			var:balkfm_ruling_dynasty_var ?= flag:balkfm_house_obrenovic
+			ruler = {
+				balkfm_is_obrenovic_character_trigger = no
+			}
+		}
+		create_character = {
+			template = template_balkfm_obrenovic_dynamic
+			ruler = yes
+		}
+		error_log = "Error! Ruler for Serbia has been regenerated. House Obrenović rules Serbia."
+	}
+	else_if = {
+		limit = {
+			var:balkfm_ruling_dynasty_var ?= flag:balkfm_house_karadordevic
+			ruler = {
+				balkfm_is_karadordevic_character_trigger = no
+			}
+		}
+		create_character = {
+			template = template_balkfm_karadordevic_dynamic
+			ruler = yes
+		}
+		error_log = "Error! Ruler for Serbia has been regenerated. House Karađorđević rules Serbia."
+	}
+	else_if = {
+		limit = {
+			has_variable = balkfm_ruling_dynasty_var
+		}
+		error_log = "Error! Variable balkfm_ruling_dynasty_var is set, but its value does not correspond to a valid house flag. Unable to generate compatible ruler for Serbia."
+	}
+	else = {
+		error_log = "Error! Variable balkfm_ruling_dynasty_var is not set. Unable to generate compatible ruler for Serbia."
+	}
 }
 
 balkfm_calculate_dynastic_rivalry_variables_effect = {
