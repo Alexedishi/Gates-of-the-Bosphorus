@@ -30,9 +30,11 @@
 	set_variable = com_no_regencies
 }
 
-balkfm_validate_ruler_character = {
-		if = {
+balkfm_validate_serbian_characters = {
+	# First, validate the ruler
+	if = {
 		limit = {
+			has_variable = balkfm_ruling_dynasty_var
 			var:balkfm_ruling_dynasty_var ?= flag:balkfm_house_obrenovic
 			ruler = {
 				balkfm_is_obrenovic_character_trigger = no
@@ -42,10 +44,11 @@ balkfm_validate_ruler_character = {
 			template = template_balkfm_obrenovic_dynamic
 			ruler = yes
 		}
-		error_log = "Error! Ruler for Serbia has been regenerated. House Obrenović rules Serbia."
+		error_log = "Ruler for Serbia has been regenerated. House Obrenović rules Serbia."
 	}
 	else_if = {
 		limit = {
+			has_variable = balkfm_ruling_dynasty_var
 			var:balkfm_ruling_dynasty_var ?= flag:balkfm_house_karadordevic
 			ruler = {
 				balkfm_is_karadordevic_character_trigger = no
@@ -55,16 +58,159 @@ balkfm_validate_ruler_character = {
 			template = template_balkfm_karadordevic_dynamic
 			ruler = yes
 		}
-		error_log = "Error! Ruler for Serbia has been regenerated. House Karađorđević rules Serbia."
+		error_log = "Ruler for Serbia has been regenerated. House Karađorđević rules Serbia."
 	}
 	else_if = {
 		limit = {
 			has_variable = balkfm_ruling_dynasty_var
+			NOR = {
+				var:balkfm_ruling_dynasty_var ?= flag:balkfm_house_obrenovic
+				var:balkfm_ruling_dynasty_var ?= flag:balkfm_house_karadordevic
+			}
 		}
-		error_log = "Error! Variable balkfm_ruling_dynasty_var is set, but its value does not correspond to a valid house flag. Unable to generate compatible ruler for Serbia."
+		error_log = "Variable balkfm_ruling_dynasty_var is set, but its value does not correspond to a valid house flag. Unable to generate compatible ruler for Serbia."
 	}
-	else = {
-		error_log = "Error! Variable balkfm_ruling_dynasty_var is not set. Unable to generate compatible ruler for Serbia."
+	else_if = {
+		limit = {
+			NOT = {
+				has_variable = balkfm_ruling_dynasty_var
+			}
+		}
+		error_log = "Variable balkfm_ruling_dynasty_var is not set. Unable to validate or generate compatible ruler for Serbia."
+	}
+	
+	# Second, clip any missed heirs
+	if = {
+		limit = {
+			exists = heir
+			ruler = {
+				balkfm_is_obrenovic_character_trigger = yes
+			}
+			heir = {
+				balkfm_is_obrenovic_character_trigger = no
+			}
+		}
+		heir = {
+			kill_character = yes
+		}
+		error_log = "Serbia has a ruler with an Obrenović template, but the heir does not. Heir has been liquidated."
+	}
+	if = {
+		limit = {
+			exists = heir
+			ruler = {
+				balkfm_is_karadordevic_character_trigger = yes
+			}
+			heir = {
+				balkfm_is_karadordevic_character_trigger = no
+			}
+		}
+		heir = {
+			kill_character = yes
+		}
+		error_log = "Serbia has a ruler with a Karađorđević template, but the heir does not. Heir has been liquidated."
+	}
+	
+	# Third regenerate heir as appropriate
+	if = {
+		limit = {
+			NOR = {
+				exists = heir
+				has_variable = balkfm_constitution_pending # Blocks heir shenanigans until the initial event chain is complete
+			}
+		}
+		if = {
+			limit = {
+				balkfm_has_obrenovic_ruler_trigger = yes
+			}
+			if = {
+				limit = {
+					ruler = {
+						has_template = template_balkfm_obrenovic_milosh
+					}
+				}
+				create_character = {
+					template = template_balkfm_obrenovic_milan
+					heir = yes
+				}
+			}
+			else_if = {
+				limit = {
+					ruler = {
+						has_template = template_balkfm_obrenovic_milan
+					}
+				}
+				create_character = {
+					template = template_balkfm_obrenovic_mihailo
+					heir = yes
+				}
+			}
+			else_if = {
+				limit = {
+					ruler = {
+						has_template = template_balkfm_obrenovic_mihailo
+					}
+				}
+				if = {
+					limit = {
+						year >= 1855
+					}
+					create_character = {
+						template = template_balkfm_obrenovic_dynamic_heir
+					}
+				}
+				else = {
+					create_character = {
+						template = template_balkfm_obrenovic_milan_IV
+						heir = yes
+					}
+				}
+			}
+			error_log = "Generated an Obrenović template heir for Serbia."
+		}
+		else_if = {
+			limit = {
+				balkfm_has_karadordevic_ruler_trigger = yes
+			}
+			if = {
+				limit = {
+					ruler = {
+						has_template = template_balkfm_karadordevic_aleksander
+					}
+				}
+				if = {
+					limit = {
+						year >= 1844
+					}
+					create_character = {
+						template = template_balkfm_karadordevic_petar
+						heir = yes
+					}
+				}
+				else = {
+					create_character = {
+						template = template_balkfm_karadordevic_dynamic_heir
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					ruler = {
+						has_template = template_balkfm_karadordevic_petar
+					}
+				}
+				create_character = {
+					template = template_balkfm_karadordevic_aleksander_I
+					heir = yes
+				}
+			}
+			else = {
+				create_character = {
+					template = template_balkfm_karadordevic_dynamic_heir
+				}
+			}
+		}
+		error_log = "Generated a Karađorđević template heir for Serbia."
 	}
 }
 
