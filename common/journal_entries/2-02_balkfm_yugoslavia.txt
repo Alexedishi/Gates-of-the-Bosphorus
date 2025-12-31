@@ -1,15 +1,9 @@
-﻿je_balkfm_nacertanije = {
-	group = je_group_historical_content
+﻿je_balkfm_unification_of_yugoslavia = {
+	group = je_group_global_international_situations
 	icon = "gfx/interface/icons/event_icons/event_flag_yug.dds"
 	weight = 1000
 
 	should_be_pinned_by_default = yes
-	can_revolution_inherit = yes
-	transferable = no
-
-	scripted_button = balkfm_austrian_gunrunners_button
-	scripted_button = balkfm_ottoman_gunrunners_button
-	scripted_button = balkfm_form_yugoslavia_button # this is a fallback for Bulgaria
 
 	is_shown_in_lobby = {
 		has_dlc_feature = ip3_content # National Awakening
@@ -22,187 +16,215 @@
 		}
 	}
 
+#	scripted_button = balkfm_austrian_gunrunners_button
+#	scripted_button = balkfm_ottoman_gunrunners_button
+	scripted_button = balkfm_form_yugoslavia_button # this is a fallback for Bulgaria
+
 	is_shown_when_inactive = {
-		NOR = { # not Danubian State
-			has_global_variable = balkfm_yugoslavism_failed
-			exists = c:YUG
+		NOR = {
 			has_global_variable = has_formed_yug
-			c:KUK ?= this
-			c:HRE ?= this # https://media.tenor.com/Z16slmCnZFcAAAAM/stare-christian-bale.gif
-			has_journal_entry = je_danubian_federation
+			has_global_variable = balkfm_yugoslavism_failed
 		}
+	}
+
+	should_be_involved = {
 		OR = {
-			country_has_primary_culture = cu:serb
-			country_has_primary_culture = cu:croat
-			country_has_primary_culture = cu:bosniak
-			country_has_primary_culture = cu:slovene
 			AND = {
-				has_variable = bul_pursued_greater_yugoslavism # Inherited from IP3
-				country_has_primary_culture = cu:bulgarian
+				OR = {
+					balkfm_country_has_yugoslav_culture_trigger = yes
+					hidden_trigger = {
+						has_variable = bul_pursued_greater_yugoslavism
+					}
+				}
+				has_technology_researched = nationalism
+			}
+			any_scope_state = {
+				is_in_geographic_region = geographic_region_yugoslavia
+			}
+			any_subject_or_below = {
+				balkfm_country_has_yugoslav_culture_trigger = yes
+				has_technology_researched = nationalism
 			}
 		}
-		aggressive_diplomatic_plays_permitted = yes
 	}
 
 	possible = {
-		has_technology_researched = nationalism
-		is_subject = no
-		hidden_trigger = { # blocks journal before a tag has independence
-			is_secessionist = no
+		any_country = {
+			OR = {
+				country_has_primary_culture = cu:serb
+				country_has_primary_culture = cu:croat
+				country_has_primary_culture = cu:bosniak
+				country_has_primary_culture = cu:slovene
+				AND = {
+					country_has_primary_culture = cu:bulgarian
+					hidden_trigger = {
+						has_variable = bul_pursued_greater_yugoslavism # Inherited from IP3
+					}
+				}
+			}
+			has_technology_researched = nationalism
+			hidden_trigger = { # blocks journal before a tag has independence
+				is_secessionist = no
+			}
 		}
 	}
 
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
-		root = {
-			save_scope_as = root_country_scope
+		set_global_variable = balkfm_yugoslavism_started
+		scope:journal_entry = {
+			save_scope_as = balkfm_yugoslavia_journal_scope
 		}
-		cu:serb = {
-			save_scope_as = serbian_scope
+		set_global_variable = {
+			name = balkfm_yugoslavia_journal_var
+			value = scope:balkfm_yugoslavia_journal_scope
 		}
-		cu:bulgarian = {
-			save_scope_as = bulgarian_scope
-		}
-		cu:bosniak = {
-			save_scope_as = bosniak_scope
-		}
-		cu:croat = {
-			save_scope_as = croatian_scope
-		}
-		cu:slovene = {
-			save_scope_as = slovene_scope
-		}
+	}
+
+	immediate_all_involved = {
 		trigger_event = {
 			id = balkfm_yugoslavia.001 # Yugoslavism Starter Event
 		}
-		set_global_variable = balkfm_yugoslavism_started
-		set_variable = je_yugoslavia_is_active
 	}
 
 	complete = {
-		custom_tooltip = {
-			text = je_balkfm_nacertanije_complete_tt
-			c:YUG ?= this
-		}
-		government_legitimacy >= 50
-		is_at_war = no
-		custom_tooltip = {
-			text = no_insurrectionary_movement_tt
-			NOT = {
-				any_political_movement = {
-					is_insurrectionary = yes
-				}
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = bul_pursued_greater_yugoslavism # Inherited from IP3
-			}
-			owns_entire_state_region = STATE_BULGARIA
-			owns_entire_state_region = STATE_NORTHERN_THRACE
-			owns_entire_state_region = STATE_DOBRUDJA
-		}
+		exists = c:YUG
 	}
 
 	on_complete = {
-		set_variable = {
+		set_global_variable = {
 			name = je_yugoslavism_cooldown_var # Blocks event spam
 			months = 3
 		}
+		every_country = {
+			limit = {
+				has_diplomatic_relevance = c:YUG
+				balkfm_country_has_yugoslav_culture_trigger = no
+			}
+			c:YUG ?= {
+				save_scope_as = yug_scope
+				ruler = {
+					save_scope_as = ruler_scope
+				}
+			}
+			post_notification = yug_unification
+		}
+	}
+
+	on_complete_all_involved = {
 		if = {
 			limit = {
-				has_variable = bul_pursued_greater_yugoslavism # Inherited from IP3
+				balkfm_country_has_yugoslav_culture_trigger = yes
+				c:YUG != this
 			}
 			trigger_event = {
-				id = balkfm_bulgaria.217 # The Slavic Balkans
+				id = balkfm_yugoslavia.009
 			}
 		}
-		else = {
-			trigger_event = {
-				id = balkfm_yugoslavia.009 # The Birth of Yugoslavia
-			}
-		}
-		balkfm_cleanup_yugoslavism_effect = yes
 	}
 
 	fail = {
-		OR = {
-			is_subject = yes
-			balkfm_is_national_empire_trigger = yes
+		NOT = {
+			any_country = {
+				OR = {
+					country_has_primary_culture = cu:serb
+					country_has_primary_culture = cu:croat
+					country_has_primary_culture = cu:bosniak
+					country_has_primary_culture = cu:slovene
+					country_has_primary_culture = cu:bulgarian
+				}
+			}
 		}
 	}
 
 	on_fail = {
-		balkfm_cleanup_yugoslavism_effect = yes
-		post_notification = yugoslavia_failed_message
-	}
-
-	invalid = {
-		OR = {
-			custom_tooltip = {
-				text = balkfm_yugoslavism_completed_tt
-				hidden_trigger = {
-					has_global_variable = has_formed_yug
-					NOT = {
-						c:YUG ?= this
-					}
-				}
+		every_country = {
+			limit = {
+				has_interest_marker_in_region = region_balkans
 			}
-			custom_tooltip = {
-				text = balkfm_yugoslavism_failed_tt
-				hidden_trigger = {
-					has_global_variable = balkfm_yugoslavism_failed
-				}
-			}
-			custom_tooltip = {
-				text = balkfm_weaksauce_trigger_tt
-				hidden_trigger = {
-					has_variable = balkfm_weaksauce
-				}
+			trigger_event = {
+				id = balkfm_yugoslavia.008
 			}
 		}
-	}
-
-	on_invalid = {
-		balkfm_cleanup_yugoslavism_effect = yes
 	}
 
 	on_weekly_pulse = {
 		effect = {
-			balkfm_determine_yugoslav_leader_effect = yes
+			ordered_country = {
+				limit = {
+					is_involved_in_journal_entry = je_balkfm_unification_of_yugoslavia
+					balkfm_country_has_yugoslav_culture_trigger = yes
+				}
+				order_by = prestige
+				position = 0
+				check_range_bounds = no
+				save_scope_as = balkfm_yugoslav_leader_scope
+			}
+			scope:journal_entry = {
+				set_variable = {
+					name = balkfm_yugoslav_leader_var
+					value = scope:balkfm_yugoslav_leader_scope
+				}
+				set_variable = {
+					name = balkfm_yugoslav_leader_prestige_var
+					value = var:balkfm_yugoslav_leader_var.prestige
+				}
+			}
 		}
 	}
 
 	on_monthly_pulse = {
-		random_events = {
-			chance_of_no_event = 50
-			5 = balkfm_yugoslavia.015 # Yugoslav Country Seeks Union (Same Culture)
-			5 = balkfm_yugoslavia.016 # Yugoslav Country Seeks Union (Different Culture)
+		effect = {
+			every_country = {
+				if = {
+					limit = {
+						is_involved_in_journal_entry = je_balkfm_unification_of_yugoslavia
+						NOR = {
+							balkfm_country_is_eligible_for_yugoslavism_trigger = yes
+							any_scope_state = {
+								is_in_geographic_region = geographic_region_yugoslavia
+							}
+							any_subject_or_below = {
+								balkfm_country_has_yugoslav_culture_trigger = yes
+							}
+						}
+					}
+					global_var:balkfm_yugoslavia_journal_var = {
+						remove_involved_country = prev
+					}
+				}
+				if = {
+					limit = {
+						NOT = {
+							is_involved_in_journal_entry = je_balkfm_unification_of_yugoslavia
+						}
+						OR = {
+							balkfm_country_has_yugoslav_culture_trigger = yes
+							has_variable = bul_pursued_greater_yugoslavism
+							any_scope_state = {
+								is_in_geographic_region = geographic_region_yugoslavia
+							}
+							any_subject_or_below = {
+								balkfm_country_has_yugoslav_culture_trigger = yes
+							}
+						}
+					}
+					global_var:balkfm_yugoslavia_journal_var = {
+						add_involved_country = prev
+					}
+				}
+			}
 		}
 	}
 
 	status_desc = {
-		first_valid = {
-			triggered_desc ={
-				desc = je_balkfm_nacertanije_no_leader_tt
-				trigger = {
-					NOT = {
-						has_global_variable = balkfm_yugoslav_leader_var
-					}
-				}
-			}
-			triggered_desc ={
-				desc = je_balkfm_nacertanije_no_leader_tt
-				trigger = {
-					NOT = {
-						exists = global_var:balkfm_yugoslav_leader_var
-					}
-				}
-			}
-			triggered_desc = {
-				desc = je_balkfm_nacertanije_leader_tt
-				trigger = {
-					exists = global_var:balkfm_yugoslav_leader_var
+		triggered_desc ={
+			desc = je_balkfm_unification_of_yugoslavia_status
+			trigger = {
+				has_global_variable = balkfm_yugoslavism_started
+				scope:journal_entry = {
+					has_variable = balkfm_yugoslav_leader_var
+					exists = var:balkfm_yugoslav_leader_var
 				}
 			}
 		}
@@ -226,13 +248,13 @@ je_balkfm_yugoslav_nationalism = {
 	is_shown_when_inactive = {
 		c:YUG ?= this
 		NOT = {
-			has_variable = je_yugoslavism_cooldown_var
+			has_global_variable = je_yugoslavism_cooldown_var
 		}
 	}
 	
 	possible = {
 		NOT = {
-			has_journal_entry = je_balkfm_nacertanije
+			has_journal_entry = je_balkfm_unification_of_yugoslavia
 		}
 	}
 	
