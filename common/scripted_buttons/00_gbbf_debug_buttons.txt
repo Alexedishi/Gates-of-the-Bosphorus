@@ -150,3 +150,65 @@ gbbf_serbenegro_button = {
 		}
 	}
 }
+
+gbbf_break_ottoman_alliances = {
+	name = "gbbf_break_ottoman_alliances"
+	desc = "gbbf_break_ottoman_alliances_desc"
+	
+	visible = {
+		exists = c:TUR
+	}
+	possible = {
+		c:TUR = {
+			any_scope_treaty = {
+				any_scope_article = {
+					OR = {
+						has_type = alliance
+						has_type = defensive_pact
+					}
+				}
+			}
+		}
+	}
+	effect = {
+		c:TUR = {
+			every_scope_treaty = {
+				limit = {
+					any_scope_article = {
+						OR = {
+							has_type = alliance
+							has_type = defensive_pact
+						}
+					}
+				}
+				withdraw = {
+					country = c:TUR
+				}
+			}
+		}
+	}
+}
+
+gbbf_fix_yugoslavism = {
+	name = "gbbf_fix_yugoslavism"
+	desc = "gbbf_fix_yugoslavism_desc"
+	
+	visible = {
+		has_global_variable = balkfm_yugoslavism_failed
+	}
+	possible = {
+		has_technology_researched = nationalism
+	}
+	effect = {
+		every_country = {
+			limit = {
+				balkfm_has_yugoslav_culture_trigger = yes
+			}
+			add_journal_entry = {
+				type = je_balkfm_nacertanije
+			}
+		}
+		remove_variable = balkfm_yug_failure_var
+		remove_global_variable = balkfm_yugoslavism_failed
+	}
+}
