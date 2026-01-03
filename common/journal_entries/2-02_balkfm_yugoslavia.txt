@@ -35,17 +35,22 @@
 	
 	complete = {
 		c:MON ?= {
-			any_neighbouring_state = { owner = c:SER }
 			is_subject = no
 		}
 		c:SER ?= {
 			is_subject = no
 		}
+		custom_tooltip = {
+			text = je_balkfm_serbia_and_montenegro_complete
+			c:MON ?= {
+				any_neighbouring_state = { owner = c:SER }
+			}
+		}
 	}
 	
 	on_complete = {
 		custom_tooltip = {
-			text = je_balkfm_serbia_and_montenegro_complete
+			text = je_balkfm_serbia_and_montenegro_on_complete
 			if = {
 				limit = {
 					c:MON = {
@@ -93,26 +98,41 @@
 	}
 	
 	fail = {
-		c:MON ?= {
-			is_subject = no
-		}
-		c:SER ?= {
-			is_subject = no
-			has_war_with = c:MON
+		OR = {
+			AND = {
+				c:MON ?= {
+					is_subject = no
+				}
+				c:SER ?= {
+					is_subject = no
+					has_war_with = c:MON
+				}
+			}
+			custom_tooltip = {
+				text = je_balkfm_serbia_and_montenegro_fail
+				c:MON ?= {
+					NOT = {
+						country_has_primary_culture = cu:serb
+					}
+				}
+			}
 		}
 	}
 	
 	on_fail = {
-		c:MON ?= {
-			create_diplomatic_catalyst = {
-				type = catalyst_event_negative
-				target = c:SER
+		custom_tooltip = {
+			text = je_balkfm_serbia_and_montenegro_on_fail
+			c:MON ?= {
+				create_diplomatic_catalyst = {
+					type = catalyst_event_negative
+					target = c:SER
+				}
 			}
-		}
-		c:SER ?= {
-			create_diplomatic_catalyst = {
-				type = catalyst_event_negative
-				target = c:MON
+			c:SER ?= {
+				create_diplomatic_catalyst = {
+					type = catalyst_event_negative
+					target = c:MON
+				}
 			}
 		}
 	}
@@ -241,7 +261,11 @@ je_balkfm_unification_of_yugoslavia = {
 	}
 
 	complete = {
-		exists = c:YUG
+		custom_tooltip = {
+			text = je_balkfm_unification_of_yugoslavia_complete
+			exists = c:YUG
+		}
+		
 	}
 
 	on_complete = {
@@ -249,54 +273,73 @@ je_balkfm_unification_of_yugoslavia = {
 			name = je_yugoslavism_cooldown_var # Blocks event spam
 			months = 3
 		}
-		every_country = {
+		if = {
 			limit = {
-				has_diplomatic_relevance = c:YUG
-				balkfm_country_has_yugoslav_culture_trigger = no
+				exists = c:YUG # Error suppression
 			}
-			c:YUG ?= {
-				save_scope_as = yug_scope
-				ruler = {
-					save_scope_as = ruler_scope
+			every_country = {
+				limit = {
+					has_diplomatic_relevance = c:YUG
+					balkfm_country_has_yugoslav_culture_trigger = no
 				}
+				c:YUG ?= {
+					save_scope_as = yug_scope
+					ruler = {
+						save_scope_as = ruler_scope
+					}
+				}
+				post_notification = yug_unification
 			}
-			post_notification = yug_unification
 		}
 	}
 
 	on_complete_all_involved = {
-		if = {
-			limit = {
-				balkfm_country_has_yugoslav_culture_trigger = yes
-				c:YUG != this
-			}
-			trigger_event = {
-				id = balkfm_yugoslavia.009
+		custom_tooltip = {
+			text = je_balkfm_unification_of_yugoslavia_on_complete_all_involved
+			if = {
+				limit = {
+					exists = c:YUG # Error suppression
+				}
+				if = {
+					limit = {
+						balkfm_country_has_yugoslav_culture_trigger = yes
+						c:YUG != this
+					}
+					trigger_event = {
+						id = balkfm_yugoslavia.009
+					}
+				}
 			}
 		}
 	}
 
 	fail = {
-		NOT = {
-			any_country = {
-				OR = {
-					country_has_primary_culture = cu:serb
-					country_has_primary_culture = cu:croat
-					country_has_primary_culture = cu:bosniak
-					country_has_primary_culture = cu:slovene
-					country_has_primary_culture = cu:bulgarian
+		custom_tooltip = {
+			text = je_balkfm_unification_of_yugoslavia_fail
+			NOT = {
+				any_country_in_yugoslavia = {
+					OR = {
+						country_has_primary_culture = cu:serb
+						country_has_primary_culture = cu:croat
+						country_has_primary_culture = cu:bosniak
+						country_has_primary_culture = cu:slovene
+						country_has_primary_culture = cu:bulgarian
+					}
 				}
 			}
 		}
 	}
 
 	on_fail = {
-		every_country = {
-			limit = {
-				has_interest_marker_in_region = region_balkans
-			}
-			trigger_event = {
-				id = balkfm_yugoslavia.008
+		custom_tooltip = {
+			text = je_balkfm_unification_of_yugoslavia_on_fail
+			every_country = {
+				limit = {
+					has_interest_marker_in_region = region_balkans
+				}
+				trigger_event = {
+					id = balkfm_yugoslavia.008
+				}
 			}
 		}
 	}
