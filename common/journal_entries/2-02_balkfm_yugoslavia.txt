@@ -1,4 +1,144 @@
-﻿je_balkfm_unification_of_yugoslavia = {
+﻿je_balkfm_serbia_and_montenegro = {
+	group = je_group_global_international_situations
+	icon = "gfx/interface/icons/event_icons/event_montenegro.dds"
+	weight = 100
+	
+	should_be_pinned_by_default = yes
+	
+	is_shown_in_lobby = {
+		has_dlc_feature = ip3_content # National Awakening
+		country_has_primary_culture = cu:serb
+	}
+	
+	should_be_involved = {
+		country_has_primary_culture = cu:serb
+	}
+	
+	should_show_when_not_involved = {
+		has_interest_marker_in_region = region_balkans
+	}
+	
+	immediate = {
+		c:RUS ?= {
+			save_scope_as = russia
+		}
+		c:TUR ?= {
+			save_scope_as = ottoman
+		}
+		c:MON ?= {
+			save_scope_as = montenegro
+		}
+		c:SER ?= {
+			save_scope_as = serbia
+		}
+	}
+	
+	complete = {
+		c:MON ?= {
+			any_neighbouring_state = { owner = c:SER }
+			is_subject = no
+		}
+		c:SER ?= {
+			is_subject = no
+		}
+	}
+	
+	on_complete = {
+		custom_tooltip = {
+			text = je_balkfm_serbia_and_montenegro_complete
+			if = {
+				limit = {
+					c:MON = {
+						is_player = yes
+					}
+				}
+				c:MON = {
+					trigger_event = {
+						id = mon_state_formation.5
+						popup = yes
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					c:SER = {
+						is_player = yes
+					}
+				}
+				c:SER = {
+					trigger_event = {
+						id = mon_state_formation.5
+						popup = yes
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					c:MON.prestige >= c:SER.prestige
+				}
+				c:MON = {
+					trigger_event = {
+						id = mon_state_formation.5
+					}
+				}
+			}
+			else = {
+				c:SER = {
+					trigger_event = {
+						id = mon_state_formation.5
+					}
+				}
+			}
+		}
+	}
+	
+	fail = {
+		c:MON ?= {
+			is_subject = no
+		}
+		c:SER ?= {
+			is_subject = no
+			has_war_with = c:MON
+		}
+	}
+	
+	on_fail = {
+		c:MON ?= {
+			create_diplomatic_catalyst = {
+				type = catalyst_event_negative
+				target = c:SER
+			}
+		}
+		c:SER ?= {
+			create_diplomatic_catalyst = {
+				type = catalyst_event_negative
+				target = c:MON
+			}
+		}
+	}
+	
+	invalid = {
+		OR = {
+			c:MON ?= {
+				is_country_alive = no
+			}
+			c:SER ?= {
+				is_country_alive = no
+			}
+			AND = { # Retained from IP3 just in case this somehow gets added after history execution
+				c:MON ?= {
+					is_player = yes
+				}
+				c:SER ?= {
+					is_player = yes
+				}
+			}
+		}
+	}
+	
+}
+
+je_balkfm_unification_of_yugoslavia = {
 	group = je_group_global_international_situations
 	icon = "gfx/interface/icons/event_icons/event_flag_yug.dds"
 	weight = 1000

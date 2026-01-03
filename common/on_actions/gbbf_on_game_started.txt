@@ -8,6 +8,7 @@
 
 gbbf_on_game_start = {
 	effect = {
+		# Clean up dummy tags
 		c:GBBF_ALB ?= {
 			gbbf_play_yanya_effect = yes
 		}
@@ -70,6 +71,8 @@ gbbf_on_game_start = {
 				gbbf_spawn_yanya_effect = yes
 			}
 		}
+		
+		# Country-specific Operations
 		c:GRE ?= {
 			grefm_calculate_bavarocracy_variables_effect = yes
 		}
@@ -110,11 +113,27 @@ gbbf_on_game_start = {
 			turkfm_calculate_sick_man_effect = yes
 			turkfm_calculate_tanzimat_variables_effect = yes
 		}
+		
+		# Final Operations
 		every_country = {
 			limit = {
 				gbbf_country_has_greek_culture_trigger = yes
 			}
 			grefm_annexation_variables_effect = yes
+		}
+		if = {
+			limit = {
+				has_dlc_feature = ip3_content # National Awakening
+				NAND = {
+					c:MON = {
+						is_player = yes
+					}
+					c:SER = {
+						is_player = yes
+					}
+				}
+			}
+			add_contextless_journal_entry = je_balkfm_serbia_and_montenegro
 		}
 	}
 }
