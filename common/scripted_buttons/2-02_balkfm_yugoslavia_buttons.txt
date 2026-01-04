@@ -5,7 +5,6 @@
 	visible = { # This button has been downgraded to be a fallback for BUL
 		c:BUL ?= this
 	}
-	
 	possible = { 
 	# This are the vanilla requirements to form YUG, just retooled as a button
 	# BUL players: if this aligns poorly with previous Bulgarian conquests, remember: you're the one pulling a texas left into Yugoslavism
@@ -32,217 +31,47 @@
 			owns_entire_state_region = STATE_DELVIDEK
 		}
 	}
-	
 	effect = {
 		change_tag = YUG
 		set_global_variable = has_formed_yug
 	}
-	
 }
 
-balkfm_austrian_gunrunners_button = {
-	name = "balkfm_austrian_gunrunners_button"
-	desc = "balkfm_austrian_gunrunners_button_desc"
+balkfm_annex_mon_button = {
+	name = "balkfm_annex_mon_button"
+	desc = "balkfm_annex_mon_button_desc"
 	
 	visible = {
-		c:AUS ?= {
-			any_scope_state = {
-				balkfm_is_yugoslav_homeland_trigger = yes
-			}
-		}
+		exists = c:MON
+		c:MON != this
 	}
-	
-	selected = {
-		has_modifier = modifier_balkfm_austrian_gunrunners
-	}
-	
 	possible = {
+		has_technology_researched = pan-nationalism
 		custom_tooltip = {
-			text = balkfm_austrian_gunrunners_possible
+			text = balkfm_form_yug_tt
+			global_var:balkfm_yugoslavia_journal_var ?= {
+				var:balkfm_yugoslav_leader_var = root
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_annex_mon_possible
+			has_variable = balkfm_mon_annex_var
+			var:balkfm_mon_annex_var >= 60
+		}
+		c:MON ?= {
+			any_neighbouring_state = {
+				owner = root
+			}
+			is_subject = no
 			NOT = {
-				has_variable = balkfm_austrian_gunrunners_lockout
+				has_truce_with = root
 			}
 		}
 	}
-	
 	effect = {
-		if = {
-			limit = {
-				NOT = { 
-					has_modifier = modifier_balkfm_austrian_gunrunners
-				}
-			}
-			custom_tooltip = balkfm_austrian_gunrunners_effect1
-			add_modifier = {
-				name = modifier_balkfm_austrian_gunrunners
-				multiplier = money_amount_multiplier_medium
-			}
-		}
-		else_if = {
-			limit = {
-				has_modifier = modifier_balkfm_austrian_gunrunners
-			}
-			remove_modifier = modifier_balkfm_austrian_gunrunners
-		}
-		custom_tooltip = {
-			text = balkfm_austrian_gunrunners_effect2
-			set_variable = {
-				name = balkfm_austrian_gunrunners_lockout
-				years = 2
-			}
+		trigger_event = {
+			id = balkfm_yugoslavia.010 # MON Annexation
+			popup = yes
 		}
 	}
-	
-	ai_chance = {
-		value = -5
-		if = {
-			limit = {
-				NOT = { has_modifier = modifier_balkfm_austrian_gunrunners }
-				c:AUS ?= {
-					relations:root < relations_threshold:neutral
-				}
-				fixed_income > money_amount_multiplier_medium
-				gold_reserves > 0
-			}
-			add = 100
-		}
-		if = {
-			limit = {
-				NOT = { has_modifier = modifier_balkfm_austrian_gunrunners }
-				fixed_income < money_amount_multiplier_medium
-				gold_reserves < 0
-			}
-			add = -1000
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_balkfm_austrian_gunrunners
-				c:AUS ?= {
-					relations:root > relations_threshold:neutral
-				}
-			}
-			add = 100
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_balkfm_austrian_gunrunners
-				c:AUS ?= {
-					relations:root < relations_threshold:neutral
-				}
-			}
-			add = -100
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_balkfm_austrian_gunrunners
-				fixed_income < money_amount_multiplier_medium
-				gold_reserves < 0
-			}
-			add = 1000
-		}
-	}
-}
-
-balkfm_ottoman_gunrunners_button = {
-	name = "balkfm_ottoman_gunrunners_button"
-	desc = "balkfm_ottoman_gunrunners_button_desc"
-	
-	visible = {
-		c:TUR ?= {
-			any_scope_state = {
-				balkfm_is_yugoslav_homeland_trigger = yes
-			}
-		}
-	}
-	
-	selected = {
-		has_modifier = modifier_balkfm_ottoman_gunrunners
-	}
-	
-	possible = {
-		custom_tooltip = {
-			text = balkfm_ottoman_gunrunners_possible
-			NOT = {
-				has_variable = balkfm_ottoman_gunrunners_lockout
-			}
-		}
-	}
-	
-	effect = {
-		if = {
-			limit = {
-				NOT = { 
-					has_modifier = modifier_balkfm_ottoman_gunrunners
-				}
-			}
-			custom_tooltip = balkfm_ottoman_gunrunners_effect1
-			add_modifier = {
-				name = modifier_balkfm_ottoman_gunrunners
-				multiplier = money_amount_multiplier_medium
-			}
-		}
-		else_if = {
-			limit = {
-				has_modifier = modifier_balkfm_ottoman_gunrunners
-			}
-			remove_modifier = modifier_balkfm_ottoman_gunrunners
-		}
-		custom_tooltip = {
-			text = balkfm_ottoman_gunrunners_effect2
-			set_variable = {
-				name = balkfm_ottoman_gunrunners_lockout
-				years = 2
-			}
-		}
-	}
-	
-	ai_chance = {
-		value = -5
-		if = {
-			limit = {
-				NOT = { has_modifier = modifier_balkfm_ottoman_gunrunners }
-				c:TUR ?= {
-					relations:root < relations_threshold:neutral
-				}
-				fixed_income > money_amount_multiplier_medium
-				gold_reserves > 0
-			}
-			add = 100
-		}
-		if = {
-			limit = {
-				NOT = { has_modifier = modifier_balkfm_ottoman_gunrunners }
-				fixed_income < money_amount_multiplier_medium
-				gold_reserves < 0
-			}
-			add = -1000
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_balkfm_ottoman_gunrunners
-				c:TUR ?= {
-					relations:root > relations_threshold:neutral
-				}
-			}
-			add = 100
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_balkfm_ottoman_gunrunners
-				c:TUR ?= {
-					relations:root < relations_threshold:neutral
-				}
-			}
-			add = -100
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_balkfm_ottoman_gunrunners
-				fixed_income < money_amount_multiplier_medium
-				gold_reserves < 0
-			}
-			add = 1000
-		}
-	}
-	
 }
