@@ -276,3 +276,44 @@ balkfm_annex_slo_button = {
 		custom_tooltip = balkfm_annex_slo_effect
 	}
 }
+
+balkfm_annex_ser_rsk_button = {
+	name = "balkfm_annex_ser_rsk_button"
+	desc = "balkfm_annex_ser_rsk_button_desc"
+
+	visible = {
+		exists = c:SER_RSK
+		c:SER_RSK != this
+	}
+	possible = {
+		has_technology_researched = pan-nationalism
+		custom_tooltip = {
+			text = balkfm_yugoslav_leader_trigger
+			global_var:balkfm_yugoslavia_journal_var ?= {
+				var:balkfm_yugoslav_leader_var = root
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_annex_ser_rsk_possible
+			has_variable = balkfm_ser_rsk_annex_var
+			var:balkfm_ser_rsk_annex_var >= 60
+		}
+		c:SER_RSK ?= {
+			any_neighbouring_state = {
+				owner = root
+			}
+			is_subject = no
+			NOR = {
+				has_war_with = root
+				has_truce_with = root
+			}
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = balkfm_yugoslavia.026 # SER_RSK Annexation
+			popup = yes
+		}
+		custom_tooltip = balkfm_annex_ser_rsk_effect
+	}
+}
