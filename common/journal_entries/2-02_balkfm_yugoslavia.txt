@@ -212,23 +212,8 @@ je_balkfm_unification_of_yugoslavia = {
 	}
 
 	possible = {
-		any_country = {
-			OR = {
-				country_has_primary_culture = cu:serb
-				country_has_primary_culture = cu:croat
-				country_has_primary_culture = cu:bosniak
-				country_has_primary_culture = cu:slovene
-				AND = {
-					country_has_primary_culture = cu:bulgarian
-					hidden_trigger = {
-						has_variable = bul_pursued_greater_yugoslavism # Inherited from IP3
-					}
-				}
-			}
-			has_technology_researched = nationalism
-			hidden_trigger = { # blocks journal before a tag has independence
-				is_secessionist = no
-			}
+		any_country_in_balkans = {
+			balkfm_country_is_eligible_for_yugoslavism_trigger = yes
 		}
 	}
 
@@ -297,7 +282,7 @@ je_balkfm_unification_of_yugoslavia = {
 				limit = {
 					balkfm_country_has_yugoslav_culture_trigger = yes
 				}
-				balkfm_cleanup_yugoslav_unification_variables = yes
+				balkfm_cleanup_yugoslav_unification_variables_effect = yes
 			}
 		}
 	}
@@ -323,18 +308,9 @@ je_balkfm_unification_of_yugoslavia = {
 	}
 
 	fail = {
-		custom_tooltip = {
-			text = je_balkfm_unification_of_yugoslavia_fail
-			NOT = {
-				any_country_in_yugoslavia = {
-					OR = {
-						country_has_primary_culture = cu:serb
-						country_has_primary_culture = cu:croat
-						country_has_primary_culture = cu:bosniak
-						country_has_primary_culture = cu:slovene
-						country_has_primary_culture = cu:bulgarian
-					}
-				}
+		NOT = {
+			any_country_in_balkans = {
+				balkfm_country_is_eligible_for_yugoslavism_trigger = yes
 			}
 		}
 	}
@@ -458,7 +434,7 @@ je_balkfm_yugoslav_nationalism = {
 	transferable = no
 	can_deactivate = no
 	
-#	scripted_progress_bar = balkfm_yugoslavism_progress_bar
+	scripted_progress_bar = balkfm_yugoslavism_progressbar
 	
 #	scripted_button =
 	
@@ -477,6 +453,16 @@ je_balkfm_yugoslav_nationalism = {
 	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
+		scope:journal_entry = {
+			set_variable = {
+				name = balkfm_yugoslav_identity_var
+				value = 100
+			}
+			set_variable = {
+				name = balkfm_yugoslav_identity_progress_var
+				value = 0
+			}
+		}
 	}
 	
 	modifiers_while_active = {
@@ -487,12 +473,16 @@ je_balkfm_yugoslav_nationalism = {
 	}
 	
 	on_complete = {
+		remove_variable = balkfm_yugoslav_identity_var
+		remove_variable = balkfm_yugoslav_identity_progress_var
 	}
 	
 	fail = {
 	}
 	
 	on_fail = {
+		remove_variable = balkfm_yugoslav_identity_var
+		remove_variable = balkfm_yugoslav_identity_progress_var
 	}
 	
 	on_weekly_pulse = {
