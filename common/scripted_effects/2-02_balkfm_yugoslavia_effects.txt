@@ -23,6 +23,10 @@
 		name = balkfm_slo_annex_var
 		value = 0
 	}
+	set_variable = {
+		name = balkfm_ser_rsk_annex_var
+		value = 0
+	}
 	set_variable = je_yugoslavia_is_active
 }
 
@@ -219,6 +223,38 @@ balkfm_update_yugoslav_unification_variables = {
 	}
 	else = {
 		remove_variable = balkfm_slo_annex_var
+	}
+	
+	# Republika Srpska Variable
+	if = {
+		limit = {
+			exists = c:SER_RSK
+			c:SER_RSK != this
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_variable = balkfm_ser_rsk_annex_var
+				}
+			}
+			set_variable = {
+				name = balkfm_ser_rsk_annex_var
+				value = 0
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = balkfm_ser_rsk_annex_var
+				c:SER_RSK.relations:root >= relations_threshold:cordial
+			}
+			change_variable = {
+				name = balkfm_ser_rsk_annex_var
+				add = 1
+			}
+		}
+	}
+	else = {
+		remove_variable = balkfm_ser_rsk_annex_var
 	}
 }
 
