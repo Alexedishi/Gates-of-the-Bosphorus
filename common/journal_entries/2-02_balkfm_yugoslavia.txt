@@ -436,8 +436,6 @@ je_balkfm_yugoslav_nationalism = {
 	
 	scripted_progress_bar = balkfm_yugoslavism_progressbar
 	
-#	scripted_button =
-	
 	is_shown_when_inactive = {
 		c:YUG ?= this
 		NOT = {
@@ -449,6 +447,8 @@ je_balkfm_yugoslav_nationalism = {
 		NOT = {
 			has_journal_entry = je_balkfm_unification_of_yugoslavia
 		}
+		has_technology_researched = pan-nationalism
+		has_technology_researched = central_archives
 	}
 	
 	immediate = {
@@ -462,6 +462,23 @@ je_balkfm_yugoslav_nationalism = {
 				name = balkfm_yugoslav_identity_progress_var
 				value = 0
 			}
+			set_variable = {
+				name = balkfm_yugoslav_identity_tilt_var
+				value = 0
+			}
+			set_variable = {
+				name = balkfm_yugoslav_identity_integralist_var
+				value = 0
+			}
+			set_variable = {
+				name = balkfm_yugoslav_identity_federalist_var
+				value = 0
+			}
+			save_scope_as = balkfm_yugoslav_nationalism_scope
+		}
+		set_variable = {
+			name = balkfm_yugoslav_nationalism
+			value = scope:balkfm_yugoslav_nationalism_scope
 		}
 	}
 	
@@ -470,19 +487,39 @@ je_balkfm_yugoslav_nationalism = {
 	}
 	
 	complete = {
+		OR = {
+			custom_tooltip = {
+				text = je_balkfm_yugoslav_nationalism_complete_integralist
+				scope:journal_entry = {
+					has_variable = balkfm_yugoslav_identity_var
+					var:balkfm_yugoslav_identity_var >= 200
+				}
+			}
+			custom_tooltip = {
+				text = je_balkfm_yugoslav_nationalism_complete_federalist
+				scope:journal_entry = {
+					has_variable = balkfm_yugoslav_identity_var
+					var:balkfm_yugoslav_identity_var <= 0
+				}
+			}
+		}
 	}
 	
 	on_complete = {
-		remove_variable = balkfm_yugoslav_identity_var
-		remove_variable = balkfm_yugoslav_identity_progress_var
+		remove_variable = balkfm_yugoslav_nationalism
 	}
 	
 	fail = {
+		custom_tooltip = {
+			text = je_balkfm_yugoslav_nationalism_fail
+			NOT = {
+				c:YUG ?= this
+			}
+		}
 	}
 	
 	on_fail = {
-		remove_variable = balkfm_yugoslav_identity_var
-		remove_variable = balkfm_yugoslav_identity_progress_var
+		remove_variable = balkfm_yugoslav_nationalism
 	}
 	
 	on_weekly_pulse = {
@@ -491,6 +528,20 @@ je_balkfm_yugoslav_nationalism = {
 		random_events = {
 		}
 		effect = {
+			scope:journal_entry = {
+				set_variable = {
+					name = balkfm_yugoslav_identity_integralist_var
+					value = owner.balkfm_yugoslav_identity_integralist_value
+				}
+				set_variable = {
+					name = balkfm_yugoslav_identity_federalist_var
+					value = owner.balkfm_yugoslav_identity_federalist_value
+				}
+				set_variable = {
+					name = balkfm_yugoslav_identity_progress_var
+					value = owner.balkfm_yugoslav_identity_progress_value
+				}
+			}
 		}
 	}
 	
@@ -500,6 +551,25 @@ je_balkfm_yugoslav_nationalism = {
 		random_events = {
 		}
 		effect = {
+			scope:journal_entry = {
+				change_variable = {
+					name = balkfm_yugoslav_identity_var
+					add = var:balkfm_yugoslav_identity_progress_var
+				}
+				clamp_variable = {
+					name = balkfm_yugoslav_identity_var
+					max = 200
+					min = 0
+				}
+				set_bar_progress = {
+					name = balkfm_yugoslavism_progressbar
+					value = var:balkfm_yugoslav_identity_var
+				}
+				set_variable = {
+					name = balkfm_yugoslav_identity_tilt_var
+					value = owner.balkfm_yugoslav_identity_tilt_value
+				}
+			}
 		}
 	}
 	
