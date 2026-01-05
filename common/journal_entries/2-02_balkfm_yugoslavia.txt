@@ -309,7 +309,7 @@ je_balkfm_unification_of_yugoslavia = {
 	fail = {
 		NOT = {
 			any_country_in_balkans = {
-				balkfm_country_is_eligible_for_yugoslavism_trigger = yes
+				balkfm_country_has_yugoslav_culture_trigger = yes
 			}
 		}
 	}
@@ -346,14 +346,25 @@ je_balkfm_unification_of_yugoslavia = {
 				check_range_bounds = no
 				save_scope_as = balkfm_yugoslav_leader_scope
 			}
-			scope:journal_entry = {
-				set_variable = {
-					name = balkfm_yugoslav_leader_var
-					value = scope:balkfm_yugoslav_leader_scope
+			if = {
+				limit = {
+					exists = scope:balkfm_yugoslav_leader_scope
 				}
-				set_variable = {
-					name = balkfm_yugoslav_leader_prestige_var
-					value = var:balkfm_yugoslav_leader_var.prestige
+				scope:journal_entry = {
+					set_variable = {
+						name = balkfm_yugoslav_leader_var
+						value = scope:balkfm_yugoslav_leader_scope
+					}
+					set_variable = {
+						name = balkfm_yugoslav_leader_prestige_var
+						value = var:balkfm_yugoslav_leader_var.prestige
+					}
+				}
+			}
+			else = {
+				scope:journal_entry = {
+					remove_variable = balkfm_yugoslav_leader_var
+					remove_variable = balkfm_yugoslav_leader_prestige_var
 				}
 			}
 		}
@@ -410,13 +421,21 @@ je_balkfm_unification_of_yugoslavia = {
 	}
 
 	status_desc = {
-		triggered_desc ={
-			desc = je_balkfm_unification_of_yugoslavia_status
-			trigger = {
-				has_global_variable = balkfm_yugoslavism_started
-				scope:journal_entry = {
-					has_variable = balkfm_yugoslav_leader_var
-					exists = var:balkfm_yugoslav_leader_var
+		first_valid = {
+			triggered_desc ={
+				desc = je_balkfm_unification_of_yugoslavia_status
+				trigger = {
+					has_global_variable = balkfm_yugoslavism_started
+					scope:journal_entry = {
+						has_variable = balkfm_yugoslav_leader_var
+						exists = var:balkfm_yugoslav_leader_var
+					}
+				}
+			}
+			triggered_desc = {
+				desc = je_balkfm_unification_of_yugoslavia_status_idle
+				trigger = {
+					always = yes
 				}
 			}
 		}
