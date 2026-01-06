@@ -25,7 +25,7 @@ namespace = balkfm_yugoslavia
 #	004 - OPEN
 #	005 - OPEN
 #	006 - OPEN
-#	007 - OPEN
+#	007 - Serbia and Montenegro
 #	008 - Yugoslavism Fizzles Out
 #	009 - The Birth of Yugoslavia
 
@@ -315,7 +315,137 @@ balkfm_yugoslavia.003 = { # Vienna Literary Agreement (Slavic Variant)
 		default_option = yes
 		balkfm_add_nationalism_progress_effect = yes
 	}
+}
 
+balkfm_yugoslavia.007 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_montenegro.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = balkfm_yugoslavia.007.t
+	desc = balkfm_yugoslavia.007.d
+	flavor = balkfm_yugoslavia.007.f
+	
+	event_image = {
+		video = "ip3_official_reading_dictate"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by je_balkfm_serbia_and_montenegro
+	}
+	
+	cancellation_trigger = { # Idk this happened once in testing; looks like PDX QA caught it too
+		OR = {
+			NOT = {
+				exists = c:MON
+			}
+			NOT = {
+				exists = c:SER
+			}
+		}
+	}
+	
+	immediate = {
+		c:MON ?= {
+			save_scope_as = montenegro
+		}
+		c:SER ?= {
+			save_scope_as = serbia
+		}
+	}
+	
+	# Retained options/scopes from IP3 since they already have the appropriate support
+	option = { # Montenegro
+		name = mon_state_formation.5.a
+		custom_tooltip = {
+			text = mon_annexes_ser_tt
+			if = {
+				limit = {
+					c:SER ?= ROOT
+				}
+				play_as = c:MON
+			}
+			c:MON ?= {
+				annex = c:SER
+			}
+		}
+		c:MON ?= {
+			add_modifier = {
+				name = modifier_mon_ser_united
+			}
+			set_variable = balkfm_serbenegrotron_var
+		}
+	}
+	
+	option = { # Serbia
+		name = mon_state_formation.5.b
+		default_option = yes
+		custom_tooltip = {
+			text = ser_annexes_mon_tt
+			if = {
+				limit = {
+					c:MON ?= ROOT
+				}
+				play_as = c:SER
+			}
+			c:SER ?= {
+				annex = c:MON
+			}
+		}
+		c:SER ?= {
+			add_modifier = {
+				name = modifier_mon_ser_united
+			}
+			set_variable = balkfm_serbenegrotron_var
+		}
+	}
+	
+	option = { # Montenegro and Serbia
+		name = mon_state_formation.5.c
+		custom_tooltip = {
+			text = mon_annexes_ser_mon_tt
+			if = {
+				limit = {
+					c:MON ?= ROOT
+				}
+				annex = c:SER
+			}
+			else_if = {
+				limit = {
+					c:SER ?= ROOT
+				}
+				annex = c:MON
+			}
+			set_variable = serbian_montenegro
+		}
+		add_modifier = {
+			name = modifier_mon_ser_united
+		}
+	}
+	
+	option = { # No join
+		name = mon_state_formation.5.e
+		custom_tooltip = {
+			text = mon_annexes_not_tt
+		}
+		c:SER ?= {
+			add_modifier = {
+				name = modifier_mon_ser_united
+				multiplier = 0.5
+			}
+			set_variable = balkfm_serb_union_rejected
+		}
+		c:MON ?= {
+			add_modifier = {
+				name = modifier_mon_ser_united
+				multiplier = 0.5
+			}
+			set_variable = balkfm_serb_union_rejected
+		}
+	}
 }
 
 balkfm_yugoslavia.008 = { # Yugoslavism Fizzles Out
