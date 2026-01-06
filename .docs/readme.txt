@@ -13,16 +13,18 @@ Community Mod Framework: https://steamcommunity.com/sharedfiles/filedetails/?id=
 
 This mod is broadly divided into the following "modules" which can be identified by their prefixes:
 grefm_: Contains content for Greece, Byzantium, and other Hellene, Rhomaios, and Urum countries
-turkfm_: Contains content for the Ottoman Empire and its associated subjects
 balkfm_: Contains content for the Southern Slav, Romanian, and Albanian countries
-eqfm_: Contains content for the Eastern Question and Expeditions; was formerly merged with turkfm
+turkfm_: Contains content for the Ottoman Empire and the Turkish state
+mgrbfm: Contains content for the Ottoman subjects in Northern Africa
 haykfm_: Contains content for Kurdistan, Armenia, and Assyria
+eqfm_: Contains content for the Eastern Question and Expeditions; was formerly merged with turkfm
 
 These are other prefixing conventions used in this mod:
 *Generic and shared files are prefixed with "gbbf_"
 *Script imported from Community Mod Framework is prefixed with "com_"
 *Script imported from Morgenrote: Dawn of Flavor is prefixed with "mgr_" regardless of Morgenrote content pack origin
 *Script imported from This Land is Mine is prefixed with "tlim_" regardless of TLIM content pack origin
+*Script imported from Arise Thee Romanian is prefiex with "atr_"
 
 There are leftover references to older modules that you might find:
 eocfm_: Once contained content for the Eastern Orthodox Church; has been superseded by Kingdom of God (kog_)
@@ -30,7 +32,7 @@ byzfm_: Once contained content for Byzantium; has been merged with grefm
 bulfm_: Once contained content for Bulgaria; has been merged with balkfm
 
 **Notes:
--Arab & Iranian (Persia) flavor are OUT OF SCOPE for this mod
+-Levantine Arab & Iranian (Persia) flavor are OUT OF SCOPE for this mod
 -The current mod acronym is GotB; my common prefix is "gbbf_" and will not change
 -The CMF trigger uses the older "grefm_" generic acronym; this will not change
 
