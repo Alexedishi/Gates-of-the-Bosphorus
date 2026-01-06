@@ -246,12 +246,25 @@
 				eqfm_update_black_mountain_characters_effect = yes
 				eqfm_update_expedition_costs_effect = yes
 			}
-			else_if = {
-				limit = {
-					has_global_variable = eqfm_montenegrin_raiding_settled
-					eqfm_has_black_mountain_expedition_trigger = yes
+			else = {
+				if = {
+					limit = {
+						eqfm_has_black_mountain_expedition_trigger = yes
+					}
+					eqfm_cancel_black_mountain_expedition_effect = yes
 				}
-				eqfm_cancel_black_mountain_expedition_effect = yes
+				scope:journal_entry = {
+					if = {
+						limit = {
+							has_variable = com_journal_characters
+						}
+						every_in_list = {
+							variable = com_journal_characters
+							set_character_busy_and_immortal = no
+						}
+					}
+					clear_variable_list = com_journal_characters
+				}
 			}
 		}
 		events = {
