@@ -45,7 +45,9 @@
 	}
 
 	complete = {
-		has_law_or_variant = law_type:law_monarchy
+		NOT = {
+			has_law_or_variant = law_type:law_theocracy
+		}
 		government_legitimacy > 50
 		trigger_if = {
 			limit = {
@@ -65,12 +67,11 @@
 			}
 			custom_tooltip = {
 				text = balkfm_biljarda_built
-				capital = {
-					any_scope_building = {
-						is_building_type = gbbf_building_biljarda
-					}
+				any_scope_building = {
+					is_building_type = gbbf_building_biljarda
 				}
 			}
+			has_modifier = modifier_balkfm_declared_principality
 			NOR = {
 				in_default = yes
 				has_modifier = declared_bankruptcy
@@ -439,13 +440,18 @@ je_balkfm_mon_austria_alliance = {
 	
 	possible = {
 		custom_tooltip = {
-			text = je_balkfm_mon_austria_alliance_possible
+			text = je_balkfm_mon_austria_alliance_possible_1
 			p:x90A0E0 = {
 				owner = c:AUS
 			}
 		}
+		custom_tooltip = {
+			text = je_balkfm_mon_austria_alliance_possible_2
+			has_global_variable = eqfm_montenegrin_raiding_settled
+		}
+		is_subject = no
 		NOT = {
-			has_journal_entry = je_eqfm_the_black_mountain
+			has_war_with = c:AUS
 		}
 	}
 	
@@ -464,20 +470,13 @@ je_balkfm_mon_austria_alliance = {
 	
 	complete = {
 		government_legitimacy > 50
+		is_at_war = no
 		c:RUS ?= {
 			relations:root <= relations_threshold:poor
 		}
 		c:AUS = {
 			relations:root >= relations_threshold:friendly
-		}
-		trigger_if = {
-			limit = {
-				has_journal_entry = je_montenegrin_raiding
-			}
-			custom_tooltip = {
-				text = raiding_income_greater_tt
-				eqfm_raiding_income_value < 700
-			}
+			is_at_war = no
 		}
 	}
 	
@@ -495,26 +494,19 @@ je_balkfm_mon_austria_alliance = {
 		set_variable = turkfm_negotiated_kotor
 	}
 	
-	event_outcome_completed_desc = {
-		first_valid = {
-			triggered_desc = {
-				desc = event_effects_mon_state_formation.4_tt
-			}
-		}
-	}
-	
 	fail = {
 		OR = {
-			is_subject_of = c:TUR
-			has_war_with = c:AUS
-			any_diplomatic_play = {
-				initiator_is = root
+			trigger_if = {
+				limit = {
+					exists = c:TUR
+				}
+				is_subject_of = c:TUR
 			}
+			has_war_with = c:AUS
 		}
 	}
 	
-	on_fail = { #use same barbarian event.
-		mon_failure_events = yes
+	on_fail = {
 		c:AUS = {
 			change_relations = {
 				country = root
@@ -528,7 +520,7 @@ je_balkfm_mon_austria_alliance = {
 	}
 
 	invalid = {
-		NOT = {
+		NOR = {
 			exists = c:AUS
 			p:x90A0E0 = {
 				owner = c:AUS
@@ -555,10 +547,6 @@ je_balkfm_mon_nationalism = {
 		c:MON ?= this
 	}
 	
-#	scripted_progress_bar =
-
-#	scripted_button =
-	
 	is_shown_when_inactive = {
 		c:MON ?= this
 		NOT = {
@@ -570,7 +558,8 @@ je_balkfm_mon_nationalism = {
 		has_technology_researched = nationalism
 		custom_tooltip = {
 			text = je_balkfm_mon_nationalism_possible_1
-			NOT = {
+			NOR = {
+				has_variable = balkfm_serbenegrotron_var
 				has_variable = serbian_montenegro
 			}
 		}
@@ -588,8 +577,26 @@ je_balkfm_mon_nationalism = {
 	}
 	
 	complete = {
-		has_modifier = modifier_balkfm_declared_kingdom
-		has_law_or_variant = law_type:law_ethnostate
+		OR = {
+			has_law_or_variant = law_type:law_ethnostate
+			has_law_or_variant = law_type:law_national_supremacy
+		}
+		literacy_rate >= 0.5
+		is_subject = no
+		custom_tooltip = {
+			text = je_balkfm_mon_nationalism_complete_1
+			NOR = {
+				has_variable = balkfm_serbenegrotron_var
+				has_variable = serbian_montenegro
+			}
+		}
+		owns_entire_state_region = STATE_MONTENEGRO
+		custom_tooltip = {
+			text = je_balkfm_mon_nationalism_complete_2
+			capital ?= {
+				state_region = s:STATE_MONTENEGRO
+			}
+		}
 	}
 	
 	on_complete = {
@@ -597,28 +604,32 @@ je_balkfm_mon_nationalism = {
 			id = balkfm_montenegro.209
 		}
 		show_as_tooltip = {
-			add_primary_culture = cu:montenegrin
 			remove_primary_culture = cu:serb
-			custom_tooltip = {
-				text = je_balkfm_mon_nationalism_on_complete_1
-				every_scope_pop = {
-					limit = {
-						has_pop_culture = serb
-					}
-					change_pop_culture = {
-						target = cu:montenegrin
-						value = 0.9
-					}
-				}
-			}
+			add_primary_culture = cu:montenegrin
 			s:STATE_MONTENEGRO = {
 				add_homeland = cu:montenegrin
 			}
 			custom_tooltip = {
+				text = je_balkfm_mon_nationalism_on_complete_1
+				s:STATE_MONTENEGRO.region_state:MON = {
+					every_scope_pop = {
+						limit = {
+							has_pop_culture = serb
+						}
+						change_pop_culture = {
+							target = cu:montenegrin
+							value = 0.9
+						}
+					}
+				}
+			}
+			custom_tooltip = {
 				text = je_balkfm_mon_nationalism_on_complete_2
-				add_radicals = {
-					culture = cu:serb
-					value = 1
+				s:STATE_MONTENEGRO.region_state:MON = {
+					add_radicals = {
+						culture = cu:serb
+						value = 1
+					}
 				}
 			}
 		}
