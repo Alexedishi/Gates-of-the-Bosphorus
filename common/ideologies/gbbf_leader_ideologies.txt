@@ -1086,3 +1086,249 @@ REPLACE:ideology_gbbf_venizelist_leader = {
 		value = 0
 	}
 }
+
+ideology_gbbf_yugoslav_integralist_leader = {
+	icon = "gfx/interface/icons/ideology_icons/ethno_nationalist.dds"
+	
+	character_ideology = yes
+	
+	lawgroup_citizenship = {
+		law_ethnostate = strongly_approve
+		law_national_supremacy = approve
+		law_racial_segregation = approve
+		law_cultural_exclusion = disapprove
+		law_multicultural = strongly_disapprove
+		law_subjecthood = strongly_disapprove
+	}
+	
+	lawgroup_church_and_state = {
+		law_state_religion = approve
+		law_freedom_of_conscience = neutral
+		law_total_separation = disapprove
+		law_state_atheism = strongly_disapprove
+	}
+	
+	lawgroup_migration = {
+		law_migration_controls = strongly_approve
+		law_closed_borders = neutral
+		law_no_migration_controls = disapprove
+	}
+	
+	lawgroup_education_system = {
+		law_public_schools = approve
+		law_private_schools = approve
+		law_no_schools = disapprove
+		law_religious_schools = neutral
+	}
+	
+	lawgroup_childrens_rights = {
+		law_child_labor_allowed = disapprove
+		law_restricted_child_labor = neutral
+		law_compulsory_primary_school = approve
+	}
+	
+	country_trigger = {
+		c:YUG ?= this
+	}
+	
+	interest_group_leader_trigger = {
+		owner = {
+			NOR = {
+				has_law_or_variant = law_type:law_ethnostate
+				has_law_or_variant = law_type:law_national_supremacy
+			}
+		}
+	}
+	
+	non_interest_group_leader_trigger = {
+		owner = {
+			NOR = {
+				has_law_or_variant = law_type:law_ethnostate
+				has_law_or_variant = law_type:law_national_supremacy
+			}
+		}
+	}
+	
+	interest_group_leader_weight = {
+		value = 100
+		
+		# More likely if people are angry
+		add = {
+			value = owner.radical_fraction
+			multiply = 100
+		}
+		
+		# More likely with unowned claims
+		if = {
+			limit = {
+				owner.number_of_claims > 0
+			}
+			add = {
+				value = owner.number_of_claims
+				multiply = 25
+				max = 100
+			}
+		}
+		
+		# More likely with a convenient scapegoat
+		if = {
+			limit = {
+				owner = {
+					any_scope_state = {
+						is_incorporated = yes
+						any_scope_pop = {
+							pop_acceptance < acceptance_status_4
+						}
+					}
+				}
+			}
+			add = 25
+			if = { # And if angry without ethnostate
+				limit = {
+					owner = {
+						NOT = { has_law_or_variant = law_type:law_ethnostate }
+					}
+					ig_approval <= -5
+				}
+				subtract = {
+					value = ig_approval
+					multiply = 5
+				}
+			}
+		}
+		
+		# Less likely in council republic
+		if = {
+			limit = {
+				owner = {
+					has_law_or_variant = law_type:law_council_republic
+				}
+			}
+			add = -75
+		}
+		# less likely if content without ethnostate
+		if = {
+			limit = {
+				owner = {
+					NOT = {
+						has_law_or_variant = law_type:law_ethnostate
+					}
+				}
+				ig_approval >= 5
+			}
+			subtract = {
+				value = ig_approval
+				multiply = 5
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_variable = communist_ig_var
+					has_variable = chose_vanguardism
+					has_variable = chose_anarchism
+					has_variable = chose_communism
+					has_variable = chose_fascism
+				}
+			}
+			multiply = 0.1
+		}
+		# Minority cultures won't favor highly ethno-supremacist ideologies
+		if = {
+			limit = {
+				leader = {
+					culture = {
+						NOT = { is_primary_culture_of = prev.owner }
+					}
+				}
+			}
+			multiply = 0
+		}
+	}
+	
+	non_interest_group_leader_weight = {
+		value = 100
+		
+		# More likely if people are angry
+		add = {
+			value = owner.radical_fraction
+			multiply = 100
+		}
+		
+		# More likely with unowned claims
+		if = {
+			limit = {
+				owner.number_of_claims > 0
+			}
+			add = {
+				value = owner.number_of_claims
+				multiply = 25
+				max = 100
+			}
+		}
+		
+		# More likely with a convenient scapegoat
+		if = {
+			limit = {
+				owner = {
+					any_scope_state = {
+						is_incorporated = yes
+						any_scope_pop = {
+							pop_acceptance < acceptance_status_4
+						}
+					}
+				}
+			}
+			add = 25
+			if = { # And if angry without ethnostate
+				limit = {
+					owner = {
+						NOT = { has_law_or_variant = law_type:law_ethnostate }
+					}
+					interest_group.ig_approval <= -5
+				}
+				subtract = {
+					value = interest_group.ig_approval
+					multiply = 5
+				}
+			}
+		}
+		
+		# Less likely in council republic
+		if = {
+			limit = {
+				owner = {
+					has_law_or_variant = law_type:law_council_republic
+				}
+			}
+			add = -75
+		}
+		# less likely if content without ethnostate
+		if = {
+			limit = {
+				owner = {
+					NOT = {
+						has_law_or_variant = law_type:law_ethnostate
+					}
+				}
+				interest_group.ig_approval >= 5
+			}
+			subtract = {
+				value = interest_group.ig_approval
+				multiply = 5
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_variable = communist_ig_var
+					has_variable = chose_vanguardism
+					has_variable = chose_anarchism
+					has_variable = chose_communism
+					has_variable = chose_fascism
+				}
+			}
+			multiply = 0.1
+		}
+	}
+}
