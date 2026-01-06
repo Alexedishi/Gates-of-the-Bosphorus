@@ -344,7 +344,10 @@ je_balkfm_mon_military_reform = {
 
 	complete = {
 		NOT = { has_law_or_variant = law_type:law_peasant_levies }
-		army_size >= 4
+		army_size >= 10
+		any_scope_building = {
+			is_building_type = building_arms_industry
+		}
 	}
 
 	on_complete = {
@@ -576,25 +579,31 @@ je_balkfm_mon_nationalism = {
 		}
 	}
 	
+	scripted_button = balkfm_montnegrin_identity_button
+	
 	complete = {
 		OR = {
 			has_law_or_variant = law_type:law_ethnostate
 			has_law_or_variant = law_type:law_national_supremacy
-		}
-		literacy_rate >= 0.5
-		is_subject = no
-		custom_tooltip = {
-			text = je_balkfm_mon_nationalism_complete_1
-			NOR = {
-				has_variable = balkfm_serbenegrotron_var
-				has_variable = serbian_montenegro
-			}
 		}
 		owns_entire_state_region = STATE_MONTENEGRO
 		custom_tooltip = {
 			text = je_balkfm_mon_nationalism_complete_2
 			capital ?= {
 				state_region = s:STATE_MONTENEGRO
+			}
+		}
+		has_modifier = modifier_balkfm_cultural_schism
+		trigger_if = {
+			limit = {
+				has_dlc_feature = ip3_content
+			}
+			custom_tooltip = {
+				text = je_balkfm_mon_nationalism_complete_1
+				NOR = {
+					has_variable = balkfm_serbenegrotron_var
+					has_variable = serbian_montenegro
+				}
 			}
 		}
 	}
