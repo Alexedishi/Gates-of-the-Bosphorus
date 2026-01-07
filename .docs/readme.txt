@@ -15,7 +15,7 @@ This mod is broadly divided into the following "modules" which can be identified
 grefm_: Contains content for Greece, Byzantium, and other Hellene, Rhomaios, and Urum countries
 balkfm_: Contains content for the Southern Slav, Romanian, and Albanian countries
 turkfm_: Contains content for the Ottoman Empire and the Turkish state
-mgrbfm: Contains content for the Ottoman subjects in Northern Africa
+mgrbfm_: Contains content for the Ottoman subjects in Northern Africa
 haykfm_: Contains content for Kurdistan, Armenia, and Assyria
 eqfm_: Contains content for the Eastern Question and Expeditions; was formerly merged with turkfm
 
@@ -24,7 +24,7 @@ These are other prefixing conventions used in this mod:
 *Script imported from Community Mod Framework is prefixed with "com_"
 *Script imported from Morgenrote: Dawn of Flavor is prefixed with "mgr_" regardless of Morgenrote content pack origin
 *Script imported from This Land is Mine is prefixed with "tlim_" regardless of TLIM content pack origin
-*Script imported from Arise Thee Romanian is prefiex with "atr_"
+*Script imported from "Awaken Thee Romanian" is prefixed with "atr_"
 
 There are leftover references to older modules that you might find:
 eocfm_: Once contained content for the Eastern Orthodox Church; has been superseded by Kingdom of God (kog_)
@@ -66,7 +66,7 @@ Greek Separatism: Mechanics to influence Greek radicalism and provoke historical
 
 Content for Byzantium:
 Greek Nationalism: Start as a Rhomaios country and assert their identity against the tide of Hellenism
-The Purple Pheonix: Events and journal entries to reclaim the former Roman Empire
+The Purple Phoenix: Events and journal entries to reclaim the former Roman Empire
 Ability to rebuild the Imperial Palace and the Hippodrome, along with a decision to revive chariot racing (replaces the Olympics)
 Cappadocia, Trebizond, & Theodoro as playable tags
 Dynamic country names for Byzantium and a game rule to choose between "Byzantine" or "Roman" Empire
@@ -74,7 +74,7 @@ Event Option to Elect a Palaiologos ruler during the Greek monarch election even
 
 Content for Montenegro:
 The Prince-Bishropic: Guide Montenegro into becoming a modern nation state
-The Lands of the Black Moutain: Stand your ground against neighboring Ottoman Pashas as they attempt to assert Ottoman authority over Montenegro
+The Lands of the Black Mountain: Stand your ground against neighboring Ottoman Pashas as they attempt to assert Ottoman authority over Montenegro
 The Wrath of Ali Pasha: Deal with the antics of the upstart Ottoman noble, Ali Pasha
 
 Content for Serbia:
