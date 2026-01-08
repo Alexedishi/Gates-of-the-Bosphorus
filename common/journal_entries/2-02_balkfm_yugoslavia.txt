@@ -449,8 +449,7 @@ je_balkfm_yugoslav_nationalism = {
 	transferable = no
 	can_deactivate = no
 	
-	scripted_progress_bar = balkfm_yugoslavism_identity_progressbar
-	scripted_progress_bar = balkfm_yugoslavism_legitimacy_progressbar
+	scripted_progress_bar = balkfm_yugoslavism_progressbar
 	
 	is_shown_when_inactive = {
 		c:YUG ?= this
@@ -493,32 +492,25 @@ je_balkfm_yugoslav_nationalism = {
 			}
 		}
 		scope:journal_entry = {
+			set_variable = com_double_bad_gold_bar
 			set_variable = {
-				name = balkfm_yugoslav_identity_var
+				name = balkfm_yugoslavism_var
 				value = 100
 			}
 			set_variable = {
-				name = balkfm_yugoslav_identity_progress_var
-				value = 0
-			}
-			set_variable = {
-				name = balkfm_yugoslav_identity_tilt_var
-				value = 0
-			}
-			set_variable = {
-				name = balkfm_yugoslav_identity_integralist_var
-				value = 0
-			}
-			set_variable = {
-				name = balkfm_yugoslav_identity_federalist_var
-				value = 0
-			}
-			set_variable = {
-				name = balkfm_yugoslavism_var
-				value = 50
-			}
-			set_variable = {
 				name = balkfm_yugoslavism_progress_var
+				value = 0
+			}
+			set_variable = {
+				name = balkfm_yugoslavism_tilt_var
+				value = 0
+			}
+			set_variable = {
+				name = balkfm_yugoslavism_integralist_var
+				value = 0
+			}
+			set_variable = {
+				name = balkfm_yugoslavism_federalist_var
 				value = 0
 			}
 			save_scope_as = balkfm_yugoslav_nationalism_scope
@@ -538,15 +530,15 @@ je_balkfm_yugoslav_nationalism = {
 			custom_tooltip = {
 				text = je_balkfm_yugoslav_nationalism_complete_integralist
 				scope:journal_entry = {
-					has_variable = balkfm_yugoslav_identity_var
-					var:balkfm_yugoslav_identity_var >= 200
+					has_variable = balkfm_yugoslavism_var
+					var:balkfm_yugoslavism_var >= 200
 				}
 			}
 			custom_tooltip = {
 				text = je_balkfm_yugoslav_nationalism_complete_federalist
 				scope:journal_entry = {
-					has_variable = balkfm_yugoslav_identity_var
-					var:balkfm_yugoslav_identity_var <= 0
+					has_variable = balkfm_yugoslavism_var
+					var:balkfm_yugoslavism_var <= 0
 				}
 			}
 		}
@@ -557,7 +549,7 @@ je_balkfm_yugoslav_nationalism = {
 			text = je_balkfm_yugoslav_nationalism_on_complete_integralist
 			if = {
 				limit = {
-					var:balkfm_yugoslav_identity_var >= 200
+					var:balkfm_yugoslavism_var >= 200
 				}
 			}
 		}
@@ -565,7 +557,7 @@ je_balkfm_yugoslav_nationalism = {
 			text = je_balkfm_yugoslav_nationalism_on_complete_federalist
 			if = {
 				limit = {
-					var:balkfm_yugoslav_identity_var <= 0
+					var:balkfm_yugoslavism_var <= 0
 				}
 			}
 		}
@@ -593,16 +585,12 @@ je_balkfm_yugoslav_nationalism = {
 		effect = {
 			scope:journal_entry = {
 				set_variable = {
-					name = balkfm_yugoslav_identity_integralist_var
-					value = owner.balkfm_yugoslav_identity_integralist_value
+					name = balkfm_yugoslavism_integralist_var
+					value = owner.balkfm_yugoslavism_integralist_value
 				}
 				set_variable = {
-					name = balkfm_yugoslav_identity_federalist_var
-					value = owner.balkfm_yugoslav_identity_federalist_value
-				}
-				set_variable = {
-					name = balkfm_yugoslav_identity_progress_var
-					value = owner.balkfm_yugoslav_identity_progress_value
+					name = balkfm_yugoslavism_federalist_var
+					value = owner.balkfm_yugoslavism_federalist_value
 				}
 				set_variable = {
 					name = balkfm_yugoslavism_progress_var
@@ -620,40 +608,23 @@ je_balkfm_yugoslav_nationalism = {
 		effect = {
 			scope:journal_entry = {
 				change_variable = {
-					name = balkfm_yugoslav_identity_var
-					add = var:balkfm_yugoslav_identity_progress_var
-				}
-				clamp_variable = {
-					name = balkfm_yugoslav_identity_var
-					max = 200
-					min = 0
-				}
-				set_bar_progress = {
-					name = balkfm_yugoslavism_identity_progressbar
-					value = var:balkfm_yugoslav_identity_var
-				}
-				set_variable = {
-					name = balkfm_yugoslav_identity_tilt_var
-					value = owner.balkfm_yugoslav_identity_tilt_value
-				}
-				change_variable = {
 					name = balkfm_yugoslavism_var
 					add = var:balkfm_yugoslavism_progress_var
 				}
 				clamp_variable = {
 					name = balkfm_yugoslavism_var
-					max = 100
+					max = 200
 					min = 0
 				}
 				set_bar_progress = {
-					name = balkfm_yugoslavism_legitimacy_progressbar
+					name = balkfm_yugoslavism_progressbar
 					value = var:balkfm_yugoslavism_var
+				}
+				set_variable = {
+					name = balkfm_yugoslavism_tilt_var
+					value = owner.balkfm_yugoslavism_tilt_value
 				}
 			}
 		}
-	}
-	
-	status_desc = {
-		desc = je_balkfm_yugoslav_nationalism_status
 	}
 }
