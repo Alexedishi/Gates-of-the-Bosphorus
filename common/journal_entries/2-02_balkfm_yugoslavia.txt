@@ -526,55 +526,40 @@ je_balkfm_yugoslav_nationalism = {
 	}
 	
 	complete = {
-		OR = {
-			custom_tooltip = {
-				text = je_balkfm_yugoslav_nationalism_complete_integralist
-				scope:journal_entry = {
-					has_variable = balkfm_yugoslavism_var
-					var:balkfm_yugoslavism_var >= 200
-				}
-			}
-			custom_tooltip = {
-				text = je_balkfm_yugoslav_nationalism_complete_federalist
-				scope:journal_entry = {
-					has_variable = balkfm_yugoslavism_var
-					var:balkfm_yugoslavism_var <= 0
-				}
+		custom_tooltip = {
+			text = je_balkfm_yugoslav_nationalism_complete
+			scope:journal_entry = {
+				has_variable = balkfm_yugoslavism_var
+				var:balkfm_yugoslavism_var >= 200
 			}
 		}
 	}
 	
 	on_complete = {
-		custom_tooltip = {
-			text = je_balkfm_yugoslav_nationalism_on_complete_integralist
-			if = {
-				limit = {
-					var:balkfm_yugoslavism_var >= 200
-				}
-			}
-		}
-		custom_tooltip = {
-			text = je_balkfm_yugoslav_nationalism_on_complete_federalist
-			if = {
-				limit = {
-					var:balkfm_yugoslavism_var <= 0
-				}
-			}
-		}
 		remove_variable = balkfm_yugoslav_nationalism
 	}
 	
 	fail = {
 		custom_tooltip = {
 			text = je_balkfm_yugoslav_nationalism_fail
-			NOT = {
-				c:YUG ?= this
+			scope:journal_entry = {
+				has_variable = balkfm_yugoslavism_var
+				var:balkfm_yugoslavism_var <= 0
 			}
 		}
 	}
 	
 	on_fail = {
 		remove_variable = balkfm_yugoslav_nationalism
+	}
+	
+	invalid = {
+		custom_tooltip = {
+			text = je_balkfm_yugoslav_nationalism_invalid
+			NOT = {
+				c:YUG ?= this
+			}
+		}
 	}
 	
 	on_weekly_pulse = {
