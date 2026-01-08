@@ -197,6 +197,29 @@ gbbf_break_ottoman_alliances = {
 	}
 }
 
+gbbf_fix_trs_subjecthood = {
+	name = "gbbf_fix_trs_subjecthood"
+	desc = "gbbf_fix_trs_subjecthood_desc"
+	
+	visible = {
+		c:TRS ?= this
+		exists = c:AUS
+	}
+	possible = {
+		NOT = {
+			is_subject_of = c:AUS
+		}
+	}
+	effect = {
+		c:AUS = {
+			create_diplomatic_pact = {
+				type = protectorate
+				country = c:TRS
+			}
+		}
+	}
+}
+
 gbbf_fix_yugoslavism = {
 	name = "gbbf_fix_yugoslavism"
 	desc = "gbbf_fix_yugoslavism_desc"
@@ -210,5 +233,23 @@ gbbf_fix_yugoslavism = {
 	effect = {
 		remove_global_variable = balkfm_yugoslavism_failed
 		add_contextless_journal_entry = je_balkfm_unification_of_yugoslavia
+	}
+}
+
+gbbf_flex = {
+	name = "dummy_decision"
+	desc = "dummy_decision_desc"
+	
+	visible = {
+		always = yes
+	}
+	possible = {
+		enacting_any_law = yes
+	}
+	effect = {
+		add_enactment_modifier = {
+			name = free_speech_pamphlet_risk_success
+			multiplier = 5
+		}
 	}
 }

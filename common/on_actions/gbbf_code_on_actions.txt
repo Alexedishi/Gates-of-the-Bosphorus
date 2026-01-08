@@ -217,7 +217,51 @@ on_diplomatic_action_overlord_decrease_autonomy = {
 
 on_diplomatic_action_overlord_increase_autonomy = {
 	on_actions = {
+		balkfm_trs_protectorate_autonomy
 		eqfm_tension_increase_autonomy
+	}
+}
+
+on_diplomatic_action_subject_increase_own_autonomy = {
+	on_actions = {
+		balkfm_trs_protectorate_autonomy
+	}
+}
+
+balkfm_trs_protectorate_autonomy = {
+	trigger = {
+		scope:actor = {
+			c:AUS ?= this
+		}
+		scope:recipient = {
+			c:TRS ?= this
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				c:TRS = {
+					NOT = {
+						is_subject_type = subject_type_protectorate
+					}
+				}
+			}
+			c:TRS = {
+				if = {
+					limit = {
+						is_subject = yes
+					}
+				}
+				make_independent = yes
+			}
+			c:AUS = {
+				create_diplomatic_pact = {
+					type = protectorate
+					country = c:TRS
+				}
+			}
+			error_log = "GotB: Transylvania's autonomy was increased, but it became independent instead. Subjecthood has been fixed."
+		}
 	}
 }
 
