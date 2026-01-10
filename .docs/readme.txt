@@ -16,7 +16,8 @@ grefm_: Contains content for Greece, Byzantium, and other Hellene, Rhomaios, and
 balkfm_: Contains content for the Southern Slav, Romanian, and Albanian countries
 turkfm_: Contains content for the Ottoman Empire and the Turkish state
 mgrbfm_: Contains content for the Ottoman subjects in Northern Africa
-haykfm_: Contains content for Kurdistan, Armenia, and Assyria
+haykfm_: Contains content for the Kurdistan, Armenia, and Assyria states
+levafm_: Contains content for the Levantine countries
 eqfm_: Contains content for the Eastern Question and Expeditions; was formerly merged with turkfm
 
 These are other prefixing conventions used in this mod:
