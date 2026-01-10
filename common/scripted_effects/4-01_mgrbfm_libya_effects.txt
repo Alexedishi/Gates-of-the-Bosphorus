@@ -1,0 +1,359 @@
+﻿mgrbfm_initialize_senussi_variables_effect = {
+	set_variable = {
+		name = mgrbfm_senussi_var
+		value = 20
+	}
+	set_variable = {
+		name = mgrbfm_senussi_progress_var
+		value = 0
+	}
+	set_variable = {
+		name = mgrbfm_senussi_support_var
+		value = 0
+	}
+	set_variable = {
+		name = mgrbfm_senussi_opposition_var
+		value = 0
+	}
+	set_variable = {
+		name = mgrbfm_senussi_desert_centralized_var
+		value = 0
+	}
+	set_variable = {
+		name = mgrbfm_senussi_desert_decentralized_var
+		value = 0
+	}
+	set_variable = {
+		name = mgrbfm_bedouin_radical_fraction_var
+		value = 0
+	}
+	set_variable = {
+		name = mgrbfm_senussi_location_var
+		value = flag:mgrbfm_senussi_ghosted
+	}
+}
+
+mgrbfm_senussi_weekly_effect = {
+	## Step 1, Check for Libyan Desert & Bedouin Involvement
+	set_variable = {
+		name = mgrbfm_senussi_support_var
+		value = mgrbfm_senussi_support_value
+	}
+	set_variable = {
+		name = mgrbfm_senussi_opposition_var
+		value = mgrbfm_senussi_opposition_value
+	}
+	set_variable = {
+		name = mgrbfm_senussi_desert_centralized_var
+		value = mgrbfm_senussi_desert_centralized_value
+	}
+	set_variable = {
+		name = mgrbfm_senussi_desert_decentralized_var
+		value = mgrbfm_senussi_desert_decentralized_value
+	}
+	set_variable = {
+		name = mgrbfm_bedouin_radical_fraction_var
+		value = mgrbfm_bedouin_radical_fraction_value
+	}
+
+	## Step 2, Set Progress Variable
+	set_variable = {
+		name = mgrbfm_senussi_progress_var
+		value = mgrbfm_senussi_progress_value
+	}
+
+	## Step 3, Update Senusiyya Modifier
+	remove_modifier = modifier_mgrbfm_senusiyya_movement
+	add_modifier = {
+		name = modifier_mgrbfm_senusiyya_movement
+		multiplier = mgrbfm_senussi_multiplier_value
+	}
+
+	##Step 4, Update the Progress Bar
+	if = {
+		limit = {
+			has_journal_entry = je_mgrbfm_senusiyya_main
+		}
+		je:je_mgrbfm_senusiyya_main = {
+			set_bar_progress = {
+				name = mgrbfm_senussi_progressbar
+				value = owner.var:mgrbfm_senussi_var
+			}
+		}
+
+	}
+	else_if = {
+		limit = {
+			has_journal_entry = je_mgrbfm_senusiyya_sub
+		}
+		je:je_mgrbfm_senusiyya_sub = {
+			set_bar_progress = {
+				name = mgrbfm_senussi_progressbar
+				value = owner.var:mgrbfm_senussi_var
+			}
+		}
+
+	}
+}
+
+mgrbfm_update_senussi_effect = {
+	## Step 1, Make Sure Senussi Exists and Recapture/Regenerate as appropriate
+	if = {
+		limit = {
+			any_character_in_void = {
+				mgrbfm_character_is_senussi_trigger = yes
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				mgrbfm_character_is_senussi_trigger = yes
+			}
+			save_scope_as = mgrbfm_senussi_character_scope
+		}
+		set_variable = {
+			name = mgrbfm_senussi_character_var
+			value = scope:mgrbfm_senussi_character_scope
+		}
+	}
+	else = {
+		if = {
+			limit = {
+				global_var:mgrbfm_senussi_counter_var >= 5
+			}
+			create_character = {
+				template = template_mgrbfm_senussi_dynamic
+				on_created = {
+					add_trait = gbbf_trait_marabout
+					place_character_in_void = 240
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				global_var:mgrbfm_senussi_counter_var = 4
+			}
+			create_character = {
+				template = template_mgrbfm_senussi_hasan
+				on_created = {
+					add_trait = gbbf_trait_marabout
+					place_character_in_void = 240
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				global_var:mgrbfm_senussi_counter_var = 3
+			}
+			create_character = {
+				template = template_mgrbfm_senussi_idris
+				on_created = {
+					add_trait = gbbf_trait_marabout
+					place_character_in_void = 240
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				global_var:mgrbfm_senussi_counter_var = 2
+			}
+			create_character = {
+				template = template_mgrbfm_senussi_ahmed
+				on_created = {
+					add_trait = gbbf_trait_marabout
+					place_character_in_void = 240
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				global_var:mgrbfm_senussi_counter_var = 1
+			}
+			create_character = {
+				template = template_mgrbfm_senussi_muhammad_ii
+				on_created = {
+					add_trait = gbbf_trait_marabout
+					place_character_in_void = 240
+				}
+			}
+		}
+		else = {
+			create_character = {
+				template = template_mgrbfm_senussi_muhammad_i
+				on_created = {
+					add_trait = gbbf_trait_marabout
+					place_character_in_void = 120
+				}
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				mgrbfm_character_is_senussi_trigger = yes
+			}
+			save_scope_as = mgrbfm_senussi_character_scope
+		}
+		set_variable = {
+			name = mgrbfm_senussi_character_var
+			value = scope:mgrbfm_senussi_character_scope
+		}
+		change_global_variable = {
+			name = mgrbfm_senussi_counter_var
+			add = 1
+		}
+	}
+
+	## Step 2, Update the journal list
+	if = {
+		limit = {
+			has_journal_entry = je_mgrbfm_senusiyya_main
+		}
+		je:je_mgrbfm_senusiyya_main = {
+			clear_variable_list = com_journal_characters
+			add_to_variable_list = {
+				name = com_journal_characters
+				target = scope:mgrbfm_senussi_character_scope
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_journal_entry = je_mgrbfm_senusiyya_sub
+		}
+		je:je_mgrbfm_senusiyya_sub = {
+			clear_variable_list = com_journal_characters
+			add_to_variable_list = {
+				name = com_journal_characters
+				target = scope:mgrbfm_senussi_character_scope
+			}
+		}
+	}
+
+	## Step 3, Figure out where Senussi should be located & update flags
+	if = {
+		limit = {
+			var:mgrbfm_senussi_var >= 99
+		}
+		if = {
+			limit = {
+				var:mgrbfm_senussi_location_var != flag:mgrbfm_senussi_court
+			}
+			post_notification = notification_mgrbfm_senussi_entrenched
+		}
+		set_variable = {
+			name = mgrbfm_senussi_location_var
+			value = flag:mgrbfm_senussi_court
+		}
+	}
+	else_if = {
+		limit = {
+			var:mgrbfm_senussi_var >= 75
+		}
+		if = {
+			limit = {
+				OR = {
+					var:mgrbfm_senussi_location_var = flag:mgrbfm_senussi_ghosted
+					var:mgrbfm_senussi_location_var = flag:mgrbfm_senussi_desert
+					var:mgrbfm_senussi_location_var = flag:mgrbfm_senussi_villages
+				}
+			}
+			post_notification = notification_mgrbfm_senussi_urbanized_up
+		}
+		else_if = {
+			limit = {
+				var:mgrbfm_senussi_location_var = flag:mgrbfm_senussi_court
+			}
+			post_notification = notification_mgrbfm_senussi_urbanized_down
+		}
+		set_variable = {
+			name = mgrbfm_senussi_location_var
+			value = flag:mgrbfm_senussi_urban
+		}
+	}
+	else_if = {
+		limit = {
+			var:mgrbfm_senussi_var < 75
+			var:mgrbfm_senussi_var >= 50
+		}
+		if = {
+			limit = {
+				OR = {
+					var:mgrbfm_senussi_location_var = flag:mgrbfm_senussi_court
+					var:mgrbfm_senussi_location_var = flag:mgrbfm_senussi_urban
+				}
+			}
+			post_notification = notification_mgrbfm_senussi_villages_down
+		}
+		if = {
+			limit = {
+				OR = {
+					var:mgrbfm_senussi_location_var = flag:mgrbfm_senussi_ghosted
+					var:mgrbfm_senussi_location_var = flag:mgrbfm_senussi_desert
+				}
+
+			}
+			post_notification = notification_mgrbfm_senussi_villages_up
+		}
+		set_variable = {
+			name = mgrbfm_senussi_location_var
+			value = flag:mgrbfm_senussi_villages
+		}
+	}
+	else_if = {
+		limit = {
+			var:mgrbfm_senussi_var < 50
+		}
+		if = {
+			limit = {
+				var:mgrbfm_senussi_location_var = flag:mgrbfm_senussi_ghosted
+			}
+			post_notification = notification_mgrbfm_senussi_desert_up
+		}
+		else_if = {
+			limit = {
+				OR = {
+					var:mgrbfm_senussi_location_var = flag:mgrbfm_senussi_court
+					var:mgrbfm_senussi_location_var = flag:mgrbfm_senussi_urban
+					var:mgrbfm_senussi_location_var = flag:mgrbfm_senussi_villages
+				}
+			}
+			post_notification = notification_mgrbfm_senussi_desert_down
+		}
+		set_variable = {
+			name = mgrbfm_senussi_location_var
+			value = flag:mgrbfm_senussi_desert
+		}
+	}
+	else = {
+		if = {
+			limit = {
+				var:mgrbfm_senussi_location_var != flag:mgrbfm_senussi_ghosted
+			}
+			post_notification = notification_mgrbfm_senussi_ghosted
+		}
+		set_variable = {
+			name = mgrbfm_senussi_location_var
+			value = flag:mgrbfm_senussi_ghosted
+		}
+	}
+	scope:mgrbfm_senussi_character_scope = {
+		set_variable = {
+			name = com_opinion
+			value = root.var:mgrbfm_senussi_location_var
+		}
+	}
+
+}
+
+mgrbfm_cleanup_senussi_effect = {
+	remove_modifier = modifier_mgrbfm_senusiyya_movement
+	remove_variable = mgrbfm_senussi_var
+	remove_variable = mgrbfm_senussi_progress_var
+	remove_variable = mgrbfm_senussi_support_var
+	remove_variable = mgrbfm_senussi_opposition_var
+	remove_variable = mgrbfm_senussi_character_var
+	remove_variable = mgrbfm_senussi_location_var
+	remove_variable = mgrbfm_senussi_desert_centralized_var
+	remove_variable = mgrbfm_senussi_desert_decentralized_var
+	remove_variable = mgrbfm_bedouin_radical_fraction_var
+	remove_variable = mgrbfm_senussi_outcome_var
+	remove_global_variable = mgrbfm_intimidated_sensussi
+}
