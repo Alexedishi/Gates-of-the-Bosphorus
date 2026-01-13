@@ -559,7 +559,6 @@ balkfm_yugoslavia.009 = { # The Birth of Yugoslavia
 			add_claim = ROOT
 		}
 	}
-
 }
 
 
@@ -898,6 +897,27 @@ balkfm_yugoslavia.108 = {
 	option = {
 		name = balkfm_yugoslavia.108.a
 		default_option = yes
+		every_political_movement = {
+			limit = {
+				OR = {
+					is_political_movement_type = movement_cultural_majority
+					AND = {
+						is_political_movement_type = movement_cultural_minority
+						balkfm_is_yugoslav_culture_trigger = yes
+					}
+				}
+			}
+			
+		}
+		every_political_movement = {
+			limit = {
+				OR = {
+					is_political_movement_type = movement_yugoslav_national
+					is_political_movement_type = movement_gbbf_yugoslav_integralist
+				}
+			}
+			
+		}
 	}
 	
 	option = {
@@ -931,6 +951,45 @@ balkfm_yugoslavia.109 = {
 	option = {
 		name = balkfm_yugoslavia.109.a
 		default_option = yes
+		add_primary_culture = cu:yugoslav
+		custom_tooltip = {
+			text = je_balkfm_yugoslav_nationalism_on_complete_1
+			remove_primary_culture = cu:montenegrin
+			remove_primary_culture = cu:serb
+			remove_primary_culture = cu:bulgarian
+			remove_primary_culture = cu:bosniak
+			remove_primary_culture = cu:croat
+			remove_primary_culture = cu:slovene
+		}
+		custom_tooltip = {
+			text = je_balkfm_yugoslav_nationalism_on_complete_2
+			every_scope_pop = {
+				limit = {
+					balkfm_pop_has_yugoslav_culture_trigger = yes
+				}
+				change_pop_culture = {
+					target = cu:yugoslav
+					value = 0.5
+				}
+			}
+		}
+		if = {
+			limit = {
+				cu:yugoslav = {
+					culture_has_national_awakening = no
+				}
+			}
+			start_national_awakening = {
+				culture = cu:yugoslav
+				months = 120
+				state_region = s:STATE_EASTERN_SERBIA
+			}
+		}
+		add_modifier = {
+			name = modifier_popular_genesis
+			days = long_modifier_time
+			multiplier = 2
+		}
 	}
 	
 	option = {
