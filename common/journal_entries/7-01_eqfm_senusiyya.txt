@@ -1,0 +1,275 @@
+﻿je_eqfm_senusiyya = {
+	group = je_group_global_international_situations
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	weight = 100
+	
+	should_be_pinned_by_default = yes
+	
+	is_shown_in_lobby = {
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_senussi
+		}
+	}
+	
+	scripted_progress_bar = mgrbfm_senussi_progressbar
+	
+	scripted_button = mgrbfm_embrace_senussi_button
+	scripted_button = mgrbfm_sweep_desert_button
+	scripted_button = mgrbfm_supress_senusiyya_button
+	
+	is_shown_when_inactive = {
+		c:TRI ?= {
+			NOR = {
+				has_variable = mgrbfm_embraced_senussi
+				has_variable = mgrbfm_swept_senussi
+			}
+		}
+		OR = {
+			has_interest_marker_in_region = region_north_africa
+			has_interest_marker_in_region = region_nile_basin
+		}
+	}
+	
+	should_be_involved = {
+		OR = {
+			AND = {
+				any_scope_state = {
+					is_in_geographic_region = geographic_region_senussi
+				}
+				gbbf_is_muslim_trigger = yes
+			}
+			any_subject_or_below = {
+				any_scope_state = {
+					is_in_geographic_region = geographic_region_senussi
+				}
+				gbbf_is_muslim_trigger = yes
+			}
+			AND = {
+				country_rank >= rank_value:great_power
+				OR = {
+					has_interest_marker_in_region = region_north_africa
+					has_interest_marker_in_region = region_nile_basin
+				}
+			}
+		}
+		hidden_trigger = {
+			NOR = {
+				has_variable = eqfm_embraced_senusiyya
+				has_variable = eqfm_expelled_senusiyya
+			}
+		}
+	}
+	
+	possible = {
+		any_country_in_senussi = {
+			capital = {
+				is_in_geographic_region = geographic_region_senussi
+			}
+			has_technology_researched = mass_communication
+		}
+	}
+	
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		scope:journal_entry = {
+			set_variable = {
+				name = mgrbfm_senussi_var
+				value = 20
+			}
+			set_variable = {
+				name = mgrbfm_senussi_progress_var
+				value = 0
+			}
+			set_variable = {
+				name = mgrbfm_senussi_support_var
+				value = 0
+			}
+			set_variable = {
+				name = mgrbfm_senussi_opposition_var
+				value = 0
+			}
+			set_variable = {
+				name = mgrbfm_senussi_desert_centralized_var
+				value = 0
+			}
+			set_variable = {
+				name = mgrbfm_senussi_desert_decentralized_var
+				value = 0
+			}
+			set_variable = {
+				name = mgrbfm_bedouin_radical_fraction_var
+				value = 0
+			}
+			set_variable = {
+				name = mgrbfm_senussi_location_var
+				value = flag:mgrbfm_senussi_ghosted
+			}
+			save_scope_as = eqfm_senussi_journal_scope
+		}
+		set_global_variable = {
+			name = je_eqfm_senusiyya
+			value = scope:eqfm_senussi_journal_scope
+		}
+	}
+	
+	immediate_all_involved = {
+		trigger_event = {
+			id = mgrbfm_libya.100
+		}
+	}
+	
+	should_show_when_not_involved = {
+		OR = {
+			country_rank >= rank_value:great_power
+			any_scope_state = {
+				is_in_geographic_region = geographic_region_senussi
+			}
+		}
+	}
+	
+	on_become_involved_after_activation = {
+		if = {
+			limit = {
+				gbbf_is_muslim_trigger = yes
+				NOT = {
+					has_variable = eqfm_senusiyya_started
+				}
+			}
+			trigger_event = {
+				id = mgrbfm_libya.111 # Senusiyya Arrives in Country
+			}
+		}
+		else_if = {
+			limit = {
+				gbbf_is_muslim_trigger = yes
+				has_variable = eqfm_senusiyya_started
+			}
+			post_notification = notification_mgrbfm_senussi_arrival
+		}
+		else = {
+			post_notification = notification_eqfm_senusiyya_involved
+		}
+	}
+	
+	on_no_longer_involved = {
+		if = {
+			limit = {
+				gbbf_is_muslim_trigger = yes
+				OR = {
+					has_variable = eqfm_embraced_senusiyya
+					has_variable = eqfm_expelled_senusiyya
+				}
+			}
+			post_notification = notification_eqfm_senusiyya_completed
+		}
+		else_if = {
+			limit = {
+				gbbf_is_muslim_trigger = yes
+				NOR = {
+					has_variable = eqfm_embraced_senusiyya
+					has_variable = eqfm_expelled_senusiyya
+				}
+			}
+			post_notification = notification_eqfm_senusiyya_failed
+		}
+		else = {
+			post_notification = notification_eqfm_senusiyya_uninvolved
+		}
+	}
+	
+	complete = {
+		any_country = {
+			filter = {
+				any_scope_state = {
+					is_in_geographic_region = geographic_region_senussi
+				}
+				gbbf_is_muslim_trigger = yes
+			}
+			count = all
+			custom_tooltip = {
+				text = je_eqfm_senusiyya_complete
+				OR = {
+					has_variable = eqfm_embraced_senusiyya
+					has_variable = eqfm_expelled_senusiyya
+				}
+			}
+		}
+	}
+	
+	on_complete = {
+		hidden_effect = {
+			every_country = {
+				limit = {
+					has_modifier = modifier_mgrbfm_senusiyya_movement
+				}
+				remove_modifier = modifier_mgrbfm_senusiyya_movement
+			}
+		}
+		remove_global_variable = je_eqfm_senusiyya
+	}
+	
+	on_weekly_pulse = {
+		effect = {
+			scope:journal_entry = {
+				set_variable = {
+					name = mgrbfm_senussi_support_var
+					value = mgrbfm_senussi_support_value
+				}
+				set_variable = {
+					name = mgrbfm_senussi_opposition_var
+					value = mgrbfm_senussi_opposition_value
+				}
+				set_variable = {
+					name = mgrbfm_senussi_progress_var
+					value = mgrbfm_senussi_progress_value
+				}
+				set_bar_progress = {
+					name = mgrbfm_senussi_progressbar
+					value = owner.var:mgrbfm_senussi_var
+				}
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_senusiyya
+					gbbf_is_muslim_trigger = yes
+				}
+				if = {
+					limit = {
+						has_modifier = modifier_mgrbfm_senusiyya_movement
+					}
+					remove_modifier = modifier_mgrbfm_senusiyya_movement
+				}
+				add_modifier = {
+					name = modifier_mgrbfm_senusiyya_movement
+					multiplier = mgrbfm_senussi_multiplier_value
+				}
+			}
+		}
+	}
+	
+	on_monthly_pulse = {
+		effect = {
+			eqfm_validate_senusiyya_involvement_effect = yes
+			scope:journal_entry = {
+				change_variable = {
+					name = mgrbfm_senussi_var
+					add = var:mgrbfm_senussi_progress_var
+				}
+				clamp_variable = {
+					name = mgrbfm_senussi_var
+					max = 100
+					min = 0
+				}
+			}
+		}
+	}
+	
+	status_desc = {
+		triggered_desc = {
+			desc = mgrbfm_senussi_location_status
+			trigger = {
+				has_journal_entry = je_mgrbfm_senusiyya_main
+			}
+		}
+	}
+}

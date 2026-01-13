@@ -1,102 +1,4 @@
-﻿mgrbfm_initialize_senussi_variables_effect = {
-	set_variable = {
-		name = mgrbfm_senussi_var
-		value = 20
-	}
-	set_variable = {
-		name = mgrbfm_senussi_progress_var
-		value = 0
-	}
-	set_variable = {
-		name = mgrbfm_senussi_support_var
-		value = 0
-	}
-	set_variable = {
-		name = mgrbfm_senussi_opposition_var
-		value = 0
-	}
-	set_variable = {
-		name = mgrbfm_senussi_desert_centralized_var
-		value = 0
-	}
-	set_variable = {
-		name = mgrbfm_senussi_desert_decentralized_var
-		value = 0
-	}
-	set_variable = {
-		name = mgrbfm_bedouin_radical_fraction_var
-		value = 0
-	}
-	set_variable = {
-		name = mgrbfm_senussi_location_var
-		value = flag:mgrbfm_senussi_ghosted
-	}
-}
-
-mgrbfm_senussi_weekly_effect = {
-	## Step 1, Check for Libyan Desert & Bedouin Involvement
-	set_variable = {
-		name = mgrbfm_senussi_support_var
-		value = mgrbfm_senussi_support_value
-	}
-	set_variable = {
-		name = mgrbfm_senussi_opposition_var
-		value = mgrbfm_senussi_opposition_value
-	}
-	set_variable = {
-		name = mgrbfm_senussi_desert_centralized_var
-		value = mgrbfm_senussi_desert_centralized_value
-	}
-	set_variable = {
-		name = mgrbfm_senussi_desert_decentralized_var
-		value = mgrbfm_senussi_desert_decentralized_value
-	}
-	set_variable = {
-		name = mgrbfm_bedouin_radical_fraction_var
-		value = mgrbfm_bedouin_radical_fraction_value
-	}
-
-	## Step 2, Set Progress Variable
-	set_variable = {
-		name = mgrbfm_senussi_progress_var
-		value = mgrbfm_senussi_progress_value
-	}
-
-	## Step 3, Update Senusiyya Modifier
-	remove_modifier = modifier_mgrbfm_senusiyya_movement
-	add_modifier = {
-		name = modifier_mgrbfm_senusiyya_movement
-		multiplier = mgrbfm_senussi_multiplier_value
-	}
-
-	##Step 4, Update the Progress Bar
-	if = {
-		limit = {
-			has_journal_entry = je_mgrbfm_senusiyya_main
-		}
-		je:je_mgrbfm_senusiyya_main = {
-			set_bar_progress = {
-				name = mgrbfm_senussi_progressbar
-				value = owner.var:mgrbfm_senussi_var
-			}
-		}
-
-	}
-	else_if = {
-		limit = {
-			has_journal_entry = je_mgrbfm_senusiyya_sub
-		}
-		je:je_mgrbfm_senusiyya_sub = {
-			set_bar_progress = {
-				name = mgrbfm_senussi_progressbar
-				value = owner.var:mgrbfm_senussi_var
-			}
-		}
-
-	}
-}
-
-mgrbfm_update_senussi_effect = {
+﻿mgrbfm_update_senussi_effect = {
 	## Step 1, Make Sure Senussi Exists and Recapture/Regenerate as appropriate
 	if = {
 		limit = {
@@ -343,17 +245,41 @@ mgrbfm_update_senussi_effect = {
 
 }
 
-mgrbfm_cleanup_senussi_effect = {
-	remove_modifier = modifier_mgrbfm_senusiyya_movement
-	remove_variable = mgrbfm_senussi_var
-	remove_variable = mgrbfm_senussi_progress_var
-	remove_variable = mgrbfm_senussi_support_var
-	remove_variable = mgrbfm_senussi_opposition_var
-	remove_variable = mgrbfm_senussi_character_var
-	remove_variable = mgrbfm_senussi_location_var
-	remove_variable = mgrbfm_senussi_desert_centralized_var
-	remove_variable = mgrbfm_senussi_desert_decentralized_var
-	remove_variable = mgrbfm_bedouin_radical_fraction_var
-	remove_variable = mgrbfm_senussi_outcome_var
-	remove_global_variable = mgrbfm_intimidated_sensussi
+eqfm_validate_senusiyya_involvement_effect = {
+	every_country = {
+		limit = {
+			OR = {
+				AND = {
+					NOT = {
+						is_involved_in_journal_entry = je_eqfm_senusiyya
+					}
+					eqfm_senusiyya_involvement_trigger = yes
+				}
+				AND = {
+					is_involved_in_journal_entry = je_eqfm_senusiyya
+					eqfm_senusiyya_involvement_trigger = no
+				}
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					is_involved_in_journal_entry = je_eqfm_senusiyya
+				}
+				eqfm_senusiyya_involvement_trigger = yes
+			}
+			global_var:je_eqfm_senusiyya = {
+				add_involved_country = prev
+			}
+		}
+		else_if = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_senusiyya
+				eqfm_senusiyya_involvement_trigger = no
+			}
+			global_var:je_eqfm_senusiyya = {
+				remove_involved_country = prev
+			}
+		}
+	}
 }
