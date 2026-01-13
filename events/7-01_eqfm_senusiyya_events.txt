@@ -1,0 +1,646 @@
+#################################################################
+## EASTERN QUESTION FLAVOR MODULE: THE FOLLOWERS OF AL-SANUSSI ##
+#################################################################
+
+# For Greek & Byzantium content, see the "grefm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Ottoman & Turkish content, see the "turkfm" module
+# For Northern African content, see the "mgrbfm" module
+# For Armenian, Kurdish, & Assyrian content, see the "haykfm" module
+# For Levantine content, see the "levafm" module
+# For Eastern Question & Expeditions content, see the "eqfm" module
+
+####################
+
+namespace = eqfm_senusiyya
+
+####################
+
+####	TABLE OF CONTENTS	####	#TOC
+
+# The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
+
+#001-009 - The Senusiyya Movement Narrative Events
+#	001 - The Senussi Order
+#	002 - The Grand Senussi
+#	003 - Senussi Withdraws to the Desert
+#	004 - Armed Diplomacy
+#	005 - The State-within-a-State
+#	006 -
+#	007 -
+#	008 - Senusiyya Extinguished
+#	009 - House Senussi of Country
+
+#010-019 - The Senusiyya Movement Mechanical Events
+#	010 - Senusiyya Spreads to Country
+#	011 - Senusiyya Arrives in Country
+#	012 - Senusiyya Takes Root in State
+#	013 - Senusiyya Expunged from State
+
+####################
+
+## The Senusiyya Movement Narrative Events ##
+mgrbfm_libya.100 = { # The Senussi Order
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	
+	title = mgrbfm_libya.100.t
+	desc =  mgrbfm_libya.100.d
+	flavor = mgrbfm_libya.100.f
+	
+	gui_window = event_window_1char_adventure
+	
+	left_icon = scope:mgrbfm_senussi_character_scope
+	
+	event_image = {
+		video = "middleeast_islam"
+	}
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by je_mgrbfm_senusiyya_main/sub
+	}
+	
+	immediate = {
+		eqfm_update_senussi_effect = yes
+		mgrbfm_senussi_weekly_effect = yes
+	}
+	
+	option = {
+		name = mgrbfm_libya.100.a
+		default_option = yes
+		random_scope_state = {
+			add_modifier = modifier_mgrbfm_senussi_stronghold
+		}
+	}
+	
+}
+
+mgrbfm_libya.101 = { # The Grand Senussi
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	
+	title = mgrbfm_libya.101.t
+	desc = mgrbfm_libya.101.d
+	flavor = mgrbfm_libya.101.f
+	
+	gui_window = event_window_1char_adventure
+	
+	left_icon = scope:mgrbfm_senussi_character_scope
+	
+	event_image = {
+		video = "middleeast_islam"
+	}
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		NOT = {
+			has_global_variable = turkfm_grand_senussi_has_landed
+		}
+		global_var:mgrbfm_senussi_counter_var = 2
+	}
+	
+	immediate = {
+		set_global_variable = turkfm_grand_senussi_has_landed
+		eqfm_update_senussi_effect = yes
+	}
+	
+	option = {
+		name = mgrbfm_libya.101.a
+		default_option = yes
+	}
+	
+}
+
+mgrbfm_libya.102 = { # Senussi Withdraws to the Desert
+	type = country_event
+	placement = scope:kufra_scope
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	
+	title = mgrbfm_libya.102.t
+	desc = mgrbfm_libya.102.d
+	flavor = mgrbfm_libya.102.f
+	
+	gui_window = event_window_1char_adventure
+	
+	left_icon = scope:mgrbfm_senussi_character_scope
+	
+	event_image = {
+		video = "africa_desert_expedition"
+	}
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		NOT = {
+			has_variable = mgrbfm_senussi_ran_away
+		}
+		has_global_variable = mgrbfm_intimidated_sensussi
+		var:mgrbfm_senussi_var <= 50
+	}
+	
+	immediate = {
+		set_variable = mgrbfm_senussi_ran_away
+		eqfm_update_senussi_effect = yes
+		c:ZWY = {
+			save_scope_as = kufra_scope
+		}
+	}
+	
+	option = {
+		name = mgrbfm_libya.102.a
+		default_option = yes
+	}
+	
+}
+
+mgrbfm_libya.103 = { # Armed Diplomacy
+	type = country_event
+	placement = scope:kufra_capital_scope
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	
+	title = mgrbfm_libya.103.t
+	desc = mgrbfm_libya.103.d
+	flavor = mgrbfm_libya.103.f
+	
+	gui_window = event_window_2char_discussion
+	
+	left_icon = scope:mgrbfm_senussi_character_scope
+	right_icon = scope:turkfm_intimidation_scope
+	
+	event_image = {
+		video = "middleeast_courtroom_upheaval"
+	}
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by mgrbfm_armed_delegation_button
+	}
+	
+	cancellation_trigger = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+	
+	immediate = {
+		eqfm_update_senussi_effect = yes
+		random_scope_general = {
+			limit = {
+				has_modifier = modifier_eqfm_leading_desert_expedition
+			}
+			save_scope_as = turkfm_intimidation_scope
+		}
+		c:ZWY = {
+			capital = {
+				save_scope_as = kufra_capital_scope
+			}
+		}
+	}
+	
+	option = {
+		name = mgrbfm_libya.103.a
+		default_option = yes
+		custom_tooltip = {
+			text = mgrbfm_senussi_lose_10
+			change_variable = {
+				name = mgrbfm_senussi_var
+				subtract = 10
+			}
+			clamp_variable = {
+				name = mgrbfm_senussi_var
+				max = 100
+				min = 0
+			}
+		}
+	}
+	
+}
+
+mgrbfm_libya.104 = { # The State-within-a-State
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	
+	title = mgrbfm_libya.104.t
+	desc = mgrbfm_libya.104.d
+	flavor = mgrbfm_libya.104.f
+	
+	event_image = {
+		video = "middleeast_islam"
+	}
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		var:mgrbfm_senussi_var >= 50
+		NOT = {
+			has_modifier = modifier_mgrbfm_senussi_nationalism
+		}
+	}
+	
+	immediate = {
+		eqfm_update_senussi_effect = yes
+		add_modifier = {
+			name = modifier_mgrbfm_senussi_nationalism
+		}
+	}
+	
+	option = {
+		name = mgrbfm_libya.104.a
+		default_option = yes
+		show_as_tooltip = {
+			add_modifier = {
+				name = modifier_mgrbfm_senussi_nationalism
+			}
+		}
+	}
+	
+}
+
+mgrbfm_libya.108 = { # The Senusiyya Extinguished
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	
+	title = mgrbfm_libya.108.t
+	desc = mgrbfm_libya.108.d
+	flavor = mgrbfm_libya.108.f
+	
+	event_image = {
+		video = "votp_hostile_court"
+	}
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by je_mgrbfm_senusiyya_main/sub
+	}
+	
+	immediate = {
+		eqfm_update_senussi_effect = yes
+	}
+	
+	option = {
+		name = mgrbfm_libya.108.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_mgrbfm_senusiyya_extinguished
+			months = gbbf_10_years
+		}
+		add_radicals = {
+			culture = cu:bedouin
+			value = large_radicals
+		}
+	}
+	
+}
+
+mgrbfm_libya.109 = { # The Senussi of Country
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	
+	title = mgrbfm_libya.109.t
+	desc = mgrbfm_libya.109.d
+	flavor = mgrbfm_libya.109.f
+	
+	event_image = {
+		video = "middleeast_islam"
+	}
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by je_mgrbfm_senusiyya_main/sub
+	}
+	
+	immediate = {
+		eqfm_update_senussi_effect = yes
+	}
+	
+	option = {
+		name = mgrbfm_libya.109.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_mgrbfm_senusiyya_embraced
+			months = gbbf_10_years
+		}
+		add_loyalists = {
+			culture = cu:bedouin
+			value = large_radicals
+		}
+	}
+	
+}
+
+## The Senusiyya Movement Mechanical Events ##
+mgrbfm_libya.110 = { # Senusiyya Spreads to Country
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	
+	title = mgrbfm_libya.110.t
+	desc = mgrbfm_libya.110.d
+	flavor = mgrbfm_libya.110.f
+	
+	event_image = {
+		video = "middleeast_islam"
+	}
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		var:mgrbfm_senussi_var >= 100
+		any_country ={
+			is_adjacent_to_country = root
+			country_has_state_religion = rel:sunni
+			NOR = {
+				has_journal_entry = je_mgrbfm_senusiyya_sub
+				has_variable = mgrbfm_embraced_senussi
+				has_variable = mgrbfm_swept_senussi
+			}
+			any_scope_state = {
+				gbbf_senussi_geography_trigger = yes
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		OR = {
+			has_variable = mgrbfm_embraced_senussi
+			has_variable = mgrbfm_swept_senussi
+		}
+	}
+	
+	cooldown = {
+		years = 2
+	}
+	
+	immediate = {
+		eqfm_update_senussi_effect = yes
+		random_country = {
+			limit = {
+				is_adjacent_to_country = root
+				country_has_state_religion = rel:sunni
+				NOR = {
+					has_journal_entry = je_mgrbfm_senusiyya_sub
+					has_variable = mgrbfm_embraced_senussi
+					has_variable = mgrbfm_swept_senussi
+				}
+				any_scope_state = {
+					gbbf_senussi_geography_trigger = yes
+				}
+			}
+			save_scope_as = mgrbfm_senussi_target
+		}
+	}
+	
+	option = {
+		name = mgrbfm_libya.110.a
+		default_option = yes
+		scope:mgrbfm_senussi_target = {
+			show_as_tooltip = {
+				trigger_event = {
+					id = mgrbfm_libya.111 # Senusiyya Arrives in Country
+				}
+			}
+			hidden_effect = {
+				add_journal_entry = {
+					type = je_mgrbfm_senusiyya_sub
+				}
+			}
+		}
+	}
+	
+}
+
+mgrbfm_libya.111 = { # Senusiyya Arrives in Country
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	
+	title = mgrbfm_libya.111.t
+	desc = mgrbfm_libya.111.d
+	flavor = mgrbfm_libya.111.f
+	
+	gui_window = event_window_1char_adventure
+	
+	left_icon = scope:mgrbfm_senussi_character_scope
+	
+	event_image = {
+		video = "middleeast_islam"
+	}
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		# triggered by mgrbfm_libya.110
+	}
+	
+	immediate = {
+		eqfm_update_senussi_effect = yes
+		mgrbfm_senussi_weekly_effect = yes
+	}
+	
+	option = {
+		name = mgrbfm_libya.100.a
+		default_option = yes
+		add_journal_entry = {
+			type = je_mgrbfm_senusiyya_sub
+		}
+	}
+	
+}
+
+mgrbfm_libya.112 = { # Senusiyya Takes Root in State
+	type = country_event
+	placement = scope:mgrbfm_senussi_state_scope
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	
+	title = mgrbfm_libya.112.t
+	desc = mgrbfm_libya.112.d
+	flavor = mgrbfm_libya.112.f
+	
+	gui_window = event_window_1char_adventure
+	
+	left_icon = scope:mgrbfm_senussi_character_scope
+	
+	event_image = {
+		video = "middleeast_islam"
+	}
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		var:mgrbfm_senussi_var >= 70
+		trigger_if = {
+			limit = {
+				c:TRI ?= this
+			}
+			has_modifier = modifier_mgrbfm_senussi_nationalism
+		}
+		any_scope_state = {
+			gbbf_senussi_geography_trigger = yes
+			NOT = {
+				has_modifier = modifier_mgrbfm_senussi_stronghold
+			}
+		}
+	}
+	
+	cooldown = {
+		years = 4
+	}
+	
+	immediate = {
+		eqfm_update_senussi_effect = yes
+		random_scope_state = {
+			limit = {
+				gbbf_senussi_geography_trigger = yes
+				NOT = {
+					has_modifier = modifier_mgrbfm_senussi_stronghold
+				}
+			}
+			save_scope_as = mgrbfm_senussi_state_scope
+		}
+	}
+	
+	option = { # Allow them to Spread
+		name = mgrbfm_libya.112.a
+		default_option = yes
+		scope:mgrbfm_senussi_state_scope = {
+			add_modifier = modifier_mgrbfm_senussi_stronghold
+		}
+		custom_tooltip = {
+			text = mgrbfm_senussi_lose_20
+			change_variable = {
+				name = mgrbfm_senussi_var
+				subtract = 20
+			}
+		}
+	}
+	
+	option = { # Attempt to Suppress Them
+		name = mgrbfm_libya.112.b
+		default_option = yes
+		trigger = {
+			has_technology_researched = centralization
+			has_global_variable = mgrbfm_intimidated_sensussi
+			authority >= 200
+		}
+		add_modifier = modifier_mgrbfm_desert_raids
+		custom_tooltip = {
+			text = mgrbfm_supress_senusiyya_effect
+			set_variable = {
+				name = mgrbfm_desert_raids_var
+				years = 2
+			}
+		}
+	}
+	
+}
+
+mgrbfm_libya.113 = { # Senusiyya Expunged from State
+	type = country_event
+	placement = scope:mgrbfm_senussi_state_scope
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	
+	title = mgrbfm_libya.113.t
+	desc = mgrbfm_libya.113.d
+	flavor = mgrbfm_libya.113.f
+	
+	gui_window = event_window_1char_adventure
+	
+	left_icon = scope:mgrbfm_senussi_character_scope
+	
+	event_image = {
+		video = "africa_desert_expedition"
+	}
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		var:mgrbfm_senussi_var < 30
+		has_modifier = modifier_mgrbfm_desert_raids
+		any_scope_state = {
+			has_modifier = modifier_mgrbfm_senussi_stronghold
+		}
+	}
+	
+	cooldown = {
+		years = 2
+	}
+	
+	immediate = {
+		random_scope_state = {
+			limit = {
+				has_modifier = modifier_mgrbfm_senussi_stronghold
+			}
+			save_scope_as = mgrbfm_senussi_state_scope
+		}
+		eqfm_update_senussi_effect = yes
+	}
+	
+	option = {
+		name = mgrbfm_libya.113.a
+		default_option = yes
+		scope:mgrbfm_senussi_state_scope = {
+			remove_modifier = modifier_mgrbfm_senussi_stronghold
+		}
+		custom_tooltip = {
+			text = mgrbfm_senussi_gain_20
+			change_variable = {
+				name = mgrbfm_senussi_var
+				add = 20
+			}
+		}
+	}
+	
+}
