@@ -50,6 +50,10 @@
 				value = 0
 			}
 			set_variable = {
+				name = eqfm_senussi_chacter_counter_var
+				value = 0
+			}
+			set_variable = {
 				name = eqfm_senussi_location_var
 				value = flag:eqfm_senussi_ghosted
 			}
@@ -102,7 +106,154 @@ eqfm_update_senusiyya_variables_effect = {
 		}
 		set_bar_progress = {
 			name = eqfm_senusiyya_progressbar
-			value = owner.var:eqfm_senussi_var
+			value = owner.var:eqfm_senusiyya_var
+		}
+		
+		## Figure out where Senussi should be located & update flags
+		if = {
+			limit = {
+				var:eqfm_senusiyya_var >= 99
+			}
+			if = {
+				limit = {
+					var:eqfm_senussi_location_var != flag:eqfm_senussi_court
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_eqfm_senusiyya
+					}
+					post_notification = notification_eqfm_senussi_entrenched
+				}
+			}
+			set_variable = {
+				name = eqfm_senussi_location_var
+				value = flag:eqfm_senussi_court
+			}
+		}
+		else_if = {
+			limit = {
+				var:eqfm_senusiyya_var >= 75
+			}
+			if = {
+				limit = {
+					OR = {
+						var:eqfm_senussi_location_var = flag:eqfm_senussi_ghosted
+						var:eqfm_senussi_location_var = flag:eqfm_senussi_desert
+						var:eqfm_senussi_location_var = flag:eqfm_senussi_villages
+					}
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_eqfm_senusiyya
+					}
+					post_notification = notification_eqfm_senussi_urbanized_up
+				}
+			}
+			else_if = {
+				limit = {
+					var:eqfm_senussi_location_var = flag:eqfm_senussi_court
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_eqfm_senusiyya
+					}
+					post_notification = notification_eqfm_senussi_urbanized_down
+				}
+			}
+			set_variable = {
+				name = eqfm_senussi_location_var
+				value = flag:eqfm_senussi_urban
+			}
+		}
+		else_if = {
+			limit = {
+				var:eqfm_senusiyya_var < 75
+				var:eqfm_senusiyya_var >= 50
+			}
+			if = {
+				limit = {
+					OR = {
+						var:eqfm_senussi_location_var = flag:eqfm_senussi_court
+						var:eqfm_senussi_location_var = flag:eqfm_senussi_urban
+					}
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_eqfm_senusiyya
+					}
+					post_notification = notification_eqfm_senussi_villages_down
+				}
+			}
+			if = {
+				limit = {
+					OR = {
+						var:eqfm_senussi_location_var = flag:eqfm_senussi_ghosted
+						var:eqfm_senussi_location_var = flag:eqfm_senussi_desert
+					}
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_eqfm_senusiyya
+					}
+					post_notification = notification_eqfm_senussi_villages_up
+				}
+			}
+			set_variable = {
+				name = eqfm_senussi_location_var
+				value = flag:eqfm_senussi_villages
+			}
+		}
+		else_if = {
+			limit = {
+				var:eqfm_senusiyya_var < 50
+			}
+			if = {
+				limit = {
+					var:eqfm_senussi_location_var = flag:eqfm_senussi_ghosted
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_eqfm_senusiyya
+					}
+					post_notification = notification_eqfm_senussi_desert_up
+				}
+			}
+			else_if = {
+				limit = {
+					OR = {
+						var:eqfm_senussi_location_var = flag:eqfm_senussi_court
+						var:eqfm_senussi_location_var = flag:eqfm_senussi_urban
+						var:eqfm_senussi_location_var = flag:eqfm_senussi_villages
+					}
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_eqfm_senusiyya
+					}
+					post_notification = notification_eqfm_senussi_desert_down
+				}
+			}
+			set_variable = {
+				name = eqfm_senussi_location_var
+				value = flag:eqfm_senussi_desert
+			}
+		}
+		else = {
+			if = {
+				limit = {
+					var:eqfm_senussi_location_var != flag:eqfm_senussi_ghosted
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_eqfm_senusiyya
+					}
+					post_notification = notification_eqfm_senussi_ghosted
+				}
+			}
+			set_variable = {
+				name = eqfm_senussi_location_var
+				value = flag:eqfm_senussi_ghosted
+			}
 		}
 	}
 }
@@ -165,11 +316,7 @@ eqfm_validate_senusiyya_involvement_effect = {
 	}
 }
 
-
-
-
-
-eqfm_update_senussi_effect = {
+eqfm_update_senussi_character_effect = {
 	## Step 1, Make Sure Senussi Exists and Recapture/Regenerate as appropriate
 	if = {
 		limit = {
@@ -191,61 +338,61 @@ eqfm_update_senussi_effect = {
 	else = {
 		if = {
 			limit = {
-				global_var:eqfm_senussi_counter_var >= 5
+				global_var:eqfm_senussi_chacter_counter_var >= 5
 			}
 			create_character = {
 				template = template_eqfm_senussi_dynamic
 				on_created = {
 					add_trait = gbbf_trait_marabout
-					place_character_in_void = 240
+					place_character_in_void = 400
 				}
 			}
 		}
 		else_if = {
 			limit = {
-				global_var:eqfm_senussi_counter_var = 4
+				global_var:eqfm_senussi_chacter_counter_var = 4
 			}
 			create_character = {
 				template = template_eqfm_senussi_hasan
 				on_created = {
 					add_trait = gbbf_trait_marabout
-					place_character_in_void = 240
+					place_character_in_void = 400
 				}
 			}
 		}
 		else_if = {
 			limit = {
-				global_var:eqfm_senussi_counter_var = 3
+				global_var:eqfm_senussi_chacter_counter_var = 3
 			}
 			create_character = {
 				template = template_eqfm_senussi_idris
 				on_created = {
 					add_trait = gbbf_trait_marabout
-					place_character_in_void = 240
+					place_character_in_void = 400
 				}
 			}
 		}
 		else_if = {
 			limit = {
-				global_var:eqfm_senussi_counter_var = 2
+				global_var:eqfm_senussi_chacter_counter_var = 2
 			}
 			create_character = {
 				template = template_eqfm_senussi_ahmed
 				on_created = {
 					add_trait = gbbf_trait_marabout
-					place_character_in_void = 240
+					place_character_in_void = 400
 				}
 			}
 		}
 		else_if = {
 			limit = {
-				global_var:eqfm_senussi_counter_var = 1
+				global_var:eqfm_senussi_chacter_counter_var = 1
 			}
 			create_character = {
 				template = template_eqfm_senussi_muhammad_ii
 				on_created = {
 					add_trait = gbbf_trait_marabout
-					place_character_in_void = 240
+					place_character_in_void = 400
 				}
 			}
 		}
@@ -254,7 +401,7 @@ eqfm_update_senussi_effect = {
 				template = template_eqfm_senussi_muhammad_i
 				on_created = {
 					add_trait = gbbf_trait_marabout
-					place_character_in_void = 120
+					place_character_in_void = 400
 				}
 			}
 		}
@@ -269,150 +416,17 @@ eqfm_update_senussi_effect = {
 			value = scope:eqfm_senussi_character_scope
 		}
 		change_global_variable = {
-			name = eqfm_senussi_counter_var
+			name = eqfm_senussi_chacter_counter_var
 			add = 1
 		}
 	}
-
+	
 	## Step 2, Update the journal list
-	if = {
-		limit = {
-			has_journal_entry = je_eqfm_senusiyya_main
-		}
-		je:je_eqfm_senusiyya_main = {
-			clear_variable_list = com_journal_characters
-			add_to_variable_list = {
-				name = com_journal_characters
-				target = scope:eqfm_senussi_character_scope
-			}
+	global_var:je_eqfm_senusiyya = {
+		clear_variable_list = com_journal_characters
+		add_to_variable_list = {
+			name = com_journal_characters
+			target = scope:eqfm_senussi_character_scope
 		}
 	}
-	else_if = {
-		limit = {
-			has_journal_entry = je_eqfm_senusiyya_sub
-		}
-		je:je_eqfm_senusiyya_sub = {
-			clear_variable_list = com_journal_characters
-			add_to_variable_list = {
-				name = com_journal_characters
-				target = scope:eqfm_senussi_character_scope
-			}
-		}
-	}
-
-	## Step 3, Figure out where Senussi should be located & update flags
-	if = {
-		limit = {
-			var:eqfm_senussi_var >= 99
-		}
-		if = {
-			limit = {
-				var:eqfm_senussi_location_var != flag:eqfm_senussi_court
-			}
-			post_notification = notification_eqfm_senussi_entrenched
-		}
-		set_variable = {
-			name = eqfm_senussi_location_var
-			value = flag:eqfm_senussi_court
-		}
-	}
-	else_if = {
-		limit = {
-			var:eqfm_senussi_var >= 75
-		}
-		if = {
-			limit = {
-				OR = {
-					var:eqfm_senussi_location_var = flag:eqfm_senussi_ghosted
-					var:eqfm_senussi_location_var = flag:eqfm_senussi_desert
-					var:eqfm_senussi_location_var = flag:eqfm_senussi_villages
-				}
-			}
-			post_notification = notification_eqfm_senussi_urbanized_up
-		}
-		else_if = {
-			limit = {
-				var:eqfm_senussi_location_var = flag:eqfm_senussi_court
-			}
-			post_notification = notification_eqfm_senussi_urbanized_down
-		}
-		set_variable = {
-			name = eqfm_senussi_location_var
-			value = flag:eqfm_senussi_urban
-		}
-	}
-	else_if = {
-		limit = {
-			var:eqfm_senussi_var < 75
-			var:eqfm_senussi_var >= 50
-		}
-		if = {
-			limit = {
-				OR = {
-					var:eqfm_senussi_location_var = flag:eqfm_senussi_court
-					var:eqfm_senussi_location_var = flag:eqfm_senussi_urban
-				}
-			}
-			post_notification = notification_eqfm_senussi_villages_down
-		}
-		if = {
-			limit = {
-				OR = {
-					var:eqfm_senussi_location_var = flag:eqfm_senussi_ghosted
-					var:eqfm_senussi_location_var = flag:eqfm_senussi_desert
-				}
-
-			}
-			post_notification = notification_eqfm_senussi_villages_up
-		}
-		set_variable = {
-			name = eqfm_senussi_location_var
-			value = flag:eqfm_senussi_villages
-		}
-	}
-	else_if = {
-		limit = {
-			var:eqfm_senussi_var < 50
-		}
-		if = {
-			limit = {
-				var:eqfm_senussi_location_var = flag:eqfm_senussi_ghosted
-			}
-			post_notification = notification_eqfm_senussi_desert_up
-		}
-		else_if = {
-			limit = {
-				OR = {
-					var:eqfm_senussi_location_var = flag:eqfm_senussi_court
-					var:eqfm_senussi_location_var = flag:eqfm_senussi_urban
-					var:eqfm_senussi_location_var = flag:eqfm_senussi_villages
-				}
-			}
-			post_notification = notification_eqfm_senussi_desert_down
-		}
-		set_variable = {
-			name = eqfm_senussi_location_var
-			value = flag:eqfm_senussi_desert
-		}
-	}
-	else = {
-		if = {
-			limit = {
-				var:eqfm_senussi_location_var != flag:eqfm_senussi_ghosted
-			}
-			post_notification = notification_eqfm_senussi_ghosted
-		}
-		set_variable = {
-			name = eqfm_senussi_location_var
-			value = flag:eqfm_senussi_ghosted
-		}
-	}
-	scope:eqfm_senussi_character_scope = {
-		set_variable = {
-			name = com_opinion
-			value = root.var:eqfm_senussi_location_var
-		}
-	}
-
 }
-
