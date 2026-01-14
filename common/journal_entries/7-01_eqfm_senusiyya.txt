@@ -7,11 +7,11 @@
 	
 	is_shown_in_lobby = {
 		any_scope_state = {
-			is_in_geographic_region = geographic_region_senussi
+			is_in_geographic_region = geographic_region_senusiyya
 		}
 	}
 	
-	scripted_progress_bar = eqfm_senussi_progressbar
+	scripted_progress_bar = eqfm_senusiyya_progressbar
 	
 	scripted_button = eqfm_embrace_senussi_button
 	scripted_button = eqfm_sweep_desert_button
@@ -34,13 +34,13 @@
 		OR = {
 			AND = {
 				any_scope_state = {
-					is_in_geographic_region = geographic_region_senussi
+					is_in_geographic_region = geographic_region_senusiyya
 				}
 				gbbf_is_muslim_trigger = yes
 			}
 			any_subject_or_below = {
 				any_scope_state = {
-					is_in_geographic_region = geographic_region_senussi
+					is_in_geographic_region = geographic_region_senusiyya
 				}
 				gbbf_is_muslim_trigger = yes
 			}
@@ -63,7 +63,7 @@
 	possible = {
 		any_country_in_senussi = {
 			capital = {
-				is_in_geographic_region = geographic_region_senussi
+				is_in_geographic_region = geographic_region_senusiyya
 			}
 			has_technology_researched = mass_communication
 		}
@@ -71,45 +71,7 @@
 	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
-		scope:journal_entry = {
-			set_variable = {
-				name = eqfm_senussi_var
-				value = 20
-			}
-			set_variable = {
-				name = eqfm_senussi_progress_var
-				value = 0
-			}
-			set_variable = {
-				name = eqfm_senussi_support_var
-				value = 0
-			}
-			set_variable = {
-				name = eqfm_senussi_opposition_var
-				value = 0
-			}
-			set_variable = {
-				name = eqfm_senussi_desert_centralized_var
-				value = 0
-			}
-			set_variable = {
-				name = eqfm_senussi_desert_decentralized_var
-				value = 0
-			}
-			set_variable = {
-				name = mgrbfm_bedouin_radical_fraction_var
-				value = 0
-			}
-			set_variable = {
-				name = eqfm_senussi_location_var
-				value = flag:eqfm_senussi_ghosted
-			}
-			save_scope_as = eqfm_senussi_journal_scope
-		}
-		set_global_variable = {
-			name = je_eqfm_senusiyya
-			value = scope:eqfm_senussi_journal_scope
-		}
+		eqfm_initialize_senusiyya_variables = yes
 	}
 	
 	immediate_all_involved = {
@@ -122,7 +84,7 @@
 		OR = {
 			country_rank >= rank_value:great_power
 			any_scope_state = {
-				is_in_geographic_region = geographic_region_senussi
+				is_in_geographic_region = geographic_region_senusiyya
 			}
 		}
 	}
@@ -181,7 +143,7 @@
 		any_country = {
 			filter = {
 				any_scope_state = {
-					is_in_geographic_region = geographic_region_senussi
+					is_in_geographic_region = geographic_region_senusiyya
 				}
 				gbbf_is_muslim_trigger = yes
 			}
@@ -200,9 +162,9 @@
 		hidden_effect = {
 			every_country = {
 				limit = {
-					has_modifier = modifier_eqfm_senusiyya_movement.013
+					has_modifier = modifier_eqfm_senusiyya_movement
 				}
-				remove_modifier = modifier_eqfm_senusiyya_movement.013
+				remove_modifier = modifier_eqfm_senusiyya_movement
 			}
 		}
 		remove_global_variable = je_eqfm_senusiyya
@@ -210,40 +172,9 @@
 	
 	on_weekly_pulse = {
 		effect = {
-			scope:journal_entry = {
-				set_variable = {
-					name = eqfm_senussi_support_var
-					value = eqfm_senussi_support_value
-				}
-				set_variable = {
-					name = eqfm_senussi_opposition_var
-					value = eqfm_senussi_opposition_value
-				}
-				set_variable = {
-					name = eqfm_senussi_progress_var
-					value = eqfm_senussi_progress_value
-				}
-				set_bar_progress = {
-					name = eqfm_senussi_progressbar
-					value = owner.var:eqfm_senussi_var
-				}
-			}
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_senusiyya
-					gbbf_is_muslim_trigger = yes
-				}
-				if = {
-					limit = {
-						has_modifier = modifier_eqfm_senusiyya_movement.013
-					}
-					remove_modifier = modifier_eqfm_senusiyya_movement.013
-				}
-				add_modifier = {
-					name = modifier_eqfm_senusiyya_movement.013
-					multiplier = eqfm_senussi_multiplier_value
-				}
-			}
+			eqfm_update_senussi_effect = yes
+			eqfm_update_senusiyya_variables_effect = yes
+			eqfm_update_senusiyya_modifier_effect = yes
 		}
 	}
 	
@@ -252,13 +183,17 @@
 			eqfm_validate_senusiyya_involvement_effect = yes
 			scope:journal_entry = {
 				change_variable = {
-					name = eqfm_senussi_var
-					add = var:eqfm_senussi_progress_var
+					name = eqfm_senusiyya_var
+					add = var:eqfm_senusiyya_progress_var
 				}
 				clamp_variable = {
-					name = eqfm_senussi_var
+					name = eqfm_senusiyya_var
 					max = 100
 					min = 0
+				}
+				set_bar_progress = {
+					name = eqfm_senusiyya_progressbar
+					value = owner.var:eqfm_senusiyya_var
 				}
 			}
 		}
