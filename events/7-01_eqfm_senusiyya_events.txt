@@ -40,41 +40,43 @@ namespace = eqfm_senusiyya
 ####################
 
 ## The Senusiyya Movement Narrative Events ##
-eqfm_senusiyya.001 = { # The Senussi Order
+eqfm_senusiyya.001 = {
 	type = country_event
 	placement = root
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_senusiyya.001.t
-	desc =  eqfm_senusiyya.001.d
+	desc = eqfm_senusiyya.001.d
 	flavor = eqfm_senusiyya.001.f
 	
 	gui_window = event_window_1char_adventure
-	
 	left_icon = scope:eqfm_senussi_character_scope
 	
 	event_image = {
 		video = "middleeast_islam"
 	}
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
 	
 	trigger = {
 		# triggered by je_eqfm_senusiyya
 	}
 	
 	immediate = {
-		eqfm_update_senussi_effect = yes
+		eqfm_update_senussi_character_effect = yes
 	}
 	
 	option = {
 		name = eqfm_senusiyya.001.a
 		default_option = yes
-		
+		custom_tooltip = eqfm_senusiyya.001.a.tt
+	}
+	
+	option = {
+		name = eqfm_senusiyya.001.b
+		custom_tooltip = eqfm_senusiyya.001.b.tt
 	}
 }
 
@@ -362,281 +364,3 @@ eqfm_senusiyya.009 = { # The Senussi of Country
 }
 
 ## The Senusiyya Movement Mechanical Events ##
-eqfm_senusiyya.010 = { # Senusiyya Spreads to Country
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	
-	title = eqfm_senusiyya.010.t
-	desc = eqfm_senusiyya.010.d
-	flavor = eqfm_senusiyya.010.f
-	
-	event_image = {
-		video = "middleeast_islam"
-	}
-	
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		var:eqfm_senusiyya_var >= 100
-		any_country ={
-			is_adjacent_to_country = root
-			country_has_state_religion = rel:sunni
-			NOR = {
-				has_journal_entry = je_eqfm_senusiyya_sub
-				has_variable = mgrbfm_embraced_senussi
-				has_variable = mgrbfm_swept_senussi
-			}
-			any_scope_state = {
-				gbbf_senussi_geography_trigger = yes
-			}
-		}
-	}
-	
-	cancellation_trigger = {
-		OR = {
-			has_variable = mgrbfm_embraced_senussi
-			has_variable = mgrbfm_swept_senussi
-		}
-	}
-	
-	cooldown = {
-		years = 2
-	}
-	
-	immediate = {
-		eqfm_update_senussi_effect = yes
-		random_country = {
-			limit = {
-				is_adjacent_to_country = root
-				country_has_state_religion = rel:sunni
-				NOR = {
-					has_journal_entry = je_eqfm_senusiyya_sub
-					has_variable = mgrbfm_embraced_senussi
-					has_variable = mgrbfm_swept_senussi
-				}
-				any_scope_state = {
-					gbbf_senussi_geography_trigger = yes
-				}
-			}
-			save_scope_as = eqfm_senussi_target
-		}
-	}
-	
-	option = {
-		name = eqfm_senusiyya.010.a
-		default_option = yes
-		scope:eqfm_senussi_target = {
-			show_as_tooltip = {
-				trigger_event = {
-					id = eqfm_senusiyya.011 # Senusiyya Arrives in Country
-				}
-			}
-			hidden_effect = {
-				add_journal_entry = {
-					type = je_eqfm_senusiyya_sub
-				}
-			}
-		}
-	}
-	
-}
-
-eqfm_senusiyya.011 = { # Senusiyya Arrives in Country
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	
-	title = eqfm_senusiyya.011.t
-	desc = eqfm_senusiyya.011.d
-	flavor = eqfm_senusiyya.011.f
-	
-	gui_window = event_window_1char_adventure
-	
-	left_icon = scope:eqfm_senussi_character_scope
-	
-	event_image = {
-		video = "middleeast_islam"
-	}
-	
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		# triggered by eqfm_senusiyya.010
-	}
-	
-	immediate = {
-		eqfm_update_senussi_effect = yes
-		eqfm_senussi_weekly_effect = yes
-	}
-	
-	option = {
-		name = eqfm_senusiyya.001.a
-		default_option = yes
-		add_journal_entry = {
-			type = je_eqfm_senusiyya_sub
-		}
-	}
-	
-}
-
-eqfm_senusiyya.012 = { # Senusiyya Takes Root in State
-	type = country_event
-	placement = scope:eqfm_senussi_state_scope
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	
-	title = eqfm_senusiyya.012.t
-	desc = eqfm_senusiyya.012.d
-	flavor = eqfm_senusiyya.012.f
-	
-	gui_window = event_window_1char_adventure
-	
-	left_icon = scope:eqfm_senussi_character_scope
-	
-	event_image = {
-		video = "middleeast_islam"
-	}
-	
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		var:eqfm_senusiyya_var >= 70
-		trigger_if = {
-			limit = {
-				c:TRI ?= this
-			}
-			has_modifier = modifier_eqfm_senussi_nationalism
-		}
-		any_scope_state = {
-			gbbf_senussi_geography_trigger = yes
-			NOT = {
-				has_modifier = modifier_eqfm_senussi_stronghold
-			}
-		}
-	}
-	
-	cooldown = {
-		years = 4
-	}
-	
-	immediate = {
-		eqfm_update_senussi_effect = yes
-		random_scope_state = {
-			limit = {
-				gbbf_senussi_geography_trigger = yes
-				NOT = {
-					has_modifier = modifier_eqfm_senussi_stronghold
-				}
-			}
-			save_scope_as = eqfm_senussi_state_scope
-		}
-	}
-	
-	option = { # Allow them to Spread
-		name = eqfm_senusiyya.012.a
-		default_option = yes
-		scope:eqfm_senussi_state_scope = {
-			add_modifier = modifier_eqfm_senussi_stronghold
-		}
-		custom_tooltip = {
-			text = eqfm_senussi_lose_20
-			change_variable = {
-				name = eqfm_senusiyya_var
-				subtract = 20
-			}
-		}
-	}
-	
-	option = { # Attempt to Suppress Them
-		name = eqfm_senusiyya.012.b
-		default_option = yes
-		trigger = {
-			has_technology_researched = centralization
-			has_global_variable = mgrbfm_intimidated_sensussi
-			authority >= 200
-		}
-		add_modifier = modifier_eqfm_desert_raids
-		custom_tooltip = {
-			text = eqfm_supress_senusiyya_effect
-			set_variable = {
-				name = mgrbfm_desert_raids_var
-				years = 2
-			}
-		}
-	}
-	
-}
-
-eqfm_senusiyya.013 = { # Senusiyya Expunged from State
-	type = country_event
-	placement = scope:eqfm_senussi_state_scope
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	
-	title = eqfm_senusiyya.013.t
-	desc = eqfm_senusiyya.013.d
-	flavor = eqfm_senusiyya.013.f
-	
-	gui_window = event_window_1char_adventure
-	
-	left_icon = scope:eqfm_senussi_character_scope
-	
-	event_image = {
-		video = "africa_desert_expedition"
-	}
-	
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		var:eqfm_senusiyya_var < 30
-		has_modifier = modifier_eqfm_desert_raids
-		any_scope_state = {
-			has_modifier = modifier_eqfm_senussi_stronghold
-		}
-	}
-	
-	cooldown = {
-		years = 2
-	}
-	
-	immediate = {
-		random_scope_state = {
-			limit = {
-				has_modifier = modifier_eqfm_senussi_stronghold
-			}
-			save_scope_as = eqfm_senussi_state_scope
-		}
-		eqfm_update_senussi_effect = yes
-	}
-	
-	option = {
-		name = eqfm_senusiyya.013.a
-		default_option = yes
-		scope:eqfm_senussi_state_scope = {
-			remove_modifier = modifier_eqfm_senussi_stronghold
-		}
-		custom_tooltip = {
-			text = eqfm_senussi_gain_20
-			change_variable = {
-				name = eqfm_senusiyya_var
-				add = 20
-			}
-		}
-	}
-	
-}
