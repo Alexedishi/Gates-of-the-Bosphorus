@@ -32,10 +32,10 @@ namespace = eqfm_senusiyya
 #	009 - House Senussi of Country
 
 #010-019 - The Senusiyya Movement Mechanical Events
-#	010 - Senusiyya Spreads to Country
-#	011 - Senusiyya Arrives in Country
-#	012 - Senusiyya Takes Root in State
-#	013 - Senusiyya Expunged from State
+#	010 - ##Senusiyya Spreads to Country
+#	011 - ##Senusiyya Arrives in Country
+#	012 - ##Senusiyya Takes Root in State
+#	013 - ##Senusiyya Expunged from State
 
 ####################
 
@@ -66,6 +66,7 @@ eqfm_senusiyya.001 = {
 	
 	immediate = {
 		eqfm_update_senussi_character_effect = yes
+		set_variable = eqfm_senusiyya_started
 	}
 	
 	option = {
@@ -80,85 +81,96 @@ eqfm_senusiyya.001 = {
 	}
 }
 
-eqfm_senusiyya.002 = { # The Grand Senussi
+eqfm_senusiyya.002 = {
 	type = country_event
 	placement = root
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_senusiyya.002.t
 	desc = eqfm_senusiyya.002.d
 	flavor = eqfm_senusiyya.002.f
 	
 	gui_window = event_window_1char_adventure
-	
 	left_icon = scope:eqfm_senussi_character_scope
 	
 	event_image = {
 		video = "middleeast_islam"
 	}
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
 	trigger = {
-		NOT = {
-			has_global_variable = turkfm_grand_senussi_has_landed
-		}
-		global_var:eqfm_senussi_chacter_counter_var = 2
+		# triggered by eqfm_update_senussi_character_effect
 	}
 	
 	immediate = {
-		set_global_variable = turkfm_grand_senussi_has_landed
-		eqfm_update_senussi_effect = yes
+		eqfm_update_senussi_character_effect = yes
 	}
 	
 	option = {
 		name = eqfm_senusiyya.002.a
 		default_option = yes
+		custom_tooltip = eqfm_senusiyya.002.a.tt
 	}
 	
 }
 
-eqfm_senusiyya.003 = { # Senussi Withdraws to the Desert
+eqfm_senusiyya.003 = {
 	type = country_event
 	placement = scope:kufra_scope
 	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_senusiyya.003.t
 	desc = eqfm_senusiyya.003.d
 	flavor = eqfm_senusiyya.003.f
 	
 	gui_window = event_window_1char_adventure
-	
 	left_icon = scope:eqfm_senussi_character_scope
 	
 	event_image = {
 		video = "africa_desert_expedition"
 	}
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		NOT = {
 			has_variable = eqfm_senussi_ran_away
 		}
-		has_global_variable = mgrbfm_intimidated_sensussi
-		var:eqfm_senusiyya_var <= 50
+		exists = c:ZWY
+		exists = c:TRI
+		OR = {
+			has_global_variable = eqfm_intimidated_sensussi
+			global_var:je_eqfm_senusiyya.var:eqfm_senusiyya_var >= 50
+		}
+	}
+	
+	cancellation_trigger = {
+		NOR = {
+			exists = c:ZWY
+			exists = c:TRI
+		}
+	}
+	
+	cooldown = {
+		years = 5
 	}
 	
 	immediate = {
-		set_variable = eqfm_senussi_ran_away
-		eqfm_update_senussi_effect = yes
+		eqfm_update_senussi_character_effect = yes
+		c:TRI = {
+			save_scope_as = libya_scope
+		}
 		c:ZWY = {
 			save_scope_as = kufra_scope
 		}
+		set_variable = {
+			name = eqfm_senussi_ran_away
+			months = 60
+		}
+		set_global_variable = eqfm_intimidated_sensussi
 	}
 	
 	option = {
@@ -167,200 +179,3 @@ eqfm_senusiyya.003 = { # Senussi Withdraws to the Desert
 	}
 	
 }
-
-eqfm_senusiyya.004 = { # Armed Diplomacy
-	type = country_event
-	placement = scope:kufra_capital_scope
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	
-	title = eqfm_senusiyya.004.t
-	desc = eqfm_senusiyya.004.d
-	flavor = eqfm_senusiyya.004.f
-	
-	gui_window = event_window_2char_discussion
-	
-	left_icon = scope:eqfm_senussi_character_scope
-	right_icon = scope:turkfm_intimidation_scope
-	
-	event_image = {
-		video = "middleeast_courtroom_upheaval"
-	}
-	
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		# triggered by eqfm_armed_delegation_button
-	}
-	
-	cancellation_trigger = {
-		eqfm_has_desert_expedition_trigger = no
-	}
-	
-	immediate = {
-		eqfm_update_senussi_effect = yes
-		random_scope_general = {
-			limit = {
-				has_modifier = modifier_eqfm_leading_desert_expedition
-			}
-			save_scope_as = turkfm_intimidation_scope
-		}
-		c:ZWY = {
-			capital = {
-				save_scope_as = kufra_capital_scope
-			}
-		}
-	}
-	
-	option = {
-		name = eqfm_senusiyya.004.a
-		default_option = yes
-		custom_tooltip = {
-			text = eqfm_senussi_lose_10
-			change_variable = {
-				name = eqfm_senusiyya_var
-				subtract = 10
-			}
-			clamp_variable = {
-				name = eqfm_senusiyya_var
-				max = 100
-				min = 0
-			}
-		}
-	}
-	
-}
-
-eqfm_senusiyya.005 = { # The State-within-a-State
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	
-	title = eqfm_senusiyya.005.t
-	desc = eqfm_senusiyya.005.d
-	flavor = eqfm_senusiyya.005.f
-	
-	event_image = {
-		video = "middleeast_islam"
-	}
-	
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		var:eqfm_senusiyya_var >= 50
-		NOT = {
-			has_modifier = modifier_eqfm_senussi_nationalism
-		}
-	}
-	
-	immediate = {
-		eqfm_update_senussi_effect = yes
-		add_modifier = {
-			name = modifier_eqfm_senussi_nationalism
-		}
-	}
-	
-	option = {
-		name = eqfm_senusiyya.005.a
-		default_option = yes
-		show_as_tooltip = {
-			add_modifier = {
-				name = modifier_eqfm_senussi_nationalism
-			}
-		}
-	}
-	
-}
-
-eqfm_senusiyya.008 = { # The Senusiyya Extinguished
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	
-	title = eqfm_senusiyya.008.t
-	desc = eqfm_senusiyya.008.d
-	flavor = eqfm_senusiyya.008.f
-	
-	event_image = {
-		video = "votp_hostile_court"
-	}
-	
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		# triggered by je_eqfm_senusiyya_main/sub
-	}
-	
-	immediate = {
-		eqfm_update_senussi_effect = yes
-	}
-	
-	option = {
-		name = eqfm_senusiyya.008.a
-		default_option = yes
-		add_modifier = {
-			name = modifier_eqfm_senusiyya_extinguished
-			months = gbbf_10_years
-		}
-		add_radicals = {
-			culture = cu:bedouin
-			value = large_radicals
-		}
-	}
-	
-}
-
-eqfm_senusiyya.009 = { # The Senussi of Country
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	
-	title = eqfm_senusiyya.009.t
-	desc = eqfm_senusiyya.009.d
-	flavor = eqfm_senusiyya.009.f
-	
-	event_image = {
-		video = "middleeast_islam"
-	}
-	
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
-	
-	trigger = {
-		# triggered by je_eqfm_senusiyya_main/sub
-	}
-	
-	immediate = {
-		eqfm_update_senussi_effect = yes
-	}
-	
-	option = {
-		name = eqfm_senusiyya.009.a
-		default_option = yes
-		add_modifier = {
-			name = modifier_eqfm_senusiyya_embraced
-			months = gbbf_10_years
-		}
-		add_loyalists = {
-			culture = cu:bedouin
-			value = large_radicals
-		}
-	}
-	
-}
-
-## The Senusiyya Movement Mechanical Events ##
