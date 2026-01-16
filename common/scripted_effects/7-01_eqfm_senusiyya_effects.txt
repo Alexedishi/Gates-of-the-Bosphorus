@@ -319,10 +319,25 @@ eqfm_initialize_local_senusiyya_variables_effect = {
 }
 
 eqfm_update_local_senusiyya_variables_effect = {
-	set_variable = {
-		name = eqfm_senusiyya_penetration_progress_var
-		value = eqfm_senusiyya_penetration_progress_value
+	if = {
+		limit = {
+			has_variable = eqfm_senusiyya_penetration_var
+		}
+		set_variable = {
+			name = eqfm_senusiyya_penetration_progress_var
+			value = eqfm_senusiyya_penetration_progress_value
+		}
+		change_variable = {
+			name = eqfm_senusiyya_penetration_var
+			add = var:eqfm_senusiyya_penetration_progress_var
+		}
+		clamp_variable = {
+			name = eqfm_senusiyya_penetration_var
+			max = 100
+			min = 0
+		}
 	}
+	
 }
 
 eqfm_cleanup_senusiyya_effect = {
@@ -527,25 +542,15 @@ eqfm_update_georegion_senusiyya_variables_effect = {
 eqfm_update_senusiyya_modifier_effect = {
 	every_country = {
 		limit = {
-			is_involved_in_journal_entry = je_eqfm_senusiyya
-			gbbf_is_muslim_trigger = yes
+			has_modifier = modifier_eqfm_senusiyya_movement
 		}
+		remove_modifier = modifier_eqfm_senusiyya_movement
 		if = {
 			limit = {
-				has_modifier = modifier_eqfm_senusiyya_movement
+				NOT = {
+					has_variable = eqfm_expelled_senusiyya
+				}
 			}
-			remove_modifier = modifier_eqfm_senusiyya_movement
-		}
-		if = {
-			limit = {
-				has_variable = eqfm_embraced_senusiyya
-			}
-			add_modifier = {
-				name = modifier_eqfm_senusiyya_embraced
-				multiplier = eqfm_senussi_multiplier_value
-			}
-		}
-		else = {
 			add_modifier = {
 				name = modifier_eqfm_senusiyya_movement
 				multiplier = eqfm_senussi_multiplier_value
