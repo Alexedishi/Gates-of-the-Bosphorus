@@ -1,12 +1,14 @@
-﻿# Senussi Movement Scripted Buttons
-eqfm_embrace_senussi_button = {
-	name = "eqfm_embrace_senussi_button"
-	desc = "eqfm_embrace_senussi_button_desc"
-
+﻿####---------- Senusiyya Scripted Buttons ----------####
+eqfm_embrace_senusiyya_button = {
+	name = "eqfm_embrace_senusiyya_button"
+	desc = "eqfm_embrace_senusiyya_button_desc"
 	visible = {
-		always = yes
+		is_involved_in_journal_entry = je_eqfm_senusiyya
+		NOR = {
+			has_variable = eqfm_embraced_senusiyya
+			has_variable = eqfm_expelled_senusiyya
+		}
 	}
-
 	possible = {
 		OR = {
 			has_law_or_variant = law_type:law_monarchy
@@ -30,37 +32,28 @@ eqfm_embrace_senussi_button = {
 			}
 		}
 		custom_tooltip = {
-			text = eqfm_embrace_senussi_possible
-			var:eqfm_senusiyya_var >= 100
-		}
-		hidden_trigger = {
-			NOT = {
-				has_variable = eqfm_senussi_outcome_var
-			}
+			text = eqfm_embrace_senusiyya_possible
+			var:eqfm_senusiyya_penetration_var >= 100
 		}
 	}
-
 	effect = {
-		custom_tooltip = {
-			text = eqfm_embrace_senussi_button_effect
-			set_variable = mgrbfm_embraced_senussi
-			set_variable = eqfm_senussi_outcome_var
+		trigger_event = {
+			id = eqfm_senusiyya.009
 		}
-	}
-
-	ai_chance = {
-		value = 100
+		set_variable = eqfm_embraced_senusiyya
 	}
 }
 
-eqfm_sweep_desert_button = {
-	name = "eqfm_sweep_desert_button"
-	desc = "eqfm_sweep_desert_button_desc"
-
+eqfm_expell_senusiyya_button = {
+	name = "eqfm_expell_senusiyya_button"
+	desc = "eqfm_expell_senusiyya_button_desc"
 	visible = {
-		always = yes
+		is_involved_in_journal_entry = je_eqfm_senusiyya
+		NOR = {
+			has_variable = eqfm_embraced_senusiyya
+			has_variable = eqfm_expelled_senusiyya
+		}
 	}
-
 	possible = {
 		trigger_if = {
 			limit = {
@@ -80,7 +73,7 @@ eqfm_sweep_desert_button = {
 		}
 		custom_tooltip = {
 			text = eqfm_sweep_desert_possible
-			var:eqfm_senusiyya_var <= 0
+			var:eqfm_senusiyya_penetration_var <= 0
 		}
 		trigger_if = {
 			limit = {
@@ -164,7 +157,7 @@ eqfm_sweep_desert_button = {
 							}
 						}
 					}
-
+					
 				}
 			}
 		}
@@ -185,99 +178,29 @@ eqfm_sweep_desert_button = {
 				}
 			}
 		}
-		hidden_trigger = {
-			NOT = {
-				has_variable = eqfm_senussi_outcome_var
-			}
-		}
 	}
-
 	effect = {
-		custom_tooltip = {
-			text = eqfm_sweep_desert_button_effect
-			set_variable = mgrbfm_swept_senussi
-			set_variable = eqfm_senussi_outcome_var
+		trigger_event = {
+			id = eqfm_senusiyya.008
 		}
-	}
-
-	ai_chance = {
-		value = 100
+		set_variable = eqfm_expelled_senusiyya
 	}
 }
 
-eqfm_supress_senusiyya_button = {
-	name = "eqfm_supress_senusiyya_button"
-	desc = "eqfm_supress_senusiyya_button_desc"
-
+eqfm_send_armed_delegation_button = {
+	name = "eqfm_send_armed_delegation_button"
+	desc = "eqfm_send_armed_delegation_button_desc"
+	
 	visible = {
-		always = yes
-	}
-
-	selected = {
-		has_modifier = modifier_eqfm_desert_raids
-	}
-
-	possible = {
-		has_technology_researched = centralization
-		trigger_if = {
-			limit = {
-				NOT = {
-					has_modifier = modifier_eqfm_desert_raids
-				}
-			}
-			authority >= 200
-		}
-		trigger_if = {
-			limit = {
-				c:TRI ?= this
-			}
-			custom_tooltip = {
-				text = eqfm_supress_senusiyya_possible_1
-				has_global_variable = eqfm_intimidated_sensussi
-			}
-		}
-		custom_tooltip = {
-			text = eqfm_supress_senusiyya_possible_2
-			NOT = {
-				has_variable = mgrbfm_desert_raids_var
-			}
-		}
-	}
-
-	effect = {
-		if = {
-			limit = {
-				has_modifier = modifier_eqfm_desert_raids
-			}
-			remove_modifier = modifier_eqfm_desert_raids
-		}
-		else = {
-			add_modifier = modifier_eqfm_desert_raids
-		}
-		custom_tooltip = {
-			text = eqfm_supress_senusiyya_effect
-			set_variable = {
-				name = mgrbfm_desert_raids_var
-				years = 2
-			}
-		}
-	}
-
-	ai_chance = {
-		value = 0
-	}
-}
-
-eqfm_armed_delegation_button = {
-	name = "eqfm_armed_delegation_button"
-	desc = "eqfm_armed_delegation_button_desc"
-
-	visible = {
-		NOR = {
+		is_involved_in_journal_entry = je_eqfm_senusiyya
+		NOT = {
 			has_global_variable = eqfm_intimidated_sensussi
 		}
+		OR = {
+			c:TRI ?= this
+			c:FZN ?= this
+		}
 	}
-
 	possible = {
 		has_technology_researched = centralization
 		army_size > 25 # Just in case you downsize :p
@@ -286,14 +209,12 @@ eqfm_armed_delegation_button = {
 			owns_entire_state_region = STATE_LIBYAN_DESERT
 		}
 	}
-
 	effect = {
 		trigger_event = {
 			id = eqfm_senusiyya.004 # Armed Diplomacy
 		}
 		set_global_variable = eqfm_intimidated_sensussi
 	}
-
 	ai_chance = {
 		value = 10
 	}
