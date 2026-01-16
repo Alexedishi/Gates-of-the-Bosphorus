@@ -20,7 +20,7 @@ namespace = eqfm_senusiyya
 
 # The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
 
-#001-009 - The Senusiyya Movement Narrative Events
+#001-009 - Senusiyya Movement Narrative Events
 #	001 - The Senussi Order
 #	002 - The Grand Senussi
 #	003 - Senussi Withdraws to the Desert
@@ -31,7 +31,7 @@ namespace = eqfm_senusiyya
 #	008 - Senusiyya Extinguished
 #	009 - House Senussi of Country
 
-#010-019 - The Senusiyya Movement Mechanical Events
+#010-019 - Senusiyya Movement Mechanical Events
 #	010 - ##Senusiyya Spreads to Country
 #	011 - ##Senusiyya Arrives in Country
 #	012 - ##Senusiyya Takes Root in State
@@ -39,7 +39,7 @@ namespace = eqfm_senusiyya
 
 ####################
 
-## The Senusiyya Movement Narrative Events ##
+####---------- Senusiyya Movement Narrative Events ----------####
 eqfm_senusiyya.001 = {
 	type = country_event
 	placement = root
@@ -119,7 +119,7 @@ eqfm_senusiyya.002 = {
 eqfm_senusiyya.003 = {
 	type = country_event
 	placement = scope:kufra_scope
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
 	duration = 3
 	dlc = dlc_grefm
 	
@@ -147,10 +147,6 @@ eqfm_senusiyya.003 = {
 		OR = {
 			exists = c:TRI
 			exists = c:FZN
-		}
-		OR = {
-			has_global_variable = eqfm_intimidated_sensussi
-			global_var:je_eqfm_senusiyya.var:eqfm_senusiyya_var >= 50
 		}
 	}
 	
@@ -192,7 +188,7 @@ eqfm_senusiyya.003 = {
 eqfm_senusiyya.004 = { # Armed Diplomacy
 	type = country_event
 	placement = scope:kufra_capital_scope
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
 	duration = 3
 	dlc = dlc_grefm
 	
@@ -245,7 +241,7 @@ eqfm_senusiyya.005 = {
 	# The State-within-a-State
 	type = country_event
 	placement = root
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
 	
 	title = eqfm_senusiyya.005.t
 	desc = eqfm_senusiyya.005.d
@@ -289,3 +285,177 @@ eqfm_senusiyya.005 = {
 	}
 }
 
+eqfm_senusiyya.008 = { # The Senusiyya Extinguished
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_senusiyya.008.t
+	desc = eqfm_senusiyya.008.d
+	flavor = eqfm_senusiyya.008.f
+	
+	event_image = {
+		video = "votp_hostile_court"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by 
+	}
+	
+	immediate = {
+		eqfm_update_senussi_character_effect = yes
+	}
+	
+	option = {
+		name = eqfm_senusiyya.008.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_eqfm_senusiyya_extinguished
+			months = gbbf_10_years
+		}
+		add_radicals = {
+			culture = cu:bedouin
+			value = large_radicals
+		}
+	}
+}
+
+eqfm_senusiyya.009 = { # The Senussi of Country
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_senusiyya.009.t
+	desc = eqfm_senusiyya.009.d
+	flavor = eqfm_senusiyya.009.f
+	
+	event_image = {
+		video = "middleeast_islam"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by 
+	}
+	
+	immediate = {
+		eqfm_update_senussi_character_effect = yes
+	}
+	
+	option = {
+		name = eqfm_senusiyya.009.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_eqfm_senusiyya_embraced
+			months = gbbf_10_years
+		}
+		add_loyalists = {
+			culture = cu:bedouin
+			value = large_radicals
+		}
+	}
+}
+
+####---------- Senusiyya Movement Mechanical Events ----------####
+eqfm_senusiyya.010 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_senusiyya.010.t
+	desc = eqfm_senusiyya.010.d
+	flavor = eqfm_senusiyya.010.f
+	
+	event_image = {
+		video = "middleeast_islam"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_global_variable = eqfm_intimidated_sensussi
+		NOT = {
+			has_variable = eqfm_senusiyya_penetration_var
+		}
+		gbbf_is_muslim_trigger = yes
+		OR = {
+			AND = {
+				has_state_in_state_region = STATE_LIBYA
+				s:STATE_LIBYA = {
+					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
+				}
+			}
+			AND = {
+				has_state_in_state_region = STATE_LIBYAN_DESERT
+				s:STATE_LIBYAN_DESERT = {
+					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
+				}
+			}
+			AND = {
+				has_state_in_state_region = STATE_TRIPOLI
+				s:STATE_TRIPOLI = {
+					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
+				}
+			}
+			AND = {
+				has_state_in_state_region = STATE_MATRUH
+				s:STATE_MATRUH = {
+					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
+				}
+			}
+			AND = {
+				has_state_in_state_region = STATE_EGYPTIAN_DESERT
+				s:STATE_EGYPTIAN_DESERT = {
+					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
+				}
+			}
+			AND = {
+				has_state_in_state_region = STATE_TUNISIA
+				s:STATE_TUNISIA = {
+					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
+				}
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_senusiyya
+		}
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+		random_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_senusiyya
+			}
+			save_scope_as = eqfm_senusiyya_target_state
+		}
+		save_scope_as = eqfm_senusiyya_target_country
+		every_country = {
+			limit = {
+				OR = {
+					has_interest_marker_in_region = region_north_africa
+					has_interest_marker_in_region = region_nile_basin
+				}
+			}
+			post_notification = notification_eqfm_senusiyya_spreads_to_country
+		}
+	}
+	
+	option = {
+		name = eqfm_senusiyya.010.a
+		default_option = yes
+		
+	}
+}
