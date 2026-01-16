@@ -140,7 +140,14 @@ eqfm_senusiyya.003 = {
 			has_variable = eqfm_senussi_ran_away
 		}
 		exists = c:ZWY
-		exists = c:TRI
+		OR = {
+			has_state_in_state_region = STATE_LIBYAN_DESERT
+			has_state_in_state_region = STATE_LIBYA
+		}
+		OR = {
+			exists = c:TRI
+			exists = c:FZN
+		}
 		OR = {
 			has_global_variable = eqfm_intimidated_sensussi
 			global_var:je_eqfm_senusiyya.var:eqfm_senusiyya_var >= 50
@@ -148,9 +155,12 @@ eqfm_senusiyya.003 = {
 	}
 	
 	cancellation_trigger = {
-		NOR = {
+		NOT = {
 			exists = c:ZWY
+		}
+		NAND = {
 			exists = c:TRI
+			exists = c:FZN
 		}
 	}
 	
@@ -177,5 +187,105 @@ eqfm_senusiyya.003 = {
 		name = eqfm_senusiyya.003.a
 		default_option = yes
 	}
-	
 }
+
+eqfm_senusiyya.004 = { # Armed Diplomacy
+	type = country_event
+	placement = scope:kufra_capital_scope
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_senusiyya.004.t
+	desc = eqfm_senusiyya.004.d
+	flavor = eqfm_senusiyya.004.f
+	
+	gui_window = event_window_2char_discussion
+	left_icon = scope:eqfm_senussi_character_scope
+	right_icon = scope:eqfm_intimidation_scope
+	
+	event_image = {
+		video = "middleeast_courtroom_upheaval"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_armed_delegation_button
+	}
+	
+	cancellation_trigger = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+	
+	immediate = {
+		eqfm_update_senussi_character_effect = yes
+		random_scope_general = {
+			limit = {
+				has_modifier = modifier_eqfm_leading_desert_expedition
+			}
+			save_scope_as = eqfm_intimidation_scope
+		}
+		c:ZWY = {
+			capital = {
+				save_scope_as = kufra_capital_scope
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_senusiyya.004.a
+		default_option = yes
+		eqfm_add_senusiyya_pressure_effect = {
+			value = -20
+		}
+	}
+}
+
+eqfm_senusiyya.005 = {
+	# The State-within-a-State
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	
+	title = eqfm_senusiyya.005.t
+	desc = eqfm_senusiyya.005.d
+	flavor = eqfm_senusiyya.005.f
+	
+	event_image = {
+		video = "middleeast_islam"
+	}
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		has_variable = eqfm_senusiyya_penetration_var
+		has_variable = eqfm_senusiyya_penetration_progress_var
+		var:eqfm_senusiyya_penetration_var > 50
+		var:eqfm_senusiyya_penetration_progress_var > 0 # Safety trigger
+		NOT = {
+			has_modifier = modifier_eqfm_senussi_nationalism
+		}
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+		eqfm_update_senussi_character_effect = yes
+	}
+	
+	option = {
+		name = eqfm_senusiyya.005.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_eqfm_senussi_nationalism
+			multiplier = eqfm_senusiyya_penetration_multiplier
+		}
+	}
+}
+
