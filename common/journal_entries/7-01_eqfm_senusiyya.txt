@@ -36,20 +36,12 @@
 				any_scope_state = {
 					is_in_geographic_region = geographic_region_senusiyya
 				}
-				gbbf_is_muslim_trigger = yes
 			}
 			any_subject_or_below = {
 				any_scope_state = {
 					is_in_geographic_region = geographic_region_senusiyya
 				}
 				gbbf_is_muslim_trigger = yes
-			}
-			AND = {
-				country_rank >= rank_value:great_power
-				OR = {
-					has_interest_marker_in_region = region_north_africa
-					has_interest_marker_in_region = region_nile_basin
-				}
 			}
 		}
 		hidden_trigger = {
@@ -71,7 +63,7 @@
 	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
-		eqfm_initialize_senusiyya_variables = yes
+		eqfm_initialize_global_senusiyya_variables = yes
 		eqfm_update_senussi_character_effect = yes
 	}
 	
@@ -83,104 +75,60 @@
 	
 	should_show_when_not_involved = {
 		OR = {
-			country_rank >= rank_value:great_power
-			any_scope_state = {
-				is_in_geographic_region = geographic_region_senusiyya
-			}
+			has_interest_marker_in_region = region_north_africa
+			has_interest_marker_in_region = region_nile_basin
 		}
 	}
 	
 	on_become_involved_after_activation = {
-		if = {
-			limit = {
-				gbbf_is_muslim_trigger = yes
-				NOT = {
-					has_variable = eqfm_senusiyya_started
-				}
-			}
-			trigger_event = {
-				id = eqfm_senusiyya.001
-			}
-		}
-		else_if = {
-			limit = {
-				gbbf_is_muslim_trigger = yes
-				has_variable = eqfm_senusiyya_started
-			}
-			post_notification = notification_eqfm_senussi_arrival
-		}
-		else = {
-			post_notification = notification_eqfm_senusiyya_involved
-		}
+		eqfm_initialize_local_senusiyya_variables_effect = yes
 	}
 	
 	on_no_longer_involved = {
-		if = {
-			limit = {
-				gbbf_is_muslim_trigger = yes
-				OR = {
-					has_variable = eqfm_embraced_senusiyya
-					has_variable = eqfm_expelled_senusiyya
-				}
-			}
-			post_notification = notification_eqfm_senusiyya_completed
-		}
-		else_if = {
-			limit = {
-				gbbf_is_muslim_trigger = yes
-				NOR = {
-					has_variable = eqfm_embraced_senusiyya
-					has_variable = eqfm_expelled_senusiyya
-				}
-			}
-			post_notification = notification_eqfm_senusiyya_failed
-		}
-		else = {
-			post_notification = notification_eqfm_senusiyya_uninvolved
-		}
+		eqfm_cleanup_senusiyya_effect = yes
 	}
 	
 	complete = {
-		any_country = {
-			filter = {
-				any_scope_state = {
-					is_in_geographic_region = geographic_region_senusiyya
-				}
-				gbbf_is_muslim_trigger = yes
-			}
+		any_state_in_senusiyya = {
 			count = all
-			custom_tooltip = {
-				text = je_eqfm_senusiyya_complete
+			owner = {
 				OR = {
-					has_variable = eqfm_embraced_senusiyya
-					has_variable = eqfm_expelled_senusiyya
+					custom_tooltip = {
+						text = je_eqfm_senusiyya_complete
+						OR = {
+							has_variable = eqfm_embraced_senusiyya
+							has_variable = eqfm_expelled_senusiyya
+						}
+					}
+					country_has_primary_culture = cu:bedouin
 				}
 			}
 		}
 	}
 	
 	on_complete = {
-		hidden_effect = {
-			every_country = {
-				limit = {
-					has_modifier = modifier_eqfm_senusiyya_movement
-				}
-				remove_modifier = modifier_eqfm_senusiyya_movement
-			}
-		}
 		remove_global_variable = je_eqfm_senusiyya
+		every_state_region = {
+			remove_variable = eqfm_senusiyya_entrenchment_var
+			remove_variable = eqfm_senusiyya_entrenchment_progress_var
+		}
+	}
+	
+	on_complete_all_involved = {
+		eqfm_cleanup_senusiyya_effect = yes
 	}
 	
 	on_weekly_pulse = {
 		effect = {
 			eqfm_update_senussi_character_effect = yes
-			eqfm_update_senusiyya_variables_effect = yes
+			eqfm_update_global_senusiyya_variables_effect = yes
 			eqfm_update_senusiyya_modifier_effect = yes
 		}
 	}
 	
 	on_monthly_pulse = {
 		effect = {
+			eqfm_update_georegion_senusiyya_variables_effect = yes
 			eqfm_validate_senusiyya_involvement_effect = yes
 			scope:journal_entry = {
 				change_variable = {
