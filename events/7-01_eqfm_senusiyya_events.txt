@@ -32,10 +32,9 @@ namespace = eqfm_senusiyya
 #	009 - House Senussi of Country
 
 #010-019 - Senusiyya Movement Mechanical Events
-#	010 - ##Senusiyya Spreads to Country
-#	011 - ##Senusiyya Arrives in Country
-#	012 - ##Senusiyya Takes Root in State
-#	013 - ##Senusiyya Expunged from State
+#	010 - Senusiyya Spreads to Country
+#	011 - ##Senusiyya Takes Root in State
+#	012 - ##Senusiyya Expunged from State
 
 ####################
 
@@ -242,6 +241,8 @@ eqfm_senusiyya.005 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_senusiyya.005.t
 	desc = eqfm_senusiyya.005.d
@@ -250,12 +251,7 @@ eqfm_senusiyya.005 = {
 	event_image = {
 		video = "middleeast_islam"
 	}
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		has_variable = eqfm_senusiyya_penetration_var
@@ -384,6 +380,11 @@ eqfm_senusiyya.010 = {
 			has_variable = eqfm_senusiyya_penetration_var
 		}
 		gbbf_is_muslim_trigger = yes
+		any_country_in_senusiyya = {
+			is_adjacent_to_country = root
+			has_variable = eqfm_senusiyya_penetration_var
+			var:eqfm_senusiyya_penetration_var >= 50
+		}
 		OR = {
 			AND = {
 				has_state_in_state_region = STATE_LIBYA
@@ -440,6 +441,19 @@ eqfm_senusiyya.010 = {
 				is_in_geographic_region = geographic_region_senusiyya
 			}
 			save_scope_as = eqfm_senusiyya_target_state
+			state_region = {
+				if = {
+					limit = {
+						NOT = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+						}
+					}
+					set_variable = {
+						name = eqfm_senusiyya_entrenchment_var
+						value = 25
+					}
+				}
+			}
 		}
 		save_scope_as = eqfm_senusiyya_target_country
 		every_country = {
@@ -456,6 +470,91 @@ eqfm_senusiyya.010 = {
 	option = {
 		name = eqfm_senusiyya.010.a
 		default_option = yes
-		
+		custom_tooltip = {
+			text = eqfm_normal_starting_senusiyya_penetration
+			set_variable = {
+				name = eqfm_senusiyya_penetration_var
+				value = 25
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_senusiyya.010.b
+		custom_tooltip = {
+			text = eqfm_reduced_starting_senusiyya_penetration
+			set_variable = {
+				name = eqfm_senusiyya_penetration_var
+				value = 15
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_senusiyya_unwelcome
+			months = gbbf_5_years
+		}
+		add_radicals = {
+			culture = cu:bedouin
+			value = medium_radicals
+		}
+	}
+	
+	option = {
+		name = eqfm_senusiyya.010.c
+		custom_tooltip = {
+			text = eqfm_increased_starting_senusiyya_penetration
+			set_variable = {
+				name = eqfm_senusiyya_penetration_var
+				value = 35
+			}
+		}
+		scope:eqfm_senusiyya_target_state = {
+			eqfm_add_senusiyya_entrenchment_effect = {
+				value = 5
+			}
+		}
+		add_loyalists = {
+			culture = cu:bedouin
+			value = small_radicals
+		}
+		ig:ig_devout = {
+			add_modifier = {
+				name = modifier_eqfm_senusiyya_welcomed
+				months = gbbf_5_years
+			}
+		}
+	}
+}
+
+eqfm_senusiyya.011 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_senusiyya.011.t
+	desc = eqfm_senusiyya.011.d
+	flavor = eqfm_senusiyya.011.f
+	
+	event_image = {
+		video = "middleeast_islam"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+	}
+	
+	cancellation_trigger = {
+	}
+	
+	cooldown = {
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = eqfm_senusiyya.011.a
+		default_option = yes
 	}
 }
