@@ -319,7 +319,7 @@ eqfm_senusiyya.008 = { # The Senusiyya Extinguished
 	}
 }
 
-eqfm_senusiyya.009 = { # The Senussi of Country
+eqfm_senusiyya.009 = { # House Senussi of Country
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
@@ -390,36 +390,54 @@ eqfm_senusiyya.010 = {
 			AND = {
 				has_state_in_state_region = STATE_LIBYA
 				s:STATE_LIBYA = {
+					any_scope_state = {
+						has_variable = eqfm_senusiyya_entrenchment_var
+					}
 					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
 				}
 			}
 			AND = {
 				has_state_in_state_region = STATE_LIBYAN_DESERT
 				s:STATE_LIBYAN_DESERT = {
+					any_scope_state = {
+						has_variable = eqfm_senusiyya_entrenchment_var
+					}
 					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
 				}
 			}
 			AND = {
 				has_state_in_state_region = STATE_TRIPOLI
 				s:STATE_TRIPOLI = {
+					any_scope_state = {
+						has_variable = eqfm_senusiyya_entrenchment_var
+					}
 					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
 				}
 			}
 			AND = {
 				has_state_in_state_region = STATE_MATRUH
 				s:STATE_MATRUH = {
+					any_scope_state = {
+						has_variable = eqfm_senusiyya_entrenchment_var
+					}
 					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
 				}
 			}
 			AND = {
 				has_state_in_state_region = STATE_EGYPTIAN_DESERT
 				s:STATE_EGYPTIAN_DESERT = {
+					any_scope_state = {
+						has_variable = eqfm_senusiyya_entrenchment_var
+					}
 					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
 				}
 			}
 			AND = {
 				has_state_in_state_region = STATE_TUNISIA
 				s:STATE_TUNISIA = {
+					any_scope_state = {
+						has_variable = eqfm_senusiyya_entrenchment_var
+					}
 					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
 				}
 			}
@@ -527,30 +545,316 @@ eqfm_senusiyya.010 = {
 }
 
 eqfm_senusiyya.011 = {
-	# Senusiyya Spreads to State Region
+	# Senusiyya Spreads to State Region (Headless)
 	type = country_event
-	placement = root
+	hidden = yes
+	
+	trigger = {
+		has_global_variable = eqfm_intimidated_sensussi
+		NOT = {
+			has_global_variable = eqfm_senusiyya_contagion_cooldown
+		}
+		any_state_in_senusiyya = {
+			state_region = {
+				NOT = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+				}
+			}
+		}
+		any_state_in_senusiyya = {
+			state_region = {
+				has_variable = eqfm_senusiyya_entrenchment_var
+				var:eqfm_senusiyya_entrenchment_var >= 50
+			}
+		}
+		OR = {
+			AND = { # From Tripolitania into Egypt
+				s:STATE_LIBYA = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+					var:eqfm_senusiyya_entrenchment_var >= 50
+				}
+				OR = {
+					s:STATE_TRIPOLI = {
+						NOT = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+						}
+					}
+					s:STATE_LIBYAN_DESERT = {
+						NOT = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+						}
+					}
+					AND = {
+						s:STATE_EGYPTIAN_DESERT = {
+							NOT = {
+								has_variable = eqfm_senusiyya_entrenchment_var
+							}
+						}
+						s:STATE_TRIPOLI = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+						}
+						s:STATE_LIBYAN_DESERT = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+						}
+					}
+					AND = {
+						s:STATE_MATRUH = {
+							NOT = {
+								has_variable = eqfm_senusiyya_entrenchment_var
+							}
+						}
+						s:STATE_TRIPOLI = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+						}
+						s:STATE_LIBYAN_DESERT = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+						}
+					}
+				}
+			}
+			AND = { # From Tripolitania into Tunisia
+				s:STATE_TRIPOLI = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+					var:eqfm_senusiyya_entrenchment_var >= 50
+				}
+				s:STATE_TUNISIA = {
+					NOT = {
+						has_variable = eqfm_senusiyya_entrenchment_var
+					}
+				}
+			}
+		}
+	}
+
+	cancellation_trigger = {
+		has_global_variable = eqfm_seusiyya_spread_null
+	}
+	
+	immediate = {
+		set_global_variable = {
+			name = eqfm_senusiyya_contagion_cooldown
+			years = 2
+		}
+		if = {
+			limit = {
+				s:STATE_LIBYA = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+					var:eqfm_senusiyya_entrenchment_var >= 50
+				}
+				OR = {
+					s:STATE_LIBYAN_DESERT = {
+						NOT = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+						}
+					}
+					s:STATE_TRIPOLI = {
+						NOT = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					s:STATE_LIBYAN_DESERT = {
+						NOT = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+						}
+					}
+				}
+				s:STATE_LIBYAN_DESERT = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else_if = {
+				limit = {
+					s:STATE_TRIPOLI = {
+						NOT = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+						}
+					}
+				}
+				s:STATE_TRIPOLI = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else = {
+				error_log = "Event eqfm_senusiyya.011 was triggered and attempted to select a state region within Tripolitania, but no valid state_region was available."
+				set_global_variable = {
+					name = eqfm_seusiyya_spread_null
+					months = 1
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				s:STATE_LIBYA = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+					var:eqfm_senusiyya_entrenchment_var >= 50
+				}
+				s:STATE_LIBYAN_DESERT = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+				}
+				s:STATE_TRIPOLI = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+				}
+				OR = {
+					s:STATE_EGYPTIAN_DESERT = {
+						NOT = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+						}
+					}
+					s:STATE_MATRUH = {
+						NOT = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					s:STATE_EGYPTIAN_DESERT = {
+						NOT = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+						}
+					}
+				}
+				s:STATE_EGYPTIAN_DESERT = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else_if = {
+				limit = {
+					s:STATE_MATRUH = {
+						NOT = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+						}
+					}
+				}
+				s:STATE_MATRUH = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else = {
+				error_log = "Event eqfm_senusiyya.011 was triggered and attempted to select a state region within Egypt, but no valid state_region was available."
+				set_global_variable = {
+					name = eqfm_seusiyya_spread_null
+					months = 1
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				s:STATE_TRIPOLI = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+					var:eqfm_senusiyya_entrenchment_var >= 50
+				}
+				s:STATE_TUNISIA = {
+					NOT = {
+						has_variable = eqfm_senusiyya_entrenchment_var
+					}
+				}
+			}
+			if = {
+				limit = {
+					s:STATE_TUNISIA = {
+						NOT = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+						}
+					}
+				}
+				s:STATE_TUNISIA = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else = {
+				error_log = "Event eqfm_senusiyya.011 was triggered and attempted to select a state region within Tunisia, but no valid state_region was available."
+				error_log = "Wait how did this happen!?!?!?!"
+				set_global_variable = {
+					name = eqfm_seusiyya_spread_null
+					months = 1
+				}
+			}
+		}
+		else = {
+			error_log = "Event eqfm_senusiyya.011 was triggered, but no valid state_region was available. Event has been cancelled."
+			set_global_variable = {
+				name = eqfm_seusiyya_spread_null
+				months = 1
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_senusiyya_target_state_region
+			}
+			scope:eqfm_senusiyya_target_state_region = {
+				set_variable = {
+					name = eqfm_senusiyya_contagion_victim
+					months = 3
+				}
+				set_variable = {
+					name = eqfm_senusiyya_entrenchment_var
+					value = 25
+				}
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_senusiyya
+				}
+				if = {
+					limit = {
+						gbbf_is_muslim_trigger = yes
+						any_scope_state = {
+							is_in_geographic_region = geographic_region_senusiyya
+						}
+					}
+					trigger_event = {
+						id = eqfm_senusiyya.012 # Senusiyya Spreads to State Region
+					}
+				}
+				else = {
+					post_notification = notification_eqfm_senusiyya_spreads_to_state_region
+				}
+			}
+		}
+		else = {
+			error_log = "Event eqfm_senusiyya.011 made it past target selection, but the saved scope was not found."
+		}
+	}
+}
+
+eqfm_senusiyya.012 = {
+	type = country_event
+	placement = scope:eqfm_senusiyya_target_state_region
 	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
 	duration = 3
 	dlc = dlc_grefm
-	
-	title = eqfm_senusiyya.011.t
-	desc = eqfm_senusiyya.011.d
-	flavor = eqfm_senusiyya.011.f
-	
+
+	title = eqfm_senusiyya.012.t
+	desc = eqfm_senusiyya.012.d
+	flavor = eqfm_senusiyya.012.f
+
 	event_image = {
 		video = "middleeast_islam"
 	}
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
+
 	trigger = {
+		# triggered by eqfm_senusiyya.011
 	}
-	
+
 	immediate = {
+		random_state_region = {
+			limit = {
+				has_variable = eqfm_senusiyya_contagion_victim
+			}
+			save_scope_as = eqfm_senusiyya_target_state_region
+		}
 	}
-	
+
 	option = {
-		name = eqfm_senusiyya.011.a
+		name = eqfm_senusiyya.012.a
 		default_option = yes
+		custom_tooltip = eqfm_starting_senusiyya_entrenchment
 	}
 }
