@@ -1,0 +1,45 @@
+﻿mgrbfm_nafusi_pact_button = {
+	name = "mgrbfm_nafusi_pact_button"
+	desc = "mgrbfm_nafusi_pact_button_desc"
+
+	visible = {
+		country_has_state_religion = rel:ibadi
+	}
+	possible = {
+		is_at_war = yes
+	}
+	effect = {
+		set_state_religion = rel:ibadi
+		ruler ?= {
+			change_character_religion = rel:ibadi
+		}
+		heir ?= {
+			change_character_religion = rel:ibadi
+		}
+		ig:ig_devout ?= {
+			set_interest_group_name = ig_ibadi_madrasahs
+			remove_ideology = ideology_moralist
+			remove_ideology = ideology_patriarchal
+			add_ideology = ideology_ibadi_shura
+			add_ideology = ideology_ibadi_imamate
+			hidden_effect = {
+				leader ?= {
+					change_character_religion = rel:ibadi
+				}
+			}
+		}
+		every_scope_state = {
+			convert_population = {
+				target = rel:ibadi
+				value = 0.15
+			}
+		}
+		add_modifier = {
+			name = fzn_mountain_tribes_mobilized
+			days = very_short_modifier_time
+		}
+	}
+	ai_chance = {
+		value = 10
+	}
+}
