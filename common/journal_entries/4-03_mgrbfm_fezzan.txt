@@ -1,1 +1,79 @@
-﻿
+﻿je_mgrbfm_securing_fezzan = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	weight = 100
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+
+	is_shown_in_lobby = {
+		c:FZN ?= this
+	}
+
+#	scripted_progress_bar =
+
+#	scripted_button =
+
+	is_shown_when_inactive = {
+		c:FZN ?= this
+	}
+
+	possible = {
+		is_at_war = no
+	}
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		hidden_effect = {
+			if = {
+				limit = {
+					has_modifier = modifier_mgrbfm_tribal_administration
+				}
+				remove_modifier = modifier_mgrbfm_tribal_administration
+			}
+		}
+		trigger_event = {
+			id = mgrbfm_fezzan.002
+		}
+	}
+
+	modifiers_while_active = {
+		modifier_mgrbfm_tribal_administration
+	}
+
+	complete = {
+		owns_entire_state_region = STATE_LIBYAN_DESERT
+		OR = {
+			country_rank >= rank_value:unrecognized_regional_power
+			is_country_type = recognized
+		}
+		government_legitimacy >= 75
+		army_size >= 20
+		country_has_building_type_levels = {
+			target = bt:building_government_administration
+			value >= 2
+		}
+		NOT = {
+			any_interest_group = {
+				OR = {
+					is_insurrectionary = yes
+					is_revolutionary = yes
+				}
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = {
+			id = mgrbfm_fezzan.009
+		}
+	}
+
+	fail = {
+	}
+
+	on_fail = {
+	}
+}
