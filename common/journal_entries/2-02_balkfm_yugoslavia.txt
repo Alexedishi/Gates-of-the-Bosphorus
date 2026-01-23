@@ -337,6 +337,21 @@ je_balkfm_unification_of_yugoslavia = {
 		}
 	}
 
+	invalid = { # I smell a rat... can't tell you why
+		NOT = {
+			has_dlc_feature = ip3_content
+		}
+	}
+
+	on_invalid = {
+		every_country = {
+			limit = {
+				balkfm_country_has_yugoslav_culture_trigger = yes
+			}
+			balkfm_cleanup_yugoslav_unification_variables_effect = yes
+		}
+	}
+
 	on_weekly_pulse = {
 		effect = {
 			ordered_country = {
@@ -537,19 +552,75 @@ je_balkfm_yugoslav_nationalism = {
 	}
 	
 	complete = {
-		custom_tooltip = {
-			text = je_balkfm_yugoslav_nationalism_complete
-			scope:journal_entry = {
-				has_variable = balkfm_yugoslavism_var
-				var:balkfm_yugoslavism_var >= 200
+		OR = {
+			AND = {
+				custom_tooltip = {
+					text = je_balkfm_yugoslav_nationalism_complete
+					scope:journal_entry = {
+						has_variable = balkfm_yugoslavism_var
+						var:balkfm_yugoslavism_var >= 200
+					}
+				}
+				OR = {
+					has_law_or_variant = law_type:law_ethnostate
+					has_law_or_variant = law_type:law_national_supremacy
+				}
+				literacy_rate >= 0.75
+				is_subject = no
+			}
+			AND = {
+				trigger_if = {
+					limit = {
+						has_global_variable = balkfm_montegrin_culture_var
+						any_scope_pop = {
+							has_pop_culture = montenegrin
+						}
+					}
+					country_has_primary_culture = cu:montenegrin
+				}
+				trigger_if = {
+					limit = {
+						any_scope_pop = {
+							has_pop_culture = serb
+						}
+					}
+					country_has_primary_culture = cu:serb
+				}
+				trigger_if = {
+					limit = {
+						has_variable = bul_pursued_greater_yugoslavism # Inherited from IP3
+						any_scope_pop = {
+							has_pop_culture = bulgarian
+						}
+					}
+					country_has_primary_culture = cu:bulgarian
+				}
+				trigger_if = {
+					limit = {
+						any_scope_pop = {
+							has_pop_culture = bosniak
+						}
+					}
+					country_has_primary_culture = cu:bosniak
+				}
+				trigger_if = {
+					limit = {
+						any_scope_pop = {
+							has_pop_culture = croat
+						}
+					}
+					country_has_primary_culture = cu:croat
+				}
+				trigger_if = {
+					limit = {
+						any_scope_pop = {
+							has_pop_culture = slovene
+						}
+					}
+					country_has_primary_culture = cu:slovene
+				}
 			}
 		}
-		OR = {
-			has_law_or_variant = law_type:law_ethnostate
-			has_law_or_variant = law_type:law_national_supremacy
-		}
-		literacy_rate >= 0.75
-		is_subject = no
 	}
 	
 	on_complete = {
