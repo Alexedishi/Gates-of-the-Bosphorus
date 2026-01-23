@@ -78,6 +78,9 @@
 	}
 	
 	on_complete = {
+		trigger_event = {
+			id = mgrbfm_egypt.009
+		}
 	}
 	
 	fail = {
@@ -93,6 +96,9 @@
 	}
 	
 	on_fail = {
+		trigger_event = {
+			id = mgrbfm_egypt.008
+		}
 	}
 	
 	invalid = {
@@ -139,23 +145,85 @@ je_mgrbfm_egypt_modernization = {
 		c:EGY ?= this
 	}
 	
-#	scripted_progress_bar =
+	scripted_progress_bar = mgrbfm_egypt_modernization_progress_bar
 
 #	scripted_button =
 	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
+		scope:journal_entry = {
+			set_variable = {
+				name = mgrbfm_egypt_modernization_var
+				value = 0
+			}
+			set_variable = {
+				name = mgrbfm_egypt_modernization_progress_var
+				value = mgrbfm_egypt_modernization_progress_value
+			}
+			save_scope_as = je_mgrbfm_egypt_modernization
+		}
+		set_variable = {
+			name = je_mgrbfm_egypt_modernization
+			value = scope:je_mgrbfm_egypt_modernization
+		}
 	}
 	
 	complete = {
 	}
 	
 	on_complete = {
+		trigger_event = {
+			id = mgrbfm_egypt.019
+		}
+		remove_variable = je_mgrbfm_egypt_modernization
 	}
 	
 	fail = {
 	}
 	
 	on_fail = {
+		trigger_event = {
+			id = mgrbfm_egypt.018
+		}
+		remove_variable = je_mgrbfm_egypt_modernization
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			scope:journal_entry = {
+				set_variable = {
+					name = mgrbfm_egypt_modernization_progress_var
+					value = owner.mgrbfm_egypt_modernization_progress_value
+				}
+				set_bar_progress = {
+					name = mgrbfm_egypt_modernization_progress_bar
+					value = var:mgrbfm_egypt_modernization_var
+				}
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			scope:journal_entry = {
+				set_variable = {
+					name = mgrbfm_egypt_modernization_progress_var
+					value = owner.mgrbfm_egypt_modernization_progress_value
+				}
+				change_variable = {
+					name = mgrbfm_egypt_modernization_var
+					add = var:mgrbfm_egypt_modernization_progress_var
+				}
+				clamp_variable = {
+					name = mgrbfm_egypt_modernization_var
+					max = 100
+					min = 0
+				}
+				set_bar_progress = {
+					name = mgrbfm_egypt_modernization_progress_bar
+					value = var:mgrbfm_egypt_modernization_var
+				}
+			}
+		}
 	}
 }
