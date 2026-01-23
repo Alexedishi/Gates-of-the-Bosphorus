@@ -623,3 +623,377 @@ balkfm_remove_yugoslav_cultures_effect = {
 	remove_primary_culture = cu:croat
 	remove_primary_culture = cu:slovene
 }
+
+balkfm_federalize_yugoslavia_effect = {
+	# First Test for MON
+	if = {
+		limit = {
+			was_formed_from = MON
+		}
+	}
+}
+
+balkfm_create_federal_montenegro = {
+	if = {
+		limit = {
+			has_state_in_state_region = STATE_MONTENEGRO
+		}
+		custom_tooltip = {
+			text = balkfm_create_federal_montenegro
+			s:STATE_MONTENEGRO = {
+				random_scope_state = {
+					limit = {
+						owner = root
+					}
+				}
+				save_scope_as = montenegro_state_scope
+			}
+			create_country = {
+				tag = MON
+				origin = root
+				state = scope:montenegro_state_scope
+			}
+			create_diplomatic_pact = {
+				country = c:MON
+				type = puppet
+			}
+			create_bidirectional_truce = {
+				country = c:MON
+				years = 10
+			}
+		}
+		custom_tooltip = balkfm_federal_transfer_montenegro
+	}
+}
+
+balkfm_create_federal_serbia = {
+	if = {
+		limit = {
+			OR = {
+				has_state_in_state_region = STATE_EASTERN_SERBIA
+				has_state_in_state_region = STATE_WESTERN_SERBIA
+				has_state_in_state_region = STATE_BANAT
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_create_federal_serbia
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_EASTERN_SERBIA
+				}
+				s:STATE_EASTERN_SERBIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+					}
+					save_scope_as = serbia_state_scope
+				}
+			}
+			else_if = {
+				limit = {
+					has_state_in_state_region = STATE_WESTERN_SERBIA
+				}
+				s:STATE_WESTERN_SERBIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+					}
+					save_scope_as = serbia_state_scope
+				}
+			}
+			else_if = {
+				limit = {
+					has_state_in_state_region = STATE_BANAT
+				}
+				s:STATE_BANAT = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+					}
+					save_scope_as = serbia_state_scope
+				}
+
+			}
+			create_country = {
+				tag = SER
+				origin = root
+				state = scope:montenegro_state_scope
+			}
+			create_diplomatic_pact = {
+				country = c:SER
+				type = puppet
+			}
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_WESTERN_SERBIA
+				}
+				s:STATE_WESTERN_SERBIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						set_state_owner = c:SER
+					}
+				}
+			}
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_BANAT
+				}
+				s:STATE_BANAT = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						set_state_owner = c:SER
+					}
+				}
+			}
+			create_bidirectional_truce = {
+				country = c:SER
+				years = 10
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_state_in_state_region = STATE_EASTERN_SERBIA
+		}
+		custom_tooltip = balkfm_federal_transfer_eastern_serbia
+	}
+	if = {
+		limit = {
+			has_state_in_state_region = STATE_WESTERN_SERBIA
+		}
+		custom_tooltip = balkfm_federal_transfer_western_serbia
+	}
+	if = {
+		limit = {
+			has_state_in_state_region = STATE_BANAT
+		}
+		custom_tooltip = balkfm_federal_transfer_banat
+	}
+}
+
+balkfm_create_federal_bosnia = {
+	if = {
+		limit = {
+			has_state_in_state_region = STATE_BOSNIA
+		}
+		custom_tooltip = {
+			text = balkfm_create_federal_bosnia
+			s:STATE_BOSNIA = {
+				random_scope_state = {
+					limit = {
+						owner = root
+					}
+				}
+				save_scope_as = bosnia_state_scope
+			}
+			create_country = {
+				tag = BOS
+				origin = root
+				state = scope:bosnia_state_scope
+			}
+			create_diplomatic_pact = {
+				country = c:BOS
+				type = puppet
+			}
+			create_bidirectional_truce = {
+				country = c:BOS
+				years = 10
+			}
+		}
+		custom_tooltip = balkfm_federal_transfer_bosnia
+	}
+}
+
+balkfm_create_federal_croatia = {
+	if = {
+		limit = {
+			OR = {
+				has_state_in_state_region = STATE_CROATIA
+				has_state_in_state_region = STATE_DALMATIA
+				has_state_in_state_region = STATE_SLAVONIA
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_create_federal_croatia
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_CROATIA
+				}
+				s:STATE_CROATIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+					}
+					save_scope_as = croatia_state_scope
+				}
+			}
+			else_if = {
+				limit = {
+					has_state_in_state_region = STATE_DALMATIA
+				}
+				s:STATE_DALMATIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+					}
+					save_scope_as = croatia_state_scope
+				}
+			}
+			else_if = {
+				limit = {
+					has_state_in_state_region = STATE_SLAVONIA
+				}
+				s:STATE_SLAVONIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+					}
+					save_scope_as = croatia_state_scope
+				}
+			}
+			create_country = {
+				tag = CRO
+				origin = root
+				state = scope:croatia_state_scope
+			}
+			create_diplomatic_pact = {
+				country = c:CRO
+				type = puppet
+			}
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_DALMATIA
+				}
+				s:STATE_DALMATIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						set_state_owner = c:CRO
+					}
+				}
+			}
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_SLAVONIA
+				}
+				s:STATE_DALMATIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						set_state_owner = c:CRO
+					}
+				}
+			}
+			create_bidirectional_truce = {
+				country = c:CRO
+				years = 10
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_state_in_state_region = STATE_CROATIA
+		}
+		custom_tooltip = balkfm_federal_transfer_croatia
+	}
+	if = {
+		limit = {
+			has_state_in_state_region = STATE_DALMATIA
+		}
+		custom_tooltip = balkfm_federal_transfer_dalmatia
+	}
+	if = {
+		limit = {
+			has_state_in_state_region = STATE_SLAVONIA
+		}
+		custom_tooltip = balkfm_federal_transfer_slavonia
+	}
+}
+
+balkfm_create_federal_slovenia = {
+	if = {
+		limit = {
+			has_state_in_state_region = STATE_SLOVENIA
+			has_state_in_state_region = STATE_ISTRIA
+		}
+		custom_tooltip = {
+			text = balkfm_create_federal_slovenia
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_SLOVENIA
+				}
+				s:STATE_SLOVENIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+					}
+					save_scope_as = slovenia_state_scope
+				}
+			}
+			else_if = {
+				limit = {
+					has_state_in_state_region = STATE_ISTRIA
+				}
+				s:STATE_ISTRIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+					}
+					save_scope_as = slovenia_state_scope
+				}
+			}
+			create_country = {
+				tag = SLO
+				origin = root
+				state = scope:slovenia_state_scope
+			}
+			create_diplomatic_pact = {
+				country = c:SLO
+				type = puppet
+			}
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_ISTRIA
+				}
+				s:STATE_ISTRIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						set_state_owner = c:SLO
+					}
+				}
+			}
+			create_bidirectional_truce = {
+				country = c:SLO
+				years = 10
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_state_in_state_region = STATE_SLOVENIA
+		}
+		custom_tooltip = balkfm_federal_transfer_slovenia
+	}
+	if = {
+		limit = {
+			has_state_in_state_region = STATE_ISTRIA
+		}
+		custom_tooltip = balkfm_federal_transfer_istria
+	}
+}
