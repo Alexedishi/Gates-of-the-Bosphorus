@@ -641,80 +641,90 @@ eqfm_update_senussi_character_effect = {
 		
 		## Step 2, Regenerate Senussi and increment counter if needed
 		else = {
-			if = {
+			ordered_country = {
 				limit = {
-					var:eqfm_senussi_chacter_counter_var >= 5
+					is_in_geographic_region = geographic_region_senusiyya
 				}
-				create_character = {
-					template = template_eqfm_senussi_dynamic
-					on_created = {
-						add_trait = gbbf_trait_marabout
-						place_character_in_void = 400
-					}
-				}
+				order_by = prestige
+				position = 0
+				save_scope_as = eqfm_senussi_generator_scope
 			}
-			else_if = {
-				limit = {
-					var:eqfm_senussi_chacter_counter_var = 4
-				}
-				create_character = {
-					template = template_eqfm_senussi_hasan
-					on_created = {
-						add_trait = gbbf_trait_marabout
-						place_character_in_void = 400
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					var:eqfm_senussi_chacter_counter_var = 3
-				}
-				create_character = {
-					template = template_eqfm_senussi_idris
-					on_created = {
-						add_trait = gbbf_trait_marabout
-						place_character_in_void = 400
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					var:eqfm_senussi_chacter_counter_var = 2
-				}
-				create_character = {
-					template = template_eqfm_senussi_ahmed
-					on_created = {
-						add_trait = gbbf_trait_marabout
-						place_character_in_void = 400
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					var:eqfm_senussi_chacter_counter_var = 1
-				}
-				create_character = {
-					template = template_eqfm_senussi_muhammad_ii
-					on_created = {
-						add_trait = gbbf_trait_marabout
-						place_character_in_void = 400
-					}
-				}
-				every_country = {
+			scope:eqfm_senussi_generator_scope = {
+				if = {
 					limit = {
-						is_involved_in_journal_entry = je_eqfm_senusiyya
+						global_var:je_eqfm_senusiyya.var:eqfm_senussi_chacter_counter_var >= 5
 					}
-					trigger_event = {
-						id = eqfm_senusiyya.002
+					create_character = {
+						template = template_eqfm_senussi_dynamic
+						on_created = {
+							add_trait = gbbf_trait_marabout
+							place_character_in_void = 400
+						}
 					}
 				}
-			}
-			else = {
-				create_character = {
-					template = template_eqfm_senussi_muhammad_i
-					on_created = {
-						add_trait = gbbf_trait_marabout
-						place_character_in_void = 400
+				else_if = {
+					limit = {
+						global_var:je_eqfm_senusiyya.var:eqfm_senussi_chacter_counter_var = 4
+					}
+					create_character = {
+						template = template_eqfm_senussi_hasan
+						on_created = {
+							add_trait = gbbf_trait_marabout
+							place_character_in_void = 400
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						global_var:je_eqfm_senusiyya.var:eqfm_senussi_chacter_counter_var = 3
+					}
+					create_character = {
+						template = template_eqfm_senussi_idris
+						on_created = {
+							add_trait = gbbf_trait_marabout
+							place_character_in_void = 400
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						global_var:je_eqfm_senusiyya.var:eqfm_senussi_chacter_counter_var = 2
+					}
+					create_character = {
+						template = template_eqfm_senussi_ahmed
+						on_created = {
+							add_trait = gbbf_trait_marabout
+							place_character_in_void = 400
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						global_var:je_eqfm_senusiyya.var:eqfm_senussi_chacter_counter_var = 1
+					}
+					create_character = {
+						template = template_eqfm_senussi_muhammad_ii
+						on_created = {
+							add_trait = gbbf_trait_marabout
+							place_character_in_void = 400
+						}
+					}
+					every_country = {
+						limit = {
+							is_involved_in_journal_entry = je_eqfm_senusiyya
+						}
+						trigger_event = {
+							id = eqfm_senusiyya.002
+						}
+					}
+				}
+				else = {
+					create_character = {
+						template = template_eqfm_senussi_muhammad_i
+						on_created = {
+							add_trait = gbbf_trait_marabout
+							place_character_in_void = 400
+						}
 					}
 				}
 			}
