@@ -49,12 +49,12 @@
 				name = eqfm_senussi_location_var
 				value = flag:eqfm_senussi_ghosted
 			}
-			save_scope_as = je_eqfm_senusiyya_scope
+			save_scope_as = je_eqfm_senusiyya
 		}
 	}
 	set_global_variable = {
 		name = je_eqfm_senusiyya
-		value = scope:je_eqfm_senusiyya_scope
+		value = scope:je_eqfm_senusiyya
 	}
 	s:STATE_LIBYA = {
 		set_variable = {
@@ -105,7 +105,7 @@ eqfm_update_global_senusiyya_variables_effect = {
 		}
 		set_bar_progress = {
 			name = eqfm_senusiyya_progressbar
-			value = owner.var:eqfm_senusiyya_pressure_var
+			value = var:eqfm_senusiyya_pressure_var
 		}
 		
 		## Figure out where Senussi should be located & update flags
@@ -258,30 +258,24 @@ eqfm_update_global_senusiyya_variables_effect = {
 		
 	## Make sure the appropriate state regions have their variables set
 	every_state_in_senusiyya = {
+		limit = {
+			state_region = {
+				has_variable = eqfm_senusiyya_entrenchment_var
+			}
+		}
 		state_region = {
-			if = {
-				limit = {
-					NOT = {
-						has_variable = eqfm_state_region_math_cooldown
-					}
-				}
-				set_variable = {
-					name = eqfm_state_region_math_cooldown
-					days = 7
-				}
-				set_variable = {
-					name = eqfm_senusiyya_entrenchment_progress_var
-					value = eqfm_senusiyya_entrenchment_progress_value
-				}
-				change_variable = {
-					name = eqfm_senusiyya_entrenchment_var
-					add = var:eqfm_senusiyya_entrenchment_progress_var
-				}
-				clamp_variable = {
-					name = eqfm_senusiyya_entrenchment_var
-					max = 100
-					min = 0
-				}
+			set_variable = {
+				name = eqfm_senusiyya_entrenchment_progress_var
+				value = eqfm_senusiyya_entrenchment_progress_value
+			}
+			change_variable = {
+				name = eqfm_senusiyya_entrenchment_var
+				add = var:eqfm_senusiyya_entrenchment_progress_var
+			}
+			clamp_variable = {
+				name = eqfm_senusiyya_entrenchment_var
+				max = 100
+				min = 0
 			}
 		}
 	}
@@ -738,7 +732,7 @@ eqfm_update_senussi_character_effect = {
 				name = eqfm_senussi_character_var
 				value = scope:eqfm_senussi_character_scope
 			}
-			change_global_variable = {
+			change_variable = {
 				name = eqfm_senussi_chacter_counter_var
 				add = 1
 			}
