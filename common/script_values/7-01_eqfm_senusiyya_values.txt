@@ -74,6 +74,17 @@
 			value = s:STATE_EGYPTIAN_DESERT.var:eqfm_senusiyya_entrenchment_var
 		}
 	}
+	if = {
+		limit = {
+			s:STATE_CHAD = {
+				has_variable = eqfm_senusiyya_entrenchment_var
+			}
+		}
+		add = {
+			desc = eqfm_value_from_senusiyya_entrenchment_chad
+			value = s:STATE_CHAD.var:eqfm_senusiyya_entrenchment_var
+		}
+	}
 	add = {
 		desc = eqfm_value_from_bedouin_radicals
 		value = global_var:je_eqfm_senusiyya.var:eqfm_georegion_bedouin_radical_fraction_var
@@ -231,6 +242,15 @@ eqfm_senusiyya_entrenchment_progress_value = {
 		add = {
 			desc = eqfm_value_from_egyptian_desert_centralization_ratio
 			value = global_var:je_eqfm_senusiyya.var:eqfm_state_egyptian_desert_centralization_var
+		}
+	}
+	if = {
+		limit = {
+			s:STATE_CHAD = this
+		}
+		add = {
+			desc = eqfm_value_from_chad_centralization_ratio
+			value = global_var:je_eqfm_senusiyya.var:eqfm_state_chad_centralization_var
 		}
 	}
 	subtract = {
@@ -460,45 +480,6 @@ eqfm_state_libyan_desert_centralization_value = {
 	round_to = 0.01
 }
 
-eqfm_state_tripoli_centralization_value = {
-	value = 0
-	add = {
-		desc = eqfm_value_from_tripoli_centralized
-		value = {
-			s:STATE_TRIPOLI = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							NOT = {
-								is_country_type = decentralized
-							}
-						}
-					}
-					add = num_provinces
-				}
-			}
-		}
-	}
-	divide = {
-		desc = eqfm_value_from_tripoli_decentralized
-		value = {
-			s:STATE_TRIPOLI = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							is_country_type = decentralized
-							country_has_primary_culture = cu:bedouin
-						}
-					}
-					add = num_provinces
-				}
-			}
-			min = 1 # Div0 safety
-		}
-	}
-	round_to = 0.01
-}
-
 eqfm_state_matruh_centralization_value = {
 	value = 0
 	add = {
@@ -561,6 +542,45 @@ eqfm_state_egyptian_desert_centralization_value = {
 		desc = eqfm_value_from_egyptian_desert_decentralized
 		value = {
 			s:STATE_EGYPTIAN_DESERT = {
+				every_scope_state = {
+					limit = {
+						owner = {
+							is_country_type = decentralized
+							country_has_primary_culture = cu:bedouin
+						}
+					}
+					add = num_provinces
+				}
+			}
+			min = 1 # Div0 safety
+		}
+	}
+	round_to = 0.01
+}
+
+eqfm_state_chad_centralization_value = {
+	value = 0
+	add = {
+		desc = eqfm_value_from_chad_centralized
+		value = {
+			s:STATE_CHAD = {
+				every_scope_state = {
+					limit = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+					add = num_provinces
+				}
+			}
+		}
+	}
+	divide = {
+		desc = eqfm_value_from_tripoli_decentralized
+		value = {
+			s:STATE_CHAD = {
 				every_scope_state = {
 					limit = {
 						owner = {

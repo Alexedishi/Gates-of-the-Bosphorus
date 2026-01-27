@@ -556,61 +556,51 @@ eqfm_senusiyya.011 = {
 		NOT = {
 			has_global_variable = eqfm_senusiyya_contagion_cooldown
 		}
-		any_state_in_senusiyya = {
-			state_region = {
+		s:STATE_LIBYA = {
+			has_variable = eqfm_senusiyya_entrenchment_var
+			var:eqfm_senusiyya_entrenchment_var >= 50
+		}
+		OR = {
+			s:STATE_TRIPOLI = {
 				NOT = {
 					has_variable = eqfm_senusiyya_entrenchment_var
 				}
 			}
-		}
-		any_state_in_senusiyya = {
-			state_region = {
-				has_variable = eqfm_senusiyya_entrenchment_var
-				var:eqfm_senusiyya_entrenchment_var >= 50
+			s:STATE_LIBYAN_DESERT = {
+				NOT = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+				}
 			}
-		}
-		OR = {
-			AND = { # From Tripolitania into Egypt
-				s:STATE_LIBYA = {
+			AND = {
+				s:STATE_TRIPOLI = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+					var:eqfm_senusiyya_entrenchment_var >= 50
+				}
+				s:STATE_LIBYAN_DESERT = {
 					has_variable = eqfm_senusiyya_entrenchment_var
 					var:eqfm_senusiyya_entrenchment_var >= 50
 				}
 				OR = {
-					s:STATE_TRIPOLI = {
+					s:STATE_EGYPTIAN_DESERT = {
 						NOT = {
 							has_variable = eqfm_senusiyya_entrenchment_var
 						}
 					}
-					s:STATE_LIBYAN_DESERT = {
+					s:STATE_MATRUH = {
 						NOT = {
 							has_variable = eqfm_senusiyya_entrenchment_var
 						}
 					}
-					AND = {
-						s:STATE_EGYPTIAN_DESERT = {
-							NOT = {
-								has_variable = eqfm_senusiyya_entrenchment_var
-							}
-						}
-						s:STATE_TRIPOLI = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-						}
-						s:STATE_LIBYAN_DESERT = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-						}
-					}
-					AND = {
-						s:STATE_MATRUH = {
-							NOT = {
-								has_variable = eqfm_senusiyya_entrenchment_var
-							}
-						}
-						s:STATE_TRIPOLI = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-						}
-						s:STATE_LIBYAN_DESERT = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-						}
+				}
+			}
+			AND = { # From Tripolitania into Chad
+				s:STATE_LIBYA = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+					var:eqfm_senusiyya_entrenchment_var >= 50
+				}
+				s:STATE_CHAD = {
+					NOT = {
+						has_variable = eqfm_senusiyya_entrenchment_var
 					}
 				}
 			}
@@ -626,7 +616,7 @@ eqfm_senusiyya.011 = {
 			name = eqfm_senusiyya_contagion_cooldown
 			years = 2
 		}
-		if = {
+		if = { # Attempt Selection within Libya
 			limit = {
 				s:STATE_LIBYA = {
 					has_variable = eqfm_senusiyya_entrenchment_var
@@ -677,7 +667,7 @@ eqfm_senusiyya.011 = {
 				}
 			}
 		}
-		else_if = {
+		else_if = { # Attempt selection within Egypt
 			limit = {
 				s:STATE_LIBYA = {
 					has_variable = eqfm_senusiyya_entrenchment_var
@@ -685,9 +675,7 @@ eqfm_senusiyya.011 = {
 				}
 				s:STATE_LIBYAN_DESERT = {
 					has_variable = eqfm_senusiyya_entrenchment_var
-				}
-				s:STATE_TRIPOLI = {
-					has_variable = eqfm_senusiyya_entrenchment_var
+					var:eqfm_senusiyya_entrenchment_var >= 50
 				}
 				OR = {
 					s:STATE_EGYPTIAN_DESERT = {
@@ -728,6 +716,38 @@ eqfm_senusiyya.011 = {
 			}
 			else = {
 				error_log = "Event eqfm_senusiyya.011 was triggered and attempted to select a state region within Egypt, but no valid state_region was available."
+				set_global_variable = {
+					name = eqfm_seusiyya_spread_null
+					months = 1
+				}
+			}
+		}
+		else_if = { # Attempt selection within Chad
+			limit = {
+				s:STATE_LIBYA = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+					var:eqfm_senusiyya_entrenchment_var >= 50
+				}
+				s:STATE_CHAD = {
+					NOT = {
+						has_variable = eqfm_senusiyya_entrenchment_var
+					}
+				}
+			}
+			if = {
+				limit = {
+					s:STATE_CHAD = {
+						NOT = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+						}
+					}
+				}
+				s:STATE_CHAD = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else = {
+				error_log = "Event eqfm_senusiyya.011 was triggered and attempted to select a state region within Chad, but no valid state_region was available."
 				set_global_variable = {
 					name = eqfm_seusiyya_spread_null
 					months = 1
