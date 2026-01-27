@@ -26,15 +26,25 @@ namespace = eqfm_senusiyya
 #	003 - Senussi Withdraws to the Desert
 #	004 - Armed Diplomacy
 #	005 - The State-within-a-State
-#	006 -
+#	006 - ##Tribal Reconciliation
 #	007 -
 #	008 - Senusiyya Extinguished
 #	009 - House Senussi of Country
 
 #010-019 - Senusiyya Movement Mechanical Events
 #	010 - Senusiyya Spreads to Country
-#	011 - ##Senusiyya Takes Root in State
-#	012 - ##Senusiyya Expunged from State
+#	011 - Senusiyya Spreads to State Region (Headless)
+#	012 - Senusiyya Spreads to State Region
+
+#020-029 - Senusiyya Movement Influence Events
+#	020 - ##Imams Defect from the Ulema
+#	021 - ##Dissidents Preach in State
+#	022 - ##Sufist Thought in State
+
+#030-039 - Senusiyya Movement Entrenchment Events
+#	030 - ##The Awliya of State Region
+#	031 - ##Sufism Spreads in State Region
+#	032 - ## tbd Marabout event <<xfer from eqfm_desert
 
 ####################
 
@@ -432,15 +442,6 @@ eqfm_senusiyya.010 = {
 					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
 				}
 			}
-			AND = {
-				has_state_in_state_region = STATE_TUNISIA
-				s:STATE_TUNISIA = {
-					any_scope_state = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-					}
-					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
-				}
-			}
 		}
 	}
 	
@@ -613,17 +614,6 @@ eqfm_senusiyya.011 = {
 					}
 				}
 			}
-			AND = { # From Tripolitania into Tunisia
-				s:STATE_TRIPOLI = {
-					has_variable = eqfm_senusiyya_entrenchment_var
-					var:eqfm_senusiyya_entrenchment_var >= 50
-				}
-				s:STATE_TUNISIA = {
-					NOT = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-					}
-				}
-			}
 		}
 	}
 
@@ -744,39 +734,6 @@ eqfm_senusiyya.011 = {
 				}
 			}
 		}
-		else_if = {
-			limit = {
-				s:STATE_TRIPOLI = {
-					has_variable = eqfm_senusiyya_entrenchment_var
-					var:eqfm_senusiyya_entrenchment_var >= 50
-				}
-				s:STATE_TUNISIA = {
-					NOT = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-					}
-				}
-			}
-			if = {
-				limit = {
-					s:STATE_TUNISIA = {
-						NOT = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-						}
-					}
-				}
-				s:STATE_TUNISIA = {
-					save_scope_as = eqfm_senusiyya_target_state_region
-				}
-			}
-			else = {
-				error_log = "Event eqfm_senusiyya.011 was triggered and attempted to select a state region within Tunisia, but no valid state_region was available."
-				error_log = "Wait how did this happen!?!?!?!"
-				set_global_variable = {
-					name = eqfm_seusiyya_spread_null
-					months = 1
-				}
-			}
-		}
 		else = {
 			error_log = "Event eqfm_senusiyya.011 was triggered, but no valid state_region was available. Event has been cancelled."
 			set_global_variable = {
@@ -858,5 +815,108 @@ eqfm_senusiyya.012 = {
 		name = eqfm_senusiyya.012.a
 		default_option = yes
 		custom_tooltip = eqfm_starting_senusiyya_entrenchment
+	}
+}
+
+####---------- Senusiyya Movement Influence Events ----------####
+eqfm_senusiyya.020 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_senusiyya.020.t
+	desc = eqfm_senusiyya.020.d
+	flavor = eqfm_senusiyya.020.f
+	
+	event_image = {
+		video = "middleeast_courtroom_upheaval"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_variable = eqfm_senusiyya_influence_var
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_variable = eqfm_senusiyya_influence_var
+		}
+	}
+	
+	cooldown = {
+		years = 5
+	}
+	
+	immediate = {
+		ig:ig_devout = {
+			save_scope_as = devout_scope
+		}
+	}
+	
+	option = {
+		name = eqfm_senusiyya.020.a
+		default_option = yes
+	}
+	
+	option = {
+		name = eqfm_senusiyya.020.b
+	}
+}
+
+eqfm_senusiyya.021 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_senusiyya.021.t
+	desc = eqfm_senusiyya.021.d
+	flavor = eqfm_senusiyya.021.f
+	
+	event_image = {
+		video = "ip3_agitator_reading_manifesto"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_variable = eqfm_senusiyya_influence_var
+		any_scope_state = { 
+			state_region = {
+				has_variable = eqfm_senusiyya_entrenchment_var
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_variable = eqfm_senusiyya_influence_var
+		}
+	}
+	
+	cooldown = {
+		years = 5
+	}
+	
+	immediate = {
+		random_scope_state = { 
+			limit = {
+				state_region = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+				}
+			}
+			save_scope_as = eqfm_senusiyya_target_state
+		}
+	}
+	
+	option = {
+		name = eqfm_senusiyya.021.a
+		default_option = yes
+	}
+	
+	option = {
+		name = eqfm_senusiyya.021.b
 	}
 }

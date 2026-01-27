@@ -74,17 +74,6 @@
 			value = s:STATE_EGYPTIAN_DESERT.var:eqfm_senusiyya_entrenchment_var
 		}
 	}
-	if = {
-		limit = {
-			s:STATE_TUNISIA = {
-				has_variable = eqfm_senusiyya_entrenchment_var
-			}
-		}
-		add = {
-			desc = eqfm_value_from_senusiyya_entrenchment_tunisia
-			value = s:STATE_TUNISIA.var:eqfm_senusiyya_entrenchment_var
-		}
-	}
 	add = {
 		desc = eqfm_value_from_bedouin_radicals
 		value = global_var:je_eqfm_senusiyya.var:eqfm_georegion_bedouin_radical_fraction_var
@@ -244,15 +233,6 @@ eqfm_senusiyya_entrenchment_progress_value = {
 			value = global_var:je_eqfm_senusiyya.var:eqfm_state_egyptian_desert_centralization_var
 		}
 	}
-	if = {
-		limit = {
-			s:STATE_TUNISIA = this
-		}
-		add = {
-			desc = eqfm_value_from_tunisia_centralization_ratio
-			value = global_var:je_eqfm_senusiyya.var:eqfm_state_tunisia_centralization_var
-		}
-	}
 	subtract = {
 		desc = eqfm_value_from_average_urbanization
 		value = {
@@ -399,10 +379,6 @@ eqfm_senusiyya_desert_centralization_value = {
 	add = {
 		desc = eqfm_value_from_egyptian_desert_centralization_ratio
 		value = eqfm_state_egyptian_desert_centralization_value
-	}
-	add = {
-		desc = eqfm_value_from_tunisia_centralization_ratio
-		value = eqfm_state_tripoli_centralization_value
 	}
 }
 
@@ -585,45 +561,6 @@ eqfm_state_egyptian_desert_centralization_value = {
 		desc = eqfm_value_from_egyptian_desert_decentralized
 		value = {
 			s:STATE_EGYPTIAN_DESERT = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							is_country_type = decentralized
-							country_has_primary_culture = cu:bedouin
-						}
-					}
-					add = num_provinces
-				}
-			}
-			min = 1 # Div0 safety
-		}
-	}
-	round_to = 0.01
-}
-
-eqfm_state_tunisia_centralization_value = {
-	value = 0
-	add = {
-		desc = eqfm_value_from_tunisia_centralized
-		value = {
-			s:STATE_TUNISIA = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							NOT = {
-								is_country_type = decentralized
-							}
-						}
-					}
-					add = num_provinces
-				}
-			}
-		}
-	}
-	divide = {
-		desc = eqfm_value_from_tunisia_decentralized
-		value = {
-			s:STATE_TUNISIA = {
 				every_scope_state = {
 					limit = {
 						owner = {
