@@ -857,6 +857,8 @@ eqfm_senusiyya.020 = {
 	
 	trigger = {
 		has_variable = eqfm_senusiyya_influence_var
+		var:eqfm_senusiyya_influence_var >= 15
+		var:eqfm_senusiyya_influence_var <= 90
 	}
 	
 	cancellation_trigger = {
@@ -878,10 +880,46 @@ eqfm_senusiyya.020 = {
 	option = {
 		name = eqfm_senusiyya.020.a
 		default_option = yes
+		add_modifier = {
+			name = modifier_eqfm_deposed_imams
+			months = gbbf_short_modifier_time
+		}
+		scope:devout_scope = {
+			add_modifier = {
+				name = modifier_eqfm_membership_deposed
+				months = gbbf_normal_modifier_time
+				is_decaying = yes
+			}
+		}
+		add_radicals = {
+			culture = cu:bedouin
+			pop_type = peasants
+			value = medium_radicals
+		}
+		eqfm_add_senusiyya_influence_effect = {
+			value = -15
+		}
 	}
 	
 	option = {
 		name = eqfm_senusiyya.020.b
+		eqfm_add_senusiyya_influence_effect = {
+			value = 10
+		}
+		add_radicals = {
+			pop_type = clergymen
+			value = large_radicals
+		}
+		add_modifier = {
+			name = modifier_eqfm_tolerated_imams
+			months = gbbf_normal_modifier_time
+		}
+		scope:devout_scope = {
+			add_modifier = {
+				name = modifier_eqfm_membership_infiltrated
+				months = gbbf_normal_modifier_time
+			}
+		}
 	}
 }
 
@@ -938,5 +976,179 @@ eqfm_senusiyya.021 = {
 	
 	option = {
 		name = eqfm_senusiyya.021.b
+	}
+}
+
+eqfm_senusiyya.022 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_senusiyya.022.t
+	desc = eqfm_senusiyya.022.d
+	flavor = eqfm_senusiyya.022.f
+	
+	event_image = {
+		video = "middleeast_islam"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+	}
+	
+	cancellation_trigger = {
+	}
+	
+	cooldown = {
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = eqfm_senusiyya.022.a
+		default_option = yes
+	}
+}
+
+####---------- Senusiyya Movement Entrenchment Events ----------####
+eqfm_senusiyya.030 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_senusiyya.030.t
+	desc = eqfm_senusiyya.030.d
+	flavor = eqfm_senusiyya.030.f
+	
+	event_image = {
+		video = "gbbf_saharan_oasis"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		any_scope_state = {
+			state_region = {
+				has_variable = eqfm_senusiyya_entrenchment_var
+			}
+			NOT = {
+				has_variable = eqfm_awliya_var
+			}
+		}
+	}
+	
+	cooldown = {
+		years = 5
+	}
+	
+	immediate = {
+		random_scope_state = {
+			limit = {
+				state_region = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+				}
+				NOT = {
+					has_variable = eqfm_awliya_var
+				}
+			}
+			set_variable = eqfm_awliya_var
+			save_scope_as = eqfm_senusiyya_target_state
+		}
+	}
+	
+	option = {
+		name = eqfm_senusiyya.030.a
+		default_option = yes
+	}
+	
+	option = {
+		name = eqfm_senusiyya.030.b
+	}
+	
+	option = {
+		name = eqfm_senusiyya.030.c
+		trigger = { 
+			custom_tooltip = { 
+				text = eqfm_has_censorship_or_outlawed_dissent
+				OR = {
+					has_law = law_type:law_censorship
+					has_law = law_type:law_outlawed_dissent
+				}
+			}
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+	}
+}
+
+eqfm_senusiyya.031 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_senusiyya.031.t
+	desc = eqfm_senusiyya.031.d
+	flavor = eqfm_senusiyya.031.f
+	
+	event_image = {
+		video = "middleeast_islam"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+	}
+	
+	cancellation_trigger = {
+	}
+	
+	cooldown = {
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = eqfm_senusiyya.031.a
+		default_option = yes
+	}
+}
+	
+eqfm_senusiyya.032 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_senusiyya.032.t
+	desc = eqfm_senusiyya.032.d
+	flavor = eqfm_senusiyya.032.f
+	
+	event_image = {
+		video = "media_alias"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+	}
+	
+	cancellation_trigger = {
+	}
+	
+	cooldown = {
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = eqfm_senusiyya.032.a
+		default_option = yes
 	}
 }
