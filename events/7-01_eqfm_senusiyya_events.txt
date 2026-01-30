@@ -594,6 +594,8 @@ eqfm_senusiyya.011 = {
 		NOT = {
 			has_global_variable = eqfm_senusiyya_contagion_cooldown
 		}
+
+		# Evaluate using STATE_GREAT_SAND_SEA if it exists
 		trigger_if = {
 			limit = {
 				s:STATE_GREAT_SAND_SEA ?= {
@@ -640,6 +642,8 @@ eqfm_senusiyya.011 = {
 				}
 			}
 		}
+
+		# Evaluate STATE_LIBYA, with considerations for STATE_GREAT_SAND_SEA not existing
 		trigger_else_if = {
 			limit = {
 				s:STATE_LIBYA = {
@@ -648,6 +652,27 @@ eqfm_senusiyya.011 = {
 				}
 			}
 			OR = {
+				trigger_if = {
+					limit = {
+						NOT = {
+							exists = s:STATE_GREAT_SAND_SEA
+						}
+					}
+					OR = {
+						s:STATE_LIBYAN_DESERT = {
+							NOR = {
+								has_variable = eqfm_senusiyya_entrenchment_var
+								has_variable = eqfm_senusiyya_explusion_var
+							}
+						}
+						s:STATE_EGYPTIAN_DESERT = {
+							NOR = {
+								has_variable = eqfm_senusiyya_entrenchment_var
+								has_variable = eqfm_senusiyya_explusion_var
+							}
+						}
+					}
+				}
 				s:STATE_TRIPOLI = {
 					NOR = {
 						has_variable = eqfm_senusiyya_entrenchment_var
@@ -662,6 +687,8 @@ eqfm_senusiyya.011 = {
 				}
 			}
 		}
+
+		# Evaluate STATE_LIBYAN_DESERT with considerations for STATE_GREAT_SAND_SEA not existing
 		trigger_else_if = {
 			limit = {
 				s:STATE_LIBYAN_DESERT = {
@@ -670,10 +697,23 @@ eqfm_senusiyya.011 = {
 				}
 			}
 			OR = {
-				s:STATE_GREAT_SAND_SEA = {
-					NOR = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-						has_variable = eqfm_senusiyya_explusion_var
+				trigger_if = {
+					limit = {
+						exists = s:STATE_GREAT_SAND_SEA
+					}
+					s:STATE_GREAT_SAND_SEA = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				trigger_else = {
+					s:STATE_LIBYA = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
 					}
 				}
 				s:STATE_TRIPOLI = {
@@ -684,6 +724,8 @@ eqfm_senusiyya.011 = {
 				}
 			}
 		}
+
+		# Evaluate STATE_TRIPOLI
 		trigger_else_if = {
 			limit = {
 				s:STATE_TRIPOLI = {
@@ -704,7 +746,38 @@ eqfm_senusiyya.011 = {
 						has_variable = eqfm_senusiyya_explusion_var
 					}
 				}
-				s:STATE_GREAT_SAND_SEA = {
+			}
+		}
+
+		# Evaluate STATE_EGYPTIAN_DESERT with considerations for STATE_GREAT_SAND_SEA not existing
+		trigger_else_if = {
+			limit = {
+				s:STATE_EGYPTIAN_DESERT = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+					var:eqfm_senusiyya_entrenchment_var >= 50
+				}
+			}
+			OR = {
+				trigger_if = {
+					limit = {
+						exists = s:STATE_GREAT_SAND_SEA
+					}
+					s:STATE_GREAT_SAND_SEA = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				trigger_else = {
+					s:STATE_LIBYA = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_MATRUH = {
 					NOR = {
 						has_variable = eqfm_senusiyya_entrenchment_var
 						has_variable = eqfm_senusiyya_explusion_var
@@ -712,6 +785,8 @@ eqfm_senusiyya.011 = {
 				}
 			}
 		}
+
+		# Evaluate STATE_MATRUH
 		trigger_else_if = {
 			limit = {
 				s:STATE_MATRUH = {
@@ -720,56 +795,52 @@ eqfm_senusiyya.011 = {
 				}
 			}
 			OR = {
+				s:STATE_EGYPTIAN_DESERT = {
+					NOR = {
+						has_variable = eqfm_senusiyya_entrenchment_var
+						has_variable = eqfm_senusiyya_explusion_var
+					}
+				}
 				s:STATE_LIBYA = {
 					NOR = {
 						has_variable = eqfm_senusiyya_entrenchment_var
 						has_variable = eqfm_senusiyya_explusion_var
 					}
 				}
-				s:STATE_EGYPTIAN_DESERT = {
-					NOR = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-						has_variable = eqfm_senusiyya_explusion_var
-					}
-				}
 			}
 		}
-		trigger_else_if = {
-			limit = {
-				s:STATE_EGYPTIAN_DESERT = {
-					has_variable = eqfm_senusiyya_entrenchment_var
-					var:eqfm_senusiyya_entrenchment_var >= 50
-				}
-			}
-			OR = {
-				s:STATE_MATRUH = {
-					NOR = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-						has_variable = eqfm_senusiyya_explusion_var
-					}
-				}
-				s:STATE_GREAT_SAND_SEA = {
-					NOR = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-						has_variable = eqfm_senusiyya_explusion_var
-					}
-				}
-			}
-		}
+
+		# Evaluate STATE_CHAD with considerations for STATE_GREAT_SAND_SEA not existing
 		trigger_else_if = {
 			limit = {
 				s:STATE_CHAD = {
 					has_variable = eqfm_senusiyya_entrenchment_var
 					var:eqfm_senusiyya_entrenchment_var >= 50
 				}
+
 			}
-			s:STATE_GREAT_SAND_SEA = {
-				NOR = {
-					has_variable = eqfm_senusiyya_entrenchment_var
-					has_variable = eqfm_senusiyya_explusion_var
+			trigger_if = {
+				limit = {
+					exists = s:STATE_GREAT_SAND_SEA
+				}
+				s:STATE_GREAT_SAND_SEA = {
+					NOR = {
+						has_variable = eqfm_senusiyya_entrenchment_var
+						has_variable = eqfm_senusiyya_explusion_var
+					}
+				}
+			}
+			trigger_else = {
+				s:STATE_LIBYA = {
+					NOR = {
+						has_variable = eqfm_senusiyya_entrenchment_var
+						has_variable = eqfm_senusiyya_explusion_var
+					}
 				}
 			}
 		}
+
+		# Fallback in case all prior triggers fail
 		trigger_else = {
 			always = no
 		}
@@ -784,30 +855,72 @@ eqfm_senusiyya.011 = {
 			name = eqfm_senusiyya_contagion_cooldown
 			years = 2
 		}
-		if = { # Attempt Selection within Libya
+		# Attempt Selection using STATE_GREAT_SAND_SEA if it exists
+		if = {
 			limit = {
-				s:STATE_LIBYA = {
+				exists = s:STATE_GREAT_SAND_SEA
+				s:STATE_GREAT_SAND_SEA ?= {
 					has_variable = eqfm_senusiyya_entrenchment_var
 					var:eqfm_senusiyya_entrenchment_var >= 50
 				}
 				OR = {
-					s:STATE_LIBYAN_DESERT = {
-						NOT = {
+					s:STATE_LIBYA = {
+						NOR = {
 							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+					s:STATE_LIBYAN_DESERT = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
 						}
 					}
 					s:STATE_TRIPOLI = {
-						NOT = {
+						NOR = {
 							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+					s:STATE_MATRUH = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+					s:STATE_EGYPTIAN_DESERT = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+					s:STATE_CHAD = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
 						}
 					}
 				}
 			}
 			if = {
 				limit = {
-					s:STATE_LIBYAN_DESERT = {
-						NOT = {
+					s:STATE_LIBYA = {
+						NOR = {
 							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_LIBYA = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else_if = {
+				limit = {
+					s:STATE_LIBYAN_DESERT = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
 						}
 					}
 				}
@@ -818,8 +931,9 @@ eqfm_senusiyya.011 = {
 			else_if = {
 				limit = {
 					s:STATE_TRIPOLI = {
-						NOT = {
+						NOR = {
 							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
 						}
 					}
 				}
@@ -827,42 +941,135 @@ eqfm_senusiyya.011 = {
 					save_scope_as = eqfm_senusiyya_target_state_region
 				}
 			}
+			else_if = {
+				limit = {
+					s:STATE_MATRUH = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_MATRUH = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else_if = {
+				limit = {
+					s:STATE_EGYPTIAN_DESERT = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_EGYPTIAN_DESERT = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else_if = {
+				limit = {
+					s:STATE_CHAD = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_CHAD = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
 			else = {
-				error_log = "Event eqfm_senusiyya.011 was triggered and attempted to select a state region within Tripolitania, but no valid state_region was available."
+				error_log = "Event eqfm_senusiyya.011 was triggered and attempted to select a state region using STATE_GREAT_SAND_SEA, but no valid state region was available."
 				set_global_variable = {
 					name = eqfm_seusiyya_spread_null
 					months = 1
 				}
 			}
 		}
-		else_if = { # Attempt selection within Egypt
+
+		# Attempt Selection using STATE_LIBYA, with considerations for STATE_GREAT_SAND_SEA not existing
+		else_if = {
 			limit = {
 				s:STATE_LIBYA = {
 					has_variable = eqfm_senusiyya_entrenchment_var
 					var:eqfm_senusiyya_entrenchment_var >= 50
 				}
-				s:STATE_LIBYAN_DESERT = {
-					has_variable = eqfm_senusiyya_entrenchment_var
-					var:eqfm_senusiyya_entrenchment_var >= 50
-				}
 				OR = {
-					s:STATE_EGYPTIAN_DESERT = {
-						NOT = {
+					trigger_if = {
+						limit = {
+							NOT = {
+								exists = s:STATE_GREAT_SAND_SEA
+							}
+						}
+						OR = {
+							s:STATE_LIBYAN_DESERT = {
+								NOR = {
+									has_variable = eqfm_senusiyya_entrenchment_var
+									has_variable = eqfm_senusiyya_explusion_var
+								}
+							}
+							s:STATE_EGYPTIAN_DESERT = {
+								NOR = {
+									has_variable = eqfm_senusiyya_entrenchment_var
+									has_variable = eqfm_senusiyya_explusion_var
+								}
+							}
+						}
+					}
+					s:STATE_TRIPOLI = {
+						NOR = {
 							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
 						}
 					}
 					s:STATE_MATRUH = {
-						NOT = {
+						NOR = {
 							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
 						}
 					}
 				}
 			}
 			if = {
 				limit = {
-					s:STATE_EGYPTIAN_DESERT = {
-						NOT = {
+					NOT = {
+						exists = s:STATE_GREAT_SAND_SEA
+					}
+					s:STATE_LIBYAN_DESERT = {
+						NOR = {
 							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_LIBYAN_DESERT = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else_if = {
+				limit = {
+					s:STATE_TRIPOLI = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_TRIPOLI = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = {
+						exists = s:STATE_GREAT_SAND_SEA
+					}
+					s:STATE_EGYPTIAN_DESERT = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
 						}
 					}
 				}
@@ -873,8 +1080,9 @@ eqfm_senusiyya.011 = {
 			else_if = {
 				limit = {
 					s:STATE_MATRUH = {
-						NOT = {
+						NOR = {
 							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
 						}
 					}
 				}
@@ -883,45 +1091,368 @@ eqfm_senusiyya.011 = {
 				}
 			}
 			else = {
-				error_log = "Event eqfm_senusiyya.011 was triggered and attempted to select a state region within Egypt, but no valid state_region was available."
+				error_log = "Event eqfm_senusiyya.011 was triggered and attempted to select a state region using STATE_LIBYA, but no valid state_region was available."
 				set_global_variable = {
 					name = eqfm_seusiyya_spread_null
 					months = 1
 				}
 			}
 		}
-		else_if = { # Attempt selection within Chad
+
+		# Attempt Selection using STATE_LIBYAN_DESERT with considerations for STATE_GREAT_SAND_SEA not existing
+		else_if = {
 			limit = {
-				s:STATE_LIBYA = {
+				s:STATE_LIBYAN_DESERT = {
 					has_variable = eqfm_senusiyya_entrenchment_var
 					var:eqfm_senusiyya_entrenchment_var >= 50
 				}
-				s:STATE_CHAD = {
-					NOT = {
-						has_variable = eqfm_senusiyya_entrenchment_var
+				OR = {
+					trigger_if = {
+						limit = {
+							exists = s:STATE_GREAT_SAND_SEA
+						}
+						s:STATE_GREAT_SAND_SEA = {
+							NOR = {
+								has_variable = eqfm_senusiyya_entrenchment_var
+								has_variable = eqfm_senusiyya_explusion_var
+							}
+						}
+					}
+					trigger_else = {
+						s:STATE_LIBYA = {
+							NOR = {
+								has_variable = eqfm_senusiyya_entrenchment_var
+								has_variable = eqfm_senusiyya_explusion_var
+							}
+						}
+					}
+					s:STATE_TRIPOLI = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
 					}
 				}
 			}
 			if = {
 				limit = {
-					s:STATE_CHAD = {
-						NOT = {
+					s:STATE_GREAT_SAND_SEA ?= {
+						NOR = {
 							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
 						}
 					}
 				}
-				s:STATE_CHAD = {
+				s:STATE_GREAT_SAND_SEA ?= {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = {
+						exists = s:STATE_GREAT_SAND_SEA
+					}
+					s:STATE_LIBYA = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_LIBYA ?= {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else_if = {
+				limit = {
+					s:STATE_TRIPOLI = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_TRIPOLI ?= {
 					save_scope_as = eqfm_senusiyya_target_state_region
 				}
 			}
 			else = {
-				error_log = "Event eqfm_senusiyya.011 was triggered and attempted to select a state region within Chad, but no valid state_region was available."
+				error_log = "Event eqfm_senusiyya.011 was triggered and attempted to select a state region using STATE_LIBYAN_DESERT, but no valid state_region was available."
 				set_global_variable = {
 					name = eqfm_seusiyya_spread_null
 					months = 1
 				}
 			}
 		}
+
+		# Attempt Selection using STATE_TRIPOLI
+		else_if = {
+			limit = {
+				s:STATE_TRIPOLI = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+					var:eqfm_senusiyya_entrenchment_var >= 50
+				}
+				OR = {
+					s:STATE_LIBYA = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+					s:STATE_LIBYAN_DESERT = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					s:STATE_LIBYAN_DESERT = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_LIBYAN_DESERT = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else_if = {
+				limit = {
+					s:STATE_LIBYA = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_LIBYA = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else = {
+				error_log = "Event eqfm_senusiyya.011 was triggered and attempted to select a state region using STATE_TRIPOLI, but no valid state_region was available."
+				set_global_variable = {
+					name = eqfm_seusiyya_spread_null
+					months = 1
+				}
+			}
+		}
+
+		# Attempt Selection using STATE_EGYPTIAN_DESERT with considerations for STATE_GREAT_SAND_SEA not existing
+		else_if = {
+			limit = {
+				s:STATE_EGYPTIAN_DESERT = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+					var:eqfm_senusiyya_entrenchment_var >= 50
+				}
+				OR = {
+					s:STATE_MATRUH = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+					trigger_if = {
+						limit = {
+							exists = s:STATE_GREAT_SAND_SEA
+						}
+						s:STATE_GREAT_SAND_SEA = {
+							NOR = {
+								has_variable = eqfm_senusiyya_entrenchment_var
+								has_variable = eqfm_senusiyya_explusion_var
+							}
+						}
+					}
+					trigger_else = {
+						s:STATE_LIBYA = {
+							NOR = {
+								has_variable = eqfm_senusiyya_entrenchment_var
+								has_variable = eqfm_senusiyya_explusion_var
+							}
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					s:STATE_MATRUH = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_MATRUH = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else_if = {
+				limit = {
+					exists = s:STATE_GREAT_SAND_SEA
+					s:STATE_GREAT_SAND_SEA ?= {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_GREAT_SAND_SEA ?= {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = {
+						exists = s:STATE_GREAT_SAND_SEA
+					}
+					s:STATE_LIBYA = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_LIBYA = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else = {
+				error_log = "Event eqfm_senusiyya.011 was triggered and attempted to select a state region using STATE_EGYPTIAN_DESERT, but no valid state_region was available."
+				set_global_variable = {
+					name = eqfm_seusiyya_spread_null
+					months = 1
+				}
+			}
+		}
+
+		# Attempt Selection using STATE_MATRUH
+		else_if = {
+			limit = {
+				s:STATE_MATRUH = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+					var:eqfm_senusiyya_entrenchment_var >= 50
+				}
+				OR = {
+					s:STATE_LIBYA = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+					s:STATE_EGYPTIAN_DESERT = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					s:STATE_EGYPTIAN_DESERT = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_EGYPTIAN_DESERT = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else_if = {
+				limit = {
+					s:STATE_LIBYA = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_LIBYA = {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else = {
+				error_log = "Event eqfm_senusiyya.011 was triggered and attempted to select a state region using STATE_MATRUH, but no valid state_region was available."
+				set_global_variable = {
+					name = eqfm_seusiyya_spread_null
+					months = 1
+				}
+			}
+		}
+
+		# Attempt Selection using STATE_CHAD with considerations for STATE_GREAT_SAND_SEA not existing
+		else_if = {
+			limit = {
+				s:STATE_CHAD = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+					var:eqfm_senusiyya_entrenchment_var >= 50
+				}
+				trigger_if = {
+					limit = {
+						exists = s:STATE_GREAT_SAND_SEA
+					}
+					s:STATE_GREAT_SAND_SEA = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				trigger_else = {
+					s:STATE_LIBYAN_DESERT = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					exists = s:STATE_GREAT_SAND_SEA
+					s:STATE_GREAT_SAND_SEA = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_GREAT_SAND_SEA ?= {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = {
+						exists = s:STATE_GREAT_SAND_SEA
+					}
+					s:STATE_LIBYAN_DESERT = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				s:STATE_LIBYAN_DESERT ?= {
+					save_scope_as = eqfm_senusiyya_target_state_region
+				}
+			}
+			else = {
+				error_log = "Event eqfm_senusiyya.011 was triggered and attempted to select a state region using STATE_CHAD, but no valid state_region was available."
+				set_global_variable = {
+					name = eqfm_seusiyya_spread_null
+					months = 1
+				}
+			}
+		}
+
+		# Cancel event if all prior effects fail
 		else = {
 			error_log = "Event eqfm_senusiyya.011 was triggered, but no valid state_region was available. Event has been cancelled."
 			set_global_variable = {
@@ -929,6 +1460,8 @@ eqfm_senusiyya.011 = {
 				months = 1
 			}
 		}
+
+		# Final sanity check before attempting downstream effects
 		if = {
 			limit = {
 				exists = scope:eqfm_senusiyya_target_state_region
