@@ -129,6 +129,7 @@ eqfm_senusiyya.002 = {
 }
 
 eqfm_senusiyya.003 = {
+	# This variant fires if STATE_GREAT_SAND_SEA exists
 	type = country_event
 	placement = scope:kufra_scope
 	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
@@ -148,27 +149,13 @@ eqfm_senusiyya.003 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
-		NOT = {
-			has_variable = eqfm_senussi_ran_away
-		}
-		exists = c:ZWY
-		OR = {
-			has_state_in_state_region = STATE_LIBYAN_DESERT
-			has_state_in_state_region = STATE_LIBYA
-		}
-		OR = {
-			exists = c:TRI
-			exists = c:FZN
-		}
+		# Fired from je_eqfm_senusiyya on_monthly_pulse
 	}
 	
 	cancellation_trigger = {
-		NOT = {
+		NOR = {
 			exists = c:ZWY
-		}
-		NAND = {
 			exists = c:TRI
-			exists = c:FZN
 		}
 	}
 	
@@ -184,16 +171,64 @@ eqfm_senusiyya.003 = {
 		c:ZWY = {
 			save_scope_as = kufra_scope
 		}
-		set_variable = {
-			name = eqfm_senussi_ran_away
-			months = 60
-		}
-		set_global_variable = eqfm_intimidated_sensussi
 	}
 	
 	option = {
 		name = eqfm_senusiyya.003.a
 		default_option = yes
+
+	}
+}
+
+eqfm_senusiyya.004 = {
+	# This variant fires if STATE_GREAT_SAND_SEA does not exist
+	type = country_event
+	placement = scope:kufra_scope
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_senusiyya.004.t
+	desc = eqfm_senusiyya.004.d
+	flavor = eqfm_senusiyya.004.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_senussi_character_scope
+
+	event_image = {
+		video = "africa_desert_expedition"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# Fired from je_eqfm_senusiyya on_monthly_pulse
+	}
+
+	cancellation_trigger = {
+		NOR = {
+			exists = c:ZWY
+			exists = c:TRI
+		}
+	}
+
+	cooldown = {
+		years = 5
+	}
+
+	immediate = {
+		eqfm_save_senussi_scope_effect = yes
+		c:TRI = {
+			save_scope_as = libya_scope
+		}
+		c:ZWY = {
+			save_scope_as = kufra_scope
+		}
+	}
+
+	option = {
+		name = eqfm_senusiyya.004.a
+		default_option = yes
+
 	}
 }
 
