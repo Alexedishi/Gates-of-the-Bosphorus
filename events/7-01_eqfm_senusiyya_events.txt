@@ -42,6 +42,8 @@ namespace = eqfm_senusiyya
 
 #200-209 - Senusiyya Influence Narrative Events
 #	200 - Senusiyya Spreads to Country
+#	201 - Senusiyya Spreads to Country (Neighbors)
+#	201 - Senusiyya Spreads to Country (Overlord)
 
 #210-219 - Senusiyya Influence Random Events
 #	210 - ##Imams Defect from the Ulema
@@ -93,11 +95,6 @@ eqfm_senusiyya.001 = {
 		name = eqfm_senusiyya.001.a
 		default_option = yes
 		custom_tooltip = eqfm_senusiyya.001.a.tt
-	}
-
-	option = {
-		name = eqfm_senusiyya.001.b
-		custom_tooltip = eqfm_senusiyya.001.b.tt
 	}
 }
 
@@ -1520,59 +1517,81 @@ eqfm_senusiyya.200 = {
 
 	trigger = {
 		has_global_variable = eqfm_intimidated_sensussi
-		NOT = {
+		NOR = {
+			has_global_variable = eqfm_seusiyya_spread_cooldown
 			has_variable = eqfm_senusiyya_influence_var
 		}
 		gbbf_is_muslim_trigger = yes
-		any_country_in_senusiyya = {
-			is_adjacent_to_country = root
-			has_variable = eqfm_senusiyya_influence_var
-			var:eqfm_senusiyya_influence_var >= 50
-		}
 		OR = {
 			AND = {
-				has_state_in_state_region = STATE_LIBYA
-				s:STATE_LIBYA = {
-					any_scope_state = {
-						has_variable = eqfm_senusiyya_entrenchment_var
+				exists = s:STATE_GREAT_SAND_SEA
+				s:STATE_GREAT_SAND_SEA ?= {
+					has_variable = eqfm_senusiyya_entrenchment_var
+				}
+				any_scope_state = {
+					state_region = {
+						s:STATE_GREAT_SAND_SEA ?= this
 					}
-					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
 				}
 			}
 			AND = {
-				has_state_in_state_region = STATE_LIBYAN_DESERT
-				s:STATE_LIBYAN_DESERT = {
-					any_scope_state = {
-						has_variable = eqfm_senusiyya_entrenchment_var
+				s:STATE_LIBYA ?= {
+					has_variable = eqfm_senusiyya_entrenchment_var
+				}
+				any_scope_state = {
+					state_region = {
+						s:STATE_LIBYA ?= this
 					}
-					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
 				}
 			}
 			AND = {
-				has_state_in_state_region = STATE_TRIPOLI
-				s:STATE_TRIPOLI = {
-					any_scope_state = {
-						has_variable = eqfm_senusiyya_entrenchment_var
+				s:STATE_LIBYAN_DESERT ?= {
+					has_variable = eqfm_senusiyya_entrenchment_var
+				}
+				any_scope_state = {
+					state_region = {
+						s:STATE_LIBYAN_DESERT ?= this
 					}
-					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
 				}
 			}
 			AND = {
-				has_state_in_state_region = STATE_MATRUH
-				s:STATE_MATRUH = {
-					any_scope_state = {
-						has_variable = eqfm_senusiyya_entrenchment_var
+				s:STATE_TRIPOLI ?= {
+					has_variable = eqfm_senusiyya_entrenchment_var
+				}
+				any_scope_state = {
+					state_region = {
+						s:STATE_TRIPOLI ?= this
 					}
-					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
 				}
 			}
 			AND = {
-				has_state_in_state_region = STATE_EGYPTIAN_DESERT
-				s:STATE_EGYPTIAN_DESERT = {
-					any_scope_state = {
-						has_variable = eqfm_senusiyya_entrenchment_var
+				s:STATE_MATRUH ?= {
+					has_variable = eqfm_senusiyya_entrenchment_var
+				}
+				any_scope_state = {
+					state_region = {
+						s:STATE_MATRUH ?= this
 					}
-					eqfm_state_region_bedouin_radical_fraction_value >= 0.25
+				}
+			}
+			AND = {
+				s:STATE_EGYPTIAN_DESERT ?= {
+					has_variable = eqfm_senusiyya_entrenchment_var
+				}
+				any_scope_state = {
+					state_region = {
+						s:STATE_EGYPTIAN_DESERT ?= this
+					}
+				}
+			}
+			AND = {
+				s:STATE_CHAD ?= {
+					has_variable = eqfm_senusiyya_entrenchment_var
+				}
+				any_scope_state = {
+					state_region = {
+						s:STATE_CHAD ?= this
+					}
 				}
 			}
 		}
@@ -1584,36 +1603,40 @@ eqfm_senusiyya.200 = {
 		}
 	}
 
-	cooldown = {
-		years = 1
-	}
-
 	immediate = {
+		set_global_variable = {
+			name = eqfm_seusiyya_spread_cooldown
+			years = 1
+		}
 		random_scope_state = {
 			limit = {
 				is_in_geographic_region = geographic_region_senusiyya
 			}
 			save_scope_as = eqfm_senusiyya_target_state
-			state_region = {
-				if = {
-					limit = {
-						NOT = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-						}
-					}
-					set_variable = {
-						name = eqfm_senusiyya_entrenchment_var
-						value = 25
-					}
-				}
-			}
 		}
 		save_scope_as = eqfm_senusiyya_target_country
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_senusiyya
+			}
+			if = {
+				limit = {
+					gbbf_is_muslim_trigger = yes
+				}
+				trigger_event = eqfm_senusiyya.201
+			}
+			else = {
+				trigger_event = eqfm_senusiyya.202
+			}
+		}
 		every_country = {
 			limit = {
 				OR = {
 					has_interest_marker_in_region = region_north_africa
 					has_interest_marker_in_region = region_nile_basin
+				}
+				NOT = {
+					is_involved_in_journal_entry = je_eqfm_senusiyya
 				}
 			}
 			post_notification = notification_eqfm_senusiyya_spreads_to_country
@@ -1676,6 +1699,64 @@ eqfm_senusiyya.200 = {
 				months = gbbf_normal_modifier_time
 			}
 		}
+	}
+}
+
+eqfm_senusiyya.201 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_senusiyya.201.t
+	desc = eqfm_senusiyya.201.d
+	flavor = eqfm_senusiyya.201.f
+
+	event_image = {
+		video = "middleeast_islam"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = eqfm_senusiyya.201.a
+		default_option = yes
+		custom_tooltip = eqfm_senusiyya.201.a.tt
+	}
+}
+
+eqfm_senusiyya.202 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_senusiyya.202.t
+	desc = eqfm_senusiyya.202.d
+	flavor = eqfm_senusiyya.202.f
+
+	event_image = {
+		video = "middleeast_islam"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = eqfm_senusiyya.202.a
+		default_option = yes
+		custom_tooltip = eqfm_senusiyya.202.a.tt
 	}
 }
 
@@ -1848,6 +1929,7 @@ eqfm_senusiyya.212 = {
 		default_option = yes
 	}
 }
+
 
 ####---------- Senusiyya Pressure Narrative Events ----------####
 # //
