@@ -248,6 +248,42 @@ eqfm_update_adriatic_expedition_variables_effect = {
 	}
 }
 
+eqfm_annual_piracy_expedition_progress_effect = {
+	if = {
+		limit = {
+			has_variable = eqfm_piracy_expedition_progress_timer
+			NOT = {
+				has_variable = eqfm_expedition_piracy_transit_var
+			}
+		}
+		change_variable = {
+			name = eqfm_piracy_expedition_progress_timer
+			subtract = 1
+		}
+		if = {
+			limit = {
+				var:eqfm_adriatic_expedition_progress_var <= 0
+			}
+			change_variable = {
+				name = eqfm_adriatic_expedition_progress_var
+				add = 1
+			}
+			set_variable = {
+				name = eqfm_piracy_expedition_progress_timer
+				months = 6
+			}
+			post_notification = notification_eqfm_piracy_yearly_progress
+		}
+	}
+	else = {
+		set_variable = {
+			name = eqfm_piracy_expedition_progress_timer
+			value = 6
+		}
+		error_log = "Scripted effect 'eqfm_update_piracy_expedition_progress_effect' was called, but variable 'eqfm_piracy_expedition_progress_timer' was not set. Variable has been set with a value of 6."
+	}
+}
+
 eqfm_piracy_scopes_effect = {
 	random_character_in_void = {
 		limit = {
@@ -264,7 +300,6 @@ eqfm_piracy_scopes_effect = {
 }
 
 eqfm_start_piracy_expedition_effect = {
-	remove_variable = eqfm_expedition_piracy_transit_var
 	set_variable = {
 		name = eqfm_adriatic_expedition_progress_var
 		value = 0
@@ -274,9 +309,10 @@ eqfm_start_piracy_expedition_effect = {
 		value = 0
 	}
 	set_variable = {
-		name = eqfm_expedition_progress_timeout
-		months = 6
+		name = eqfm_piracy_expedition_progress_timer
+		value = 6
 	}
+	remove_variable = eqfm_expedition_piracy_transit_var
 }
 
 eqfm_clear_piracy_expedition_variables_effect = {
