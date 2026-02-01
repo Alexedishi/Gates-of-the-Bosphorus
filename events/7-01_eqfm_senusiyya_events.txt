@@ -59,9 +59,12 @@ namespace = eqfm_senusiyya
 #320-329 - Senusiyya Pressure Random Events
 #	320 - ##
 
-#400-409 - Senusiyya Expedition Random Events
-#	400 - Expelling Senusiyya from State Region
-#	401 - Expulsion Expedition Arrives in State Region
+#400-409 - Senusiyya Expedition Mechanical Events
+#	400 - ##Expelling Senusiyya from State Region
+#	401 - ##Expulsion Expedition Arrives in State Region
+#	402 - ##Expulsion Expedition Leader has Died!
+#	403 - ##Expulsion Expedition Withdraws from State Region
+#	404 - ##Senusiyya Expelled from State Region
 
 ####################
 
@@ -1945,3 +1948,66 @@ eqfm_senusiyya.212 = {
 
 ####---------- Senusiyya Pressure Random Events ----------####
 # //
+
+
+####---------- Senusiyya Expedition Mechanical Events ----------####
+eqfm_senusiyya.400 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	duration = 2
+	dlc = dlc_grefm
+	
+	title = eqfm_senusiyya.400.t
+	desc = eqfm_senusiyya.400.d
+	flavor = eqfm_senusiyya.400.f
+	
+	event_image = {
+		video = "africa_desert_expedition"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by Senusiyya Expedition buttons
+	}
+	
+	cancellation_trigger = {
+		OR = {
+			NOT = {
+				any_scope_general = {
+					is_busy = no
+					is_ruler = no
+				}
+			}
+			eqfm_has_senusiyya_expedition_trigger = no
+		}
+	}
+	
+	immediate = {
+		set_variable = {
+			name = eqfm_senusiyya_expedition_transit_var
+			months = 2
+		}
+	}
+	
+	option = {
+		name = eqfm_senusiyya.400.a
+		default_option = yes
+	}
+	
+	option = {
+		name = eqfm_senusiyya.400.b
+	}
+	
+	option = {
+		name = eqfm_senusiyya.400.c
+	}
+	
+	option = {
+		name = eqfm_senusiyya.400.e
+		custom_tooltip = {
+			text = gbbf_nothing_happens
+			eqfm_clear_senusiyya_expedition_variables_effect = yes
+		}
+	}
+}

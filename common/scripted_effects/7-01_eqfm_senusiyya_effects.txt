@@ -1,4 +1,5 @@
-﻿eqfm_initialize_global_senusiyya_variables = {
+﻿####---------- Senusiyya Situation Effects ----------####
+eqfm_initialize_global_senusiyya_variables = {
 	scope:journal_entry = {
 		scope:journal_entry = {
 			set_variable = {
@@ -792,6 +793,7 @@ eqfm_update_senussi_character_effect = {
 	}
 }
 
+####---------- Senusiyya Event Effects ----------####
 eqfm_save_senussi_scope_effect = {
 	if = {
 		limit = {
@@ -880,5 +882,61 @@ eqfm_add_senusiyya_entrenchment_effect = {
 				min = 0
 			}
 		}
+	}
+}
+
+####---------- Senusiyya Situation Effects ----------####
+eqfm_start_senusiyya_expedition_effect = {
+
+}
+
+eqfm_cancel_senusiyya_expedition_effect = {
+
+}
+
+eqfm_clear_senusiyya_expedition_effect = {
+
+}
+
+eqfm_clear_senusiyya_expedition_variables_effect = {
+
+}
+
+eqfm_update_senusiyya_expedition_variables_effect = {
+
+}
+
+eqfm_annual_senusiyya_expedition_progress_effect = {
+	if = {
+		limit = {
+			has_variable = eqfm_senusiyya_expedition_progress_timer
+			NOT = {
+				has_variable = eqfm_senusiyya_expedition_transit_var
+			}
+		}
+		change_variable = {
+			name = eqfm_senusiyya_expedition_progress_timer
+			subtract = 1
+		}
+		if = {
+			limit = {
+				var:eqfm_senusiyya_expedition_progress_timer <= 0
+			}
+			eqfm_add_senusiyya_expedition_progress_effect = {
+				value = 1
+			}
+			set_variable = {
+				name = eqfm_senusiyya_expedition_progress_timer
+				value = 12
+			}
+			post_notification = notification_eqfm_senusiyya_yearly_progress
+		}
+	}
+	else = {
+		set_variable = {
+			name = eqfm_senusiyya_expedition_progress_timer
+			value = 12
+		}
+		error_log = "Scripted effect 'eqfm_update_senusiyya_expedition_progress_effect' was called but variable 'eqfm_senusiyya_expedition_progress_timer' was not set. Variable has been set with a value of 12."
 	}
 }

@@ -183,3 +183,116 @@
 		}
 	}
 }
+
+je_eqfm_senusiyya_expedition = {
+	group = je_group_expeditions
+	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	weight = 100
+	
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+	
+	scripted_progress_bar = eqfm_senusiyya_expedition_progress_bar
+	scripted_progress_bar = eqfm_senusiyya_expedition_peril_bar
+	
+	scripted_button = eqfm_recall_senusiyya_expedition_button
+	
+	modifiers_while_active = {
+	}
+	
+	complete = {
+		custom_tooltip = {
+			text = je_eqfm_senusiyya_expedition_complete
+			has_variable = eqfm_senusiyya_expedition_progress_var
+			var:eqfm_senusiyya_expedition_progress_var >= 8
+		}
+	}
+	
+	on_complete = {
+		trigger_event = eqfm_senusiyya.404
+		set_variable = {
+			name = eqfm_senusiyya_expedition_transit_var
+			months = 3
+		}
+	}
+	
+	fail = {
+		OR = {
+			custom_tooltip = {
+				text = je_eqfm_senusiyya_expedition_fail
+				has_variable = eqfm_senusiyya_expedition_peril_var
+				var:eqfm_senusiyya_expedition_peril_var >= 5
+			}
+			custom_tooltip = {
+				text = eqfm_expedition_leaderless_trigger
+				NOT = {
+					any_scope_general = {
+						has_modifier = modifier_eqfm_leading_senusiyya_expedition
+					}
+				}
+			}
+		}
+	}
+	
+	on_fail = {
+		hidden_effect = {
+			if = {
+				limit = {
+					has_variable = eqfm_senusiyya_expedition_peril_var
+					var:eqfm_senusiyya_expedition_peril_var >= 5
+				}
+				trigger_event = eqfm_senusiyya.403
+			}
+			else = {
+				trigger_event = eqfm_senusiyya.402
+			}
+		}
+	}
+	
+	invalid = {
+		eqfm_has_senusiyya_expedition_trigger = no
+	}
+	
+	on_invalid = {
+		eqfm_clear_senusiyya_expedition_effect = yes
+	}
+	
+	on_weekly_pulse = {
+		events = {
+		}
+		random_events = {
+		}
+		effect = {
+			eqfm_update_senusiyya_expedition_variables_effect = yes
+		}
+	}
+	
+	on_monthly_pulse = {
+		events = {
+		}
+		random_events = {
+		}
+		effect = {
+			eqfm_annual_senusiyya_expedition_progress_effect = yes
+		}
+	}
+	
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_eqfm_senusiyya_expedition_status_transit
+				trigger = {
+					has_variable = eqfm_senusiyya_expedition_transit_var
+				}
+			}
+			triggered_desc = {
+				desc = je_eqfm_senusiyya_expedition_status_default
+				trigger = {
+					has_variable = eqfm_senusiyya_expedition_var
+				}
+			}
+		}
+	}
+}
