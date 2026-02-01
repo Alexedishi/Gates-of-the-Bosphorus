@@ -887,7 +887,19 @@ eqfm_add_senusiyya_entrenchment_effect = {
 
 ####---------- Senusiyya Situation Effects ----------####
 eqfm_start_senusiyya_expedition_effect = {
-
+	set_variable = {
+		name = senusiyya_expedition_progress_var
+		value = 0
+	}
+	set_variable = {
+		name = senusiyya_expedition_peril_var
+		value = 0
+	}
+	set_variable = {
+		name = eqfm_senusiyya_expedition_progress_timer
+		value = 12
+	}
+	remove_variable = eqfm_senusiyya_expedition_transit_var
 }
 
 eqfm_cancel_senusiyya_expedition_effect = {
@@ -909,34 +921,40 @@ eqfm_update_senusiyya_expedition_variables_effect = {
 eqfm_annual_senusiyya_expedition_progress_effect = {
 	if = {
 		limit = {
-			has_variable = eqfm_senusiyya_expedition_progress_timer
 			NOT = {
 				has_variable = eqfm_senusiyya_expedition_transit_var
 			}
 		}
-		change_variable = {
-			name = eqfm_senusiyya_expedition_progress_timer
-			subtract = 1
-		}
 		if = {
 			limit = {
-				var:eqfm_senusiyya_expedition_progress_timer <= 0
+				has_variable = eqfm_senusiyya_expedition_progress_timer
+				
 			}
-			eqfm_add_senusiyya_expedition_progress_effect = {
-				value = 1
+			change_variable = {
+				name = eqfm_senusiyya_expedition_progress_timer
+				subtract = 1
 			}
+			if = {
+				limit = {
+					var:eqfm_senusiyya_expedition_progress_timer <= 0
+				}
+				eqfm_add_expedition_progress_effect = {
+					type = senusiyya
+					value = 1
+				}
+				set_variable = {
+					name = eqfm_senusiyya_expedition_progress_timer
+					value = 12
+				}
+				post_notification = notification_eqfm_senusiyya_yearly_progress
+			}
+		}
+		else = {
 			set_variable = {
 				name = eqfm_senusiyya_expedition_progress_timer
 				value = 12
 			}
-			post_notification = notification_eqfm_senusiyya_yearly_progress
+			error_log = "Scripted effect 'eqfm_update_senusiyya_expedition_progress_effect' was called, but variable 'eqfm_senusiyya_expedition_progress_timer' was not set. Variable has been set with a value of 12."
 		}
-	}
-	else = {
-		set_variable = {
-			name = eqfm_senusiyya_expedition_progress_timer
-			value = 12
-		}
-		error_log = "Scripted effect 'eqfm_update_senusiyya_expedition_progress_effect' was called but variable 'eqfm_senusiyya_expedition_progress_timer' was not set. Variable has been set with a value of 12."
 	}
 }
