@@ -902,20 +902,145 @@ eqfm_start_senusiyya_expedition_effect = {
 	remove_variable = eqfm_senusiyya_expedition_transit_var
 }
 
-eqfm_cancel_senusiyya_expedition_effect = {
+eqfm_complete_senusiyya_expedition_effect = {
+	every_scope_character = {
+		limit = {
+			has_modifier = modifier_eqfm_leading_senusiyya_expedition
+		}
+		add_modifier = modifier_eqfm_completed_senusiyya_expedition_character
+		set_character_busy_and_immortal = no
+	}
+	add_modifier = {
+		name = modifier_eqfm_completed_senusiyya_expedition_country
+		months = gbbf_short_modifier_time
+	}
+	eqfm_clear_senusiyya_expedition_effect = yes
+	set_variable = eqfm_completed_senusiyya_expedition
+}
 
+eqfm_fail_senusiyya_expedition_effect = {
+	every_scope_character = {
+		limit = {
+			has_modifier = modifier_eqfm_leading_senusiyya_expedition
+		}
+		add_modifier = modifier_eqfm_failed_senusiyya_expedition_character
+		set_character_busy_and_immortal = no
+	}
+	add_modifier = {
+		name = modifier_eqfm_failed_senusiyya_expedition_country
+		months = gbbf_short_modifier_time
+	}
+	eqfm_clear_senusiyya_expedition_effect = yes
+}
+
+eqfm_cancel_senusiyya_expedition_effect = {
+	eqfm_clear_senusiyya_expedition_effect = yes
+	add_modifier = {
+		name = modifier_eqfm_cancelled_senusiyya_expedition
+		months = gbbf_short_modifier_time
+	}
+	eqfm_update_expedition_costs_effect = yes
 }
 
 eqfm_clear_senusiyya_expedition_effect = {
-
+	every_scope_character = {
+		limit = {
+			has_modifier = modifier_eqfm_leading_senusiyya_expedition
+		}
+		remove_modifier = modifier_eqfm_leading_senusiyya_expedition
+		set_character_busy_and_immortal = no
+	}
+	eqfm_clear_senusiyya_expedition_variables_effect = yes
 }
 
 eqfm_clear_senusiyya_expedition_variables_effect = {
-
+	remove_variable = eqfm_senusiyya_expedition_var
+	remove_variable = eqfm_senusiyya_expedition_progress_var
+	remove_variable = eqfm_senusiyya_expedition_peril_var
+	remove_variable = eqfm_senusiyya_expedition_progress_timer
+	remove_variable = eqfm_senusiyya_expedition_transit_var
 }
 
 eqfm_update_senusiyya_expedition_variables_effect = {
-
+	## Step 1, Check for Expedition Leader
+	scope:journal_entry = {
+		clear_variable_list = com_journal_characters
+	}
+	if = {
+		limit = {
+			any_scope_general = {
+				has_modifier = modifier_eqfm_leading_senusiyya_expedition
+			}
+		}
+		random_scope_general = {
+			limit = {
+				has_modifier = modifier_eqfm_leading_senusiyya_expedition
+			}
+			save_scope_as = eqfm_senusiyya_expedition_leader_scope
+		}
+		scope:journal_entry = {
+			add_to_variable_list = {
+				name = com_journal_characters
+				target = scope:eqfm_senusiyya_expedition_leader_scope
+			}
+		}
+	}
+	
+	## Step 2, Validate Expedition Variables
+	if = {
+		limit = {
+			eqfm_has_senusiyya_expedition_trigger = yes
+			NOT = {
+				has_variable = eqfm_senusiyya_expedition_transit_var
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_variable = eqfm_senusiyya_expedition_progress_var
+				}
+			}
+			set_variable = {
+				name = eqfm_senusiyya_expedition_progress_var
+				value = 0
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_variable = eqfm_senusiyya_expedition_peril_var
+				}
+			}
+			set_variable = {
+				name = eqfm_senusiyya_expedition_peril_var
+				value = 0
+			}
+		}
+	}
+	
+	## Step 3, Update Progress Bars
+	if = {
+		limit = {
+			has_variable = eqfm_senusiyya_expedition_progress_var
+		}
+		scope:journal_entry = {
+			set_bar_progress = {
+				name = eqfm_senusiyya_expedition_progress_bar
+				value = owner.var:eqfm_senusiyya_expedition_progress_var
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_variable = eqfm_senusiyya_expedition_peril_var
+		}
+		scope:journal_entry = {
+			set_bar_progress = {
+				name = eqfm_senusiyya_expedition_peril_bar
+				value = owner.var:eqfm_senusiyya_expedition_peril_var
+			}
+		}
+	}
 }
 
 eqfm_annual_senusiyya_expedition_progress_effect = {
