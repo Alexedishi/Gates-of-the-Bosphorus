@@ -10,15 +10,27 @@ eqfm_adopt_welcoming_stance_button = {
 		is_involved_in_journal_entry = je_eqfm_senusiyya
 	}
 	effect = {
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_senusiyya_stance_negative
+			}
+			remove_modifier = modifier_eqfm_senusiyya_stance_negative
+		}
+		add_modifier = modifier_eqfm_senusiyya_stance_positive
+		custom_tooltip = {
+			text = eqfm_adopt_welcoming_stance_effect_1
+			set_variable = {
+				name = eqfm_senusiyya_stance_var
+				value = flag:eqfm_senusiyya_stance_welcoming
+			}
+		}
+		custom_tooltip = eqfm_adopt_welcoming_stance_effect_2
 		custom_tooltip = {
 			text = eqfm_adopt_stance_effect
 			set_variable = eqfm_senusiyya_stance_cooldown
 		}
-		add_modifier = modifier_eqfm_senusiyya_stance_positive
-		set_variable = {
-			name = eqfm_senusiyya_stance_var
-			value = flag:eqfm_senusiyya_stance_welcoming
-		}
+
+
 	}
 }
 
@@ -41,14 +53,29 @@ eqfm_adopt_aloof_stance_button = {
 		}
 	}
 	effect = {
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_senusiyya_stance_positive
+			}
+			remove_modifier = modifier_eqfm_senusiyya_stance_positive
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_senusiyya_stance_negative
+			}
+			remove_modifier = modifier_eqfm_senusiyya_stance_negative
+		}
+		add_modifier = modifier_eqfm_senusiyya_stance_neutral
+		custom_tooltip = {
+			text = eqfm_adopt_aloof_stance_effect_1
+			set_variable = {
+				name = eqfm_senusiyya_stance_var
+				value = flag:eqfm_senusiyya_stance_aloof
+			}
+		}
 		custom_tooltip = {
 			text = eqfm_adopt_stance_effect
 			set_variable = eqfm_senusiyya_stance_cooldown
-		}
-		add_modifier = modifier_eqfm_senusiyya_stance_neutral
-		set_variable = {
-			name = eqfm_senusiyya_stance_var
-			value = flag:eqfm_senusiyya_stance_aloof
 		}
 	}
 }
@@ -64,14 +91,24 @@ eqfm_adopt_hostile_stance_button = {
 		is_involved_in_journal_entry = je_eqfm_senusiyya
 	}
 	effect = {
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_senusiyya_stance_positive
+			}
+			remove_modifier = modifier_eqfm_senusiyya_stance_positive
+		}
+		add_modifier = modifier_eqfm_senusiyya_stance_negative
+		custom_tooltip = {
+			text = eqfm_adopt_hostile_stance_effect_1
+			set_variable = {
+				name = eqfm_senusiyya_stance_var
+				value = flag:eqfm_senusiyya_stance_hostile
+			}
+		}
+		custom_tooltip = eqfm_adopt_hostile_stance_effect_2
 		custom_tooltip = {
 			text = eqfm_adopt_stance_effect
 			set_variable = eqfm_senusiyya_stance_cooldown
-		}
-		add_modifier = modifier_eqfm_senusiyya_stance_negative
-		set_variable = {
-			name = eqfm_senusiyya_stance_var
-			value = flag:eqfm_senusiyya_stance_hostile
 		}
 	}
 }
@@ -317,50 +354,6 @@ eqfm_recall_senusiyya_expedition_button = {
 	}
 	effect = {
 		eqfm_cancel_senusiyya_expedition_effect = yes
-	}
-}
-
-eqfm_expel_senusiyya_great_sand_sea_button = {
-	name = "eqfm_expel_senusiyya_great_sand_sea_button"
-	desc = "eqfm_expel_senusiyya_great_sand_sea_button_desc"
-	
-	visible = {
-		exists = s:STATE_GREAT_SAND_SEA
-		s:STATE_GREAT_SAND_SEA ?= {
-			has_variable = eqfm_senusiyya_entrenchment_var
-		}
-	}
-	possible = {
-		custom_tooltip = {
-			text = eqfm_expel_senusiyya_possible
-			s:STATE_GREAT_SAND_SEA = {
-				var:eqfm_senusiyya_entrenchment_var <= 0
-			}
-		}
-		is_in_geographic_region = geographic_region_senusiyya
-		custom_tooltip = {
-			text = eqfm_has_hostile_stance
-			var:eqfm_senusiyya_stance_var ?= flag:eqfm_senusiyya_stance_hostile
-		}
-		eqfm_has_senusiyya_expedition_trigger = no
-		any_scope_general = {
-			is_ruler = no
-			is_busy = no
-		}
-		NOR = {
-			has_modifier = modifier_eqfm_failed_senusiyya_expedition_country
-			has_modifier = modifier_eqfm_cancelled_senusiyya_expedition
-		}
-	}
-	effect = {
-		trigger_event = {
-			id = eqfm_senusiyya.400
-			popup = yes
-		}
-		set_variable = {
-			name = eqfm_senusiyya_expedition_var
-			value = s:STATE_GREAT_SAND_SEA
-		}
 	}
 }
 

@@ -141,7 +141,6 @@ eqfm_senusiyya.002 = {
 }
 
 eqfm_senusiyya.003 = {
-	# This variant fires if STATE_GREAT_SAND_SEA exists
 	type = country_event
 	placement = scope:kufra_scope
 	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
@@ -192,57 +191,7 @@ eqfm_senusiyya.003 = {
 	}
 }
 
-eqfm_senusiyya.004 = {
-	# This variant fires if STATE_GREAT_SAND_SEA does not exist
-	type = country_event
-	placement = scope:kufra_scope
-	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
-	duration = 3
-	dlc = dlc_grefm
-
-	title = eqfm_senusiyya.004.t
-	desc = eqfm_senusiyya.004.d
-	flavor = eqfm_senusiyya.004.f
-
-	gui_window = event_window_1char_adventure
-	left_icon = scope:eqfm_senussi_character_scope
-
-	event_image = {
-		video = "africa_desert_expedition"
-	}
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	trigger = {
-		# Fired from je_eqfm_senusiyya on_monthly_pulse
-	}
-
-	cancellation_trigger = {
-		NOR = {
-			exists = c:ZWY
-			exists = c:TRI
-		}
-	}
-
-	cooldown = {
-		years = 5
-	}
-
-	immediate = {
-		eqfm_save_senussi_scope_effect = yes
-		c:TRI = {
-			save_scope_as = libya_scope
-		}
-		c:ZWY = {
-			save_scope_as = kufra_scope
-		}
-	}
-
-	option = {
-		name = eqfm_senusiyya.004.a
-		default_option = yes
-
-	}
-}
+# eqfm_senusiyya.004
 
 eqfm_senusiyya.005 = { # Armed Diplomacy
 	type = country_event
@@ -430,55 +379,7 @@ eqfm_senusiyya.100 = {
 			has_global_variable = eqfm_senusiyya_contagion_cooldown
 		}
 
-		# Evaluate using STATE_GREAT_SAND_SEA if it exists
-		trigger_if = {
-			limit = {
-				s:STATE_GREAT_SAND_SEA ?= {
-					has_variable = eqfm_senusiyya_entrenchment_var
-					var:eqfm_senusiyya_entrenchment_var >= 50
-				}
-			}
-			OR = {
-				s:STATE_LIBYA = {
-					NOR = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-						has_variable = eqfm_senusiyya_explusion_var
-					}
-				}
-				s:STATE_LIBYAN_DESERT = {
-					NOR = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-						has_variable = eqfm_senusiyya_explusion_var
-					}
-				}
-				s:STATE_TRIPOLI = {
-					NOR = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-						has_variable = eqfm_senusiyya_explusion_var
-					}
-				}
-				s:STATE_MATRUH = {
-					NOR = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-						has_variable = eqfm_senusiyya_explusion_var
-					}
-				}
-				s:STATE_EGYPTIAN_DESERT = {
-					NOR = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-						has_variable = eqfm_senusiyya_explusion_var
-					}
-				}
-				s:STATE_CHAD = {
-					NOR = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-						has_variable = eqfm_senusiyya_explusion_var
-					}
-				}
-			}
-		}
-
-		# Evaluate STATE_LIBYA, with considerations for STATE_GREAT_SAND_SEA not existing
+		# Evaluate STATE_LIBYA
 		trigger_else_if = {
 			limit = {
 				s:STATE_LIBYA = {
@@ -487,27 +388,6 @@ eqfm_senusiyya.100 = {
 				}
 			}
 			OR = {
-				trigger_if = {
-					limit = {
-						NOT = {
-							exists = s:STATE_GREAT_SAND_SEA
-						}
-					}
-					OR = {
-						s:STATE_LIBYAN_DESERT = {
-							NOR = {
-								has_variable = eqfm_senusiyya_entrenchment_var
-								has_variable = eqfm_senusiyya_explusion_var
-							}
-						}
-						s:STATE_EGYPTIAN_DESERT = {
-							NOR = {
-								has_variable = eqfm_senusiyya_entrenchment_var
-								has_variable = eqfm_senusiyya_explusion_var
-							}
-						}
-					}
-				}
 				s:STATE_TRIPOLI = {
 					NOR = {
 						has_variable = eqfm_senusiyya_entrenchment_var
@@ -523,7 +403,7 @@ eqfm_senusiyya.100 = {
 			}
 		}
 
-		# Evaluate STATE_LIBYAN_DESERT with considerations for STATE_GREAT_SAND_SEA not existing
+		# Evaluate STATE_LIBYAN_DESERT
 		trigger_else_if = {
 			limit = {
 				s:STATE_LIBYAN_DESERT = {
@@ -532,17 +412,6 @@ eqfm_senusiyya.100 = {
 				}
 			}
 			OR = {
-				trigger_if = {
-					limit = {
-						exists = s:STATE_GREAT_SAND_SEA
-					}
-					s:STATE_GREAT_SAND_SEA = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-				}
 				trigger_else = {
 					s:STATE_LIBYA = {
 						NOR = {
@@ -584,7 +453,7 @@ eqfm_senusiyya.100 = {
 			}
 		}
 
-		# Evaluate STATE_EGYPTIAN_DESERT with considerations for STATE_GREAT_SAND_SEA not existing
+		# Evaluate STATE_EGYPTIAN_DESERT
 		trigger_else_if = {
 			limit = {
 				s:STATE_EGYPTIAN_DESERT = {
@@ -593,23 +462,10 @@ eqfm_senusiyya.100 = {
 				}
 			}
 			OR = {
-				trigger_if = {
-					limit = {
-						exists = s:STATE_GREAT_SAND_SEA
-					}
-					s:STATE_GREAT_SAND_SEA = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-				}
-				trigger_else = {
-					s:STATE_LIBYA = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
+				s:STATE_LIBYA = {
+					NOR = {
+						has_variable = eqfm_senusiyya_entrenchment_var
+						has_variable = eqfm_senusiyya_explusion_var
 					}
 				}
 				s:STATE_MATRUH = {
@@ -645,7 +501,7 @@ eqfm_senusiyya.100 = {
 			}
 		}
 
-		# Evaluate STATE_CHAD with considerations for STATE_GREAT_SAND_SEA not existing
+		# Evaluate STATE_CHAD
 		trigger_else_if = {
 			limit = {
 				s:STATE_CHAD = {
@@ -654,23 +510,10 @@ eqfm_senusiyya.100 = {
 				}
 
 			}
-			trigger_if = {
-				limit = {
-					exists = s:STATE_GREAT_SAND_SEA
-				}
-				s:STATE_GREAT_SAND_SEA = {
-					NOR = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-						has_variable = eqfm_senusiyya_explusion_var
-					}
-				}
-			}
-			trigger_else = {
-				s:STATE_LIBYA = {
-					NOR = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-						has_variable = eqfm_senusiyya_explusion_var
-					}
+			s:STATE_LIBYA = {
+				NOR = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+					has_variable = eqfm_senusiyya_explusion_var
 				}
 			}
 		}
@@ -690,141 +533,8 @@ eqfm_senusiyya.100 = {
 			name = eqfm_senusiyya_contagion_cooldown
 			years = 2
 		}
-		# Attempt Selection using STATE_GREAT_SAND_SEA if it exists
-		if = {
-			limit = {
-				exists = s:STATE_GREAT_SAND_SEA
-				s:STATE_GREAT_SAND_SEA ?= {
-					has_variable = eqfm_senusiyya_entrenchment_var
-					var:eqfm_senusiyya_entrenchment_var >= 50
-				}
-				OR = {
-					s:STATE_LIBYA = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-					s:STATE_LIBYAN_DESERT = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-					s:STATE_TRIPOLI = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-					s:STATE_MATRUH = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-					s:STATE_EGYPTIAN_DESERT = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-					s:STATE_CHAD = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-				}
-			}
-			if = {
-				limit = {
-					s:STATE_LIBYA = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-				}
-				s:STATE_LIBYA = {
-					save_scope_as = eqfm_senusiyya_target_state_region
-				}
-			}
-			else_if = {
-				limit = {
-					s:STATE_LIBYAN_DESERT = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-				}
-				s:STATE_LIBYAN_DESERT = {
-					save_scope_as = eqfm_senusiyya_target_state_region
-				}
-			}
-			else_if = {
-				limit = {
-					s:STATE_TRIPOLI = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-				}
-				s:STATE_TRIPOLI = {
-					save_scope_as = eqfm_senusiyya_target_state_region
-				}
-			}
-			else_if = {
-				limit = {
-					s:STATE_MATRUH = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-				}
-				s:STATE_MATRUH = {
-					save_scope_as = eqfm_senusiyya_target_state_region
-				}
-			}
-			else_if = {
-				limit = {
-					s:STATE_EGYPTIAN_DESERT = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-				}
-				s:STATE_EGYPTIAN_DESERT = {
-					save_scope_as = eqfm_senusiyya_target_state_region
-				}
-			}
-			else_if = {
-				limit = {
-					s:STATE_CHAD = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-				}
-				s:STATE_CHAD = {
-					save_scope_as = eqfm_senusiyya_target_state_region
-				}
-			}
-			else = {
-				error_log = "Event eqfm_senusiyya.100 was triggered and attempted to select a state region using STATE_GREAT_SAND_SEA, but no valid state region was available."
-				set_global_variable = {
-					name = eqfm_seusiyya_spread_null
-					months = 1
-				}
-			}
-		}
 
-		# Attempt Selection using STATE_LIBYA, with considerations for STATE_GREAT_SAND_SEA not existing
+		# Attempt Selection using STATE_LIBYA
 		else_if = {
 			limit = {
 				s:STATE_LIBYA = {
@@ -832,27 +542,6 @@ eqfm_senusiyya.100 = {
 					var:eqfm_senusiyya_entrenchment_var >= 50
 				}
 				OR = {
-					trigger_if = {
-						limit = {
-							NOT = {
-								exists = s:STATE_GREAT_SAND_SEA
-							}
-						}
-						OR = {
-							s:STATE_LIBYAN_DESERT = {
-								NOR = {
-									has_variable = eqfm_senusiyya_entrenchment_var
-									has_variable = eqfm_senusiyya_explusion_var
-								}
-							}
-							s:STATE_EGYPTIAN_DESERT = {
-								NOR = {
-									has_variable = eqfm_senusiyya_entrenchment_var
-									has_variable = eqfm_senusiyya_explusion_var
-								}
-							}
-						}
-					}
 					s:STATE_TRIPOLI = {
 						NOR = {
 							has_variable = eqfm_senusiyya_entrenchment_var
@@ -869,9 +558,6 @@ eqfm_senusiyya.100 = {
 			}
 			if = {
 				limit = {
-					NOT = {
-						exists = s:STATE_GREAT_SAND_SEA
-					}
 					s:STATE_LIBYAN_DESERT = {
 						NOR = {
 							has_variable = eqfm_senusiyya_entrenchment_var
@@ -898,9 +584,6 @@ eqfm_senusiyya.100 = {
 			}
 			else_if = {
 				limit = {
-					NOT = {
-						exists = s:STATE_GREAT_SAND_SEA
-					}
 					s:STATE_EGYPTIAN_DESERT = {
 						NOR = {
 							has_variable = eqfm_senusiyya_entrenchment_var
@@ -934,7 +617,7 @@ eqfm_senusiyya.100 = {
 			}
 		}
 
-		# Attempt Selection using STATE_LIBYAN_DESERT with considerations for STATE_GREAT_SAND_SEA not existing
+		# Attempt Selection using STATE_LIBYAN_DESERT
 		else_if = {
 			limit = {
 				s:STATE_LIBYAN_DESERT = {
@@ -942,23 +625,10 @@ eqfm_senusiyya.100 = {
 					var:eqfm_senusiyya_entrenchment_var >= 50
 				}
 				OR = {
-					trigger_if = {
-						limit = {
-							exists = s:STATE_GREAT_SAND_SEA
-						}
-						s:STATE_GREAT_SAND_SEA = {
-							NOR = {
-								has_variable = eqfm_senusiyya_entrenchment_var
-								has_variable = eqfm_senusiyya_explusion_var
-							}
-						}
-					}
-					trigger_else = {
-						s:STATE_LIBYA = {
-							NOR = {
-								has_variable = eqfm_senusiyya_entrenchment_var
-								has_variable = eqfm_senusiyya_explusion_var
-							}
+					s:STATE_LIBYA = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
 						}
 					}
 					s:STATE_TRIPOLI = {
@@ -971,22 +641,6 @@ eqfm_senusiyya.100 = {
 			}
 			if = {
 				limit = {
-					s:STATE_GREAT_SAND_SEA ?= {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-				}
-				s:STATE_GREAT_SAND_SEA ?= {
-					save_scope_as = eqfm_senusiyya_target_state_region
-				}
-			}
-			else_if = {
-				limit = {
-					NOT = {
-						exists = s:STATE_GREAT_SAND_SEA
-					}
 					s:STATE_LIBYA = {
 						NOR = {
 							has_variable = eqfm_senusiyya_entrenchment_var
@@ -1077,7 +731,7 @@ eqfm_senusiyya.100 = {
 			}
 		}
 
-		# Attempt Selection using STATE_EGYPTIAN_DESERT with considerations for STATE_GREAT_SAND_SEA not existing
+		# Attempt Selection using STATE_EGYPTIAN_DESERT
 		else_if = {
 			limit = {
 				s:STATE_EGYPTIAN_DESERT = {
@@ -1091,23 +745,10 @@ eqfm_senusiyya.100 = {
 							has_variable = eqfm_senusiyya_explusion_var
 						}
 					}
-					trigger_if = {
-						limit = {
-							exists = s:STATE_GREAT_SAND_SEA
-						}
-						s:STATE_GREAT_SAND_SEA = {
-							NOR = {
-								has_variable = eqfm_senusiyya_entrenchment_var
-								has_variable = eqfm_senusiyya_explusion_var
-							}
-						}
-					}
-					trigger_else = {
-						s:STATE_LIBYA = {
-							NOR = {
-								has_variable = eqfm_senusiyya_entrenchment_var
-								has_variable = eqfm_senusiyya_explusion_var
-							}
+					s:STATE_LIBYA = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
 						}
 					}
 				}
@@ -1127,23 +768,6 @@ eqfm_senusiyya.100 = {
 			}
 			else_if = {
 				limit = {
-					exists = s:STATE_GREAT_SAND_SEA
-					s:STATE_GREAT_SAND_SEA ?= {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-				}
-				s:STATE_GREAT_SAND_SEA ?= {
-					save_scope_as = eqfm_senusiyya_target_state_region
-				}
-			}
-			else_if = {
-				limit = {
-					NOT = {
-						exists = s:STATE_GREAT_SAND_SEA
-					}
 					s:STATE_LIBYA = {
 						NOR = {
 							has_variable = eqfm_senusiyya_entrenchment_var
@@ -1221,52 +845,22 @@ eqfm_senusiyya.100 = {
 			}
 		}
 
-		# Attempt Selection using STATE_CHAD with considerations for STATE_GREAT_SAND_SEA not existing
+		# Attempt Selection using STATE_CHAD
 		else_if = {
 			limit = {
 				s:STATE_CHAD = {
 					has_variable = eqfm_senusiyya_entrenchment_var
 					var:eqfm_senusiyya_entrenchment_var >= 50
 				}
-				trigger_if = {
-					limit = {
-						exists = s:STATE_GREAT_SAND_SEA
-					}
-					s:STATE_GREAT_SAND_SEA = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-				}
-				trigger_else = {
-					s:STATE_LIBYAN_DESERT = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
+				s:STATE_LIBYAN_DESERT = {
+					NOR = {
+						has_variable = eqfm_senusiyya_entrenchment_var
+						has_variable = eqfm_senusiyya_explusion_var
 					}
 				}
 			}
 			if = {
 				limit = {
-					exists = s:STATE_GREAT_SAND_SEA
-					s:STATE_GREAT_SAND_SEA = {
-						NOR = {
-							has_variable = eqfm_senusiyya_entrenchment_var
-							has_variable = eqfm_senusiyya_explusion_var
-						}
-					}
-				}
-				s:STATE_GREAT_SAND_SEA ?= {
-					save_scope_as = eqfm_senusiyya_target_state_region
-				}
-			}
-			else_if = {
-				limit = {
-					NOT = {
-						exists = s:STATE_GREAT_SAND_SEA
-					}
 					s:STATE_LIBYAN_DESERT = {
 						NOR = {
 							has_variable = eqfm_senusiyya_entrenchment_var
@@ -1530,17 +1124,6 @@ eqfm_senusiyya.200 = {
 		}
 		gbbf_is_muslim_trigger = yes
 		OR = {
-			AND = {
-				exists = s:STATE_GREAT_SAND_SEA
-				s:STATE_GREAT_SAND_SEA ?= {
-					has_variable = eqfm_senusiyya_entrenchment_var
-				}
-				any_scope_state = {
-					state_region = {
-						s:STATE_GREAT_SAND_SEA ?= this
-					}
-				}
-			}
 			AND = {
 				s:STATE_LIBYA ?= {
 					has_variable = eqfm_senusiyya_entrenchment_var
@@ -2256,5 +1839,517 @@ eqfm_senusiyya.404 = {
 		name = eqfm_senusiyya.404.a
 		default_option = yes
 		eqfm_complete_senusiyya_expedition_effect = yes
+	}
+}
+
+
+####---------- Senusiyya Expedition Random Events ----------####
+eqfm_senusiyya.410 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_senusiyya.410.t
+	desc = eqfm_senusiyya.410.d
+	flavor = eqfm_senusiyya.410.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_settlement.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		NOT = {
+			has_variable = eqfm_senusiyya_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		eqfm_has_senusiyya_expedition_trigger = no
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		eqfm_save_senusiyya_expedition_scopes_effect = yes
+		set_variable = {
+			name = eqfm_senusiyya_expedition_cooldown_var
+			months = 3
+		}
+	}
+
+	option = {
+		name = eqfm_senusiyya.410.a
+		default_option = yes
+	}
+
+	option = {
+		name = eqfm_senusiyya.410.b
+	}
+}
+
+eqfm_senusiyya.411 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_senusiyya.411.t
+	desc = eqfm_senusiyya.411.d
+	flavor = eqfm_senusiyya.411.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_settlement.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		NOT = {
+			has_variable = eqfm_senusiyya_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		eqfm_has_senusiyya_expedition_trigger = no
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		eqfm_save_senusiyya_expedition_scopes_effect = yes
+		set_variable = {
+			name = eqfm_senusiyya_expedition_cooldown_var
+			months = 3
+		}
+	}
+
+	option = {
+		name = eqfm_senusiyya.411.a
+		default_option = yes
+	}
+
+	option = {
+		name = eqfm_senusiyya.411.b
+	}
+}
+
+eqfm_senusiyya.412 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_senusiyya.412.t
+	desc = eqfm_senusiyya.412.d
+	flavor = eqfm_senusiyya.412.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_nomad.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		NOT = {
+			has_variable = eqfm_senusiyya_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		eqfm_has_senusiyya_expedition_trigger = no
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		eqfm_save_senusiyya_expedition_scopes_effect = yes
+		set_variable = {
+			name = eqfm_senusiyya_expedition_cooldown_var
+			months = 3
+		}
+	}
+
+	option = {
+		name = eqfm_senusiyya.412.a
+		default_option = yes
+	}
+
+	option = {
+		name = eqfm_senusiyya.412.b
+	}
+}
+
+eqfm_senusiyya.413 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_senusiyya.413.t
+	desc = eqfm_senusiyya.413.d
+	flavor = eqfm_senusiyya.413.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
+
+	event_image = {
+		video = "gbbf_saharan_sandstorm"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		NOT = {
+			has_variable = eqfm_senusiyya_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		eqfm_has_senusiyya_expedition_trigger = no
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		eqfm_save_senusiyya_expedition_scopes_effect = yes
+		set_variable = {
+			name = eqfm_senusiyya_expedition_cooldown_var
+			months = 3
+		}
+	}
+
+	option = {
+		name = eqfm_senusiyya.413.a
+		default_option = yes
+	}
+
+	option = {
+		name = eqfm_senusiyya.413.b
+	}
+}
+
+eqfm_senusiyya.414 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_senusiyya.414.t
+	desc = eqfm_senusiyya.414.d
+	flavor = eqfm_senusiyya.414.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_nomad.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		NOT = {
+			has_variable = eqfm_senusiyya_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		eqfm_has_senusiyya_expedition_trigger = no
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		eqfm_save_senusiyya_expedition_scopes_effect = yes
+		set_variable = {
+			name = eqfm_senusiyya_expedition_cooldown_var
+			months = 3
+		}
+	}
+
+	option = {
+		name = eqfm_senusiyya.414.a
+		default_option = yes
+	}
+
+	option = {
+		name = eqfm_senusiyya.414.b
+	}
+}
+
+eqfm_senusiyya.415 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_senusiyya.415.t
+	desc = eqfm_senusiyya.415.d
+	flavor = eqfm_senusiyya.415.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		NOT = {
+			has_variable = eqfm_senusiyya_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		eqfm_has_senusiyya_expedition_trigger = no
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		eqfm_save_senusiyya_expedition_scopes_effect = yes
+		set_variable = {
+			name = eqfm_senusiyya_expedition_cooldown_var
+			months = 3
+		}
+	}
+
+	option = {
+		name = eqfm_senusiyya.415.a
+		default_option = yes
+	}
+
+	option = {
+		name = eqfm_senusiyya.415.b
+	}
+}
+
+eqfm_senusiyya.416 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_senusiyya.416.t
+	desc = eqfm_senusiyya.416.d
+	flavor = eqfm_senusiyya.416.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_nomad.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		NOT = {
+			has_variable = eqfm_senusiyya_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		eqfm_has_senusiyya_expedition_trigger = no
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		eqfm_save_senusiyya_expedition_scopes_effect = yes
+		set_variable = {
+			name = eqfm_senusiyya_expedition_cooldown_var
+			months = 3
+		}
+	}
+
+	option = {
+		name = eqfm_senusiyya.416.a
+		default_option = yes
+	}
+
+	option = {
+		name = eqfm_senusiyya.416.b
+	}
+}
+
+eqfm_senusiyya.417 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_senusiyya.417.t
+	desc = eqfm_senusiyya.417.d
+	flavor = eqfm_senusiyya.417.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		NOT = {
+			has_variable = eqfm_senusiyya_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		eqfm_has_senusiyya_expedition_trigger = no
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		eqfm_save_senusiyya_expedition_scopes_effect = yes
+		set_variable = {
+			name = eqfm_senusiyya_expedition_cooldown_var
+			months = 3
+		}
+	}
+
+	option = {
+		name = eqfm_senusiyya.417.a
+		default_option = yes
+	}
+
+	option = {
+		name = eqfm_senusiyya.417.b
+	}
+}
+
+eqfm_senusiyya.418 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_senusiyya.418.t
+	desc = eqfm_senusiyya.418.d
+	flavor = eqfm_senusiyya.418.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_settlement.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		NOT = {
+			has_variable = eqfm_senusiyya_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		eqfm_has_senusiyya_expedition_trigger = no
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		eqfm_save_senusiyya_expedition_scopes_effect = yes
+		set_variable = {
+			name = eqfm_senusiyya_expedition_cooldown_var
+			months = 3
+		}
+	}
+
+	option = {
+		name = eqfm_senusiyya.418.a
+		default_option = yes
+	}
+
+	option = {
+		name = eqfm_senusiyya.418.b
+	}
+}
+
+eqfm_senusiyya.419 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_senusiyya.419.t
+	desc = eqfm_senusiyya.419.d
+	flavor = eqfm_senusiyya.419.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_settlement.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		NOT = {
+			has_variable = eqfm_senusiyya_expedition_cooldown_var
+		}
+	}
+
+	cancellation_trigger = {
+		eqfm_has_senusiyya_expedition_trigger = no
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+		eqfm_save_senusiyya_expedition_scopes_effect = yes
+		set_variable = {
+			name = eqfm_senusiyya_expedition_cooldown_var
+			months = 3
+		}
+	}
+
+	option = {
+		name = eqfm_senusiyya.419.a
+		default_option = yes
+	}
+
+	option = {
+		name = eqfm_senusiyya.419.b
 	}
 }
