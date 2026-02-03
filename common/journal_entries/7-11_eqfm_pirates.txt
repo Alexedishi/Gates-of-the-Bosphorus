@@ -137,10 +137,9 @@ je_eqfm_expedition_to_the_adriatic = {
 	}
 	
 	complete = {
-		custom_tooltip = {
-			text = je_eqfm_expedition_to_the_adriatic_complete
-			has_variable = eqfm_adriatic_expedition_progress_var
-			var:eqfm_adriatic_expedition_progress_var >= 8
+		eqfm_expedition_progress_greater_than_or_equals_trigger = {
+			type = adriatic
+			value = 8
 		}
 	}
 	
@@ -162,32 +161,18 @@ je_eqfm_expedition_to_the_adriatic = {
 	
 	fail = {
 		OR = {
-			custom_tooltip = {
-				text = je_eqfm_expedition_to_the_adriatic_fail_1
-				has_variable = eqfm_adriatic_expedition_peril_var
-				var:eqfm_adriatic_expedition_peril_var >= 5
-			}
-			custom_tooltip = {
-				text = je_eqfm_expedition_to_the_adriatic_fail_2
-				NOT = {
-					has_variable = eqfm_adriatic_expedition_transit_var
-				}
-				OR = {
-					AND = {
-						has_variable = eqfm_cutler_beckett_var
-						NOT = {
-							exists = var:eqfm_cutler_beckett_var
-						}
-					}
-					NOT = {
-						has_variable = eqfm_cutler_beckett_var
-					}
+			NOT = {
+				eqfm_has_expedition_trigger = {
+					type = adriatic
 				}
 			}
-			custom_tooltip = {
-				text = eqfm_has_adriatic_expedition_NOT
-				NOT = {
-					has_variable = eqfm_adriatic_expedition_var
+			eqfm_expedition_peril_greater_than_or_equals_trigger = {
+				type = adriatic
+				value = 5
+			}
+			NOT = {
+				eqfm_expedition_has_leader_trigger = {
+					type = adriatic
 				}
 			}
 		}
@@ -196,8 +181,9 @@ je_eqfm_expedition_to_the_adriatic = {
 	on_fail = {
 		if = {
 			limit = {
-				has_variable = eqfm_cutler_beckett_var
-				exists = var:eqfm_cutler_beckett_var
+				eqfm_expedition_has_leader_trigger = {
+					type = adriatic
+				}
 			}
 			trigger_event = {
 				id = eqfm_pirates.004 # Cutler Beckett Withdraws from the Adriatic
