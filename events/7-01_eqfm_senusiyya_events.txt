@@ -2033,7 +2033,7 @@ eqfm_senusiyya.411 = {
 
 eqfm_senusiyya.412 = {
 	type = country_event
-	placement = root
+	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
@@ -2131,7 +2131,7 @@ eqfm_senusiyya.412 = {
 
 eqfm_senusiyya.413 = {
 	type = country_event
-	placement = root
+	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
@@ -2219,7 +2219,7 @@ eqfm_senusiyya.413 = {
 
 eqfm_senusiyya.414 = {
 	type = country_event
-	placement = root
+	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 3
 	dlc = dlc_grefm
@@ -2329,12 +2329,16 @@ eqfm_senusiyya.414 = {
 			country = scope:eqfm_senusiyya_expedition_neighbor_scope
 			value = 50
 		}
+		create_incident = { 
+			country = scope:eqfm_senusiyya_expedition_neighbor_scope
+			value = 5
+		}
 	}
 }
 
 eqfm_senusiyya.415 = {
 	type = country_event
-	placement = root
+	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 3
 	dlc = dlc_grefm
@@ -2405,7 +2409,7 @@ eqfm_senusiyya.415 = {
 
 eqfm_senusiyya.416 = {
 	type = country_event
-	placement = root
+	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 3
 	dlc = dlc_grefm
@@ -2433,7 +2437,7 @@ eqfm_senusiyya.416 = {
 	}
 
 	cooldown = {
-		years = 1
+		years = 8
 	}
 
 	immediate = {
@@ -2447,16 +2451,31 @@ eqfm_senusiyya.416 = {
 	option = {
 		name = eqfm_senusiyya.416.a
 		default_option = yes
+		eqfm_add_expedition_progress_effect = {
+			type = senusiyya
+			value = 1
+		}
+		eqfm_add_senusiyya_pressure_effect = {
+			value = -5
+		}
 	}
 
 	option = {
 		name = eqfm_senusiyya.416.b
+		eqfm_add_expedition_progress_effect = {
+			type = senusiyya
+			value = 2
+		}
+		eqfm_add_expedition_peril_effect = {
+			type = senusiyya
+			value = 1
+		}
 	}
 }
 
 eqfm_senusiyya.417 = {
 	type = country_event
-	placement = root
+	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 3
 	dlc = dlc_grefm
@@ -2493,21 +2512,74 @@ eqfm_senusiyya.417 = {
 			name = eqfm_senusiyya_expedition_cooldown_var
 			months = 3
 		}
+		if = {
+			limit = {
+				eqfm_has_desert_expedition_trigger = yes
+			}
+			random_scope_character = {
+				limit = {
+					has_modifier = modifier_eqfm_leading_desert_expedition
+				}
+				save_scope_as = eqfm_desert_expedition_leader_scope
+			}
+		}
 	}
 
 	option = {
 		name = eqfm_senusiyya.417.a
 		default_option = yes
+		eqfm_add_expedition_peril_effect = {
+			type = senusiyya
+			value = 2
+		}
 	}
 
 	option = {
 		name = eqfm_senusiyya.417.b
+		eqfm_add_expedition_progress_effect = {
+			type = senusiyya
+			value = -2
+		}
+		eqfm_add_expedition_peril_effect = {
+			type = senusiyya
+			value = 1
+		}
+	}
+
+	option = {
+		name = eqfm_senusiyya.417.c
+		trigger = {
+			eqfm_has_desert_expedition_trigger = yes
+			eqfm_expedition_progress_greater_than_or_equals_trigger = {
+				type = desert
+				value = 2
+			}
+		}
+		highlighted_option = yes
+		eqfm_add_expedition_progress_effect = {
+			type = senusiyya
+			value = -1
+		}
+		eqfm_add_expedition_progress_effect = {
+			type = desert
+			value = -1
+		}
+		scope:eqfm_desert_expedition_leader_scope = {
+			if = {
+				limit = {
+					NOT = {
+						has_modifier = modifier_eqfm_desert_fighter
+					}
+				}
+				add_modifier = modifier_eqfm_desert_fighter
+			}
+		}
 	}
 }
 
 eqfm_senusiyya.418 = {
 	type = country_event
-	placement = root
+	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 3
 	dlc = dlc_grefm
@@ -2535,7 +2607,7 @@ eqfm_senusiyya.418 = {
 	}
 
 	cooldown = {
-		years = 1
+		years = 4
 	}
 
 	immediate = {
@@ -2549,16 +2621,28 @@ eqfm_senusiyya.418 = {
 	option = {
 		name = eqfm_senusiyya.418.a
 		default_option = yes
+		eqfm_add_expedition_progress_effect = {
+			type = senusiyya
+			value = -1
+		}
 	}
 
 	option = {
 		name = eqfm_senusiyya.418.b
+		eqfm_add_expedition_progress_effect = {
+			type = senusiyya
+			value = 1
+		}
+		eqfm_add_expedition_peril_effect = {
+			type = senusiyya
+			value = 1
+		}
 	}
 }
 
 eqfm_senusiyya.419 = {
 	type = country_event
-	placement = root
+	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 3
 	dlc = dlc_grefm
@@ -2571,7 +2655,7 @@ eqfm_senusiyya.419 = {
 	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
 
 	event_image = {
-		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_settlement.dds"
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert.dds"
 	}
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
@@ -2600,9 +2684,100 @@ eqfm_senusiyya.419 = {
 	option = {
 		name = eqfm_senusiyya.419.a
 		default_option = yes
+		eqfm_add_expedition_progress_effect = {
+			type = senusiyya
+			value = 2
+		}
+		scope:eqfm_senusiyya_expedition_state_scope = {
+			add_radicals_in_state = { 
+				pop_type = peasants
+				value = medium_radicals
+			}
+		}
 	}
 
 	option = {
 		name = eqfm_senusiyya.419.b
+		custom_tooltip = gbbf_nothing_happens
+	}
+}
+
+eqfm_senusiyya.420 = {
+	type = country_event
+	placement = scope:eqfm_senusiyya_expedition_state_scope
+	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = eqfm_senusiyya.420.t
+	desc = eqfm_senusiyya.420.d
+	flavor = eqfm_senusiyya.420.f
+
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
+
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_nomad.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		NOT = {
+			has_variable = eqfm_senusiyya_expedition_cooldown_var
+		}
+		eqfm_expedition_peril_greater_than_or_equals_trigger = {
+			type = senusiyya
+			value = 2
+		}
+	}
+
+	cancellation_trigger = {
+		eqfm_has_senusiyya_expedition_trigger = no
+	}
+
+	cooldown = {
+		years = 4
+	}
+
+	immediate = {
+		eqfm_save_senusiyya_expedition_scopes_effect = yes
+		set_variable = {
+			name = eqfm_senusiyya_expedition_cooldown_var
+			months = 3
+		}
+	}
+
+	option = {
+		name = eqfm_senusiyya.420.a
+		default_option = yes
+		eqfm_add_expedition_progress_effect = {
+			type = senusiyya
+			value = 1
+		}
+		eqfm_add_expedition_peril_effect = {
+			type = senusiyya
+			value = -1
+		}
+	}
+
+	option = {
+		name = eqfm_senusiyya.420.b
+		default_option = yes
+		eqfm_add_expedition_progress_effect = {
+			type = senusiyya
+			value = -1
+		}
+		eqfm_add_expedition_peril_effect = {
+			type = senusiyya
+			value = -3
+		}
+	}
+
+	option = {
+		name = eqfm_senusiyya.420.c
+		eqfm_add_expedition_progress_effect = {
+			type = senusiyya
+			value = 2
+		}
 	}
 }
