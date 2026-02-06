@@ -1827,9 +1827,9 @@ eqfm_senusiyya.404 = {
 ####---------- Senusiyya Expedition Random Events ----------####
 eqfm_senusiyya.410 = {
 	type = country_event
-	placement = root
+	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	duration = 3
+	duration = 2
 	dlc = dlc_grefm
 
 	title = eqfm_senusiyya.410.t
@@ -1869,10 +1869,34 @@ eqfm_senusiyya.410 = {
 	option = {
 		name = eqfm_senusiyya.410.a
 		default_option = yes
+		eqfm_add_expedition_progress_effect = {
+			type = senusiyya
+			value = 1
+		}
+		scope:eqfm_senusiyya_expedition_state_scope = {
+			add_radicals_in_state = {
+				pop_type = peasants
+				value = small_radicals
+			}
+		}
 	}
 
 	option = {
 		name = eqfm_senusiyya.410.b
+		eqfm_add_expedition_progress_effect = {
+			type = senusiyya
+			value = 2
+		}
+		eqfm_add_expedition_peril_effect = {
+			type = senusiyya
+			value = 1
+		}
+		scope:eqfm_senusiyya_expedition_state_scope = {
+			add_radicals_in_state = {
+				pop_type = peasants
+				value = medium_radicals
+			}
+		}
 	}
 }
 
@@ -1880,7 +1904,7 @@ eqfm_senusiyya.411 = {
 	type = country_event
 	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	duration = 3
+	duration = 2
 	dlc = dlc_grefm
 
 	title = eqfm_senusiyya.411.t
@@ -1922,7 +1946,7 @@ eqfm_senusiyya.411 = {
 		default_option = yes
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
-			value = 1
+			value = -1
 		}
 		add_radicals = {
 			pop_type = clergymen
@@ -1934,11 +1958,17 @@ eqfm_senusiyya.411 = {
 		name = eqfm_senusiyya.411.b
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
-			value = 2
+			value = 1
 		}
 		eqfm_add_expedition_peril_effect = {
 			type = senusiyya
 			value = 1
+		}
+		scope:eqfm_senusiyya_expedition_state_scope = {
+			add_radicals_in_state = {
+				pop_type = peasants
+				value = small_radicals
+			}
 		}
 	}
 }
@@ -1947,7 +1977,7 @@ eqfm_senusiyya.412 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	duration = 3
+	duration = 2
 	dlc = dlc_grefm
 
 	title = eqfm_senusiyya.412.t
@@ -1966,6 +1996,14 @@ eqfm_senusiyya.412 = {
 		NOT = {
 			has_variable = eqfm_senusiyya_expedition_cooldown_var
 		}
+		any_scope_state = {
+			state_region = var:eqfm_senusiyya_expedition_var
+			any_neighbouring_state = {
+				owner = {
+					is_country_type = decentralized
+				}
+			}
+		}
 	}
 
 	cancellation_trigger = {
@@ -1973,7 +2011,7 @@ eqfm_senusiyya.412 = {
 	}
 
 	cooldown = {
-		years = 1
+		years = 4
 	}
 
 	immediate = {
@@ -1982,15 +2020,54 @@ eqfm_senusiyya.412 = {
 			name = eqfm_senusiyya_expedition_cooldown_var
 			months = 3
 		}
+		random_scope_state = {
+			limit = {
+				state_region = var:eqfm_senusiyya_expedition_var
+			}
+			random_neighbouring_state = {
+				limit = {
+					owner = {
+						is_country_type = decentralized
+					}
+				}
+				owner = {
+					save_scope_as = eqfm_senusiyya_expedition_neighbor_scope
+				}
+			}
+		}
 	}
 
 	option = {
 		name = eqfm_senusiyya.412.a
 		default_option = yes
+		change_tension = {
+			country = scope:eqfm_senusiyya_expedition_neighbor_scope
+			value = 10
+		}
+		eqfm_add_expedition_progress_effect = {
+			type = senusiyya
+			value = -1
+		}
+		eqfm_add_expedition_peril_effect = {
+			type = senusiyya
+			value = 1
+		}
 	}
 
 	option = {
 		name = eqfm_senusiyya.412.b
+		change_tension = {
+			country = scope:eqfm_senusiyya_expedition_neighbor_scope
+			value = 40
+		}
+		eqfm_add_expedition_progress_effect = {
+			type = senusiyya
+			value = 1
+		}
+		eqfm_add_expedition_peril_effect = {
+			type = senusiyya
+			value = 2
+		}
 	}
 }
 
@@ -1998,7 +2075,7 @@ eqfm_senusiyya.413 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	duration = 3
+	duration = 2
 	dlc = dlc_grefm
 
 	title = eqfm_senusiyya.413.t
@@ -2038,10 +2115,43 @@ eqfm_senusiyya.413 = {
 	option = {
 		name = eqfm_senusiyya.413.a
 		default_option = yes
+		eqfm_add_expedition_peril_effect = {
+			type = senusiyya
+			value = 2
+		}
+	}
+	
+	option = {
+		name = eqfm_senusiyya.413.a
+		default_option = yes
+		eqfm_add_expedition_progress_effect = {
+			type = senusiyya
+			value = -1
+		}
+		eqfm_add_expedition_peril_effect = {
+			type = senusiyya
+			value = 1
+		}
 	}
 
 	option = {
-		name = eqfm_senusiyya.413.b
+		name = eqfm_senusiyya.413.c
+		trigger = {
+			scope:eqfm_senusiyya_expedition_leader_scope = {
+				OR = {
+					has_trait = resupply_commander
+					has_trait = innovative
+					has_trait = persistent
+					has_trait = plains_commander
+				}
+			}
+		}
+		highlighted_option = yes
+		show_as_unavailable = { always = yes }
+		eqfm_add_expedition_peril_effect = {
+			type = senusiyya
+			value = 1
+		}
 	}
 }
 
@@ -2068,6 +2178,11 @@ eqfm_senusiyya.414 = {
 		NOT = {
 			has_variable = eqfm_senusiyya_expedition_cooldown_var
 		}
+		any_scope_state = {
+			state_region = var:eqfm_senusiyya_expedition_var
+			is_under_colonization = yes
+			is_incorporated = no
+		}
 	}
 
 	cancellation_trigger = {
@@ -2075,7 +2190,7 @@ eqfm_senusiyya.414 = {
 	}
 
 	cooldown = {
-		years = 1
+		years = 4
 	}
 
 	immediate = {
@@ -2084,15 +2199,74 @@ eqfm_senusiyya.414 = {
 			name = eqfm_senusiyya_expedition_cooldown_var
 			months = 3
 		}
+		var:eqfm_senusiyya_expedition_var = {
+			random_scope_state = {
+				limit = {
+					owner = {
+						is_country_type = decentralized
+					}
+				}
+				owner = {
+					save_scope_as = eqfm_senusiyya_expedition_neighbor_scope
+				}
+			}
+		}
 	}
 
 	option = {
 		name = eqfm_senusiyya.414.a
 		default_option = yes
+		eqfm_add_expedition_progress_effect = {
+			type = senusiyya
+			value = 1
+		}
+		scope:eqfm_senusiyya_expedition_state_scope = {
+			add_modifier = {
+				name = modifier_eqfm_granted_tribal_exemptions
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+			add_loyalists_in_state = {
+				pop_type = peasants
+				value = large_radicals
+			}
+		}
+		change_tension = {
+			country = scope:eqfm_senusiyya_expedition_neighbor_scope
+			value = -20
+		}
 	}
 
 	option = {
 		name = eqfm_senusiyya.414.b
+		scope:eqfm_senusiyya_expedition_state_scope = {
+			add_modifier = {
+				name = modifier_eqfm_refused_tribal_exemptions
+				months = gbbf_normal_modifier_time
+			}
+		}
+		change_tension = {
+			country = scope:eqfm_senusiyya_expedition_neighbor_scope
+			value = 10
+		}
+	}
+	
+	option = {
+		name = eqfm_senusiyya.414.c
+		scope:eqfm_senusiyya_expedition_state_scope = {
+			add_modifier = {
+				name = modifier_eqfm_refused_tribal_exemptions
+				months = gbbf_long_modifier_time
+			}
+			add_radicals_in_state = {
+				pop_type = peasants
+				value = very_large_radicals
+			}
+		}
+		change_tension = {
+			country = scope:eqfm_senusiyya_expedition_neighbor_scope
+			value = 50
+		}
 	}
 }
 
