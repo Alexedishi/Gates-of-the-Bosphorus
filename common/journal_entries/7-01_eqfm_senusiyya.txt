@@ -17,7 +17,7 @@
 	scripted_button = eqfm_adopt_aloof_stance_button
 	scripted_button = eqfm_adopt_hostile_stance_button
 	scripted_button = eqfm_embrace_senusiyya_button
-	scripted_button = eqfm_sweep_senusiyya_button
+	scripted_button = eqfm_expell_senusiyya_button
 	scripted_button = eqfm_send_armed_delegation_button
 	scripted_button = eqfm_expel_senusiyya_libya_button
 	scripted_button = eqfm_expel_senusiyya_libyan_desert_button
@@ -87,32 +87,61 @@
 	}
 	
 	complete = {
-		any_state_in_senusiyya = {
+		any_country_in_senusiyya = {
 			count = all
-			owner = {
-				OR = {
-					custom_tooltip = {
-						text = eqfm_embraced_senusiyya_situation
-						has_variable = eqfm_embraced_senusiyya
+			OR = {
+				custom_tooltip = {
+					text = eqfm_embraced_senusiyya_situation
+					has_variable = eqfm_embraced_senusiyya
+				}
+				custom_tooltip = {
+					text = eqfm_expelled_senusiyya_situation
+					any_state_in_senusiyya = {
+						count = all
+						state_region = {
+							has_variable = eqfm_expelled_senusiyya
+						}
 					}
-					custom_tooltip = {
-						text = eqfm_expelled_senusiyya_situation
-						has_variable = eqfm_expelled_senusiyya
-					}
+
 				}
 			}
 		}
 	}
 	
 	on_complete = {
-		remove_global_variable = je_eqfm_senusiyya
-		every_state_region = {
-			remove_variable = eqfm_senusiyya_entrenchment_var
-			remove_variable = eqfm_senusiyya_entrenchment_progress_var
+		eqfm_cleanup_global_senusiyya_variables_effect = yes
+		custom_tooltip = {
+			text = je_eqfm_senusiyya_on_complete_senusiyya_survives
+			if = {
+				limit = {
+					any_country_in_senusiyya = {
+						has_variable = eqfm_embraced_senusiyya
+					}
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_eqfm_senusiyya
+					}
+					trigger_event = eqfm_senusiyya.008
+				}
+			}
 		}
-		every_country = {
-			limit = {
-				has_variable = eqfm_completed_senusiyya_expedition
+		custom_tooltip = {
+			text = je_eqfm_senusiyya_on_complete_senusiyya_extinguished
+			if = {
+				limit = {
+					NOT = {
+						any_country_in_senusiyya = {
+							has_variable = eqfm_embraced_senusiyya
+						}
+					}
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_eqfm_senusiyya
+					}
+					trigger_event = eqfm_senusiyya.009
+				}
 			}
 		}
 	}
@@ -156,6 +185,15 @@
 					global_var:je_eqfm_senusiyya.var:eqfm_senusiyya_pressure_var >= 50
 				}
 				set_global_variable = eqfm_intimidated_sensussi
+				s:STATE_TRIPOLI = {
+					remove_variable = eqfm_senusiyya_entrenchment_var
+				}
+				s:STATE_LIBYA = {
+					set_variable = {
+						name = eqfm_senusiyya_entrenchment_var
+						value = 25
+					}
+				}
 				every_country = {
 					limit = {
 						is_involved_in_journal_entry = je_eqfm_senusiyya
