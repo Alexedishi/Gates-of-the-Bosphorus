@@ -319,10 +319,6 @@ grefm_byzantium.020 = { # Chariot Racing Technical Event
 		}
 	}
 
-	cooldown = {
-		months = 40
-	}
-
 	immediate = {
 		if = {
 			limit = {
@@ -335,20 +331,40 @@ grefm_byzantium.020 = { # Chariot Racing Technical Event
 			}
 			random_list = {
 				40 = {
-					set_variable = grefm_chariot_reds
-					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+					set_variable = {
+						name = grefm_chariot_race_var
+						value = flag:grefm_chariot_team_reds
+					}
+					trigger_event = {
+						id = grefm_byzantium.023 # A Day at the Races
+					}
 				}
 				40 = {
-					set_variable = grefm_chariot_whites
-					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+					set_variable = {
+						name = grefm_chariot_race_var
+						value = flag:grefm_chariot_team_whites
+					}
+					trigger_event = {
+						id = grefm_byzantium.023 # A Day at the Races
+					}
 				}
 				40 = {
-					set_variable = grefm_chariot_greens
-					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+					set_variable = {
+						name = grefm_chariot_race_var
+						value = flag:grefm_chariot_team_greens
+					}
+					trigger_event = {
+						id = grefm_byzantium.023 # A Day at the Races
+					}
 				}
 				40 = {
-					set_variable = grefm_chariot_blues
-					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+					set_variable = {
+						name = grefm_chariot_race_var
+						value = flag:grefm_chariot_team_blues
+					}
+					trigger_event = {
+						id = grefm_byzantium.023 # A Day at the Races
+					}
 				}
 				1 = {
 					trigger_event = { id = grefm_byzantium.024 } # Inconclusive Race Results
@@ -375,28 +391,58 @@ grefm_byzantium.020 = { # Chariot Racing Technical Event
 			}
 			random_list = {
 				25 = {
-					set_variable = grefm_chariot_reds
-					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+					set_variable = {
+						name = grefm_chariot_race_var
+						value = flag:grefm_chariot_team_reds
+					}
+					trigger_event = {
+						id = grefm_byzantium.023 # A Day at the Races
+					}
 				}
 				25 = {
-					set_variable = grefm_chariot_whites
-					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+					set_variable = {
+						name = grefm_chariot_race_var
+						value = flag:grefm_chariot_team_whites
+					}
+					trigger_event = {
+						id = grefm_byzantium.023 # A Day at the Races
+					}
 				}
 				25 = {
-					set_variable = grefm_chariot_greens
-					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+					set_variable = {
+						name = grefm_chariot_race_var
+						value = flag:grefm_chariot_team_greens
+					}
+					trigger_event = {
+						id = grefm_byzantium.023 # A Day at the Races
+					}
 				}
 				25 = {
-					set_variable = grefm_chariot_blues
-					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+					set_variable = {
+						name = grefm_chariot_race_var
+						value = flag:grefm_chariot_team_blues
+					}
+					trigger_event = {
+						id = grefm_byzantium.023 # A Day at the Races
+					}
 				}
 				25 = {
-					set_variable = grefm_chariot_purples
-					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+					set_variable = {
+						name = grefm_chariot_race_var
+						value = flag:grefm_chariot_team_purples
+					}
+					trigger_event = {
+						id = grefm_byzantium.023 # A Day at the Races
+					}
 				}
 				25 = {
-					set_variable = grefm_chariot_golds
-					trigger_event = { id = grefm_byzantium.023 } # A Day at the Races
+					set_variable = {
+						name = grefm_chariot_race_var
+						value = flag:grefm_chariot_team_golds
+					}
+					trigger_event = {
+						id = grefm_byzantium.023 # A Day at the Races
+					}
 				}
 				1 = {
 					trigger_event = { id = grefm_byzantium.024 } # Inconclusive Race Results
@@ -467,14 +513,12 @@ grefm_byzantium.021 = { # Chariot Racing Re-established
 				save_scope_as = byzantium_capital_state
 			}
 		}
+		set_variable = grefm_chariot_racing_revived
 	}
 
 	option = {
 		name = grefm_byzantium.021.a
-		custom_tooltip = {
-			text = chariot_racing_enabled_tt
-			set_variable = grefm_chariot_racing_revived
-		}
+		custom_tooltip = chariot_racing_enabled_tt
 		scope:byzantium_capital_state = {
 			add_loyalists_in_state = {
 				value = small_radicals
@@ -510,6 +554,12 @@ grefm_byzantium.023 = { # A Day at the Races
 		# triggered by grefm_byzantium.020
 	}
 
+	cancellation_trigger = {
+		NOT = {
+			has_variable = grefm_chariot_race_var
+		}
+	}
+
 	immediate = {
 		s:STATE_EASTERN_THRACE = {
 			random_scope_state = {
@@ -518,7 +568,7 @@ grefm_byzantium.023 = { # A Day at the Races
 		}
 		if = {
 			limit = {
-				has_variable = grefm_chariot_reds
+				var:grefm_chariot_race_var ?= flag:grefm_chariot_team_reds
 			}
 			ig:ig_industrialists = {
 				save_scope_as = grefm_chariot_winner_scope
@@ -526,7 +576,7 @@ grefm_byzantium.023 = { # A Day at the Races
 		}
 		if = {
 			limit = {
-				has_variable = grefm_chariot_whites
+				var:grefm_chariot_race_var ?= flag:grefm_chariot_team_whites
 			}
 			ig:ig_intelligentsia = {
 				save_scope_as = grefm_chariot_winner_scope
@@ -534,7 +584,7 @@ grefm_byzantium.023 = { # A Day at the Races
 		}
 		if = {
 			limit = {
-				has_variable = grefm_chariot_greens
+				var:grefm_chariot_race_var ?= flag:grefm_chariot_team_greens
 			}
 			ig:ig_rural_folk = {
 				save_scope_as = grefm_chariot_winner_scope
@@ -542,7 +592,7 @@ grefm_byzantium.023 = { # A Day at the Races
 		}
 		if = {
 			limit = {
-				has_variable = grefm_chariot_blues
+				var:grefm_chariot_race_var ?= flag:grefm_chariot_team_blues
 			}
 			ig:ig_petty_bourgeoisie = {
 				save_scope_as = grefm_chariot_winner_scope
@@ -550,7 +600,7 @@ grefm_byzantium.023 = { # A Day at the Races
 		}
 		if = {
 			limit = {
-				has_variable = grefm_chariot_purples
+				var:grefm_chariot_race_var ?= flag:grefm_chariot_team_purples
 			}
 			ig:ig_landowners = {
 				save_scope_as = grefm_chariot_winner_scope
@@ -558,7 +608,7 @@ grefm_byzantium.023 = { # A Day at the Races
 		}
 		if = {
 			limit = {
-				has_variable = grefm_chariot_golds
+				var:grefm_chariot_race_var ?= flag:grefm_chariot_team_golds
 			}
 			ig:ig_trade_unions = {
 				save_scope_as = grefm_chariot_winner_scope
@@ -581,9 +631,7 @@ grefm_byzantium.023 = { # A Day at the Races
 				months = 40
 			}
 		}
-		grefm_cleanup_quadrennial_race_effect = yes
 	}
-
 }
 
 grefm_byzantium.024 = { # Inconclusive Race Results
