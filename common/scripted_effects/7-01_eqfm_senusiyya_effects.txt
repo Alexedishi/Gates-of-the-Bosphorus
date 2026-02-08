@@ -248,30 +248,6 @@ eqfm_update_global_senusiyya_variables_effect = {
 			}
 		}
 	}
-		
-	## Make sure the appropriate state regions have their variables set
-	every_state_in_senusiyya = {
-		limit = {
-			state_region = {
-				has_variable = eqfm_senusiyya_entrenchment_var
-			}
-		}
-		state_region = {
-			set_variable = {
-				name = eqfm_senusiyya_entrenchment_progress_var
-				value = eqfm_senusiyya_entrenchment_progress_value
-			}
-			change_variable = {
-				name = eqfm_senusiyya_entrenchment_var
-				add = var:eqfm_senusiyya_entrenchment_progress_var
-			}
-			clamp_variable = {
-				name = eqfm_senusiyya_entrenchment_var
-				max = 100
-				min = 0
-			}
-		}
-	}
 }
 
 eqfm_initialize_starter_senusiyya_variables_effect = {
@@ -342,19 +318,27 @@ eqfm_update_local_senusiyya_variables_effect = {
 			min = 0
 		}
 	}
-	
 }
 
 eqfm_cleanup_global_senusiyya_variables_effect = {
 	remove_global_variable = je_eqfm_senusiyya
+	remove_global_variable = eqfm_intimidated_sensussi
+	remove_global_variable = eqfm_senussi_brokered_peace
 	every_state_region = {
 		remove_variable = eqfm_senusiyya_entrenchment_var
 		remove_variable = eqfm_senusiyya_entrenchment_progress_var
+		remove_variable = eqfm_senusiyya_explusion_var
 	}
 	every_country = {
 		limit = {
 			has_variable = eqfm_completed_senusiyya_expedition
 		}
+	}
+	every_state_in_senusiyya = {
+		limit = {
+			has_modifier = modifier_eqfm_senusiyya_stronghold
+		}
+		remove_modifier = modifier_eqfm_senusiyya_stronghold
 	}
 }
 
@@ -387,172 +371,166 @@ eqfm_cleanup_senusiyya_effect = {
 	remove_variable = eqfm_senusiyya_influence_progress_var
 }
 
-eqfm_update_georegion_senusiyya_variables_effect = {
+eqfm_monthly_entrenchment_effect = {
+	every_state_in_senusiyya = {
+		limit = {
+			has_modifier = modifier_eqfm_senusiyya_stronghold
+		}
+		remove_modifier = modifier_eqfm_senusiyya_stronghold
+	}
 	s:STATE_LIBYA = {
 		if = {
 			limit = {
-				any_scope_state = {
-					has_modifier = modifier_eqfm_senusiyya_stronghold
-				}
+				has_variable = eqfm_senusiyya_entrenchment_var
 			}
 			set_variable = {
 				name = eqfm_senusiyya_entrenchment_progress_var
 				value = eqfm_senusiyya_entrenchment_progress_value
 			}
-			if = {
-				limit = {
-					NOT = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-					}
-				}
-				set_variable = {
-					name = eqfm_senusiyya_entrenchment_var
-					value = 10
-				}
-			}
 			change_variable = {
 				name = eqfm_senusiyya_entrenchment_var
 				add = var:eqfm_senusiyya_entrenchment_progress_var
+			}
+			clamp_variable = {
+				name = eqfm_senusiyya_entrenchment_var
+				max = 100
+				min = 0
+			}
+			every_scope_state = {
+				add_modifier = {
+					name = modifier_eqfm_senusiyya_stronghold
+					multiplier = var:eqfm_senusiyya_entrenchment_var
+				}
 			}
 		}
 	}
 	s:STATE_LIBYAN_DESERT = {
 		if = {
 			limit = {
-				any_scope_state = {
-					has_modifier = modifier_eqfm_senusiyya_stronghold
-				}
+				has_variable = eqfm_senusiyya_entrenchment_var
 			}
 			set_variable = {
 				name = eqfm_senusiyya_entrenchment_progress_var
 				value = eqfm_senusiyya_entrenchment_progress_value
 			}
-			if = {
-				limit = {
-					NOT = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-					}
-				}
-				set_variable = {
-					name = eqfm_senusiyya_entrenchment_var
-					value = 10
-				}
-			}
 			change_variable = {
 				name = eqfm_senusiyya_entrenchment_var
 				add = var:eqfm_senusiyya_entrenchment_progress_var
+			}
+			clamp_variable = {
+				name = eqfm_senusiyya_entrenchment_var
+				max = 100
+				min = 0
+			}
+			every_scope_state = {
+				add_modifier = {
+					name = modifier_eqfm_senusiyya_stronghold
+					multiplier = var:eqfm_senusiyya_entrenchment_var
+				}
 			}
 		}
 	}
 	s:STATE_TRIPOLI = {
 		if = {
 			limit = {
-				any_scope_state = {
-					has_modifier = modifier_eqfm_senusiyya_stronghold
-				}
+				has_variable = eqfm_senusiyya_entrenchment_var
 			}
 			set_variable = {
 				name = eqfm_senusiyya_entrenchment_progress_var
 				value = eqfm_senusiyya_entrenchment_progress_value
 			}
-			if = {
-				limit = {
-					NOT = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-					}
-				}
-				set_variable = {
-					name = eqfm_senusiyya_entrenchment_var
-					value = 10
-				}
-			}
 			change_variable = {
 				name = eqfm_senusiyya_entrenchment_var
 				add = var:eqfm_senusiyya_entrenchment_progress_var
+			}
+			clamp_variable = {
+				name = eqfm_senusiyya_entrenchment_var
+				max = 100
+				min = 0
+			}
+			every_scope_state = {
+				add_modifier = {
+					name = modifier_eqfm_senusiyya_stronghold
+					multiplier = var:eqfm_senusiyya_entrenchment_var
+				}
 			}
 		}
 	}
 	s:STATE_MATRUH = {
 		if = {
 			limit = {
-				any_scope_state = {
-					has_modifier = modifier_eqfm_senusiyya_stronghold
-				}
+				has_variable = eqfm_senusiyya_entrenchment_var
 			}
 			set_variable = {
 				name = eqfm_senusiyya_entrenchment_progress_var
 				value = eqfm_senusiyya_entrenchment_progress_value
 			}
-			if = {
-				limit = {
-					NOT = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-					}
-				}
-				set_variable = {
-					name = eqfm_senusiyya_entrenchment_var
-					value = 10
-				}
-			}
 			change_variable = {
 				name = eqfm_senusiyya_entrenchment_var
 				add = var:eqfm_senusiyya_entrenchment_progress_var
+			}
+			clamp_variable = {
+				name = eqfm_senusiyya_entrenchment_var
+				max = 100
+				min = 0
+			}
+			every_scope_state = {
+				add_modifier = {
+					name = modifier_eqfm_senusiyya_stronghold
+					multiplier = var:eqfm_senusiyya_entrenchment_var
+				}
 			}
 		}
 	}
 	s:STATE_EGYPTIAN_DESERT = {
 		if = {
 			limit = {
-				any_scope_state = {
-					has_modifier = modifier_eqfm_senusiyya_stronghold
-				}
+				has_variable = eqfm_senusiyya_entrenchment_var
 			}
 			set_variable = {
 				name = eqfm_senusiyya_entrenchment_progress_var
 				value = eqfm_senusiyya_entrenchment_progress_value
 			}
-			if = {
-				limit = {
-					NOT = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-					}
-				}
-				set_variable = {
-					name = eqfm_senusiyya_entrenchment_var
-					value = 10
-				}
-			}
 			change_variable = {
 				name = eqfm_senusiyya_entrenchment_var
 				add = var:eqfm_senusiyya_entrenchment_progress_var
+			}
+			clamp_variable = {
+				name = eqfm_senusiyya_entrenchment_var
+				max = 100
+				min = 0
+			}
+			every_scope_state = {
+				add_modifier = {
+					name = modifier_eqfm_senusiyya_stronghold
+					multiplier = var:eqfm_senusiyya_entrenchment_var
+				}
 			}
 		}
 	}
 	s:STATE_CHAD = {
 		if = {
 			limit = {
-				any_scope_state = {
-					has_modifier = modifier_eqfm_senusiyya_stronghold
-				}
+				has_variable = eqfm_senusiyya_entrenchment_var
 			}
 			set_variable = {
 				name = eqfm_senusiyya_entrenchment_progress_var
 				value = eqfm_senusiyya_entrenchment_progress_value
 			}
-			if = {
-				limit = {
-					NOT = {
-						has_variable = eqfm_senusiyya_entrenchment_var
-					}
-				}
-				set_variable = {
-					name = eqfm_senusiyya_entrenchment_var
-					value = 10
-				}
-			}
 			change_variable = {
 				name = eqfm_senusiyya_entrenchment_var
 				add = var:eqfm_senusiyya_entrenchment_progress_var
+			}
+			clamp_variable = {
+				name = eqfm_senusiyya_entrenchment_var
+				max = 100
+				min = 0
+			}
+			every_scope_state = {
+				add_modifier = {
+					name = modifier_eqfm_senusiyya_stronghold
+					multiplier = var:eqfm_senusiyya_entrenchment_var
+				}
 			}
 		}
 	}
