@@ -352,14 +352,20 @@ eqfm_senusiyya.006 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
+		# Fired from je_eqfm_senusiyya on_monthly_pulse
 	}
 	
 	immediate = {
+		eqfm_save_senussi_scope_effect = yes
+		s:STATE_CHAD = {
+			save_scope_as = eqfm_senusiyya_target_state_region
+		}
 	}
 	
 	option = {
 		name = eqfm_senusiyya.006.a
 		default_option = yes
+		custom_tooltip = eqfm_starting_senusiyya_entrenchment
 	}
 }
 
@@ -380,6 +386,7 @@ eqfm_senusiyya.008 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
+		# triggered by je_eqfm_senusiyya
 	}
 	
 	immediate = {
@@ -388,10 +395,48 @@ eqfm_senusiyya.008 = {
 	option = {
 		name = eqfm_senusiyya.008.a
 		default_option = yes
+		trigger = {
+			NOT = {
+				has_variable = eqfm_embraced_senusiyya
+			}
+		}
+		every_country = {
+			limit = {
+				has_variable = eqfm_embraced_senusiyya
+			}
+			change_relations = {
+				country = root
+				value = -25
+			}
+			root = {
+				create_diplomatic_catalyst = {
+					target = prev
+					type = catalyst_relations_level_decreased
+				}
+			}
+		}
 	}
 	
 	option = {
 		name = eqfm_senusiyya.008.b
+		trigger = {
+			has_variable = eqfm_embraced_senusiyya
+		}
+		every_country = {
+			limit = {
+				has_variable = eqfm_embraced_senusiyya
+			}
+			change_relations = {
+				country = root
+				value = 25
+			}
+			root = {
+				create_diplomatic_catalyst = {
+					target = prev
+					type = catalyst_relations_level_increased
+				}
+			}
+		}
 	}
 }
 
@@ -412,7 +457,7 @@ eqfm_senusiyya.009 = { # The Senusiyya Extinguished
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
-		# triggered by
+		# triggered by je_eqfm_senusiyya
 	}
 
 	immediate = {
@@ -422,6 +467,9 @@ eqfm_senusiyya.009 = { # The Senusiyya Extinguished
 	option = {
 		name = eqfm_senusiyya.009.a
 		default_option = yes
+		trigger = {
+			is_in_geographic_region = geographic_region_senusiyya
+		}
 		add_modifier = {
 			name = modifier_eqfm_senusiyya_extinguished
 			months = gbbf_long_modifier_time
@@ -429,6 +477,39 @@ eqfm_senusiyya.009 = { # The Senusiyya Extinguished
 		add_radicals = {
 			culture = cu:bedouin
 			value = large_radicals
+		}
+	}
+
+	option = {
+		trigger = {
+			NOT = {
+				is_in_geographic_region = geographic_region_senusiyya
+			}
+		}
+		if = {
+			limit = {
+				any_subject_or_below = {
+					country_has_primary_culture = cu:bedouin
+				}
+			}
+			every_subject_or_below = {
+				limit = {
+					country_has_primary_culture = cu:bedouin
+				}
+			}
+			change_relations = {
+				country = root
+				value = -25
+			}
+			root = {
+				create_diplomatic_catalyst = {
+					target = prev
+					type = catalyst_relations_level_decreased
+				}
+			}
+		}
+		else = {
+			custom_tooltip = gbbf_no_effects
 		}
 	}
 }
