@@ -1,4 +1,57 @@
-﻿gbbf_debug_money_button = {
+﻿####---------- Debug Tool Buttons ----------####
+gbbf_debug_cheats_button = {
+	name = "gbbf_debug_cheats_button"
+	desc = "gbbf_debug_cheats_button_desc"
+
+	visible = {
+		always = yes
+	}
+	selected = {
+		has_variable = gbbf_debug_cheats_var
+	}
+	possible = {
+		always = yes
+	}
+	effect = {
+		if = {
+			limit = {
+				has_variable = gbbf_debug_cheats_var
+			}
+			remove_variable = gbbf_debug_cheats_var
+		}
+		else = {
+			set_variable = gbbf_debug_cheats_var
+		}
+	}
+}
+
+gbbf_debug_test_button = {
+	name = "gbbf_debug_test_button"
+	desc = "gbbf_debug_test_button_desc"
+
+	visible = {
+		always = yes
+	}
+	selected = {
+		has_variable = gbbf_debug_test_var
+	}
+	possible = {
+		always = yes
+	}
+	effect = {
+		if = {
+			limit = {
+				has_variable = gbbf_debug_test_var
+			}
+			remove_variable = gbbf_debug_test_var
+		}
+		else = {
+			set_variable = gbbf_debug_test_var
+		}
+	}
+}
+
+gbbf_debug_money_button = {
 	name = "gbbf_debug_money_button"
 	desc = "gbbf_debug_money_button_desc"
 	
@@ -54,40 +107,14 @@ gbbf_debug_close_button = {
 	}
 }
 
-gbbf_debug_tag_button = {
-	name = "gbbf_debug_tag_button"
-	desc = "gbbf_debug_tag_button_desc"
-	
-	visible = {
-		NOT = {
-			exists = c:GBBF
-		}
-	}
-	possible = {
-		custom_tooltip = {
-			text = gbbf_debug_active_trigger
-			has_variable = gbbf_debug_var
-		}
-		NOT = {
-			exists = c:GBBF
-		}
-	}
-	effect = {
-		create_country = {
-			tag = GBBF
-			origin = root
-			province = p:x021374
-		}
-		play_as = c:GBBF
-	}
-}
 
+####---------- Debug Cheat Buttons ----------####
 gbbf_debug_clear_amendments_button = {
 	name = "gbbf_debug_clear_amendments_button"
 	desc = "gbbf_debug_clear_amendments_button_desc"
-	
+
 	visible = {
-		always = yes
+		has_variable = gbbf_debug_cheats_var
 	}
 	possible = {
 		any_active_law = {
@@ -118,32 +145,12 @@ gbbf_debug_clear_amendments_button = {
 	}
 }
 
-gbbf_activate_highlands_button = {
-	name = "gbbf_activate_highlands_button"
-	desc = "gbbf_activate_highlands_button_desc"
+gbbf_clear_quest_modifiers_button = {
+	name = "gbbf_clear_quest_modifiers_button"
+	desc = "gbbf_clear_quest_modifiers_button_desc"
 
 	visible = {
-		NOT = {
-			has_global_variable = haykfm_highlands_started
-		}
-	}
-	possible = {
-		custom_tooltip = {
-			text = gbbf_debug_active_trigger
-			has_variable = gbbf_debug_var
-		}
-	}
-	effect = {
-		add_contextless_journal_entry = je_haykfm_highlands
-	}
-}
-
-gbbf_clear_quest_modifiers = {
-	name = "gbbf_clear_quest_modifiers"
-	desc = "gbbf_clear_quest_modifiers_desc"
-	
-	visible = {
-		has_modifier = negotiation_failed_quest_legit
+		has_variable = gbbf_debug_cheats_var
 	}
 	possible = {
 		has_modifier = negotiation_failed_quest_legit
@@ -159,11 +166,30 @@ gbbf_clear_quest_modifiers = {
 	}
 }
 
+gbbf_law_enactment_button = {
+	name = "gbbf_law_enactment_button"
+	desc = "gbbf_law_enactment_button_desc"
+
+	visible = {
+		has_variable = gbbf_debug_cheats_var
+	}
+	possible = {
+		enacting_any_law = yes
+	}
+	effect = {
+		add_enactment_modifier = {
+			name = free_speech_pamphlet_risk_success
+			multiplier = 5
+		}
+	}
+}
+
 gbbf_break_ottoman_alliances = {
 	name = "gbbf_break_ottoman_alliances"
 	desc = "gbbf_break_ottoman_alliances_desc"
-	
+
 	visible = {
+		has_variable = gbbf_debug_cheats_var
 		exists = c:TUR
 	}
 	possible = {
@@ -197,11 +223,64 @@ gbbf_break_ottoman_alliances = {
 	}
 }
 
+
+####---------- Debug Test Buttons ----------####
+gbbf_debug_tag_button = {
+	name = "gbbf_debug_tag_button"
+	desc = "gbbf_debug_tag_button_desc"
+
+	visible = {
+		has_variable = gbbf_debug_test_var
+		NOT = {
+			exists = c:GBBF
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			text = gbbf_debug_active_trigger
+			has_variable = gbbf_debug_var
+		}
+		NOT = {
+			exists = c:GBBF
+		}
+	}
+	effect = {
+		create_country = {
+			tag = GBBF
+			origin = root
+			province = p:x021374
+		}
+		play_as = c:GBBF
+	}
+}
+
+gbbf_activate_highlands_button = {
+	name = "gbbf_activate_highlands_button"
+	desc = "gbbf_activate_highlands_button_desc"
+
+	visible = {
+		has_variable = gbbf_debug_test_var
+		NOT = {
+			has_global_variable = haykfm_highlands_started
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			text = gbbf_debug_active_trigger
+			has_variable = gbbf_debug_var
+		}
+	}
+	effect = {
+		add_contextless_journal_entry = je_haykfm_highlands
+	}
+}
+
 gbbf_fix_trs_subjecthood = {
 	name = "gbbf_fix_trs_subjecthood"
 	desc = "gbbf_fix_trs_subjecthood_desc"
-	
+
 	visible = {
+		has_variable = gbbf_debug_test_var
 		c:TRS ?= this
 		exists = c:AUS
 	}
@@ -223,8 +302,9 @@ gbbf_fix_trs_subjecthood = {
 gbbf_fix_yugoslavism = {
 	name = "gbbf_fix_yugoslavism"
 	desc = "gbbf_fix_yugoslavism_desc"
-	
+
 	visible = {
+		has_variable = gbbf_debug_test_var
 		has_global_variable = balkfm_yugoslavism_failed
 	}
 	possible = {
@@ -233,23 +313,5 @@ gbbf_fix_yugoslavism = {
 	effect = {
 		remove_global_variable = balkfm_yugoslavism_failed
 		add_contextless_journal_entry = je_balkfm_unification_of_yugoslavia
-	}
-}
-
-gbbf_flex = {
-	name = "dummy_decision"
-	desc = "dummy_decision_desc"
-	
-	visible = {
-		always = yes
-	}
-	possible = {
-		enacting_any_law = yes
-	}
-	effect = {
-		add_enactment_modifier = {
-			name = free_speech_pamphlet_risk_success
-			multiplier = 5
-		}
 	}
 }
