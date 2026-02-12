@@ -1148,6 +1148,12 @@ eqfm_senusiyya.110 = {
 			NOT = {
 				has_variable = eqfm_awliya_var
 			}
+			eqfm_senusiyya_entrenchment_less_or_equals_trigger = {
+				value = 90
+			}
+			eqfm_senusiyya_entrenchment_greater_or_equals_trigger = {
+				value = 25
+			}
 		}
 	}
 
@@ -1301,6 +1307,12 @@ eqfm_senusiyya.111 = {
 	trigger = {
 		any_scope_state = {
 			eqfm_eligible_for_entrenchment_event_trigger = yes
+			eqfm_senusiyya_entrenchment_less_or_equals_trigger = {
+				value = 90
+			}
+			eqfm_senusiyya_entrenchment_greater_or_equals_trigger = {
+				value = 10
+			}
 		}
 	}
 
@@ -1321,12 +1333,48 @@ eqfm_senusiyya.111 = {
 	option = {
 		name = eqfm_senusiyya.111.a
 		default_option = yes
-
+		scope:eqfm_senusiyya_state_scope = {
+			eqfm_add_senusiyya_entrenchment_effect = {
+				value = -5
+			}
+			add_radicals_in_state = {
+				strata = lower
+				value = small_radicals
+			}
+		}
 	}
 
 	option = {
 		name = eqfm_senusiyya.111.b
+		scope:eqfm_senusiyya_state_scope = {
+			eqfm_add_senusiyya_entrenchment_effect = {
+				value = 5
+			}
+		}
+	}
 
+	option = {
+		name = eqfm_senusiyya.111.c
+		trigger = {
+			custom_tooltip = {
+				text = eqfm_has_censorship_or_outlawed_dissent
+				OR = {
+					has_law = law_type:law_censorship
+					has_law = law_type:law_outlawed_dissent
+				}
+			}
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		scope:eqfm_senusiyya_state_scope = {
+			eqfm_add_senusiyya_entrenchment_effect = {
+				value = -10
+			}
+			add_radicals_in_state = {
+				strata = lower
+				value = medium_radicals
+			}
+		}
 	}
 }
 
@@ -1819,13 +1867,40 @@ eqfm_senusiyya.211 = {
 	option = {
 		name = eqfm_senusiyya.211.a
 		default_option = yes
+		eqfm_add_senusiyya_influence_effect = {
+			value = 5
+		}
 		scope:eqfm_senusiyya_state_scope = {
-
+			eqfm_add_senusiyya_entrenchment_effect = {
+				value = 10
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_tolerating_dissident_preachers
+			months = normal_modifier_time
 		}
 	}
 
 	option = {
 		name = eqfm_senusiyya.211.b
+		eqfm_add_senusiyya_influence_effect = {
+			value = -5
+		}
+		scope:eqfm_senusiyya_state_scope = {
+			eqfm_add_senusiyya_entrenchment_effect = {
+				value = -5
+			}
+			add_modifier = {
+				name = modifier_eqfm_preaching_orthodoxy_ig
+				months = normal_modifier_time
+			}
+		}
+		ig:ig_devout = {
+			add_modifier = {
+				name = modifier_eqfm_preaching_orthodoxy_country
+				months = normal_modifier_time
+			}
+		}
 	}
 }
 
