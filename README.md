@@ -7,7 +7,7 @@
 
 *"One day the great European War will come out of some damned foolish thing in the Balkans" - Otto von Bismark, 1888*
 
-Ever noticed that despite being called "the powder keg of Europe", nothing really happens in the Balkans most games? Or that instead of a powerkeg you only get a sad Ottoman basketcase?
+Ever noticed that despite being called "the powder keg of Europe", nothing really happens in the Balkans most games? Or that instead of a powder keg you only get a sad Ottoman basket case?
 
 That's what lead led me to create Gates of the Bosphorus. This mod aims to add historical context and new mechanics to nations of the Balkans and the Ottoman Empire. This mod has an expensive scope covering the Ottoman and post-Ottoman states of the near East with an eventual goal of providing content from 1836 into the 1940s.
 
