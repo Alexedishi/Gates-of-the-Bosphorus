@@ -617,6 +617,446 @@ REPLACE:ideology_gbbf_kogalnitchanism = {
 
 }
 
+ideology_gbbf_metaxist_leader = {
+	icon = "gfx/interface/icons/ideology_icons/ideology_leader/ideology_leader_fascist.dds"
+	character_ideology = yes
+	
+	lawgroup_governance_principles = {
+		law_theocracy = disapprove
+		law_monarchy = strongly_approve
+		law_presidential_republic = disapprove
+		law_parliamentary_republic = disapprove
+		law_corporate_state = neutral
+		law_council_republic = strongly_disapprove
+	}
+	
+	lawgroup_distribution_of_power = {
+		law_single_party_state = strongly_approve
+		law_autocracy = approve
+		law_oligarchy = neutral
+		law_technocracy = neutral
+		law_anarchy = strongly_disapprove
+		law_universal_suffrage = disapprove
+		law_census_voting = disapprove
+		law_wealth_voting = disapprove
+		law_landed_voting = disapprove
+	}
+	
+	lawgroup_church_and_state = {
+		law_state_religion = approve
+		law_freedom_of_conscience = disapprove
+		law_total_separation = strongly_disapprove
+		law_state_atheism = strongly_disapprove
+	}
+	
+	lawgroup_trade_policy = {
+		law_free_trade = disapprove
+		law_mercantilism = disapprove
+		law_protectionism = strongly_approve
+		law_isolationism = strongly_disapprove
+	}
+	
+	lawgroup_army_model = {
+		law_mass_conscription = strongly_approve
+		law_professional_army = approve
+		law_national_militia = disapprove
+		law_peasant_levies = strongly_disapprove
+	}
+	
+	lawgroup_free_speech = {
+		law_protected_speech = strongly_disapprove
+		law_right_of_assembly = disapprove
+		law_censorship = neutral
+		law_outlawed_dissent = strongly_approve
+	}
+	
+	lawgroup_labour_associations = {
+		law_combination_acts = neutral
+		law_guild_system = approve
+		law_anti_strike_laws = approve
+		law_corporatized_unions = strongly_approve
+		law_right_to_associate = disapprove
+		law_factory_councils = strongly_disapprove
+	}
+	
+	country_trigger = {
+		country_has_primary_culture = cu:greek
+		has_global_variable = grefm_venizelos_has_landed
+		has_technology_researched = political_agitation
+	}
+	
+	interest_group_leader_trigger = {
+		NOT = {
+			is_interest_group_type = ig_trade_unions
+		}
+	}
+	interest_group_leader_weight = {
+		value = 50
+		
+		# More likely if people are angry
+		add = {
+			value = owner.radical_fraction
+			multiply = 100
+		}
+		
+		# More likely if issues are relevant
+		if = {
+			limit = {
+				owner.ideology_fascist_disfavoured_laws > 0
+			}
+			add = {
+				value = owner.ideology_fascist_disfavoured_laws
+				multiply = 8
+			}
+		}
+		
+		# Less likely if issues are not relevant
+		if = {
+			limit = {
+				owner.ideology_fascist_favoured_laws > 0
+			}
+			subtract = {
+				value = owner.ideology_fascist_favoured_laws
+				multiply = 8
+			}
+		}
+		
+		# More likely if paying war reparations
+		if = {
+			limit = {
+				any_country = {
+					any_scope_treaty = {
+						is_enforced = yes
+						any_scope_article = {
+							has_type = money_transfer
+							source_country = root.owner
+						}
+					}
+				}
+			}
+			add = 25
+		}
+		# More likely with a convenient scapegoat
+		if = {
+			limit = {
+				owner = {
+					any_scope_state = {
+						is_incorporated = yes
+						any_scope_pop = {
+							pop_acceptance < acceptance_status_4
+							total_size >= 1000
+						}
+					}
+				}
+			}
+			add = 25
+		}
+		# more likely if bankrupt
+		if = {
+			limit = {
+				owner = {
+					OR = {
+						in_default = yes
+						has_modifier = declared_bankruptcy
+					}
+				}
+			}
+			add = 25
+		}
+		# Less likely in council republic
+		if = {
+			limit = {
+				owner = {
+					has_law_or_variant = law_type:law_council_republic
+				}
+			}
+			add = -75
+		}
+		# more likely if angry non-unions
+		if = {
+			limit = {
+				ig_approval <= -5
+				NOT = { is_interest_group_type = ig_trade_unions }
+			}
+			subtract = {
+				value = ig_approval
+				multiply = 5
+			}
+		}
+		# less likely if content without ethnostate or Corporate State
+		if = {
+			limit = {
+				owner = {
+					NOR = {
+						has_law_or_variant = law_type:law_ethnostate
+						has_law_or_variant = law_type:law_corporate_state
+					}
+				}
+				ig_approval >= 5
+			}
+			subtract = {
+				value = ig_approval
+				multiply = 5
+			}
+		}
+		# more likely for PB and armed forces
+		if = {
+			limit = {
+				OR = {
+					is_interest_group_type = ig_petty_bourgeoisie
+					is_interest_group_type = ig_armed_forces
+				}
+			}
+			add = 50
+		}
+		# less likely for unions and intelligentsia
+		if = {
+			limit = {
+				OR = {
+					is_interest_group_type = ig_trade_unions
+					is_interest_group_type = ig_intelligentsia
+				}
+			}
+			add = -25
+		}
+		# more likely if in government with ethnostate or Corporate State
+		if = {
+			limit = {
+				owner = {
+					OR = {
+						has_law_or_variant = law_type:law_ethnostate
+						has_law_or_variant = law_type:law_corporate_state
+					}
+					NOR = {
+						is_enacting_law = law_type:law_multicultural
+						is_enacting_law = law_type:law_national_supremacy
+						is_enacting_law = law_type:law_racial_segregation
+						is_enacting_law = law_type:law_cultural_exclusion
+					}
+				}
+				is_in_government = yes
+			}
+			add = 50
+		}
+		# red scare can make you more fascist
+		if = {
+			limit = {
+				has_variable = fascist_uptick
+			}
+			multiply = 1.5
+		}
+		# Fascism JE causes an uptick in fascism
+		if = {
+			limit = {
+				owner = {
+					OR = {
+						has_journal_entry = je_fascism_1
+						has_variable = completed_fascism_1_var
+					}
+				}
+			}
+			multiply = 1.25
+		}
+		if = {
+			limit = {
+				OR = {
+					has_variable = communist_ig_var
+					has_variable = chose_vanguardism
+					has_variable = chose_anarchism
+					has_variable = chose_communism
+					has_variable = chose_ethno_nationalism
+				}
+			}
+			multiply = 0.1
+		}
+		# Minority cultures won't favor highly ethno-supremacist ideologies
+		if = {
+			limit = {
+				leader = {
+					culture = {
+						NOT = { is_primary_culture_of = prev.owner }
+					}
+				}
+			}
+			multiply = 0
+		}
+	}
+	
+	non_interest_group_leader_trigger = {
+		NOT = {
+			is_interest_group_type = ig_trade_unions
+		}
+	}
+	non_interest_group_leader_weight = {
+		value = 50
+		
+		# More likely if people are angry
+		add = {
+			value = owner.radical_fraction
+			multiply = 100
+		}
+		
+		# More likely if issues are relevant
+		if = {
+			limit = {
+				owner.ideology_fascist_disfavoured_laws > 0
+			}
+			add = {
+				value = owner.ideology_fascist_disfavoured_laws
+				multiply = 8
+			}
+		}
+		
+		# Less likely if issues are not relevant
+		if = {
+			limit = {
+				owner.ideology_fascist_favoured_laws > 0
+			}
+			subtract = {
+				value = owner.ideology_fascist_favoured_laws
+				multiply = 8
+			}
+		}
+		
+		# More likely if paying war reparations
+		if = {
+			limit = {
+				any_country = {
+					has_diplomatic_pact = {
+						who = root.owner
+						type = war_reparations
+						is_initiator = yes
+					}
+				}
+			}
+			add = 25
+		}
+		# More likely with a convenient scapegoat
+		if = {
+			limit = {
+				owner = {
+					any_scope_state = {
+						is_incorporated = yes
+						any_scope_pop = {
+							pop_acceptance < acceptance_status_4
+							total_size >= 1000
+						}
+					}
+				}
+			}
+			add = 25
+		}
+		# more likely if bankrupt
+		if = {
+			limit = {
+				owner = {
+					OR = {
+						in_default = yes
+						has_modifier = declared_bankruptcy
+					}
+				}
+			}
+			add = 25
+		}
+		# Less likely in council republic
+		if = {
+			limit = {
+				owner = {
+					has_law_or_variant = law_type:law_council_republic
+				}
+			}
+			add = -75
+		}
+		# more likely if angry non-unions
+		if = {
+			limit = {
+				interest_group.ig_approval <= -5
+				NOT = { is_interest_group_type = ig_trade_unions }
+			}
+			add = {
+				value = interest_group.ig_approval
+				multiply = 5
+			}
+		}
+		# less likely if content without ethnostate or Corporate State
+		if = {
+			limit = {
+				owner = {
+					NOR = {
+						has_law_or_variant = law_type:law_ethnostate
+						has_law_or_variant = law_type:law_corporate_state
+					}
+				}
+				interest_group.ig_approval >= 5
+			}
+			subtract = {
+				value = interest_group.ig_approval
+				multiply = 5
+			}
+		}
+		# more likely for PB and armed forces
+		if = {
+			limit = {
+				OR = {
+					is_interest_group_type = ig_petty_bourgeoisie
+					is_interest_group_type = ig_armed_forces
+				}
+			}
+			add = 50
+		}
+		# less likely for unions and intelligentsia
+		if = {
+			limit = {
+				OR = {
+					is_interest_group_type = ig_trade_unions
+					is_interest_group_type = ig_intelligentsia
+				}
+			}
+			add = -25
+		}
+		# more likely if in government with ethnostate or Corporate State
+		if = {
+			limit = {
+				owner = {
+					OR = {
+						has_law_or_variant = law_type:law_ethnostate
+						has_law_or_variant = law_type:law_corporate_state
+					}
+					NOR = {
+						is_enacting_law = law_type:law_multicultural
+						is_enacting_law = law_type:law_national_supremacy
+						is_enacting_law = law_type:law_racial_segregation
+						is_enacting_law = law_type:law_cultural_exclusion
+					}
+				}
+				interest_group = {
+					is_in_government = yes
+				}
+			}
+			add = 50
+		}
+		# red scare can make you more fascist
+		if = {
+			limit = {
+				has_variable = fascist_uptick
+			}
+			multiply = 1.5
+		}
+		# Fascism JE causes an uptick in fascism
+		if = {
+			limit = {
+				owner = {
+					OR = {
+						has_journal_entry = je_fascism_1
+						has_variable = completed_fascism_1_var
+					}
+				}
+			}
+			multiply = 1.25
+		}
+	}
+}
+
 REPLACE:ideology_gbbf_ottomanist_leader = {
 	icon = "gfx/interface/icons/ideology_icons/ideology_leader/ideology_gbbf_ottomanist_leader.dds"
 
