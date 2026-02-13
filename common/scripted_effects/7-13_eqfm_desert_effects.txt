@@ -52,7 +52,18 @@ eqfm_update_desert_modifier_effect = {
 	s:STATE_LIBYAN_DESERT.region_state:TRI ?= {
 		add_modifier = {
 			name = modifier_eqfm_desert_scouting
-			multiplier = eqfm_desert_multiplier_value
+			multiplier = {
+				value = 0
+				if = {
+					limit = {
+						eqfm_has_desert_expedition_trigger = yes
+					}
+					add = var:eqfm_desert_expedition_progress_var
+				}
+				subtract = 5
+				min = 0
+				max = 3
+			}
 		}
 	}
 }
