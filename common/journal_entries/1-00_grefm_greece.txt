@@ -1066,6 +1066,85 @@ je_grefm_venizelism_constitution = {
 	}
 }
 
+## THE AGE OF METAXAS
+je_grefm_metaxaism = {
+	group = je_group_internal_affairs
+	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
+	weight = 2000
+	
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+	
+	is_shown_in_lobby = {
+		c:GRE ?= this
+	}
+	
+	is_shown_when_inactive = {
+		has_technology_researched = political_agitation
+	}
+	
+	possible = {
+		any_political_movement = {
+			is_political_movement_type = movement_fascist
+			political_movement_support >= 0.15
+			political_movement_radicalism >= 0.10
+		}
+	}
+	
+	immediate = {
+		trigger_event = grefm_greece.070
+	}
+	
+	modifiers_while_active = {
+		modifier_grefm_reactionary_thought
+	}
+	
+	complete = {
+		any_interest_group = {
+			filter = {
+				leader = {
+					OR = {
+						has_ideology = ideology:ideology_fascist
+						has_ideology = ideology:ideology_gbbf_metaxist_leader
+					}
+				}
+			}
+			count = all
+			is_marginal = yes
+			is_in_government = no
+		}
+	}
+	
+	on_complete = {}
+	
+	fail = {
+		NOT = {
+			any_interest_group = {
+				leader = {
+					OR = {
+						has_ideology = ideology:ideology_fascist
+						has_ideology = ideology:ideology_gbbf_metaxist_leader
+					}
+				}
+			}
+		}
+	}
+	
+	on_fail = {}
+	
+	on_monthly_pulse = {
+		effect = {
+			every_scope_character = {
+				limit = {
+					has_ideology = ideology:ideology_fascist
+				}
+				set_ideology = ideology:ideology_gbbf_metaxist_leader
+			}
+		}
+	}
+}
+
 ## OTHER HELLENE FLAVOR
 je_grefm_the_womens_journal = {
 	group = je_group_internal_affairs
