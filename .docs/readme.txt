@@ -6,8 +6,9 @@ Game Version: 1.12.x
 
 Mod Author: Alexedishi
 
-NOTE: This mod is dependent on the Community Mod Framework to work correctly!
+NOTE: This mod is dependent on the Community Mod Framework & Community State Framework to function correctly!
 Community Mod Framework: https://steamcommunity.com/sharedfiles/filedetails/?id=3385002128
+Community State Framework: https://steamcommunity.com/sharedfiles/filedetails/?id=3654153829
 
 ####################
 
