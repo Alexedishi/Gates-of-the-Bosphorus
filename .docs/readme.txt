@@ -39,6 +39,19 @@ bulfm_: Once contained content for Bulgaria; has been merged with balkfm
 
 ####################
 
+The following countries are in scope:
+- GREFM: Greece (including Byzantium, the Ionian Islands, and Samos)
+- BALKFM: Montenegro, Serbia, Bulgaria, Romania (and the Principalities), Bosnia, Albania
+- TURKFM: Ottoman Empire (including Turkey)
+- MGRBFM: Egypt, Tripolitania/Libya, Tunis, Fezzan
+- HAYKFM: Kurdistan, Armenia
+
+The following countries will eventually come into scope:
+- BALKFM: Croatia, Slovenia
+- HAYKFM: Assyria
+
+####################
+
 "One day the great European War will come out of some damned foolish thing in the Balkans" - Otto von Bismark, 1888
 
 Ever noticed that despite being called "the powder keg of Europe", nothing really happens in the Balkans most games?
