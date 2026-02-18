@@ -6,8 +6,9 @@ Game Version: 1.12.x
 
 Mod Author: Alexedishi
 
-NOTE: This mod is dependent on the Community Mod Framework to work correctly!
+NOTE: This mod is dependent on the Community Mod Framework & Community State Framework to function correctly!
 Community Mod Framework: https://steamcommunity.com/sharedfiles/filedetails/?id=3385002128
+Community State Framework: https://steamcommunity.com/sharedfiles/filedetails/?id=3654153829
 
 ####################
 
@@ -36,6 +37,19 @@ bulfm_: Once contained content for Bulgaria; has been merged with balkfm
 -Levantine Arab & Iranian (Persia) flavor are OUT OF SCOPE for this mod
 -The current mod acronym is GotB; my common prefix is "gbbf_" and will not change
 -The CMF trigger uses the older "grefm_" generic acronym; this will not change
+
+####################
+
+The following countries are in scope:
+- GREFM: Greece (including Byzantium, the Ionian Islands, and Samos)
+- BALKFM: Montenegro, Serbia, Bulgaria, Romania (and the Principalities), Bosnia, Albania
+- TURKFM: Ottoman Empire (including Turkey)
+- MGRBFM: Egypt, Tripolitania/Libya, Tunis, Fezzan
+- HAYKFM: Kurdistan, Armenia
+
+The following countries will eventually come into scope:
+- BALKFM: Croatia, Slovenia
+- HAYKFM: Assyria
 
 ####################
 
