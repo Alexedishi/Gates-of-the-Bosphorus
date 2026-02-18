@@ -1027,7 +1027,7 @@ je_grefm_venizelism_constitution = {
 }
 
 ####---------- Metaxism Journal Entries ----------####
-je_grefm_metaxaism = {
+je_grefm_metaxism = {
 	group = je_group_internal_affairs
 	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
 	weight = 2000
@@ -1041,10 +1041,12 @@ je_grefm_metaxaism = {
 	}
 	
 	is_shown_when_inactive = {
-		has_technology_researched = political_agitation
+		c:GRE ?= this
+		has_journal_entry = je_grefm_megali_idea
 	}
 	
 	possible = {
+		has_technology_researched = political_agitation
 		any_political_movement = {
 			is_political_movement_type = movement_fascist
 			political_movement_support >= 0.15
@@ -1115,7 +1117,11 @@ je_grefm_metaxaism = {
 		effect = {
 			every_scope_character = {
 				limit = {
-					has_ideology = ideology:ideology_fascist
+					OR = {
+						has_ideology = ideology:ideology_fascist
+						has_ideology = ideology:ideology_royalist
+						has_ideology = ideology:ideology_authoritarian
+					}
 				}
 				set_ideology = ideology:ideology_gbbf_metaxist_leader
 			}
@@ -1227,7 +1233,7 @@ je_grefm_corinth_canal_survey = {
 	}
 }
 
-je_grefm_land_reclaimation = {
+je_grefm_land_reclamation = {
 	# literally the vanilla reclamation event in a trench coat
 	group = je_group_technology
 	icon = "gfx/interface/icons/invention_icons/hydraulic_cranes.dds"
@@ -1301,7 +1307,7 @@ je_grefm_land_reclaimation = {
 	status_desc = {
 		first_valid = {
 			triggered_desc = {
-				desc = je_grefm_land_reclaimation_status
+				desc = je_grefm_land_reclamation_status
 				trigger = {
 					has_variable = grefm_lake_kopais_var
 				}

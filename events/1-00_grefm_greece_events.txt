@@ -3325,18 +3325,6 @@ grefm_greece.049 = {
 	}
 
 	immediate = {
-		create_character = {
-			template = template_grefm_metaxas_ioannis
-			on_created = {
-				place_character_in_void = 12
-			}
-		}
-		random_character_in_void = {
-			limit = {
-				has_template = template_grefm_metaxas_ioannis
-			}
-			save_scope_as = ioannis_metaxas_scope
-		}
 	}
 
 	option = {
@@ -3345,9 +3333,6 @@ grefm_greece.049 = {
 		trigger_event = {
 			id = grefm_greece.060
 			days = 30
-		}
-		scope:ioannis_metaxas_scope = {
-			gbbf_free_from_void_leader = yes
 		}
 	}
 }
@@ -4731,19 +4716,43 @@ grefm_greece.070 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
-		# triggered by je_grefm_metaxaism
+		# triggered by je_grefm_metaxism
 	}
 	
 	immediate = {
+		create_character = {
+			template = template_grefm_metaxas_ioannis
+			on_created = {
+				place_character_in_void = 12
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = template_grefm_metaxas_ioannis
+			}
+			save_scope_as = ioannis_metaxas_scope
+		}
+		random_political_movement = {
+			limit = {
+				is_political_movement_type = movement_fascist
+			}
+			save_scope_as = grefm_fascist_scope
+		}
 	}
 	
 	option = {
 		name = grefm_greece.070.a
 		default_option = yes
-	}
-	
-	option = {
-		name = grefm_greece.070.b
+		scope:ioannis_metaxas_scope = {
+			gbbf_free_from_void_leader = yes
+		}
+		scope:grefm_fascist_scope = {
+			add_modifier = {
+				name = modifier_grefm_reactionary_wave
+				months = gbbf_normal_modifier_time
+				is_decaying = yes
+			}
+		}
 	}
 }
 
@@ -4764,19 +4773,68 @@ grefm_greece.071 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
-		# triggered by je_grefm_metaxaism
+		# triggered by je_grefm_metaxism
 	}
 	
 	immediate = {
+		random_political_movement = {
+			limit = {
+				is_political_movement_type = movement_fascist
+			}
+			save_scope_as = grefm_fascist_scope
+		}
+		ordered_interest_group = {
+			limit = {
+				OR = {
+					has_ideology = ideology:ideology_fascist
+					has_ideology = ideology:ideology_royalist
+					has_ideology = ideology:ideology_authoritarian
+				}
+			}
+			order_by = ig_clout
+			position = 0
+			check_range_bounds = no
+			leader = {
+				save_scope_as = grefm_fascist_leader_scope
+			}
+		}
 	}
 	
 	option = {
 		name = grefm_greece.071.a
 		default_option = yes
+		scope:grefm_fascist_scope = {
+			add_modifier = {
+				name = modifier_grefm_dominant_movement
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+		}
+		scope:grefm_fascist_leader_scope = {
+			add_modifier = {
+				name = modifier_grefm_second_aristotle
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+		}
 	}
 	
 	option = {
 		name = grefm_greece.071.b
+		scope:grefm_fascist_scope = {
+			add_modifier = {
+				name = modifier_grefm_dominant_movement
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+		}
+		scope:grefm_fascist_leader_scope = {
+			add_modifier = {
+				name = modifier_grefm_second_belisarius
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+		}
 	}
 }
 
@@ -4797,19 +4855,29 @@ grefm_greece.072 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
-		# triggered by je_grefm_metaxaism
+		# triggered by je_grefm_metaxism
 	}
 	
 	immediate = {
+		random_political_movement = {
+			limit = {
+				is_political_movement_type = movement_fascist
+			}
+			save_scope_as = grefm_fascist_scope
+		}
 	}
 	
 	option = {
 		name = grefm_greece.072.a
 		default_option = yes
+		scope:grefm_fascist_scope ?= {
+		}
 	}
 	
 	option = {
 		name = grefm_greece.072.b
+		scope:grefm_fascist_scope ?= {
+		}
 	}
 }
 
@@ -4830,19 +4898,29 @@ grefm_greece.073 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
-		# triggered by je_grefm_metaxaism
+		# triggered by je_grefm_metaxism
 	}
 	
 	immediate = {
+		random_political_movement = {
+			limit = {
+				is_political_movement_type = movement_fascist
+			}
+			save_scope_as = grefm_fascist_scope
+		}
 	}
 	
 	option = {
 		name = grefm_greece.073.a
 		default_option = yes
+		scope:grefm_fascist_scope ?= {
+		}
 	}
 	
 	option = {
 		name = grefm_greece.073.b
+		scope:grefm_fascist_scope ?= {
+		}
 	}
 }
 
@@ -5528,11 +5606,10 @@ grefm_greece.097 = {
 			custom_tooltip = {
 				text = grefm_greece.097.5_tt
 				create_character = {
-					first_name = George# I LITERALLY PICKED A RANDOM NAME, FIGHT ME
+					first_name = George
 					noble = yes
 					culture = cu:french
 					ideology = ideology_moderate
-					age = default
 					ruler = yes
 				}
 			}
@@ -6293,7 +6370,7 @@ grefm_greece.112 = {
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by je_grefm_land_reclaimation
+		# triggered by je_grefm_land_reclamation
 	}
 
 	immediate = {
@@ -6499,7 +6576,7 @@ grefm_greece.119 = {
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by je_grefm_land_reclaimation
+		# triggered by je_grefm_land_reclamation
 	}
 
 	immediate = {
