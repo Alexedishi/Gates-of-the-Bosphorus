@@ -72,9 +72,7 @@
 		OR = {
 			custom_tooltip = {
 				text = je_turkfm_tanzimat_main_fail
-				hidden_trigger = {
-					var:turkfm_tanzimat_reform_var <= 0
-				}
+				var:turkfm_tanzimat_reform_var <= 0
 			}
 			trigger_if = {
 				limit = {
@@ -891,27 +889,87 @@ je_turkfm_tanzimat_young_turks = {
 	can_revolution_inherit = yes
 	transferable = no
 	
+	is_shown_in_lobby = {
+		c:TUR ?= this
+	}
+	
+	scripted_progress_bar = turkfm_young_turks_progressbar
+	
+	scripted_button =
+	
 	is_shown_when_inactive = {
-		always = no
 		has_journal_entry = je_turkfm_tanzimat_main
+		has_technology_researched = egalitarianism
+		has_technology_researched = nationalism
 	}
 	
 	possible = {
-		always = no
+		has_technology_researched = political_agitation
 	}
 	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
-		set_variable = turkfm_young_turks_started
+		turkfm_initialize_young_turks_effect = yes
+		trigger_event = turkfm_tanzimat.200
+		show_as_tooltip = {
+			every_political_movement = {
+				limit = {
+					is_political_movement_type = movement_gbbf_young_turks
+				}
+				set_core_ideology = ideology_positivist_movement
+			}
+		}
 	}
 
-	complete = {  }
+	complete = {
+		custom_tooltip = {
+			text = je_turkfm_tanzimat_young_turks_complete
+			scope:journal_entry.var:turkfm_young_turks_var <= 0
+		}
+		country_has_voting_franchise = yes
+		government_legitimacy >= 75
+		NOT = {
+			any_interest_group = {
+				OR = {
+					is_insurrectionary = yes
+					is_revolutionary = yes
+				}
+			}
+		}
+	}
 
-	on_complete = {  }
+	on_complete = {
+		trigger_event = turkfm_tanzimat.201
+		turkfm_cleanup_young_turks_effect = yes
+	}
 
-	fail = {  }
+	fail = {
+		custom_tooltip = {
+			text = je_turkfm_tanzimat_young_turks_fail
+			scope:journal_entry.var:turkfm_young_turks_var >= 100
+		}
+	}
 
 	on_fail = {
+		turkfm_cleanup_young_turks_effect = yes
 		set_variable = turkfm_young_turks_failed
 	}
+	
+	invalid = {
+		NOT = {
+			has_journal_entry = je_turkfm_tanzimat_main
+		}
+	}
+	
+	on_invalid = {
+		turkfm_cleanup_young_turks_effect = yes
+	}
+	
+	on_weekly_pulse = {
+		effect = {
+			turkfm_calculate_young_turks_effect = yes
+		}
+	}
+	
+	on_monthly_pulse = {  }
 }
