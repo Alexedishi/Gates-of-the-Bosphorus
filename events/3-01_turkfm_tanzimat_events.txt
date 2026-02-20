@@ -71,6 +71,7 @@ namespace = turkfm_tanzimat
 #200-209 - Emergence of the Young Turks Events
 #	200 - ##The Committee of Union and Progress
 #	201 - ##
+#	202 - ##
 
 
 #210-219 - Atatürk Events
@@ -415,11 +416,70 @@ turkfm_tanzimat.007 = { # The Three Pashas
 	}
 
 	immediate = {
+		# This represents the total collapse of political coherency immediately after the Three Pashas took power
+		if = {
+			limit = {
+				NOT = {
+					any_political_movement = {
+						is_political_movement_type = movement_fascist
+					}
+				}
+			}
+			create_political_movement = {
+				type = movement_fascist
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					any_political_movement = {
+						is_political_movement_type = movement_socialist
+					}
+				}
+			}
+			create_political_movement = {
+				type = movement_socialist
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					any_political_movement = {
+						is_political_movement_type = movement_reactionary
+					}
+				}
+			}
+			create_political_movement = {
+				type = movement_reactionary
+			}
+		}
+		every_political_movement = {
+			limit = {
+				OR = {
+					is_political_movement_type = movement_fascist
+					is_political_movement_type = movement_socialist
+					is_political_movement_type = movement_reactionary
+					is_political_movement_type = movement_cultural_majority
+					is_political_movement_type = movement_royalist_constitutional
+					is_political_movement_type = movement_radical
+				}
+			}
+			add_modifier = {
+				name = modifier_turkfm_political_collapse
+				months = gbbf_normal_modifier_time
+				is_decaying = yes
+			}
+		}
+		custom_tooltip = turkfm_grand_collapse_possible
 	}
 
 	option = {
 		name = turkfm_tanzimat.007.a
 		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_tanzimat_failed_country
+			months = gbbf_very_long_modifier_time
+		}
 		ig:ig_intelligentsia = {
 			if = {
 				limit = {
@@ -1713,14 +1773,37 @@ turkfm_tanzimat.200 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
+		# triggered by je_turkfm_tanzimat_young_turks
 	}
 
 	immediate = {
+		if = {
+			limit = {
+				NOT = {
+					any_political_movement = {
+						is_political_movement_type = movement_gbbf_young_turks
+					}
+				}
+			}
+			create_political_movement = { type = movement_gbbf_young_turks }
+		}
+		random_political_movement = {
+			limit = {
+				is_political_movement_type = movement_gbbf_young_turks
+			}
+			save_scope_as = young_turks_scope
+		}
 	}
 
 	option = {
 		name = turkfm_tanzimat.200.a
 		default_option = yes
+		scope:young_turks_scope = {
+			set_core_ideology = ideology_positivist_movement
+		}
+		show_as_tooltip = {
+			add_modifier = modifier_turkfm_political_instability
+		}
 	}
 }
 
@@ -1741,6 +1824,7 @@ turkfm_tanzimat.201 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
+		# triggered by je_turkfm_tanzimat_young_turks
 	}
 
 	immediate = {

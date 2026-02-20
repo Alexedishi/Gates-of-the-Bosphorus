@@ -96,8 +96,8 @@
 		}
 		else = {
 			trigger_event = turkfm_tanzimat.006
-			custom_tooltip = turkfm_grand_collapse_possible
 		}
+		custom_tooltip = turkfm_grand_collapse_possible
 		turkfm_cleanup_tanzimat_effect = yes
 	}
 
@@ -784,7 +784,6 @@ je_turkfm_tanzimat_young_ottomans = {
 				var:turkfm_young_ottomans_var <= 0
 			}
 		}
-
 	}
 
 	on_complete = {
@@ -924,6 +923,9 @@ je_turkfm_tanzimat_young_turks = {
 	
 	possible = {
 		has_technology_researched = political_agitation
+		NOT = {
+			has_journal_entry = je_ip4_coup
+		}
 	}
 	
 	immediate = {
@@ -931,13 +933,17 @@ je_turkfm_tanzimat_young_turks = {
 		turkfm_initialize_young_turks_effect = yes
 		trigger_event = turkfm_tanzimat.200
 		show_as_tooltip = {
-			every_political_movement = {
+			random_political_movement = {
 				limit = {
 					is_political_movement_type = movement_gbbf_young_turks
 				}
 				set_core_ideology = ideology_positivist_movement
 			}
 		}
+	}
+
+	modifiers_while_active = {
+		modifier_turkfm_political_instability
 	}
 
 	complete = {
@@ -970,8 +976,11 @@ je_turkfm_tanzimat_young_turks = {
 	}
 
 	on_fail = {
-		turkfm_cleanup_young_turks_effect = yes
 		set_variable = turkfm_young_turks_failed
+		show_as_tooltip = {
+			trigger_event = turkfm_tanzimat.007
+		}
+		turkfm_cleanup_young_turks_effect = yes
 	}
 	
 	invalid = {
