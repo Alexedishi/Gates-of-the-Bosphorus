@@ -145,57 +145,6 @@
 	}
 }
 
-je_grefm_national_language = {
-	group = je_group_historical_content
-	icon = "gfx/interface/icons/invention_icons/academia.dds"
-	weight = 2000
-
-	should_be_pinned_by_default = yes
-	can_revolution_inherit = yes
-	transferable = no
-
-	scripted_progress_bar = grefm_dimotiki_progress_bar
-	scripted_progress_bar = grefm_katharevousa_progress_bar
-	scripted_progress_bar = grefm_khoine_progress_bar
-	scripted_progress_bar = grefm_rhomaiika_progress_bar
-
-	scripted_button = grefm_declare_national_language_button
-
-	is_shown_when_inactive = {
-		OR = {
-			country_has_primary_culture = cu:greek
-			country_has_primary_culture = cu:rhomaios
-		}
-	}
-
-	possible = {
-		has_journal_entry = je_grefm_greek_nationalism
-		literacy_rate > 0.30
-	}
-
-	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
-		trigger_event = grefm_greek_nationalism.006
-	}
-
-	complete = {
-		custom_tooltip = {
-			text = je_grefm_national_language_complete
-			hidden_trigger = {
-				OR = {
-					has_variable = grefm_greek_language_demotic
-					has_variable = grefm_greek_language_katharevousa
-					has_variable = grefm_greek_language_khoine
-					has_variable = grefm_greek_language_rhomaiika
-				}
-			}
-		}
-	}
-
-	on_complete = {
-	}
-}
-
 je_grefm_archaeology = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
@@ -228,7 +177,8 @@ je_grefm_archaeology = {
 	scripted_button = grefm_archeaology_tyana_button
 	scripted_button = grefm_archeaology_chios_button
 
-	is_shown_when_inactive = { ##TODO MGR Compatch
+	is_shown_when_inactive = {
+		morgenrote_is_active = no
 		OR = {
 			country_has_primary_culture = cu:greek
 			country_has_primary_culture = cu:rhomaios
@@ -268,7 +218,7 @@ je_grefm_archaeology = {
 					has_variable = grefm_delos_complete
 					has_variable = grefm_larissa_complete
 					has_variable = grefm_rhodes_complete
-					
+
 					has_variable = grefm_corinth_1_complete
 					has_variable = grefm_corinth_2_complete
 					has_variable = grefm_thessaloniki_complete
@@ -317,7 +267,7 @@ je_grefm_archaeology = {
 	on_complete = {
 		grefm_cleanup_archaeology_effect = yes
 	}
-	
+
 	on_weekly_pulse = {
 		events = {
 			grefm_greek_nationalism.043 # Hellenic Excavation Completed
@@ -363,6 +313,129 @@ je_grefm_archaeology = {
 					has_modifier = modifier_grefm_active_excavation
 				}
 				desc = je_grefm_archaeology_status
+			}
+		}
+	}
+}
+
+je_grefm_national_language = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/invention_icons/academia.dds"
+	weight = 2000
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	scripted_progress_bar = grefm_dimotiki_progress_bar
+	scripted_progress_bar = grefm_katharevousa_progress_bar
+	scripted_progress_bar = grefm_khoine_progress_bar
+	scripted_progress_bar = grefm_rhomaiika_progress_bar
+
+	scripted_button = grefm_declare_national_language_button
+
+	is_shown_when_inactive = {
+		morgenrote_is_active = no
+		OR = {
+			country_has_primary_culture = cu:greek
+			country_has_primary_culture = cu:rhomaios
+		}
+	}
+
+	possible = {
+		has_journal_entry = je_grefm_greek_nationalism
+		literacy_rate > 0.30
+	}
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		trigger_event = grefm_greek_nationalism.006
+	}
+
+	complete = {
+		custom_tooltip = {
+			text = je_grefm_national_language_complete
+			has_variable = grefm_language_var
+		}
+	}
+}
+
+####---------- Morgenrote Variants ----------####
+je_grefm_archaeology_mgr = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	weight = 2000
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	is_shown_when_inactive = {
+		morgenrote_is_active = yes
+		OR = {
+			country_has_primary_culture = cu:greek
+			country_has_primary_culture = cu:rhomaios
+		}
+	}
+
+	possible = {
+		has_journal_entry = je_grefm_greek_nationalism
+		any_scope_building = {
+			is_building_type = building_university
+		}
+	}
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		grefm_initialize_anthropology_effect = yes
+		#		trigger_event = grefm_greek_nationalism.040
+	}
+}
+
+je_grefm_national_language_mgr = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/invention_icons/academia.dds"
+	weight = 2000
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	scripted_progress_bar = grefm_dimotiki_progress_bar
+	scripted_progress_bar = grefm_katharevousa_progress_bar
+	scripted_progress_bar = grefm_khoine_progress_bar
+	scripted_progress_bar = grefm_rhomaiika_progress_bar
+
+	scripted_button = grefm_declare_national_language_button
+
+	is_shown_when_inactive = {
+		morgenrote_is_active = yes
+		OR = {
+			country_has_primary_culture = cu:greek
+			country_has_primary_culture = cu:rhomaios
+		}
+	}
+
+	possible = {
+		has_journal_entry = je_grefm_greek_nationalism
+		literacy_rate > 0.30
+	}
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		trigger_event = grefm_greek_nationalism.006
+	}
+
+	complete = {
+		custom_tooltip = {
+			text = je_grefm_national_language_complete
+			hidden_trigger = {
+				OR = {
+					has_variable = grefm_greek_language_demotic
+					has_variable = grefm_greek_language_katharevousa
+					has_variable = grefm_greek_language_khoine
+					has_variable = grefm_greek_language_rhomaiika
+				}
 			}
 		}
 	}
