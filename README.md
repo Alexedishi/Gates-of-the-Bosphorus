@@ -1,6 +1,6 @@
 # Gates of the Bosphorus (Victoria 3 Mod)
 
-![GotB_launcher_thumbnail.png](.docs/GotB_launcher_thumbnail.png)
+![GotB_launcher_thumbnail.png](.docs/.gfx_workspace/GotB_launcher_thumbnail.png)
 
 ### IMPORTANT: This mod is dependent on the Community Mod Framework to work correctly! 
 **Community Mod Framework**: https://steamcommunity.com/sharedfiles/filedetails/?id=3385002128
