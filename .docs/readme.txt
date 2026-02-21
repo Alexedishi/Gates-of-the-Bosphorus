@@ -1,10 +1,29 @@
 ﻿##########################
 # GATES OF THE BOSPHORUS #
 ##########################
-Mod Version: 3.4.0
+Mod Version: 4.0.0
 Game Version: 1.12.x
 
 Mod Author: Alexedishi
+Contributors: LordR, Caelreader, CipherParadox
+Special Thanks: RationaLess, Bahmut|Chris
+
+####---------- Mod Dependencies ----------####
+ - Community Mod Framework: https://steamcommunity.com/sharedfiles/filedetails/?id=3385002128
+ - Community State Framework: https://steamcommunity.com/sharedfiles/filedetails/?id=3654153829
+
+####---------- Version Compatibility ----------####
+#		GotB Patch	....	Victoria 3 Patch
+#		4.0.0		....	1.??
+#		3.4.11		.... 	1.12.3
+#		3.3.7		.... 	1.10.6 / 1.11.1
+#		3.2.8		.... 	1.9.8
+#		3.0.8		.... 	1.8.7
+#		2.2.11		.... 	1.7.7
+#		2.1.3		....	1.6.2
+#		2.0.3		....	1.5.13
+#		1.0.0		....	1.5.6
+
 
 ####---------- Current Content Scope ----------####
 The following countries are in scope:
@@ -17,12 +36,6 @@ The following countries are in scope:
 The following countries will eventually come into scope:
 - BALKFM: Croatia, Slovenia
 - HAYKFM: Assyria
-
-
-####---------- Mod Dependencies ----------####
-This mod is dependent on the Community Mod Framework & Community State Framework to function correctly!
-Community Mod Framework: https://steamcommunity.com/sharedfiles/filedetails/?id=3385002128
-Community State Framework: https://steamcommunity.com/sharedfiles/filedetails/?id=3654153829
 
 
 ####---------- Mod Structure and Organization ----------####
@@ -95,30 +108,12 @@ bulfm_: Once contained content for Bulgaria; has been merged with balkfm
  -- If a variable is used only for a specific journal entry and its direct content, store the variable in that journal
 
 
-####---------- Works Cited ----------####:
-Last Updated: 05.01.2024
-
-Greek History:
-1. Clogg, Richard (1979). A Short History of Modern Greece
-2. Clogg, Richard (2002). A Concise History of Greece
-3. Finlay, George (1877). A history of Greece, from its conquest by the Romans to the present time, B.C. 146 to A.D. 1864, Vol 7
-4. Gallant, Thomas (2016). Modern Greece: A Political and Social History from the War of Independence to the Present
-5. Gennadios, Ioannes (1870). Notes on the Recent Murders by Brigands in Greece
-6. Kairophylas, Kostas (1915). Eleftherios Venizelos, His Life and Work
-7. Christmas, Walter (1914). King George of Greece
-8. Avdela, Efi (2005). Engendering ‘Greekness’: Women's Emancipation and Irredentist Politics in Nineteenth-Century Greece
-9. Tsivanopoulos, Sōkrates (1864). Greece: Its Condition During the Reign of King Otho and Is Prospects under His Majesty George I.
-10. Petropulos, John A (1968). Politics and Statecraft in the Kingdom of Greece, 1833-1843
-
-Last Words by Koert Davidse: vimeo . com / 88034680
-
-
 ####---------- Planned Content/Reworks ----------####
-----GREFM: Greek Content Module
+----GREFM: Greek Content Module (GRE, BYZ)
  - Increase number of factors that contribute to the Hellenism vs Romanism journal
  - Expansion to Theodoro Content
 
-----BALKFM: Balkans Content Module
+----BALKFM: Balkans Content Module (YUG, MON, SER, BUL, ROM, BOS, ALB, CRO. SLO)
  - MON: Content for the 1905 Constitution
  - SER: Content for the Serb People's Movement
  - SER: Content for the Serbian Radical Constitution, Timok Rebellion, and May Coup
@@ -130,21 +125,21 @@ Last Words by Koert Davidse: vimeo . com / 88034680
  - CRO: Initial round of content
  - SLO: Initial round of content
 
-----TURKFM: Ottoman Content Module
+----TURKFM: Ottoman Content Module (TUR, TURAN)
  - TUR:  Second Chapter of Ottoman Content extending from Abdulmecid to Abdulaziz
 
-----MGRBFM: Maghrebi Content Module
+----MGRBFM: Maghrebi Content Module (EGY, TRI, TUN, FZN)
  - EGY:
  - TRI:
  - TUN:
  - FZN:
 
-----HAYKFM: Highlands Content Module
+----HAYKFM: Highlands Content Module (KUR, ARM, ASS)
  - KUR:
  - ARM:
  - ASS:
 
-----LEVAFM: Levantine Content Module
+----LEVAFM: Levantine Content Module (SYR, PAL)
  - SYR:
  - PAL:
 
@@ -159,6 +154,24 @@ Last Words by Koert Davidse: vimeo . com / 88034680
 ----Compatibility:
  - Morgenröte - The Dawn of Flavor
  - Better Politics Mod
+
+
+ ####---------- Works Cited ----------####:
+ Last Updated: 05.01.2024
+
+ Greek History:
+ 1. Clogg, Richard (1979). A Short History of Modern Greece
+ 2. Clogg, Richard (2002). A Concise History of Greece
+ 3. Finlay, George (1877). A history of Greece, from its conquest by the Romans to the present time, B.C. 146 to A.D. 1864, Vol 7
+ 4. Gallant, Thomas (2016). Modern Greece: A Political and Social History from the War of Independence to the Present
+ 5. Gennadios, Ioannes (1870). Notes on the Recent Murders by Brigands in Greece
+ 6. Kairophylas, Kostas (1915). Eleftherios Venizelos, His Life and Work
+ 7. Christmas, Walter (1914). King George of Greece
+ 8. Avdela, Efi (2005). Engendering ‘Greekness’: Women's Emancipation and Irredentist Politics in Nineteenth-Century Greece
+ 9. Tsivanopoulos, Sōkrates (1864). Greece: Its Condition During the Reign of King Otho and Is Prospects under His Majesty George I.
+ 10. Petropulos, John A (1968). Politics and Statecraft in the Kingdom of Greece, 1833-1843
+
+ Last Words by Koert Davidse: vimeo . com / 88034680
 
 
 ####---------- Published Updates ----------####
