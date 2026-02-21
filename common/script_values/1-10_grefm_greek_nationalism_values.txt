@@ -20,25 +20,48 @@ grefm_hellenism_value = {
 	}
 	if = {
 		limit = {
-			var:grefm_language_var ?= flag:grefm_dialect_katharevousa
+			has_variable = grefm_language_var
 		}
-		add = {
-			value = 2
-			desc = grefm_value_from_katharevousa
+		if = {
+			limit = {
+				var:grefm_language_var ?= flag:grefm_dialect_katharevousa
+			}
+			add = {
+				value = 2
+				desc = grefm_value_from_katharevousa
+			}
+		}
+		if = {
+			limit = {
+				var:grefm_language_var ?= flag:grefm_dialect_demotic
+			}
+			add = {
+				value = 1
+				desc = grefm_value_from_demotic
+			}
 		}
 	}
 	if = {
 		limit = {
-			var:grefm_language_var ?= flag:grefm_dialect_demotic
+			morgenrote_is_active = yes
 		}
 		add = {
-			value = 1
-			desc = grefm_value_from_demotic
+			desc = grefm_value_from_aegean_artifact_major
+			value = var:lepsius_aegean_artifact_major
+		}
+		add = {
+			desc = grefm_value_from_aegean_artifact_minor
+			value = {
+				add = var:lepsius_aegean_artifact_minor
+				multiply = 0.1
+			}
 		}
 	}
-	add = {
-		value = grefm_hellenic_artifact_value
-		desc = grefm_value_from_hellene_artifacts
+	else = {
+		add = {
+			value = grefm_hellenic_artifact_value
+			desc = grefm_value_from_hellene_artifacts
+		}
 	}
 	if = {
 		limit = {
@@ -75,26 +98,50 @@ grefm_romanism_value = {
 	}
 	if = {
 		limit = {
-			var:grefm_language_var ?= flag:grefm_dialect_rhomaiika
+			has_variable = grefm_language_var
 		}
-		add = {
-			value = 2
-			desc = grefm_value_from_rhomaiika
+		if = {
+			limit = {
+				var:grefm_language_var ?= flag:grefm_dialect_rhomaiika
+			}
+			add = {
+				value = 2
+				desc = grefm_value_from_rhomaiika
+			}
+		}
+		if = {
+			limit = {
+				var:grefm_language_var ?= flag:grefm_dialect_khoine
+			}
+			add = {
+				value = 1
+				desc = grefm_value_from_khoine
+			}
 		}
 	}
 	if = {
 		limit = {
-			var:grefm_language_var ?= flag:grefm_dialect_khoine
+			morgenrote_is_active = yes
 		}
 		add = {
-			value = 1
-			desc = grefm_value_from_khoine
+			desc = grefm_value_from_local_artifact_major
+			value = var:lepsius_local_artifact_major
+		}
+		add = {
+			desc = grefm_value_from_local_artifact_minor
+			value = {
+				add = var:lepsius_local_artifact_minor
+				multiply = 0.1
+			}
 		}
 	}
-	add = {
-		value = grefm_roman_artifact_value
-		desc = grefm_value_from_roman_artifacts
+	else = {
+		add = {
+			value = grefm_roman_artifact_value
+			desc = grefm_value_from_roman_artifacts
+		}
 	}
+
 	if = {
 		limit = {
 			ruler = {
@@ -318,6 +365,44 @@ grefm_roman_artifact_value = {
 	}
 }
 
+####---------- Greek Archaeology Values (MR) ----------####
+grefm_hellenic_archeaology_value = {
+	value = 0
+	add = {
+		desc = grefm_value_from_aegean_artifact_major
+		value = var:lepsius_aegean_artifact_major
+	}
+	add = {
+		desc = grefm_value_from_aegean_artifact_minor
+		value = {
+			add = var:lepsius_aegean_artifact_minor
+			multiply = 0.1
+		}
+	}
+}
+
+grefm_roman_archeaology_value = {
+	value = 0
+	add = {
+		desc = grefm_value_from_local_artifact_major
+		value = var:lepsius_local_artifact_major
+	}
+	add = {
+		desc = grefm_value_from_local_artifact_minor
+		value = {
+			add = var:lepsius_local_artifact_minor
+			multiply = 0.1
+		}
+	}
+}
+
+grefm_total_archeaology_value = {
+	value = 0
+	add = grefm_hellenic_archeaology_value
+	add = grefm_roman_archeaology_value
+	max = 10
+}
+
 ####---------- Greek Language Values ----------####
 grefm_hellene_radicals_value = {
 	value = {
@@ -435,11 +520,13 @@ grefm_language_decay_value = {
 	divide = 7 # this is meant to slow down everything and clap out the weakest of the three values
 }
 
-####---------- Greek Archaeology Values (MR) ----------####
-grefm_hellenic_archeaology_value = {
+grefm_literary_tradition_value = {
 	value = 0
-}
-
-grefm_roman_archeaology_value = {
-	value = 0
+	add = {
+		desc = grefm_value_from_literary_tradition
+		value = {
+			add = var:manzoni_literary_tradition_var
+			multiply = 0.1
+		}
+	}
 }

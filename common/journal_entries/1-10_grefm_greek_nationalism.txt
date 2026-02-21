@@ -154,9 +154,9 @@ je_grefm_archaeology = {
 	can_revolution_inherit = yes
 	transferable = no
 
-	scripted_button = grefm_archeaology_greek_sites_button
-	scripted_button = grefm_archeaology_roman_sites_button
-	scripted_button = grefm_archeaology_alternate_site_button
+	scripted_button = grefm_greek_sites_button
+	scripted_button = grefm_roman_sites_button
+	scripted_button = grefm_alternate_sites_button
 	scripted_button = grefm_archeaology_cancel_button
 
 	scripted_button = grefm_archeaology_parthenon_button_1
@@ -178,7 +178,6 @@ je_grefm_archaeology = {
 	scripted_button = grefm_archeaology_chios_button
 
 	is_shown_when_inactive = {
-		morgenrote_is_active = no
 		OR = {
 			country_has_primary_culture = cu:greek
 			country_has_primary_culture = cu:rhomaios
@@ -199,66 +198,77 @@ je_grefm_archaeology = {
 	}
 
 	complete = {
-		custom_tooltip = {
-			text = je_grefm_archaeology_complete
-			hidden_trigger = {
-				has_variable = grefm_archeaology_var
-				trigger_if = {
-					limit = {
-						OR = {
-							has_variable = grefm_hellenic_sites_allowed
-							has_variable = grefm_roman_sites_allowed
+		trigger_if = {
+			limit = {
+				morgenrote_is_active = yes
+			}
+			custom_tooltip = {
+				text = je_grefm_archaeology_complete_mgr
+				var:grefm_total_archeaology_var >= 10
+			}
+		}
+		trigger_else = {
+			custom_tooltip = {
+				text = je_grefm_archaeology_complete
+				hidden_trigger = {
+					has_variable = grefm_archeaology_var
+					trigger_if = {
+						limit = {
+							OR = {
+								has_variable = grefm_hellenic_sites_allowed
+								has_variable = grefm_roman_sites_allowed
+							}
 						}
-					}
-					has_variable = grefm_parthenon_1_complete
-					has_variable = grefm_parthenon_2_complete
-					has_variable = grefm_knossos_1_complete
-					has_variable = grefm_knossos_2_complete
-					has_variable = grefm_gla_complete
-					has_variable = grefm_delos_complete
-					has_variable = grefm_larissa_complete
-					has_variable = grefm_rhodes_complete
+						has_variable = grefm_parthenon_1_complete
+						has_variable = grefm_parthenon_2_complete
+						has_variable = grefm_knossos_1_complete
+						has_variable = grefm_knossos_2_complete
+						has_variable = grefm_gla_complete
+						has_variable = grefm_delos_complete
+						has_variable = grefm_larissa_complete
+						has_variable = grefm_rhodes_complete
 
-					has_variable = grefm_corinth_1_complete
-					has_variable = grefm_corinth_2_complete
-					has_variable = grefm_thessaloniki_complete
-					has_variable = grefm_thebes_complete
-					has_variable = grefm_nicomedia_complete
-					has_variable = grefm_smyrna_complete
-					has_variable = grefm_tyana_complete
-					has_variable = grefm_chios_complete
-				}
-				trigger_else_if = {
-					limit = {
-						country_has_primary_culture = cu:greek
-						NOT = {
-							country_has_primary_culture = cu:rhomaios
-						}
+						has_variable = grefm_corinth_1_complete
+						has_variable = grefm_corinth_2_complete
+						has_variable = grefm_thessaloniki_complete
+						has_variable = grefm_thebes_complete
+						has_variable = grefm_nicomedia_complete
+						has_variable = grefm_smyrna_complete
+						has_variable = grefm_tyana_complete
+						has_variable = grefm_chios_complete
 					}
-					has_variable = grefm_parthenon_1_complete
-					has_variable = grefm_parthenon_2_complete
-					has_variable = grefm_knossos_1_complete
-					has_variable = grefm_knossos_2_complete
-					has_variable = grefm_gla_complete
-					has_variable = grefm_delos_complete
-					has_variable = grefm_larissa_complete
-					has_variable = grefm_rhodes_complete
-				}
-				trigger_else_if = {
-					limit = {
-						country_has_primary_culture = cu:rhomaios
-						NOT = {
+					trigger_else_if = {
+						limit = {
 							country_has_primary_culture = cu:greek
+							NOT = {
+								country_has_primary_culture = cu:rhomaios
+							}
 						}
+						has_variable = grefm_parthenon_1_complete
+						has_variable = grefm_parthenon_2_complete
+						has_variable = grefm_knossos_1_complete
+						has_variable = grefm_knossos_2_complete
+						has_variable = grefm_gla_complete
+						has_variable = grefm_delos_complete
+						has_variable = grefm_larissa_complete
+						has_variable = grefm_rhodes_complete
 					}
-					has_variable = grefm_corinth_1_complete
-					has_variable = grefm_corinth_2_complete
-					has_variable = grefm_thessaloniki_complete
-					has_variable = grefm_thebes_complete
-					has_variable = grefm_nicomedia_complete
-					has_variable = grefm_smyrna_complete
-					has_variable = grefm_tyana_complete
-					has_variable = grefm_chios_complete
+					trigger_else_if = {
+						limit = {
+							country_has_primary_culture = cu:rhomaios
+							NOT = {
+								country_has_primary_culture = cu:greek
+							}
+						}
+						has_variable = grefm_corinth_1_complete
+						has_variable = grefm_corinth_2_complete
+						has_variable = grefm_thessaloniki_complete
+						has_variable = grefm_thebes_complete
+						has_variable = grefm_nicomedia_complete
+						has_variable = grefm_smyrna_complete
+						has_variable = grefm_tyana_complete
+						has_variable = grefm_chios_complete
+					}
 				}
 			}
 		}
@@ -269,6 +279,28 @@ je_grefm_archaeology = {
 	}
 
 	on_weekly_pulse = {
+		effect = {
+			if = {
+				limit = {
+					morgenrote_is_active = yes
+				}
+				scope:journal_entry = {
+					set_variable = {
+						name = grefm_hellenic_archeaology_var
+						value = grefm_hellenic_archeaology_value
+					}
+					set_variable = {
+						name = grefm_roman_archeaology_var
+						value = grefm_roman_archeaology_value
+					}
+					set_variable = {
+						name = grefm_total_archeaology_var
+						value = grefm_total_archeaology_value
+					}
+				}
+				remove_variable = grefm_archeaology_sites_var
+			}
+		}
 		events = {
 			grefm_greek_nationalism.043 # Hellenic Excavation Completed
 			grefm_greek_nationalism.044 # Roman Excavation Completed
@@ -356,106 +388,6 @@ je_grefm_national_language = {
 		custom_tooltip = {
 			text = je_grefm_national_language_complete
 			has_variable = grefm_language_var
-		}
-	}
-}
-
-####---------- Morgenrote Variants ----------####
-je_grefm_archaeology_mgr = {
-	group = je_group_historical_content
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	weight = 2000
-
-	should_be_pinned_by_default = yes
-	can_revolution_inherit = yes
-	transferable = no
-
-	is_shown_when_inactive = {
-		morgenrote_is_active = yes
-		OR = {
-			country_has_primary_culture = cu:greek
-			country_has_primary_culture = cu:rhomaios
-		}
-	}
-
-	possible = {
-		has_journal_entry = je_grefm_greek_nationalism
-		any_scope_building = {
-			is_building_type = building_university
-		}
-	}
-
-	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
-		grefm_initialize_anthropology_effect = yes
-#		trigger_event = grefm_greek_nationalism.040
-	}
-
-	complete = {
-		custom_tooltip = {
-			text = je_grefm_archaeology_mgr_complete
-		}
-	}
-
-	on_complete = {  }
-
-	on_weekly_pulse = {
-		effect = {
-			scope:journal_entry = {
-				set_variable = {
-					name = grefm_hellenic_archeaology_var
-					value = grefm_hellenic_archeaology_value
-				}
-				set_variable = {
-					name = grefm_roman_archeaology_var
-					value = grefm_roman_archeaology_value
-				}
-			}
-		}
-	}
-}
-
-je_grefm_national_language_mgr = {
-	group = je_group_historical_content
-	icon = "gfx/interface/icons/invention_icons/academia.dds"
-	weight = 2000
-
-	should_be_pinned_by_default = yes
-	can_revolution_inherit = yes
-	transferable = no
-
-	scripted_progress_bar = grefm_dimotiki_progress_bar
-	scripted_progress_bar = grefm_katharevousa_progress_bar
-	scripted_progress_bar = grefm_khoine_progress_bar
-	scripted_progress_bar = grefm_rhomaiika_progress_bar
-
-	scripted_button = grefm_declare_national_language_button
-
-	is_shown_when_inactive = {
-		morgenrote_is_active = yes
-		OR = {
-			country_has_primary_culture = cu:greek
-			country_has_primary_culture = cu:rhomaios
-		}
-	}
-
-	possible = {
-		has_journal_entry = je_grefm_greek_nationalism
-		literacy_rate > 0.30
-	}
-
-	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
-		trigger_event = grefm_greek_nationalism.006
-	}
-
-	complete = {
-		custom_tooltip = {
-			text = je_grefm_national_language_complete
-			custom_tooltip = {
-				text = je_grefm_national_language_complete
-				has_variable = grefm_language_var
-			}
 		}
 	}
 }
