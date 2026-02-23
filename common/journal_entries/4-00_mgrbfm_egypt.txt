@@ -257,8 +257,10 @@ je_mgrbfm_egypt_nationalism = {
 	scripted_progress_bar = mgrbfm_misri_identity_progress_bar
 	scripted_progress_bar = mgrbfm_arab_identity_progress_bar
 	scripted_progress_bar = mgrbfm_copt_identity_progress_bar
-
-#	scripted_button =
+	
+	scripted_button = grefm_embrace_misri_identity_button
+	scripted_button = grefm_embrace_arab_identity_button
+	scripted_button = grefm_embrace_copt_identity_button
 
 	is_shown_when_inactive = {
 		tlim_is_active_trigger = no
@@ -275,7 +277,14 @@ je_mgrbfm_egypt_nationalism = {
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
 		mgrbfm_egy_identity_variables_effect = yes
-#		trigger_event =
+		scope:journal_entry = {
+			save_scope_as = je_mgrbfm_egypt_nationalism
+		}
+		set_variable = {
+			name = je_mgrbfm_egypt_nationalism
+			value = scope:je_mgrbfm_egypt_nationalism
+		}
+		trigger_event = mgrbfm_egypt.100
 	}
 
 	modifiers_while_active = {
@@ -289,9 +298,8 @@ je_mgrbfm_egypt_nationalism = {
 			}
 			has_law_or_variant = law_type:law_ethnostate
 		}
-		
-		is_subject = no
 		NOR = {
+			is_subject = yes
 			has_law_or_variant = law_type:law_multicultural
 			any_interest_group = {
 				OR = {
@@ -303,43 +311,23 @@ je_mgrbfm_egypt_nationalism = {
 	}
 
 	on_complete = {
-		custom_tooltip = {
-			text = je_mgrbfm_egypt_nationalism_on_complete_1
-			if = {
-				limit = {
-					var:mgrbfm_national_identity_var ?= cu:misri
-				}
-#				trigger_event =
-			}
-		}
-		custom_tooltip = {
-			text = je_mgrbfm_egypt_nationalism_on_complete_2
-			if = {
-				limit = {
-					var:mgrbfm_national_identity_var ?= cu:arab
-				}
-#				trigger_event =
-			}
-		}
-		custom_tooltip = {
-			text = je_mgrbfm_egypt_nationalism_on_complete_3
-			if = {
-				limit = {
-					var:mgrbfm_national_identity_var ?= cu:coptic
-				}
-#				trigger_event =
-			}
-		}
+		custom_tooltip = je_mgrbfm_egypt_nationalism_on_complete_1
+		custom_tooltip = je_mgrbfm_egypt_nationalism_on_complete_2
+		custom_tooltip = je_mgrbfm_egypt_nationalism_on_complete_3
 		custom_tooltip = {
 			text = je_mgrbfm_egypt_nationalism_on_complete_4
 			if = {
 				limit = {
 					has_law_or_variant = law_type:law_ethnostate
-					NOT = {
-						has_variable = mgrbfm_national_identity_var
-					}
 				}
-#				trigger_event =
+				set_variable = {
+					name = mgrbfm_national_identity_var
+					value = cu:misri
+				}
+				trigger_event = {
+					id = mgrbfm_egypt.101
+					popup = yes
+				}
 			}
 		}
 	}
@@ -371,6 +359,10 @@ je_mgrbfm_egypt_imperialism = {
 	
 	possible = {
 		has_technology_researched = nationalism
+		OR = {
+			is_subject = no
+			is_country_type = recognized
+		}
 	}
 	
 	immediate = {}
@@ -415,4 +407,124 @@ je_mgrbfm_egypt_imperialism = {
 	on_fail = {}
 	
 	invalid = {}
+}
+
+je_mgrbfm_egypt_ethiopia = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	weight = 1000
+	
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+	
+	is_shown_when_inactive = {
+		c:EGY ?= this
+	}
+	
+	possible = {
+		has_technology_researched = colonization
+	}
+	
+	immediate = {
+	
+	}
+	
+	complete = {
+		OR = {
+			calc_true_if = {
+				amount >= 3
+				owns_entire_state_region = STATE_AMHARA
+				owns_entire_state_region = STATE_GONDER
+				owns_entire_state_region = STATE_OROMIA
+				owns_entire_state_region = STATE_ERITREA
+			}
+			trigger_if = {
+				limit = {
+					exists = c:ETH
+				}
+				c:ETH ?= {
+					is_subject_of = root
+					calc_true_if = {
+						amount >= 3
+						owns_entire_state_region = STATE_AMHARA
+						owns_entire_state_region = STATE_GONDER
+						owns_entire_state_region = STATE_OROMIA
+						owns_entire_state_region = STATE_ERITREA
+					}
+				}
+			}
+		}
+	}
+	
+	on_complete = {  }
+	
+	fail = {  }
+	
+	on_fail = {  }
+}
+
+je_mgrbfm_egypt_arabia = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	weight = 1000
+	
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+	
+	is_shown_when_inactive = {
+		c:EGY ?= this
+		has_technology_researched = colonization
+	}
+	
+	possible = {
+		OR = {
+			any_scope_state = {
+				is_in_geographic_region = geographic_region_arabia
+			}
+			any_subject_or_below = {
+				any_scope_state = {
+					is_in_geographic_region = geographic_region_arabia
+				}
+			}
+		}
+	}
+	
+	immediate = {  }
+	
+	complete = {
+		OR = {
+			calc_true_if = {
+				amount >= 3
+				owns_entire_state_region = STATE_AMHARA
+				owns_entire_state_region = STATE_GONDER
+				owns_entire_state_region = STATE_OROMIA
+				owns_entire_state_region = STATE_ERITREA
+			}
+			trigger_if = {
+				limit = {
+					exists = c:ARA
+				}
+				c:ARA ?= {
+					is_subject_of = root
+					calc_true_if = {
+						amount >= 3
+						owns_entire_state_region = STATE_AMHARA
+						owns_entire_state_region = STATE_GONDER
+						owns_entire_state_region = STATE_OROMIA
+						owns_entire_state_region = STATE_ERITREA
+					}
+				}
+			}
+		}
+	}
+	
+	on_complete = {  }
+	
+	fail = {  }
+	
+	on_fail = {  }
 }
