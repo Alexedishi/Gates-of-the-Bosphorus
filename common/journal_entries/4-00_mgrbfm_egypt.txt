@@ -258,9 +258,9 @@ je_mgrbfm_egypt_nationalism = {
 	scripted_progress_bar = mgrbfm_arab_identity_progress_bar
 	scripted_progress_bar = mgrbfm_copt_identity_progress_bar
 	
-	scripted_button = grefm_embrace_misri_identity_button
-	scripted_button = grefm_embrace_arab_identity_button
-	scripted_button = grefm_embrace_copt_identity_button
+	scripted_button = mgrbfm_embrace_misri_identity_button
+	scripted_button = mgrbfm_embrace_arab_identity_button
+	scripted_button = mgrbfm_embrace_copt_identity_button
 
 	is_shown_when_inactive = {
 		tlim_is_active_trigger = no
@@ -352,6 +352,7 @@ je_mgrbfm_egypt_imperialism = {
 	is_shown_when_inactive = {
 		c:EGY ?= this
 		NOR = {
+			has_variable = mgrbfm_weaksauce
 			has_variable = mgrbfm_egy_ambition_completed
 			has_journal_entry = je_mgrbfm_egypt_muhammad_ali
 		}
@@ -369,25 +370,17 @@ je_mgrbfm_egypt_imperialism = {
 	
 	complete = {
 		owns_entire_state_region = STATE_LOWER_EGYPT
-		custom_tooltip = {
-			text = je_mgrbfm_egypt_imperialism_complete_1
-			any_scope_state = {
-				count >= 5
-				region = sr:region_nile_basin
-				is_split_state = no
-			}
+		gbbf_controls_georegion_trigger = {
+			georegion = nile_river
 		}
-		custom_tooltip = {
-			text = je_mgrbfm_egypt_imperialism_complete_2
-			any_scope_state = {
-				count >= 6
-				is_in_geographic_region = geographic_region_levant
-				is_split_state = no
-			}
+		gbbf_controls_georegion_trigger = {
+			georegion = levant
 		}
 	}
 	
-	on_complete = {}
+	on_complete = {
+		set_variable = mgrbfm_egypt_imperialism_completed
+	}
 	
 	fail = {
 		OR = {
@@ -404,9 +397,101 @@ je_mgrbfm_egypt_imperialism = {
 		}
 	}
 	
-	on_fail = {}
+	on_fail = {
+		set_variable = mgrbfm_weaksauce
+	}
 	
 	invalid = {}
+}
+
+je_mgrbfm_egypt_arabia = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	weight = 1000
+	
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+	
+	is_shown_when_inactive = {
+		c:EGY ?= this
+		NOR = {
+			has_variable = mgrbfm_weaksauce
+			has_variable = mgrbfm_egy_ambition_completed
+			has_journal_entry = je_mgrbfm_egypt_muhammad_ali
+		}
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = mgrbfm_egypt_imperialism_completed
+			has_variable = mgrbfm_egypt_imperialism_completed
+		}
+		is_subject = no
+		has_technology_researched = colonization
+	}
+	
+	immediate = {  }
+	
+	complete = {
+		is_country_type = recognized
+		custom_tooltip = {
+			text = mgrfm_formed_ara
+			c:ARA ?= this
+		}
+		owns_entire_state_region = STATE_LOWER_EGYPT
+		gbbf_controls_georegion_trigger = {
+			georegion = nile_river
+		}
+		gbbf_controls_georegion_trigger = {
+			georegion = levant
+		}
+		gbbf_controls_georegion_trigger = {
+			georegion = levant
+		}
+		is_at_war = no
+		custom_tooltip = {
+			text = no_insurrectionary_movement_tt
+			NOT = {
+				any_political_movement = {
+					is_insurrectionary = yes
+				}
+			}
+		}
+		in_default = no
+		NOT = {
+			has_modifier = declared_bankruptcy
+		}
+	}
+	
+	on_complete = {  }
+	
+	fail = {
+		OR = {
+			trigger_if = {
+				limit = {
+					NOT = {
+						c:ARA ?= this
+					}
+				}
+				custom_tooltip = {
+					text = mgrbfm_ara_formed
+					exists = c:ARA
+				}
+			}
+			is_subject = yes
+			AND = {
+				country_rank < rank_value:minor_power
+				OR = {
+					gold_reserves < 0
+					has_modifier = declared_bankruptcy
+				}
+			}
+		}
+	}
+	
+	on_fail = {  }
 }
 
 je_mgrbfm_egypt_ethiopia = {
@@ -460,71 +545,8 @@ je_mgrbfm_egypt_ethiopia = {
 	
 	on_complete = {  }
 	
-	fail = {  }
-	
-	on_fail = {  }
-}
-
-je_mgrbfm_egypt_arabia = {
-	group = je_group_historical_content
-	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	weight = 1000
-	
-	should_be_pinned_by_default = yes
-	can_revolution_inherit = yes
-	transferable = no
-	can_deactivate = no
-	
-	is_shown_when_inactive = {
-		c:EGY ?= this
-		has_technology_researched = colonization
+	fail = {
 	}
-	
-	possible = {
-		OR = {
-			any_scope_state = {
-				is_in_geographic_region = geographic_region_arabia
-			}
-			any_subject_or_below = {
-				any_scope_state = {
-					is_in_geographic_region = geographic_region_arabia
-				}
-			}
-		}
-	}
-	
-	immediate = {  }
-	
-	complete = {
-		OR = {
-			calc_true_if = {
-				amount >= 3
-				owns_entire_state_region = STATE_AMHARA
-				owns_entire_state_region = STATE_GONDER
-				owns_entire_state_region = STATE_OROMIA
-				owns_entire_state_region = STATE_ERITREA
-			}
-			trigger_if = {
-				limit = {
-					exists = c:ARA
-				}
-				c:ARA ?= {
-					is_subject_of = root
-					calc_true_if = {
-						amount >= 3
-						owns_entire_state_region = STATE_AMHARA
-						owns_entire_state_region = STATE_GONDER
-						owns_entire_state_region = STATE_OROMIA
-						owns_entire_state_region = STATE_ERITREA
-					}
-				}
-			}
-		}
-	}
-	
-	on_complete = {  }
-	
-	fail = {  }
 	
 	on_fail = {  }
 }
