@@ -138,92 +138,135 @@ turkfm_sick_man.005 = { # Region Lost
 	trigger = {
 		OR = {
 			AND = {
-				has_variable = gbbf_controls_balkans
+				has_variable = gbbf_controls_anatolia
+				gbbf_controls_anatolia_trigger = no
+			}
+			AND = {
+				has_variable = gbbf_controls_balkan_highlands
 				gbbf_controls_balkan_highlands_trigger = no
 			}
 			AND = {
-				has_variable = gbbf_controls_anatolia
-				gbbf_controls_anatolia_trigger = no
+				has_variable = gbbf_controls_aegean_sea
+				gbbf_controls_aegean_sea_trigger = no
+			}
+			AND = {
+				has_variable = gbbf_controls_levant
+				gbbf_controls_levant_trigger = no
+			}
+			AND = {
+				has_variable = gbbf_controls_nile_river
+				gbbf_controls_nile_river_trigger = no
+			}
+			AND = {
+				has_variable = gbbf_controls_middle_east_highlands
+				gbbf_controls_middle_east_highlands_trigger = no
 			}
 			AND = {
 				has_variable = gbbf_controls_arabia
 				gbbf_controls_arabia_trigger = no
 			}
 			AND = {
-				has_variable = gbbf_controls_nile
-				gbbf_controls_nile_trigger = no
-			}
-			AND = {
 				has_variable = gbbf_controls_danubia
 				gbbf_controls_danubia_trigger = no
 			}
-			AND = {
-				has_variable = gbbf_controls_caucasus
-				gbbf_controls_caucasus_trigger = no
-			}
+		}
+	}
+
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_sick_man_main
 		}
 	}
 
 	immediate = {
 		if = {
 			limit = {
-				has_variable = gbbf_controls_balkans
-				gbbf_controls_balkan_highlands_trigger = no
-			}
-			sr:region_balkans = {
-				save_scope_as = turkfm_sregion_scope
-			}
-			remove_variable = gbbf_controls_balkans
-		}
-		else_if = {
-			limit = {
 				has_variable = gbbf_controls_anatolia
 				gbbf_controls_anatolia_trigger = no
 			}
-			sr:region_anatolia = {
-				save_scope_as = turkfm_sregion_scope
-			}
 			remove_variable = gbbf_controls_anatolia
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_anatolia
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = gbbf_controls_balkan_highlands
+				gbbf_controls_balkan_highlands_trigger = no
+			}
+			remove_variable = gbbf_controls_balkan_highlands
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_balkan_highlands
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = gbbf_controls_aegean_sea
+				gbbf_controls_aegean_sea_trigger = no
+			}
+			remove_variable = gbbf_controls_aegean_sea
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_aegean_sea
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = gbbf_controls_levant
+				gbbf_controls_levant_trigger = no
+			}
+			remove_variable = gbbf_controls_levant
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_levant
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = gbbf_controls_nile_river
+				gbbf_controls_nile_river_trigger = no
+			}
+			remove_variable = gbbf_controls_nile
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_nile_river
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = gbbf_controls_middle_east_highlands
+				gbbf_controls_middle_east_highlands_trigger = no
+			}
+			remove_variable = gbbf_controls_middle_east_highlands
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_middle_east_highlands
+			}
 		}
 		else_if = {
 			limit = {
 				has_variable = gbbf_controls_arabia
 				gbbf_controls_arabia_trigger = no
 			}
-			sr:region_arabic = {
-				save_scope_as = turkfm_sregion_scope
-			}
 			remove_variable = gbbf_controls_arabia
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_arabia
+			}
 		}
 		else_if = {
 			limit = {
-				has_variable = gbbf_controls_nile
-				turkfm_controls_nile_trigger = no
+				has_variable = gbbf_controls_danubia
+				gbbf_controls_danubia_trigger = no
 			}
-			sr:region_nile_basin = {
-				save_scope_as = turkfm_sregion_scope
+			remove_variable = gbbf_controls_danubia
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_danubia
 			}
-			remove_variable = turkfm_controls_nile
-		}
-		else_if = {
-			limit = {
-				has_variable = turkfm_controls_danubia
-				turkfm_controls_danubia_trigger = no
-			}
-			sr:region_danubia = {
-				save_scope_as = turkfm_sregion_scope
-			}
-			remove_variable = turkfm_controls_danubia
-		}
-		else_if = {
-			limit = {
-				has_variable = turkfm_controls_caucasus
-				turkfm_controls_caucasus_trigger = no
-			}
-			sr:region_caucasus = {
-				save_scope_as = turkfm_sregion_scope
-			}
-			remove_variable = turkfm_controls_caucasus
 		}
 		remove_modifier = modifier_turkfm_secured_region
 		remove_modifier = modifier_turkfm_lost_region
@@ -245,7 +288,6 @@ turkfm_sick_man.005 = { # Region Lost
 			}
 		}
 	}
-
 }
 
 turkfm_sick_man.006 = { # Region Secured
@@ -272,39 +314,51 @@ turkfm_sick_man.006 = { # Region Secured
 		OR = {
 			AND = {
 				NOT = {
-					has_variable = turkfm_controls_balkans
+					has_variable = gbbf_controls_anatolia
 				}
-				turkfm_controls_balkan_highlands_trigger = yes
+				gbbf_controls_anatolia_trigger = yes
 			}
 			AND = {
 				NOT = {
-					has_variable = turkfm_controls_anatolia
+					has_variable = gbbf_controls_balkan_highlands
 				}
-				turkfm_controls_anatolia_trigger = yes
+				gbbf_controls_balkan_highlands_trigger = yes
 			}
 			AND = {
 				NOT = {
-					has_variable = turkfm_controls_arabia
+					has_variable = gbbf_controls_aegean_sea
 				}
-				turkfm_controls_arabia_trigger = yes
+				gbbf_controls_aegean_sea_trigger = yes
 			}
 			AND = {
 				NOT = {
-					has_variable = turkfm_controls_nile
+					has_variable = gbbf_controls_levant
 				}
-				turkfm_controls_nile_trigger = yes
+				gbbf_controls_levant_trigger = yes
 			}
 			AND = {
 				NOT = {
-					has_variable = turkfm_controls_danubia
+					has_variable = gbbf_controls_nile_river
 				}
-				turkfm_controls_danubia_trigger = yes
+				gbbf_controls_nile_river_trigger = yes
 			}
 			AND = {
 				NOT = {
-					has_variable = turkfm_controls_caucasus
+					has_variable = gbbf_controls_middle_east_highlands
 				}
-				turkfm_controls_caucasus_trigger = yes
+				gbbf_controls_middle_east_highlands_trigger = yes
+			}
+			AND = {
+				NOT = {
+					has_variable = gbbf_controls_arabia
+				}
+				gbbf_controls_arabia_trigger = yes
+			}
+			AND = {
+				NOT = {
+					has_variable = gbbf_controls_danubia
+				}
+				gbbf_controls_danubia_trigger = yes
 			}
 		}
 	}
@@ -313,74 +367,106 @@ turkfm_sick_man.006 = { # Region Secured
 		if = {
 			limit = {
 				NOT = {
-					has_variable = turkfm_controls_balkans
+					has_variable = gbbf_controls_anatolia
 				}
-				turkfm_controls_balkan_highlands_trigger = yes
+				gbbf_controls_anatolia_trigger = yes
 			}
-			sr:region_balkans = {
-				save_scope_as = turkfm_sregion_scope
+			set_variable = gbbf_controls_anatolia
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_anatolia
 			}
-			set_variable = turkfm_controls_balkans
 		}
 		else_if = {
 			limit = {
 				NOT = {
-					has_variable = turkfm_controls_anatolia
+					has_variable = gbbf_controls_balkan_highlands
 				}
-				turkfm_controls_anatolia_trigger = yes
+				gbbf_controls_balkan_highlands_trigger = yes
 			}
-			sr:region_anatolia = {
-				save_scope_as = turkfm_sregion_scope
+			set_variable = gbbf_controls_balkan_highlands
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_balkan_highlands
 			}
-			set_variable = turkfm_controls_anatolia
 		}
 		else_if = {
 			limit = {
 				NOT = {
-					has_variable = turkfm_controls_arabia
+					has_variable = gbbf_controls_aegean_sea
 				}
-				turkfm_controls_arabia_trigger = yes
+				gbbf_controls_aegean_sea_trigger = yes
 			}
-			sr:region_arabic = {
-				save_scope_as = turkfm_sregion_scope
+			set_variable = gbbf_controls_aegean_sea
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_aegean_sea
 			}
-			set_variable = turkfm_controls_arabia
 		}
 		else_if = {
 			limit = {
 				NOT = {
-					has_variable = turkfm_controls_nile
+					has_variable = gbbf_controls_levant
 				}
-				turkfm_controls_nile_trigger = yes
+				gbbf_controls_levant_trigger = yes
 			}
-			sr:region_nile_basin = {
-				save_scope_as = turkfm_sregion_scope
+			set_variable = gbbf_controls_levant
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_levant
 			}
-			set_variable = turkfm_controls_nile
 		}
 		else_if = {
 			limit = {
 				NOT = {
-					has_variable = turkfm_controls_danubia
+					has_variable = gbbf_controls_nile_river
 				}
-				turkfm_controls_danubia_trigger = yes
+				gbbf_controls_nile_river_trigger = yes
 			}
-			sr:region_danubia = {
-				save_scope_as = turkfm_sregion_scope
+			set_variable = gbbf_controls_nile
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_nile_river
 			}
-			set_variable = turkfm_controls_danubia
 		}
 		else_if = {
 			limit = {
 				NOT = {
-					has_variable = turkfm_controls_caucasus
+					has_variable = gbbf_controls_middle_east_highlands
 				}
-				turkfm_controls_caucasus_trigger = yes
+				gbbf_controls_middle_east_highlands_trigger = yes
 			}
-			sr:region_caucasus = {
-				save_scope_as = turkfm_sregion_scope
+			set_variable = gbbf_controls_middle_east_highlands
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_middle_east_highlands
 			}
-			set_variable = turkfm_controls_caucasus
+		}
+		else_if = {
+			limit = {
+				NOT = {
+					has_variable = gbbf_controls_arabia
+				}
+				gbbf_controls_arabia_trigger = yes
+			}
+			set_variable = gbbf_controls_arabia
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_arabia
+			}
+		}
+		else_if = {
+			limit = {
+				NOT = {
+					has_variable = gbbf_controls_danubia
+				}
+				gbbf_controls_danubia_trigger = yes
+			}
+			set_variable = gbbf_controls_danubia
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_danubia
+			}
 		}
 		remove_modifier = modifier_turkfm_lost_region
 		remove_modifier = modifier_turkfm_secured_region
