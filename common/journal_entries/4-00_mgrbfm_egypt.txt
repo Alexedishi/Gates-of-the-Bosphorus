@@ -203,6 +203,10 @@ je_mgrbfm_egypt_modernization = {
 		effect = {
 			scope:journal_entry = {
 				set_variable = {
+					name = gbbf_country_monopolies_var
+					value = gbbf_country_monopolies_value
+				}
+				set_variable = {
 					name = mgrbfm_egypt_modernization_progress_var
 					value = owner.mgrbfm_egypt_modernization_progress_value
 				}
@@ -355,7 +359,6 @@ je_mgrbfm_egypt_imperialism = {
 		NOR = {
 			has_variable = mgrbfm_weaksauce
 			has_variable = mgrbfm_egy_ambition_completed
-			has_journal_entry = je_mgrbfm_egypt_muhammad_ali
 		}
 	}
 	
@@ -364,6 +367,9 @@ je_mgrbfm_egypt_imperialism = {
 		OR = {
 			is_subject = no
 			is_country_type = recognized
+		}
+		NOT = {
+			has_journal_entry = je_mgrbfm_egypt_muhammad_ali
 		}
 	}
 	
@@ -380,7 +386,7 @@ je_mgrbfm_egypt_imperialism = {
 	}
 	
 	on_complete = {
-		set_variable = mgrbfm_egypt_imperialism_completed
+		set_variable = mgrbfm_egy_ambition_completed
 	}
 	
 	fail = {
@@ -419,15 +425,19 @@ je_mgrbfm_egypt_arabia = {
 		c:EGY ?= this
 		NOR = {
 			has_variable = mgrbfm_weaksauce
-			has_variable = mgrbfm_egy_ambition_completed
-			has_journal_entry = je_mgrbfm_egypt_muhammad_ali
+			
+		}
+		has_technology_researched = nationalism
+		OR = {
+			is_subject = no
+			is_country_type = recognized
 		}
 	}
 	
 	possible = {
 		custom_tooltip = {
 			text = mgrbfm_egypt_imperialism_completed
-			has_variable = mgrbfm_egypt_imperialism_completed
+			has_variable = mgrbfm_egy_ambition_completed
 		}
 		is_subject = no
 		has_technology_researched = colonization
@@ -442,6 +452,8 @@ je_mgrbfm_egypt_arabia = {
 			c:ARA ?= this
 		}
 		owns_entire_state_region = STATE_LOWER_EGYPT
+		owns_entire_state_region = STATE_PALESTINE
+		owns_entire_state_region = STATE_HEDJAZ
 		gbbf_controls_georegion_trigger = {
 			georegion = nile_river
 		}
@@ -561,7 +573,9 @@ je_mgrbfm_egypt_sudan = {
 		}
 	}
 
-	on_complete = {  }
+	on_complete = {
+		trigger_event = #
+	}
 	
 	fail = {
 		NOR = {
@@ -571,7 +585,43 @@ je_mgrbfm_egypt_sudan = {
 		}
 	}
 
-	on_fail = {  }
+	on_fail = {
+		if = {
+			limit = {
+				exists = c:SUD
+			}
+			if = {
+				limit = {
+					c:SUD ?= {
+						is_subject_of = root
+						is_diplomatic_play_enemy_of = root
+					}
+				}
+				trigger_event = #
+			}
+			else_if = {
+				limit = {
+					c:SUD ?= {
+						is_subject_of = root
+					}
+				}
+				trigger_event = #
+			}
+			else_if = {
+				limit = {
+					c:SUD ?= {
+						NOT = {
+							is_subject_of = root
+						}
+					}
+				}
+				trigger_event = #
+			}
+		}
+		else = {
+			trigger_event = #
+		}
+	}
 }
 
 je_mgrbfm_egypt_ethiopia = {
