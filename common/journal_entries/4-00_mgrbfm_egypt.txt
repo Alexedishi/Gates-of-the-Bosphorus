@@ -527,8 +527,6 @@ je_mgrbfm_egypt_sudan = {
 	can_revolution_inherit = yes
 	transferable = no
 	
-	trigger_event = mgrbfm_egypt.210
-	
 	complete = {
 		trigger_if = {
 			limit = {
@@ -584,10 +582,28 @@ je_mgrbfm_egypt_sudan = {
 				}
 			}
 		}
+		trigger_if = {
+			limit = {
+				exists = c:SUD
+			}
+			c:SUD ?= {
+				is_subject_of = root
+			}
+		}
 	}
 
 	on_complete = {
-		trigger_event = mgrbfm_egypt.211
+		if = {
+			limit = {
+				c:SUD ?= {
+					is_subject_of = root
+				}
+			}
+			trigger_event = mgrbfm_egypt.210
+		}
+		else = {
+			trigger_event = mgrbfm_egypt.211
+		}
 	}
 	
 	fail = {
@@ -595,6 +611,14 @@ je_mgrbfm_egypt_sudan = {
 			has_state_in_state_region = STATE_KORDOFAN
 			has_state_in_state_region = STATE_BLUE_NILE
 			has_state_in_state_region = STATE_DONGOLA
+			trigger_if = {
+				limit = {
+					exists = c:SUD
+				}
+				c:SUD ?= {
+					is_subject_of = root
+				}
+			}
 		}
 	}
 
@@ -615,24 +639,16 @@ je_mgrbfm_egypt_sudan = {
 			else_if = {
 				limit = {
 					c:SUD ?= {
-						is_subject_of = root
-					}
-				}
-				trigger_event = mgrbfm_egypt.213
-			}
-			else_if = {
-				limit = {
-					c:SUD ?= {
 						NOT = {
 							is_subject_of = root
 						}
 					}
 				}
-				trigger_event = mgrbfm_egypt.214
+				trigger_event = mgrbfm_egypt.213
 			}
 		}
 		else = {
-			trigger_event = mgrbfm_egypt.215
+			trigger_event = mgrbfm_egypt.214
 		}
 	}
 }
