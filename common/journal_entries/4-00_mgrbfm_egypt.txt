@@ -11,6 +11,8 @@
 	is_shown_in_lobby = {
 		c:EGY ?= this
 	}
+
+	scripted_button = mgrbfm_broker_colonization_button
 	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
@@ -132,8 +134,8 @@
 			trigger = {
 				ruler ?= {
 					OR = {
-						has_template = egy_muhammad_ali_template
-						has_template = egy_ibrahim_alawi_template
+						has_template = template_mgrbfm_alawi_muhammad
+						has_template = template_mgrbfm_alawi_ibrahim
 					}
 				}
 			}
@@ -397,6 +399,23 @@ je_mgrbfm_egypt_imperialism = {
 		gbbf_controls_georegion_trigger = {
 			georegion = levant
 		}
+		trigger_if = {
+			limit = {
+				exists = c:TUR
+				c:TUR = {
+					is_power_bloc_leader = yes
+				}
+			}
+			custom_tooltip = {
+				text = je_mgrbfm_egypt_imperialism_complete
+				NOT = {
+					any_country = {
+						is_in_same_power_bloc = c:TUR
+						is_in_geographic_region = geographic_region_greater_egypt
+					}
+				}
+			}
+		}
 	}
 	
 	on_complete = {
@@ -422,8 +441,6 @@ je_mgrbfm_egypt_imperialism = {
 	on_fail = {
 		set_variable = mgrbfm_weaksauce
 	}
-	
-	invalid = {}
 }
 
 je_mgrbfm_egypt_arabia = {
@@ -440,13 +457,8 @@ je_mgrbfm_egypt_arabia = {
 		c:EGY ?= this
 		NOR = {
 			has_variable = mgrbfm_weaksauce
-			
 		}
 		has_technology_researched = nationalism
-		OR = {
-			is_subject = no
-			is_country_type = recognized
-		}
 	}
 	
 	possible = {
@@ -454,8 +466,14 @@ je_mgrbfm_egypt_arabia = {
 			text = mgrbfm_egypt_imperialism_completed
 			has_variable = mgrbfm_egy_ambition_completed
 		}
+		country_rank > rank_value:minor_power
 		is_subject = no
 		has_technology_researched = colonization
+		hidden_trigger = {
+			NOT = {
+				has_modifier = declared_bankruptcy
+			}
+		}
 	}
 	
 	immediate = {  }
@@ -480,6 +498,25 @@ je_mgrbfm_egypt_arabia = {
 		}
 		gbbf_controls_georegion_trigger = {
 			georegion = middle_east_highlands
+		}
+		trigger_if = {
+			limit = {
+				exists = c:TUR
+			}
+			custom_tooltip = {
+				text = je_mgrbfm_egypt_imperialism_complete
+				NOT = {
+					any_state_in_greater_egypt = {
+						owner = {
+							OR = {
+								c:TUR ?= this
+								top_overlord ?= c:TUR
+								is_in_same_power_bloc = c:TUR
+							}
+						}
+					}
+				}
+			}
 		}
 		is_at_war = no
 		custom_tooltip = {
@@ -512,9 +549,12 @@ je_mgrbfm_egypt_arabia = {
 				}
 			}
 			is_subject = yes
-			AND = {
-				country_rank < rank_value:minor_power
-				OR = {
+			country_rank < rank_value:minor_power
+			trigger_if = {
+				limit = {
+					is_player = yes # bruh AI be stoopid sometimes
+				}
+				AND = {
 					gold_reserves < 0
 					has_modifier = declared_bankruptcy
 				}
@@ -676,6 +716,15 @@ je_mgrbfm_egypt_ethiopia = {
 	
 	possible = {
 		has_technology_researched = colonization
+		any_scope_state = {
+			filter = {
+				OR = {
+					state_region = s:STATE_BLUE_NILE
+					state_region = s:STATE_ERITREA
+				}
+			}
+			is_incorporated = yes
+		}
 	}
 	
 	immediate = {  }

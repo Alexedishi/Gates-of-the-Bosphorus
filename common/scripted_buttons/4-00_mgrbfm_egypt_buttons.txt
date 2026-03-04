@@ -1,4 +1,59 @@
-﻿mgrbfm_embrace_misri_identity_button = {
+﻿mgrbfm_broker_colonization_button = {
+	name = mgrbfm_broker_colonization_button
+	desc = mgrbfm_broker_colonization_button_desc
+
+	visible = {
+		NOR = {
+			owns_entire_state_region = STATE_MATRUH
+			owns_entire_state_region = STATE_EGYPTIAN_DESERT
+		}
+	}
+	possible = {
+		has_institution = institution_colonial_affairs
+		any_scope_state = {
+			filter = {
+				OR = {
+					state_region = s:STATE_MATRUH
+					state_region = s:STATE_EGYPTIAN_DESERT
+				}
+			}
+			is_under_colonization = yes
+		}
+	}
+	effect = {
+		every_scope_state = {
+			limit = {
+				OR = {
+					state_region = s:STATE_MATRUH
+					state_region = s:STATE_EGYPTIAN_DESERT
+				}
+				is_under_colonization = yes
+				NOT = {
+					has_modifier = modifier_mgrbfm_brokered_colonization_deal_state
+				}
+			}
+			add_modifier = {
+				name = modifier_mgrbfm_brokered_colonization_deal_state
+				months = long_modifier_time
+			}
+			remove_modifier = modifier_mgrbfm_tribal_resistance
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_modifier = modifier_mgrbfm_brokered_colonization_deal_country
+				}
+			}
+			add_modifier = {
+				name = modifier_mgrbfm_brokered_colonization_deal_country
+				months = long_modifier_time
+				is_decaying = yes
+			}
+		}
+	}
+}
+
+mgrbfm_embrace_misri_identity_button = {
 	name = "mgrbfm_embrace_misri_identity_button"
 	desc = "mgrbfm_embrace_misri_identity_button_desc"
 	
