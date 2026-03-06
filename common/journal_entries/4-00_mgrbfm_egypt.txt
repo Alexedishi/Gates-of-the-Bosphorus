@@ -1,19 +1,20 @@
-﻿je_mgrbfm_egypt_muhammad_ali = {
+﻿####---------- Egyptian Narrative Content -----------####
+je_mgrbfm_egypt_muhammad_ali = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_hegemon.dds"
 	weight = 100
-	
+
 	should_be_pinned_by_default = yes
 	can_revolution_inherit = yes
 	transferable = no
 	can_deactivate = no
-	
+
 	is_shown_in_lobby = {
 		c:EGY ?= this
 	}
 
 	scripted_button = mgrbfm_broker_colonization_button
-	
+
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
 		scope:journal_entry = {
@@ -38,11 +39,11 @@
 			save_scope_as = ottoman_scope
 		}
 	}
-	
+
 	modifiers_while_active = {
 		modifier_mgrbfm_imperial_ambitions
 	}
-	
+
 	complete = {
 		trigger_if = {
 			limit = {
@@ -83,12 +84,12 @@
 		}
 		country_or_subject_owns_entire_state_region = STATE_HEDJAZ
 	}
-	
+
 	on_complete = {
 		trigger_event = mgrbfm_egypt.009
 		set_variable = mgrbfm_egy_ambition_completed
 	}
-	
+
 	fail = {
 		custom_tooltip = {
 			text = je_mgrbfm_egypt_muhammad_ali_fail
@@ -100,7 +101,7 @@
 			}
 		}
 	}
-	
+
 	on_fail = {
 		trigger_event = mgrbfm_egypt.008
 	}
@@ -147,20 +148,20 @@ je_mgrbfm_egypt_modernization = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/invention_icons/nationalism.dds"
 	weight = 100
-	
+
 	should_be_pinned_by_default = yes
 	can_revolution_inherit = yes
 	transferable = no
 	can_deactivate = no
-	
+
 	is_shown_in_lobby = {
 		c:EGY ?= this
 	}
-	
+
 	scripted_progress_bar = mgrbfm_egypt_modernization_progress_bar
 
-#	scripted_button =
-	
+	#	scripted_button =
+
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
 		scope:journal_entry = {
@@ -184,7 +185,7 @@ je_mgrbfm_egypt_modernization = {
 		modifier_mgrbfm_modernizing_drive
 		modifier_mgrbfm_resistant_fellahin
 	}
-	
+
 	complete = {
 		custom_tooltip = {
 			text = je_mgrbfm_egypt_modernization_complete
@@ -201,14 +202,14 @@ je_mgrbfm_egypt_modernization = {
 			}
 		}
 	}
-	
+
 	on_complete = {
 		trigger_event = mgrbfm_egypt.010
 		remove_variable = je_mgrbfm_egypt_modernization
 	}
-	
+
 	timeout = 10950
-	
+
 	on_timeout = {
 		trigger_event = mgrbfm_egypt.011
 		remove_variable = je_mgrbfm_egypt_modernization
@@ -258,6 +259,8 @@ je_mgrbfm_egypt_modernization = {
 	}
 }
 
+
+####---------- Egyptian Historical Content -----------####
 je_mgrbfm_egypt_nationalism = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_eagle.dds"
@@ -276,7 +279,7 @@ je_mgrbfm_egypt_nationalism = {
 	scripted_progress_bar = mgrbfm_misri_identity_progress_bar
 	scripted_progress_bar = mgrbfm_arab_identity_progress_bar
 	scripted_progress_bar = mgrbfm_copt_identity_progress_bar
-	
+
 	scripted_button = mgrbfm_embrace_misri_identity_button
 	scripted_button = mgrbfm_embrace_arab_identity_button
 	scripted_button = mgrbfm_embrace_copt_identity_button
@@ -351,7 +354,7 @@ je_mgrbfm_egypt_nationalism = {
 		}
 		remove_variable = je_mgrbfm_egypt_nationalism
 	}
-	
+
 	on_weekly_pulse = {
 		effect = {
 			mgrbfm_egy_identity_variables_effect = yes
@@ -359,16 +362,133 @@ je_mgrbfm_egypt_nationalism = {
 	}
 }
 
-je_mgrbfm_egypt_imperialism = {
-	group = je_group_historical_content
-	icon = "gfx/interface/icons/event_icons/event_eagle.dds"
+je_mgrbfm_egypt_nile_river = {
+	group = je_group_global_international_situations
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
 	weight = 1000
-	
+
 	should_be_pinned_by_default = yes
 	can_revolution_inherit = yes
 	transferable = no
 	can_deactivate = no
-	
+
+	should_be_involved = {
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_nile_river
+		}
+	}
+
+	immediate = {
+		scope:journal_entry = {
+			set_variable = {
+				name = mgrbfm_nile_control_var
+				value = 0
+			}
+		}
+	}
+
+	complete = {
+		any_state_in_lower_nile = {
+			filter = {
+				owner = {
+					NOT = {
+						is_country_type = decentralized
+					}
+				}
+			}
+			count = all
+			OR = {
+				is_production_method_active = {
+					building_type = gbbf_building_nile_barrage
+					production_method = pm_gbbf_adequate_reservior
+				}
+				is_production_method_active = {
+					building_type = gbbf_building_nile_barrage
+					production_method = pm_gbbf_massive_reservior
+				}
+			}
+		}
+	}
+
+	on_complete = {
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			scope:journal_entry = {
+				set_variable = {
+					name = mgrbfm_nile_control_var
+					value = mgrbfm_nile_control_value
+				}
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
+					NOT = {
+						any_scope_state = {
+							is_in_geographic_region = geographic_region_lower_nile
+						}
+					}
+				}
+				scope:journal_entry = {
+					remove_involved_country = prev
+				}
+			}
+			every_country = {
+				limit = {
+					any_scope_state = {
+						is_in_geographic_region = geographic_region_lower_nile
+					}
+					NOT = {
+						is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
+					}
+				}
+				scope:journal_entry = {
+					add_involved_country = prev
+				}
+			}
+		}
+	}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_mgrbfm_egypt_nile_river_complete_status_1
+				trigger = {
+					scope:journal_entry.var:mgrbfm_nile_control_var < 2
+				}
+			}
+			triggered_desc = {
+				desc = je_mgrbfm_egypt_nile_river_complete_status_3
+				trigger = {
+					scope:journal_entry.var:mgrbfm_nile_control_var > 3
+				}
+			}
+			triggered_desc = {
+				desc = je_mgrbfm_egypt_nile_river_complete_status_2
+			}
+		}
+
+	}
+}
+
+
+####---------- Egyptian Imperialism Content -----------####
+je_mgrbfm_egypt_imperialism = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_eagle.dds"
+	weight = 1000
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+
 	is_shown_when_inactive = {
 		c:EGY ?= this
 		NOR = {
@@ -376,7 +496,7 @@ je_mgrbfm_egypt_imperialism = {
 			has_variable = mgrbfm_egy_ambition_completed
 		}
 	}
-	
+
 	possible = {
 		has_technology_researched = nationalism
 		OR = {
@@ -387,9 +507,9 @@ je_mgrbfm_egypt_imperialism = {
 			has_journal_entry = je_mgrbfm_egypt_muhammad_ali
 		}
 	}
-	
+
 	immediate = {}
-	
+
 	complete = {
 		owns_entire_state_region = STATE_LOWER_EGYPT
 		country_or_subject_owns_entire_state_region = STATE_HEDJAZ
@@ -417,12 +537,12 @@ je_mgrbfm_egypt_imperialism = {
 			}
 		}
 	}
-	
+
 	on_complete = {
 		trigger_event = mgrbfm_egypt.200
 		set_variable = mgrbfm_egy_ambition_completed
 	}
-	
+
 	fail = {
 		OR = {
 			is_subject_type = subject_type_puppet
@@ -437,7 +557,7 @@ je_mgrbfm_egypt_imperialism = {
 			}
 		}
 	}
-	
+
 	on_fail = {
 		set_variable = mgrbfm_weaksauce
 	}
@@ -447,12 +567,12 @@ je_mgrbfm_egypt_arabia = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	weight = 1000
-	
+
 	should_be_pinned_by_default = yes
 	can_revolution_inherit = yes
 	transferable = no
 	can_deactivate = no
-	
+
 	is_shown_when_inactive = {
 		c:EGY ?= this
 		NOR = {
@@ -460,7 +580,7 @@ je_mgrbfm_egypt_arabia = {
 		}
 		has_technology_researched = nationalism
 	}
-	
+
 	possible = {
 		custom_tooltip = {
 			text = mgrbfm_egypt_imperialism_completed
@@ -475,9 +595,9 @@ je_mgrbfm_egypt_arabia = {
 			}
 		}
 	}
-	
+
 	immediate = {  }
-	
+
 	complete = {
 		country_rank >= rank_value:major_power
 		custom_tooltip = {
@@ -532,9 +652,9 @@ je_mgrbfm_egypt_arabia = {
 			has_modifier = declared_bankruptcy
 		}
 	}
-	
+
 	on_complete = {  }
-	
+
 	fail = {
 		OR = {
 			trigger_if = {
@@ -561,7 +681,7 @@ je_mgrbfm_egypt_arabia = {
 			}
 		}
 	}
-	
+
 	on_fail = {  }
 }
 
@@ -569,11 +689,11 @@ je_mgrbfm_egypt_sudan = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
 	weight = 1000
-	
+
 	should_be_pinned_by_default = yes
 	can_revolution_inherit = yes
 	transferable = no
-	
+
 	complete = {
 		trigger_if = {
 			limit = {
@@ -652,7 +772,7 @@ je_mgrbfm_egypt_sudan = {
 			trigger_event = mgrbfm_egypt.211
 		}
 	}
-	
+
 	fail = {
 		NOR = {
 			has_state_in_state_region = STATE_KORDOFAN
@@ -704,31 +824,29 @@ je_mgrbfm_egypt_ethiopia = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
 	weight = 1000
-	
+
 	should_be_pinned_by_default = yes
 	can_revolution_inherit = yes
 	transferable = no
 	can_deactivate = no
-	
+
 	is_shown_when_inactive = {
 		c:EGY ?= this
 	}
-	
+
 	possible = {
 		has_technology_researched = colonization
 		any_scope_state = {
-			filter = {
-				OR = {
-					state_region = s:STATE_BLUE_NILE
-					state_region = s:STATE_ERITREA
-				}
+			OR = {
+				state_region = s:STATE_BLUE_NILE
+				state_region = s:STATE_ERITREA
 			}
 			is_incorporated = yes
 		}
 	}
-	
+
 	immediate = {  }
-	
+
 	complete = {
 		OR = {
 			calc_true_if = {
@@ -757,10 +875,10 @@ je_mgrbfm_egypt_ethiopia = {
 			}
 		}
 	}
-	
+
 	on_complete = {  }
-	
+
 	fail = {  }
-	
+
 	on_fail = {  }
 }
