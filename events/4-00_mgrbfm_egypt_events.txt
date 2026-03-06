@@ -268,7 +268,7 @@ mgrbfm_egypt.101 = {
 ####---------- Taming the Nile Events ----------####
 mgrbfm_egypt.110 = {
 	type = country_event
-	placement = root
+	placement = scope:mgrbfm_flood_scope
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
 	duration = 3
 	dlc = dlc_grefm
@@ -287,6 +287,14 @@ mgrbfm_egypt.110 = {
 	}
 
 	immediate = {
+		random_state_in_lower_nile = {
+			limit = {
+				state_region = {
+					has_variable = mgrbfm_flood_state_var
+				}
+			}
+			save_scope_as = mgrbfm_flood_scope
+		}
 	}
 
 	option = {
@@ -298,6 +306,29 @@ mgrbfm_egypt.110 = {
 					is_in_geographic_region = geographic_region_lower_nile
 					has_building = gbbf_building_nile_barrage
 				}
+			}
+		}
+		random_scope_state = {
+			limit = {
+				scope:mgrbfm_flood_scope = this
+			}
+			add_modifier = {
+				name = modifier_mgrbfm_nile_flood_epicenter
+				months = short_modifier_time
+				multiplier = global_var:mgrbfm_nile_flood_var
+				is_decaying = yes
+			}
+		}
+		every_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_lower_nile
+				scope:mgrbfm_flood_scope != this
+			}
+			add_modifier = {
+				name = modifier_mgrbfm_widespread_nile_floods
+				months = short_modifier_time
+				multiplier = global_var:mgrbfm_nile_flood_var
+				is_decaying = yes
 			}
 		}
 	}
@@ -320,6 +351,91 @@ mgrbfm_egypt.110 = {
 				}
 			}
 		}
+		random_scope_state = {
+			limit = {
+				scope:mgrbfm_flood_scope = this
+			}
+			add_modifier = {
+				name = modifier_mgrbfm_nile_flood_epicenter
+				months = short_modifier_time
+				multiplier = {
+					add = global_var:mgrbfm_nile_flood_var
+					scope:mgrbfm_flood_scope = {
+						if = {
+							limit = {
+								is_production_method_active = {
+									building_type = gbbf_building_nile_barrage
+									production_method = pm_gbbf_adequate_reservior
+								}
+							}
+							divide = 2
+						}
+						else_if = {
+							limit = {
+								is_production_method_active = {
+									building_type = gbbf_building_nile_barrage
+									production_method = pm_gbbf_massive_reservior
+								}
+							}
+							divide = 4
+						}
+					}
+				}
+				is_decaying = yes
+			}
+		}
+		every_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_lower_nile
+				scope:mgrbfm_flood_scope != this
+				NOR = {
+					is_production_method_active = {
+						building_type = gbbf_building_nile_barrage
+						production_method = pm_gbbf_adequate_reservior
+					}
+					is_production_method_active = {
+						building_type = gbbf_building_nile_barrage
+						production_method = pm_gbbf_massive_reservior
+					}
+				}
+			}
+			add_modifier = {
+				name = modifier_mgrbfm_widespread_nile_floods
+				months = short_modifier_time
+				multiplier = global_var:mgrbfm_nile_flood_var
+				is_decaying = yes
+			}
+		}
+		every_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_lower_nile
+				scope:mgrbfm_flood_scope != this
+				is_production_method_active = {
+					building_type = gbbf_building_nile_barrage
+					production_method = pm_gbbf_adequate_reservior
+				}
+			}
+			add_modifier = {
+				name = modifier_mgrbfm_localized_nile_floods
+				months = short_modifier_time
+				multiplier = global_var:mgrbfm_nile_flood_var
+				is_decaying = yes
+			}
+		}
+		every_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_lower_nile
+				scope:mgrbfm_flood_scope != this
+				is_production_method_active = {
+					building_type = gbbf_building_nile_barrage
+					production_method = pm_gbbf_massive_reservior
+				}
+			}
+			add_modifier = {
+				name = modifier_mgrbfm_mitigated_nile_floods
+				months = short_modifier_time
+			}
+		}
 	}
 
 	option = {
@@ -340,6 +456,15 @@ mgrbfm_egypt.110 = {
 						production_method = pm_gbbf_massive_reservior
 					}
 				}
+			}
+		}
+		every_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_lower_nile
+			}
+			add_modifier = {
+				name = modifier_mgrbfm_mitigated_nile_floods
+				months = short_modifier_time
 			}
 		}
 	}
