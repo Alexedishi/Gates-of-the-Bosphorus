@@ -378,10 +378,20 @@ je_mgrbfm_egypt_nile_river = {
 		}
 	}
 
+	scripted_button = mgrbfm_repair_nilometers_button
+
 	immediate = {
 		set_global_variable = {
 			name = mgrbfm_nile_control_var
 			value = 0
+		}
+		set_global_variable = {
+			name = mgrbfm_nile_flood_var
+			value = 0
+		}
+		set_global_variable = {
+			name = mgrbfm_nile_flood_cooldown
+			value = 2 # Tiny grace period
 		}
 	}
 
@@ -409,25 +419,18 @@ je_mgrbfm_egypt_nile_river = {
 	}
 
 	on_complete = {
-		s:STATE_LOWER_EGYPT = {
-			remove_state_trait = gbbf_state_trait_nile_uncontrolled
-			add_state_trait = state_trait_nile_river
-		}
-		s:STATE_MIDDLE_EGYPT = {
-			remove_state_trait = gbbf_state_trait_nile_uncontrolled
-			add_state_trait = state_trait_nile_river
-		}
-		s:STATE_UPPER_EGYPT = {
-			remove_state_trait = gbbf_state_trait_nile_uncontrolled
-			add_state_trait = state_trait_nile_river
-		}
-		s:STATE_EGYPTIAN_DESERT = {
-			remove_state_trait = gbbf_state_trait_nile_uncontrolled
-			add_state_trait = state_trait_nile_river
-		}
-		s:STATE_DONGOLA = {
-			remove_state_trait = gbbf_state_trait_nile_uncontrolled
-			add_state_trait = state_trait_nile_river
+		every_state_in_lower_nile = {
+			limit = {
+				owner = {
+					NOT = {
+						is_country_type = decentralized
+					}
+				}
+			}
+			state_region = {
+				remove_state_trait = gbbf_state_trait_nile_uncontrolled
+				add_state_trait = state_trait_nile_river
+			}
 		}
 		remove_global_variable = mgrbfm_nile_control_var
 	}
@@ -468,6 +471,12 @@ je_mgrbfm_egypt_nile_river = {
 				scope:journal_entry = {
 					add_involved_country = prev
 				}
+			}
+			if = {
+				limit = {
+					month = 7 # August, it's zero-indexed
+				}
+				mgrbfm_nile_inundation_effect = yes
 			}
 		}
 	}
