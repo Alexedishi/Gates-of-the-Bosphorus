@@ -265,6 +265,87 @@ mgrbfm_egypt.101 = {
 	}
 }
 
+####---------- Taming the Nile Events ----------####
+mgrbfm_egypt.110 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = mgrbfm_egypt.110.t
+	desc = mgrbfm_egypt.110.d
+	flavor = mgrbfm_egypt.110.f
+
+	event_image = {
+		video = "unspecific_world_fair"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		# triggered by mgrbfm_nile_inundation_effect
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = mgrbfm_egypt.110.a
+		default_option = yes
+		trigger = {
+			NOT = {
+				any_scope_state = {
+					is_in_geographic_region = geographic_region_lower_nile
+					has_building = gbbf_building_nile_barrage
+				}
+			}
+		}
+	}
+
+	option = {
+		name = mgrbfm_egypt.110.b
+		trigger = {
+			any_scope_state = {
+				is_in_geographic_region = geographic_region_lower_nile
+				has_building = gbbf_building_nile_barrage
+				NOR = {
+					is_production_method_active = {
+						building_type = gbbf_building_nile_barrage
+						production_method = pm_gbbf_adequate_reservior
+					}
+					is_production_method_active = {
+						building_type = gbbf_building_nile_barrage
+						production_method = pm_gbbf_massive_reservior
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = mgrbfm_egypt.110.c
+		trigger = {
+			any_scope_state = {
+				filter = {
+					is_in_geographic_region = geographic_region_lower_nile
+				}
+				count = all
+				OR = {
+					is_production_method_active = {
+						building_type = gbbf_building_nile_barrage
+						production_method = pm_gbbf_adequate_reservior
+					}
+					is_production_method_active = {
+						building_type = gbbf_building_nile_barrage
+						production_method = pm_gbbf_massive_reservior
+					}
+				}
+			}
+		}
+	}
+}
+
+
 ####---------- Egyptian Imperialism Events ----------####
 mgrbfm_egypt.200 = {
 	type = country_event
