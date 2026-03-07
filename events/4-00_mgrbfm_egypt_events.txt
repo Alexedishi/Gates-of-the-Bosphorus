@@ -32,7 +32,9 @@ namespace = mgrbfm_egypt
 #	101 - ##
 
 #110-119 - Taming the Nile Events
-#	110 - ##Nile Flood Event
+#	110 - Flooding Strikes the Nile!
+#	111 - Nilometer Damaged in Floods
+#	112 - Railway Damaged in Floods
 
 #200-209 - Egyptian Imperialism Mainline Events
 #	200 - ##From the Nile to the Orontes
@@ -81,6 +83,230 @@ mgrbfm_egypt.001 = {
 			add_modifier = modifier_mgrbfm_imperial_ambitions
 			add_modifier = modifier_mgrbfm_modernizing_drive
 		}
+	}
+}
+
+mgrbfm_egypt.002 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = mgrbfm_egypt.002.t
+	desc = mgrbfm_egypt.002.d
+	flavor = mgrbfm_egypt.002.f
+
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		ruler = {
+			has_template = template_mgrbfm_alawi_muhammad
+			has_trait = gbbf_trait_old_spider
+			NOT = {
+				has_variable = mgrbfm_old_spider_var
+
+			}
+		}
+	}
+
+	cancellation_trigger = {
+		ruler = {
+			NOT = {
+				has_template = template_mgrbfm_alawi_muhammad
+			}
+		}
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = mgrbfm_ruler_scope
+			set_variable = {
+				name = mgrbfm_old_spider_var
+				years = { 5 7 }
+			}
+		}
+	}
+
+	option = {
+		name = mgrbfm_egypt.002.a
+		default_option = yes
+		ruler = {
+			remove_trait = gbbf_trait_old_spider
+			add_trait = psychological_affliction
+		}
+	}
+}
+
+mgrbfm_egypt.003 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = mgrbfm_egypt.003.t
+	desc = mgrbfm_egypt.003.d
+	flavor = {
+		triggered_desc = { 
+			desc = mgrbfm_egypt.003.f1
+			trigger = { 
+				heir = {
+					has_template = template_mgrbfm_alawi_abbas
+				}
+			}
+		}
+		triggered_desc = {
+			desc = mgrbfm_egypt.003.f2
+			trigger = {
+				heir = {
+					has_template = template_mgrbfm_alawi_ibrahim
+				}
+			}
+		}
+	}
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		ruler = {
+			has_template = template_mgrbfm_alawi_muhammad
+			has_trait = psychological_affliction
+			NOR = {
+				has_variable = mgrbfm_old_spider_var
+				has_trait = gbbf_trait_old_spider
+			}
+		}
+	}
+
+	cancellation_trigger = {
+		ruler = {
+			NOT = {
+				has_template = template_mgrbfm_alawi_muhammad
+			}
+		}
+	}
+
+	immediate = {
+		ruler = {
+			save_scope_as = mgrbfm_ruler_scope
+		}
+		
+	}
+
+	option = {
+		name = mgrbfm_egypt.003.a
+		default_option = yes
+		ruler = {
+			kill_character = yes
+		}
+		heir ?= {
+			set_character_as_ruler = yes
+		}
+		set_heir = scope:mgrbfm_new_heir_scope
+	}
+}
+
+mgrbfm_egypt.004 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = mgrbfm_egypt.004.t
+	desc = mgrbfm_egypt.004.d
+	flavor = mgrbfm_egypt.004.f
+
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		heir = {
+			has_template = template_mgrbfm_alawi_ibrahim
+			NOR = {
+				has_variable = mgrbfm_sick_boi_var
+				has_trait = gbbf_trait_tuberculosis
+			}
+		}
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			heir = {
+				has_template = template_mgrbfm_alawi_ibrahim
+			}
+		}
+	}
+
+	immediate = {
+		heir = {
+			save_scope_as = mgrbfm_heir_scope
+			set_variable = mgrbfm_sick_boi_var
+		}
+	}
+
+	option = {
+		name = mgrbfm_egypt.004.a
+		default_option = yes
+		scope:mgrbfm_heir_scope = {
+			add_trait = gbbf_trait_tuberculosis
+		}
+	}
+}
+
+mgrbfm_egypt.005 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = mgrbfm_egypt.005.t
+	desc = mgrbfm_egypt.005.d
+	flavor = mgrbfm_egypt.005.f
+
+	event_image = {
+		video = "votp_hostile_court"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		ruler = {
+			has_template = template_mgrbfm_alawi_abbas
+		}
+		NOR = {
+			has_law_or_variant = law_type:law_slavery_banned
+			has_law_or_variant = law_type:law_colonial_slavery
+		}
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			ruler = {
+				has_template = template_mgrbfm_alawi_abbas
+			}
+		}
+	}
+
+	cooldown = {
+		years = 1
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = mgrbfm_egypt.005.a
+		default_option = yes
 	}
 }
 
@@ -226,10 +452,6 @@ mgrbfm_egypt.100 = {
 	option = {
 		name = mgrbfm_egypt.100.a
 		default_option = yes
-	}
-	
-	option = {
-		name = mgrbfm_egypt.100.b
 	}
 }
 
@@ -465,6 +687,127 @@ mgrbfm_egypt.110 = {
 			add_modifier = {
 				name = modifier_mgrbfm_mitigated_nile_floods
 				months = short_modifier_time
+			}
+		}
+	}
+}
+
+mgrbfm_egypt.111 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_ruined_building.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = mgrbfm_egypt.111.t
+	desc = mgrbfm_egypt.111.d
+	flavor = mgrbfm_egypt.111.f
+
+	event_image = {
+		video = "unspecific_devastation"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_lower_nile
+			has_modifier = modifier_mgrbfm_nilometer_system
+			OR = {
+				has_modifier = modifier_mgrbfm_nile_flood_epicenter
+				has_modifier = modifier_mgrbfm_widespread_nile_floods
+			}
+		}
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
+		}
+	}
+
+	cooldown = {
+		years = 5
+	}
+
+	immediate = {
+		random_scope_state = {
+			limit = {
+				has_modifier = modifier_mgrbfm_nilometer_system
+				OR = {
+					has_modifier = modifier_mgrbfm_nile_flood_epicenter
+					has_modifier = modifier_mgrbfm_widespread_nile_floods
+				}
+			}
+			save_scope_as = mgrbfm_nile_flood_scope
+		}
+	}
+
+	option = {
+		name = mgrbfm_egypt.111.a
+		default_option = yes
+		scope:mgrbfm_nile_flood_scope = {
+			remove_modifier = modifier_mgrbfm_nilometer_system
+		}
+	}
+}
+
+mgrbfm_egypt.112 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_ruined_building.dds"
+	duration = 3
+	dlc = dlc_grefm
+
+	title = mgrbfm_egypt.112.t
+	desc = mgrbfm_egypt.112.d
+	flavor = mgrbfm_egypt.112.f
+
+	event_image = {
+		video = "unspecific_devastation"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	trigger = {
+		is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_lower_nile
+			has_building = building_railway
+			OR = {
+				has_modifier = modifier_mgrbfm_nile_flood_epicenter
+				has_modifier = modifier_mgrbfm_widespread_nile_floods
+			}
+		}
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
+		}
+	}
+
+	cooldown = {
+		years = 5
+	}
+
+	immediate = {
+		random_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_lower_nile
+				has_building = building_railway
+			}
+			save_scope_as = mgrbfm_nile_flood_scope
+		}
+	}
+
+	option = {
+		name = mgrbfm_egypt.112.a
+		default_option = yes
+		scope:mgrbfm_nile_flood_scope = {
+			add_modifier = {
+				name = modifier_mgrbfm_flooded_railways
+				months = gbbf_short_modifier_time
+				multiplier = global_var:mgrbfm_nile_flood_var
 			}
 		}
 	}
