@@ -197,7 +197,40 @@ mgrbfm_egypt.003 = {
 		ruler = {
 			save_scope_as = mgrbfm_ruler_scope
 		}
-		
+		if = {
+			limit = {
+				NOT = {
+					exists = heir
+				}
+			}
+			if = {
+				limit = {
+					ruler = {
+						has_template = template_mgrbfm_alawi_muhammad
+					}
+				}
+				create_character = {
+					template = template_mgrbfm_alawi_abbas
+				}
+			}
+		}
+		create_character = {
+			template = template_mgrbfm_alawi_abbas
+			on_created = {
+				place_character_in_void = 12
+				save_scope_as = mgrbfm_abbas_scope
+			}
+		}
+		create_character = {
+			template = template_mgrbfm_alawi_said
+			on_created = {
+				place_character_in_void = 12
+				save_scope_as = mgrbfm_said_scope
+			}
+		}
+		heir = {
+			save_scope_as = mgrbfm_heir_scope
+		}
 	}
 
 	option = {
@@ -209,7 +242,31 @@ mgrbfm_egypt.003 = {
 		heir ?= {
 			set_character_as_ruler = yes
 		}
-		set_heir = scope:mgrbfm_new_heir_scope
+		if = {
+			limit = {
+				scope:mgrbfm_heir_scope = {
+					has_template = template_mgrbfm_alawi_ibrahim
+				}
+			}
+			set_heir = scope:mgrbfm_abbas_scope
+		}
+		else_if = {
+			limit = {
+				scope:mgrbfm_heir_scope = {
+					has_template = template_mgrbfm_alawi_abbas
+				}
+			}
+			set_heir = scope:mgrbfm_said_scope
+		}
+	}
+
+	after = {
+		scope:mgrbfm_abbas_scope = {
+			gbbf_free_from_void = yes
+		}
+		scope:mgrbfm_said_scope = {
+			gbbf_free_from_void = yes
+		}
 	}
 }
 
@@ -282,6 +339,7 @@ mgrbfm_egypt.005 = {
 	trigger = {
 		ruler = {
 			has_template = template_mgrbfm_alawi_abbas
+			age >  45
 		}
 		NOR = {
 			has_law_or_variant = law_type:law_slavery_banned
@@ -302,11 +360,41 @@ mgrbfm_egypt.005 = {
 	}
 
 	immediate = {
+		if = {
+			limit = {
+				OR = {
+					NOT = {
+						exists = heir
+					}
+					heir ?= {
+						NOT = {
+							has_template = template_mgrbfm_alawi_said
+						}
+					}
+				}
+			}
+			create_character = {
+				template = template_mgrbfm_alawi_said
+				on_created = {
+					save_scope_as = mgrbfm_new_heir_scope
+					place_character_in_void = 12
+				}
+			}
+		}
 	}
 
 	option = {
 		name = mgrbfm_egypt.005.a
 		default_option = yes
+		ruler = {
+			kill_character = yes
+		}
+		set_heir = scope:mgrbfm_new_heir_scope
+		add_modifier = {
+			name = modifier_mgrbfm_ruler_assassinated
+			months = gbbf_normal_modifier_time
+			is_decaying = yes
+		}
 	}
 }
 
