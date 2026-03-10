@@ -1,0 +1,121 @@
+﻿turkfm_kemalism_value = {
+	value = 0
+	add = {
+		desc = turkfm_value_from_republicanism
+		value = {
+			if = {
+				limit = {
+					OR = {
+						has_law_or_variant = law_type:law_parliamentary_republic
+						has_law_or_variant = law_type:law_presidential_republic
+					}
+				}
+				add = 1
+			}
+		}
+	}
+	add = {
+		desc = turkfm_value_from_nationalism
+		value = {
+			if = {
+				limit = {
+					has_law_or_variant = law_type:law_ethnostate
+				}
+				add = 1
+			}
+		}
+	}
+	add = {
+		desc = turkfm_value_from_laicism
+		value = {
+			if = {
+				limit = {
+					has_law_or_variant = law_type:law_total_separation
+				}
+				add = 1
+			}
+		}
+	}
+	add = {
+		desc = gbbf_value_from_institution_levels
+		value = {
+			add = gbbf_institution_investment_levels_value
+			multiply = 0.1
+		}
+	}
+}
+
+turkfm_turanism_value = {
+	value = 0
+	add = {
+		desc = turkfm_value_from_turkic_states
+		value = {
+			every_scope_state = {
+				limit = {
+					is_split_state = no
+					is_incorporated = yes
+					state_region = {
+						OR = {
+							is_homeland = turkmen
+							is_homeland = kazak
+							is_homeland = uzbek
+							is_homeland = tajik
+							is_homeland = uighur
+							is_homeland = tatar
+							is_homeland = azerbaijani
+						}
+					}
+				}
+				add = 0.1
+			}
+		}
+	}
+}
+
+turkfm_anatolianism_value = {
+	value = 0
+	add = {
+		desc = turkfm_value_from_turkish_literacy
+		value = {
+			every_scope_state = {
+				limit = {
+					is_in_geographic_region = geographic_region_anatolia
+				}
+				every_scope_pop = {
+					limit = {
+						has_pop_culture = turkish
+					}
+					add = literacy_rate
+				}
+			}
+			divide = {
+				every_scope_state = {
+					limit = {
+						is_in_geographic_region = geographic_region_anatolia
+					}
+					every_scope_pop = {
+						limit = {
+							has_pop_culture = turkish
+						}
+						add = 1
+					}
+				}
+				min = 1
+			}
+		}
+		
+	}
+	add = {
+		desc = turkfm_value_from_turkish_states
+		value = {
+			every_scope_state = {
+				limit = {
+					is_split_state = no
+					is_incorporated = yes
+					is_in_geographic_region = geographic_region_anatolia
+				}
+				add = 0.1
+			}
+		}
+	}
+}
