@@ -63,6 +63,7 @@ turkfm_milletindir.100 = {
 	option = {
 		name = turkfm_milletindir.100.a
 		default_option = yes
+		custom_tooltip = turkfm_milletindir.100.tt
 	}
 }
 
@@ -153,15 +154,43 @@ turkfm_milletindir.103 = {
 		c:TUR ?= {
 			save_scope_as = ottoman_scope
 		}
+		root = {
+			save_scope_as = protester_scope
+		}
 	}
 
 	option = {
 		name = turkfm_milletindir.103.a
 		default_option = yes
+		change_relations = {
+			country = scope:russia_scope
+			value = -30
+		}
+		c:TUR ?= {
+			post_notification = notification_turkfm_expulsions_protested
+			create_diplomatic_catalyst = {
+				type = catalyst_event_negative
+				target = root
+			}
+		}
 	}
 
 	option = {
 		name = turkfm_milletindir.103.b
+		if = {
+			limit = {
+				any_scope_pop = {
+					has_pop_culture = armenian
+				}
+			}
+			add_radicals = {
+				value = very_large_radicals
+				culture = cu:circassian
+			}
+		}
+		else = {
+			custom_tooltip = gbbf_nothing_happens
+		}
 	}
 
 	option = { # Fuck it, we ball
@@ -175,6 +204,14 @@ turkfm_milletindir.103 = {
 				target_country = c:TUR
 				primary_demand = yes
 			}
+		}
+		create_incident = {
+			country = scope:ottoman_scope
+			value = 10
+		}
+		change_relations = {
+			country = scope:ottoman_scope
+			value = -50
 		}
 	}
 }
