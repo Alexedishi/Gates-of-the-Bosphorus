@@ -54,3 +54,224 @@
 		}
 	}
 }
+
+je_turkfm_armenian_question = {
+	group = je_group_crises
+	icon = "gfx/interface/icons/invention_icons/dynamite.dds"
+	weight = 100
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+
+	scripted_button = turkfm_endorse_pogroms_button
+	scripted_button = turkfm_halt_deportations_button
+	scripted_button = turkfm_cook_the_books_button
+	scripted_button = turkfm_shoot_the_press_button
+
+	is_shown_when_inactive = {
+		has_dlc_feature = ip3_content
+		c:TUR ?= this
+		any_scope_state = {
+			state_region = {
+				is_homeland = armenian
+			}
+		}
+		has_global_variable = eqfm_balkan_situation
+	}
+
+	possible = {
+		has_technology_researched = nationalism
+		has_technology_researched = central_archives
+		any_political_movement = {
+			OR = {
+				is_political_movement_type = movement_gbbf_young_turks
+				is_political_movement_type = movement_fascist
+			}
+		}
+	}
+
+	immediate = {
+		trigger_event =
+	}
+
+	modifiers_while_active = {
+		modifier_turkfm_organized_expulsions
+	}
+
+	complete = {
+		OR = {
+			any_scope_state = {
+				filter = {
+					state_region = {
+						is_homeland = armenian
+					}
+				}
+				count = all
+				custom_tooltip = {
+					text = je_turkfm_armenian_question_complete
+					culture_percent_state = {
+						target = cu:armenian
+						value <= 0.05
+					}
+				}
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event =
+	}
+
+	fail = {
+		OR = {
+			NOT = {
+				any_scope_state = {
+					state_region = {
+						is_homeland = armenian
+					}
+				}
+			}
+			custom_tooltip = {
+				text = je_turkfm_armenian_question_fail
+				has_variable = turkfm_armenian_deportations_halted
+			}
+		}
+	}
+
+	on_fail = {
+		if = {
+			limit = {
+				has_variable = turkfm_armenian_deportations_halted
+			}
+			trigger_event =
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {  }
+		random_events = {  }
+		effect = {
+			random_scope_state = {
+				limit = {
+					state_region = {
+						is_homeland = armenian
+					}
+					culture_percent_state = {
+						target = cu:armenian
+						value > 0.05
+					}
+				}
+				save_scope_as = turkfm_expulsion_state_scope
+			}
+			random_state_in_greater_armenia = {
+				limit = {
+					owner = {
+						this != root
+						NOT = {
+							has_variable = turkfm_receptor_cooldown_var
+						}
+					}
+					state_region = {
+						is_homeland = armenian
+					}
+				}
+				save_scope_as = turkfm_receptor_state_scope
+				owner = {
+					set_variable = {
+						name = turkfm_receptor_cooldown_var
+						months = 3
+					}
+					save_scope_as = turkfm_receptor_country_scope
+				}
+			}
+			if = {
+				limit = {
+					exists = scope:turkfm_receptor_state_scope
+				}
+				scope:turkfm_expulsion_state_scope = {
+					random_scope_pop = {
+						limit = {
+							culture = cu:armenian
+							strata = lower
+						}
+						move_pop = scope:turkfm_receptor_state_scope
+					}
+					random_scope_pop = {
+						limit = {
+							culture = cu:armenian
+							strata = middle
+						}
+						move_pop = scope:turkfm_receptor_state_scope
+					}
+					random_scope_pop = {
+						limit = {
+							culture = cu:armenian
+							strata = upper
+						}
+						move_pop = scope:turkfm_receptor_state_scope
+					}
+					kill_population_percent_in_state = {
+						percent = 0.02
+						culture = cu:armenian
+					}
+				}
+				scope:turkfm_receptor_country_scope = {
+					trigger_event =
+				}
+				post_notification = notification_turkfm_armenians_deported
+			}
+			else = {
+				s:STATE_DEIR_EZ_ZOR = {
+					random_scope_state = {
+						save_scope_as = turkfm_receptor_state_scope
+						owner = {
+							save_scope_as = turkfm_receptor_country_scope
+						}
+					}
+				}
+				scope:turkfm_expulsion_state_scope = {
+					random_scope_pop = {
+						limit = {
+							culture = cu:armenian
+							strata = lower
+						}
+						move_pop = scope:turkfm_receptor_state_scope
+					}
+					random_scope_pop = {
+						limit = {
+							culture = cu:armenian
+							strata = middle
+						}
+						move_pop = scope:turkfm_receptor_state_scope
+					}
+					random_scope_pop = {
+						limit = {
+							culture = cu:armenian
+							strata = upper
+						}
+						move_pop = scope:turkfm_receptor_state_scope
+					}
+					kill_population_percent_in_state = {
+						percent = 0.06
+						culture = cu:armenian
+					}
+				}
+				post_notification = notification_turkfm_armenians_deported
+			}
+			random_list = {
+				95 = {}
+				5 = {
+					random_country = {
+						limit = {
+							this != root
+							country_rank >= rank_value:great_power
+						}
+						trigger_event =
+					}
+				}
+			}
+		}
+	}
+}
