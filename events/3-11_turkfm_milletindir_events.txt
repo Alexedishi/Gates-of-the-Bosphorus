@@ -23,9 +23,12 @@ namespace = turkfm_milletindir
 #001-009 - Turkish Foundation Events
 #	001 - ##
 
+#010-019 - Turkish Reconquest Events
+#	010 - ##Restoring Anadolu
+
 #100-109 - Armenian Expulsion Events
-#	100 - ##
-#	101 - ##
+#	100 - ##A Scapegoat for Collapse
+#	101 - ##An Anatolian Frontier
 #	102 - ##Cultural Reparations
 #	103 - ##Death Marches
 #	104 - ##Armenian Expulsions Halted
@@ -84,15 +87,46 @@ turkfm_milletindir.101 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
+		# triggered by je_turkfm_armenian_expulsions
 	}
 
 	immediate = {
-		# triggered by je_turkfm_armenian_expulsions
+		if = {
+			limit = {
+				has_modifier = modifier_turkfm_cooking_the_books
+			}
+			remove_modifier = modifier_turkfm_cooking_the_books
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_turkfm_shooting_the_press
+			}
+			remove_modifier = modifier_turkfm_shooting_the_press
+		}
 	}
 
 	option = {
 		name = turkfm_milletindir.101.a
 		default_option = yes
+		every_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_greater_armenia
+			}
+			add_modifier = {
+				name = modifier_turkfm_anatolian_frontier
+				months = gbbf_long_modifier_time
+			}
+			state_region = {
+				if = {
+					limit = {
+						NOT = {
+							is_homeland = turkish
+						}
+					}
+					add_homeland = turkish
+				}
+			}
+		}
 	}
 }
 
@@ -113,10 +147,22 @@ turkfm_milletindir.102 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
+		# triggered by je_turkfm_armenian_expulsions
 	}
 
 	immediate = {
-		# triggered by je_turkfm_armenian_expulsions
+		if = {
+			limit = {
+				has_modifier = modifier_turkfm_cooking_the_books
+			}
+			remove_modifier = modifier_turkfm_cooking_the_books
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_turkfm_shooting_the_press
+			}
+			remove_modifier = modifier_turkfm_shooting_the_press
+		}
 	}
 
 	option = {
@@ -245,5 +291,12 @@ turkfm_milletindir.104 = {
 	option = {
 		name = turkfm_milletindir.104.a
 		default_option = yes
+		add_modifier = {
+			name = modifier_turkfm_halted_atrocities
+			months = long_modifier_time
+		}
+		add_loyalists = {
+			value = large_radicals
+		}
 	}
 }
