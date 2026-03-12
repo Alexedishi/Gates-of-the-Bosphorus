@@ -34,6 +34,7 @@
 	
 	immediate = {
 		turkfm_milletindir_variables_effect = yes
+		trigger_event = turkfm_milletindir.001
 	}
 	
 	complete = {
@@ -67,10 +68,11 @@ je_turkfm_anatolian_reconquest = {
 
 	is_shown_when_inactive = {
 		c:TUR ?= this
-		has_global_variable = turkfm_tanzimat_failed
-		NOT = {
+		NOR = {
 			has_variable = turkfm_reconquered_anatolia
+			has_variable = turkfm_weaksauce
 		}
+		has_global_variable = turkfm_tanzimat_failed
 		any_state_in_anatolia = {
 			owner != c:TUR
 		}
@@ -79,8 +81,11 @@ je_turkfm_anatolian_reconquest = {
 	possible = {
 		has_technology_researched = nationalism
 		custom_tooltip = {
-			text = turkfm_grand_collapse_failed
-			has_global_variable = turkfm_grand_collapse_failed
+			text = turkfm_grand_collapse_happened
+			OR = {
+				has_variable = turkfm_grand_collapse_completed
+				has_variable = turkfm_grand_collapse_failed
+			}
 		}
 	}
 
@@ -89,7 +94,7 @@ je_turkfm_anatolian_reconquest = {
 	complete = {
 		any_state_in_anatolia = {
 			count = all
-			owner = c:TUR
+			owner = root
 		}
 	}
 
@@ -113,6 +118,84 @@ je_turkfm_rampaging_wolf = {
 	can_revolution_inherit = yes
 	transferable = no
 	can_deactivate = no
+
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_variable = turkfm_weaksauce
+		}
+	}
+
+	possible = {
+		has_technology_researched = nationalism
+		NOR = {
+			has_journal_entry = je_turkfm_sick_man_main
+			has_journal_entry = je_turkfm_tanzimat_main
+		}
+		any_state_in_anatolia = {
+			count = all
+			owner = root
+		}
+	}
+
+	immediate = {
+		set_variable = turkfm_reconquered_anatolia
+	}
+
+	complete = {  }
+
+	on_complete = {
+		set_variable = turkfm_rampaging_wolf_complete
+	}
+
+	fail = {  }
+
+	on_fail = {
+		set_variable = turkfm_weaksauce
+	}
+}
+
+je_turkfm_turan = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_vulpes.dds"
+	weight = 500
+
+	should_be_pinned_by_default = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_variable = turkfm_weaksauce
+		}
+		has_variable = turkfm_reconquered_anatolia
+	}
+
+	possible = {
+		has_technology_researched = pan-nationalism
+		custom_tooltip = {
+			text = turkfm_has_turanist_foundation
+			var:turkfm_culture_var ?= flag:turkfm_turanism
+		}
+		custom_tooltip = {
+			text = turkfm_rampaging_wolf_complete
+			has_variable = turkfm_rampaging_wolf_complete
+		}
+	}
+
+	immediate = {  }
+
+	complete = {  }
+
+	on_complete = {  }
+
+	fail = {  }
+
+	on_fail = {
+		set_variable = turkfm_weaksauce
+	}
 }
 
 je_turkfm_armenian_expulsions = {
