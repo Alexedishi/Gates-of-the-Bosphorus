@@ -463,11 +463,9 @@ REPLACE:ideology_gbbf_ittihadist_leader = {
 	interest_group_leader_trigger = {
 		has_variable = turkfm_young_turks_started
 		OR = {
-			is_interest_group_type = ig_trade_unions
 			is_interest_group_type = ig_rural_folk
 			is_interest_group_type = ig_petty_bourgeoisie
-			is_interest_group_type = ig_landowners
-			is_interest_group_type = ig_devout
+			is_interest_group_type = ig_armed_forces
 			is_interest_group_type = ig_intelligentsia
 		}
 	}
@@ -504,11 +502,9 @@ REPLACE:ideology_gbbf_ittihadist_leader = {
 		}
 		interest_group = {
 			OR = {
-				is_interest_group_type = ig_trade_unions
 				is_interest_group_type = ig_rural_folk
 				is_interest_group_type = ig_petty_bourgeoisie
-				is_interest_group_type = ig_landowners
-				is_interest_group_type = ig_devout
+				is_interest_group_type = ig_armed_forces
 				is_interest_group_type = ig_intelligentsia
 			}
 		}
@@ -620,6 +616,136 @@ REPLACE:ideology_gbbf_junimist = {
 	}
 	non_interest_group_leader_weight = {
 		value = 0
+	}
+}
+
+REPLACE:ideology_gbbf_kemalist_leader = {
+	icon = gfx/interface/icons/ideology_icons/ideology_gbbf_kemalist.dds
+	character_ideology = yes
+
+	lawgroup_governance_principles = {
+		law_monarchy = strongly_disapprove
+		law_presidential_republic = strongly_approve
+		law_parliamentary_republic = approve
+		law_corporate_state = strongly_disapprove
+		law_theocracy = strongly_disapprove
+		law_council_republic = strongly_disapprove
+	}
+	lawgroup_distribution_of_power = {
+		law_oligarchy = strongly_disapprove
+		law_autocracy = strongly_disapprove
+		law_anarchy = strongly_disapprove
+		law_universal_suffrage = strongly_approve
+		law_census_voting = approve
+		law_wealth_voting = neutral
+		law_landed_voting = disapprove
+		law_technocracy = strongly_disapprove
+		law_single_party_state = strongly_disapprove
+	}
+	lawgroup_citizenship = {
+		law_ethnostate = strongly_approve
+		law_national_supremacy = approve
+		law_subjecthood = strongly_disapprove
+		law_racial_segregation = approve
+		law_cultural_exclusion = disapprove
+		law_multicultural = strongly_disapprove
+	}
+	lawgroup_church_and_state = {
+		law_state_religion = strongly_disapprove
+		law_freedom_of_conscience = neutral
+		law_total_separation = strongly_approve
+		law_state_atheism = strongly_disapprove
+	}
+	lawgroup_education_system = {
+		law_public_schools = strongly_approve
+		law_religious_schools = strongly_disapprove
+		law_private_schools = neutral
+		law_no_schools = disapprove
+	}
+	lawgroup_childrens_rights = {
+		law_child_labor_allowed = strongly_disapprove
+		law_restricted_child_labor = disapprove
+		law_compulsory_primary_school = approve
+	}
+
+	country_trigger = {
+		c:TUR ?= this
+	}
+	interest_group_leader_trigger = {
+		has_variable = turkfm_young_turks_started
+		OR = {
+			is_interest_group_type = ig_trade_unions
+			is_interest_group_type = ig_rural_folk
+			is_interest_group_type = ig_petty_bourgeoisie
+			is_interest_group_type = ig_intelligentsia
+		}
+	}
+	interest_group_leader_weight = {
+		value = 100
+		if = {
+			limit = {
+				owner = {
+					var:turkfm_culture_var ?= flag:turkfm_kemalism
+				}
+			}
+			add = 100
+		}
+		if = {
+			limit = {
+				owner = {
+					has_law_or_variant = law_type:law_state_religion
+				}
+			}
+			add = -25
+		}
+		if = {
+			limit = {
+				owner = {
+					has_law_or_variant = law_type:law_multicultural
+				}
+			}
+			add = -25
+		}
+	}
+	non_interest_group_leader_trigger = {
+		owner = {
+			has_variable = turkfm_young_turks_started
+		}
+		interest_group = {
+			OR = {
+				is_interest_group_type = ig_trade_unions
+				is_interest_group_type = ig_rural_folk
+				is_interest_group_type = ig_petty_bourgeoisie
+				is_interest_group_type = ig_intelligentsia
+			}
+		}
+	}
+	non_interest_group_leader_weight = {
+		value = 100
+		if = {
+			limit = {
+				owner = {
+					var:turkfm_culture_var ?= flag:turkfm_kemalism
+				}
+			}
+			add = 50
+		}
+		if = {
+			limit = {
+				owner = {
+					has_law_or_variant = law_type:law_state_religion
+				}
+			}
+			add = 25
+		}
+		if = {
+			limit = {
+				owner = {
+					has_law_or_variant = law_type:law_multicultural
+				}
+			}
+			add = -25
+		}
 	}
 }
 
