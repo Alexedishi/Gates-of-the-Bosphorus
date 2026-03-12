@@ -21,7 +21,6 @@ namespace = gbbf_debug
 
 #1-XXX - Debug Events
 #	1 - The Unused Variable Dumpster Fire
-#	2 - Switches Eyalets to Puppet/Vassal if the overlord is not TUR
 
 ####################
 
@@ -78,45 +77,5 @@ gbbf_debug.1 = { # The Unused Variable Dumpster Fire
 		fix_variable_error = { variable = romania_subject }
 		fix_variable_error = { variable = romania_unification_in_motion }
 		fix_variable_error = { variable = mon_raid_state }
-	}
-}
-
-gbbf_debug.2 = {
-	type = country_event
-	hidden = yes
-	
-	trigger = {
-		is_subject_type = subject_type_gbbf_eyalet
-		overlord ?= {
-			NOT = {
-				c:TUR ?= this
-			}
-		}
-	}
-	immediate = {
-		overlord ?= {
-			save_scope_as = overlord_scope
-		}
-		make_independent = yes
-		scope:overlord_scope = {
-			if = {
-				limit = {
-					OR = {
-						is_country_type = recognized
-						is_country_type = colonial
-					}
-				}
-				create_diplomatic_pact = {
-					type = puppet
-					country = root
-				}
-			}
-			else = {
-				create_diplomatic_pact = {
-					type = vassal
-					country = root
-				}
-			}
-		}
 	}
 }

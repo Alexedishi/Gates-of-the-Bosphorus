@@ -1,0 +1,124 @@
+﻿##########################################
+## GATES OF THE BOSPHORUS HIDDEN EVENTS ##
+##########################################
+
+# For Greek & Byzantium content, see the "grefm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Ottoman & Turkish content, see the "turkfm" module
+# For North African content, see the "mgrbfm" module
+# For Armenian, Kurdish, & Assyrian content, see the "haykfm" module
+# For Eastern Question & Expeditions content, see the "eqfm" module
+
+####################
+
+namespace = gbbf_hidden
+####################
+
+####	TABLE OF CONTENTS	####	#TOC
+
+# The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
+
+#1-XXX - Hidden Events
+#	1 - Switches Eyalets to Puppet/Vassal if the overlord is not TUR
+#	2 - Deactivates Turkish Palaces if held if owner is not TUR
+
+####################
+
+gbbf_hidden.1 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		is_subject_type = subject_type_gbbf_eyalet
+		overlord ?= {
+			NOT = {
+				c:TUR ?= this
+			}
+		}
+	}
+	immediate = {
+		overlord ?= {
+			save_scope_as = overlord_scope
+		}
+		make_independent = yes
+		scope:overlord_scope = {
+			if = {
+				limit = {
+					OR = {
+						is_country_type = recognized
+						is_country_type = colonial
+					}
+				}
+				create_diplomatic_pact = {
+					type = puppet
+					country = root
+				}
+			}
+			else = {
+				create_diplomatic_pact = {
+					type = vassal
+					country = root
+				}
+			}
+		}
+	}
+}
+
+gbbf_hidden.2 = {
+	type = state_event
+	hidden = yes
+
+	trigger = {
+		owner = {
+			NOT = {
+				country_has_primary_culture = cu:turkish
+			}
+		}
+		OR = {
+			is_production_method_active = {
+				building_type = gbbf_building_topkapi_palace
+				production_method = pm_gbbf_topkapi_palace_active
+			}
+			is_production_method_active = {
+				building_type = gbbf_building_dolmabahce_palace
+				production_method = pm_gbbf_dolmabahce_palace_active
+			}
+			is_production_method_active = {
+				building_type = gbbf_building_dolmabahce_palace
+				production_method = pm_gbbf_dolmabahce_palace_upgraded
+			}
+		}
+	}
+	immediate = {
+		if = {
+			limit = {
+				is_production_method_active = {
+					building_type = gbbf_building_topkapi_palace
+					production_method = pm_gbbf_topkapi_palace_active
+				}
+			}
+			activate_production_method = {
+				building_type = gbbf_building_topkapi_palace
+				production_method = pm_gbbf_topkapi_palace_inactive
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					is_production_method_active = {
+						building_type = gbbf_building_dolmabahce_palace
+						production_method = pm_gbbf_dolmabahce_palace_active
+					}
+					is_production_method_active = {
+						building_type = gbbf_building_dolmabahce_palace
+						production_method = pm_gbbf_dolmabahce_palace_upgraded
+					}
+				}
+			}
+			activate_production_method = {
+				building_type = gbbf_building_dolmabahce_palace
+				production_method = pm_gbbf_dolmabahce_palace_inactive
+			}
+		}
+	}
+}
