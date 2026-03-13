@@ -47,7 +47,9 @@
 		}
 	}
 	
-	on_complete = {  }
+	on_complete = {
+		trigger_event = turkfm_milletindir.002
+	}
 
 	on_monthly_pulse = {
 		effect = {
@@ -89,7 +91,9 @@ je_turkfm_anatolian_reconquest = {
 		}
 	}
 
-	immediate = {  }
+	immediate = {
+		trigger_event = turkfm_milletindir.010
+	}
 
 	complete = {
 		any_state_in_anatolia = {
@@ -105,7 +109,16 @@ je_turkfm_anatolian_reconquest = {
 	fail = {  }
 
 	on_fail = {
-		set_variable = turkfm_weaksauce
+		custom_tooltip = {
+			text = turkfm_weaksauce
+			set_variable = turkfm_weaksauce
+		}
+	}
+
+	invalid = {
+		hidden_trigger = {
+			has_variable = turkfm_reconquered_anatolia
+		}
 	}
 }
 
@@ -142,7 +155,21 @@ je_turkfm_rampaging_wolf = {
 		set_variable = turkfm_reconquered_anatolia
 	}
 
-	complete = {  }
+	complete = {
+		country_rank >= rank_value:great_power
+		gbbf_controls_georegion_trigger = {
+			georegion = anatolia
+		}
+		gbbf_controls_georegion_trigger = {
+			georegion = balkans
+		}
+		gbbf_owns_entire_georegion_trigger = {
+			georegion = levant
+		}
+		gbbf_controls_georegion_trigger = {
+			georegion = middle_east_highlands
+		}
+	}
 
 	on_complete = {
 		set_variable = turkfm_rampaging_wolf_complete
@@ -151,7 +178,10 @@ je_turkfm_rampaging_wolf = {
 	fail = {  }
 
 	on_fail = {
-		set_variable = turkfm_weaksauce
+		custom_tooltip = {
+			text = turkfm_weaksauce
+			set_variable = turkfm_weaksauce
+		}
 	}
 }
 
@@ -167,10 +197,12 @@ je_turkfm_turan = {
 
 	is_shown_when_inactive = {
 		c:TUR ?= this
-		NOT = {
-			has_variable = turkfm_weaksauce
-		}
 		has_variable = turkfm_reconquered_anatolia
+		NOR = {
+			has_variable = turkfm_weaksauce
+			has_variable = turkfm_culture_var
+			var:turkfm_culture_var != flag:turkfm_turanism
+		}
 	}
 
 	possible = {
@@ -194,13 +226,16 @@ je_turkfm_turan = {
 	fail = {  }
 
 	on_fail = {
-		set_variable = turkfm_weaksauce
+		custom_tooltip = {
+			text = turkfm_weaksauce
+			set_variable = turkfm_weaksauce
+		}
 	}
 }
 
 je_turkfm_armenian_expulsions = {
 	group = je_group_crises
-	icon = "gfx/interface/icons/invention_icons/dynamite.dds"
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
 	weight = 100
 
 	should_be_pinned_by_default = yes
