@@ -15,13 +15,20 @@
 		}
 	}
 	add = {
-		desc = turkfm_value_from_nationalism
+		desc = gbbf_value_from_citizenship_restrictiveness
 		value = {
-			if = {
-				limit = {
-					has_law_or_variant = law_type:law_ethnostate
-				}
-				add = 1
+			add = gbbf_citizenship_restrictiveness_value
+			multiply = 0.1
+		}
+	}
+	add = {
+		desc = turkfm_value_from_sol_ratio
+		value = {
+			add = {
+				value = average_sol
+				subtract = average_expected_sol
+				multiply = 0.01
+				round_to = 0.01
 			}
 		}
 	}
@@ -41,6 +48,13 @@
 		value = {
 			add = gbbf_institution_investment_levels_value
 			multiply = 0.1
+		}
+	}
+	add = {
+		desc = gbbf_value_from_innovation
+		value = {
+			add = country_innovation
+			multiply = 0.01
 		}
 	}
 }
@@ -68,6 +82,13 @@ turkfm_turanism_value = {
 				}
 				add = 0.1
 			}
+		}
+	}
+	subtract = {
+		desc = gbbf_value_from_citizenship_restrictiveness
+		value = {
+			add = gbbf_citizenship_restrictiveness_value
+			multiply = 0.1
 		}
 	}
 }
@@ -116,6 +137,23 @@ turkfm_anatolianism_value = {
 				}
 				add = 0.1
 			}
+		}
+	}
+	add = {
+		desc = turkfm_value_from_university_levels
+		value = {
+			every_state_in_anatolia = {
+				limit = {
+					owner = root
+				}
+				every_scope_building = {
+					limit = {
+						is_building_type = building_university
+					}
+					add = level
+				}
+			}
+			multiply = 0.1
 		}
 	}
 }
