@@ -130,6 +130,7 @@ bulfm_: Once contained content for Bulgaria; has been merged with balkfm
 
 ----MGRBFM: Maghrebi Content Module (EGY, TRI, TUN, FZN)
  - EGY:
+ -- New journal "Egyptian Nationalism" representing the three-way struggle between the Arab, Misri, and Pharonic identities in Egypt
  - TRI:
  - TUN:
  - FZN:
@@ -175,46 +176,6 @@ bulfm_: Once contained content for Bulgaria; has been merged with balkfm
 
 
 ####---------- Published Updates ----------####
---Update 3.5.0--
-New Additions:
-- Rebuilt "Nacertanije" into a global journal "The Yugoslav Project"
-- Added scripted buttons to "The Yugoslav Project" to annex Yugoslav countries in a manner similar to Greek annexations
-- New journal "The Nature of Yugoslavia:" Promote a Centralized or Federalist approach to the Yugoslav state
-- Added "Yugoslav Integralist" ideologies and movement representing the Integralist movement in Yugoslavia
-- New journal "The Spirit of the Black Mountain" Reject Yugoslavism and lead Montenegro towards an independent identity
-- Rebuilt "The Teachings of al-Sanusi" into a global journal with new mechanics, events, and modifiers
-- New journal "The Ambitions of Muhammad 'Ali" representing the expansionist goals of Muhammad Ali
-
-- New journal "Securing Fezzan" for Fezzan
-- Added five new dynamic country names for the Serbian Empire tag
-- Added flags to both TRI and LBY
-- Decentralized a large portion of the Egyptian desert
-
-Integrations:
-- Integrated the "Awaken Thee, Romanian!" mod with permission:
--- Added a game rule to change Romania's color to its cream color from Victoria 2
--- Added multiple flags for Moldavia and Wallachia
--- Added DNA for Alexandru Ioan Cuza, Alexandru Ghica, and Carol and Ferdinand Hohenzollern
-
-Balancing/Adjustments:
-- Replaced IP3's "Serbia and Montenegro" journal for better integration; this remains DLC-locked
-- Cloned IP3's mon_state_formation.5 to balkfm_yugoslavia.007 for better integration; this remains DLC-locked
-- je_balkfm_mon_military_reform now requires 10 military units and an Arms Industries building
-- Refactored multiple Romanian characters to use templates
-- Both TRI's and FZN's starting journals will activate after their war is resolves
-
-Fixes:
-- Refactored script handling the creation and tracking of Serbian dynastic heads
-- Fixed a case where subjects could get stuck as Eyalets
-- Building the Biljarda is now mandatory for the "Prince-Bishopric" journal if IP3 is active
-- Declaring the Principality of Montenegro is now mandatory if IP3 is active
-- Fixed a situation where "Change of Tack" journal's fail conditions could be true when the journal activates
-
-Notes:
-- Libyan and Tunisian content split from "turkfm" into "mgrbfm"
-- Merged je_eqfm_senusiyya_main and je_eqfm_senusiyya_sub into je_eqfm_senusiyya
-
-
 --Update 3.4.11--
 Fixes:
 - Pirates completion event now shows the country that captured the Pirate Leader instead of a broken scope
