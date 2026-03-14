@@ -1,36 +1,174 @@
-﻿je_balkfm_tax_reform = {
+﻿je_balkfm_ottoman_legacy = {
 	group = je_group_technology
 	icon = "gfx/interface/icons/invention_icons/currency_standards.dds"
 	weight = 1000
-
+	
 	should_be_pinned_by_default = yes
 	can_revolution_inherit = yes
 	transferable = no
-
+	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
-	}
-
-	modifiers_while_active = {
-		modifier_balkfm_timar
-	}
-
-	complete = {
-		OR = {
-			has_law_or_variant = law_type:law_per_capita_based_taxation
-			has_law_or_variant = law_type:law_proportional_taxation
-			has_law_or_variant = law_type:law_graduated_taxation
+		if = {
+			limit = {
+				NOT = {
+					has_variable = balkfm_ottoman_legacies_started
+				}
+			}
+			trigger_event = {
+				id = balkfm_legacies.009
+				days = 15
+			}
 		}
 	}
-
-	on_complete = {
-		trigger_event = balkfm_legacies.001
-		set_variable = balkfm_tax_reform_complete
+	
+	complete = {
+		## Land Reform
+		trigger_if = {
+			limit = {
+				scope:journal_entry = {
+					has_modifier = modifier_balkfm_outdated_argiculture
+				}
+			}
+			custom_tooltip = {
+				text = je_balkfm_ottoman_legacy_land_reform_agenda
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = balkfm_land_reform_complete
+			}
+			custom_tooltip = {
+				text = je_balkfm_ottoman_legacy_land_reform_complete
+				always = yes
+			}
+		}
+		
+		## Civic Reform
+		trigger_if = {
+			limit = {
+				scope:journal_entry = {
+					has_modifier = modifier_balkfm_poor_administration
+				}
+			}
+			custom_tooltip = {
+				text = je_balkfm_ottoman_legacy_civic_reform_agenda
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = balkfm_civic_reform_complete
+			}
+			custom_tooltip = {
+				text = je_balkfm_ottoman_legacy_civic_reform_complete
+				always = yes
+			}
+		}
+		
+		## Brigandage
+		trigger_if = {
+			limit = {
+				scope:journal_entry = {
+					has_modifier = modifier_balkfm_insecure_countryside
+				}
+			}
+			custom_tooltip = {
+				text = je_balkfm_ottoman_legacy_brigandage_agenda
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = balkfm_brigandage_complete
+			}
+			custom_tooltip = {
+				text = je_balkfm_ottoman_legacy_brigandage_complete
+				always = yes
+			}
+		}
+		
+		## State Reform
+		trigger_if = {
+			limit = {
+				scope:journal_entry = {
+					has_modifier = modifier_balkfm_incompetent_administration
+				}
+			}
+			custom_tooltip = {
+				text = je_balkfm_ottoman_legacy_state_reform_agenda
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = balkfm_state_reform_complete
+			}
+			custom_tooltip = {
+				text = je_balkfm_ottoman_legacy_state_reform_complete
+				always = yes
+			}
+		}
+		
+		## Economic Reform
+		trigger_if = {
+			limit = {
+				scope:journal_entry = {
+					has_modifier = modifier_balkfm_informal_economy
+				}
+			}
+			custom_tooltip = {
+				text = je_balkfm_ottoman_legacy_economic_reform_agenda
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = balkfm_economic_reform_complete
+			}
+			custom_tooltip = {
+				text = je_balkfm_ottoman_legacy_economic_reform_complete
+				always = yes
+			}
+		}
+		
+		## Social Reform
+		trigger_if = {
+			limit = {
+				scope:journal_entry = {
+					has_modifier = modifier_balkfm_rigid_society
+				}
+			}
+			custom_tooltip = {
+				text = je_balkfm_ottoman_legacy_social_reform_agenda
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = balkfm_social_reform_complete
+			}
+			custom_tooltip = {
+				text = je_balkfm_ottoman_legacy_social_reform_complete
+				always = yes
+			}
+		}
 	}
-
-	invalid = {
-		hidden_trigger = {
-			has_variable = balkfm_tax_reform_complete
+	
+	on_monthly_pulse = {
+		events = {
+			balkfm_legacies.001
+			balkfm_legacies.002
+			balkfm_legacies.003
+			balkfm_legacies.004
+			balkfm_legacies.005
+			balkfm_legacies.006
+			balkfm_legacies.007
+		}
+		random_events = {
+			chance_of_no_event = 95
+			5 = balkfm_legacies.010
 		}
 	}
 }
@@ -204,10 +342,7 @@ je_balkfm_brigandage = {
 	}
 
 	on_monthly_pulse = {
-		random_events = {
-			chance_of_no_event = 95
-			5 = balkfm_legacies.010 # The Brigands Raid Again!
-		}
+	
 	}
 }
 
