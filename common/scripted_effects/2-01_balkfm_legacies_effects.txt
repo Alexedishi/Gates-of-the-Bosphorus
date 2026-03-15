@@ -18,7 +18,7 @@
 				}
 			}
 			je:je_balkfm_legacies = {
-				add_modifier = modifier_balkfm_timar
+				add_modifier = modifier_balkfm_tax_reform_agenda
 			}
 		}
 		
@@ -36,7 +36,7 @@
 				}
 			}
 			je:je_balkfm_legacies = {
-				add_modifier = modifier_balkfm_outdated_argiculture
+				add_modifier = modifier_balkfm_land_reform_agenda
 			}
 		}
 		
@@ -54,7 +54,7 @@
 				}
 			}
 			je:je_balkfm_legacies = {
-				add_modifier = modifier_balkfm_poor_administration
+				add_modifier = modifier_balkfm_civic_reform_agenda
 			}
 		}
 		
@@ -62,7 +62,7 @@
 		if = {
 			limit = {
 				NOT = {
-					has_variable = balkfm_brigandage_complete
+					has_variable = balkfm_security_reform_complete
 				}
 				any_scope_state = {
 					is_in_geographic_region = geographic_region_rumelia
@@ -73,7 +73,7 @@
 				}
 			}
 			je:je_balkfm_legacies = {
-				add_modifier = modifier_balkfm_insecure_countryside
+				add_modifier = modifier_balkfm_security_reform_agenda
 			}
 		}
 		
@@ -85,9 +85,9 @@
 				}
 			}
 			je:je_balkfm_legacies = {
-				add_modifier = modifier_balkfm_incompetent_administration
-				add_modifier = modifier_balkfm_informal_economy
-				add_modifier = modifier_balkfm_rigid_society
+				add_modifier = modifier_balkfm_state_reform_agenda
+				add_modifier = modifier_balkfm_economic_reform_agenda
+				add_modifier = modifier_balkfm_social_reform_agenda
 			}
 		}
 		else_if = {
@@ -95,23 +95,47 @@
 				country_has_primary_culture = cu:bosniak
 			}
 			je:je_balkfm_legacies = {
-				add_modifier = modifier_balkfm_incompetent_administration
-				add_modifier = modifier_balkfm_informal_economy
+				add_modifier = modifier_balkfm_state_reform_agenda
+				add_modifier = modifier_balkfm_economic_reform_agenda
 			}
 		}
 	}
 	else = {
 		error_log = "balkfm_set_up_ottoman_legacies_effect was called, but the country calling it already has an active je_balkfm_legacies journal entry."
 	}
+	set_variable = {
+		name = balkfm_completed_legacies_var
+		value = balkfm_completed_legacies_value
+	}
+	set_variable = {
+		name = balkfm_total_legacies_var
+		value = balkfm_total_legacies_value
+	}
 }
 
 balkfm_add_legacy_agenda_effect = {
-	# This effect does NOT work for Brigandage
 	if = {
+		limit = {
+			NOR = {
+				has_journal_entry = je_balkfm_legacies
+				has_variable = balkfm_$type$_reform_complete
+			}
+		}
+		add_journal_entry = {
+			type = je_balkfm_legacies
+		}
+		custom_tooltip = {
+			text = balkfm_add_$type$_reform_agenda
+			je:je_balkfm_legacies = {
+				add_modifier = modifier_balkfm_$type$_reform_agenda
+			}
+		}
+	}
+	else_if = {
 		limit = {
 			has_journal_entry = je_balkfm_legacies
 			NOR = {
-				je:je_balkfm_legacies = {
+				je:je_balkfm_legacies ?= {
 					has_modifier = modifier_balkfm_$type$_reform_agenda
 				}
 				has_variable = balkfm_$type$_reform_complete
@@ -124,25 +148,7 @@ balkfm_add_legacy_agenda_effect = {
 			}
 		}
 	}
-}
-
-balkfm_add_brigandage_agenda_effect = {
-	# Use this effect to add the Brigandage Agenda
-	if = {
-		limit = {
-			has_journal_entry = je_balkfm_legacies
-			NOR = {
-				je:je_balkfm_legacies = {
-					has_modifier = modifier_balkfm_brigandage_agenda
-				}
-				has_variable = balkfm_brigandage_complete
-			}
-		}
-		custom_tooltip = {
-			text = balkfm_add_brigandage_agenda
-			je:je_balkfm_legacies = {
-				add_modifier = modifier_balkfm_brigandage_agenda
-			}
-		}
+	else = {
+		error_log = "balkfm_add_legacy_agenda_effect was called, but the specified agenda is either active or already completed."
 	}
 }
