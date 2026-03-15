@@ -2,74 +2,124 @@
 	if = {
 		limit = {
 			NOT = {
-				has_variable = balkfm_ottoman_legacies_started # There's a tiny corner case where Bulgaria can fire this effect twice
-			}
-		}
-		if = {
-			limit = {
-				OR = {
-					has_law_or_variant = law_type:law_serfdom
-					has_law_or_variant = law_type:law_tenant_farmers
-					has_law_or_variant = law_type:law_traditionalism
-					has_law_or_variant = law_type:law_agrarianism
-				}
-			}
-			add_journal_entry = {
-				type = je_balkfm_land_reform
+				has_journal_entry = je_balkfm_ottoman_legacy
+				# There's a tiny corner case where Bulgaria can fire this effect twice
 			}
 		}
 		add_journal_entry = {
-			type = je_balkfm_civic_reform
-		}
-		if = {
-			limit = {
-				balkfm_balkans_native_trigger = yes
-				institution_investment_level = {
-					institution = institution_police
-					value < 3
-				}
-			}
-			add_journal_entry = {
-				type = je_balkfm_brigandage
-			}
-		}
-		if = {
-			limit = {
-				always = no
-			}
-			add_journal_entry = {
-				type = je_balkfm_tax_reform
-			}
-		}
-		if = {
-			limit = {
-				country_has_primary_culture = cu:romanian
-			}
-			add_journal_entry = {
-				type = je_balkfm_state_reform
-			}
-			add_journal_entry = {
-				type = je_balkfm_economic_reform
-			}
-			add_journal_entry = {
-				type = je_balkfm_social_reform
-			}
-		}
-		else_if = {
-			limit = {
-				country_has_primary_culture = cu:bosniak
-			}
-			add_journal_entry = {
-				type = je_balkfm_state_reform
-			}
-			add_journal_entry = {
-				type = je_balkfm_economic_reform
-			}
-		}
-		set_variable = balkfm_ottoman_legacies_started
-		trigger_event = {
-			id = balkfm_legacies.009
-			days = 15
+			type = je_balkfm_ottoman_legacy
 		}
 	}
+	## Tax Reform
+	if = {
+		limit = {
+			always = no # TODO enable when ready
+			NOT = {
+				has_variable = balkfm_tax_reform_complete
+			}
+		}
+		je:je_balkfm_ottoman_legacy = {
+			add_modifier = modifier_balkfm_timar
+		}
+	}
+	
+	## Land Reform
+	if = {
+		limit = {
+			NOT = {
+				has_variable = balkfm_land_reform_complete
+			}
+			OR = {
+				has_law_or_variant = law_type:law_serfdom
+				has_law_or_variant = law_type:law_tenant_farmers
+				has_law_or_variant = law_type:law_traditionalism
+				has_law_or_variant = law_type:law_agrarianism
+			}
+		}
+		je:je_balkfm_ottoman_legacy = {
+			add_modifier = modifier_balkfm_outdated_argiculture
+		}
+	}
+	
+	## Civic Reform
+	if = {
+		limit = {
+			NOT = {
+				has_variable = balkfm_civic_reform_complete
+			}
+			OR = {
+				has_law_or_variant = law_type:law_hereditary_bureaucrats
+				ig:ig_landowners = {
+					is_powerful = yes
+				}
+			}
+		}
+		je:je_balkfm_ottoman_legacy = {
+			add_modifier = modifier_balkfm_poor_administration
+		}
+	}
+	
+	## Brigandage
+	if = {
+		limit = {
+			NOT = {
+				has_variable = balkfm_brigandage_complete
+			}
+			any_scope_state = {
+				is_in_geographic_region = geographic_region_rumelia
+			}
+			institution_investment_level = {
+				institution = institution_police
+				value < 3
+			}
+		}
+		je:je_balkfm_ottoman_legacy = {
+			add_modifier = modifier_balkfm_insecure_countryside
+		}
+	}
+	
+	## State Reform
+	if = {
+		limit = {
+			OR = {
+				country_has_primary_culture = cu:romanian
+			}
+		}
+		je:je_balkfm_ottoman_legacy = {
+			add_modifier = modifier_balkfm_incompetent_administration
+		}
+	}
+	
+	if = {
+		limit = {
+			country_has_primary_culture = cu:romanian
+		}
+		add_journal_entry = {
+			type = je_balkfm_state_reform
+		}
+		add_journal_entry = {
+			type = je_balkfm_economic_reform
+		}
+		add_journal_entry = {
+			type = je_balkfm_social_reform
+		}
+	}
+	else_if = {
+		limit = {
+			country_has_primary_culture = cu:bosniak
+		}
+		add_journal_entry = {
+			type = je_balkfm_state_reform
+		}
+		add_journal_entry = {
+			type = je_balkfm_economic_reform
+		}
+	}
+	set_variable = balkfm_ottoman_legacies_started
+	trigger_event = {
+		id = balkfm_legacies.009
+		days = 15
+	}
+	
+	
 }

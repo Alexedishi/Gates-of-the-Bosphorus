@@ -37,10 +37,13 @@ namespace = balkfm_legacies
 
 ####################
 
-## Ottoman Legacies Narrative Events ##
-balkfm_legacies.001 = { # Tax Reform Complete
+####----------- Ottoman Legacy Narrative Events -----------####
+balkfm_legacies.001 = {
 	type = country_event
 	placement = root
+	icon = "gfx/interface/icons/event_icons/event_trade.dds"
+	duration = 3
+	dlc = dlc_grefm
 
 	title = balkfm_legacies.001.t
 	desc = balkfm_legacies.001.d
@@ -49,24 +52,30 @@ balkfm_legacies.001 = { # Tax Reform Complete
 	event_image = {
 		video = "unspecific_ruler_speaking_to_people"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_trade.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
-	duration = 3
-
-	dlc = dlc_grefm
-
 	trigger = {
+		je:je_balkfm_ottoman_legacy = {
+			has_modifier = modifier_balkfm_timar
+		}
+		NOR = {
+			has_law_or_variant = law_type:law_consumption_based_taxation
+			has_law_or_variant = law_type:law_land_based_taxation
+		}
 	}
 
 	immediate = {
+		je:je_balkfm_ottoman_legacy = {
+			remove_modifier = modifier_balkfm_timar
+		}
 	}
 
 	option = {
 		name = balkfm_legacies.001.a
 		default_option = yes
+		show_as_tooltip = {
+			remove_modifier = modifier_balkfm_timar
+		}
 		add_modifier = {
 			name = modifier_balkfm_taxation_reformed
 			months = gbbf_normal_modifier_time
@@ -75,13 +84,16 @@ balkfm_legacies.001 = { # Tax Reform Complete
 			value = small_radicals
 			strata = lower
 		}
+		set_variable = balkfm_tax_reform_complete
 	}
-
 }
 
-balkfm_legacies.002 = { # Land Reform Complete
+balkfm_legacies.002 = {
 	type = country_event
 	placement = root
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	duration = 3
+	dlc = dlc_grefm
 
 	title = balkfm_legacies.002.t
 	desc = balkfm_legacies.002.d
@@ -90,25 +102,43 @@ balkfm_legacies.002 = { # Land Reform Complete
 	event_image = {
 		video = "southamerica_factory_opening"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_scales.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
-	duration = 3
-
-	dlc = dlc_grefm
-
 	trigger = {
-		# triggered by je_balkfm_land_reform
+		je:je_balkfm_ottoman_legacy = {
+			has_modifier = modifier_balkfm_outdated_argiculture
+		}
+		NOR = {
+			has_law_or_variant = law_type:law_traditionalism
+			has_law_or_variant = law_type:law_agrarianism
+		}
+		NOR = {
+			has_law_or_variant = law_type:law_serfdom
+			has_law_or_variant = law_type:law_tenant_farmers
+		}
+		any_scope_building = {
+			is_building_type = building_wheat_farm
+			NOT = {
+				has_active_production_method = pm_simple_farming
+			}
+			level >= 5
+			weekly_profit > 5
+			occupancy >= 0.9
+		}
 	}
 
 	immediate = {
+		je:je_balkfm_ottoman_legacy = {
+			remove_modifier = modifier_balkfm_outdated_argiculture
+		}
 	}
 
 	option = {
 		name = balkfm_legacies.002.a
 		default_option = yes
+		show_as_tooltip = {
+			remove_modifier = modifier_balkfm_outdated_argiculture
+		}
 		add_modifier = {
 			name = modifier_balkfm_modernized_agriculture
 			months = gbbf_normal_modifier_time
@@ -117,13 +147,16 @@ balkfm_legacies.002 = { # Land Reform Complete
 			pop_type = farmers
 			value = small_radicals
 		}
+		set_variable = balkfm_land_reform_complete
 	}
-
 }
 
-balkfm_legacies.003 = { # Civic Reform Complete
+balkfm_legacies.003 = {
 	type = country_event
 	placement = root
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
 
 	title = balkfm_legacies.003.t
 	desc = balkfm_legacies.003.d
@@ -132,25 +165,36 @@ balkfm_legacies.003 = { # Civic Reform Complete
 	event_image = {
 		video = "unspecific_signed_contract"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
-	duration = 3
-
-	dlc = dlc_grefm
-
 	trigger = {
-		# triggered by je_balkfm_civic_reform
+		je:je_balkfm_ottoman_legacy = {
+			has_modifier = modifier_balkfm_poor_administration
+		}
+		NOT = {
+			has_law_or_variant = law_type:law_hereditary_bureaucrats
+		}
+		ig:ig_intelligentsia = {
+			is_marginal = no
+		}
+		ig:ig_landowners = {
+			is_powerful = no
+			is_insurrectionary = no
+		}
 	}
 
 	immediate = {
+		je:je_balkfm_ottoman_legacy = {
+			remove_modifier = modifier_balkfm_poor_administration
+		}
 	}
 
 	option = {
 		name = balkfm_legacies.003.a
 		default_option = yes
+		show_as_tooltip = {
+			remove_modifier = modifier_balkfm_poor_administration
+		}
 		add_modifier = {
 			name = modifier_balkfm_civic_tradition_established
 			months = gbbf_normal_modifier_time
@@ -159,13 +203,16 @@ balkfm_legacies.003 = { # Civic Reform Complete
 			pop_type = bureaucrats
 			value = small_radicals
 		}
+		set_variable = balkfm_civic_reform_complete
 	}
-
 }
 
-balkfm_legacies.004 = { # Brigandage Complete
+balkfm_legacies.004 = {
 	type = country_event
 	placement = root
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
 
 	title = balkfm_legacies.004.t
 	desc = balkfm_legacies.004.d
@@ -174,25 +221,41 @@ balkfm_legacies.004 = { # Brigandage Complete
 	event_image = {
 		video = "unspecific_ruler_speaking_to_people"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
-	duration = 3
-
-	dlc = dlc_grefm
-
 	trigger = {
-		# triggered by je_balkfm_brigandage
+		je:je_balkfm_ottoman_legacy = {
+			has_modifier = modifier_balkfm_insecure_countryside
+		}
+		NOR = {
+			has_law_or_variant = law_type:law_no_police
+			has_law_or_variant = law_type:law_local_police
+		}
+		institution_investment_level = {
+			institution = institution_police
+			value >= 3
+		}
+		any_scope_state = {
+			filter = {
+				is_in_geographic_region = geographic_region_rumelia
+			}
+			count = all
+			turmoil < 0.20
+		}
 	}
 
 	immediate = {
+		je:je_balkfm_ottoman_legacy = {
+			remove_modifier = modifier_balkfm_insecure_countryside
+		}
 	}
 
 	option = {
 		name = balkfm_legacies.004.a
 		default_option = yes
+		show_as_tooltip = {
+			remove_modifier = modifier_balkfm_insecure_countryside
+		}
 		add_modifier = {
 			name = modifier_balkfm_secured_order
 			months = gbbf_normal_modifier_time
@@ -207,13 +270,16 @@ balkfm_legacies.004 = { # Brigandage Complete
 			}
 			remove_modifier = modifier_balkfm_brigandage
 		}
+		set_variable = balkfm_brigandage_complete
 	}
-
 }
 
-balkfm_legacies.005 = { # State Reform Complete
+balkfm_legacies.005 = {
 	type = country_event
 	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 3
+	dlc = dlc_grefm
 
 	title = balkfm_legacies.005.t
 	desc = balkfm_legacies.005.d
@@ -222,25 +288,45 @@ balkfm_legacies.005 = { # State Reform Complete
 	event_image = {
 		video = "unspecific_ruler_speaking_to_people"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
-	duration = 3
-
-	dlc = dlc_grefm
-
 	trigger = {
-		# triggered by je_balkfm_state_reform
+		je:je_balkfm_ottoman_legacy = {
+			has_modifier = modifier_balkfm_incompetent_administration
+		}
+		NOR = {
+			has_law_or_variant = law_type:law_hereditary_bureaucrats
+			has_law_or_variant = law_type:law_peasant_levies
+		}
+		country_has_building_type_levels = {
+			target = bt:building_government_administration
+			value >= 5
+		}
+		any_scope_building = {
+			filter = {
+				is_building_type = building_government_administration
+			}
+			count = all
+			NOT = {
+				has_active_production_method = pm_simple_organization
+			}
+			occupancy >= 0.9
+		}
+		bureaucracy >= 0
 	}
 
 	immediate = {
+		je:je_balkfm_ottoman_legacy = {
+			remove_modifier = modifier_balkfm_incompetent_administration
+		}
 	}
 
 	option = {
 		name = balkfm_legacies.005.a
 		default_option = yes
+		show_as_tooltip = {
+			remove_modifier = modifier_balkfm_incompetent_administration
+		}
 		add_modifier = {
 			name = modifier_balkfm_stately_foundation
 			months = gbbf_normal_modifier_time
@@ -249,13 +335,16 @@ balkfm_legacies.005 = { # State Reform Complete
 			value = small_radicals
 			strata = middle
 		}
+		set_variable = balkfm_state_reform_complete
 	}
-
 }
 
-balkfm_legacies.006 = { # Economic Reform Complete
+balkfm_legacies.006 = {
 	type = country_event
 	placement = root
+	icon = "gfx/interface/icons/event_icons/event_trade.dds"
+	duration = 3
+	dlc = dlc_grefm
 
 	title = balkfm_legacies.006.t
 	desc = balkfm_legacies.006.d
@@ -264,24 +353,43 @@ balkfm_legacies.006 = { # Economic Reform Complete
 	event_image = {
 		video = "europenorthamerica_london_center"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_trade.dds"
-
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
-	duration = 3
-
-	dlc = dlc_grefm
-
 	trigger = {
+		je:je_balkfm_ottoman_legacy = {
+			has_modifier = modifier_balkfm_informal_economy
+		}
+		NOR = {
+			has_law_or_variant = law_type:law_traditionalism
+			has_law_or_variant = law_type:law_agrarianism
+			has_law_or_variant = law_type:law_isolationism
+		}
+		any_scope_state = {
+			filter = {
+				is_in_geographic_region = geographic_region_rumelia
+			}
+			percent >= 0.75
+			is_incorporated = yes
+			has_building = building_urban_center
+		}
+		NOR = {
+			in_default = yes
+			has_modifier = declared_bankruptcy
+		}
 	}
 
 	immediate = {
+		je:je_balkfm_ottoman_legacy = {
+			remove_modifier = modifier_balkfm_informal_economy
+		}
 	}
 
 	option = {
 		name = balkfm_legacies.006.a
 		default_option = yes
+		show_as_tooltip = {
+			remove_modifier = modifier_balkfm_informal_economy
+		}
 		add_modifier = {
 			name = modifier_balkfm_economic_reforms
 			months = gbbf_long_modifier_time
@@ -289,13 +397,16 @@ balkfm_legacies.006 = { # Economic Reform Complete
 		add_loyalists = {
 			value = small_radicals
 		}
+		set_variable = balkfm_economic_reform_complete
 	}
-
 }
 
-balkfm_legacies.007 = { # Social Equity
+balkfm_legacies.007 = {
 	type = country_event
 	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 3
+	dlc = dlc_grefm
 
 	title = balkfm_legacies.007.t
 	desc = balkfm_legacies.007.d
@@ -304,24 +415,34 @@ balkfm_legacies.007 = { # Social Equity
 	event_image = {
 		video = "europenorthamerica_london_center"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
-	duration = 3
-
-	dlc = dlc_grefm
-
 	trigger = {
+		je:je_balkfm_ottoman_legacy = {
+			has_modifier = modifier_balkfm_rigid_society
+		}
+		has_law_or_variant = law_type:law_slavery_banned
+		NOT = {
+			has_law_or_variant = law_type:law_serfdom
+		}
+		institution_investment_level = {
+			institution = institution_schools
+			value >= 3
+		}
 	}
 
 	immediate = {
+		je:je_balkfm_ottoman_legacy = {
+			remove_modifier = modifier_balkfm_rigid_society
+		}
 	}
 
 	option = {
 		name = balkfm_legacies.007.a
 		default_option = yes
+		show_as_tooltip = {
+			remove_modifier = modifier_balkfm_rigid_society
+		}
 		add_modifier = {
 			name = modifier_balkfm_economic_reforms
 			months = gbbf_long_modifier_time
@@ -330,13 +451,16 @@ balkfm_legacies.007 = { # Social Equity
 			value = small_radicals
 			strata = lower
 		}
+		set_variable = balkfm_social_reform_complete
 	}
-
 }
 
-balkfm_legacies.009 = { # An Ottoman Legacy
+balkfm_legacies.009 = {
 	type = country_event
 	placement = root
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+	duration = 3
+	dlc = dlc_grefm
 
 	title = balkfm_legacies.009.t
 	desc = balkfm_legacies.009.d
@@ -345,17 +469,10 @@ balkfm_legacies.009 = { # An Ottoman Legacy
 	event_image = {
 		video = "southamerica_war_civilians"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_industry.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
-	duration = 3
-
-	dlc = dlc_grefm
-
 	trigger = {
-		# triggered from GLOBAL
+		# triggered by je_balkfm_ottoman_legacy
 	}
 
 	immediate = {
@@ -369,13 +486,16 @@ balkfm_legacies.009 = { # An Ottoman Legacy
 		default_option = yes
 		custom_tooltip = balkfm_legacies.009.tt
 	}
-
 }
 
-## Ottoman Legacies Mechanical Events ##
-balkfm_legacies.010 = { # The Brigands Raid Again!
+
+####----------- Ottoman Legacies Mechanical Events -----------####
+balkfm_legacies.010 = {
 	type = country_event
 	placement = scope:brigandage_state
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
 
 	title = balkfm_legacies.010.t
 	desc = balkfm_legacies.010.d
@@ -384,14 +504,7 @@ balkfm_legacies.010 = { # The Brigands Raid Again!
 	event_image = {
 		video = "rp1_social_banditry"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
 
 	trigger = {
 		any_scope_state = {
@@ -400,8 +513,17 @@ balkfm_legacies.010 = { # The Brigands Raid Again!
 	}
 
 	cancellation_trigger = {
-		NOT = {
-			has_journal_entry = je_balkfm_brigandage
+		OR = {
+			je:je_balkfm_ottoman_legacy = {
+				NOT = {
+					has_modifier = modifier_balkfm_insecure_countryside
+				}
+			}
+			NOT = {
+				any_scope_state = {
+					is_in_geographic_region = geographic_region_rumelia
+				}
+			}
 		}
 	}
 
@@ -443,5 +565,27 @@ balkfm_legacies.010 = { # The Brigands Raid Again!
 			}
 		}
 	}
+}
 
+balkfm_legacies.011 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		je:je_balkfm_ottoman_legacy = {
+			has_modifier = modifier_balkfm_insecure_countryside
+		}
+		NOT = {
+			any_scope_state = {
+				is_in_geographic_region = geographic_region_rumelia
+			}
+		}
+	}
+
+	immediate = {
+		je:je_balkfm_ottoman_legacy = {
+			remove_modifier = modifier_balkfm_insecure_countryside
+		}
+		post_notification = notification_balkfm_brigandage_invalid
+	}
 }

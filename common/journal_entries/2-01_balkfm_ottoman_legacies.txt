@@ -23,6 +23,28 @@
 	}
 	
 	complete = {
+		## Tax Reform
+		trigger_if = {
+			limit = {
+				scope:journal_entry = {
+					has_modifier = modifier_balkfm_timar
+				}
+			}
+			custom_tooltip = {
+				text = balkfm_tax_reform_complete
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = balkfm_tax_reform_complete
+			}
+			custom_tooltip = {
+				text = balkfm_tax_reform_complete
+				always = yes
+			}
+		}
+
 		## Land Reform
 		trigger_if = {
 			limit = {
@@ -31,7 +53,7 @@
 				}
 			}
 			custom_tooltip = {
-				text = je_balkfm_ottoman_legacy_land_reform_agenda
+				text = balkfm_land_reform_complete
 				always = no
 			}
 		}
@@ -40,7 +62,7 @@
 				has_variable = balkfm_land_reform_complete
 			}
 			custom_tooltip = {
-				text = je_balkfm_ottoman_legacy_land_reform_complete
+				text = balkfm_land_reform_complete
 				always = yes
 			}
 		}
@@ -53,8 +75,7 @@
 				}
 			}
 			custom_tooltip = {
-				text = je_balkfm_ottoman_legacy_civic_reform_agenda
-				always = no
+				text = balkfm_civic_reform_complete
 			}
 		}
 		trigger_if = {
@@ -62,7 +83,7 @@
 				has_variable = balkfm_civic_reform_complete
 			}
 			custom_tooltip = {
-				text = je_balkfm_ottoman_legacy_civic_reform_complete
+				text = balkfm_civic_reform_complete
 				always = yes
 			}
 		}
@@ -75,7 +96,7 @@
 				}
 			}
 			custom_tooltip = {
-				text = je_balkfm_ottoman_legacy_brigandage_agenda
+				text = balkfm_brigandage_complete
 				always = no
 			}
 		}
@@ -84,7 +105,7 @@
 				has_variable = balkfm_brigandage_complete
 			}
 			custom_tooltip = {
-				text = je_balkfm_ottoman_legacy_brigandage_complete
+				text = balkfm_brigandage_complete
 				always = yes
 			}
 		}
@@ -97,7 +118,7 @@
 				}
 			}
 			custom_tooltip = {
-				text = je_balkfm_ottoman_legacy_state_reform_agenda
+				text = balkfm_state_reform_complete
 				always = no
 			}
 		}
@@ -106,7 +127,7 @@
 				has_variable = balkfm_state_reform_complete
 			}
 			custom_tooltip = {
-				text = je_balkfm_ottoman_legacy_state_reform_complete
+				text = balkfm_state_reform_complete
 				always = yes
 			}
 		}
@@ -119,7 +140,7 @@
 				}
 			}
 			custom_tooltip = {
-				text = je_balkfm_ottoman_legacy_economic_reform_agenda
+				text = balkfm_economic_reform_complete
 				always = no
 			}
 		}
@@ -128,7 +149,7 @@
 				has_variable = balkfm_economic_reform_complete
 			}
 			custom_tooltip = {
-				text = je_balkfm_ottoman_legacy_economic_reform_complete
+				text = balkfm_economic_reform_complete
 				always = yes
 			}
 		}
@@ -141,7 +162,7 @@
 				}
 			}
 			custom_tooltip = {
-				text = je_balkfm_ottoman_legacy_social_reform_agenda
+				text = balkfm_social_reform_complete
 				always = no
 			}
 		}
@@ -150,7 +171,7 @@
 				has_variable = balkfm_social_reform_complete
 			}
 			custom_tooltip = {
-				text = je_balkfm_ottoman_legacy_social_reform_complete
+				text = balkfm_social_reform_complete
 				always = yes
 			}
 		}
@@ -169,298 +190,6 @@
 		random_events = {
 			chance_of_no_event = 95
 			5 = balkfm_legacies.010
-		}
-	}
-}
-
-je_balkfm_land_reform = {
-	group = je_group_technology
-	icon = "gfx/interface/icons/invention_icons/enclosure.dds"
-	weight = 1000
-
-	should_be_pinned_by_default = yes
-	can_revolution_inherit = yes
-	transferable = no
-
-	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
-	}
-
-	modifiers_while_active = {
-		modifier_balkfm_outdated_argiculture
-	}
-
-	complete = {
-		NOR = {
-			has_law_or_variant = law_type:law_traditionalism
-			has_law_or_variant = law_type:law_agrarianism
-		}
-		NOR = {
-			has_law_or_variant = law_type:law_serfdom
-			has_law_or_variant = law_type:law_tenant_farmers
-		}
-		any_scope_building = {
-			is_building_type = building_wheat_farm
-			NOT = {
-				has_active_production_method = pm_simple_farming
-			}
-			level >= 5
-			weekly_profit > 5
-			occupancy >= 0.9
-		}
-	}
-
-	on_complete = {
-		trigger_event = balkfm_legacies.002
-		set_variable = balkfm_land_reform_complete
-	}
-
-	invalid = {
-		hidden_trigger = {
-			has_variable = balkfm_land_reform_complete
-		}
-	}
-}
-
-je_balkfm_civic_reform = {
-	group = je_group_technology
-	icon = "gfx/interface/icons/invention_icons/egalitarianism.dds"
-	weight = 1000
-
-	should_be_pinned_by_default = yes
-	can_revolution_inherit = yes
-	transferable = no
-
-	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
-	}
-
-	modifiers_while_active = {
-		modifier_balkfm_poor_administration
-	}
-
-	complete = {
-		trigger_if = {
-			limit = {
-				has_modifier = modifier_grefm_armansperg_regency
-			}
-			custom_tooltip = {
-				text = grefm_regency_discharged
-				hidden_trigger = {
-					NOT = {
-						has_modifier = modifier_grefm_armansperg_regency
-					}
-				}
-			}
-		}
-		NOT = {
-			has_law_or_variant = law_type:law_hereditary_bureaucrats
-		}
-		ig:ig_intelligentsia = {
-			is_marginal = no
-		}
-		ig:ig_landowners = {
-			is_powerful = no
-			is_insurrectionary = no
-		}
-	}
-
-	on_complete = {
-		trigger_event = balkfm_legacies.003
-		set_variable = balkfm_civic_reform_complete
-	}
-
-	invalid = {
-		hidden_trigger = {
-			has_variable = balkfm_civic_reform_complete
-		}
-	}
-}
-
-je_balkfm_brigandage = {
-	group = je_group_technology
-	icon = "gfx/interface/icons/event_icons/event_raiding.dds"
-	weight = 1000
-
-	should_be_pinned_by_default = yes
-	can_revolution_inherit = yes
-	transferable = no
-
-	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
-	}
-
-	modifiers_while_active = {
-		modifier_balkfm_insecure_countryside
-	}
-
-	complete = {
-		NOR = {
-			has_law_or_variant = law_type:law_no_police
-			has_law_or_variant = law_type:law_local_police
-		}
-		institution_investment_level = {
-			institution = institution_police
-			value >= 3
-		}
-		any_scope_state = {
-			filter = {
-				is_in_geographic_region = geographic_region_rumelia
-			}
-			count = all
-			turmoil < 0.20
-		}
-	}
-
-	on_complete = {
-		trigger_event = balkfm_legacies.004
-		set_variable = balkfm_brigandage_complete
-	}
-
-	invalid = {
-		OR = {
-			hidden_trigger = {
-				has_variable = balkfm_brigandage_complete
-			}
-			NOT = {
-				any_scope_state = {
-					is_in_geographic_region = geographic_region_rumelia
-				}
-			}
-		}
-	}
-
-	on_invalid = {
-		hidden_effect = {
-			every_scope_state = {
-				limit = {
-					has_modifier = modifier_balkfm_brigandage
-				}
-				remove_modifier = modifier_balkfm_brigandage
-			}
-		}
-	}
-
-	on_monthly_pulse = {
-	
-	}
-}
-
-je_balkfm_state_reform = {
-	group = je_group_technology
-	icon = "gfx/interface/icons/invention_icons/central_archives.dds"
-	weight = 1000
-
-	should_be_pinned_by_default = yes
-	can_revolution_inherit = yes
-	transferable = no
-
-	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
-	}
-
-	complete = {
-		NOR = {
-			has_law_or_variant = law_type:law_hereditary_bureaucrats
-			has_law_or_variant = law_type:law_peasant_levies
-		}
-		country_has_building_type_levels = {
-			target = bt:building_government_administration
-			value >= 2
-		}
-		any_scope_building = {
-			filter = {
-				is_building_type = building_government_administration
-			}
-			count = all
-			NOT = {
-				has_active_production_method = pm_simple_organization
-			}
-			occupancy >= 0.9
-		}
-		bureaucracy >= 0
-		approaching_bureaucracy_shortage = no
-	}
-
-	on_complete = {
-		trigger_event = balkfm_legacies.005
-		set_variable = balkfm_state_reform_complete
-	}
-
-	invalid = {
-		hidden_trigger = {
-			has_variable = balkfm_state_reform_complete
-		}
-	}
-}
-
-je_balkfm_economic_reform = {
-	group = je_group_technology
-	icon = "gfx/interface/icons/invention_icons/investment_banks.dds"
-	weight = 1000
-
-	should_be_pinned_by_default = yes
-	can_revolution_inherit = yes
-	transferable = no
-
-	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
-	}
-
-	complete = {
-		NOR = {
-			has_law_or_variant = law_type:law_traditionalism
-			has_law_or_variant = law_type:law_land_based_taxation
-			has_law_or_variant = law_type:law_consumption_based_taxation
-			has_law_or_variant = law_type:law_isolationism
-		}
-		in_default = no
-		any_scope_state = {
-			is_incorporated = yes
-			has_building = building_urban_center
-			percent >= 0.75
-		}
-	}
-
-	on_complete = {
-		trigger_event = balkfm_legacies.006
-		set_variable = balkfm_economic_reform_complete
-	}
-
-	invalid = {
-		hidden_trigger = {
-			has_variable = balkfm_economic_reform_complete
-		}
-	}
-}
-
-je_balkfm_social_reform = {
-	group = je_group_technology
-	icon = "gfx/interface/icons/invention_icons/egalitarianism.dds"
-	weight = 1000
-
-	should_be_pinned_by_default = yes
-	can_revolution_inherit = yes
-	transferable = no
-
-	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
-	}
-
-	complete = {
-		NOT = { has_law_or_variant = law_type:law_serfdom }
-		has_law_or_variant = law_type:law_slavery_banned
-		NOT = { has_law_or_variant = law_type:law_no_schools }
-	}
-
-	on_complete = {
-		trigger_event = balkfm_legacies.007
-		set_variable = balkfm_social_reform_complete
-	}
-
-	invalid = {
-		hidden_trigger = {
-			has_variable = balkfm_social_reform_complete
 		}
 	}
 }
