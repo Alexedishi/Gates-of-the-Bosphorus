@@ -556,7 +556,7 @@ je_grefm_the_military_league = {
 		has_variable = grefm_bavarocracy_started
 		NOR = {
 			has_variable = grefm_intercontinental_ballistic_venizelos_var
-			has_journal_entry = je_grefm_venizelism_main
+			has_journal_entry = je_grefm_venizelism
 		}
 	}
 
@@ -713,7 +713,7 @@ je_grefm_the_military_league = {
 }
 
 ####---------- Venizelism Journal Entries ----------####
-je_grefm_venizelism_main = {
+je_grefm_venizelism = {
 	group = je_group_internal_affairs
 	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
 	weight = 2000
@@ -765,6 +765,9 @@ je_grefm_venizelism_main = {
 				type = movement_gbbf_venizelist
 			}
 		}
+		grefm_add_venizelism_agenda = {
+			type = identity
+		}
 	}
 
 	modifiers_while_active = {
@@ -772,34 +775,143 @@ je_grefm_venizelism_main = {
 	}
 
 	complete = {
-		custom_tooltip = {
-			text = je_grefm_venizelism_tt1
-			hidden_trigger = {
-				has_variable = grefm_nationalism_complete
+		## Constitution Agenda
+		trigger_if = {
+			limit = {
+				has_variable = grefm_venizelism_constitution_agenda
+			}
+			custom_tooltip = {
+				text = grefm_venizelism_constitution_complete
+				always = no
 			}
 		}
-		custom_tooltip = {
-			text = je_grefm_venizelism_tt2
-			hidden_trigger = {
-				has_variable = grefm_venizelism_civics_completed
+		trigger_if = {
+			limit = {
+				has_variable = grefm_venizelism_constitution_complete
+			}
+			custom_tooltip = {
+				text = grefm_venizelism_constitution_complete
+				always = yes
 			}
 		}
-		custom_tooltip = {
-			text = je_grefm_venizelism_tt3
-			hidden_trigger = {
-				has_variable = grefm_venizelism_military_completed
+		
+		## Greek Nationalism Agenda
+		trigger_if = {
+			limit = {
+				has_variable = grefm_venizelism_identity_agenda
+			}
+			custom_tooltip = {
+				text = grefm_venizelism_identity_complete
+				always = no
 			}
 		}
-		custom_tooltip = {
-			text = je_grefm_venizelism_tt4
-			hidden_trigger = {
-				has_variable = grefm_venizelism_society_completed
+		trigger_if = {
+			limit = {
+				has_variable = grefm_venizelism_identity_complete
+			}
+			custom_tooltip = {
+				text = grefm_venizelism_identity_complete
+				always = yes
 			}
 		}
-		custom_tooltip = {
-			text = je_grefm_venizelism_tt5
-			hidden_trigger = {
-				has_variable = grefm_venizelism_education_completed
+		
+		## Civics Agenda
+		trigger_if = { 
+			limit = { 
+				has_variable = grefm_venizelism_civics_agenda
+			}
+			custom_tooltip = { 
+				text = grefm_venizelism_civics_complete
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = grefm_venizelism_civics_complete
+			}
+			custom_tooltip = {
+				text = grefm_venizelism_civics_complete
+				always = yes
+			}
+		}
+		
+		## Military Agenda
+		trigger_if = {
+			limit = {
+				has_variable = grefm_venizelism_military_agenda
+			}
+			custom_tooltip = {
+				text = grefm_venizelism_military_complete
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = grefm_venizelism_military_complete
+			}
+			custom_tooltip = {
+				text = grefm_venizelism_military_complete
+				always = yes
+			}
+		}
+		
+		## Society Agenda
+		trigger_if = {
+			limit = {
+				has_variable = grefm_venizelism_social_agenda
+			}
+			custom_tooltip = {
+				text = grefm_venizelism_social_complete
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = grefm_venizelism_social_complete
+			}
+			custom_tooltip = {
+				text = grefm_venizelism_social_complete
+				always = yes
+			}
+		}
+		
+		## Education Agenda
+		trigger_if = {
+			limit = {
+				has_variable = grefm_venizelism_education_agenda
+			}
+			custom_tooltip = {
+				text = grefm_venizelism_education_complete
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = grefm_venizelism_education_complete
+			}
+			custom_tooltip = {
+				text = grefm_venizelism_education_complete
+				always = yes
+			}
+		}
+		
+		## Cultural Agenda
+		trigger_if = {
+			limit = {
+				has_variable = grefm_venizelism_culture_agenda
+			}
+			custom_tooltip = {
+				text = grefm_venizelism_culture_complete
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = grefm_venizelism_culture_complete
+			}
+			custom_tooltip = {
+				text = grefm_venizelism_culture_complete
+				always = yes
 			}
 		}
 	}
@@ -824,202 +936,39 @@ je_grefm_venizelism_main = {
 	on_fail = {
 		set_variable = grefm_venizelism_completed
 	}
-}
-
-je_grefm_venizelism_civics = {
-	group = je_group_internal_affairs
-	icon = "gfx/interface/icons/event_icons/event_scales.dds"
-	weight = 500
-
-	can_revolution_inherit = yes
-	transferable = no
-
-	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
-	}
-
-	complete = {
-		has_law_or_variant = law_type:law_universal_suffrage
-		NOT = { has_law_or_variant = law_type:law_hereditary_bureaucrats }
-		OR = {
-			has_law_or_variant = law_type:law_commercialized_agriculture
-			has_law_or_variant = law_type:law_homesteading
+	
+	on_monthly_pulse = {
+		events = {
+			grefm_greece.062
+			grefm_greece.064
+			grefm_greece.066
+			grefm_greece.068
 		}
-		OR = {
-			has_law_or_variant = law_type:law_dedicated_police
-			has_law_or_variant = law_type:law_militarized_police
-		}
-		any_scope_building = {
-			is_building_type = building_government_administration
-			OR = {
-				has_active_production_method = pm_vertical_filing_cabinets
-				has_active_production_method = pm_switch_boards
+		effect = {
+			set_variable = {
+				name = grefm_total_agendas_var
+				value = grefm_total_agendas_value
 			}
-		}
-	}
-
-	on_complete = {
-		trigger_event = grefm_greece.062
-	}
-
-	invalid = {
-		OR = {
-			has_variable = grefm_venizelism_completed
-			has_variable = grefm_venizelism_civics_completed
-		}
-	}
-}
-
-je_grefm_venizelism_military = {
-	group = je_group_internal_affairs
-	icon = "gfx/interface/icons/invention_icons/army_reserves.dds"
-	weight = 100
-
-	can_revolution_inherit = yes
-	transferable = no
-
-	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
-	}
-
-	complete = {
-		## Some Notes on the completion requirements (drawn from Greek-language sources):
-		# The Greek Army during the First Balkan War consisted of roughly 130k men with no corps-level or higher structure in place until war was declared.
-		# The primary force was was the "Army of Thessaly", with roughly 100k men, of which 80k were organized into frontline units. The "Concise History of the Balkan Wars" states:
-		# 59 Infantry with 4 Evzones battalions
-		# 8 Cavalry Companies
-		# 32 Artillery Companies
-		# The Secondary force was of the "Army of Epirus" that varied from 10k to 13k men with various forms of organization.
-		# A third force the "Interior Army" is referenced in some sources with between 10k to 20k men, but doesn't seem to have been intended as a frontline formation.
-		# The Hellenic navy had around a dozen ships during the Balkan Wars with a rapid expansion of the Navy occurring after the outbreak of hostilities; They joined WWI with 22 surface combatants.
-		# I have contradicting sources about when exactly conscription was adopted and in which forms, but it was definitely in place as general conscription by 1917 when Greece joined WWI.
-		has_law_or_variant = law_type:law_mass_conscription
-		any_military_formation = {
-			any_combat_unit = {
-				count >= 80 # This is based on the frontline forces of the Army of Thessaly; see below.
-				OR = {
-					has_unit_type = unit_type:combat_unit_type_trench_infantry
-					has_unit_type = unit_type:combat_unit_type_squad_infantry
-					has_unit_type = unit_type:combat_unit_type_mechanized_infantry
-					has_unit_type = unit_type:combat_unit_type_shrapnel_artillery
-					has_unit_type = unit_type:combat_unit_type_siege_artillery
-					has_unit_type = unit_type:combat_unit_type_heavy_tank
+			set_variable = {
+				name = grefm_completed_agendas_var
+				value = grefm_completed_agendas_value
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_variable = grefm_venizelism_identity_complete
+					}
+					has_variable = grefm_culture_var
+					any_scope_state = {
+						count >= 7
+						state_region = {
+							is_homeland = cu:hellene
+						}
+						is_split_state = no
+					}
 				}
+				set_variable = grefm_venizelism_identity_complete
 			}
-		}
-		any_military_formation = {
-			any_combat_unit = {
-				count >= 20 # This is a round number based on surface combatants at the start of WWI; see below.
-				OR = {
-					has_unit_type = unit_type:combat_unit_type_destroyer
-					has_unit_type = unit_type:combat_unit_type_torpedo_boat
-					has_unit_type = unit_type:combat_unit_type_scout_cruiser
-					has_unit_type = unit_type:combat_unit_type_ironclad
-					has_unit_type = unit_type:combat_unit_type_dreadnought
-					has_unit_type = unit_type:combat_unit_type_battleship
-				}
-			}
-		}
-	}
-
-	on_complete = {
-		trigger_event = grefm_greece.064
-	}
-
-	invalid = {
-		OR = {
-			has_variable = grefm_venizelism_completed
-			has_variable = grefm_venizelism_military_completed
-		}
-	}
-}
-
-je_grefm_venizelism_society = {
-	group = je_group_internal_affairs
-	icon = "gfx/interface/icons/invention_icons/romanticism.dds"
-	weight = 500
-
-	can_revolution_inherit = yes
-	transferable = no
-
-	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
-	}
-
-	complete = {
-		NOT = { has_law_or_variant = law_type:law_no_womens_rights }
-		NOT = { has_law_or_variant = law_type:law_child_labor_allowed }
-		NOT = { has_law_or_variant = law_type:law_no_workers_rights }
-	}
-
-	on_complete = {
-		trigger_event = grefm_greece.066
-	}
-
-	invalid = {
-		OR = {
-			has_variable = grefm_venizelism_completed
-			has_variable = grefm_venizelism_society_completed
-		}
-	}
-}
-
-je_grefm_venizelism_education = {
-	group = je_group_internal_affairs
-	icon = "gfx/interface/icons/invention_icons/human_rights.dds"
-	weight = 500
-
-	can_revolution_inherit = yes
-	transferable = no
-
-	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
-	}
-
-	complete = {
-		has_law_or_variant = law_type:law_public_schools
-		has_law_or_variant = law_type:law_compulsory_primary_school
-		institution_investment_level = {
-			institution = institution_schools
-			value >= 4
-		}
-		literacy_rate >= 0.50
-	}
-
-	on_complete = {
-		trigger_event = grefm_greece.068
-	}
-
-	invalid = {
-		OR = {
-			has_variable = grefm_venizelism_completed
-			has_variable = grefm_venizelism_education_completed
-		}
-	}
-}
-
-je_grefm_venizelism_constitution = {
-	group = je_group_internal_affairs
-	icon = "gfx/interface/icons/invention_icons/democracy.dds"
-	weight = 500
-
-	can_revolution_inherit = yes
-	transferable = no
-
-	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
-	}
-
-	complete = {
-		NOT = { has_law_or_variant = law_type:law_monarchy }
-	}
-
-	on_complete = {
-	}
-
-	invalid = {
-		hidden_trigger = {
-			has_variable = grefm_venizelism_completed
 		}
 	}
 }
