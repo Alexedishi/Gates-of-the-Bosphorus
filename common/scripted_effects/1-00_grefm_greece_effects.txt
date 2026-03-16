@@ -634,3 +634,38 @@ grefm_cleanup_military_league_effect = {
 		days = short_modifier_time
 	}
 }
+
+## Venizelism Effects ##
+grefm_add_venizelism_agenda = {
+	if = {
+		limit = {
+			has_journal_entry = je_grefm_venizelism
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_variable = grefm_venizelism_$type$_agenda
+					has_variable = grefm_venizelism_$type$_complete
+				}
+			}
+			custom_tooltip = {
+				text = grefm_add_$type$_agenda
+				set_variable = grefm_venizelism_$type$_agenda
+			}
+		}
+		else = {
+			error_log = "grefm_add_venizelism_agenda was called, but the specified agenda is either active or complete."
+		}
+	}
+	else = {
+		error_log = "grefm_add_venizelism_agenda was called, but the calling country does not have an active je_grefm_venizelism journal entry."
+	}
+	set_variable = {
+		name = grefm_total_agendas_var
+		value = grefm_total_agendas_value
+	}
+	set_variable = {
+		name = grefm_completed_agendas_var
+		value = grefm_completed_agendas_value
+	}
+}
