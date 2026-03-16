@@ -161,11 +161,17 @@ grefm_civic_reform_goal_1_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			NOR = {
+				has_law_or_variant = law_type:law_universal_suffrage
+				has_law_or_variant = law_type:law_elected_bureaucrats
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			has_law_or_variant = law_type:law_universal_suffrage
+			has_law_or_variant = law_type:law_elected_bureaucrats
 		}
 	}
 }
@@ -174,11 +180,73 @@ grefm_civic_reform_goal_2_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			NOR = {
+				has_law_or_variant = law_type:law_dedicated_police
+				has_law_or_variant = law_type:law_militarized_police
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			OR = {
+				has_law_or_variant = law_type:law_dedicated_police
+				has_law_or_variant = law_type:law_militarized_police
+			}
+		}
+	}
+}
+
+je_grefm_venizelism_civic_reform_goal_3 = {
+	text = {
+		localization_key = gbbf_checkbox_empty
+		trigger = {
+			institution_investment_level = {
+				institution = institution_home_affairs
+				value < 3
+			}
+		}
+	}
+	text = {
+		localization_key = gbbf_checkbox_green
+		trigger = {
+			institution_investment_level = {
+				institution = institution_home_affairs
+				value >= 3
+			}
+		}
+	}
+}
+
+je_grefm_venizelism_civic_reform_goal_4 = {
+	text = {
+		localization_key = gbbf_checkbox_empty
+		trigger = {
+			any_scope_building = {
+				filter = {
+					is_building_type = building_government_administration
+				}
+				count > 0
+				NOR = {
+					has_active_production_method = pm_vertical_filing_cabinets
+					has_active_production_method = pm_switch_boards
+				}
+			}
+		}
+	}
+	text = {
+		localization_key = gbbf_checkbox_green
+		trigger = {
+			any_scope_building = {
+				filter = {
+					is_building_type = building_government_administration
+				}
+				count = all
+				OR = {
+					has_active_production_method = pm_vertical_filing_cabinets
+					has_active_production_method = pm_switch_boards
+				}
+			}
 		}
 	}
 }
@@ -205,11 +273,15 @@ grefm_military_reform_goal_1_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			NOT = {
+				has_law_or_variant = law_type:law_mass_conscription
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			has_law_or_variant = law_type:law_mass_conscription
 		}
 	}
 }
@@ -218,11 +290,76 @@ grefm_military_reform_goal_2_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			any_military_formation = {
+				any_combat_unit = {
+					count < 80 # This is based on the frontline forces of the Army of Thessaly; see above.
+					OR = {
+						has_unit_type = unit_type:combat_unit_type_trench_infantry
+						has_unit_type = unit_type:combat_unit_type_squad_infantry
+						has_unit_type = unit_type:combat_unit_type_mechanized_infantry
+						has_unit_type = unit_type:combat_unit_type_shrapnel_artillery
+						has_unit_type = unit_type:combat_unit_type_siege_artillery
+						has_unit_type = unit_type:combat_unit_type_heavy_tank
+					}
+				}
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			any_military_formation = {
+				any_combat_unit = {
+					count >= 80
+					OR = {
+						has_unit_type = unit_type:combat_unit_type_trench_infantry
+						has_unit_type = unit_type:combat_unit_type_squad_infantry
+						has_unit_type = unit_type:combat_unit_type_mechanized_infantry
+						has_unit_type = unit_type:combat_unit_type_shrapnel_artillery
+						has_unit_type = unit_type:combat_unit_type_siege_artillery
+						has_unit_type = unit_type:combat_unit_type_heavy_tank
+					}
+				}
+			}
+		}
+	}
+}
+
+je_grefm_venizelism_military_reform_goal_3 = {
+	text = {
+		localization_key = gbbf_checkbox_empty
+		trigger = {
+			any_military_formation = {
+				any_combat_unit = {
+					count < 20
+					OR = {
+						has_unit_type = unit_type:combat_unit_type_destroyer
+						has_unit_type = unit_type:combat_unit_type_torpedo_boat
+						has_unit_type = unit_type:combat_unit_type_scout_cruiser
+						has_unit_type = unit_type:combat_unit_type_ironclad
+						has_unit_type = unit_type:combat_unit_type_dreadnought
+						has_unit_type = unit_type:combat_unit_type_battleship
+					}
+				}
+			}
+		}
+	}
+	text = {
+		localization_key = gbbf_checkbox_green
+		trigger = {
+			any_military_formation = {
+				any_combat_unit = {
+					count >= 20 # This is a round number based on surface combatants at the start of WWI; see above.
+					OR = {
+						has_unit_type = unit_type:combat_unit_type_destroyer
+						has_unit_type = unit_type:combat_unit_type_torpedo_boat
+						has_unit_type = unit_type:combat_unit_type_scout_cruiser
+						has_unit_type = unit_type:combat_unit_type_ironclad
+						has_unit_type = unit_type:combat_unit_type_dreadnought
+						has_unit_type = unit_type:combat_unit_type_battleship
+					}
+				}
+			}
 		}
 	}
 }
@@ -249,11 +386,15 @@ grefm_social_reform_goal_1_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			has_law_or_variant = law_type:law_no_womens_rights
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			NOT = {
+				has_law_or_variant = law_type:law_no_womens_rights
+			}
 		}
 	}
 }
@@ -262,11 +403,36 @@ grefm_social_reform_goal_2_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			institution_investment_level = {
+				institution = institution_workplace_safety
+				value < 3
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			institution_investment_level = {
+				institution = institution_workplace_safety
+				value >= 3
+			}
+		}
+	}
+}
+
+je_grefm_venizelism_social_reform_goal_3 = {
+	text = {
+		localization_key = gbbf_checkbox_empty
+		trigger = {
+			NOT = {
+				has_institution = institution_social_security
+			}
+		}
+	}
+	text = {
+		localization_key = gbbf_checkbox_green
+		trigger = {
+			has_institution = institution_social_security
 		}
 	}
 }
@@ -294,11 +460,17 @@ grefm_education_reform_goal_1_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			NOR = {
+				has_law_or_variant = law_type:law_public_schools
+				has_law_or_variant = law_type:law_compulsory_primary_school
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			has_law_or_variant = law_type:law_public_schools
+			has_law_or_variant = law_type:law_compulsory_primary_school
 		}
 	}
 }
@@ -307,11 +479,34 @@ grefm_education_reform_goal_2_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			institution_investment_level = {
+				institution = institution_schools
+				value < 4
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			institution_investment_level = {
+				institution = institution_schools
+				value >= 4
+			}
+		}
+	}
+}
+
+je_grefm_venizelism_education_reform_goal_3 = {
+	text = {
+		localization_key = gbbf_checkbox_empty
+		trigger = {
+			literacy_rate < 0.50
+		}
+	}
+	text = {
+		localization_key = gbbf_checkbox_green
+		trigger = {
+			literacy_rate >= 0.50
 		}
 	}
 }
@@ -338,11 +533,19 @@ grefm_constitution_reform_goal_1_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			NOR = {
+				has_law_or_variant = law_type:law_parliamentary_republic
+				has_law_or_variant = law_type:law_presidential_republic
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			OR = {
+				has_law_or_variant = law_type:law_parliamentary_republic
+				has_law_or_variant = law_type:law_presidential_republic
+			}
 		}
 	}
 }
@@ -351,11 +554,51 @@ grefm_constitution_reform_goal_2_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			country_has_voting_franchise = no
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			country_has_voting_franchise = yes
+		}
+	}
+}
+
+je_grefm_venizelism_constitution_reform_goal_3 = {
+	text = {
+		localization_key = gbbf_checkbox_empty
+		trigger = {
+			electoral_confidence < 80
+		}
+	}
+	text = {
+		localization_key = gbbf_checkbox_green
+		trigger = {
+			electoral_confidence >= 80
+		}
+	}
+}
+
+je_grefm_venizelism_constitution_reform_goal_4 = {
+	text = {
+		localization_key = gbbf_checkbox_empty
+		trigger = {
+			ig:ig_landowners = {
+				OR = {
+					is_powerful = yes
+					is_insurrectionary = yes
+				}
+			}
+		}
+	}
+	text = {
+		localization_key = gbbf_checkbox_green
+		trigger = {
+			ig:ig_landowners = {
+				is_powerful = no
+				is_insurrectionary = no
+			}
 		}
 	}
 }
