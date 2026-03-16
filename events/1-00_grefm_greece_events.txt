@@ -4302,21 +4302,31 @@ grefm_greece.060 = {
 		hidden_effect = {
 			# the National Assembly concluded its reforms much more quickly than this, but gameplay lol
 			trigger_event = {
-				id = grefm_greece.061 # Rejuvenating the State
+				id = grefm_greece.061
 				days = 60
 			}
 			trigger_event = {
-				id = grefm_greece.062 # Reorganizing the Military
+				id = grefm_greece.062
 				days = 90
 			}
 			trigger_event = {
-				id = grefm_greece.063 # Advancing Society
+				id = grefm_greece.063
 				days = 120
 			}
 			trigger_event = {
-				id = grefm_greece.064 # The Ignorant Masses
+				id = grefm_greece.064
 				days = 150
 			}
+			if = {
+				limit = {
+					morgenrote_is_active = yes
+				}
+				trigger_event = {
+					id = grefm_greece.065
+					days = 150
+				}
+			}
+			
 		}
 	}
 }
@@ -4463,6 +4473,42 @@ grefm_greece.064 = {
 		default_option = yes
 		grefm_add_venizelism_agenda = {
 			type = education
+		}
+	}
+}
+
+grefm_greece.065 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.065.t
+	desc = grefm_greece.065.d
+	flavor = grefm_greece.065.f
+	
+	event_image = {
+		video = "europenorthamerica_rich_and_poor"
+	}
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+	}
+	
+	immediate = {
+		ig:ig_intelligentsia = {
+			leader = {
+				save_scope_as = grefm_venizelos_scope
+			}
+		}
+	}
+	
+	option = {
+		name = grefm_greece.065.a
+		default_option = yes
+		grefm_add_venizelism_agenda = {
+			type = culture
 		}
 	}
 }
@@ -4806,6 +4852,54 @@ grefm_greece.074 = {
 		}
 		remove_variable = grefm_venizelism_education_agenda
 		set_variable = grefm_venizelism_education_complete
+	}
+}
+
+grefm_greece.075 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.075.t
+	desc = grefm_greece.075.d
+	flavor = grefm_greece.075.f
+	
+	event_image = {
+		video = "unspecific_world_fair"
+	}
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_variable = grefm_venizelism_culture_agenda
+		
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = grefm_greece.075.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_populace_educated
+			months = gbbf_normal_modifier_time
+		}
+		add_loyalists = {
+			pop_type = academics
+			value = medium_radicals
+		}
+		add_loyalists = {
+			strata = lower
+			value = large_radicals
+		}
+		remove_variable = grefm_venizelism_culture_agenda
+		set_variable = grefm_venizelism_culture_complete
 	}
 }
 
