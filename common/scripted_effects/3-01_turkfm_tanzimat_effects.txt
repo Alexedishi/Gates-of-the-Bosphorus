@@ -41,17 +41,13 @@
 	
 	# Supporting Variables
 	set_variable = {
-		name = turkfm_tanzimat_completion_var
+		name = turkfm_total_tanzimat_agendas_var
+		value = 1
+	}
+	set_variable = {
+		name = turkfm_completed_tanzimat_agendas_var
 		value = 0
 	}
-	
-	# Modifiers
-	add_modifier = modifier_turkfm_feudal_argiculture
-	add_modifier = modifier_turkfm_cizye_tax
-	add_modifier = modifier_turkfm_outmoded_bureaucracy
-	add_modifier = modifier_turkfm_stagnant_economy
-	add_modifier = modifier_turkfm_illiterate_populace
-	add_modifier = modifier_turkfm_insecure_countryside
 }
 
 turkfm_calculate_tanzimat_variables_effect = {
@@ -88,6 +84,40 @@ turkfm_calculate_tanzimat_variables_effect = {
 	}
 }
 
+turkfm_add_tanzimat_agenda_effect = {
+	if = {
+		limit = {
+			has_journal_entry = je_turkfm_tanzimat_reforms
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_variable = turkfm_tanzimat_$type$_agenda
+					has_variable = turkfm_tanzimat_$type$_complete
+				}
+			}
+			custom_tooltip = {
+				text = turkfm_add_$type$_agenda
+				set_variable = turkfm_tanzimat_$type$_agenda
+			}
+		}
+		else = {
+			error_log = "turkfm_add_tanzimat_agenda_effect was called, but the specified agenda is either active or complete."
+		}
+	}
+	else = {
+		error_log = "turkfm_add_tanzimat_agenda_effect was called, but the calling country does not have an active je_turkfm_tanzimat_reforms journal entry."
+	}
+	set_variable = {
+		name = turkfm_total_tanzimat_agendas_var
+		value = turkfm_total_tanzimat_agendas_value
+	}
+	set_variable = {
+		name = turkfm_completed_tanzimat_agendas_var
+		value = turkfm_completed_tanzimat_agendas_value
+	}
+}
+
 turkfm_cleanup_tanzimat_effect = {
 	set_global_variable = turkfm_tanzimat_complete
 	remove_variable = turkfm_tanzimat_identity_var
@@ -99,55 +129,8 @@ turkfm_cleanup_tanzimat_effect = {
 	remove_variable = turkfm_tanzimat_reformist_progress_var
 	remove_variable = turkfm_tanzimat_conservatist_progress_var
 	remove_variable = turkfm_tanzimat_reform_progress_var
-	remove_variable = turkfm_tanzimat_completion_var
-	hidden_effect = {
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_feudal_argiculture
-			}
-			remove_modifier = modifier_turkfm_feudal_argiculture
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_cizye_tax
-			}
-			remove_modifier = modifier_turkfm_cizye_tax
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_outmoded_bureaucracy
-			}
-			remove_modifier = modifier_turkfm_outmoded_bureaucracy
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_stagnant_economy
-			}
-			remove_modifier = modifier_turkfm_stagnant_economy
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_illiterate_populace
-			}
-			remove_modifier = modifier_turkfm_illiterate_populace
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_insecure_countryside
-			}
-			remove_modifier = modifier_turkfm_insecure_countryside
-		}
-	}
-}
-
-turkfm_complete_reform_effect = {
-	custom_tooltip = {
-		text = turkfm_reform_completed
-		change_variable = {
-			name = turkfm_tanzimat_completion_var
-			add = 1
-		}
-	}
+	remove_variable = turkfm_total_tanzimat_agendas_var
+	remove_variable = turkfm_completed_tanzimat_agendas_var
 }
 
 turkfm_advance_ottomanism1_effect = {
