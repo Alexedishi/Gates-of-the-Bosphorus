@@ -164,11 +164,13 @@ turkfm_tanzimat_military_reform_goal_1_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			army_size < 100
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			army_size >= 100
 		}
 	}
 }
@@ -178,11 +180,19 @@ turkfm_tanzimat_military_reform_goal_2_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			active_law:lawgroup_land_reform ?= {
+				has_amendment = amendment_type:amendment_gbbf_cizye_tax
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			active_law:lawgroup_land_reform ?= {
+				NOT = {
+					has_amendment = amendment_type:amendment_gbbf_cizye_tax
+				}
+			}
 		}
 	}
 }
@@ -192,11 +202,67 @@ turkfm_tanzimat_military_reform_goal_3_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			any_scope_building = {
+				is_building_type = building_barrack
+				OR = {
+					building_has_goods_shortage = yes
+					has_active_production_method = pm_no_organization
+				}
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			any_scope_building = {
+				filter = {
+					is_building_type = building_barrack
+				}
+				count = all
+				NOR = {
+					building_has_goods_shortage = yes
+					has_active_production_method = pm_no_organization
+				}
+			}
+		}
+	}
+}
+
+turkfm_tanzimat_military_reform_goal_4_type = {
+	type = country
+	text = {
+		localization_key = gbbf_checkbox_empty
+		trigger = {
+			any_military_formation = {
+				is_army = yes
+				any_combat_unit = {
+					OR = {
+						has_unit_type = unit_type:combat_unit_type_irregular_infantry
+						has_unit_type = unit_type:combat_unit_type_cannon_artillery
+						has_unit_type = unit_type:combat_unit_type_hussars
+					}
+				}
+			}
+		}
+	}
+	text = {
+		localization_key = gbbf_checkbox_green
+		trigger = {
+			any_military_formation = {
+				filter = {
+					is_army = yes
+				}
+				count = all
+				NOT = {
+					any_combat_unit = {
+						OR = {
+							has_unit_type = unit_type:combat_unit_type_irregular_infantry
+							has_unit_type = unit_type:combat_unit_type_cannon_artillery
+							has_unit_type = unit_type:combat_unit_type_hussars
+						}
+					}
+				}
+			}
 		}
 	}
 }
@@ -223,11 +289,15 @@ turkfm_tanzimat_civics_reform_goal_1_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			has_law_or_variant = law_type:law_hereditary_bureaucrats
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			NOT = {
+				has_law_or_variant = law_type:law_hereditary_bureaucrats
+			}
 		}
 	}
 }
@@ -237,11 +307,32 @@ turkfm_tanzimat_civics_reform_goal_2_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			NOT = {
+				any_scope_building = {
+					is_building_type = building_university
+					NOR = {
+						has_active_production_method = pm_scholastic_education
+						has_active_production_method = pm_religious_academia
+					}
+					occupancy > 0.9
+					level >= 5
+				}
+			}
+			
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			any_scope_building = {
+				is_building_type = building_university
+				NOR = {
+					has_active_production_method = pm_scholastic_education
+					has_active_production_method = pm_religious_academia
+				}
+				occupancy > 0.9
+				level >= 5
+			}
 		}
 	}
 }
@@ -251,11 +342,69 @@ turkfm_tanzimat_civics_reform_goal_3_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			any_scope_building = {
+				is_building_type = building_government_administration
+				OR = {
+					has_active_production_method = pm_simple_organization
+					has_active_production_method = pm_religious_bureaucrats
+				}
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			any_scope_building = {
+				filter = {
+					is_building_type = building_government_administration
+				}
+				count = all
+				NOR = {
+					has_active_production_method = pm_simple_organization
+					has_active_production_method = pm_religious_bureaucrats
+				}
+			}
+		}
+	}
+}
+
+turkfm_tanzimat_civics_reform_goal_4_type = {
+	type = country
+	text = {
+		localization_key = gbbf_checkbox_empty
+		trigger = {
+			OR = {
+				NOT = {
+					has_variable = gbbf_institution_investment_levels_var
+				}
+				AND = {
+					has_variable = gbbf_institution_investment_levels_var
+					var:gbbf_institution_investment_levels_var < 5
+				}
+			}
+		}
+	}
+	text = {
+		localization_key = gbbf_checkbox_green
+		trigger = {
+			has_variable = gbbf_institution_investment_levels_var
+			var:gbbf_institution_investment_levels_var >= 5
+		}
+	}
+}
+
+turkfm_tanzimat_civics_reform_goal_5_type = {
+	type = country
+	text = {
+		localization_key = gbbf_checkbox_empty
+		trigger = {
+			bureaucracy < 0
+		}
+	}
+	text = {
+		localization_key = gbbf_checkbox_green
+		trigger = {
+			bureaucracy >= 0
 		}
 	}
 }
@@ -282,11 +431,23 @@ turkfm_tanzimat_economy_reform_goal_1_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			OR = {
+				has_law_or_variant = law_type:law_traditionalism
+				has_law_or_variant = law_type:law_serfdom
+				has_law_or_variant = law_type:law_consumption_based_taxation
+				has_law_or_variant = law_type:law_isolationism
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			NOR = {
+				has_law_or_variant = law_type:law_traditionalism
+				has_law_or_variant = law_type:law_serfdom
+				has_law_or_variant = law_type:law_consumption_based_taxation
+				has_law_or_variant = law_type:law_isolationism
+			}
 		}
 	}
 }
@@ -296,11 +457,22 @@ turkfm_tanzimat_economy_reform_goal_2_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			any_scope_state = {
+				percent < 0.75
+				is_incorporated = yes
+				has_building = building_urban_center
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			any_scope_state = {
+				percent >= 0.75
+				is_incorporated = yes
+				has_building = building_urban_center
+				
+			}
 		}
 	}
 }
@@ -310,11 +482,19 @@ turkfm_tanzimat_economy_reform_goal_3_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			OR = {
+				in_default = yes
+				has_modifier = declared_bankruptcy
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			in_default = no
+			NOT = {
+				has_modifier = declared_bankruptcy
+			}
 		}
 	}
 }
@@ -341,11 +521,19 @@ turkfm_tanzimat_education_reform_goal_1_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			country_has_building_group_levels = {
+				type = bg_technology
+				value < 15
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			country_has_building_group_levels = {
+				type = bg_technology
+				value >= 15
+			}
 		}
 	}
 }
@@ -355,11 +543,24 @@ turkfm_tanzimat_education_reform_goal_2_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			any_scope_building = {
+				is_building_type = building_university
+				has_active_production_method = pm_religious_academia
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			any_scope_building = {
+				filter = {
+					is_building_type = building_university
+				}
+				count = all
+				NOT = {
+					has_active_production_method = pm_religious_academia
+				}
+			}
 		}
 	}
 }
@@ -369,11 +570,57 @@ turkfm_tanzimat_education_reform_goal_3_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			institution_investment_level = {
+				institution = institution_schools
+				value < 3
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			institution_investment_level = {
+				institution = institution_schools
+				value >= 3
+			}
+		}
+	}
+}
+
+turkfm_tanzimat_education_reform_goal_4_type = {
+	type = country
+	text = {
+		localization_key = gbbf_checkbox_empty
+		trigger = {
+			active_law:lawgroup_education_system ?= {
+				has_amendment = amendment_type:amendment_gbbf_elifba
+			}
+		}
+	}
+	text = {
+		localization_key = gbbf_checkbox_green
+		trigger = {
+			active_law:lawgroup_education_system ?= {
+				NOT = {
+					has_amendment = amendment_type:amendment_gbbf_elifba
+				}
+			}
+		}
+	}
+}
+
+turkfm_tanzimat_education_reform_goal_5_type = {
+	type = country
+	text = {
+		localization_key = gbbf_checkbox_empty
+		trigger = {
+			literacy_rate <= 0.30
+		}
+	}
+	text = {
+		localization_key = gbbf_checkbox_green
+		trigger = {
+			literacy_rate > 0.30
 		}
 	}
 }
@@ -400,39 +647,15 @@ turkfm_tanzimat_millet_reform_goal_1_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			has_law = law_type:law_millet_system
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
-		}
-	}
-}
-
-turkfm_tanzimat_millet_reform_goal_2_type = {
-	type = country
-	text = {
-		localization_key = gbbf_checkbox_empty
-		trigger = {
-		}
-	}
-	text = {
-		localization_key = gbbf_checkbox_green
-		trigger = {
-		}
-	}
-}
-
-turkfm_tanzimat_millet_reform_goal_3_type = {
-	type = country
-	text = {
-		localization_key = gbbf_checkbox_empty
-		trigger = {
-		}
-	}
-	text = {
-		localization_key = gbbf_checkbox_green
-		trigger = {
+			NOT = {
+				has_law = law_type:law_millet_system
+			}
 		}
 	}
 }
@@ -459,11 +682,19 @@ turkfm_tanzimat_security_reform_goal_1_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			OR = {
+				has_law_or_variant = law_type:law_no_police
+				has_law_or_variant = law_type:law_local_police
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			NOR = {
+				has_law_or_variant = law_type:law_no_police
+				has_law_or_variant = law_type:law_local_police
+			}
 		}
 	}
 }
@@ -473,11 +704,19 @@ turkfm_tanzimat_security_reform_goal_2_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			institution_investment_level = {
+				institution = institution_police
+				value < 3
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			institution_investment_level = {
+				institution = institution_police
+				value >= 3
+			}
 		}
 	}
 }
@@ -487,11 +726,34 @@ turkfm_tanzimat_security_reform_goal_3_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			any_scope_state = {
+				OR = {
+					is_in_geographic_region = geographic_region_rumelia
+					is_in_geographic_region = geographic_region_anatolia
+				}
+				turmoil > 0.25
+				NOT = {
+					has_decree = decree_violent_suppression
+				}
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			any_scope_state = {
+				filter = {
+					OR = {
+						is_in_geographic_region = geographic_region_rumelia
+						is_in_geographic_region = geographic_region_anatolia
+					}
+				}
+				count = all
+				OR = {
+					turmoil < 0.25
+					has_decree = decree_violent_suppression
+				}
+			}
 		}
 	}
 }
@@ -518,11 +780,15 @@ turkfm_tanzimat_slavery_reform_goal_1_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			NOT = {
+				has_law_or_variant = law_type:law_slavery_banned
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			has_law_or_variant = law_type:law_slavery_banned
 		}
 	}
 }
@@ -532,11 +798,19 @@ turkfm_tanzimat_slavery_reform_goal_2_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			NOR = {
+				has_law_or_variant = law_type:law_debt_slavery
+				has_law_or_variant = law_type:law_colonial_slavery
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			OR = {
+				has_law_or_variant = law_type:law_debt_slavery
+				has_law_or_variant = law_type:law_colonial_slavery
+			}
 		}
 	}
 }
@@ -546,11 +820,47 @@ turkfm_tanzimat_slavery_reform_goal_3_type = {
 	text = {
 		localization_key = gbbf_checkbox_empty
 		trigger = {
+			active_law:lawgroup_slavery ?= {
+				has_amendment = amendment_type:amendment_gbbf_esir_pazari
+			}
 		}
 	}
 	text = {
 		localization_key = gbbf_checkbox_green
 		trigger = {
+			NOT = {
+				active_law:lawgroup_slavery ?= {
+					has_amendment = amendment_type:amendment_gbbf_esir_pazari
+				}
+			}
+		}
+	}
+}
+
+turkfm_tanzimat_slavery_reform_goal_4_type = {
+	type = country
+	text = {
+		localization_key = gbbf_checkbox_empty
+		trigger = {
+			capital = {
+				is_production_method_active = {
+					building_type = gbbf_building_avret_pazarlari
+					production_method = pm_gbbf_open_slave_markets
+				}
+			}
+		}
+	}
+	text = {
+		localization_key = gbbf_checkbox_green
+		trigger = {
+			NOT = {
+				capital = {
+					is_production_method_active = {
+						building_type = gbbf_building_avret_pazarlari
+						production_method = pm_gbbf_open_slave_markets
+					}
+				}
+			}
 		}
 	}
 }
