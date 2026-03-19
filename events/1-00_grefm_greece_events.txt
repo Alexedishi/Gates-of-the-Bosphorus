@@ -112,6 +112,10 @@ namespace = grefm_greece
 #	080 - ##The Third Greece
 #	081 - ##The Archigos of Greece
 #	082 - ##The End of Metaxas
+#	083 - ##Pillars of Tradition
+#	084 - ##Suppressing Dissent
+#	085 - ##A Greece for Greeks
+#	086 - ##A Moral Society
 
 #090-099 - IP3 Bavarocracy Variant Events
 #	090 - The Regency Council (IP3 Variant)
@@ -5187,7 +5191,7 @@ grefm_greece.082 = {
 grefm_greece.083 = {
 	type = country_event
 	placement = root
-	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
 	duration = 3
 	dlc = dlc_grefm
 	
@@ -5201,32 +5205,200 @@ grefm_greece.083 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
-		# triggered by je_grefm_metaxism
+		has_variable = grefm_metaxism_tradition_agenda
+		has_law_or_variant = law_type:law_monarchy
+		has_law_or_variant = law_type:law_state_religion
+	}
+	
+	cooldown = {
+		years = 1
 	}
 	
 	immediate = {
-		random_political_movement = {
+		random_interest_group = {
 			limit = {
-				is_political_movement_type = movement_fascist
+				has_ideology = ideology:ideology_gbbf_metaxist_leader
 			}
-			save_scope_as = grefm_fascist_scope
+			save_scope_as = grefm_fascist_ig_scope
+			leader = {
+				save_scope_as = grefm_facist_leader_scope
+			}
 		}
 	}
 	
 	option = {
 		name = grefm_greece.083.a
 		default_option = yes
-		scope:grefm_fascist_scope ?= {
-		}
+		
 	}
 	
 	option = {
 		name = grefm_greece.083.b
-		scope:grefm_fascist_scope ?= {
+		trigger = {
+			has_law_or_variant = law_type:law_single_party_state
+			scope:grefm_fascist_ig_scope = {
+				is_in_government = yes
+			}
 		}
+		scope:grefm_facist_leader_scope ?= {
+			set_character_as_ruler = yes
+		}
+		hidden_effect = {
+			heir ?= {
+				kill_character = yes
+			}
+		}
+	}
+	
+	after = { 
+		set_variable = grefm_metaxism_tradition_complete
 	}
 }
 
+grefm_greece.084 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.084.t
+	desc = grefm_greece.084.d
+	flavor = grefm_greece.084.f
+	
+	event_image = {
+		video = "ip3_official_reading_dictate"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_variable = grefm_metaxism_tradition_agenda
+		has_law_or_variant = law_type:law_single_party_state
+		OR = {
+			has_law_or_variant = law_type:law_censorship
+			has_law_or_variant = law_type:law_outlawed_dissent
+		}
+		has_law_or_variant = law_type:law_militarized_police
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = grefm_greece.084.a
+		default_option = yes
+	}
+	
+	option = {
+		name = grefm_greece.084.b
+	}
+	
+	after = { 
+		set_variable = grefm_metaxism_tradition_complete
+	}
+}
+
+grefm_greece.085 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.085.t
+	desc = grefm_greece.085.d
+	flavor = grefm_greece.085.f
+	
+	event_image = {
+		video = "ip3_village_school"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_variable = grefm_metaxism_assimilation_agenda
+		has_law_or_variant = law_type:law_ethnostate
+		has_law_or_variant = law_type:law_public_schools
+		has_law_or_variant = law_type:law_compulsory_primary_school
+		institution_investment_level = {
+			institution = institution_schools
+			value >= 4
+		}
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = grefm_greece.085.a
+		default_option = yes
+	}
+	
+	option = {
+		name = grefm_greece.085.b
+	}
+	
+	after = {
+		set_variable = grefm_metaxism_assimilation_complete
+	}
+}
+
+grefm_greece.086 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.086.t
+	desc = grefm_greece.086.d
+	flavor = grefm_greece.086.f
+	
+	event_image = {
+		video = ""
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_variable = grefm_metaxism_social_agenda
+		OR = {
+			has_law_or_variant = law_type:law_no_womens_rights
+			has_law_or_variant = law_type:law_women_own_property
+		}
+		NOR = {
+			has_law_or_variant = law_type:law_factory_councils
+			has_law_or_variant = law_type:law_right_to_associate
+			
+		}
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = grefm_greece.086.a
+		default_option = yes
+	}
+	
+	option = {
+		name = grefm_greece.086.b
+	}
+	
+	after = {
+		set_variable = grefm_metaxism_social_complete
+	}
+}
 
 ####---------- Bavarocracy IP3 Events ----------####
 # Note, several variables from the default GotB journals are re-used here
