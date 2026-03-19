@@ -11,22 +11,24 @@
 		balkfm_has_matching_consul_trigger = yes
 		custom_tooltip = {
 			text = balkfm_cement_monarchy_possible
-			hidden_trigger = {
-				NOT = {
-					has_variable = balkfm_constitution_pending
-				}
+			NOT = {
+				has_variable = balkfm_constitution_pending
 			}
 		}
 		custom_tooltip = {
 			text = balkfm_friend_with_all_great_powers_tt
-			hidden_trigger = {
-				any_country = {
-					country_rank >= rank_value:great_power
+			any_country = {
+				filter = {
 					NOT = { c:TUR ?= this }
-					NOT = { has_war_with = ROOT }
-					has_interest_marker_in_region = ROOT.capital.region
-					relations:root > 0
+					country_rank >= rank_value:great_power
+					has_strategic_region_interest_tier = {
+						strategic_region = ROOT.capital.region
+						value >= 1
+					}
 				}
+				count = all
+				relations:root > 0
+				NOT = { has_war_with = ROOT }
 			}
 		}
 		legitimacy > 50

@@ -95,13 +95,17 @@ balkfm_unite_principalities_button = {
 	possible = {
 		custom_tooltip = {
 			text = balkfm_friend_with_all_great_powers_tt
-			NOT = {
-				any_country = {
+			any_country = {
+				filter = {
 					country_rank >= rank_value:great_power
-					NOT = { has_war_with = ROOT }
-					has_interest_marker_in_region = ROOT.capital.region
-					relations:root < 0
+					has_strategic_region_interest_tier = {
+						strategic_region = ROOT.capital.region
+						value >= 1
+					}
 				}
+				count = all
+				relations:root > 0
+				NOT = { has_war_with = ROOT }
 			}
 		}
 		custom_tooltip = {
@@ -210,17 +214,19 @@ balkfm_bessarabian_retrocession_button = { # vanilla button, integrated into bal
 	possible = {
 		custom_tooltip = {
 			text = je_south_bessarabian_retrocession_button_tt1
-			
 			any_country = {
 				country_rank >= rank_value:great_power
-				NOT = {
-					has_war_with = ROOT
+				has_strategic_region_interest_tier = {
+					strategic_region = ROOT.capital.region
+					value >= 1
+				}
+				relations:root >= relations_threshold:amicable
+				NOR = {
 					any_scope_state = {
 						state_region = s:STATE_BESSARABIA
 					}
+					has_war_with = ROOT
 				}
-				has_interest_marker_in_region = ROOT.capital.region
-				relations:root > 25
 			}
 		}
 		custom_tooltip = {
