@@ -5330,10 +5330,60 @@ grefm_greece.084 = {
 	option = {
 		name = grefm_greece.084.a
 		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_allowed_opposition_country
+			months = gbbf_long_modifier_time
+		}
+		every_interest_group = {
+			limit = {
+				OR = {
+					is_in_government = no
+					law_stance = {
+						law = law_type:law_single_party_state
+						value < neutral
+					}
+				}
+			}
+			add_modifier = {
+				name = modifier_grefm_allowed_opposition_ig
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+		}
 	}
 	
 	option = {
 		name = grefm_greece.084.b
+		add_modifier = {
+			name = modifier_grefm_crushed_opposition_country
+			months = gbbf_long_modifier_time
+		}
+		every_interest_group = {
+			limit = {
+				OR = {
+					is_in_government = no
+					law_stance = {
+						law = law_type:law_single_party_state
+						value < neutral
+					}
+				}
+			}
+			add_modifier = {
+				name = modifier_grefm_crushed_opposition_country
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+		}
+		every_scope_character = {
+			limit = {
+				has_role_of_type = agitator
+				law_stance = {
+					law = law_type:law_single_party_state
+					value < neutral
+				}
+			}
+			exile_character = yes
+		}
 	}
 	
 	after = { 
@@ -5378,6 +5428,7 @@ grefm_greece.085 = {
 	option = {
 		name = grefm_greece.085.a
 		default_option = yes
+		
 	}
 	
 	option = {
