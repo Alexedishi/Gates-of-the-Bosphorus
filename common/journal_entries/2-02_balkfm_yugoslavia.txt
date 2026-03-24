@@ -471,6 +471,7 @@ je_balkfm_yugoslav_nationalism = {
 		c:YUG ?= this
 		NOR = {
 			has_global_variable = je_yugoslavism_cooldown_var
+			has_variable = je_balkfm_yugoslav_nationalism_complete
 			has_law_or_variant = law_type:law_multicultural
 		}
 	}
@@ -616,31 +617,17 @@ je_balkfm_yugoslav_nationalism = {
 	}
 	
 	on_complete = {
-		show_as_tooltip = {
-			add_primary_culture = cu:yugoslav
-			custom_tooltip = je_balkfm_yugoslav_nationalism_on_complete_1
-			custom_tooltip = je_balkfm_yugoslav_nationalism_on_complete_2
-			if = {
-				limit = {
-					cu:yugoslav = {
-						culture_has_national_awakening = no
-					}
-				}
-				start_national_awakening = {
-					culture = cu:yugoslav
-					months = 120
-					state_region = s:STATE_EASTERN_SERBIA
-				}
-			}
-			add_modifier = {
-				name = modifier_popular_genesis
-				days = gbbf_long_modifier_time
-			}
+		custom_tooltip = {
+			text = je_balkfm_yugoslav_nationalism_on_complete_integralist
+			trigger_event = balkfm_yugoslavia.102
+			
 		}
-		hidden_effect = {
-			trigger_event = balkfm_yugoslavia.109
+		custom_tooltip = {
+			text = je_balkfm_yugoslav_nationalism_on_complete_pluralist
+			trigger_event = balkfm_yugoslavia.103
 		}
 		remove_variable = je_balkfm_yugoslav_nationalism
+		set_variable = je_balkfm_yugoslav_nationalism_complete
 	}
 	
 	fail = {
@@ -652,13 +639,12 @@ je_balkfm_yugoslav_nationalism = {
 					var:balkfm_yugoslavism_var <= 0
 				}
 			}
-			has_law_or_variant = law_type:law_multicultural
 		}
 	}
 	
 	on_fail = {
-		trigger_event = balkfm_yugoslavia.108
-		custom_tooltip = je_balkfm_yugoslav_nationalism_on_fail
+		trigger_event = balkfm_yugoslavia.101
+		custom_tooltip = balkfm_federalist_outcome
 		remove_variable = je_balkfm_yugoslav_nationalism
 	}
 	
@@ -671,10 +657,13 @@ je_balkfm_yugoslav_nationalism = {
 		}
 	}
 	
+	on_invalid = {
+		remove_variable = je_balkfm_yugoslav_nationalism
+	}
+	
 	on_weekly_pulse = {
 		events = {
-		}
-		random_events = {
+			balkfm_yugoslavia.105
 		}
 		effect = {
 			scope:journal_entry = {
@@ -689,6 +678,11 @@ je_balkfm_yugoslav_nationalism = {
 				set_variable = {
 					name = balkfm_yugoslavism_progress_var
 					value = owner.balkfm_yugoslavism_progress_value
+				}
+				gbbf_gated_calc_and_push_variable_effect = {
+					name = balkfm_yugoslav_integration
+					max = 100
+					min = 0
 				}
 			}
 		}
@@ -717,6 +711,17 @@ je_balkfm_yugoslav_nationalism = {
 				set_variable = {
 					name = balkfm_yugoslavism_tilt_var
 					value = owner.balkfm_yugoslavism_tilt_value
+				}
+			}
+		}
+	}
+	
+	status_desc = {
+		triggered_desc = {
+			desc = je_balkfm_yugoslav_nationalism_status
+			trigger = {
+				var:je_balkfm_yugoslav_nationalism ?= {
+					has_variable = balkfm_yugoslav_integration_var
 				}
 			}
 		}
