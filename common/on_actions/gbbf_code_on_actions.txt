@@ -120,56 +120,69 @@ gbbf_on_country_formed = {
 			}
 			if = {
 				limit = {
-					was_formed_from = MON
+					NOT = {
+						has_law_or_variant = law_type:law_multicultural
+					}
 				}
-				balkfm_remove_yugoslav_cultures_effect = yes
 				if = {
 					limit = {
-						has_global_variable = balkfm_montegrin_culture_var
+						was_formed_from = MON
 					}
-					add_primary_culture = cu:montenegrin
+					balkfm_remove_yugoslav_cultures_effect = yes
+					if = {
+						limit = {
+							has_global_variable = balkfm_montegrin_culture_var
+						}
+						add_primary_culture = cu:montenegrin
+					}
+					else = {
+						add_primary_culture = cu:serb
+					}
 				}
-				else = {
+				else_if = {
+					limit = {
+						OR = {
+							was_formed_from = SER
+							was_formed_from = SER_RSK
+						}
+					}
+					balkfm_remove_yugoslav_cultures_effect = yes
 					add_primary_culture = cu:serb
 				}
-			}
-			else_if = {
-				limit = {
-					was_formed_from = SER
+				else_if = {
+					limit = {
+						was_formed_from = BUL
+					}
+					balkfm_remove_yugoslav_cultures_effect = yes
+					add_primary_culture = cu:bulgarian
 				}
-				balkfm_remove_yugoslav_cultures_effect = yes
-				add_primary_culture = cu:serb
-			}
-			else_if = {
-				limit = {
-					was_formed_from = BUL
+				else_if = {
+					limit = {
+						was_formed_from = BOS
+					}
+					balkfm_remove_yugoslav_cultures_effect = yes
+					add_primary_culture = cu:bosniak
 				}
-				balkfm_remove_yugoslav_cultures_effect = yes
-				add_primary_culture = cu:bulgarian
-			}
-			else_if = {
-				limit = {
-					was_formed_from = BOS
+				else_if = {
+					limit = {
+						was_formed_from = CRO
+					}
+					balkfm_remove_yugoslav_cultures_effect = yes
+					add_primary_culture = cu:croat
 				}
-				balkfm_remove_yugoslav_cultures_effect = yes
-				add_primary_culture = cu:bosniak
-			}
-			else_if = {
-				limit = {
-					was_formed_from = CRO
+				else_if = {
+					limit = {
+						was_formed_from = SLO
+					}
+					balkfm_remove_yugoslav_cultures_effect = yes
+					add_primary_culture = cu:slovene
 				}
-				balkfm_remove_yugoslav_cultures_effect = yes
-				add_primary_culture = cu:croat
-			}
-			else_if = {
-				limit = {
-					was_formed_from = SLO
+				else = {
+					error_log = "The gbbf_on_country_formed was evaluated for YUG and did not have law_multicultural, but none of the was_formed_from triggers were true."
 				}
-				balkfm_remove_yugoslav_cultures_effect = yes
-				add_primary_culture = cu:slovene
 			}
 			else = {
-				error_log = "The gbbf_on_country_formed was evaluated for YUG, but none of the was_formed_from triggers were true."
+				set_variable = je_balkfm_yugoslav_nationalism_complete
 			}
 		}
 	}
