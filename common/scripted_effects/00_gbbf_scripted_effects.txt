@@ -267,17 +267,100 @@ gbbf_purge_buildings_effect = { # This effect only checks for buildings that are
 
 gbbf_push_variable_effect = {
 	set_variable = {
-		name = $name$
+		name = $name$_var
 		value = {
 			if = {
 				limit = {
-					has_variable = $name$
+					has_variable = $name$_var
 				}
-				add = var:$name$
+				add = var:$name$_var
 			}
-			add = var:$value$
+			add = var:$name$_progress_var
 			max = $max$
 			min = $min$
+		}
+	}
+}
+
+gbbf_calc_and_push_variable_effect = {
+	set_variable = {
+		name = $name$_progress_var
+		value = $name$_progress_value
+	}
+	set_variable = {
+		name = $name$_var
+		value = {
+			if = {
+				limit = {
+					has_variable = $name$_var
+				}
+				add = var:$name$_var
+			}
+			add = var:$name$_progress_var
+			max = $max$
+			min = $min$
+		}
+	}
+}
+
+gbbf_checked_calc_and_push_variable_effect = {
+	if = {
+		limit = {
+			has_variable = $name$_var
+		}
+		set_variable = {
+			name = $name$_progress_var
+			value = $name$_progress_value
+		}
+		set_variable = {
+			name = $name$_var
+			value = {
+				if = {
+					limit = {
+						has_variable = $name$_var
+					}
+					add = var:$name$_var
+				}
+				add = var:$name$_progress_var
+				max = $max$
+				min = $min$
+			}
+		}
+	}
+	else = {
+		set_variable = {
+			name = $name$_var
+			value = 0
+		}
+		set_variable = {
+			name = $name$_progress_var
+			value = $name$_progress_value
+		}
+	}
+}
+
+gbbf_gated_calc_and_push_variable_effect = {
+	if = {
+		limit = {
+			has_variable = $name$_var
+		}
+		set_variable = {
+			name = $name$_progress_var
+			value = $name$_progress_value
+		}
+		set_variable = {
+			name = $name$_var
+			value = {
+				if = {
+					limit = {
+						has_variable = $name$_var
+					}
+					add = var:$name$_var
+				}
+				add = var:$name$_progress_var
+				max = $max$
+				min = $min$
+			}
 		}
 	}
 }
