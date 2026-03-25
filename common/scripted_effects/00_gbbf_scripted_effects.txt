@@ -7,55 +7,6 @@ gbbf_assign_dlc_icon_effect = {
 	}
 }
 
-gbbf_free_from_void = {
-	hidden_effect = {
-		free_character_from_void = yes
-	}
-}
-
-gbbf_free_from_void_ruler = {
-	hidden_effect = {
-		free_character_from_void = yes
-	}
-	set_character_as_ruler = yes
-}
-
-gbbf_free_from_void_leader = {
-	hidden_effect = {
-		free_character_from_void = yes
-	}
-	set_as_interest_group_leader = yes
-}
-
-gbbf_free_from_void_general = {
-	hidden_effect = {
-		free_character_from_void = yes
-	}
-	add_character_role = general
-}
-
-gbbf_free_from_void_admiral = {
-	hidden_effect = {
-		free_character_from_void = yes
-	}
-	add_character_role = admiral
-}
-
-gbbf_free_from_void_agitator = {
-	hidden_effect = {
-		free_character_from_void = yes
-	}
-	add_character_role = agitator
-}
-
-gbbf_free_from_void_ruler_leader = {
-	hidden_effect = {
-		free_character_from_void = yes
-	}
-	set_character_as_ruler = yes
-	set_as_interest_group_leader = yes
-}
-
 gbbf_purge_buildings_effect = { # This effect only checks for buildings that are present at game start
 	## Government Buildings
 	if = {
@@ -265,7 +216,72 @@ gbbf_purge_buildings_effect = { # This effect only checks for buildings that are
 	}
 }
 
+
+####---------- Character Management Effects ----------####
+gbbf_free_from_void = {
+	hidden_effect = {
+		free_character_from_void = yes
+	}
+}
+
+gbbf_free_from_void_ruler = {
+	hidden_effect = {
+		free_character_from_void = yes
+	}
+	set_character_as_ruler = yes
+}
+
+gbbf_free_from_void_leader = {
+	hidden_effect = {
+		free_character_from_void = yes
+	}
+	set_as_interest_group_leader = yes
+}
+
+gbbf_free_from_void_general = {
+	hidden_effect = {
+		free_character_from_void = yes
+	}
+	add_character_role = general
+}
+
+gbbf_free_from_void_admiral = {
+	hidden_effect = {
+		free_character_from_void = yes
+	}
+	add_character_role = admiral
+}
+
+gbbf_free_from_void_agitator = {
+	hidden_effect = {
+		free_character_from_void = yes
+	}
+	add_character_role = agitator
+}
+
+gbbf_free_from_void_ruler_leader = {
+	hidden_effect = {
+		free_character_from_void = yes
+	}
+	set_character_as_ruler = yes
+	set_as_interest_group_leader = yes
+}
+
+
+####---------- Variable Management Effects ----------####
+# NOTE: These effects are meant to execute within the *journal_entry* scope
+# It is policy for GotB to set all journal-related variables to be within the journal scope
+
+gbbf_calc_variable_effect = {
+# For use when the calc_ and push_ effects are split between different pulses
+	set_variable = {
+		name = $name$_progress_var
+		value = owner.$name$_progress_value
+	}
+}
+
 gbbf_push_variable_effect = {
+# For use when the calc_ and push_ effects are split between different pulses
 	set_variable = {
 		name = $name$_var
 		value = {
@@ -283,9 +299,10 @@ gbbf_push_variable_effect = {
 }
 
 gbbf_calc_and_push_variable_effect = {
+# This effect will restore variables if lost
 	set_variable = {
 		name = $name$_progress_var
-		value = $name$_progress_value
+		value = owner.$name$_progress_value
 	}
 	set_variable = {
 		name = $name$_var
@@ -304,13 +321,14 @@ gbbf_calc_and_push_variable_effect = {
 }
 
 gbbf_checked_calc_and_push_variable_effect = {
+# This is more nuanced, and will set the base _var to 0 if lost
 	if = {
 		limit = {
 			has_variable = $name$_var
 		}
 		set_variable = {
 			name = $name$_progress_var
-			value = $name$_progress_value
+			value = owner.$name$_progress_value
 		}
 		set_variable = {
 			name = $name$_var
@@ -334,19 +352,20 @@ gbbf_checked_calc_and_push_variable_effect = {
 		}
 		set_variable = {
 			name = $name$_progress_var
-			value = $name$_progress_value
+			value = onwer.$name$_progress_value
 		}
 	}
 }
 
 gbbf_gated_calc_and_push_variable_effect = {
+# This will only fire if the base _var is set; it will not restore it if it is lost somehow
 	if = {
 		limit = {
 			has_variable = $name$_var
 		}
 		set_variable = {
 			name = $name$_progress_var
-			value = $name$_progress_value
+			value = onwer.$name$_progress_value
 		}
 		set_variable = {
 			name = $name$_var
@@ -365,6 +384,8 @@ gbbf_gated_calc_and_push_variable_effect = {
 	}
 }
 
+
+####---------- Flavor Content Effects ----------####
 gbbf_add_georegion_claims_effect = {
 	every_state_region_in_$georegion$ = {
 		limit = {
@@ -384,6 +405,7 @@ gbbf_calculate_institution_investment_effect = {
 		value = gbbf_institution_investment_levels_value
 	}
 }
+
 
 ####---------- Eyalet Creation Effects ----------####
 # Cappadocia
@@ -687,6 +709,7 @@ gbbf_setup_erzurum_effect = {
 	set_country_type = unrecognized
 	activate_law = law_type:law_people_of_the_book
 }
+
 
 ####---------- Placeholder Effects ----------####
 eocfm_schism_cleanup_effect = {
