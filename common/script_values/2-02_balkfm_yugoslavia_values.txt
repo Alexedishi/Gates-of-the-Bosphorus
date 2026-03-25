@@ -1,4 +1,5 @@
-﻿balkfm_yugoslavism_integralist_value = {
+﻿####---------- Yugoslav Nationalism Values ----------####
+balkfm_yugoslavism_integralist_value = {
 	value = 0
 	add = {
 		value = balkfm_yugoslav_loyalists_value
@@ -291,6 +292,502 @@ balkfm_yugoslav_fervor_value = {
 			add = cu:slovene.culture_current_fervor
 			round_to = 0.01
 		}
+	}
+	round_to = 0.01
+}
+
+balkfm_yugoslav_promotion_progress_value = {
+	value = 0
+	add = {
+		desc = gbbf_value_from_base_weekly
+		value = 1
+	}
+	add = {
+		desc = balkfm_value_From_minority_support
+		random_political_movement = {
+			limit = {
+				is_political_movement_type = movement_cultural_minority
+				culture = var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var
+			}
+			add = political_movement_support
+		}
+	}
+	subtract = {
+		desc = balkfm_value_from_integralist_support
+		value = {
+			random_political_movement = {
+				limit = {
+					is_political_movement_type = movement_gbbf_yugoslav_integralist
+				}
+				add = political_movement_support
+			}
+		}
+	}
+	subtract = {
+		desc = balkfm_value_from_promoted_culture_radicals
+		value = {
+			if = {
+				limit = {
+					var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:montenegrin
+				}
+				add = balkfm_montenegrin_radicals_value
+			}
+			if = {
+				limit = {
+					var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:serb
+				}
+				add = balkfm_serb_radicals_value
+			}
+			if = {
+				limit = {
+					var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:bulgarian
+				}
+				add = balkfm_bulgarian_radicals_value
+			}
+			if = {
+				limit = {
+					var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:bosniak
+				}
+				add = balkfm_bosniak_radicals_value
+			}
+			if = {
+				limit = {
+					var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:croat
+				}
+				add = balkfm_croat_radicals_value
+			}
+			if = {
+				limit = {
+					var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:slovene
+				}
+				add = balkfm_slovene_radicals_value
+			}
+		}
+	}
+}
+
+####---------- Yugoslav Loyalists Values ----------####
+balkfm_montenegrin_loyalists_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			any_scope_pop = {
+				has_pop_culture = serb
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = serb
+			}
+			add = pop_loyalist_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				any_scope_pop = {
+					has_pop_culture = serb
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = serb
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+balkfm_serb_loyalists_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			any_scope_pop = {
+				has_pop_culture = serb
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = serb
+			}
+			add = pop_loyalist_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				any_scope_pop = {
+					has_pop_culture = serb
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = serb
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+balkfm_bulgarian_loyalists_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			any_scope_pop = {
+				has_pop_culture = bulgarian
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = bulgarian
+			}
+			add = pop_loyalist_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				any_scope_pop = {
+					has_pop_culture = bulgarian
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = bulgarian
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+balkfm_bosniak_loyalists_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			any_scope_pop = {
+				has_pop_culture = bosniak
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = bosniak
+			}
+			add = pop_loyalist_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				any_scope_pop = {
+					has_pop_culture = bosniak
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = bosniak
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+balkfm_croat_loyalists_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			is_in_geographic_region = geographic_region_rumelia
+			is_incorporated = yes
+			any_scope_pop = {
+				has_pop_culture = croat
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = croat
+			}
+			add = pop_loyalist_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_rumelia
+				is_incorporated = yes
+				any_scope_pop = {
+					has_pop_culture = croat
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = croat
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+balkfm_slovene_loyalists_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			is_in_geographic_region = geographic_region_rumelia
+			is_incorporated = yes
+			any_scope_pop = {
+				has_pop_culture = slovene
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = slovene
+			}
+			add = pop_loyalist_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_rumelia
+				is_incorporated = yes
+				any_scope_pop = {
+					has_pop_culture = slovene
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = slovene
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+####---------- Yugoslav Radicals Values ----------####
+balkfm_montenegrin_radicals_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			any_scope_pop = {
+				has_pop_culture = serb
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = serb
+			}
+			add = pop_radical_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				any_scope_pop = {
+					has_pop_culture = serb
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = serb
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+balkfm_serb_radicals_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			any_scope_pop = {
+				has_pop_culture = serb
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = serb
+			}
+			add = pop_radical_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				any_scope_pop = {
+					has_pop_culture = serb
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = serb
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+balkfm_bulgarian_radicals_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			any_scope_pop = {
+				has_pop_culture = bulgarian
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = bulgarian
+			}
+			add = pop_radical_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				any_scope_pop = {
+					has_pop_culture = bulgarian
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = bulgarian
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+balkfm_bosniak_radicals_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			any_scope_pop = {
+				has_pop_culture = bosniak
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = bosniak
+			}
+			add = pop_radical_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				any_scope_pop = {
+					has_pop_culture = bosniak
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = bosniak
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+balkfm_croat_radicals_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			is_in_geographic_region = geographic_region_rumelia
+			is_incorporated = yes
+			any_scope_pop = {
+				has_pop_culture = croat
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = croat
+			}
+			add = pop_radical_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_rumelia
+				is_incorporated = yes
+				any_scope_pop = {
+					has_pop_culture = croat
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = croat
+				}
+				add = 1
+			}
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+balkfm_slovene_radicals_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			is_in_geographic_region = geographic_region_rumelia
+			is_incorporated = yes
+			any_scope_pop = {
+				has_pop_culture = slovene
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = slovene
+			}
+			add = pop_radical_fraction
+		}
+	}
+	divide = {
+		every_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_rumelia
+				is_incorporated = yes
+				any_scope_pop = {
+					has_pop_culture = slovene
+				}
+			}
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = slovene
+				}
+				add = 1
+			}
+		}
+		min = 1
 	}
 	round_to = 0.01
 }
