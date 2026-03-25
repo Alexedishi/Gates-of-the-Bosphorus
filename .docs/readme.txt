@@ -2,7 +2,7 @@
 # GATES OF THE BOSPHORUS #
 ##########################
 Mod Version: 4.0.0
-Game Version: 1.12.x
+Game Version: 1.13.x
 
 Mod Author: Alexedishi
 Contributors: LordR, Caelreader, CipherParadox
@@ -14,8 +14,8 @@ Special Thanks: RationaLess, Bahmut|Chris
 
 ####---------- Version Compatibility ----------####
 #		GotB Patch	....	Victoria 3 Patch
-#		4.0.0		....	1.??
-#		3.4.11		.... 	1.12.3
+#		4.0.0		....	1.13
+#		3.4.12		.... 	1.12.3
 #		3.3.7		.... 	1.10.6 / 1.11.1
 #		3.2.8		.... 	1.9.8
 #		3.0.8		.... 	1.8.7
@@ -35,7 +35,11 @@ The following countries are in scope:
 
 The following countries will eventually come into scope:
 - BALKFM: Croatia, Slovenia
+- LEVAFM: Syria, Lebanon, Palestine
 - HAYKFM: Assyria
+
+**Notes:
+- Zionism, Pan-Arab, & Iranian flavor are OUT OF SCOPE for this mod
 
 
 ####---------- Mod Structure and Organization ----------####
@@ -61,7 +65,6 @@ byzfm_: Once contained content for Byzantium; has been merged with grefm
 bulfm_: Once contained content for Bulgaria; has been merged with balkfm
 
 **Notes:
--Levantine Arab & Iranian (Persia) flavor are OUT OF SCOPE for this mod
 -The current mod acronym is GotB; my common prefix is "gbbf_" and will not change
 -The CMF trigger uses the older "grefm_" generic acronym; this will not change
 
@@ -71,8 +74,9 @@ bulfm_: Once contained content for Bulgaria; has been merged with balkfm
 
 - The following entry prefix/suffix conventions should be following:
  -- Alerts:
+ -- Amendments: amendment_gbbf_**
  -- Buildings: building_gbbf_**
- -- Characters: template_<module>_**
+ -- Characters: <module>_<TAG>_<last_name>_<first_name>
  -- Custom Loc: <module>_**_type
  -- Decisions: <module>_**_decision
  -- Decrees: decree_gbbf_**
@@ -105,16 +109,18 @@ bulfm_: Once contained content for Bulgaria; has been merged with balkfm
  -- If the variable is used to store a value, suffix it with "_var"
  -- If the variable is used in a boolean trigger (has_variable), suffix it using any of the following:
     "_started", "_completed", "_failed", "_happened", "_cooldown", "_tracker", "_target"
- -- If a variable is used only for a specific journal entry and its direct content, store the variable in that journal
+ -- If a variable(s) is used only for a specific journal entry and its direct content, store the variable(s) in that journal
+ -- Scripted effects are provided to aid in variable management
 
 
 ####---------- Planned Content/Reworks ----------####
-----GREFM: Greek Content Module (GRE, BYZ)
+----GREFM: Greek Content Module (GRE, ION, GRE_SAM, BYZ)
  - Increase number of factors that contribute to the Hellenism vs Romanism journal
  - Expansion to Theodoro Content
 
 ----BALKFM: Balkans Content Module (YUG, MON, SER, BUL, ROM, BOS, ALB, CRO. SLO)
  - MON: Content for the 1905 Constitution
+ - MON: New journal "The Spirit of the Black Mountain": Lead Montenegro towards an independent identity; uses Morgenröte's writer mechanics
  - SER: Content for the Serb People's Movement
  - SER: Content for the Serbian Radical Constitution, Timok Rebellion, and May Coup
  - SER: Event chain representing the Krivošije uprising
@@ -140,8 +146,9 @@ bulfm_: Once contained content for Bulgaria; has been merged with balkfm
  - ARM:
  - ASS:
 
-----LEVAFM: Levantine Content Module (SYR, PAL)
+----LEVAFM: Levantine Content Module (SYR, LEB, PAL)
  - SYR:
+ - LEB:
  - PAL:
 
 ----EQFM: Eastern Question & Expeditions Content Module
