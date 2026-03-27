@@ -120,6 +120,40 @@ turkfm_add_tanzimat_agenda_effect = {
 	}
 }
 
+turkfm_complete_tanzimat_agenda_effect = {
+	if = {
+		limit = {
+			has_journal_entry = je_turkfm_tanzimat_reforms
+		}
+		je:je_turkfm_tanzimat_reforms = {
+			if = {
+				limit = {
+					has_variable = turkfm_tanzimat_$type$_agenda
+				}
+				remove_variable = turkfm_tanzimat_$type$_agenda
+				set_variable = turkfm_tanzimat_$type$_complete
+				root = {
+					turkfm_advance_ottomanism1_effect = yes
+				}
+			}
+			else = {
+				error_log = "turkfm_complete_tanzimat_agenda_effect was called, but the specified agenda is not active in je_turkfm_tanzimat_reforms."
+			}
+		}
+	}
+	else = {
+		error_log = "turkfm_complete_tanzimat_agenda_effect was called, but the calling country does not have an active je_turkfm_tanzimat_reforms journal entry."
+	}
+	set_variable = {
+		name = turkfm_total_tanzimat_agendas_var
+		value = turkfm_total_tanzimat_agendas_value
+	}
+	set_variable = {
+		name = turkfm_completed_tanzimat_agendas_var
+		value = turkfm_completed_tanzimat_agendas_value
+	}
+}
+
 turkfm_cleanup_tanzimat_effect = {
 	set_global_variable = turkfm_tanzimat_complete
 	remove_variable = turkfm_tanzimat_identity_var
