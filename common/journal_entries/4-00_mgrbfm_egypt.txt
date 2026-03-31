@@ -40,10 +40,6 @@ je_mgrbfm_egypt_muhammad_ali = {
 		}
 	}
 
-	modifiers_while_active = {
-		modifier_mgrbfm_imperial_ambitions
-	}
-
 	complete = {
 		trigger_if = {
 			limit = {
@@ -233,7 +229,6 @@ je_mgrbfm_egypt_modernization = {
 	}
 
 	modifiers_while_active = {
-		modifier_mgrbfm_modernizing_drive
 		modifier_mgrbfm_resistant_fellahin
 	}
 
@@ -424,17 +419,24 @@ je_mgrbfm_egypt_nile_river = {
 	scripted_button = mgrbfm_repair_nilometers_button
 
 	immediate = {
-		set_global_variable = {
-			name = mgrbfm_nile_control_var
-			value = 0
+		scope:journal_entry = {
+			set_variable = {
+				name = mgrbfm_nile_control_var
+				value = 0
+			}
+			set_variable = {
+				name = mgrbfm_nile_flood_var
+				value = 0
+			}
+			set_variable = {
+				name = mgrbfm_nile_flood_cooldown
+				value = 2 # Tiny grace period
+			}
+			save_scope_as = je_mgrbfm_egypt_nile_river
 		}
 		set_global_variable = {
-			name = mgrbfm_nile_flood_var
-			value = 0
-		}
-		set_global_variable = {
-			name = mgrbfm_nile_flood_cooldown
-			value = 2 # Tiny grace period
+			name = je_mgrbfm_egypt_nile_river
+			value = scope:je_mgrbfm_egypt_nile_river
 		}
 	}
 
@@ -462,33 +464,27 @@ je_mgrbfm_egypt_nile_river = {
 	}
 
 	on_complete = {
-		every_state_in_lower_nile = {
-			limit = {
-				owner = {
-					NOT = {
-						is_country_type = decentralized
-					}
+		every_state_region_in_lower_nile = {
+			remove_state_trait = gbbf_state_trait_nile_uncontrolled
+			add_state_trait = state_trait_nile_river
+		}
+		hidden_effect = {
+			every_state_in_lower_nile = {
+				limit = {
+					has_modifier = modifier_mgrbfm_nilometer_system
 				}
-			}
-			state_region = {
-				remove_state_trait = gbbf_state_trait_nile_uncontrolled
-				add_state_trait = state_trait_nile_river
+				remove_modifier = modifier_mgrbfm_nilometer_system
 			}
 		}
-		every_state_in_lower_nile = {
-			limit = {
-				has_modifier = modifier_mgrbfm_nilometer_system
-			}
-			remove_modifier = modifier_mgrbfm_nilometer_system
-		}
-		remove_global_variable = mgrbfm_nile_control_var
 	}
 
 	on_weekly_pulse = {
 		effect = {
-			set_global_variable = {
-				name = mgrbfm_nile_control_var
-				value = mgrbfm_nile_control_value
+			scope:journal_entry = {
+				set_variable = {
+					name = mgrbfm_nile_control_var
+					value = mgrbfm_nile_control_value
+				}
 			}
 		}
 	}
@@ -535,20 +531,19 @@ je_mgrbfm_egypt_nile_river = {
 			triggered_desc = {
 				desc = je_mgrbfm_egypt_nile_river_complete_status_1
 				trigger = {
-					global_var:mgrbfm_nile_control_var < 2
+					global_var:je_mgrbfm_egypt_nile_river.var:mgrbfm_nile_control_var < 2
 				}
 			}
 			triggered_desc = {
 				desc = je_mgrbfm_egypt_nile_river_complete_status_3
 				trigger = {
-					global_var:mgrbfm_nile_control_var > 3
+					global_var:je_mgrbfm_egypt_nile_river.var:mgrbfm_nile_control_var > 3
 				}
 			}
 			triggered_desc = {
 				desc = je_mgrbfm_egypt_nile_river_complete_status_2
 			}
 		}
-
 	}
 }
 

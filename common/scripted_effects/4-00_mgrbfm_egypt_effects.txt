@@ -1,124 +1,142 @@
 ﻿mgrbfm_nile_inundation_effect = {
-	if = {
-		limit = {
-			global_var:mgrbfm_nile_flood_cooldown <= 0
-		}
-		random_list = {
-			1 = {
-				set_global_variable = {
-					name = mgrbfm_nile_flood_var
-					value = 1
-				}
-			}
-			1 = {
-				set_global_variable = {
-					name = mgrbfm_nile_flood_var
-					value = 2
-				}
-			}
-			1 = {
-				set_global_variable = {
-					name = mgrbfm_nile_flood_var
-					value = 3
-				}
-			}
-			1 = {
-				set_global_variable = {
-					name = mgrbfm_nile_flood_var
-					value = 4
-				}
-			}
-			1 = {
-				set_global_variable = {
-					name = mgrbfm_nile_flood_var
-					value = 5
-				}
-			}
-			1 = {
-				set_global_variable = {
-					name = mgrbfm_nile_flood_var
-					value = 6
-				}
-			}
-			1 = {
-				set_global_variable = {
-					name = mgrbfm_nile_flood_var
-					value = 7
-				}
-			}
-			1 = {
-				set_global_variable = {
-					name = mgrbfm_nile_flood_var
-					value = 8
-				}
-			}
-			1 = {
-				set_global_variable = {
-					name = mgrbfm_nile_flood_var
-					value = 9
-				}
-			}
-			1 = {
-				set_global_variable = {
-					name = mgrbfm_nile_flood_var
-					value = 10
-				}
-			}
-		}
-		set_global_variable = {
-			name = mgrbfm_nile_flood_var
-			value = {
-				add = global_var:mgrbfm_nile_flood_var
-				subtract = global_var:mgrbfm_nile_control_var
-				max = 10
-				min = 0
-			}
-		}
-		set_global_variable = {
-			name = mgrbfm_nile_flood_cooldown
-			value = {
-				add = global_var:mgrbfm_nile_flood_var
-				divide = 2
-				round = yes
-				min = 0
-			}
-		}
-		random_state_in_lower_nile = {
+	scope:journal_entry = {
+		if = {
 			limit = {
-				state_region = {
-					NOT = {
-						has_harvest_condition = flood
+				var:mgrbfm_nile_flood_cooldown <= 0
+			}
+			random_list = {
+				1 = {
+					set_variable = {
+						name = mgrbfm_nile_flood_var
+						value = 1
+					}
+				}
+				1 = {
+					set_variable = {
+						name = mgrbfm_nile_flood_var
+						value = 2
+					}
+				}
+				1 = {
+					set_variable = {
+						name = mgrbfm_nile_flood_var
+						value = 3
+					}
+				}
+				1 = {
+					set_variable = {
+						name = mgrbfm_nile_flood_var
+						value = 4
+					}
+				}
+				1 = {
+					set_variable = {
+						name = mgrbfm_nile_flood_var
+						value = 5
+					}
+				}
+				1 = {
+					set_variable = {
+						name = mgrbfm_nile_flood_var
+						value = 6
+					}
+				}
+				1 = {
+					set_variable = {
+						name = mgrbfm_nile_flood_var
+						value = 7
+					}
+				}
+				1 = {
+					set_variable = {
+						name = mgrbfm_nile_flood_var
+						value = 8
+					}
+				}
+				1 = {
+					set_variable = {
+						name = mgrbfm_nile_flood_var
+						value = 9
+					}
+				}
+				1 = {
+					set_variable = {
+						name = mgrbfm_nile_flood_var
+						value = 10
 					}
 				}
 			}
-			state_region = {
-				save_scope_as = mgrbfm_flood_scope
-				start_harvest_condition = flood
-				set_variable = mgrbfm_flood_state_var
-			}
-		}
-		every_country = {
-			limit = {
-				NOT = {
-					is_country_type = decentralized
-				}
-				any_scope_state = {
-					is_in_geographic_region = geographic_region_lower_nile
+			set_variable = {
+				name = mgrbfm_nile_flood_var
+				value = {
+					add = var:mgrbfm_nile_flood_var
+					subtract = var:mgrbfm_nile_control_var
+					max = 10
+					min = 0
 				}
 			}
-			trigger_event = mgrbfm_egypt.110
+			if = {
+				limit = {
+					var:mgrbfm_nile_flood_var > 0
+				}
+				set_variable = {
+					name = mgrbfm_nile_flood_cooldown
+					value = {
+						add = var:mgrbfm_nile_flood_var
+						divide = 2
+						round = yes
+						min = 2
+					}
+				}
+				random_state_in_lower_nile = {
+					limit = {
+						state_region = {
+							NOT = {
+								has_harvest_condition = flood
+							}
+						}
+					}
+					state_region = {
+						save_scope_as = mgrbfm_flood_region_scope
+						start_harvest_condition = flood
+						set_variable = mgrbfm_flood_state_var
+					}
+				}
+				set_variable = {
+					name = mgrbfm_flood_epicenter_var
+					value = scope:mgrbfm_flood_region_scope
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
+					}
+					trigger_event = mgrbfm_egypt.110
+				}
+				scope:mgrbfm_flood_region_scope = {
+					remove_variable = mgrbfm_flood_state_var
+				}
+			}
+			else = {
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
+					}
+					post_notification = notification_mgrbfm_floods_mitigated
+				}
+				set_variable = {
+					name = mgrbfm_nile_flood_cooldown
+					value = 3
+				}
+			}
 		}
-		scope:mgrbfm_flood_scope = {
-			remove_variable = mgrbfm_flood_state_var
-		}
-	}
-	else = {
-		set_global_variable = {
-			name = mgrbfm_nile_flood_cooldown
-			value = {
-				add = global_var:mgrbfm_nile_flood_cooldown
-				subtract = 1
-				min = 0
+		else = {
+			set_variable = {
+				name = mgrbfm_nile_flood_cooldown
+				value = {
+					add = var:mgrbfm_nile_flood_cooldown
+					subtract = 1
+					min = 0
+				}
 			}
 		}
 	}
