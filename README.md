@@ -5,7 +5,7 @@
 ### IMPORTANT: This mod is dependent on the Community Mod Framework to work correctly! 
 **Community Mod Framework**: https://steamcommunity.com/sharedfiles/filedetails/?id=3385002128
 
-*"One day the great European War will come out of some damned foolish thing in the Balkans" — Otto von Bismark, 1888*
+*"One day the great European War will come out of some damned foolish thing in the Balkans" —Otto von Bismark, 1888*
 
 Ever noticed that despite being called "the powder keg of Europe", nothing really happens in the Balkans most games? Or that instead of a powder keg you only get a sad Ottoman basket case?
 
