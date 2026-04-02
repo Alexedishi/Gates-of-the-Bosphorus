@@ -4,77 +4,132 @@
 			limit = {
 				var:mgrbfm_nile_flood_cooldown <= 0
 			}
+			
+			#### Determine Flood Var; Range -5 to +10
 			random_list = {
-				1 = {
+				10 = {
 					set_variable = {
 						name = mgrbfm_nile_flood_var
 						value = 1
 					}
 				}
-				1 = {
+				10 = {
 					set_variable = {
 						name = mgrbfm_nile_flood_var
 						value = 2
 					}
 				}
-				1 = {
+				10 = {
 					set_variable = {
 						name = mgrbfm_nile_flood_var
 						value = 3
 					}
 				}
-				1 = {
+				10 = {
 					set_variable = {
 						name = mgrbfm_nile_flood_var
 						value = 4
 					}
 				}
-				1 = {
+				10 = {
 					set_variable = {
 						name = mgrbfm_nile_flood_var
 						value = 5
 					}
 				}
-				1 = {
+				5 = {
 					set_variable = {
 						name = mgrbfm_nile_flood_var
 						value = 6
 					}
 				}
-				1 = {
+				5 = {
 					set_variable = {
 						name = mgrbfm_nile_flood_var
 						value = 7
 					}
 				}
-				1 = {
+				5 = {
 					set_variable = {
 						name = mgrbfm_nile_flood_var
 						value = 8
 					}
 				}
-				1 = {
+				5 = {
 					set_variable = {
 						name = mgrbfm_nile_flood_var
 						value = 9
 					}
 				}
-				1 = {
+				2 = {
 					set_variable = {
 						name = mgrbfm_nile_flood_var
 						value = 10
 					}
 				}
-			}
-			set_variable = {
-				name = mgrbfm_nile_flood_var
-				value = {
-					add = var:mgrbfm_nile_flood_var
-					subtract = var:mgrbfm_nile_control_var
-					max = 10
-					min = 0
+				5 = {
+					set_variable = {
+						name = mgrbfm_nile_flood_var
+						value = -1
+					}
+				}
+				2 = {
+					set_variable = {
+						name = mgrbfm_nile_flood_var
+						value = -2
+					}
+				}
+				2 = {
+					set_variable = {
+						name = mgrbfm_nile_flood_var
+						value = -3
+					}
+				}
+				2 = {
+					set_variable = {
+						name = mgrbfm_nile_flood_var
+						value = -4
+					}
+				}
+				1 = {
+					set_variable = {
+						name = mgrbfm_nile_flood_var
+						value = -5
+					}
 				}
 			}
+			
+			#### Calculate Flood/Drought Mitigation
+			if = {
+				limit = {
+					var:mgrbfm_nile_flood_var > 0
+				}
+				set_variable = {
+					name = mgrbfm_nile_flood_var
+					value = {
+						add = var:mgrbfm_nile_flood_var
+						subtract = var:mgrbfm_nile_control_var
+						max = 10
+						min = 0
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					var:mgrbfm_nile_flood_var < 0
+				}
+				set_variable = {
+					name = mgrbfm_nile_flood_var
+					value = {
+						add = var:mgrbfm_nile_flood_var
+						add = var:mgrbfm_nile_control_var
+						max = 0
+						min = -5
+					}
+				}
+			}
+			
+			#### If greater than zero; run flooding effects
 			if = {
 				limit = {
 					var:mgrbfm_nile_flood_var > 0
@@ -112,6 +167,52 @@
 					remove_variable = mgrbfm_flood_state_region_var
 				}
 			}
+			#### If less than zero; run drought effects
+			else_if = {
+				limit = {
+					var:mgrbfm_nile_flood_var < 0
+				}
+				set_variable = {
+					name = mgrbfm_nile_flood_var
+					value = {
+						add = var:mgrbfm_nile_flood_var
+						multiply = -1 # We need this to be positive for downstream effects
+					}
+				}
+				set_variable = {
+					name = mgrbfm_nile_flood_cooldown
+					value = {
+						add = var:mgrbfm_nile_flood_var
+						divide = 2
+						round = yes
+						min = 2
+					}
+				}
+				random_state_region_in_lower_nile = {
+					limit = {
+						NOT = {
+							has_harvest_condition = drought
+						}
+					}
+					save_scope_as = mgrbfm_flood_state_region_scope
+					start_harvest_condition = drought
+					set_variable = mgrbfm_flood_state_region_var
+				}
+				set_variable = {
+					name = mgrbfm_flood_epicenter_var
+					value = scope:mgrbfm_flood_state_region_scope
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
+					}
+					trigger_event = mgrbfm_egypt.111
+				}
+				scope:mgrbfm_flood_state_region_scope = {
+					remove_variable = mgrbfm_flood_state_region_var
+				}
+			}
+			#### If zero; display mitigation toast and set 3 year cooldown
 			else = {
 				every_country = {
 					limit = {
@@ -125,6 +226,8 @@
 				}
 			}
 		}
+		
+		#### If cooldown is positive, decrement by 1
 		else = {
 			set_variable = {
 				name = mgrbfm_nile_flood_cooldown
