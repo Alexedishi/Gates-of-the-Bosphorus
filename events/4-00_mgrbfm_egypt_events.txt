@@ -599,7 +599,7 @@ mgrbfm_egypt.110 = {
 	type = country_event
 	placement = scope:mgrbfm_flood_scope
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	duration = 3
+	duration = 2
 	dlc = dlc_grefm
 
 	title = mgrbfm_egypt.110.t
@@ -795,18 +795,76 @@ mgrbfm_egypt.110 = {
 			}
 		}
 	}
+	
+	after = {
+		hidden_effect = {
+			if = {
+				limit = {
+					is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
+					any_scope_state = {
+						is_in_geographic_region = geographic_region_lower_nile
+						OR = {
+							has_modifier = modifier_mgrbfm_nile_flood_epicenter
+							has_modifier = modifier_mgrbfm_widespread_nile_floods
+							has_modifier = modifier_mgrbfm_mitigated_nile_floods
+						}
+					}
+				}
+				random_scope_state = {
+					limit = {
+						is_in_geographic_region = geographic_region_lower_nile
+						OR = {
+							has_modifier = modifier_mgrbfm_nile_flood_epicenter
+							has_modifier = modifier_mgrbfm_widespread_nile_floods
+							has_modifier = modifier_mgrbfm_mitigated_nile_floods
+						}
+					}
+					save_scope_as = mgrbfm_flood_state_scope
+				}
+				random_list = {
+					90 = {}
+					5 = {
+						trigger_event = mgrbfm_egypt.112
+						trigger = {
+							scope:mgrbfm_flood_state_scope = {
+								has_modifier = modifier_mgrbfm_nilometer_system
+								OR = {
+									has_modifier = modifier_mgrbfm_nile_flood_epicenter
+									has_modifier = modifier_mgrbfm_localized_nile_floods
+									has_modifier = modifier_mgrbfm_widespread_nile_floods
+								}
+							}
+						}
+					}
+					5 = {
+						trigger_event = mgrbfm_egypt.113
+						trigger = {
+							scope:mgrbfm_flood_state_scope = {
+								has_building = building_railway
+								OR = {
+									has_modifier = modifier_mgrbfm_nile_flood_epicenter
+									has_modifier = modifier_mgrbfm_localized_nile_floods
+									has_modifier = modifier_mgrbfm_widespread_nile_floods
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
-mgrbfm_egypt.111 = {
+mgrbfm_egypt.112 = {
 	type = country_event
-	placement = root
+	placement = scope:mgrbfm_nile_flood_state_scope
 	icon = "gfx/interface/icons/event_icons/event_ruined_building.dds"
 	duration = 3
 	dlc = dlc_grefm
 
-	title = mgrbfm_egypt.111.t
-	desc = mgrbfm_egypt.111.d
-	flavor = mgrbfm_egypt.111.f
+	title = mgrbfm_egypt.112.t
+	desc = mgrbfm_egypt.112.d
+	flavor = mgrbfm_egypt.112.f
 
 	event_image = {
 		video = "unspecific_devastation"
@@ -814,14 +872,8 @@ mgrbfm_egypt.111 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
-		is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
 		any_scope_state = {
 			is_in_geographic_region = geographic_region_lower_nile
-			has_modifier = modifier_mgrbfm_nilometer_system
-			OR = {
-				has_modifier = modifier_mgrbfm_nile_flood_epicenter
-				has_modifier = modifier_mgrbfm_widespread_nile_floods
-			}
 		}
 	}
 
@@ -844,29 +896,29 @@ mgrbfm_egypt.111 = {
 					has_modifier = modifier_mgrbfm_widespread_nile_floods
 				}
 			}
-			save_scope_as = mgrbfm_nile_flood_scope
+			save_scope_as = mgrbfm_nile_flood_state_scope
 		}
 	}
 
 	option = {
-		name = mgrbfm_egypt.111.a
+		name = mgrbfm_egypt.112.a
 		default_option = yes
-		scope:mgrbfm_nile_flood_scope = {
+		scope:mgrbfm_nile_flood_state_scope = {
 			remove_modifier = modifier_mgrbfm_nilometer_system
 		}
 	}
 }
 
-mgrbfm_egypt.112 = {
+mgrbfm_egypt.113 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_ruined_building.dds"
 	duration = 3
 	dlc = dlc_grefm
 
-	title = mgrbfm_egypt.112.t
-	desc = mgrbfm_egypt.112.d
-	flavor = mgrbfm_egypt.112.f
+	title = mgrbfm_egypt.113.t
+	desc = mgrbfm_egypt.113.d
+	flavor = mgrbfm_egypt.113.f
 
 	event_image = {
 		video = "unspecific_devastation"
@@ -874,14 +926,8 @@ mgrbfm_egypt.112 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
-		is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
 		any_scope_state = {
 			is_in_geographic_region = geographic_region_lower_nile
-			has_building = building_railway
-			OR = {
-				has_modifier = modifier_mgrbfm_nile_flood_epicenter
-				has_modifier = modifier_mgrbfm_widespread_nile_floods
-			}
 		}
 	}
 
@@ -900,15 +946,20 @@ mgrbfm_egypt.112 = {
 			limit = {
 				is_in_geographic_region = geographic_region_lower_nile
 				has_building = building_railway
+				OR = {
+					has_modifier = modifier_mgrbfm_nile_flood_epicenter
+					has_modifier = modifier_mgrbfm_localized_nile_floods
+					has_modifier = modifier_mgrbfm_widespread_nile_floods
+				}
 			}
-			save_scope_as = mgrbfm_nile_flood_scope
+			save_scope_as = mgrbfm_nile_flood_state_scope
 		}
 	}
 
 	option = {
-		name = mgrbfm_egypt.112.a
+		name = mgrbfm_egypt.113.a
 		default_option = yes
-		scope:mgrbfm_nile_flood_scope = {
+		scope:mgrbfm_nile_flood_state_scope = {
 			add_modifier = {
 				name = modifier_mgrbfm_flooded_railways
 				months = gbbf_short_modifier_time
@@ -922,7 +973,7 @@ mgrbfm_egypt.112 = {
 ####---------- Egyptian Imperialism Events ----------####
 mgrbfm_egypt.200 = {
 	type = country_event
-	placement = root
+	placement = scope:mgrbfm_nile_flood_state_scope
 	icon = "gfx/interface/icons/event_icons/event_eagle.dds"
 	duration = 3
 	dlc = dlc_grefm
