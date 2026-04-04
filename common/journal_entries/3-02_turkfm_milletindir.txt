@@ -267,8 +267,8 @@ je_turkfm_turan = {
 		has_variable = turkfm_reconquered_anatolia
 		NOR = {
 			has_variable = turkfm_weaksauce
-			has_variable = turkfm_culture_var
-			var:turkfm_culture_var != flag:turkfm_turanism
+			var:turkfm_culture_var ?= flag:turkfm_anatolianism
+			var:turkfm_culture_var ?= flag:turkfm_kemalism
 		}
 	}
 
@@ -282,19 +282,40 @@ je_turkfm_turan = {
 			text = turkfm_rampaging_wolf_complete
 			has_variable = turkfm_rampaging_wolf_complete
 		}
+		is_subject = no
 	}
 
 	immediate = {
 		trigger_event = turkfm_milletindir.016
 	}
 
-	complete = {  }
+	complete = {
+		custom_tooltip = {
+			text = turkfm_has_formed_turan
+			c:TURAN ?= this
+		}
+		any_state_in_anatolia = {
+			owner = root
+		}
+		sr:region_central_asia = {
+			any_scope_state = {
+				percent >= 0.9
+				owner = root
+			}
+		}
+	}
 
 	on_complete = {
 		trigger_event = turkfm_milletindir.017
 	}
 
-	fail = {  }
+	fail = {
+		OR = {
+			gbbf_is_broke_trigger = yes
+			country_rank < rank_value:major_power
+			is_subject = yes
+		}
+	}
 
 	on_fail = {
 		trigger_event = turkfm_milletindir.018
