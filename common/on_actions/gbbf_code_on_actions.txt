@@ -79,7 +79,7 @@ grefm_byz_culture_validation = {
 }
 
 
-####---------- on_country_formed ----------##
+####---------- on_country_formed ----------####
 on_country_formed = {
 	on_actions = {
 		gbbf_on_country_formed
@@ -189,7 +189,7 @@ gbbf_on_country_formed = {
 }
 
 
-####---------- on_country_released ----------##
+####---------- on_country_released ----------####
 on_country_released_as_independent = {
 	on_actions = {
 		balkfm_country_release_1
@@ -277,7 +277,7 @@ balkfm_country_release_2 = {
 }
 
 
-####---------- on_diplomatic_action ----------##
+####---------- on_diplomatic_action ----------####
 on_diplomatic_action_overlord_decrease_autonomy = {
 	on_actions = {
 		eqfm_tension_decrease_autonomy
@@ -389,7 +389,7 @@ eqfm_tension_increase_autonomy = {
 }
 
 
-####---------- on_diplomats_expelled ----------##
+####---------- on_diplomats_expelled ----------####
 # Root = Diplomatic Action
 # scope:target = the country whose diplomats were expelled
 # scope:initiator = the country doing the expelling
@@ -450,8 +450,40 @@ eqfm_tension_diplomats_expelled = {
 	}
 }
 
+####---------- on_harvest_condition_started_in_country ----------####
+# Root = country
+# scope:area = harvest condition area
+# scope:state = affected state with the highest intensity
+# scope:duration = duration of the harvest condition in days
+# scope:num_states = the number of affected states in the country
+# scope:intensity = the highest intensity of the affected states
+on_harvest_condition_started_in_country = {
+	on_actions = {
+		on_harvest_condition_started_in_lower_nile
+	}
+}
 
-####---------- on_heir_born ----------##
+on_harvest_condition_started_in_lower_nile = {
+	trigger = {
+		has_global_variable = je_mgrbfm_egypt_nile_river
+		scope:state = {
+			is_in_geographic_region = geographic_region_lower_nile
+		}
+	}
+	effect = {
+		scope:state = {
+			save_scope_as = mgrbfm_flood_epicenter_area
+		}
+		global_var:je_mgrbfm_egypt_nile_river ?= {
+			set_variable = {
+				name = mgrbfm_flood_epicenter_area_var
+				value = scope:mgrbfm_flood_epicenter_area
+			}
+		}
+	}
+}
+
+####---------- on_heir_born ----------####
 on_heir_born = {
 	on_actions = {
 		grefm_validate_heir_dynasty
@@ -835,7 +867,7 @@ grefm_validate_heir_dynasty = {
 	}
 }
 
-####---------- on_law_enactment_pass ----------##
+####---------- on_law_enactment_pass ----------####
 on_law_enactment_pass = {
 	on_actions = {
 		gbbf_law_enactment_pass
@@ -870,7 +902,7 @@ gbbf_law_enactment_pass = {
 }
 
 
-####---------- on_state_owner_change ----------##
+####---------- on_state_owner_change ----------####
 on_state_owner_change = {
 	on_actions = {
 		gbbf_evaluate_and_assign_state_hub_dynamic_names
@@ -898,7 +930,7 @@ gbbf_validate_state_modifiers = {
 }
 
 
-####---------- on_state_created ----------##
+####---------- on_state_created ----------####
 on_state_created = {
 	on_actions = {
 		gbbf_evaluate_and_assign_state_hub_dynamic_names
@@ -906,7 +938,7 @@ on_state_created = {
 }
 
 
-####---------- on_secession_start ----------##
+####---------- on_secession_start ----------####
 on_secession_start = {
 	on_actions = {
 		eqfm_secession_start
@@ -946,7 +978,7 @@ eqfm_secession_start = {
 }
 
 
-####---------- on_wargoal_enforced ----------##
+####---------- on_wargoal_enforced ----------####
 # Root = Country
 # scope:target = the country the wargoal was enforced against
 # scope:diplomatic_play = the relevant diplomatic play
