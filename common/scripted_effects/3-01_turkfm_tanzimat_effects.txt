@@ -337,6 +337,69 @@ turkfm_advance_islamism3_effect = {
 	}
 }
 
+turkfm_circassian_slave_trade_effect = {
+	if = {
+		limit = {
+			active_law:lawgroup_slavery = {
+				any_scope_amendment = {
+					amendment_type:amendment_gbbf_esir_pazari ?= this
+				}
+			}
+			s:STATE_KUBAN = {
+				has_variable = turkfm_circassian_slave_trade_var
+			}
+		}
+		c:TUR ?= {
+			capital = {
+				save_scope_as = ottoman_capital_scope
+			}
+		}
+		s:STATE_KUBAN = {
+			set_variable = {
+				name = turkfm_circassian_slave_trade_var
+				value = {
+					scope:ottoman_capital_scope = {
+						every_scope_pop = {
+							limit = {
+								is_pop_type = aristocrats
+							}
+							add = standard_of_living
+						}
+						divide = {
+							every_scope_pop = {
+								limit = {
+									is_pop_type = aristocrats
+								}
+								add = standard_of_living
+							}
+							min = 1
+						}
+					}
+					round = yes # idk, unless you want a shipment of slaves plus like a hand and a few ears.
+				}
+			}
+			random_scope_state = {
+				limit = {
+					any_scope_pop = {
+						has_pop_culture = circassian
+						total_size >= s:STATE_KUBAN.var:turkfm_circassian_slave_trade_var
+					}
+				}
+				random_scope_pop = {
+					limit = {
+						has_pop_culture = circassian
+						total_size >= s:STATE_KUBAN.var:turkfm_circassian_slave_trade_var
+					}
+					move_partial_pop = {
+						state = scope:ottoman_capital_scope
+						population = s:STATE_KUBAN.var:turkfm_circassian_slave_trade_var
+					}
+				}
+			}
+		}
+	}
+}
+
 turkfm_initialize_young_ottomans_effect = {
 	set_variable = {
 		name = turkfm_young_ottomans_var

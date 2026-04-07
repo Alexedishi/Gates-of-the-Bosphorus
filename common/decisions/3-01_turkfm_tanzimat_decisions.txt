@@ -108,3 +108,73 @@ turkfm_palace_museum_decision = {
 		value = 10
 	}
 }
+
+turkfm_suppress_circassian_slavery_decision = {
+	is_shown = {
+		has_state_in_state_region = STATE_KUBAN
+		s:STATE_KUBAN = {
+			has_variable = turkfm_circassian_slave_trade_var
+		}
+		c:TUR ?= {
+			active_law:lawgroup_slavery = {
+				any_scope_amendment = {
+					amendment_type:amendment_gbbf_esir_pazari ?= this
+				}
+			}
+		}
+	}
+	possible = {
+		owns_entire_state_region = STATE_KUBAN
+		any_scope_state = {
+			filter = {
+				state_region = s:STATE_KUBAN
+			}
+			count = all
+			is_incorporated = yes
+			radical_fraction = {
+				value < 0.15
+			}
+		}
+		is_subject = no
+	}
+	when_taken = {
+		trigger_event = {
+			id = turkfm_tanzimat.018
+			popup = yes
+		}
+		c:TUR ?= {
+			trigger_event = {
+				id = turkfm_tanzimat.018
+				popup = yes
+			}
+		}
+	}
+	ai_chance = {
+		value = 10
+		subtract = c:TUR.relations:root
+		if = {
+			limit = {
+				has_law = law_type:law_slavery_banned
+			}
+			add = 100
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_law = law_type:law_legacy_slavery
+					has_law = law_type:law_colonial_slavery
+				}
+			}
+			add = -25
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_law = law_type:law_debt_slavery
+					has_law = law_type:law_slave_trade
+				}
+			}
+			add = -50
+		}
+	}
+}

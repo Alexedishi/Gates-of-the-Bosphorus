@@ -41,7 +41,7 @@ namespace = turkfm_tanzimat
 #	015 - Equality Before the Law
 #	016 - Countrysides Secured
 #	017 - Slavery Abolished
-#	018 - ##
+#	018 - Circassian Slave Trade Suppressed
 #	019 - ##
 
 #020-029 - Imperial Challenger Events
@@ -1259,6 +1259,79 @@ turkfm_tanzimat.017 = { # Slavery Abolished
 		add_modifier = {
 			name = modifier_turkfm_slavery_abolished
 			months = gbbf_long_modifier_time
+		}
+	}
+}
+
+turkfm_tanzimat.018 = {
+	type = country_event
+	placement = scope:kuban_scope
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = turkfm_tanzimat.018.t
+	desc = turkfm_tanzimat.018.d
+	flavor = turkfm_tanzimat.018.f
+	
+	gui_window = event_window_com_default
+	
+	event_image = {
+		video = "ep1_ca_mountain_pass_civilian"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+	}
+	
+	cancellation_trigger = {
+	}
+	
+	cooldown = {
+	}
+	
+	immediate = {
+		s:STATE_KUBAN = {
+			random_scope_state = {
+				save_scope_as = kuban_scope
+				owner = {
+					save_scope_as = kuban_owner_scope
+				}
+			}
+		}
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
+	}
+	
+	option = {
+		name = turkfm_tanzimat.018.a
+		default_option = yes
+		trigger = {
+			has_state_in_state_region = STATE_KUBAN
+		}
+		scope:kuban_scope = {
+			add_loyalists = {
+				culture = cu:circassian
+				value = very_large_radicals
+			}
+		}
+	}
+	
+	option = {
+		name = turkfm_tanzimat.018.b
+		trigger = {
+			NOT = {
+				has_state_in_state_region = STATE_KUBAN
+			}
+		}
+		active_law:lawgroup_slavery = {
+			every_scope_amendment = {
+				limit = {
+					amendment_type:amendment_gbbf_esir_pazari ?= this
+				}
+				remove_amendment = yes
+			}
 		}
 	}
 }
