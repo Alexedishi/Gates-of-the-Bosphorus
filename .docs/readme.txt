@@ -160,8 +160,9 @@ bulfm_: Once contained content for Bulgaria; has been merged with balkfm
  - Highlands: New global journal entry "The Eastern Highlands" to represent the struggle between Russia and the Ottomans over their border
 
 ----Compatibility:
- - Morgenröte - The Dawn of Flavor
- - Better Politics Mod
+-- The "A National Language" journal now supports Morgenröte's writer mechanics (Greek tags)
+-- New journal "A National Epic" journal; uses Morgenröte's writer mechanics (Montenegro)
+-- New journal "The Naturalist King": Partake in Ferdinand I's naturalist tendencies; uses Morgenröte's naturalist mechanics (Bulgaria)
 
 
  ####---------- Works Cited ----------####:
@@ -183,6 +184,128 @@ bulfm_: Once contained content for Bulgaria; has been merged with balkfm
 
 
 ####---------- Published Updates ----------####
+--Update 4.0.0-- **Major Update**
+V3 Patch 1.13 Related Changes:
+- Replaced nearly scopes to sr: with geographic region triggers
+- Updated journals to comply with new pinning params and widget injection
+- Characters now have defined home states
+- Updated character role, interest, and several other triggers
+
+New Additions (grefm):
+- New journal entry "Metaxism" representing the emergence of anti-monarchism and authoritarianism in Greece
+- Added Metaxism ideology for Greece's version of Fascist-related thought
+- Added Greece as a formable country
+- Added several geographic regions to support Megali Idea content
+
+New Additions (balkfm):
+- Rebuilt "Nacertanije" into a global journal "The Yugoslav Project"
+- Added scripted buttons to "The Yugoslav Project" to annex Yugoslav countries in a manner similar to Greek annexations
+- New journal "The Nature of Yugoslavia" Promote a Centralized or Federalist approach to the Yugoslav state
+- Added "Yugoslav Integralist" ideologies and movement representing the Integralist movement in Yugoslavia
+- Added five new dynamic country names for the Serbian Empire tag
+
+New Additions (turkfm):
+- ##New journal "The Young Turks" representing an alternative fail state to the Tanzimat
+- ##New journal "The Foundation of the State" representing the multiple outcomes of Turkish identity after the failure of the Tanzimat
+- New journal "Restoring Anadolu" in the event post-Ottoman TUR does not control all of Anatolia
+- New journal chain "The Rampaging Wolf" for post-Ottoman Turkish expansion
+- ##New journal "The Armenian Expulsions"
+- New building "Avret Pazarları" (Slave Market of Constantinople) with scripting for Ottoman slave trade
+- New amendments "Çiftlik" for Land Reform and "Esir Pazari" for Slavery
+- New "Young Turks" political movement with "İttihadism" and "Kemalism" ideologies
+- Added a new formable tag "Turan"
+
+New Additions (mgrbfm):
+- New journal "The Ambitions of Muhammad 'Ali" representing the expansionist goals of Muhammad Ali
+- New journal "The Dawn of the New Egypt" representing the modernization goals of Muhammad Ali
+- New journal "Taming the Nile" representing the long-winded struggle to control the waters of the Nile
+- New journal chain "The Egyptian Caliphate" representing the idea of an Egyptian Empire
+- New journal "The Subjugation of Sudan" for Ali Pasha's efforts to secure his hold on Sudan
+- New journal "The Ethiopian Frontier" for the Egyptian invasion of Ethiopia
+- New journal "Securing Fezzan" for Fezzan
+- Added several historical rulers for EGY
+- Added flags to both TRI and LBY
+- Decentralized a portion of the Egyptian desert
+- Added Copt culture and converted all Misri Oriental Orthodox pops to it
+- Added "Nile Barrage" government building as a potential in Lower Nile states
+- Added "Sharan Trade Networks" government building to some Saharan states
+- Added "Esparto Plantations" agricultural building to Libya and Tunisia
+- Moved Joseph Anthelme Sève to Armed Forces leader for EGY
+- Added Hayreddin Pasha as a starting character for TUN
+
+New Additions (haykfm):
+- Armenia is selectable from the "Sick Man of Europe" objective and spawns as the Eyālet-i Erżurūm
+
+New Additions (eqfm):
+- Rebuilt "The Teachings of al-Sanusi" into a global journal with new mechanics, events, and modifiers
+- FZN now has access to the "Securing the Desert" journal entry
+- Improved localization with additional tooltips, explanations, and text icons
+
+Mod Integrations:
+- Integrated the "Awaken Thee, Romanian!" mod with permission:
+-- Added a game rule to change Romania's color to its cream color from Victoria 2
+-- Added multiple flags for Moldavia and Wallachia
+-- Added DNA for Alexandru Ioan Cuza, Alexandru Ghica, and Carol and Ferdinand Hohenzollern
+
+Compatibility:
+- GotB now has built in compatibility with Morgenröte: Dawn of Flavor:
+-- The "Greek Cultural Roots" journal now supports Morgenröte's archaeology mechanics (Greek tags)
+-- The "Venizelism" journal now supports Morgenröte's artistic tradition mechanics (Greece)
+-- The "14 Regions of Constantinople" now supports Morgenröte's Architect mechanics (Byzantium)
+
+Balancing/Adjustments:
+- Merged all Ottoman Legacy sub-journals into a singular journal
+- Merged all Venizelism sub-journals into the primary journal
+- Merged all Tanzimat Reform sub-journals into a singular journal
+- "Megali Idea" and "Sick Man of Europe" journal entries now use geographic regions instead of strategic regions
+- Replaced IP3's "Serbia and Montenegro" journal for better integration; this remains DLC-locked
+- Cloned IP3's mon_state_formation.5 to balkfm_yugoslavia.007 for better integration; this remains DLC-locked
+- je_balkfm_mon_military_reform now requires 10 military units and an Arms Industries building
+- Refactored multiple Romanian characters to use templates
+- Both TRI's and FZN's starting journals will activate after their war is resolved
+- Merged je_eqfm_senusiyya_main and je_eqfm_senusiyya_sub into je_eqfm_senusiyya
+- Added 6 Sulfur resources to Kosovo
+- Added Silk Plantation resource to Bosnia
+- Added 4 Sulfur resources to East Aegean Islands
+- Added potential triggers to several formable tags
+- Byzantine Restoration journals now use geographic regions instead of strategic regions in most cases
+- Ottomans now start with Migration Controls enacted
+- "Dedilomeni Principle" journal now accounts for electoral confidence
+- Reworked eqfm_balkans.008/009 to have discrete effects
+- Implemented several scripted effects and script values for better value/var management
+
+Fixes:
+- Large localization pass to fix typos, formatting, puncutation, etc.
+- Reworked script handling the creation and tracking of Serbian dynastic heads
+- Fixed a case where subjects could get stuck as Eyalets
+- Building the Biljarda is now mandatory for the "Prince-Bishopric" journal if IP3 is active
+- Declaring the Principality of Montenegro is now mandatory if IP3 is active
+- Fixed a situation where "Change of Tack" journal's fail conditions could be true when the journal activates
+- Fixed error spam from balkfm_validate_serbian_characters scripted effect
+- Fixed several instances of age instead of birth_date
+- Fixed several outdated character template calls
+- Fixed several improper/non-flowing modifier type placements
+- Added missing custom loc for byzantium.023
+- Fixed dozens of small localization typos and errors
+- Improved the scripting of the Chariot Race events
+- Montenegrin journals that involve AUS now check for it to exist first
+- Changes all instances of set_relations in history to change_relations
+- Improved scripting for the Megali Idea completion triggers
+- Fixed several issues in the completion tooltips for the Megali Idea
+- Fixed a duplicated trigger in the "Dedilomeni Principle" journal
+- Refactored implementation of quotation marks in localization
+- Refactored all instances of pirates_expedition_ to adriatic_expedition_
+- Refactored all instances of black_mountain_expedition_ to karadag_expedition_
+- Refactored geographic_region_balkan_situation to geographic_region_rumelia
+- Fixed confusing localization in Greek king election buttons
+- Updated progress bars to use CMF's colored progress bars
+- Fixed several scoping issues in Piracy events
+
+Notes:
+- Egypt and Fezzan are now in scope- Arabian Peninsular, Pan-Arab, and Muslim content remain *out of scope*
+- Libyan and Tunisian content split from "turkfm" into "mgrbfm" & outlined "levafm"
+
+
 --Update 3.4.11--
 Fixes:
 - Pirates completion event now shows the country that captured the Pirate Leader instead of a broken scope
