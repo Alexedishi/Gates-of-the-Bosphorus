@@ -39,7 +39,7 @@ The following countries will eventually come into scope:
 - HAYKFM: Assyria
 
 **Notes:
-- Zionism, Pan-Arab, & Iranian flavor are OUT OF SCOPE for this mod
+- Zionism, Pan-Arabism, & Iranian flavor are OUT OF SCOPE for this mod
 
 
 ####---------- Mod Structure and Organization ----------####
@@ -61,18 +61,19 @@ These are other prefixing conventions used in this mod:
 
 There are leftover references to older modules that you might find:
 eocfm_: Once contained content for the Eastern Orthodox Church; has been superseded by Kingdom of God (kog_)
-byzfm_: Once contained content for Byzantium; has been merged with grefm
-bulfm_: Once contained content for Bulgaria; has been merged with balkfm
+byzfm_: Once contained content for Byzantium; has been merged with grefm_
+bulfm_: Once contained content for Bulgaria; expanded into balkfm_
 
 **Notes:
--The current mod acronym is GotB; my common prefix is "gbbf_" and will not change
--The CMF trigger uses the older "grefm_" generic acronym; this will not change
+-The current mod acronym is GotB; my common prefix is "gbbf_"; this was set before the name from GBBF to GotB and will not change
+-The CMF trigger uses the much older "grefm_" generic acronym; this will not change
 
 
 ####---------- Naming Standards, Entry Prefixing, and Variable Names ----------####
 - Entry names should be intuitive and readable, i.e. "grefm_bavarocracy_progress_var"
 
 - The following entry prefix/suffix conventions should be following:
+ Note: <module> should be replaced with according to which module the object belongs to, i.e. "grefm_bavarocracy_progressbar"
  -- Alerts:
  -- Amendments: amendment_gbbf_**
  -- Buildings: building_gbbf_**
@@ -82,11 +83,12 @@ bulfm_: Once contained content for Bulgaria; has been merged with balkfm
  -- Decrees: decree_gbbf_**
  -- Diplo Actions: gbbf_**
  -- Diplo Plays: dp_gbbf_**
- -- Ideologies: ideology_gbbf_**
- -- Ideologies (Character):ideology_gbbf_**_leader
+ -- Ideologies (Interest Group): ideology_gbbf_**
+ -- Ideologies (Character): ideology_gbbf_**_leader
+ -- Ideologies (Movement): ideology_gbbf_**_movement
  -- Journal Entries: je_<module>_**
  -- Journal Groups: je_group_gbbf_**
- -- Messages: notification_<module>_**
+ -- Messages: notification_<module>_** <- yes, this produces ugly loc keys; deal with it
  -- Political Movements: movement_gbbf_**
  -- Production Methods: pm_gbbf_**
  -- Production Method Groups: pmg_gbbf_**
@@ -102,7 +104,6 @@ bulfm_: Once contained content for Bulgaria; has been merged with balkfm
  -- Treaty Articles: gbbf_**
  -- Trigger Loc: <module>_**
  -- War Goals: gbbf_**
- ** <module> should be replaced with according to which module the object belongs to, i.e. "grefm_bavarocracy_progressbar"
 
 - Variables should be handled with the following conventions:
  -- Prefix with the module the variable belongs to (i.e. gbbf_, grefm_, balkfm_, etc)
@@ -111,6 +112,7 @@ bulfm_: Once contained content for Bulgaria; has been merged with balkfm
     "_started", "_completed", "_failed", "_happened", "_cooldown", "_tracker", "_target"
  -- If a variable(s) is used only for a specific journal entry and its direct content, store the variable(s) in that journal
  -- Scripted effects are provided to aid in variable management
+ -- Slight deviation from this system is allowable if it makes the variable more readable or intuitive
 
 
 ####---------- Planned Content/Reworks ----------####
