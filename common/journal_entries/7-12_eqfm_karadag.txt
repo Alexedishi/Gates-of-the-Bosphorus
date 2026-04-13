@@ -299,3 +299,145 @@
 		}
 	}
 }
+
+je_eqfm_bosnia_and_montenegro = {
+	group = je_group_global_international_situations
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	weight = 100
+	
+	should_be_pinned_by_default_involved = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+	
+	is_shown_in_lobby = {
+		OR = {
+			c:MON ?= this
+			c:BOS ?= this
+		}
+	}
+	
+	scripted_button = balkfm_abandon_karadag_button #TODO migrate to eqfm
+	scripted_button = eqfm_start_scheming_button # balkfm_montenegro.032
+	scripted_button = eqfm_ice_smail_button
+	
+	should_be_involved = {
+		OR = {
+			c:MON ?= this
+			c:BOS ?= this
+		}
+	}
+	
+	should_show_when_not_involved = {
+		has_strategic_region_interest_tier = {
+			strategic_region = region_balkans
+			value >= 3
+		}
+	}
+	
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
+	
+	complete = {
+		c:BOS ?= {
+			OR = {
+				custom_tooltip = {
+					text = je_balkfm_bos_ali_pasha_fail
+					ruler = {
+						NOR = {
+							has_template = balkfm_rizvanbegovic_ali
+							has_template = balkfm_rizvanbegovic_mehmed
+						}
+					}
+				}
+				NOT = {
+					has_claim = s:STATE_MONTENEGRO
+				}
+				owns_entire_state_region = STATE_MONTENEGRO
+			}
+		}
+	}
+	
+	on_complete = {
+		c:BOS = {
+			if = {
+				limit = {
+					owns_entire_state_region = STATE_MONTENEGRO
+				}
+				trigger_event = balkfm_bosnia.007
+			}
+			else = {
+				c:MON ?= {
+					add_modifier = {
+						name = modifier_eqfm_weathered_the_storm
+						months = gbbf_normal_modifier_time
+					}
+				}
+			}
+		}
+		
+	}
+	
+	fail = {
+		c:MON ?= {
+			NOR = {
+				has_state_in_state_region = STATE_MONTENEGRO
+				has_state_in_state_region = STATE_BOSNIA
+			}
+		}
+		c:BOS ?= {
+			NOR = {
+				has_state_in_state_region = STATE_BOSNIA
+				has_state_in_state_region = STATE_MONTENEGRO
+			}
+		}
+	}
+	
+	on_fail = {
+	}
+	
+	invalid = {
+		OR = {
+			NOT = {
+				exists = c:MON
+			}
+			NOT = {
+				exists = c:BOS
+			}
+		}
+	}
+	
+	on_invalid = {
+	}
+	
+	on_weekly_pulse = {
+		events = {
+		}
+		random_events = {
+		}
+		effect = {
+		}
+	}
+	
+	on_monthly_pulse = {
+		events = {
+		}
+		random_events = {
+		}
+		effect = {
+		}
+	}
+	
+	on_yearly_pulse = {
+		events = {
+		}
+		random_events = {
+		}
+		effect = {
+		}
+	}
+	
+	status_desc = {
+	}
+}
