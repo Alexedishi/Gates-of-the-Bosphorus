@@ -678,7 +678,9 @@ je_mgrbfm_egypt_arabia = {
 		gbbf_is_broke_trigger = no
 	}
 
-	immediate = {  }
+	immediate = {
+		trigger_event = mgrbfm_egypt.202
+	}
 
 	complete = {
 		country_rank >= rank_value:major_power
@@ -758,7 +760,9 @@ je_mgrbfm_egypt_arabia = {
 		}
 	}
 
-	on_fail = {  }
+	on_fail = {
+		set_variable = mgrbfm_weaksauce
+	}
 }
 
 je_mgrbfm_egypt_sudan = {
@@ -868,24 +872,40 @@ je_mgrbfm_egypt_sudan = {
 					is_subject_of = root
 				}
 			}
-			trigger_event = mgrbfm_egypt.210
+			trigger_event = mgrbfm_egypt.211
 		}
 		else = {
-			trigger_event = mgrbfm_egypt.211
+			trigger_event = mgrbfm_egypt.210
 		}
 	}
 
 	fail = {
-		NOR = {
-			has_state_in_state_region = STATE_KORDOFAN
-			has_state_in_state_region = STATE_BLUE_NILE
-			has_state_in_state_region = STATE_DONGOLA
+		OR = {
+			NOR = {
+				has_state_in_state_region = STATE_KORDOFAN
+				has_state_in_state_region = STATE_BLUE_NILE
+				has_state_in_state_region = STATE_DONGOLA
+				hidden_trigger = {
+					exists = c:SUD
+				}
+				
+			}
 			trigger_if = {
 				limit = {
 					exists = c:SUD
 				}
 				c:SUD ?= {
-					is_subject_of = root
+					is_diplomatic_play_enemy_of = root
+				}
+			}
+			trigger_if = {
+				limit = {
+					exists = c:SUD
+				}
+				c:SUD ?= {
+					NOT = {
+						is_subject_of = root
+					}
 				}
 			}
 		}
@@ -899,7 +919,6 @@ je_mgrbfm_egypt_sudan = {
 			if = {
 				limit = {
 					c:SUD ?= {
-						is_subject_of = root
 						is_diplomatic_play_enemy_of = root
 					}
 				}
