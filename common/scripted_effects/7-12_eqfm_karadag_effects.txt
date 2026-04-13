@@ -59,59 +59,65 @@
 }
 
 ## Black Mountain Raiding Income Effects ##
-eqfm_weekly_karadag_effect = {
-	# Montenegro Raiding Math
-	c:MON ?= {
-		## Reworked script from the IP3 journal
-		if = {
-			limit = {
-				has_variable = mon_more_raiding
+eqfm_update_karadag_variables_effect = {
+	if = {
+		limit = {
+			NOT = {
+				has_global_variable = eqfm_montenegrin_raiding_settled
 			}
-			change_variable = {
+		}
+		# Montenegro Raiding Math
+		c:MON ?= {
+			## Reworked script from the IP3 journal
+			if = {
+				limit = {
+					has_variable = mon_more_raiding
+				}
+				change_variable = {
+					name = raiding_intensity
+					add = 1
+				}
+			}
+			else_if = {
+				limit = {
+					has_variable = mon_less_raiding
+				}
+				change_variable = {
+					name = raiding_intensity
+					subtract = 1
+				}
+			}
+			clamp_variable = {
 				name = raiding_intensity
-				add = 1
+				max = 100
+				min = 0
 			}
-		}
-		else_if = {
-			limit = {
-				has_variable = mon_less_raiding
+			if = {
+				limit = {
+					var:raiding_intensity >= 100
+					has_variable = mon_more_raiding
+				}
+				remove_variable = mon_more_raiding
+				remove_variable = eqfm_raiding_status_cooldown_var
 			}
-			change_variable = {
-				name = raiding_intensity
-				subtract = 1
+			if = {
+				limit = {
+					var:raiding_intensity <= 0
+					has_variable = mon_less_raiding
+				}
+				remove_variable = mon_less_raiding
+				remove_variable = eqfm_raiding_status_cooldown_var
 			}
-		}
-		clamp_variable = {
-			name = raiding_intensity
-			max = 100
-			min = 0
-		}
-		if = {
-			limit = {
-				var:raiding_intensity >= 100
-				has_variable = mon_more_raiding
+			set_variable = {
+				name = eqfm_captured_nobles_var
+				value = eqfm_captured_nobles_value
 			}
-			remove_variable = mon_more_raiding
-			remove_variable = eqfm_raiding_status_cooldown_var
+			
+			## IP3 Raiding Income Effects ##
+			eqfm_check_raiding_target_effect = yes
+			eqfm_update_raiding_income_effect = yes
 		}
-		if = {
-			limit = {
-				var:raiding_intensity <= 0
-				has_variable = mon_less_raiding
-			}
-			remove_variable = mon_less_raiding
-			remove_variable = eqfm_raiding_status_cooldown_var
-		}
-		set_variable = {
-			name = eqfm_captured_nobles_var
-			value = eqfm_captured_nobles_value
-		}
-		
-		## IP3 Raiding Income Effects ##
-		eqfm_check_raiding_target_effect = yes
-		eqfm_update_raiding_income_effect = yes
 	}
-
 }
 
 eqfm_check_raiding_target_effect = {
@@ -189,11 +195,19 @@ eqfm_update_raiding_income_effect = {
 
 
 ## Black Mountain Expedition Effects ##
-eqfm_update_karadag_characters_effect = {
-	je:je_eqfm_karadag = {
+eqfm_check_karadag_expeditions_effect = {
+	global_var:je_eqfm_karadag = {
 		clear_variable_list = com_journal_characters
 	}
 	c:MON ?= {
+		if = {
+			limit = {
+				eqfm_has_karadag_expedition_trigger = yes
+			}
+			trigger_event = {
+				on_action = eqfm_karadag_expedition_validation
+			}
+		}
 		random_scope_character = {
 			limit = {
 				has_modifier = modifier_eqfm_leading_karadag_expedition
@@ -213,7 +227,32 @@ eqfm_update_karadag_characters_effect = {
 			remove_variable = eqfm_karadag_leader_var
 		}
 	}
+	c:BOS ?= {
+		if = {
+			limit = {
+				eqfm_has_karadag_expedition_trigger = yes
+			}
+			trigger_event = {
+				on_action = eqfm_karadag_expedition_validation
+			}
+		}
+		random_scope_character = {
+			limit = {
+				has_template = balkfm_cengic_smail
+				has_modifier = modifier_eqfm_pillaging_frontier
+			}
+			save_scope_as = eqfm_karadag_bos_leader
+		}
+	}
 	c:TUR ?= {
+		if = {
+			limit = {
+				eqfm_has_karadag_expedition_trigger = yes
+			}
+			trigger_event = {
+				on_action = eqfm_karadag_expedition_validation
+			}
+		}
 		random_scope_character = {
 			limit = {
 				has_modifier = modifier_eqfm_leading_karadag_expedition
@@ -233,7 +272,7 @@ eqfm_update_karadag_characters_effect = {
 			remove_variable = eqfm_karadag_leader_var
 		}
 	}
-	je:je_eqfm_karadag = {
+	global_var:je_eqfm_karadag = {
 		if = {
 			limit = {
 				exists = scope:eqfm_karadag_mon_leader
@@ -241,6 +280,15 @@ eqfm_update_karadag_characters_effect = {
 			add_to_variable_list = {
 				name = com_journal_characters
 				target = scope:eqfm_karadag_mon_leader
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_karadag_bos_leader
+			}
+			add_to_variable_list = {
+				name = com_journal_characters
+				target = scope:eqfm_karadag_bos_leader
 			}
 		}
 		if = {
@@ -324,6 +372,14 @@ eqfm_karadag_scopes_effect = {
 			save_scope_as = eqfm_karadag_mon_leader
 		}
 	}
+	c:BOS ?= {
+		random_scope_character = {
+			limit = {
+				has_modifier = modifier_eqfm_pillaging_frontier
+			}
+			save_scope_as = eqfm_karadag_bos_leader
+		}
+	}
 	c:TUR ?= {
 		random_scope_character = {
 			limit = {
@@ -343,7 +399,18 @@ eqfm_karadag_scopes_effect = {
 				save_scope_as = eqfm_karadag_mon_leader
 			}
 		}
-		
+	}
+	if = {
+		limit = {
+			NOT = {
+				exists = scope:eqfm_karadag_bos_leader
+			}
+		}
+		c:BOS ?= {
+			ruler = {
+				save_scope_as = eqfm_karadag_bos_leader
+			}
+		}
 	}
 	if = {
 		limit = {
@@ -355,6 +422,317 @@ eqfm_karadag_scopes_effect = {
 			ruler = {
 				save_scope_as = eqfm_karadag_tur_leader
 			}
+		}
+	}
+}
+
+eqfm_village_skirmish_monitor_effect = {
+	if = {
+		limit = {
+			has_global_variable = eqfm_karadag_skirmish_var
+		}
+		eqfm_karadag_scopes_effect = yes
+		if = {
+			limit = {
+				has_global_variable = eqfm_karadag_skirmish_var
+				global_var:eqfm_karadag_skirmish_var > 0
+				global_var:eqfm_karadag_skirmish_var < 9
+			}
+			change_global_variable = {
+				name = eqfm_karadag_skirmish_duration_var
+				add = 1
+			}
+			if = {
+				limit = {
+					global_var:eqfm_karadag_skirmish_duration_var >= 24
+				}
+				c:MON = {
+					trigger_event = {
+						id = eqfm_karadag.028 # Skirmish Fizzles Out
+					}
+				}
+				c:TUR = {
+					trigger_event = {
+						id = eqfm_karadag.028 # Skirmish Fizzles Out
+					}
+				}
+				remove_global_variable = eqfm_karadag_skirmish_var
+				remove_global_variable = eqfm_karadag_skirmish_duration_var
+			}
+			else = {
+				random_list = {
+					# Steady Grind
+					25 = {
+						c:MON = {
+							trigger_event = {
+								id = eqfm_karadag.050 # Steady Grind
+							}
+						}
+						c:TUR = {
+							trigger_event = {
+								id = eqfm_karadag.050 # Steady Grind
+							}
+						}
+						change_global_variable = {
+							name = eqfm_karadag_skirmish_var
+							add = 1
+						}
+					}
+					
+					# Village Outskirts Burned
+					20 = {
+						random_list = {
+							5 = {
+								modifier = {
+									if = {
+										limit = {
+											scope:eqfm_karadag_mon_leader ?= {
+												OR = {
+													has_trait = pillager
+													has_trait = bandit
+													has_trait = social_bandit
+												}
+											}
+										}
+										add = 10
+									}
+									if = {
+										limit = {
+											scope:eqfm_karadag_mon_leader ?= {
+												OR = {
+													has_trait = war_criminal
+													has_trait = cruel
+												}
+											}
+										}
+										add = 25
+									}
+								}
+								c:MON = {
+									trigger_event = {
+										id = eqfm_karadag.051
+									}
+								}
+							}
+							5 = {
+								modifier = {
+									if = {
+										limit = {
+											scope:eqfm_karadag_tur_leader ?= {
+												OR = {
+													has_trait = pillager
+													has_trait = bandit
+													has_trait = social_bandit
+												}
+											}
+										}
+										add = 10
+									}
+									if = {
+										limit = {
+											scope:eqfm_karadag_tur_leader ?= {
+												OR = {
+													has_trait = war_criminal
+													has_trait = cruel
+												}
+											}
+										}
+										add = 25
+									}
+								}
+								c:TUR = {
+									trigger_event = {
+										id = eqfm_karadag.051
+									}
+								}
+							}
+						}
+					}
+					
+					# Village Families Massacred
+					5 = {
+						trigger = {
+							NOT = {
+								s:STATE_MONTENEGRO = {
+									any_scope_state = {
+										has_modifier = modifier_eqfm_civilians_massacred
+									}
+								}
+							}
+						}
+						modifier = {
+							if = {
+								limit = {
+									scope:eqfm_karadag_tur_leader ?= {
+										OR = {
+											has_trait = reserved
+											has_trait = tactful
+										}
+									}
+								}
+								add = -5
+							}
+						}
+						c:TUR = {
+							trigger_event = {
+								id = eqfm_karadag.052
+							}
+						}
+					}
+					
+					# Bora Disrupts Operations
+					5 = {
+						trigger = {
+							NOT = {
+								has_global_variable = eqfm_adriatic_windstorm_cooldown_var
+							}
+						}
+						c:MON = {
+							trigger_event = {
+								id = eqfm_karadag.053
+							}
+						}
+						c:TUR = {
+							trigger_event = {
+								id = eqfm_karadag.053
+							}
+						}
+						change_global_variable = {
+							name = eqfm_karadag_skirmish_var
+							subtract = 1
+						}
+					}
+					
+					# event 54
+					
+					# Pitched Battle
+					5 = {
+						modifier = {
+							if = {
+								limit = {
+									scope:eqfm_karadag_mon_leader ?= {
+										OR = {
+											has_trait = basic_defensive_strategist
+											has_trait = experienced_defensive_strategist
+											has_trait = expert_defensive_strategist
+											has_trait = cautious
+										}
+									}
+								}
+								add = 10
+							}
+							if = {
+								limit = {
+									scope:eqfm_karadag_tur_leader ?= {
+										OR = {
+											has_trait = basic_defensive_strategist
+											has_trait = experienced_defensive_strategist
+											has_trait = expert_defensive_strategist
+											has_trait = cautious
+										}
+									}
+								}
+								add = 10
+							}
+						}
+						c:MON ?= {
+							trigger_event = {
+								id = eqfm_karadag.055
+							}
+						}
+						c:TUR ?= {
+							trigger_event = {
+								id = eqfm_karadag.055
+							}
+						}
+						change_global_variable = {
+							name = eqfm_karadag_skirmish_var
+							add = 2
+						}
+					}
+					
+					# Sudden Breakthrough
+					0 = {
+						modifier = {
+							if = {
+								limit = {
+									scope:eqfm_karadag_mon_leader ?= {
+										OR = {
+											has_trait = basic_offensive_planner
+											has_trait = experienced_offensive_planner
+											has_trait = expert_offensive_planner
+										}
+									}
+								}
+								add = 10
+							}
+							if = {
+								limit = {
+									scope:eqfm_karadag_tur_leader ?= {
+										OR = {
+											has_trait = basic_offensive_planner
+											has_trait = experienced_offensive_planner
+											has_trait = expert_offensive_planner
+										}
+									}
+								}
+								add = 10
+							}
+						}
+						c:MON ?= {
+							trigger_event = {
+								id = eqfm_karadag.056
+							}
+						}
+						c:TUR ?= {
+							trigger_event = {
+								id = eqfm_karadag.056
+							}
+						}
+						change_global_variable = {
+							name = eqfm_karadag_skirmish_var
+							add = 3
+						}
+					}
+					
+					# event 57
+				}
+				s:STATE_MONTENEGRO = {
+					add_devastation = 1
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				has_global_variable = eqfm_karadag_skirmish_var
+				global_var:eqfm_karadag_skirmish_var >= 9
+			}
+			c:MON ?= {
+				trigger_event = {
+					id = eqfm_karadag.059
+				}
+			}
+			c:TUR ?= {
+				trigger_event = {
+					id = eqfm_karadag.059
+				}
+			}
+			remove_global_variable = eqfm_karadag_skirmish_var
+		}
+		else_if = {
+			limit = {
+				has_global_variable = eqfm_karadag_skirmish_var
+				global_var:eqfm_karadag_skirmish_var <= 1
+			}
+			c:MON ?= {
+				trigger_event = {
+					id = eqfm_karadag.058
+				}
+			}
+			remove_global_variable = eqfm_karadag_skirmish_var
+		}
+		else = {
+			remove_global_variable = eqfm_karadag_skirmish_var
 		}
 	}
 }
