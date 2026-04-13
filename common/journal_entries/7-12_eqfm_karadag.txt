@@ -5,12 +5,11 @@
 	weight = 10000
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
-	can_revolution_inherit = no
-	transferable = no
 
 	is_shown_in_lobby = {
 		OR = {
 			c:MON ?= this
+			c:BOS ?= this
 			c:TUR ?= this
 		}
 	}
@@ -59,239 +58,196 @@
 
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
-		if = {
-			limit = {
-				c:MON ?= this
-			}
-			scope:journal_entry = {
-				add_modifier = modifier_eqfm_border_raids
-			}
-            add_modifier = modifier_eqfm_practicing_headtaking_mon
-			set_variable = {
-				name = eqfm_captured_nobles_var
-				value = 0
-			}
-		}
-        if = {
-            limit = {
-                c:TUR ?= this
-            }
-            add_modifier = modifier_eqfm_practicing_headtaking_tur
-        }
+	}
+	
+	modifiers_while_active = {
+		modifier_eqfm_border_raids
+	}
+	
+	on_no_longer_involved = {
+		eqfm_cleanup_karadag_effect = yes
 	}
 
 	complete = {
-		## These are the pre-IP3 GotB triggers
-		## IP3's functionality is a sub-set of this journal; separate GotB scripting handles the resolution of raiding if IP3 is active
-		
-		# MON Completion Trigger
-		trigger_if = {
-			limit = {
-				c:MON ?= this
-			}
-			owns_entire_state_region = STATE_MONTENEGRO
+		OR = {
+			# Montenegrin Objectives
 			trigger_if = {
 				limit = {
-					exists = c:TUR
-				}
-				NOT = {
-					is_subject_of = c:TUR
-				}
-			}
-		}
-		# TUR Completion Triggers
-		trigger_if = {
-			limit = {
-				c:TUR ?= this
-				NOT = {
-					has_dlc_feature = ip3_content # National Awakening
-				}
-			}
-			c:MON ?= {
-				OR = {
-					NOT = {
-						has_state_in_state_region = STATE_MONTENEGRO
+					c:MON ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
 					}
 				}
-				is_subject_of = root
-			}
-		}
-		
-		## These are the imported triggers from IP3
-		trigger_if = {
-			limit = {
-				c:TUR ?= this
-				has_dlc_feature = ip3_content # National Awakening
-			}
-			OR = {
-				NOT = {
-					exists = c:MON
+				AND = {
+					c:MON = {
+						owns_entire_state_region = STATE_MONTENEGRO
+					}
+					trigger_if = {
+						limit = {
+							exists = c:BOS
+						}
+						c:BOS = {
+							OR = {
+								NOT = {
+									has_claim = s:STATE_MONTENEGRO
+								}
+								is_subject_of = c:MON
+							}
+						}
+					}
+					trigger_if = {
+						limit = {
+							exists = c:TUR
+						}
+						c:MON = {
+							NOT = {
+								is_subject_of = c:TUR
+							}
+						}
+					}
 				}
-				c:MON ?= {
-					OR = {
-						is_country_alive = no
-						is_subject_of = ROOT
+			}
+			
+			# Bosnian Objectives
+			trigger_if = {
+				limit = {
+					c:BOS ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
+					}
+				}
+				AND = {
+					c:BOS = {
+						owns_entire_state_region = STATE_MONTENEGRO
+					}
+					trigger_if = {
+						limit = {
+							exists = c:TUR
+						}
+						c:BOS = {
+							NOT = {
+								is_subject_of = c:TUR
+							}
+						}
+					}
+				}
+			}
+			
+			# Turkish Objectives
+			trigger_if = {
+				limit = {
+					c:TUR ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
+					}
+				}
+				OR = {
+					c:TUR = {
+						owns_entire_state_region = STATE_MONTENEGRO
+					}
+					AND = {
+						s:STATE_MONTENEGRO = {
+							any_scope_state = {
+								count = all
+								owner = {
+									top_overlord = c:TUR
+								}
+							}
+						}
+						trigger_if = {
+							limit = {
+								exists = c:BOS
+							}
+							c:BOS = {
+								NOT = {
+									has_claim = s:STATE_MONTENEGRO
+								}
+							}
+						}
 					}
 				}
 			}
 		}
 	}
-
+	
 	on_complete = {
-		if = { # David Slays Goliath moved to event
+		if = {
 			limit = {
-				c:MON ?= this
-			}
-			trigger_event = eqfm_karadag.009
-		}
-		else_if = {
-			limit = {
-				c:TUR ?= this
-				NOT = {
-					has_dlc_feature = ip3_content # National Awakening
+				c:MON ?= {
+					is_involved_in_journal_entry = je_eqfm_karadag
 				}
+				custom_tooltip = je_eqfm_karadag_on_complete_montenegro
 			}
-			trigger_event = eqfm_karadag.007
 		}
-		else_if = {
+		if = {
 			limit = {
-				c:TUR ?= this
-				has_dlc_feature = ip3_content # National Awakening
-			}
-			trigger_event = {
-				id = mon_state_formation.14
-				popup = yes
-			}
-			hidden_effect = {
-				add_modifier = {
-					name = goliath_slays_david_modifier
+				c:BOS ?= {
+					is_involved_in_journal_entry = je_eqfm_karadag
 				}
+				custom_tooltip = je_eqfm_karadag_on_complete_bosnia
 			}
-			add_modifier = {
-				name = put_down_rebels_modifier
-				months = gbbf_very_long_modifier_time
-				is_decaying = yes
+		}
+		if = {
+			limit = {
+				c:TUR ?= {
+					is_involved_in_journal_entry = je_eqfm_karadag
+				}
+				custom_tooltip = je_eqfm_karadag_on_complete_ottomans
 			}
-			add_fervor_target_modifier = {
-				culture = cu:serb
-				months = gbbf_stupidly_long_modifier_time
-				multiplier = -20
-			}
+		}
+	}
+	
+	on_complete_all_involved = {
+		hidden_effect = {
+		
 		}
 		eqfm_cleanup_karadag_effect = yes
-		eqfm_update_expedition_costs_effect = yes
 	}
-
+	
 	fail = {
-		OR = {
-			NOT = { # Pre-IP3 fail block, retained in IP3
-				has_state_in_state_region = STATE_MONTENEGRO
-			}
-			trigger_if = { # Imported IP3 fail trigger
+		NOR = {
+			trigger_if = {
 				limit = {
-					has_dlc_feature = ip3_content # National Awakening
-					c:MON ?= this
-					exists = c:TUR
+					c:MON ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
+					}
 				}
-				is_subject_of = c:TUR
+				c:MON = {
+					has_state_in_state_region = STATE_MONTENEGRO
+				}
 			}
-			trigger_if = { # Alternate fail trigger, present in IP3 only
+			trigger_if = {
 				limit = {
-					c:TUR ?= this
-					has_dlc_feature = ip3_content # National Awakening
+					c:BOS ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
+					}
 				}
-				NOT = {
+				c:BOS = {
 					has_claim = s:STATE_MONTENEGRO
 				}
 			}
-		}
-	}
-
-	on_fail = {
-		if = {
-			limit = {
-				c:MON ?= this
-				NOT = {
-					has_dlc_feature = ip3_content # National Awakening
-				}
-			}
-			trigger_event = eqfm_karadag.008
-		}
-		else_if = {
-			limit = {
-				c:MON ?= this
-				has_dlc_feature = ip3_content # National Awakening
-			}
-		}
-		else_if = {
-			limit = {
-				c:TUR ?= this
-				NOT = {
-					has_dlc_feature = ip3_content # National Awakening
-				}
-			}
-			trigger_event =  eqfm_karadag.006
-			eqfm_cease_raiding_effect = yes
-			every_scope_character = {
+			trigger_if = {
 				limit = {
-					has_modifier = modifier_eqfm_leading_karadag_expedition
+					c:TUR ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
+					}
 				}
-				remove_modifier = modifier_eqfm_leading_karadag_expedition
-				set_character_busy_and_immortal = no
+				c:TUR = {
+					has_state_in_state_region = STATE_MONTENEGRO
+				}
 			}
-			remove_variable = eqfm_karadag_expedition_var
 		}
-		else_if = {
-			limit = {
-				c:TUR ?= this
-				has_dlc_feature = ip3_content # National Awakening
-			}
-			eqfm_cleanup_karadag_effect = yes
-		}
-		eqfm_update_expedition_costs_effect = yes
 	}
-
+	
+	on_fail_all_involved = {
+		eqfm_cleanup_karadag_effect = yes
+	}
+	
 	on_weekly_pulse = {
 		effect = {
-			if = {
-				limit = {
-					has_dlc_feature = ip3_content # National Awakening
-					NOT = {
-						has_global_variable = eqfm_montenegrin_raiding_settled
-					}
-				}
-				eqfm_weekly_karadag_effect = yes
-				eqfm_update_karadag_characters_effect = yes
-				eqfm_update_expedition_costs_effect = yes
-			}
-			else = {
-				if = {
-					limit = {
-						eqfm_has_karadag_expedition_trigger = yes
-					}
-					eqfm_cancel_karadag_expedition_effect = yes
-				}
-				scope:journal_entry = {
-					if = {
-						limit = {
-							has_variable = com_journal_characters
-						}
-						every_in_list = {
-							variable = com_journal_characters
-							set_character_busy_and_immortal = no
-						}
-					}
-					clear_variable_list = com_journal_characters
-				}
-			}
-		}
-		events = {
-			eqfm_karadag.023 # Expeditionary Force Withdraws from the Border
-			eqfm_karadag.024 # Expeditionary Force Leader Has Died!
-			eqfm_karadag.029 # Village Skirmish Monitor
+			eqfm_validate_karadag_expeditions_effect = yes
+			eqfm_update_karadag_characters_effect = yes
+			eqfm_weekly_karadag_effect = yes
 		}
 	}
-
+	
 	status_desc = {
 		triggered_desc = {
 			trigger = {
@@ -301,152 +257,5 @@
 			}
 			desc = je_eqfm_karadag_status
 		}
-	}
-}
-
-je_eqfm_bosnia_and_montenegro = {
-	group = je_group_global_international_situations
-	icon = "gfx/interface/icons/event_icons/event_military.dds"
-	weight = 100
-	
-	should_be_pinned_by_default_involved = yes
-	can_revolution_inherit = yes
-	transferable = no
-	can_deactivate = no
-	
-	is_shown_in_lobby = {
-		OR = {
-			c:MON ?= this
-			c:BOS ?= this
-			c:TUR ?= this
-		}
-	}
-	
-	
-	
-	
-	
-	
-	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
-		c:BOS = {
-			trigger_event =
-		}
-		c:MON = {
-			trigger_event = {
-				id = eqfm_karadag.100 # A Demand for Haraç
-				days = { 30 60 }
-			}
-		}
-	}
-	
-	
-	complete = {
-		OR = {
-			c:MON ?= {
-				owns_entire_state_region = STATE_BOSNIA
-			}
-			c:BOS ?= {
-				OR = {
-					custom_tooltip = {
-						text = je_balkfm_bos_ali_pasha_fail
-						ruler = {
-							NOR = {
-								has_template = balkfm_rizvanbegovic_ali
-								has_template = balkfm_rizvanbegovic_mehmed
-							}
-						}
-					}
-					NOT = {
-						has_claim = s:STATE_MONTENEGRO
-					}
-					owns_entire_state_region = STATE_MONTENEGRO
-				}
-			}
-			c:TUR ?= {
-				owns_entire_state_region = STATE_BOSNIA
-			}
-		}
-	}
-	
-	on_complete = {
-		c:BOS = {
-			if = {
-				limit = {
-					owns_entire_state_region = STATE_MONTENEGRO
-				}
-				trigger_event = eqfm_karadag.109
-			}
-			else = {
-				c:MON ?= {
-					add_modifier = {
-						name = modifier_eqfm_weathered_the_storm
-						months = gbbf_normal_modifier_time
-					}
-				}
-			}
-		}
-	}
-	
-	fail = {
-		c:MON ?= {
-			NOR = {
-				has_state_in_state_region = STATE_MONTENEGRO
-				has_state_in_state_region = STATE_BOSNIA
-			}
-		}
-		c:BOS ?= {
-			NOR = {
-				has_state_in_state_region = STATE_BOSNIA
-				has_state_in_state_region = STATE_MONTENEGRO
-			}
-		}
-	}
-	
-	on_fail = {
-	}
-	
-	invalid = {
-		OR = {
-			NOT = {
-				exists = c:MON
-			}
-			NOT = {
-				exists = c:BOS
-			}
-		}
-	}
-	
-	on_invalid = {
-	}
-	
-	on_weekly_pulse = {
-		events = {
-		}
-		random_events = {
-		}
-		effect = {
-		}
-	}
-	
-	on_monthly_pulse = {
-		events = {
-		}
-		random_events = {
-		}
-		effect = {
-		}
-	}
-	
-	on_yearly_pulse = {
-		events = {
-		}
-		random_events = {
-		}
-		effect = {
-		}
-	}
-	
-	status_desc = {
 	}
 }

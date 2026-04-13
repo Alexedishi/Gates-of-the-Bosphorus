@@ -1,85 +1,67 @@
 ﻿eqfm_initialize_karadag_effect = {
-	# This is modified from je_montenegrin_raiding's immediate block
-	# Vanilla variables are retained for compatibility
-	# This effect is fired from global if IP3 is active
-	set_variable = {
-		name = raiding_intensity
-		value = 50
-	}
-	set_variable = {
-		name = last_week_raiding_income
-		value = 1281
-	}
-	create_diplomatic_pact = {
-		country = c:TUR
-		type = raiding_pact
-	}
-	create_diplomatic_pact = {
-		country = c:RUS
-		type = disapproval_pact
-	}
-	add_modifier = {
-		name = modifier_montenegrin_raiding
-		multiplier = 1281
-	}
-	add_modifier = {
-		name = modifier_montenegrin_disobedience
-		multiplier = 50
-	}
-	random_neighbouring_state = {
-		limit = {
-			owner ?= c:TUR
+	# This is modified from je_montenegrin_raiding's immediate block; effect is fired from global if IP3 is active
+	c:MON ?= {
+		set_variable = {
+			name = eqfm_captured_nobles_var
+			value = 0
 		}
-		save_scope_as = raid_target
+		set_variable = {
+			name = raiding_intensity
+			value = 50
+		}
+		set_variable = {
+			name = last_week_raiding_income
+			value = 1281
+		}
+		create_diplomatic_pact = {
+			country = c:TUR
+			type = raiding_pact
+		}
+		create_diplomatic_pact = {
+			country = c:RUS
+			type = disapproval_pact
+		}
 		add_modifier = {
-			name = raid_target
-			multiplier = 1
+			name = modifier_montenegrin_raiding
+			multiplier = 1281
 		}
+		add_modifier = {
+			name = modifier_montenegrin_disobedience
+			multiplier = 50
+		}
+		random_neighbouring_state = {
+			limit = {
+				owner ?= c:TUR
+			}
+			save_scope_as = raid_target
+			add_modifier = {
+				name = raid_target
+				multiplier = 1
+			}
+		}
+		set_global_variable = {
+			name = mon_raid_state
+			value = scope:raid_target
+		}
+		
+		
+		add_journal_entry = {
+			type = je_montenegrin_raiding
+		}
+		add_modifier = modifier_eqfm_practicing_headtaking_mon
 	}
-	set_global_variable = {
-		name = mon_raid_state
-		value = scope:raid_target
+	c:BOS ?= {
+	
+	}
+	c:TUR ?= {
+		add_modifier = modifier_eqfm_practicing_headtaking_tur
 	}
 }
 
 ## Black Mountain Raiding Income Effects ##
 eqfm_weekly_karadag_effect = {
-	# Checking for presence of expedition variables because I'm a poor boy
-	if = {
-		limit = {
-			eqfm_has_karadag_expedition_trigger = yes
-			NOR = {
-				has_variable = eqfm_expedition_karadag_transit_var
-			}
-		}
-		if = {
-			limit = {
-				NOT = {
-					has_variable = eqfm_karadag_expedition_progress_var
-				}
-			}
-			set_variable = {
-				name = eqfm_karadag_expedition_progress_var
-				value = 0
-			}
-		}
-		if = {
-			limit = {
-				NOT = {
-					has_variable = eqfm_karadag_expedition_peril_var
-				}
-			}
-			set_variable = {
-				name = eqfm_karadag_expedition_peril_var
-				value = 0
-			}
-		}
-	}
 	# Montenegro Raiding Math
-	if = {
-		limit = {
-			c:MON ?= this
-		}
+	c:MON ?= {
 		## Reworked script from the IP3 journal
 		if = {
 			limit = {
