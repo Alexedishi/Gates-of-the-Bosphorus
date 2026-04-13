@@ -1,6 +1,6 @@
 ﻿je_eqfm_karadag = {
 	# This journal integrates je_montenegrin_raiding with GotB content
-	group = je_group_expeditions
+	group = je_group_global_international_situations
 	icon = "gfx/interface/icons/alert_icons/secession.dds"
 	weight = 10000
 
@@ -21,11 +21,17 @@
 	scripted_button = eqfm_appoint_tribal_chief_button
 	scripted_button = eqfm_dismiss_tribal_chief_button
 	scripted_button = eqfm_ransom_captives_button
-#	scripted_button = eqfm_negotiate_kotor_button
+	scripted_button = eqfm_negotiate_kotor_button
+	
+	# Bosniak Buttons
+	scripted_button = balkfm_abandon_karadag_button #TODO migrate to eqfm
+	scripted_button = eqfm_start_scheming_button # eqfm_karadag.113
+	scripted_button = eqfm_ice_smail_button
 	
 	# Ottoman Buttons
 	scripted_button = eqfm_assign_border_guard_button
 	scripted_button = eqfm_recall_karadag_expedition_button
+	scripted_button = turkfm_arrest_ali_pasha_button #TODO migrate to eqfm
 	
 	# Shared Buttons
 	scripted_button = eqfm_renounce_headtaking_button
@@ -34,6 +40,21 @@
 		gui = "gui/com_journal_injects/injects.gui"
 		name = "com_journal_entry_characters"
 		container = "custom_widget_container_1"
+	}
+	
+	should_be_involved = {
+		OR = {
+			c:MON ?= this
+			c:BOS ?= this
+			c:TUR ?= this
+		}
+	}
+	
+	should_show_when_not_involved = {
+		has_strategic_region_interest_tier = {
+			strategic_region = region_balkans
+			value >= 3
+		}
 	}
 
 	immediate = {
@@ -271,23 +292,6 @@
 		}
 	}
 
-	on_monthly_pulse = {
-		random_events = {
-			chance_of_no_event = 90
-			 5 = eqfm_karadag.027 # Village Skirmish Escalates
-			 1 = eqfm_karadag.030 # Tax Evasion
-			 5 = eqfm_karadag.031 # Nobleman Held Hostage
-			10 = eqfm_karadag.033 # Landslide Across the Border
-			 5 = eqfm_karadag.040 # Local Informants
-			 5 = eqfm_karadag.041 # Bear Sighted
-			10 = eqfm_karadag.042 # A Circular Expedition
-			20 = eqfm_karadag.043 # Snow on the Ground
-			 5 = eqfm_karadag.044 # Balkan Hospitality
-			 5 = eqfm_karadag.045 # Expedition Beset by Plague!
-			10 = eqfm_karadag.046 # Tax Evasion
-		}
-	}
-
 	status_desc = {
 		triggered_desc = {
 			trigger = {
@@ -318,25 +322,10 @@ je_eqfm_bosnia_and_montenegro = {
 		}
 	}
 	
-	scripted_button = turkfm_arrest_ali_pasha_button #TODO migrate to eqfm
-	scripted_button = balkfm_abandon_karadag_button #TODO migrate to eqfm
-	scripted_button = eqfm_start_scheming_button # balkfm_montenegro.032
-	scripted_button = eqfm_ice_smail_button
 	
-	should_be_involved = {
-		OR = {
-			c:MON ?= this
-			c:BOS ?= this
-			c:TUR ?= this
-		}
-	}
 	
-	should_show_when_not_involved = {
-		has_strategic_region_interest_tier = {
-			strategic_region = region_balkans
-			value >= 3
-		}
-	}
+	
+	
 	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
@@ -345,7 +334,7 @@ je_eqfm_bosnia_and_montenegro = {
 		}
 		c:MON = {
 			trigger_event = {
-				id = balkfm_montenegro.030 # A Demand for Haraç
+				id = eqfm_karadag.100 # A Demand for Haraç
 				days = { 30 60 }
 			}
 		}
@@ -386,7 +375,7 @@ je_eqfm_bosnia_and_montenegro = {
 				limit = {
 					owns_entire_state_region = STATE_MONTENEGRO
 				}
-				trigger_event = balkfm_bosnia.007
+				trigger_event = eqfm_karadag.109
 			}
 			else = {
 				c:MON ?= {
