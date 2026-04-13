@@ -318,6 +318,7 @@ je_eqfm_bosnia_and_montenegro = {
 		}
 	}
 	
+	scripted_button = turkfm_arrest_ali_pasha_button #TODO migrate to eqfm
 	scripted_button = balkfm_abandon_karadag_button #TODO migrate to eqfm
 	scripted_button = eqfm_start_scheming_button # balkfm_montenegro.032
 	scripted_button = eqfm_ice_smail_button
@@ -352,21 +353,29 @@ je_eqfm_bosnia_and_montenegro = {
 	
 	
 	complete = {
-		c:BOS ?= {
-			OR = {
-				custom_tooltip = {
-					text = je_balkfm_bos_ali_pasha_fail
-					ruler = {
-						NOR = {
-							has_template = balkfm_rizvanbegovic_ali
-							has_template = balkfm_rizvanbegovic_mehmed
+		OR = {
+			c:MON ?= {
+				owns_entire_state_region = STATE_BOSNIA
+			}
+			c:BOS ?= {
+				OR = {
+					custom_tooltip = {
+						text = je_balkfm_bos_ali_pasha_fail
+						ruler = {
+							NOR = {
+								has_template = balkfm_rizvanbegovic_ali
+								has_template = balkfm_rizvanbegovic_mehmed
+							}
 						}
 					}
+					NOT = {
+						has_claim = s:STATE_MONTENEGRO
+					}
+					owns_entire_state_region = STATE_MONTENEGRO
 				}
-				NOT = {
-					has_claim = s:STATE_MONTENEGRO
-				}
-				owns_entire_state_region = STATE_MONTENEGRO
+			}
+			c:TUR ?= {
+				owns_entire_state_region = STATE_BOSNIA
 			}
 		}
 	}
@@ -388,7 +397,6 @@ je_eqfm_bosnia_and_montenegro = {
 				}
 			}
 		}
-		
 	}
 	
 	fail = {
