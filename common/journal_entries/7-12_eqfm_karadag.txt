@@ -203,7 +203,88 @@
 	
 	on_complete_all_involved = {
 		hidden_effect = {
-		
+			# Montenegrin Objectives
+			if = {
+				limit = {
+					c:MON ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
+						owns_entire_state_region = STATE_MONTENEGRO
+					}
+					trigger_if = {
+						limit = {
+							exists = c:BOS
+						}
+						c:BOS = {
+							OR = {
+								NOT = {
+									has_claim = s:STATE_MONTENEGRO
+								}
+								is_subject_of = c:MON
+							}
+						}
+					}
+					trigger_if = {
+						limit = {
+							exists = c:TUR
+						}
+						c:MON = {
+							NOT = {
+								is_subject_of = c:TUR
+							}
+						}
+					}
+				}
+				trigger_event = eqfm_karadag.001
+			}
+			
+			# Bosnian Objectives
+			if = {
+				limit = {
+					c:BOS ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
+						owns_entire_state_region = STATE_MONTENEGRO
+					}
+					trigger_if = {
+						limit = {
+							exists = c:TUR
+						}
+						c:BOS = {
+							NOT = {
+								is_subject_of = c:TUR
+							}
+						}
+					}
+				}
+				trigger_event = eqfm_karadag.003
+			}
+			
+			# Turkish Objectives
+			if = {
+				limit = {
+					c:TUR ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
+						s:STATE_MONTENEGRO = {
+							any_scope_state = {
+								count = all
+								owner = {
+									top_overlord = c:TUR
+								}
+							}
+						}
+						trigger_if = {
+							limit = {
+								exists = c:BOS
+							}
+							c:BOS = {
+								NOT = {
+									has_claim = s:STATE_MONTENEGRO
+								}
+							}
+						}
+					}
+				}
+				trigger_event = eqfm_karadag.002
+			}
 		}
 		eqfm_cleanup_karadag_effect = yes
 	}
@@ -245,6 +326,12 @@
 	
 	on_fail_all_involved = {
 		eqfm_cleanup_karadag_effect = yes
+	}
+	
+	invalid = {
+		NOT = {
+			has_dlc_feature = ip3_content
+		}
 	}
 	
 	on_weekly_pulse = {
