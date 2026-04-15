@@ -420,6 +420,65 @@ eqfm_abandon_karadag_button = {
 	}
 }
 
+eqfm_start_scheming_button = {
+	name = "eqfm_start_scheming_name"
+	desc = "eqfm_start_scheming_desc"
+	
+	visible = {
+		NOT = {
+			has_global_variable = eqfm_ali_rizvanbegovic_waxed
+		}
+		c:TUR ?= this
+		c:BOS ?= {
+			ruler = {
+				OR = {
+					has_template = balkfm_rizvanbegovic_ali
+					has_template = balkfm_rizvanbegovic_mehmed
+					has_template = mon_ali_pasha_rizvanbegovic
+				}
+			}
+			is_subject_of = root
+		}
+		exists = c:MON
+		exists = c:SER
+		
+	}
+	selected = {
+		has_variable = eqfm_scheme_var
+	}
+	possible = {
+		hidden_trigger = {
+			NOT = {
+				has_variable = eqfm_scheme_var
+			}
+		}
+		influence >= 100
+		c:MON.relations:root >= relations_threshold:cold
+		c:SER.relations:root >= relations_threshold:cold
+	}
+	effect = {
+		trigger_event = eqfm_balkans.111
+	}
+	ai_chance = {
+		value = 10
+	}
+}
+
+eqfm_ice_smail_button = {
+	name = "eqfm_ice_smail_name"
+	desc = "eqfm_ice_smail_desc"
+	
+	visible = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 1000 # If the AI gets here, DO IT
+	}
+}
+
 ## Karadag Ottoman Buttons
 eqfm_assign_border_guard_button = {
 	name = "eqfm_assign_border_guard_name"
@@ -491,6 +550,20 @@ eqfm_arrest_ali_pasha_button = {
 			id = turkfm_tanzimat.021
 			days = { 10 30 }
 		}
+		if = {
+			limit = {
+				c:MON ?= {
+					is_involved_in_journal_entry = je_eqfm_karadag
+				}
+			}
+			c:MON ?= {
+				trigger_event = balkfm_bosnia.004
+			}
+		}
+		c:BOS ?= {
+			trigger_event = balkfm_bosnia.004
+		}
+		set_global_variable = eqfm_ali_rizvanbegovic_waxed
 	}
 	ai_chance = {
 		value = 100
