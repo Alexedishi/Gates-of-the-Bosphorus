@@ -21,19 +21,17 @@ namespace = balkfm_bosnia
 # The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
 
 #000-009 - Eyalet of Hersek Events
-#	001 - The Small Land of the Serbs
-#	003 - The Reordering Begins
-#	004 - ##Vukalović's Uprising
-#	008 - Failed Ambitions
-#	009 - House Rizvanbegović of Bosnia
-
-#010-019 - Ottoman Interventions in Bosnia
-#	010 - ##The Tyranny of Omer Pasha
+#	001 - The Small Land of the Serb
+#	002 - House Rizvanbegović of Bosnia
+#	003 - The End of House Rizvanbegović
+#	004 - The Reordering Begins
+#	005 - The Reordering Begins
+#	##Vukalović's Uprising
 
 ####################
 
 ## Eyalet of Hersek Events ##
-balkfm_bosnia.001 = { # The Small Land of the Serbs
+balkfm_bosnia.001 = {
 	type = country_event
 	placement = root
 
@@ -63,11 +61,15 @@ balkfm_bosnia.001 = { # The Small Land of the Serbs
 	option = {
 		name = balkfm_bosnia.001.a
 		default_option = yes
+		show_as_tooltip = {
+			s:STATE_MONTENEGRO = {
+				add_claim = root
+			}
+		}
 	}
-
 }
 
-balkfm_bosnia.002 = { # House Rizvanbegović of Bosnia
+balkfm_bosnia.002 = {
 	type = country_event
 	placement = root
 	
@@ -101,11 +103,14 @@ balkfm_bosnia.002 = { # House Rizvanbegović of Bosnia
 			name = modifier_balkfm_sultan_in_mostar
 			months = gbbf_very_long_modifier_time
 		}
+		add_loyalists = {
+			culture = cu:bosniak
+			value = large_radicals
+		}
 	}
-	
 }
 
-balkfm_bosnia.003 = { # Failed Ambitions
+balkfm_bosnia.003 = {
 	type = country_event
 	placement = root
 	
@@ -139,17 +144,74 @@ balkfm_bosnia.003 = { # Failed Ambitions
 			name = modifier_balkfm_failed_amibitions
 			months = gbbf_very_long_modifier_time
 		}
+		s:STATE_MONTENEGRO = {
+			remove_claim = root
+		}
 	}
-	
 }
 
-balkfm_bosnia.004 = { # The Reordering Begins
+balkfm_bosnia.004 = {
 	type = country_event
 	placement = root
-
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = balkfm_bosnia.004.t
 	desc = balkfm_bosnia.004.d
 	flavor = balkfm_bosnia.004.f
+	
+	gui_window = event_window_com_default
+	
+	event_image = {
+		video = "votp_hostile_court"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			exists = c:BOS
+		}
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = balkfm_bosnia.004.a
+		default_option = yes
+		trigger = {
+			c:BOS = this
+		}
+		if = {
+			limit = {
+				has_claim = s:STATE_MONTENEGRO
+			}
+			s:STATE_MONTENEGRO = {
+				remove_claim = root
+			}
+		}
+	}
+	
+	option = {
+		name = balkfm_bosnia.004.b
+		trigger = {
+			c:BOS != this
+		}
+		
+	}
+}
+
+balkfm_bosnia.005 = {
+	type = country_event
+	placement = root
+
+	title = balkfm_bosnia.005.t
+	desc = balkfm_bosnia.005.d
+	flavor = balkfm_bosnia.005.f
 
 	event_image = {
 		video = "unspecific_ruler_speaking_to_people"
@@ -178,7 +240,7 @@ balkfm_bosnia.004 = { # The Reordering Begins
 	}
 
 	option = {
-		name = balkfm_bosnia.004.a
+		name = balkfm_bosnia.005.a
 		default_option = yes
 		add_journal_entry = {
 			type = je_balkfm_bos_tanzimat
@@ -200,7 +262,7 @@ balkfm_bosnia.004 = { # The Reordering Begins
 	}
 
 	option = {
-		name = balkfm_bosnia.004.b
+		name = balkfm_bosnia.005.b
 		change_relations = {
 			country = c:TUR
 			value = -25
@@ -214,5 +276,4 @@ balkfm_bosnia.004 = { # The Reordering Begins
 			target = c:TUR
 		}
 	}
-
 }

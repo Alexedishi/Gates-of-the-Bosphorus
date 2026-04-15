@@ -20,37 +20,57 @@
 	}
 
 	complete = {
-		is_subject = no
+		trigger_if = {
+			limit = {
+				exists = c:TUR
+			}
+		}
+		trigger_else = {
+			is_subject = no
+		}
 	}
 
 	on_complete = {
 		trigger_event = balkfm_bosnia.002
-		hidden_effect = {
-			c:TUR ?= {
-				trigger_event = eqfm_karadag.108
-			}
-			c:MON ?= {
-				trigger_event = eqfm_karadag.108
-			}
+		c:TUR ?= {
+			post_notification = notification_balkfm_ali_rizvanbegovic_ascendant
+		}
+		c:MON ?= {
+			post_notification = notification_balkfm_ali_rizvanbegovic_ascendant
 		}
 		set_global_variable = turkfm_ali_pasha_gigachad
 	}
 
 	fail = {
-		custom_tooltip = {
-			text = je_balkfm_bos_ali_pasha_fail
-			ruler = {
-				NOR = {
-					has_template = balkfm_rizvanbegovic_ali
-					has_template = balkfm_rizvanbegovic_mehmed
+		OR = {
+			custom_tooltip = {
+				text = je_balkfm_bos_ali_pasha_fail
+				ruler = {
+					NOR = {
+						has_template = balkfm_rizvanbegovic_ali
+						has_template = balkfm_rizvanbegovic_mehmed
+					}
 				}
+			}
+			NOT = {
+				has_claim = s:STATE_MONTENEGRO
 			}
 		}
 	}
 
 	on_fail = {
 		trigger_event = balkfm_bosnia.003
-		set_global_variable = eqfm_ali_pasha_waxed
+		c:TUR ?= {
+			post_notification = notification_balkfm_ali_rizvanbegovic_waxed
+		}
+		c:MON ?= {
+			post_notification = notification_balkfm_ali_rizvanbegovic_waxed
+		}
+		set_global_variable = eqfm_ali_rizvanbegovic_waxed
+	}
+	
+	invalid = {
+		has_global_variable = eqfm_ali_rizvanbegovic_waxed
 	}
 }
 
@@ -65,7 +85,7 @@ je_balkfm_bos_tanzimat = {
 	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
-		trigger_event = balkfm_bosnia.004
+		trigger_event = balkfm_bosnia.005
 	}
 	
 	complete = {

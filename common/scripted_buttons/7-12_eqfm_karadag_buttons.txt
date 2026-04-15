@@ -395,6 +395,31 @@ eqfm_negotiate_kotor_button = {
 	}
 }
 
+## Karadag Bosnian Buttons
+eqfm_abandon_karadag_button = {
+	name = "eqfm_abandon_karadag_name"
+	desc = "eqfm_abandon_karadag_desc"
+	
+	visible = {
+		c:BOS ?= this
+		has_claim = s:STATE_MONTENEGRO
+	}
+	
+	possible = {
+		has_claim = s:STATE_MONTENEGRO
+	}
+	
+	effect = {
+		s:STATE_MONTENEGRO = {
+			remove_claim = root
+		}
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
 ## Black Mountain Ottoman Buttons
 eqfm_assign_border_guard_button = {
 	name = "eqfm_assign_border_guard_name"
@@ -440,5 +465,34 @@ eqfm_recall_karadag_expedition_button = {
 	}
 	effect = {
 		eqfm_cancel_karadag_expedition_effect = yes
+	}
+}
+
+eqfm_arrest_ali_pasha_button = {
+	name = "eqfm_arrest_ali_pasha_name"
+	desc = "eqfm_arrest_ali_pasha_desc"
+	
+	visible ={
+		c:BOS ?= {
+			is_subject_of = root
+			ruler = {
+				has_template = balkfm_rizvanbegovic_ali
+			}
+		}
+	}
+	possible = {
+		c:BOS ?= {
+			liberty_desire < 25
+			NOT = { is_diplomatic_play_enemy_of = root }
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = turkfm_tanzimat.021
+			days = { 10 30 }
+		}
+	}
+	ai_chance = {
+		value = 100
 	}
 }

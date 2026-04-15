@@ -58,6 +58,52 @@
 	}
 }
 
+eqfm_check_karadag_involvement_effect = {
+	if = {
+		limit = {
+			c:BOS ?= {
+				is_involved_in_journal_entry = je_eqfm_karadag
+				OR = {
+					NOR = {
+						has_claim = s:STATE_MONTENEGRO
+						has_state_in_state_region = STATE_MONTENEGRO
+					}
+					has_global_variable = eqfm_ali_rizvanbegovic_waxed
+				}
+			}
+		}
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_karadag
+			}
+			post_notification = notification_eqfm_bosnia_ejected
+		}
+		global_var:je_eqfm_karadag = {
+			remove_involved_country = c:BOS
+		}
+	}
+	if = {
+		limit = {
+			c:TUR ?= {
+				is_involved_in_journal_entry = je_eqfm_karadag
+				NOR = {
+					has_claim = s:STATE_MONTENEGRO
+					has_state_in_state_region = STATE_MONTENEGRO
+				}
+			}
+		}
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_karadag
+			}
+			post_notification = notification_eqfm_ottomans_ejected
+		}
+		global_var:je_eqfm_karadag = {
+			remove_involved_country = c:TUR
+		}
+	}
+}
+
 ## Black Mountain Raiding Income Effects ##
 eqfm_update_karadag_variables_effect = {
 	if = {
