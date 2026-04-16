@@ -92,13 +92,13 @@ namespace = eqfm_karadag
 #	102 - >>Negotiations at Humac
 #	103 - >>The Battle of Grahovo
 #	104 - ##A Bosnian Sultan
-#	105 - ##The Sultan in Moster
+#	105 - ##The Sultan in Mostar
 #	106 - ##Lord Rizvanbegovic Detained!
 
 #110-119 - The Assassination of Smail-aga Events
 #	110 - >>A Dangerous Contender
-#	111 - >>Disruptive Influence
-#	112 - ##
+#	111 - >>Planning an Assassination
+#	112 - >>>Disruptive Influence
 #	113 - >>Knives in the Dark
 #	114 - >>A Local Collaborator
 #	115 - >>The Demise of Smaïl-aga
@@ -3378,6 +3378,9 @@ eqfm_karadag.100 = {
 				}
 			}
 		}
+		ai_chance = {
+			value = -100
+		}
 	}
 }
 
@@ -3426,8 +3429,30 @@ eqfm_karadag.101 = { # Tribal Conflicts
 	
 	immediate = {
 		balkfm_hersek_scopes_effect = yes
+		trigger_event = {
+			id = eqfm_karadag.103
+			days = 210
+		}
+		trigger_event = {
+			id = eqfm_karadag.102
+			days = 270 # should be early 1937
+		}
 		c:MON = {
 			save_scope_as = montenegro_scope
+			trigger_event = {
+				id = eqfm_karadag.103
+				days = 210
+			}
+			trigger_event = {
+				id = eqfm_karadag.102
+				days = 270 # should be early 1937
+			}
+		}
+		c:TUR = {
+			trigger_event = {
+				id = eqfm_karadag.103
+				days = 210
+			}
 		}
 	}
 	
@@ -3442,32 +3467,6 @@ eqfm_karadag.101 = { # Tribal Conflicts
 			}
 		}
 		custom_tooltip = gbbf_no_effects
-		hidden_effect = {
-			trigger_event = {
-				id = eqfm_karadag.103
-				days = 180
-			}
-			trigger_event = {
-				id = eqfm_karadag.102
-				days = 240 # should be early 1937
-			}
-			c:TUR = {
-				trigger_event = {
-					id = eqfm_karadag.103
-					days = 180
-				}
-			}
-			c:MON = {
-				trigger_event = {
-					id = eqfm_karadag.103
-					days = 180
-				}
-				trigger_event = {
-					id = eqfm_karadag.102
-					days = 240 # should be early 1937
-				}
-			}
-		}
 	}
 	
 	option = {
@@ -3482,7 +3481,6 @@ eqfm_karadag.101 = { # Tribal Conflicts
 			months = gbbf_normal_modifier_time
 		}
 	}
-	
 }
 
 eqfm_karadag.102 = {
@@ -3533,7 +3531,6 @@ eqfm_karadag.102 = {
 		create_character = {
 			template = balkfm_dakovic_jakov
 		}
-		set_global_variable = balkfm_humac_happened
 		ai_chance = {
 			base = 100
 		}
@@ -3639,7 +3636,7 @@ eqfm_karadag.103 = {
 		}
 	}
 	
-	option = {
+	option = { # For the Ottomans
 		name = eqfm_karadag.103.b
 		trigger = {
 			c:TUR ?= this
@@ -3647,26 +3644,137 @@ eqfm_karadag.103 = {
 		custom_tooltip = gbbf_no_effects
 	}
 	
-	option = {
+	option = { # For Bosnia
 		name = eqfm_karadag.103.c
 		trigger = {
 			c:BOS ?= this
 		}
-		custom_tooltip = gbbf_no_effects
+		custom_tooltip = {
+			text = gbbf_no_effects
+			trigger_event = {
+				id = eqfm_karadag.110
+				months = 3
+			}
+		}
 	}
-	
 }
 
 ####---------- The Assassination of Smail-aga Events ----------####
-## // A Dangerous Contender
-
-eqfm_karadag.111 = { # Disruptive Influence
+eqfm_karadag.110 = {
 	type = country_event
 	placement = root
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_karadag.110.t
+	desc = eqfm_karadag.110.d
+	flavor = eqfm_karadag.110.f
+	
+	gui_window = event_window_com_default
+	
+	event_image = {
+		video = "ip3_agitator_reading_manifesto"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_karadag.103
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			any_scope_character = {
+				has_template = balkfm_cengic_smail
+			}
+		}
+	}
+	
+	immediate = {
+		random_scope_character = {
+			limit = {
+				has_template = balkfm_cengic_smail
+			}
+			save_scope_as = smail_aga_scope
+		}
+	}
+	
+	option = {
+		name = eqfm_karadag.110.a
+		default_option = yes
+		scope:smail_aga_scope = {
+			add_modifier = {
+				name = modifier_balkfm_accomplished_warlord
+				months = gbbf_very_long_modifier_time
+			}
+		}
+		add_radicals = {
+			pop_type = officers
+			value = medium_radicals
+		}
+	}
+}
+
+eqfm_karadag.111 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_karadag.111.t
 	desc = eqfm_karadag.111.d
 	flavor = eqfm_karadag.111.f
+	
+	gui_window = event_window_com_default
+	
+	event_image = {
+		video = "votp_conspiring"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_start_scheming_button
+	}
+	
+	immediate = {
+		random_scope_character = {
+			limit = {
+				has_template = balkfm_cengic_smail
+			}
+			save_scope_as = smail_aga_scope
+		}
+	}
+	
+	option = {
+		name = eqfm_karadag.111.a
+		default_option = yes
+		c:SER ?= {
+			trigger_event = eqfm_karadag.112
+		}
+	}
+	
+	option = {
+		name = eqfm_karadag.111.b
+		trigger = {
+			exists = c:MON
+			c:MON.relations:root >= relations_threshold:cold
+		}
+		highlighted_option = yes
+		show_as_unavailable = { always = yes }
+		c:MON ?= {
+			trigger_event = eqfm_karadag.112
+		}
+	}
+}
+
+eqfm_karadag.112 = { # Disruptive Influence
+	type = country_event
+	placement = root
+	
+	title = eqfm_karadag.112.t
+	desc = eqfm_karadag.112.d
+	flavor = eqfm_karadag.112.f
 	
 	event_image = {
 		video = "southamerica_aristocrats"
@@ -3681,33 +3789,33 @@ eqfm_karadag.111 = { # Disruptive Influence
 	dlc = dlc_grefm
 	
 	trigger = {
-		has_global_variable = balkfm_humac_happened
+		# triggered by eqfm_karadag.111
 	}
 	
 	immediate = {
-		remove_global_variable = balkfm_humac_happened
-		balkfm_hersek_scopes_effect = yes
-		c:MON = {
-			save_scope_as = montenegro_scope
-			ruler = {
-				save_scope_as = montenegro_ruler_scope
-			}
-		}
-		s:STATE_WESTERN_SERBIA = {
-			random_scope_state = {
-				save_scope_as = northern_serbia_state_scope
+		c:BOS = {
+			random_scope_character = {
+				limit = {
+					has_template = balkfm_cengic_smail
+				}
+				save_scope_as = smail_aga_scope
 			}
 		}
 	}
 	
-	option = { # stir the pot
-		name = eqfm_karadag.111.a
+	option = {
+		name = eqfm_karadag.112.a
 		default_option = yes
+		trigger = {
+			c:SER ?= this
+		}
+		c:MON ?= {
+			trigger_event = eqfm_karadag.113
+		}
 		change_relations = {
 			country = c:MON
 			value = 20
 		}
-		set_global_variable = balkfm_stabby_stabby # triggers eqfm_karadag.113 (Knives in the Dark)
 		ai_chance = {
 			base = 10
 			modifier = {
@@ -3721,8 +3829,16 @@ eqfm_karadag.111 = { # Disruptive Influence
 		}
 	}
 	
-	option = { # do nothing
-		name = eqfm_karadag.111.b
+	option = {
+		name = eqfm_karadag.112.b
+		trigger = {
+			c:MON ?= this
+		}
+		trigger_event = eqfm_karadag.114
+	}
+	
+	option = {
+		name = eqfm_karadag.112.c
 		custom_tooltip = gbbf_nothing_happens
 		ai_chance = {
 			base = 0
@@ -3737,9 +3853,25 @@ eqfm_karadag.111 = { # Disruptive Influence
 		}
 	}
 	
+	option = {
+		name = eqfm_karadag.112.e
+		add_modifier = {
+			name = modifier_eqfm_exposed_assasination_plot
+			months = gbbf_normal_modifier_time
+			is_decaying = yes
+		}
+		create_incident = {
+			country = c:BOS
+			value = 5
+		}
+		c:BOS = {
+			trigger_event = eqfm_karadag.118
+			show_as_tooltip = { 
+				change_infamy = 10
+			}
+		}
+	}
 }
-
-## // ??
 
 eqfm_karadag.113 = {
 	# Knives in the Dark
@@ -3763,42 +3895,33 @@ eqfm_karadag.113 = {
 	dlc = dlc_grefm
 	
 	trigger = {
-		has_global_variable = balkfm_stabby_stabby # set by eqfm_karadag.111 (Disruptive Influence)
+		 # set by eqfm_karadag.112 (Disruptive Influence)
 	}
 	
 	immediate = {
-		balkfm_hersek_scopes_effect = yes
-		c:SER = {
-			save_scope_as = serbia_scope
+		c:BOS = {
+			random_scope_character = {
+				limit = {
+					has_template = balkfm_cengic_smail
+				}
+				save_scope_as = smail_aga_scope
+			}
+			save_scope_as = bosnia_scope
 		}
-		remove_global_variable = balkfm_stabby_stabby
 	}
 	
 	option = {
-		# Seek Revenge
 		name = eqfm_karadag.113.a
 		default_option = yes
 		trigger_event = {
 			id = eqfm_karadag.114 # A Local Collaborator
 			days = 150
 		}
+		set_variable = eqfm_collaborator_var
 		ai_chance = {
 			base = 50
 		}
 	}
-	
-	option = {
-		# Let it Ride
-		name = eqfm_karadag.113.b
-		add_modifier = {
-			name = modifier_balkfm_tolerated_abuses
-			months = gbbf_short_modifier_time
-		}
-		ai_chance = {
-			base = 0
-		}
-	}
-	
 }
 
 eqfm_karadag.114 = {
@@ -3845,12 +3968,32 @@ eqfm_karadag.114 = {
 	option = {
 		name = eqfm_karadag.114.a
 		default_option = yes
-		hidden_effect = {
+		custom_tooltip = {
+			text = eqfm_karadag.114.tt
 			trigger_event = {
 				id = eqfm_karadag.115 # The Demise of Smaïl-aga
 				days = 150
 			}
+			if = {
+				limit = {
+					exists = c:MON
+					c:MON != this
+				}
+				c:MON ?= {
+					trigger_event = {
+						id = eqfm_karadag.115 # The Demise of Smaïl-aga
+						days = 150
+					}
+				}
+			}
 			c:BOS ?= {
+				random_scope_character = { 
+					limit = { 
+						has_template = balkfm_cengic_smail
+					}
+					exile_character = yes
+					place_character_in_void = 120
+				}
 				trigger_event = {
 					id = eqfm_karadag.115 # The Demise of Smaïl-aga
 					days = 150
@@ -3858,13 +4001,12 @@ eqfm_karadag.114 = {
 			}
 			c:TUR ?= {
 				trigger_event = {
-					id = turkfm_tanzimat.020 # The Sultan in Mostar
+					id = eqfm_karadag.115 # The Demise of Smaïl-aga
 					days = 150
 				}
 			}
 		}
 	}
-	
 }
 
 eqfm_karadag.115 = {
@@ -3893,7 +4035,21 @@ eqfm_karadag.115 = {
 	}
 	
 	immediate = {
-		balkfm_hersek_scopes_effect = yes
+		c:BOS = {
+			random_scope_character = {
+				limit = {
+					has_template = balkfm_cengic_smail
+				}
+				save_scope_as = smail_aga_scope
+			}
+			save_scope_as = bosnia_scope
+		}
+		c:MON = {
+			save_scope_as = montenegro_scope
+		}
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
 	}
 	
 	option = {
@@ -3940,7 +4096,6 @@ eqfm_karadag.115 = {
 }
 
 eqfm_karadag.116 = {
-	# Unintended Consequences
 	type = country_event
 	placement = root
 	
@@ -3965,7 +4120,15 @@ eqfm_karadag.116 = {
 	}
 	
 	immediate = {
-		balkfm_hersek_scopes_effect = yes
+		c:BOS = {
+			save_scope_as = bosnia_scope
+		}
+		c:MON = {
+			save_scope_as = montenegro_scope
+		}
+		c:TUR = {
+			save_scope_as = ottoman_scope
+		}
 		c:RUS = {
 			save_scope_as = russia_scope
 		}
@@ -3985,7 +4148,6 @@ eqfm_karadag.116 = {
 	}
 	
 	option = {
-		# Expose the truth
 		name = eqfm_karadag.116.b
 		create_incident = {
 			country = c:TUR
@@ -4001,7 +4163,6 @@ eqfm_karadag.116 = {
 }
 
 eqfm_karadag.117 = {
-	# Duplicitous Diplomacy
 	type = country_event
 	placement = root
 	
@@ -4026,9 +4187,14 @@ eqfm_karadag.117 = {
 	}
 	
 	immediate = {
-		balkfm_hersek_scopes_effect = yes
-		ruler = {
-			save_scope_as = njegos_scope
+		c:BOS = {
+			save_scope_as = bosnia_scope
+		}
+		c:MON = {
+			save_scope_as = montenegro_scope
+		}
+		c:TUR = {
+			save_scope_as = ottoman_scope
 		}
 	}
 	
@@ -4040,5 +4206,72 @@ eqfm_karadag.117 = {
 			months = gbbf_short_modifier_time
 		}
 	}
+}
+
+eqfm_karadag.118 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
+	title = eqfm_karadag.118.t
+	desc = eqfm_karadag.118.d
+	flavor = eqfm_karadag.118.f
+	
+	gui_window = event_window_com_default
+	
+	event_image = {
+		video = "ip3_agitator_reading_manifesto"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = eqfm_karadag.118.a
+		default_option = yes
+	}
+	
+	option = {
+		name = eqfm_karadag.118.b
+	}
+}
+
+eqfm_karadag.119 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_karadag.119.t
+	desc = eqfm_karadag.119.d
+	flavor = eqfm_karadag.119.f
+	
+	gui_window = event_window_com_default
+	
+	event_image = {
+		video = "votp_conspiring"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = eqfm_karadag.119.a
+		default_option = yes
+	}
+	
+	option = {
+		name = eqfm_karadag.119.b
+	}
 }
