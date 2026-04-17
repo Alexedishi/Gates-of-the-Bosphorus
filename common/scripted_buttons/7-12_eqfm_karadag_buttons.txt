@@ -96,7 +96,6 @@ eqfm_increase_raiding_button = {
 	desc = "eqfm_increase_raiding_desc"
 	
 	visible = {
-		has_dlc_feature = ip3_content # National Awakening
 		NOT = {
 			has_global_variable = eqfm_montenegrin_raiding_settled
 		}
@@ -157,7 +156,6 @@ eqfm_decrease_raiding_button = {
 	desc = "eqfm_decrease_raiding_desc"
 	
 	visible = {
-		has_dlc_feature = ip3_content # National Awakening
 		NOT = {
 			has_global_variable = eqfm_montenegrin_raiding_settled
 		}
@@ -219,7 +217,6 @@ eqfm_appoint_tribal_chief_button = {
 	desc = "eqfm_appoint_tribal_chief_desc"
 	
 	visible = {
-		has_dlc_feature = ip3_content # National Awakening
 		NOT = {
 			has_global_variable = eqfm_montenegrin_raiding_settled
 		}
@@ -253,7 +250,6 @@ eqfm_dismiss_tribal_chief_button = {
 	desc = "eqfm_dismiss_tribal_chief_desc"
 	
 	visible = {
-		has_dlc_feature = ip3_content # National Awakening
 		c:MON ?= this
 		eqfm_has_karadag_expedition_trigger = yes
 	}
@@ -280,7 +276,6 @@ eqfm_ransom_captives_button = {
 	
 	visible = {
 		c:MON ?= this
-		has_dlc_feature = ip3_content # National Awakening
 		NOT = {
 			has_global_variable = eqfm_montenegrin_raiding_settled
 		}
@@ -428,19 +423,13 @@ eqfm_start_scheming_button = {
 		NOT = {
 			has_global_variable = eqfm_ali_rizvanbegovic_waxed
 		}
-		c:TUR ?= this
-		c:BOS ?= {
-			ruler = {
-				OR = {
-					has_template = balkfm_rizvanbegovic_ali
-					has_template = balkfm_rizvanbegovic_mehmed
-					has_template = mon_ali_pasha_rizvanbegovic
-				}
-			}
-			is_subject_of = root
-		}
+		c:BOS ?= this
 		exists = c:MON
 		exists = c:SER
+		any_scope_character = {
+			has_template = balkfm_cengic_smail
+			has_modifier = modifier_balkfm_accomplished_warlord
+		}
 		
 	}
 	selected = {
@@ -472,7 +461,6 @@ eqfm_assign_border_guard_button = {
 	desc = "eqfm_assign_border_guard_desc"
 	
 	visible = {
-		has_dlc_feature = ip3_content # National Awakening
 		NOT = {
 			has_global_variable = eqfm_montenegrin_raiding_settled
 		}
@@ -502,7 +490,6 @@ eqfm_recall_karadag_expedition_button = {
 	desc = "eqfm_recall_expedition_desc"
 	
 	visible = {
-		has_dlc_feature = ip3_content # National Awakening
 		c:TUR ?= this
 		eqfm_has_karadag_expedition_trigger = yes
 	}
@@ -519,11 +506,16 @@ eqfm_arrest_ali_pasha_button = {
 	desc = "eqfm_arrest_ali_pasha_desc"
 	
 	visible ={
+		c:TUR ?= this
 		c:BOS ?= {
-			is_subject_of = root
 			ruler = {
-				has_template = balkfm_rizvanbegovic_ali
+				OR = {
+					has_template = balkfm_rizvanbegovic_ali
+					has_template = balkfm_rizvanbegovic_mehmed
+					has_template = mon_ali_pasha_rizvanbegovic
+				}
 			}
+			is_subject_of = root
 		}
 	}
 	possible = {
