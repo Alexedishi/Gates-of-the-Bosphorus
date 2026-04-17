@@ -402,11 +402,28 @@ eqfm_abandon_karadag_button = {
 	
 	possible = {
 		has_claim = s:STATE_MONTENEGRO
+		trigger_if = {
+			limit = {
+				exists = c:MON
+			}
+			NOT = {
+				has_truce_with = c:MON
+			}
+		}
 	}
 	
 	effect = {
 		s:STATE_MONTENEGRO = {
 			remove_claim = root
+		}
+		if = {
+			limit = {
+				exists = c:MON
+			}
+			create_unidirectional_truce = {
+				country = c:MON
+				months = 240
+			}
 		}
 	}
 	
@@ -443,6 +460,10 @@ eqfm_start_scheming_button = {
 		OR = {
 			c:MON.relations:root >= relations_threshold:cold
 			c:SER.relations:root >= relations_threshold:cold
+		}
+		NOR = {
+			has_truce_with = c:MON
+			has_truce_with = c:SER
 		}
 	}
 	effect = {
@@ -518,9 +539,17 @@ eqfm_arrest_ali_pasha_button = {
 		}
 	}
 	possible = {
+		NOT = {
+			has_truce_with = c:BOS
+		}
 		c:BOS ?= {
 			liberty_desire < 25
 			NOT = { is_diplomatic_play_enemy_of = root }
+			OR = {
+				is_subject_type = subject_type_puppet
+				is_subject_type = subject_type_tributary
+				is_subject_type = subject_type_gbbf_eyalet
+			}
 		}
 	}
 	effect = {
