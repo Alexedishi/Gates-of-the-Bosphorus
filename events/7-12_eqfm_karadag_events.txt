@@ -3585,6 +3585,31 @@ eqfm_karadag.103 = {
 	
 	immediate = {
 		eqfm_save_ali_pasha_scopes_effect = yes
+		c:MON = {
+			if = {
+				limit = {
+					any_scope_character = {
+						has_template = balkfm_petrovic_joko
+					}
+				}
+				random_scope_character = {
+					limit = {
+						has_template = balkfm_petrovic_joko
+					}
+					exile_character = yes
+					place_character_in_void = 12
+				}
+				remove_variable = eqfm_karadag_expedition_var
+				eqfm_check_karadag_expeditions_effect = yes
+				eqfm_update_expedition_costs_effect = yes
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = balkfm_petrovic_joko
+			}
+			save_scope_as = balkfm_joko_scope
+		}
 	}
 	
 	option = {
@@ -3595,13 +3620,11 @@ eqfm_karadag.103 = {
 			c:MON ?= this
 		}
 		scope:balkfm_joko_scope = {
-			kill_character = yes
+			show_as_tooltip = {
+				kill_character = yes
+			}
 		}
-		custom_tooltip = {
-			text = eqfm_dismiss_tribal_chief
-			remove_variable = eqfm_karadag_expedition_var
-			eqfm_update_expedition_costs_effect = yes
-		}
+		custom_tooltip = eqfm_dismiss_tribal_chief
 	}
 	
 	option = { # For the Ottomans
@@ -3609,7 +3632,11 @@ eqfm_karadag.103 = {
 		trigger = {
 			c:TUR ?= this
 		}
-		custom_tooltip = gbbf_no_effects
+		scope:balkfm_joko_scope = {
+			show_as_tooltip = {
+				kill_character = yes
+			}
+		}
 	}
 	
 	option = { # For Bosnia
@@ -3617,12 +3644,14 @@ eqfm_karadag.103 = {
 		trigger = {
 			c:BOS ?= this
 		}
-		custom_tooltip = {
-			text = gbbf_no_effects
-			trigger_event = {
-				id = eqfm_karadag.110
-				months = 3
+		scope:balkfm_joko_scope = {
+			show_as_tooltip = {
+				kill_character = yes
 			}
+		}
+		trigger_event = {
+			id = eqfm_karadag.110
+			days = { 45 60 }
 		}
 	}
 }
@@ -4027,13 +4056,6 @@ eqfm_karadag.114 = {
 				}
 			}
 			c:BOS ?= {
-				random_scope_character = { 
-					limit = { 
-						has_template = balkfm_cengic_smail
-					}
-					exile_character = yes
-					place_character_in_void = 24 # Let him sink into the abyss
-				}
 				trigger_event = {
 					id = eqfm_karadag.115 # The Demise of Smaïl-aga
 					days = 150
@@ -4078,6 +4100,23 @@ eqfm_karadag.115 = {
 	
 	immediate = {
 		eqfm_save_ali_pasha_scopes_effect = yes
+		c:BOS ?= {
+			if = {
+				limit = {
+					any_scope_character = {
+						has_template = balkfm_cengic_smail
+					}
+				}
+			}
+			random_scope_character = {
+				limit = {
+					has_template = balkfm_cengic_smail
+				}
+				exile_character = yes
+				place_character_in_void = 24 # Let him sink into the abyss
+			}
+			eqfm_check_karadag_expeditions_effect = yes
+		}
 		random_character_in_void = {
 			limit = {
 				has_template = balkfm_cengic_smail
