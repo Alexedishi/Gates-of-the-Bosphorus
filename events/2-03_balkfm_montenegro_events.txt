@@ -452,12 +452,6 @@ balkfm_montenegro.008 = {
 		heir = {
 			save_scope_as = balkfm_heir_scope
 		}
-		create_character = {
-			template = balkfm_petrovic_pero
-			on_created = {
-				place_character_in_void = 24
-			}
-		}
 		random_character_in_void = {
 			limit = {
 				has_template = balkfm_petrovic_pero
@@ -609,9 +603,12 @@ balkfm_montenegro.011 = {
 	}
 
 	cancellation_trigger = {
-		NOT = {
+		NOR = {
 			ruler = {
 				has_template = balkfm_petrovic_danilo
+			}
+			any_scope_character = {
+				has_template = balkfm_petrovic_pero
 			}
 		}
 	}
@@ -622,7 +619,7 @@ balkfm_montenegro.011 = {
 				save_scope_as = balkfm_landowners_leader_scope
 			}
 		}
-		random_character_in_void = {
+		random_scope_character = {
 			limit = {
 				has_template = balkfm_petrovic_pero
 			}
@@ -641,6 +638,9 @@ balkfm_montenegro.011 = {
 		scope:balkfm_landowners_leader_scope = {
 			exile_character = yes
 		}
+		scope:balkfm_pero_scope = {
+			retire_character = yes
+		}
 		set_variable = {
 			name = balkfm_danilo_finna_get_shot
 			years = { 9 10 } # Reigned for just over 9 years
@@ -653,11 +653,18 @@ balkfm_montenegro.011 = {
 		name = balkfm_montenegro.011.b
 		add_modifier = modifier_balkfm_unanswered_feud
 		scope:balkfm_pero_scope = {
-			gbbf_free_from_void_leader = yes
+			if = {
+				limit = {
+					NOT = {
+						interest_group.leader = this
+					}
+				}
+				set_as_interest_group_leader = yes
+			}
+			add_modifier = modifier_eqfm_rural_notable
 		}
 		remove_variable = balkfm_mon_illness_var
 	}
-
 }
 
 balkfm_montenegro.012 = {
