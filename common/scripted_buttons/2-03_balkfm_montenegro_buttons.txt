@@ -73,6 +73,52 @@ REPLACE:je_montenegrin_visit_moscow = {
 	}
 }
 
+REPLACE:je_montenegrin_make_saint = {
+	name = "je_montenegrin_make_saint"
+	desc = "je_montenegrin_make_saint_desc"
+	
+	visible = {
+		NOT = {
+			has_variable = mon_saint_made
+		}
+	}
+	possible = {
+		ruler = {
+			is_busy = no
+		}
+		gold_reserves > 15000
+		ig:ig_devout = {
+			is_insurrectionary = no
+		}
+	}
+	effect = {
+		add_modifier = {
+			name = mon_saint_nephew
+			days = long_modifier_time
+			is_decaying = yes
+		}
+		add_treasury = -15000
+		ig:ig_devout ?= {
+			add_modifier = {
+				name = saints_are_nice
+				days = long_modifier_time
+				is_decaying = yes
+			}
+		}
+		trigger_event = {
+			id = mon_state_formation.3
+			popup = yes
+		}
+	}
+	ai_chance = {
+		value = -3 # Token amount to make Montenegro wait a bit before doing this
+		add = {
+			value = gold_reserves
+			divide = 10000
+		}
+	}
+}
+
 balkfm_mon_principality_button = {
 	name = "balkfm_mon_principality_name"
 	desc = "balkfm_mon_principality_desc"
