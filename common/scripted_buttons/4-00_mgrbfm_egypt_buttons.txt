@@ -224,3 +224,117 @@ mgrbfm_embrace_copt_identity_button = {
 		}
 	}
 }
+
+mgrbfm_red_sea_claims_button = {
+	name = "mgrbfm_red_sea_claims_name"
+	desc = "mgrbfm_red_sea_claims_desc"
+	
+	visible = {
+		OR = {
+			NOT = {
+				owns_entire_state_region = STATE_SINAI
+				has_claim = s:STATE_SINAI
+			}
+			NOT = {
+				owns_entire_state_region = STATE_TRANSJORDAN
+				has_claim = s:STATE_TRANSJORDAN
+			}
+			NOT = {
+				owns_entire_state_region = STATE_HEDJAZ
+				has_claim = s:STATE_HEDJAZ
+			}
+			NOT = {
+				owns_entire_state_region = STATE_YEMEN
+				has_claim = s:STATE_YEMEN
+			}
+		}
+	}
+	possible = {
+		has_strategic_region_interest_tier = {
+			strategic_region = sr:region_arabia
+			value >= 2
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				exists = c:GBR
+			}
+			create_incident = {
+				country = c:GBR
+				value = 10
+			}
+		}
+		else = {
+			change_infamy = 10
+		}
+		every_country_in_red_sea = {
+			limit = {
+				this != root
+				any_scope_state = {
+					state_region = {
+						OR = {
+							s:STATE_SINAI = this
+							s:STATE_TRANSJORDAN = this
+							s:STATE_HEDJAZ = this
+							s:STATE_YEMEN = this
+						}
+					}
+				}
+			}
+			change_relations = {
+				country = root
+				value = -15
+			}
+			post_notification = notification_mgrbfm_red_sea_claimed
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_SINAI
+					owns_entire_state_region = STATE_SINAI
+				}
+			}
+			s:STATE_SINAI = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_TRANSJORDAN
+					owns_entire_state_region = STATE_TRANSJORDAN
+				}
+			}
+			s:STATE_TRANSJORDAN = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_HEDJAZ
+					owns_entire_state_region = STATE_HEDJAZ
+				}
+			}
+			s:STATE_HEDJAZ = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_YEMEN
+					owns_entire_state_region = STATE_YEMEN
+				}
+			}
+			s:STATE_YEMEN = {
+				add_claim = ROOT
+			}
+		}
+	}
+	
+	ai_chance = {
+		base = 75
+	}
+}

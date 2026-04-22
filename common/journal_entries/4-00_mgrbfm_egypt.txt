@@ -1003,3 +1003,58 @@ je_mgrbfm_egypt_ethiopia = {
 
 	on_fail = {  }
 }
+
+je_mgrbfm_egypt_red_sea = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_trade.dds"
+	weight = 100
+	
+	should_be_pinned_by_default_uninvolved_or_context = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+	
+	scripted_button = mgrbfm_red_sea_claims_button
+	
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
+	
+	complete = {
+		custom_tooltip = {
+			text = je_mgrbfm_egypt_red_sea_complete
+			p:x319060 = {
+				owner = root
+			}
+			p:x9E8FDD = {
+				owner = root
+			}
+		}
+	}
+	
+	on_complete = {
+		add_modifier = {
+			name = modifier_mgbrfm_red_sea_secured
+			months = long_modifier_time
+			is_decaying = yes
+		}
+	}
+	
+	fail = {
+		custom_tooltip = {
+			text = je_mgrbfm_egypt_red_sea_fail
+			NOT = {
+				any_scope_state = {
+					state_region = {
+						OR = {
+							s:STATE_SINAI = this
+							s:STATE_TRANSJORDAN = this
+							s:STATE_HEDJAZ = this
+							s:STATE_YEMEN = this
+						}
+					}
+				}
+			}
+		}
+	}
+}
