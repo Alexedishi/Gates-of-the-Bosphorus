@@ -91,19 +91,17 @@ turkfm_add_tanzimat_agenda_effect = {
 		}
 		custom_tooltip = {
 			text = turkfm_add_$type$_agenda
-			je:je_turkfm_tanzimat_reforms = {
-				if = {
-					limit = {
-						NOR = {
-							has_variable = turkfm_tanzimat_$type$_agenda
-							has_variable = turkfm_tanzimat_$type$_complete
-						}
+			if = {
+				limit = {
+					NOR = {
+						has_variable = turkfm_tanzimat_$type$_agenda
+						has_variable = turkfm_tanzimat_$type$_complete
 					}
-					set_variable = turkfm_tanzimat_$type$_agenda
 				}
-				else = {
-					error_log = "turkfm_add_tanzimat_agenda_effect was called, but the specified agenda is either already active or complete."
-				}
+				set_variable = turkfm_tanzimat_$type$_agenda
+			}
+			else = {
+				error_log = "turkfm_add_tanzimat_agenda_effect was called, but the specified agenda is either already active or complete."
 			}
 		}
 	}
@@ -125,20 +123,16 @@ turkfm_complete_tanzimat_agenda_effect = {
 		limit = {
 			has_journal_entry = je_turkfm_tanzimat_reforms
 		}
-		je:je_turkfm_tanzimat_reforms = {
-			if = {
-				limit = {
-					has_variable = turkfm_tanzimat_$type$_agenda
-				}
-				remove_variable = turkfm_tanzimat_$type$_agenda
-				set_variable = turkfm_tanzimat_$type$_complete
-				root = {
-					turkfm_advance_ottomanism1_effect = yes
-				}
+		if = {
+			limit = {
+				has_variable = turkfm_tanzimat_$type$_agenda
 			}
-			else = {
-				error_log = "turkfm_complete_tanzimat_agenda_effect was called, but the specified agenda is not active in je_turkfm_tanzimat_reforms."
-			}
+			remove_variable = turkfm_tanzimat_$type$_agenda
+			set_variable = turkfm_tanzimat_$type$_complete
+			turkfm_advance_ottomanism1_effect = yes
+		}
+		else = {
+			error_log = "turkfm_complete_tanzimat_agenda_effect was called, but the specified agenda is not active in je_turkfm_tanzimat_reforms."
 		}
 	}
 	else = {
