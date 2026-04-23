@@ -526,6 +526,9 @@ eqfm_arrest_ali_pasha_button = {
 	desc = "eqfm_arrest_ali_pasha_desc"
 	
 	visible ={
+		NOT = {
+			has_global_variable = eqfm_ali_rizvanbegovic_waxed
+		}
 		c:TUR ?= this
 		c:BOS ?= {
 			ruler = {
@@ -544,6 +547,7 @@ eqfm_arrest_ali_pasha_button = {
 		}
 		c:BOS ?= {
 			liberty_desire < 25
+			relations:root <= relations_threshold:cold
 			NOT = { is_diplomatic_play_enemy_of = root }
 			OR = {
 				is_subject_type = subject_type_puppet
@@ -551,28 +555,20 @@ eqfm_arrest_ali_pasha_button = {
 				is_subject_type = subject_type_gbbf_eyalet
 			}
 		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = turkfm_planning_hit_var
+			}
+		}
 	}
 	effect = {
-		trigger_event = {
-			id = eqfm_karadag.105
-			days = { 10 30 }
+		trigger_event = eqfm_karadag.105
+		set_variable = {
+			name = turkfm_planning_hit_var
+			months = 2
 		}
-		if = {
-			limit = {
-				c:MON ?= {
-					is_involved_in_journal_entry = je_eqfm_karadag
-				}
-			}
-			c:MON ?= {
-				trigger_event = eqfm_karadag.105
-			}
-		}
-		c:BOS ?= {
-			trigger_event = eqfm_karadag.105
-		}
-		set_global_variable = eqfm_ali_rizvanbegovic_waxed
 	}
 	ai_chance = {
-		value = 100
+		value = 90
 	}
 }

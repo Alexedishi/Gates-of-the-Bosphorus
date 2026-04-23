@@ -3713,62 +3713,78 @@ eqfm_karadag.104 = {
 eqfm_karadag.105 = {
 	type = country_event
 	placement = root
-	icon = "gfx/interface/icons/event_icons/event_skull.dds"
-	duration = 3
+	icon = "gfx/interface/icons/invention_icons/law_enforcement.dds"
+	duration = 2
 	dlc = dlc_grefm
 	
 	title = eqfm_karadag.105.t
 	desc = eqfm_karadag.105.d
 	flavor = eqfm_karadag.105.f
 	
-	gui_window = event_window_com_base
+	gui_window = event_window_3char_selection
+	left_icon = scope:turkfm_enforcer_character_1
+	center_icon = scope:turkfm_enforcer_character_2
+	right_icon = scope:turkfm_enforcer_character_3
 	
 	event_image = {
-		video = "votp_hostile_court"
+		texture = "gfx/interface/illustrations/event_backgrounds/gbbf_turkish_palace1.dds"
 	}
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
 	
 	trigger = {
+		# triggered by eqfm_arrest_ali_pasha_button
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			c:BOS ?= {
+				ruler = {
+					OR = {
+						has_template = balkfm_rizvanbegovic_ali
+						has_template = balkfm_rizvanbegovic_mehmed
+						has_template = mon_ali_pasha_rizvanbegovic
+					}
+				}
+				is_subject_of = root
+			}
+		}
 	}
 	
 	immediate = {
-		eqfm_save_ali_pasha_scopes_effect = yes
-		c:TUR = {
-			random_scope_character = {
-				limit = {
-					has_modifier = modifier_turkfm_arrested_traitor
-				}
-				save_scope_as = balkfm_omer_scope
-			}
+		c:BOS ?= {
+			save_scope_as = turkfm_pizzo_target
 		}
-		c:BOS = {
-			if = {
-				limit = {
-					ruler = {
-						OR = {
-							has_template = balkfm_rizvanbegovic_ali
-							has_template = balkfm_rizvanbegovic_mehmed
-						}
-					}
-				}
-				ruler = {
-					set_variable = balkfm_ali_pasha_var
-					place_character_in_void = 12
-				}
-				heir ?= {
-					disinherit_character = yes
-				}
-				scope:balkfm_omer_scope = {
-					transfer_character = c:BOS
-					set_character_as_ruler = yes
-				}
-			}
-		}
-		random_character_in_void = {
+		ordered_scope_general = {
 			limit = {
-				has_variable = balkfm_ali_pasha_var
+				is_busy = no
 			}
-			save_scope_as = balkfm_ali_pasha_scope
+			order_by = prominence
+			position = 0
+			save_scope_as = turkfm_enforcer_character_1
+		}
+		ordered_scope_general = {
+			limit = {
+				is_busy = no
+			}
+			order_by = prominence
+			position = 1
+			save_scope_as = turkfm_enforcer_character_2
+		}
+		ordered_scope_general = {
+			limit = {
+				is_busy = no
+			}
+			order_by = prominence
+			position = 2
+			save_scope_as = turkfm_enforcer_character_3
+		}
+		create_character = {
+			is_general = yes
+			on_created = {
+				save_scope_as = turkfm_enforcer_character_4
+				place_character_in_void = 12
+			}
 		}
 	}
 	
@@ -3776,67 +3792,82 @@ eqfm_karadag.105 = {
 		name = eqfm_karadag.105.a
 		default_option = yes
 		trigger = {
-			c:TUR ?= this
+			exists = scope:turkfm_enforcer_character_1
 		}
-		show_as_tooltip = {
-			scope:balkfm_ali_pasha_scope = {
-				kill_character = yes
-			}
-		}
-		remove_modifier = modifier_turkfm_imperial_challenger
-		show_as_tooltip = {
-			scope:balkfm_omer_scope = {
-				transfer_character = c:BOS
-				set_character_as_ruler = yes
-			}
-			c:BOS = {
-				add_modifier = {
-					name = modifier_eqfm_military_governor
-					months = very_long_modifier_time
-					is_decaying = yes
-				}
-			}
+		scope:turkfm_enforcer_character_1 = {
+			add_modifier = modifier_turkfm_arrested_traitor
+			custom_tooltip = eqfm_become_bosnian_governor
 		}
 	}
 	
 	option = {
 		name = eqfm_karadag.105.b
 		trigger = {
-			c:BOS ?= this
+			exists = scope:turkfm_enforcer_character_2
 		}
-		show_as_tooltip = {
-			scope:balkfm_ali_pasha_scope = {
-				kill_character = yes
-			}
-			scope:balkfm_omer_scope = {
-				transfer_character = c:BOS
-				set_character_as_ruler = yes
-			}
-		}
-		add_modifier = {
-			name = modifier_eqfm_military_governor
-			months = very_long_modifier_time
-			is_decaying = yes
+		scope:turkfm_enforcer_character_2 = {
+			add_modifier = modifier_turkfm_arrested_traitor
+			custom_tooltip = eqfm_become_bosnian_governor
 		}
 	}
 	
 	option = {
 		name = eqfm_karadag.105.c
 		trigger = {
-			c:MON ?= this
+			exists = scope:turkfm_enforcer_character_3
 		}
-		show_as_tooltip = {
-			scope:balkfm_ali_pasha_scope = {
-				kill_character = yes
+		scope:turkfm_enforcer_character_3 = {
+			add_modifier = modifier_turkfm_arrested_traitor
+			custom_tooltip = eqfm_become_bosnian_governor
+		}
+	}
+	
+	option = {
+		name = eqfm_karadag.105.e
+		trigger = {
+			exists = scope:turkfm_enforcer_character_4
+		}
+		scope:turkfm_enforcer_character_4 = {
+			add_modifier = modifier_turkfm_arrested_traitor
+			custom_tooltip = eqfm_become_bosnian_governor
+		}
+	}
+	
+	after = {
+		set_global_variable = eqfm_ali_rizvanbegovic_waxed
+		trigger_event = {
+			id = balkfm_bosnia.004
+			days = 15
+		}
+		if = {
+			limit = {
+				c:MON ?= {
+					is_involved_in_journal_entry = je_eqfm_karadag
+				}
 			}
-			scope:balkfm_omer_scope = {
-				transfer_character = c:BOS
-				set_character_as_ruler = yes
+			c:MON ?= {
+				trigger_event = {
+					id = balkfm_bosnia.004
+					days = 15
+				}
 			}
-			add_modifier = {
-				name = modifier_eqfm_military_governor
-				months = very_long_modifier_time
-				is_decaying = yes
+		}
+		c:BOS ?= {
+			trigger_event = {
+				id = balkfm_bosnia.004
+				days = 15
+			}
+		}
+		hidden_effect = {
+			scope:turkfm_enforcer_character_4 ?= {
+				if = {
+					limit = {
+						NOT = {
+							has_modifier = modifier_turkfm_arrested_traitor
+						}
+					}
+					free_character_from_void = yes
+				}
 			}
 		}
 	}

@@ -157,39 +157,118 @@ balkfm_bosnia.004 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
-		# triggered by je_balkfm_bos_ali_pasha
+		# triggered by eqfm_karadag.105
 	}
 	
 	immediate = {
+		eqfm_save_ali_pasha_scopes_effect = yes
+		c:TUR = {
+			random_scope_character = {
+				limit = {
+					has_modifier = modifier_turkfm_arrested_traitor
+				}
+				save_scope_as = balkfm_omer_scope
+			}
+		}
+		c:BOS = {
+			if = {
+				limit = {
+					ruler = {
+						OR = {
+							has_template = balkfm_rizvanbegovic_ali
+							has_template = balkfm_rizvanbegovic_mehmed
+						}
+					}
+				}
+				ruler = {
+					set_variable = balkfm_ali_pasha_var
+					place_character_in_void = 12
+				}
+				scope:balkfm_omer_scope = {
+					transfer_character = c:BOS
+					set_character_as_ruler = yes
+					free_character_from_void = yes
+				}
+				heir ?= {
+					disinherit_character = yes
+				}
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_variable = balkfm_ali_pasha_var
+			}
+			save_scope_as = balkfm_ali_pasha_scope
+		}
 	}
 	
 	option = {
 		name = balkfm_bosnia.004.a
 		default_option = yes
 		trigger = {
-			c:BOS = this
+			c:TUR ?= this
 		}
-		if = {
-			limit = {
-				has_claim = s:STATE_MONTENEGRO
-			}
-			s:STATE_MONTENEGRO = {
-				remove_claim = root
+		show_as_tooltip = {
+			scope:balkfm_ali_pasha_scope = {
+				kill_character = yes
 			}
 		}
-		add_modifier = {
-			name = modifier_balkfm_failed_amibitions
-			months = long_modifier_time
-			is_decaying = yes
+		remove_modifier = modifier_turkfm_imperial_challenger
+		show_as_tooltip = {
+			scope:balkfm_omer_scope = {
+				transfer_character = c:BOS
+				set_character_as_ruler = yes
+			}
+			c:BOS = {
+				add_modifier = {
+					name = modifier_eqfm_military_governor
+					months = very_long_modifier_time
+					is_decaying = yes
+				}
+			}
 		}
 	}
 	
 	option = {
 		name = balkfm_bosnia.004.b
 		trigger = {
-			c:BOS != this
+			c:BOS ?= this
 		}
-		custom_tooltip = gbbf_no_effects
+		show_as_tooltip = {
+			scope:balkfm_ali_pasha_scope = {
+				kill_character = yes
+			}
+			scope:balkfm_omer_scope = {
+				transfer_character = c:BOS
+				set_character_as_ruler = yes
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_military_governor
+			months = very_long_modifier_time
+			is_decaying = yes
+		}
+	}
+	
+	option = {
+		name = balkfm_bosnia.004.c
+		trigger = {
+			c:MON ?= this
+		}
+		show_as_tooltip = {
+			scope:balkfm_ali_pasha_scope = {
+				kill_character = yes
+			}
+			scope:balkfm_omer_scope = {
+				transfer_character = c:BOS
+				set_character_as_ruler = yes
+			}
+			add_modifier = {
+				name = modifier_eqfm_military_governor
+				months = very_long_modifier_time
+				is_decaying = yes
+			}
+		}
 	}
 }
 
