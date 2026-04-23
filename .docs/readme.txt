@@ -167,7 +167,7 @@ bulfm_: Once contained content for Bulgaria; expanded into balkfm_
 -- New journal "The Naturalist King": Partake in Ferdinand I's naturalist tendencies; uses Morgenröte's naturalist mechanics (Bulgaria)
 
 
- ####---------- Works Cited ----------####:
+####---------- Works Cited ----------####:
  Last Updated: 05.01.2024
 
  Greek History:
@@ -184,35 +184,47 @@ bulfm_: Once contained content for Bulgaria; expanded into balkfm_
 
  Last Words by Koert Davidse: vimeo . com / 88034680
 
+####---------- Planned Updates ----------####
+--Update 4.1.0--
+New Additions:
+- ##New journal "The Nature of Yugoslavia" Promote a Centralized or Federalist approach to the Yugoslav state
+- Added "Yugoslav Integralist" ideologies and movement representing the Integralist movement in Yugoslavia
+- ##New journal "The Foundation of the State" representing the multiple outcomes of Turkish identity after the failure of the Tanzimat
+- ##Added several new events and interactions to the "Power Keg of Europe" global journal
+- ##Rebuilt "The Teachings of al-Sanusi" into a global journal with new mechanics, events, and modifiers
+
 
 ####---------- Published Updates ----------####
 --Update 4.0.0-- **Major Update**
 V3 Patch 1.13 Related Changes:
-- Replaced nearly scopes to sr: with geographic region triggers
+- Replaced most scopes to sr: with geographic region triggers
 - Updated journals to comply with new pinning params and widget injection
-- Characters now have defined home states
-- Updated character role, interest, and several other triggers
+- History-generated haracters now have defined home states
+- Updated DLC icon
 
 New Additions (grefm):
 - New journal entry "Metaxism" representing the emergence of anti-monarchism and authoritarianism in Greece
 - Added Metaxism ideology for Greece's version of Fascist-related thought
 - Added Greece as a formable country
 - Added several geographic regions to support Megali Idea content
+- Ludwig von Armansperg starts as the ruler of Greece with Otto in a regency
 
 New Additions (balkfm):
 - Rebuilt "Nacertanije" into a global journal "The Yugoslav Project"
 - Added scripted buttons to "The Yugoslav Project" to annex Yugoslav countries in a manner similar to Greek annexations
-- New journal "The Nature of Yugoslavia" Promote a Centralized or Federalist approach to the Yugoslav state
-- Added "Yugoslav Integralist" ideologies and movement representing the Integralist movement in Yugoslavia
 - Added five new dynamic country names for the Serbian Empire tag
+- Added Pero Petrović and Stanko Petrović as starting politicians for MON
+- Added Anto Daković, Ilarion Roganović, Mitrofan Ban, and Jelena Vicković as historical characters for MON
+- MON can pick up Novica Cerovic as a general and politician
+- Added Smail Aga and Hasan Aga as starting characters for BOS
+- BOS starts with a claim on Montenegro
 
 New Additions (turkfm):
 - ##New journal "The Young Turks" representing an alternative fail state to the Tanzimat
-- ##New journal "The Foundation of the State" representing the multiple outcomes of Turkish identity after the failure of the Tanzimat
 - New journal "Restoring Anadolu" in the event post-Ottoman TUR does not control all of Anatolia
 - New journal chain "The Rampaging Wolf" for post-Ottoman Turkish expansion
 - ##New journal "The Armenian Expulsions"
-- New building "Avret Pazarları" (Slave Market of Constantinople) with scripting for Ottoman slave trade
+- New building "Avret Pazarları" (Slave Market of Constantinople) with scripting for the Carcassian slave trade
 - New amendments "Çiftlik" for Land Reform and "Esir Pazari" for Slavery
 - New "Young Turks" political movement with "İttihadism" and "Kemalism" ideologies
 - Added a new formable tag "Turan"
@@ -224,6 +236,7 @@ New Additions (mgrbfm):
 - New journal chain "The Egyptian Caliphate" representing the idea of an Egyptian Empire
 - New journal "The Subjugation of Sudan" for Ali Pasha's efforts to secure his hold on Sudan
 - New journal "The Ethiopian Frontier" for the Egyptian invasion of Ethiopia
+- New journal "The Arabian Gulf" for the Egyptian attempt to control the Red Sea
 - New journal "Securing Fezzan" for Fezzan
 - Added several historical rulers for EGY
 - Added flags to both TRI and LBY
@@ -236,10 +249,11 @@ New Additions (mgrbfm):
 - Added Hayreddin Pasha as a starting character for TUN
 
 New Additions (haykfm):
+- Researched and added more historical characters to the Kurdish emirates
 - Armenia is selectable from the "Sick Man of Europe" objective and spawns as the Eyālet-i Erżurūm
 
 New Additions (eqfm):
-- Rebuilt "The Teachings of al-Sanusi" into a global journal with new mechanics, events, and modifiers
+- Rebuilt the "Black Mountain" journal into a global journal to merge and expand on content for Ali Pasha Rizvanbegović
 - FZN now has access to the "Securing the Desert" journal entry
 - Improved localization with additional tooltips, explanations, and text icons
 
@@ -275,14 +289,22 @@ Balancing/Adjustments:
 - "Dedilomeni Principle" journal now accounts for electoral confidence
 - Reworked eqfm_balkans.008/009 to have discrete effects
 - Implemented several scripted effects and script values for better value/var management
+- Refactored most instances of create_character to use templates
+- MON and BOS start with a bilateral truce
+- Adjusted modifier_grefm_armansperg_regency to match Landowners regency modifier
+- "Westernized Thought" modifier changed to be a decaying modifier
 
 Fixes:
 - Large localization pass to fix typos, formatting, puncutation, etc.
 - Reworked script handling the creation and tracking of Serbian dynastic heads
+- Removed usage of Memento Mori variable
 - Fixed a case where subjects could get stuck as Eyalets
 - Building the Biljarda is now mandatory for the "Prince-Bishopric" journal if IP3 is active
 - Declaring the Principality of Montenegro is now mandatory if IP3 is active
 - Fixed a situation where "Change of Tack" journal's fail conditions could be true when the journal activates
+- Enabled two monarchy-specific flags for MON
+- je_balkfm_cultural_identity now checks for je_balkfm_national_awakening instead of nationalism in its fail trigger
+- Completing je_balkfm_national_awakening no longer changes Bosnia's state religion to Orthodox
 - Fixed error spam from balkfm_validate_serbian_characters scripted effect
 - Fixed several instances of age instead of birth_date
 - Fixed several outdated character template calls
@@ -291,21 +313,29 @@ Fixes:
 - Fixed dozens of small localization typos and errors
 - Improved the scripting of the Chariot Race events
 - Montenegrin journals that involve AUS now check for it to exist first
-- Changes all instances of set_relations in history to change_relations
+- Changed all instances of set_relations in history to change_relations
 - Improved scripting for the Megali Idea completion triggers
 - Fixed several issues in the completion tooltips for the Megali Idea
 - Fixed a duplicated trigger in the "Dedilomeni Principle" journal
 - Refactored implementation of quotation marks in localization
 - Refactored all instances of pirates_expedition_ to adriatic_expedition_
-- Refactored all instances of black_mountain_expedition_ to karadag_expedition_
+- Refactored all instances of black_mountain and the_black_mountain to karadag
 - Refactored geographic_region_balkan_situation to geographic_region_rumelia
 - Fixed confusing localization in Greek king election buttons
 - Updated progress bars to use CMF's colored progress bars
 - Fixed several scoping issues in Piracy events
+- Fixed an issue were several Piracy events could fire despite there being no expedition
+- Fixed eqfm_pirates.030 being very eager to let you know that pirates have been spotted
+- Fixed a scoping issue in the loc for balkfm_croatia.201
+- Refactored all character template names to shorten key length
+- Pirate raid events will only occur if the involved country has a coastal state
+- "Brigands Raid Again" event will only occur if the affected country has more than one state
+- "Canonize Ancestor" scripted button is now correctly visible in je_balkfm_mon_prince_bishopric
+- Added missing effects and localization to grefm_greece.047
 
 Notes:
 - Egypt and Fezzan are now in scope- Arabian Peninsular, Pan-Arab, and Muslim content remain *out of scope*
-- Libyan and Tunisian content split from "turkfm" into "mgrbfm" & outlined "levafm"
+- Libyan and Tunisian content split from "turkfm" into "mgrbfm"
 
 
 --Update 3.4.11--
