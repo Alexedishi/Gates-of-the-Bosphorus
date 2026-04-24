@@ -3270,11 +3270,20 @@ grefm_greece.047 = {
 	}
 
 	immediate = {
+	
 	}
 
 	option = {
 		name = grefm_greece.047.a
 		default_option = yes
+		scope:grefm_goudi_ig_scope = {
+			add_modifier = {
+				name = failed_coup
+				months = gbbf_normal_modifier_time
+				multiplier = 2
+				is_decaying = yes
+			}
+		}
 	}
 }
 
@@ -3295,18 +3304,81 @@ grefm_greece.048 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
+		# triggered by je_grefm_the_military_league
 	}
 
 	immediate = {
-		# triggered by je_grefm_the_military_league
+		if = {
+			limit = {
+				scope:golpista_ig ?= {
+					is_insurrectionary = yes
+				}
+			}
+			scope:golpista_ig ?= {
+				abandon_revolution = yes
+			}
+		}
+		if = {
+			limit = {
+				scope:grefm_goudi_ig_scope ?= {
+					has_party = yes
+				}
+			}
+			scope:grefm_goudi_ig_scope.party ?= {
+				set_ruling_party = yes
+			}
+		}
+		else = {
+			if = {
+				limit = {
+					scope:grefm_goudi_ig_scope ?= {
+						is_in_government = no
+					}
+				}
+				scope:grefm_goudi_ig_scope ?= {
+					add_ruling_interest_group = yes
+				}
+			}
+			every_interest_group = {
+				limit = {
+					is_in_government = yes
+					NOT = {
+						scope:grefm_goudi_ig_scope ?= this
+					}
+				}
+				remove_ruling_interest_group = yes
+			}
+		}
 	}
 
 	option = {
 		name = grefm_greece.048.a
 		default_option = yes
-	}
-
-	after = {
+		scope:grefm_goudi_ig_scope = {
+			add_modifier = {
+				name = modifier_successful_coup
+				months = gbbf_normal_modifier_time
+				is_decaying = yes
+			}
+		}
+		add_modifier = {
+			name = modifier_government_recently_couped
+			days = short_modifier_time
+			is_decaying = yes
+		}
+		if = {
+			limit = {
+				owner ?= {
+					country_has_voting_franchise = yes
+					in_election_campaign = no
+				}
+			}
+			owner ?= {
+				call_election = {
+					months = 3
+				}
+			}
+		}
 	}
 }
 
