@@ -707,6 +707,7 @@ je_turkfm_tanzimat_young_turks = {
 		country_has_voting_franchise = yes
 		government_legitimacy >= 75
 		gbbf_no_revolutionary_ig_trigger = yes
+		gbbf_is_broke_trigger = no
 	}
 
 	on_complete = {
@@ -718,6 +719,19 @@ je_turkfm_tanzimat_young_turks = {
 		custom_tooltip = {
 			text = je_turkfm_tanzimat_young_turks_fail
 			scope:journal_entry.var:turkfm_young_turks_var >= 100
+		}
+		OR = {
+			NOT = {
+				has_law_or_variant = law_type:law_monarchy
+			}
+			AND = {
+				ig:ig_landowners = {
+					is_in_government = no
+				}
+				ig:ig_devout = {
+					is_in_government = no
+				}
+			}
 		}
 	}
 
@@ -751,6 +765,17 @@ je_turkfm_tanzimat_young_turks = {
 				name = turkfm_young_turks
 				max = 100
 				min = 0
+			}
+			scope:journal_entry = {
+				remove_modifier = modifier_turkfm_political_instability
+				add_modifier = {
+					name = modifier_turkfm_political_instability
+					multiplier = {
+						value = var:turkfm_young_turks_var
+						divide = 25
+						min = 1
+					}
+				}
 			}
 		}
 	}
