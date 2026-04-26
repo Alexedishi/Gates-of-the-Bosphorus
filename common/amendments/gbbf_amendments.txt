@@ -1,6 +1,88 @@
-﻿amendment_gbbf_elifba = {
+﻿amendment_gbbf_cizye_tax = {
 	parent = law_state_religion
+	allowed_laws = {
+		law_peasant_levies
+		law_professional_army
+		law_national_militia
+		law_mass_conscription
+	}
+	
+	modifier = {
+		tax_heathen_add = 0.5
+		state_conscription_rate_mult = -0.2
+	}
+	
+	possible = {
+		c:TUR ?= this
+	}
+	would_sponsor = {
+		always = no
+	}
+	can_repeal = {
+		legitimacy >= 75
+		any_interest_group = {
+			filter = {
+				law_stance = {
+					law = law_type:law_state_religion
+					value > neutral
+				}
+			}
+			count = all
+			is_in_government = no
+			is_powerful = no
+		}
+	}
+	
+	ai_will_revoke = {
+		any_interest_group = {
+			is_in_government = yes
+			law_stance = {
+				law = law_type:law_state_religion
+				value < neutral
+			}
+		}
+	}
+}
 
+amendment_gbbf_chiftlik = {
+	parent = law_serfdom
+	allowed_laws = {
+		law_serfdom
+	}
+
+	modifier = {
+		country_officers_pol_str_mult = 0.50
+		state_officers_investment_pool_contribution_add = 0.25
+		state_pop_support_movement_cultural_minority_mult = 0.25
+	}
+
+	possible = {
+		c:TUR ?= this
+	}
+	would_sponsor = {
+		always = no
+	}
+	can_repeal = {
+		legitimacy >= 75
+		ig:ig_landowners = {
+			is_in_government = no
+			is_powerful = no
+		}
+	}
+
+	ai_will_revoke = {
+		any_interest_group = {
+			is_in_government = yes
+			law_stance = {
+				law = law_type:law_serfdom
+				value < neutral
+			}
+		}
+	}
+}
+
+amendment_gbbf_elifba = {
+	parent = law_state_religion
 	allowed_laws = {
 		law_no_schools
 		law_religious_schools
@@ -19,9 +101,22 @@
 	possible = {
 		c:TUR ?= this
 	}
-
 	would_sponsor = {
 		always = no
+	}
+	can_repeal = {
+		legitimacy >= 75
+		any_interest_group = {
+			filter = {
+				law_stance = {
+					law = law_type:law_state_religion
+					value > neutral
+				}
+			}
+			count = all
+			is_in_government = no
+			is_powerful = no
+		}
 	}
 
 	ai_will_revoke = {
@@ -33,16 +128,49 @@
 			}
 		}
 	}
+}
 
+amendment_gbbf_esir_pazari = {
+	parent = law_slave_trade
+	allowed_laws = {
+		law_slave_trade
+		law_debt_slavery
+		law_legacy_slavery
+	}
+
+	modifier = {
+		state_ottoman_slave_import_bool = yes
+	}
+
+	possible = {
+		c:TUR ?= this
+	}
+	would_sponsor = {
+		always = no
+	}
 	can_repeal = {
-		legitimacy >= legitimacy_to_repeal_amendment
-		ig:ig_devout = {
+		legitimacy >= 75
+		any_interest_group = {
+			filter = {
+				law_stance = {
+					law = law_type:law_slave_trade
+					value > neutral
+				}
+			}
+			count = all
 			is_in_government = no
 			is_powerful = no
 		}
-		ig:ig_landowners = {
-			is_in_government = no
-			is_powerful = no
+	}
+
+	ai_will_revoke = {
+		any_interest_group = {
+			is_in_government = yes
+			is_powerful = yes
+			law_stance = {
+				law = law_type:law_slavery_banned
+				value > neutral
+			}
 		}
 	}
 }

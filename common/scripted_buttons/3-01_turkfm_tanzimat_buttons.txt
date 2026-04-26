@@ -1,6 +1,6 @@
 ﻿turkfm_start_tanzimat_button = {
-	name = "turkfm_start_tanzimat_button"
-	desc = "turkfm_start_tanzimat_button_desc"
+	name = "turkfm_start_tanzimat_name"
+	desc = "turkfm_start_tanzimat_desc"
 
 	visible = {
 		NOT = {
@@ -12,82 +12,241 @@
 			text = turkfm_mahmud_dead_tt
 			ruler = {
 				NOT = {
-					has_template = template_turkfm_osmanoglu_mahmut_ii
+					has_template = turkfm_osmanoglu_mahmut_ii
 				}
 			}
 		}
 	}
 	effect = {
 		trigger_event = {
-			id = turkfm_tanzimat.002 # Edict of Gülhane
+			id = turkfm_tanzimat.002
 			popup = yes
 		}
-		show_as_tooltip = {
-			add_modifier = {
-				name = modifier_turkfm_reorganizing_spirit
-				months  = gbbf_duration_30_years
-			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_declaration
-				change_variable = {
-					name = turkfm_tanzimat_completion_var
-					add = 1
+		turkfm_add_tanzimat_agenda_effect = {
+			type = agriculture
+		}
+		turkfm_add_tanzimat_agenda_effect = {
+			type = military
+		}
+		turkfm_add_tanzimat_agenda_effect = {
+			type = civics
+		}
+		turkfm_add_tanzimat_agenda_effect = {
+			type = economy
+		}
+		turkfm_add_tanzimat_agenda_effect = {
+			type = education
+		}
+		turkfm_add_tanzimat_agenda_effect = {
+			type = security
+		}
+		turkfm_add_tanzimat_agenda_effect = {
+			type = slavery
+		}
+		add_modifier = {
+			name = modifier_turkfm_reorganizing_spirit
+			months  = 360
+		}
+		ig:ig_intelligentsia = {
+			add_ideology = ideology_anti_slavery
+		}
+		every_interest_group = {
+			limit = {
+				law_stance = {
+					law = law_type:law_state_religion
+					value > neutral
 				}
-			}
-			ig:ig_intelligentsia = {
-				add_ideology = ideology_anti_slavery
-			}
-			every_interest_group = {
-				limit = {
+				NOR = {
 					law_stance = {
-						law = law_type:law_state_religion
+						law = law_type:law_landed_voting
 						value > neutral
 					}
-					NOR = {
-						law_stance = {
-							law = law_type:law_landed_voting
-							value > neutral
-						}
-						law_stance = {
-							law = law_type:law_wealth_voting
-							value > neutral
-						}
-						law_stance = {
-							law = law_type:law_census_voting
-							value > neutral
-						}
-						law_stance = {
-							law = law_type:law_universal_suffrage
-							value > neutral
-						}
+					law_stance = {
+						law = law_type:law_wealth_voting
+						value > neutral
+					}
+					law_stance = {
+						law = law_type:law_census_voting
+						value > neutral
+					}
+					law_stance = {
+						law = law_type:law_universal_suffrage
+						value > neutral
 					}
 				}
-				add_modifier = {
-					name = modifier_turkfm_influence_questioned
-					months = gbbf_duration_10_years
-					is_decaying = yes
+			}
+			add_modifier = {
+				name = modifier_turkfm_influence_questioned
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+		}
+		every_political_movement = {
+			limit = {
+				OR = {
+					is_political_movement_type = movement_religious_majority
+					is_political_movement_type = movement_modernizer
 				}
 			}
-			every_political_movement = {
-				limit = {
-					OR = {
-						is_political_movement_type = movement_religious_majority
-						is_political_movement_type = movement_modernizer
-					}
-				}
-				add_modifier = {
-					name = modifier_turkfm_declared_reforms
-					months = gbbf_duration_20_years
-				}
+			add_modifier = {
+				name = modifier_turkfm_declared_reforms
+				months = gbbf_very_long_modifier_time
 			}
+		}
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_situation
+			}
+			post_notification = turkfm_tanzimat_started
 		}
 		set_global_variable = turkfm_tanzimat_started
 	}
 }
 
+turkfm_abolish_cizye_button = {
+	name = turkfm_abolish_cizye_name
+	desc = turkfm_abolish_cizye_desc
+	
+	visible = {
+		active_law:lawgroup_army_model = {
+			has_amendment = amendment_type:amendment_gbbf_cizye_tax
+		}
+	}
+	possible = {
+		legitimacy >= 75
+		any_interest_group = {
+			filter = {
+				law_stance = {
+					law = law_type:law_state_religion
+					value > neutral
+				}
+			}
+			count = all
+			is_in_government = no
+			is_powerful = no
+		}
+	}
+	effect = {
+		active_law:lawgroup_army_model = {
+			random_scope_amendment = {
+				limit = {
+					type = amendment_type:amendment_gbbf_cizye_tax
+				}
+				remove_amendment = yes
+			}
+		}
+	}
+}
+
+turkfm_abolish_chiftlik_button = {
+	name = turkfm_abolish_chiftlik_name
+	desc = turkfm_abolish_chiftlik_desc
+	
+	visible = {
+		active_law:lawgroup_land_reform = {
+			has_amendment = amendment_type:amendment_gbbf_chiftlik
+		}
+	}
+	possible = {
+		legitimacy >= 75
+		any_interest_group = {
+			filter = {
+				law_stance = {
+					law = law_type:law_serfdom
+					value > neutral
+				}
+			}
+			count = all
+			is_in_government = no
+			is_powerful = no
+		}
+	}
+	effect = {
+		active_law:lawgroup_land_reform = {
+			random_scope_amendment = {
+				limit = {
+					type =  amendment_type:amendment_gbbf_chiftlik
+				}
+				remove_amendment = yes
+			}
+		}
+	}
+}
+
+turkfm_abolish_elifba_button = {
+	name = turkfm_abolish_elifba_name
+	desc = turkfm_abolish_elifba_desc
+	
+	visible = {
+		active_law:lawgroup_education_system = {
+			has_amendment = amendment_type:amendment_gbbf_elifba
+		}
+	}
+	possible = {
+		legitimacy >= 75
+		any_interest_group = {
+			filter = {
+				law_stance = {
+					law = law_type:law_state_religion
+					value > neutral
+				}
+			}
+			count = all
+			is_in_government = no
+			is_powerful = no
+		}
+	}
+	effect = {
+		active_law:lawgroup_education_system = {
+			random_scope_amendment = {
+				limit = {
+					type = amendment_type:amendment_gbbf_elifba
+				}
+				remove_amendment = yes
+			}
+		}
+	}
+}
+
+turkfm_abolish_esir_pazari_button = {
+	name = turkfm_abolish_esir_pazari_name
+	desc = turkfm_abolish_esir_pazari_desc
+	
+	visible = {
+		active_law:lawgroup_slavery = {
+			has_amendment = amendment_type:amendment_gbbf_esir_pazari
+		}
+	}
+	possible = {
+		legitimacy >= 75
+		any_interest_group = {
+			filter = {
+				law_stance = {
+					law = law_type:law_slave_trade
+					value > neutral
+				}
+			}
+			count = all
+			is_in_government = no
+			is_powerful = no
+		}
+	}
+	effect = {
+		active_law:lawgroup_slavery = {
+			random_scope_amendment = {
+				limit = {
+					type = amendment_type:amendment_gbbf_esir_pazari
+				}
+				remove_amendment = yes
+			}
+		}
+	}
+}
+
+
 turkfm_enforce_identity_button = {
-	name = "turkfm_enforce_identity_button"
-	desc = "turkfm_enforce_identity_button_desc"
+	name = "turkfm_enforce_identity_name"
+	desc = "turkfm_enforce_identity_desc"
 
 	visible = {
 		NOR = {
@@ -97,13 +256,13 @@ turkfm_enforce_identity_button = {
 	}
 	possible = {
 		custom_tooltip = {
-			text = turkfm_enforce_identity_button_possible_1
+			text = turkfm_enforce_identity_possible_1
 			hidden_trigger = {
 				var:turkfm_tanzimat_reform_var >= 1000
 			}
 		}
 		custom_tooltip = {
-			text = turkfm_enforce_identity_button_possible_2
+			text = turkfm_enforce_identity_possible_2
 			hidden_trigger = {
 				OR = {
 					var:turkfm_tanzimat_identity_var < 100
@@ -141,8 +300,8 @@ turkfm_enforce_identity_button = {
 }
 
 turkfm_depose_murad_button = {
-    name = "turkfm_depose_murad_button"
-    desc = "turkfm_depose_murad_button_desc"
+    name = "turkfm_depose_murad_name"
+    desc = "turkfm_depose_murad_desc"
 
     visible = {
         ruler = {
@@ -160,9 +319,7 @@ turkfm_depose_murad_button = {
         }
     }
     effect = {
-        trigger_event = {
-            id = turkfm_tanzimat.112 # Deposing an Invalid
-        }
+        trigger_event = turkfm_tanzimat.112
         set_variable = turkfm_murad_deposed
     }
 }

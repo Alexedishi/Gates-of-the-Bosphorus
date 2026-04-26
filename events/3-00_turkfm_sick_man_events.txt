@@ -5,8 +5,10 @@
 # For Greek & Byzantium content, see the "grefm" module
 # For Balkan Nations content, see the "balkfm" module
 # For Ottoman & Turkish content, see the "turkfm" module
-# For Eastern Question & Expeditions content, see the "eqfm" module
+# For Northern African content, see the "mgrbfm" module
 # For Armenian, Kurdish, & Assyrian content, see the "haykfm" module
+# For Levantine content, see the "levafm" module
+# For Eastern Question & Expeditions content, see the "eqfm" module
 
 ####################
 
@@ -106,7 +108,7 @@ turkfm_sick_man.001 = { # The Sick Man of Europe
 			add_modifier = modifier_eqfm_separatist_tensions
 			add_modifier = {
 				name = modifier_turkfm_imperial_aspiriations
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 			}
 		}
 	}
@@ -136,98 +138,145 @@ turkfm_sick_man.005 = { # Region Lost
 	trigger = {
 		OR = {
 			AND = {
-				has_variable = turkfm_controls_balkans
-				turkfm_controls_balkans_trigger = no
+				has_variable = gbbf_controls_anatolia
+				gbbf_controls_anatolia_trigger = no
 			}
 			AND = {
-				has_variable = turkfm_controls_anatolia
-				turkfm_controls_anatolia_trigger = no
+				has_variable = gbbf_controls_balkan_highlands
+				gbbf_controls_balkan_highlands_trigger = no
 			}
 			AND = {
-				has_variable = turkfm_controls_arabia
-				turkfm_controls_arabia_trigger = no
+				has_variable = gbbf_controls_aegean_sea
+				gbbf_controls_aegean_sea_trigger = no
 			}
 			AND = {
-				has_variable = turkfm_controls_nile
-				turkfm_controls_nile_trigger = no
+				has_variable = gbbf_controls_levant
+				gbbf_controls_levant_trigger = no
 			}
 			AND = {
-				has_variable = turkfm_controls_danubia
-				turkfm_controls_danubia_trigger = no
+				has_variable = gbbf_controls_nile_river
+				gbbf_controls_nile_river_trigger = no
 			}
 			AND = {
-				has_variable = turkfm_controls_caucasus
-				turkfm_controls_caucasus_trigger = no
+				has_variable = gbbf_controls_middle_east_highlands
+				gbbf_controls_middle_east_highlands_trigger = no
+			}
+			AND = {
+				has_variable = gbbf_controls_arabia
+				gbbf_controls_arabia_trigger = no
+			}
+			AND = {
+				has_variable = gbbf_controls_danubia
+				gbbf_controls_danubia_trigger = no
 			}
 		}
+	}
+
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_sick_man_main
+		}
+	}
+
+	cooldown = {
+		months = 3
 	}
 
 	immediate = {
 		if = {
 			limit = {
-				has_variable = turkfm_controls_balkans
-				turkfm_controls_balkans_trigger = no
+				has_variable = gbbf_controls_anatolia
+				gbbf_controls_anatolia_trigger = no
 			}
-			sr:region_balkans = {
-				save_scope_as = turkfm_sregion_scope
+			remove_variable = gbbf_controls_anatolia
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_anatolia
 			}
-			remove_variable = turkfm_controls_balkans
 		}
 		else_if = {
 			limit = {
-				has_variable = turkfm_controls_anatolia
-				turkfm_controls_anatolia_trigger = no
+				has_variable = gbbf_controls_balkan_highlands
+				gbbf_controls_balkan_highlands_trigger = no
 			}
-			sr:region_anatolia = {
-				save_scope_as = turkfm_sregion_scope
+			remove_variable = gbbf_controls_balkan_highlands
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_balkan_highlands
 			}
-			remove_variable = turkfm_controls_anatolia
 		}
 		else_if = {
 			limit = {
-				has_variable = turkfm_controls_arabia
-				turkfm_controls_arabia_trigger = no
+				has_variable = gbbf_controls_aegean_sea
+				gbbf_controls_aegean_sea_trigger = no
 			}
-			sr:region_arabic = {
-				save_scope_as = turkfm_sregion_scope
+			remove_variable = gbbf_controls_aegean_sea
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_aegean_sea
 			}
-			remove_variable = turkfm_controls_arabia
 		}
 		else_if = {
 			limit = {
-				has_variable = turkfm_controls_nile
-				turkfm_controls_nile_trigger = no
+				has_variable = gbbf_controls_levant
+				gbbf_controls_levant_trigger = no
 			}
-			sr:region_nile_basin = {
-				save_scope_as = turkfm_sregion_scope
+			remove_variable = gbbf_controls_levant
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_levant
 			}
-			remove_variable = turkfm_controls_nile
 		}
 		else_if = {
 			limit = {
-				has_variable = turkfm_controls_danubia
-				turkfm_controls_danubia_trigger = no
+				has_variable = gbbf_controls_nile_river
+				gbbf_controls_nile_river_trigger = no
 			}
-			sr:region_danubia = {
-				save_scope_as = turkfm_sregion_scope
+			remove_variable = gbbf_controls_nile_river
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_nile_river
 			}
-			remove_variable = turkfm_controls_danubia
 		}
 		else_if = {
 			limit = {
-				has_variable = turkfm_controls_caucasus
-				turkfm_controls_caucasus_trigger = no
+				has_variable = gbbf_controls_middle_east_highlands
+				gbbf_controls_middle_east_highlands_trigger = no
 			}
-			sr:region_caucasus = {
-				save_scope_as = turkfm_sregion_scope
+			remove_variable = gbbf_controls_middle_east_highlands
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_middle_east_highlands
 			}
-			remove_variable = turkfm_controls_caucasus
+		}
+		else_if = {
+			limit = {
+				has_variable = gbbf_controls_arabia
+				gbbf_controls_arabia_trigger = no
+			}
+			remove_variable = gbbf_controls_arabia
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_arabia
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = gbbf_controls_danubia
+				gbbf_controls_danubia_trigger = no
+			}
+			remove_variable = gbbf_controls_danubia
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_danubia
+			}
 		}
 		remove_modifier = modifier_turkfm_secured_region
 		remove_modifier = modifier_turkfm_lost_region
 		add_modifier = {
 			name = modifier_turkfm_lost_region
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 		turkfm_calculate_sick_man_effect = yes
 	}
@@ -235,15 +284,17 @@ turkfm_sick_man.005 = { # Region Lost
 	option = {
 		name = turkfm_sick_man.005.a
 		default_option = yes
-		custom_tooltip = turkfm_region_lost_tt
+		custom_tooltip = {
+			text = turkfm_region_lost
+			remove_variable = gbbf_control_event_var
+		}
 		show_as_tooltip = {
 			add_modifier = {
 				name = modifier_turkfm_lost_region
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 			}
 		}
 	}
-
 }
 
 turkfm_sick_man.006 = { # Region Secured
@@ -270,121 +321,175 @@ turkfm_sick_man.006 = { # Region Secured
 		OR = {
 			AND = {
 				NOT = {
-					has_variable = turkfm_controls_balkans
+					has_variable = gbbf_controls_anatolia
 				}
-				turkfm_controls_balkans_trigger = yes
+				gbbf_controls_anatolia_trigger = yes
 			}
 			AND = {
 				NOT = {
-					has_variable = turkfm_controls_anatolia
+					has_variable = gbbf_controls_balkan_highlands
 				}
-				turkfm_controls_anatolia_trigger = yes
+				gbbf_controls_balkan_highlands_trigger = yes
 			}
 			AND = {
 				NOT = {
-					has_variable = turkfm_controls_arabia
+					has_variable = gbbf_controls_aegean_sea
 				}
-				turkfm_controls_arabia_trigger = yes
+				gbbf_controls_aegean_sea_trigger = yes
 			}
 			AND = {
 				NOT = {
-					has_variable = turkfm_controls_nile
+					has_variable = gbbf_controls_levant
 				}
-				turkfm_controls_nile_trigger = yes
+				gbbf_controls_levant_trigger = yes
 			}
 			AND = {
 				NOT = {
-					has_variable = turkfm_controls_danubia
+					has_variable = gbbf_controls_nile_river
 				}
-				turkfm_controls_danubia_trigger = yes
+				gbbf_controls_nile_river_trigger = yes
 			}
 			AND = {
 				NOT = {
-					has_variable = turkfm_controls_caucasus
+					has_variable = gbbf_controls_middle_east_highlands
 				}
-				turkfm_controls_caucasus_trigger = yes
+				gbbf_controls_middle_east_highlands_trigger = yes
+			}
+			AND = {
+				NOT = {
+					has_variable = gbbf_controls_arabia
+				}
+				gbbf_controls_arabia_trigger = yes
+			}
+			AND = {
+				NOT = {
+					has_variable = gbbf_controls_danubia
+				}
+				gbbf_controls_danubia_trigger = yes
 			}
 		}
+	}
+
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_turkfm_sick_man_main
+		}
+	}
+
+	cooldown = {
+		months = 3
 	}
 
 	immediate = {
 		if = {
 			limit = {
 				NOT = {
-					has_variable = turkfm_controls_balkans
+					has_variable = gbbf_controls_anatolia
 				}
-				turkfm_controls_balkans_trigger = yes
+				gbbf_controls_anatolia_trigger = yes
 			}
-			sr:region_balkans = {
-				save_scope_as = turkfm_sregion_scope
+			set_variable = gbbf_controls_anatolia
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_anatolia
 			}
-			set_variable = turkfm_controls_balkans
 		}
 		else_if = {
 			limit = {
 				NOT = {
-					has_variable = turkfm_controls_anatolia
+					has_variable = gbbf_controls_balkan_highlands
 				}
-				turkfm_controls_anatolia_trigger = yes
+				gbbf_controls_balkan_highlands_trigger = yes
 			}
-			sr:region_anatolia = {
-				save_scope_as = turkfm_sregion_scope
+			set_variable = gbbf_controls_balkan_highlands
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_balkan_highlands
 			}
-			set_variable = turkfm_controls_anatolia
 		}
 		else_if = {
 			limit = {
 				NOT = {
-					has_variable = turkfm_controls_arabia
+					has_variable = gbbf_controls_aegean_sea
 				}
-				turkfm_controls_arabia_trigger = yes
+				gbbf_controls_aegean_sea_trigger = yes
 			}
-			sr:region_arabic = {
-				save_scope_as = turkfm_sregion_scope
+			set_variable = gbbf_controls_aegean_sea
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_aegean_sea
 			}
-			set_variable = turkfm_controls_arabia
 		}
 		else_if = {
 			limit = {
 				NOT = {
-					has_variable = turkfm_controls_nile
+					has_variable = gbbf_controls_levant
 				}
-				turkfm_controls_nile_trigger = yes
+				gbbf_controls_levant_trigger = yes
 			}
-			sr:region_nile_basin = {
-				save_scope_as = turkfm_sregion_scope
+			set_variable = gbbf_controls_levant
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_levant
 			}
-			set_variable = turkfm_controls_nile
 		}
 		else_if = {
 			limit = {
 				NOT = {
-					has_variable = turkfm_controls_danubia
+					has_variable = gbbf_controls_nile_river
 				}
-				turkfm_controls_danubia_trigger = yes
+				gbbf_controls_nile_river_trigger = yes
 			}
-			sr:region_danubia = {
-				save_scope_as = turkfm_sregion_scope
+			set_variable = gbbf_controls_nile_river
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_nile_river
 			}
-			set_variable = turkfm_controls_danubia
 		}
 		else_if = {
 			limit = {
 				NOT = {
-					has_variable = turkfm_controls_caucasus
+					has_variable = gbbf_controls_middle_east_highlands
 				}
-				turkfm_controls_caucasus_trigger = yes
+				gbbf_controls_middle_east_highlands_trigger = yes
 			}
-			sr:region_caucasus = {
-				save_scope_as = turkfm_sregion_scope
+			set_variable = gbbf_controls_middle_east_highlands
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_middle_east_highlands
 			}
-			set_variable = turkfm_controls_caucasus
+		}
+		else_if = {
+			limit = {
+				NOT = {
+					has_variable = gbbf_controls_arabia
+				}
+				gbbf_controls_arabia_trigger = yes
+			}
+			set_variable = gbbf_controls_arabia
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_arabia
+			}
+		}
+		else_if = {
+			limit = {
+				NOT = {
+					has_variable = gbbf_controls_danubia
+				}
+				gbbf_controls_danubia_trigger = yes
+			}
+			set_variable = gbbf_controls_danubia
+			set_variable = {
+				name = gbbf_control_event_var
+				value = flag:geographic_region_danubia
+			}
 		}
 		remove_modifier = modifier_turkfm_lost_region
 		remove_modifier = modifier_turkfm_secured_region
 		add_modifier = {
 			name = modifier_turkfm_secured_region
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 		turkfm_calculate_sick_man_effect = yes
 	}
@@ -392,11 +497,14 @@ turkfm_sick_man.006 = { # Region Secured
 	option = {
 		name = turkfm_sick_man.006.a
 		default_option = yes
-		custom_tooltip = turkfm_region_secured_tt
+		custom_tooltip = {
+			text = turkfm_region_secured
+			remove_variable = gbbf_control_event_var
+		}
 		show_as_tooltip = {
 			add_modifier = {
 				name = modifier_turkfm_secured_region
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 			}
 		}
 	}
@@ -473,7 +581,7 @@ turkfm_sick_man.007 = { # The Empire Shattered
 		}
 		add_modifier = {
 			name = modifier_turkfm_sultanate_shattered
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 		create_incident = {
 			country = c:TUR
@@ -544,9 +652,7 @@ turkfm_sick_man.008 = { # The Dead Man of Europe
 						is_subject_type = subject_type_puppet
 					}
 				}
-				trigger_event = {
-					id = turkfm_sick_man.007 # The Empire Shattered
-				}
+				trigger_event = turkfm_sick_man.007
 			}
 		}
 		set_country_type = unrecognized
@@ -585,15 +691,15 @@ turkfm_sick_man.009 = { # The Healthy Man of Europe
 		name = sick_man.2.a
 		default_option = yes
 		trigger = {
-			NOT = {
-				has_journal_entry = je_turkfm_tanzimat_army
+			turkfm_has_tanzimat_agenda_NOT_trigger = {
+				type = military
 			}
 		}
 		show_as_unavailable = { always = yes }
 		highlighted_option = yes
 		add_modifier = {
 			name = ottoman_army_reform
-			days = normal_modifier_time
+			months = gbbf_normal_modifier_time
 		}
 	}
 
@@ -688,45 +794,45 @@ turkfm_sick_man.009 = { # The Healthy Man of Europe
 	option = {
 		name = sick_man.2.c
 		trigger = {
-			NOT = {
-				has_journal_entry = je_turkfm_tanzimat_economy
+			turkfm_has_tanzimat_agenda_NOT_trigger = {
+				type = economy
 			}
 		}
 		show_as_unavailable = { always = yes }
 		highlighted_option = yes
 		add_modifier = {
 			name = ottoman_urbanization
-			days = normal_modifier_time
+			months = gbbf_normal_modifier_time
 		}
 	}
 
 	option = {
 		name = sick_man.2.d
 		trigger = {
-			NOT = {
-				has_journal_entry = je_turkfm_tanzimat_education
+			turkfm_has_tanzimat_agenda_NOT_trigger = {
+				type = education
 			}
 		}
 		show_as_unavailable = { always = yes }
 		highlighted_option = yes
 		add_modifier = {
 			name = ottoman_education
-			days = normal_modifier_time
+			months = gbbf_normal_modifier_time
 		}
 	}
 
 	option = {
 		name = sick_man.2.e
 		trigger = {
-			NOT = {
-				has_journal_entry = je_turkfm_tanzimat_bureaucracy
+			turkfm_has_tanzimat_agenda_NOT_trigger = {
+				type = civics
 			}
 		}
 		show_as_unavailable = { always = yes }
 		highlighted_option = yes
 		add_modifier = {
 			name = ottoman_bureaucracy
-			days = normal_modifier_time
+			months = gbbf_normal_modifier_time
 		}
 	}
 
@@ -755,7 +861,7 @@ turkfm_sick_man.018 = { # A Consuming Sickness
 
 	trigger = {
 		ruler = {
-			has_template = template_turkfm_osmanoglu_mahmut_ii
+			has_template = turkfm_osmanoglu_mahmut_ii
 			NOT = {
 				has_trait = gbbf_trait_tuberculosis
 			}
@@ -769,7 +875,7 @@ turkfm_sick_man.018 = { # A Consuming Sickness
 			save_scope_as = turkfm_ruler_scope
 		}
 		trigger_event = {
-			id = turkfm_sick_man.019 # The Ascent of Abdulmecid
+			id = turkfm_sick_man.019
 			months = { 2 4 }
 		}
 	}
@@ -823,7 +929,7 @@ turkfm_sick_man.019 = { # The Ascent of Abdulmecid
 	cancellation_trigger = {
 		ruler = {
 			NOT = {
-				has_template = template_turkfm_osmanoglu_mahmut_ii
+				has_template = turkfm_osmanoglu_mahmut_ii
 			}
 		}
 	}
@@ -858,20 +964,13 @@ turkfm_sick_man.019 = { # The Ascent of Abdulmecid
 			}
 		}
 		trigger_event = {
-			id = turkfm_tanzimat.002 # Edict of Gülhane
+			id = turkfm_tanzimat.002
 			popup = yes
 		}
 		show_as_tooltip = {
 			add_modifier = {
 				name = modifier_turkfm_reorganizing_spirit
-				months  = gbbf_duration_30_years
-			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_declaration
-				change_variable = {
-					name = turkfm_tanzimat_completion_var
-					add = 1
-				}
+				months  = 360
 			}
 			ig:ig_intelligentsia = {
 				add_ideology = ideology_anti_slavery
@@ -903,7 +1002,7 @@ turkfm_sick_man.019 = { # The Ascent of Abdulmecid
 				}
 				add_modifier = {
 					name = modifier_turkfm_influence_questioned
-					months = gbbf_duration_10_years
+					months = gbbf_long_modifier_time
 					is_decaying = yes
 				}
 			}
@@ -916,7 +1015,7 @@ turkfm_sick_man.019 = { # The Ascent of Abdulmecid
 				}
 				add_modifier = {
 					name = modifier_turkfm_declared_reforms
-					months = gbbf_duration_20_years
+					months = gbbf_very_long_modifier_time
 				}
 			}
 		}

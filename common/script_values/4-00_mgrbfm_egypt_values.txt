@@ -1,0 +1,438 @@
+﻿mgrbfm_egypt_modernization_progress_value = {
+	value = 0
+	add = {
+		desc = mgrbfm_value_from_prestige
+		value = {
+			add = prestige
+			divide = 1000
+			round_to = 0.01
+		}
+	}
+	add = {
+		desc = mgrbfm_value_from_literacy_rate
+		value = literacy_rate
+		subtract = 0.30
+		round_to = 0.01
+	}
+	add = {
+		desc = mgrbfm_value_from_misri_urbanization
+		value = {
+			every_scope_state = {
+				limit = {
+					state_region = {
+						is_homeland = misri
+					}
+				}
+				add = total_urbanization
+			}
+			divide = 1000
+			round_to = 0.01
+		}
+	}
+	add = {
+		desc = mgrbfm_value_from_average_vs_expected_sol
+		value = {
+			add = average_sol
+			subtract = average_expected_sol
+			divide = 100
+			round_to = 0.01
+		}
+	}
+	add = {
+		desc = gbbf_value_from_institution_levels
+		value = {
+			add = gbbf_institution_investment_levels_value
+			divide = 10
+		}
+	}
+	add = {
+		desc = mgrbfm_value_from_barrages
+		value = {
+			every_scope_building = {
+				limit = {
+					is_building_type = gbbf_building_nile_barrage
+				}
+				add = 0.1
+			}
+		}
+	}
+	add = {
+		desc = mgrbfm_value_from_misri_railways
+		value = {
+			every_scope_state = {
+				limit = {
+					state_region = {
+						is_homeland = misri
+					}
+					has_building = building_railway
+				}
+				add = state_urbanization_rate
+			}
+			divide = 1000
+			round_to = 0.01
+		}
+	}
+	subtract = {
+		desc = gbbf_value_from_country_monopolies
+		value = {
+			add = var:je_mgrbfm_egypt_modernization.var:gbbf_country_monopolies_var
+			divide = 10
+		}
+	}
+	
+	subtract = {
+		desc = mgrbfm_value_from_num_taxed_goods
+		value = {
+			add = num_taxed_goods
+			divide = 10
+		}
+	}
+	if = {
+		limit = {
+			is_country_type = unrecognized
+		}
+		subtract = {
+			desc = mgrbfm_value_from_unrecognized
+			value = 0.5
+		}
+	}
+	subtract = {
+		desc = mgrbfm_value_from_misri_radicalism
+		value = {
+			every_scope_state = {
+				limit = {
+					state_region = {
+						is_homeland = misri
+					}
+				}
+				add = radical_fraction
+			}
+			divide = {
+				every_scope_state = {
+					limit = {
+						state_region = {
+							is_homeland = misri
+						}
+					}
+					add = 1
+				}
+				min = 1 # Div/0 guard
+			}
+			round_to = 0.01
+		}
+	}
+	round_to = 0.01
+}
+
+mgrbfm_nile_control_value = {
+	value = 0
+	s:STATE_LOWER_EGYPT = {
+		if = {
+			limit = {
+				any_scope_state = {
+					is_production_method_active = {
+						building_type = gbbf_building_nile_barrage
+						production_method = pm_gbbf_adequate_reservior
+					}
+				}
+			}
+			add = 1
+		}
+	}
+	s:STATE_MIDDLE_EGYPT = {
+		if = {
+			limit = {
+				any_scope_state = {
+					is_production_method_active = {
+						building_type = gbbf_building_nile_barrage
+						production_method = pm_gbbf_adequate_reservior
+					}
+				}
+			}
+			add = 1
+		}
+	}
+	s:STATE_UPPER_EGYPT = {
+		if = {
+			limit = {
+				any_scope_state = {
+					is_production_method_active = {
+						building_type = gbbf_building_nile_barrage
+						production_method = pm_gbbf_adequate_reservior
+					}
+				}
+			}
+			add = 1
+		}
+	}
+	s:STATE_EGYPTIAN_DESERT = {
+		if = {
+			limit = {
+				any_scope_state = {
+					is_production_method_active = {
+						building_type = gbbf_building_nile_barrage
+						production_method = pm_gbbf_adequate_reservior
+					}
+				}
+			}
+			add = 1
+		}
+	}
+	s:STATE_DONGOLA = {
+		if = {
+			limit = {
+				any_scope_state = {
+					is_production_method_active = {
+						building_type = gbbf_building_nile_barrage
+						production_method = pm_gbbf_adequate_reservior
+					}
+				}
+			}
+			add = 1
+		}
+	}
+}
+
+mgrbfm_misri_identity_value = {
+	value = 0
+	add = {
+		desc = mgrbfm_value_from_misri_homelands
+		value = {
+			every_scope_state = {
+				limit = {
+					is_incorporated = yes
+					is_split_state = no
+					state_region = {
+						is_homeland = misri
+					}
+				}
+				add = 0.1
+			}
+		}
+	}
+	add = {
+		desc = mgrbfm_value_from_misri_urbanization
+		value = {
+			every_scope_state = {
+				limit = {
+					state_region = {
+						is_homeland = misri
+					}
+				}
+				add = state_urbanization_rate
+			}
+			divide = 100
+			round_to = 0.01
+		}
+	}
+	add = {
+		desc = mgrbfm_value_from_secular_academia_levels
+		value = {
+			every_scope_building = {
+				limit = {
+					is_building_type = building_university
+					has_active_production_method = pm_secular_academia
+				}
+				add = level
+				divide = 10
+			}
+		}
+	}
+	add = {
+		desc = mgrbfm_value_from_misri_formations
+		value = {
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = misri
+					OR = {
+						is_pop_type = officers
+						is_pop_type = soldiers
+					}
+				}
+				add = total_size
+				divide = 100000
+				round_to = 0.01
+			}
+		}
+	}
+	if = {
+		limit = {
+			morgenrote_is_active = yes
+		}
+		add = {
+			desc = mgrbfm_value_from_egypt_artifact_major
+			value = var:lepsius_egyptian_artifact_major
+		}
+		add = {
+			desc = mgrbfm_value_from_egypt_artifact_minor
+			value = {
+				add = var:lepsius_egyptian_artifact_minor
+				divide = 10
+			}
+		}
+	}
+	add = {
+		desc = mgrbfm_value_from_literacy_rate
+		value = literacy_rate
+	}
+	if = {
+		limit = {
+			has_law_or_variant = law_type:law_freedom_of_conscience
+		}
+		add = {
+			desc = mgrbfm_value_from_religious_law
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			has_law_or_variant = law_type:law_multicultural
+		}
+		divide = {
+			desc = mgrbfm_value_from_multicultural
+			value = 2
+		}
+	}
+}
+
+mgrbfm_arab_identity_value = {
+	value = 0
+	add = {
+		desc = mgrbfm_value_from_arab_homelands
+		value = {
+			every_scope_state = {
+				limit = {
+					is_incorporated = yes
+					is_split_state = no
+					state_region = {
+						OR = {
+							is_homeland = maghrebi
+							is_homeland = misri
+							is_homeland = mashriqi
+							is_homeland = bedouin
+							is_homeland = yemenite
+						}
+						
+					}
+				}
+				add = 0.1
+			}
+		}
+	}
+	add = {
+		desc = mgrbfm_value_from_religious_academia_levels
+		value = {
+			every_scope_building = {
+				limit = {
+					is_building_type = building_university
+					has_active_production_method = pm_religious_academia
+				}
+				add = level
+				divide = 10
+			}
+		}
+	}
+	if = {
+		limit = {
+			morgenrote_is_active = yes
+		}
+		add = {
+			desc = mgrbfm_value_from_local_artifact_major
+			value = var:lepsius_local_artifact_major
+		}
+		add = {
+			desc = mgrbfm_value_from_local_artifact_minor
+			value = {
+				add = var:lepsius_local_artifact_minor
+				divide = 10
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_law_or_variant = law_type:law_state_religion
+		}
+		add = {
+			desc = mgrbfm_value_from_religious_law
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			has_law_or_variant = law_type:law_multicultural
+		}
+		divide = {
+			desc = mgrbfm_value_from_multicultural
+			value = 2
+		}
+	}
+}
+
+mgrbfm_copt_identity_value = {
+	value = 0
+	add = {
+		desc = mgrbfm_value_from_copt_homelands
+		value = {
+			every_scope_state = {
+				limit = {
+					is_incorporated = yes
+					is_split_state = no
+					state_region = {
+						is_homeland = coptic
+					}
+				}
+				add = 1
+			}
+		}
+	}
+	add = {
+		desc = mgrbfm_value_from_copt_urbanization
+		value = {
+			every_scope_state = {
+				limit = {
+					state_region = {
+						is_homeland = coptic
+					}
+				}
+				add = state_urbanization_rate
+			}
+			divide = 100
+			round_to = 0.01
+		}
+	}
+	add = {
+		desc = mgrbfm_value_from_copt_formations
+		value = {
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = coptic
+					OR = {
+						is_pop_type = officers
+						is_pop_type = soldiers
+					}
+				}
+				add = total_size
+				divide = 100000
+				round_to = 0.01
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_law_or_variant = law_type:law_total_separation
+		}
+		add = {
+			desc = mgrbfm_value_from_religious_law
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			has_law_or_variant = law_type:law_multicultural
+		}
+		divide = {
+			desc = mgrbfm_value_from_multicultural
+			value = 2
+		}
+	}
+}

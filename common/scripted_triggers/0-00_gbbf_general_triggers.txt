@@ -1,0 +1,218 @@
+﻿####---------- General Purpose Triggers ----------####
+gbbf_no_revolutionary_ig_trigger = {
+	any_interest_group = {
+		count = all
+		NOR = {
+			is_revolutionary = yes
+			is_insurrectionary = yes
+		}
+	}
+}
+
+gbbf_has_investment_levels_trigger = {
+	hidden_trigger = {
+		save_temporary_scope_value_as = {
+			name = gbbf_institution_investment_levels_loc
+			value = $value$
+		}
+	}
+	custom_tooltip = {
+		text = gbbf_has_investment_levels_trigger
+		has_variable = gbbf_institution_investment_levels_var
+		var:gbbf_institution_investment_levels_var >= $value$
+	}
+}
+
+gbbf_is_broke_trigger = {
+	OR = {
+		in_default = yes
+		AND = {
+			has_modifier = declared_bankruptcy
+			gold_reserves < 0
+		}
+	}
+}
+
+####---------- Culture Triggers ----------####
+gbbf_country_has_greek_culture_trigger = {
+	OR = {
+		country_has_primary_culture = cu:greek
+		country_has_primary_culture = cu:rhomaios
+		country_has_primary_culture = cu:urum
+	}
+}
+
+gbbf_pop_has_greek_culture_trigger = {
+	OR = {
+		has_pop_culture = greek
+		has_pop_culture = rhomaios
+		has_pop_culture = urum
+	}
+}
+
+gbbf_balkans_culture_trigger = {
+	OR = {
+		culture ?= cu:greek
+		culture ?= cu:rhomaios
+		culture ?= cu:serb
+		culture ?= cu:bulgarian
+		culture ?= cu:romanian
+		culture ?= cu:bosniak
+		culture ?= cu:croat
+		culture ?= cu:slovene
+		culture ?= cu:albanian
+	}
+}
+
+gbbf_balkans_pop_culture_trigger = {
+	OR = {
+		has_pop_culture = greek
+		has_pop_culture = rhomaios
+		has_pop_culture = serb
+		has_pop_culture = bulgarian
+		has_pop_culture = romanian
+		has_pop_culture = bosniak
+		has_pop_culture = croat
+		has_pop_culture = slovene
+		has_pop_culture = albanian
+	}
+}
+
+gbbf_is_turkic_homeland_trigger = {
+	OR = {
+		is_homeland = turkish
+		is_homeland = azerbaijani
+		is_homeland = turkmen
+		is_homeland = kazak
+		is_homeland = kirgiz
+		is_homeland = tatar
+		is_homeland = bashkir
+		is_homeland = uzbek
+		is_homeland = uighur
+		is_homeland = chuvash
+		is_homeland = tuvan
+		is_homeland = altaic
+		#is_homeland = yakut
+	}
+}
+
+####---------- Diplomacy Triggers ----------####
+gbbf_has_alliance_trigger = {
+	any_scope_treaty = {
+		binds = root
+		binds = $country$
+		any_scope_article = {
+			has_type = alliance
+		}
+	}
+}
+
+gbbf_has_defensive_pact_trigger = {
+	any_scope_treaty = {
+		binds = root
+		binds = $country$
+		any_scope_article = {
+			has_type = defensive_pact
+		}
+	}
+}
+
+gbbf_has_military_assistance_trigger = {
+	any_scope_treaty = {
+		binds = root
+		binds = $country$
+		any_scope_article = {
+			has_type = military_assistance
+		}
+	}
+}
+
+gbbf_has_rivalry_trigger = {
+	has_diplomatic_pact = {
+		who = $country$
+		type = rivalry
+	}
+}
+
+gbbf_has_embargo_trigger = {
+	has_diplomatic_pact = {
+		who = $country$
+		type = embargo
+	}
+}
+
+####---------- Religion Triggers ----------####
+gbbf_is_muslim_trigger = {
+	OR = {
+		country_has_state_religion = rel:sunni
+		country_has_state_religion = rel:shiite
+	}
+}
+
+####---------- State Triggers ----------####
+gbbf_capital_is_in_state_region_trigger = {
+	capital ?= {
+		state_region = {
+			s:$STATE_REGION$ = this
+		}
+	}
+}
+
+gbbf_capital_is_in_entire_state_region_trigger = {
+	capital ?= {
+		state_region = {
+			s:$STATE_REGION$ = this
+		}
+		is_split_state = no
+	}
+}
+
+
+####----------- COA Triggers -----------####
+gbbf_coa_hellene_trigger = {
+	scope:actor ?= {
+		country_has_primary_culture = cu:greek
+		NOR = {
+			country_has_primary_culture = cu:rhomaios
+			country_has_primary_culture = cu:australian
+		}
+	}
+}
+
+gbbf_coa_rhomaios_trigger = {
+	scope:actor ?= {
+		country_has_primary_culture = cu:rhomaios
+		NOR = {
+			country_has_primary_culture = cu:greek
+			country_has_primary_culture = cu:australian
+		}
+	}
+}
+
+gbbf_coa_hybrid_trigger = {
+	scope:actor ?= {
+		country_has_primary_culture = cu:greek
+		country_has_primary_culture = cu:rhomaios
+		NOT = {
+			country_has_primary_culture = cu:australian
+		}
+	}
+}
+
+gbbf_coa_emu_trigger = {
+	scope:actor ?= {
+		country_has_primary_culture = cu:australian
+	}
+}
+
+gbbf_coa_hellene_monarchy_trigger = {
+	scope:actor ?= {
+		country_has_primary_culture = cu:greek
+	}
+}
+
+gbbf_coa_rhomaios_monarchy_trigger = {
+	scope:actor ?= {
+		country_has_primary_culture = cu:rhomaios
+	}
+}

@@ -1,6 +1,59 @@
-﻿gbbf_debug_money_button = {
-	name = "gbbf_debug_money_button"
-	desc = "gbbf_debug_money_button_desc"
+﻿####---------- Debug Tool Buttons ----------####
+gbbf_debug_cheats_button = {
+	name = "gbbf_debug_cheats_name"
+	desc = "gbbf_debug_cheats_desc"
+
+	visible = {
+		always = yes
+	}
+	selected = {
+		has_variable = gbbf_debug_cheats_var
+	}
+	possible = {
+		always = yes
+	}
+	effect = {
+		if = {
+			limit = {
+				has_variable = gbbf_debug_cheats_var
+			}
+			remove_variable = gbbf_debug_cheats_var
+		}
+		else = {
+			set_variable = gbbf_debug_cheats_var
+		}
+	}
+}
+
+gbbf_debug_test_button = {
+	name = "gbbf_debug_test_name"
+	desc = "gbbf_debug_test_desc"
+
+	visible = {
+		always = yes
+	}
+	selected = {
+		has_variable = gbbf_debug_test_var
+	}
+	possible = {
+		always = yes
+	}
+	effect = {
+		if = {
+			limit = {
+				has_variable = gbbf_debug_test_var
+			}
+			remove_variable = gbbf_debug_test_var
+		}
+		else = {
+			set_variable = gbbf_debug_test_var
+		}
+	}
+}
+
+gbbf_debug_money_button = {
+	name = "gbbf_debug_money_name"
+	desc = "gbbf_debug_money_desc"
 	
 	visible = {
 		always = yes
@@ -17,8 +70,8 @@
 }
 
 gbbf_debug_loyalists_button = {
-	name = "gbbf_debug_loyalists_button"
-	desc = "gbbf_debug_loyalists_button_desc"
+	name = "gbbf_debug_loyalists_name"
+	desc = "gbbf_debug_loyalists_desc"
 	
 	visible = {
 		always = yes
@@ -37,8 +90,8 @@ gbbf_debug_loyalists_button = {
 }
 
 gbbf_debug_close_button = {
-	name = "gbbf_debug_close_button"
-	desc = "gbbf_debug_close_button_desc"
+	name = "gbbf_debug_close_name"
+	desc = "gbbf_debug_close_desc"
 	
 	visible = {
 		always = yes
@@ -54,11 +107,150 @@ gbbf_debug_close_button = {
 	}
 }
 
-gbbf_debug_tag_button = {
-	name = "gbbf_debug_tag_button"
-	desc = "gbbf_debug_tag_button_desc"
-	
+
+####---------- Debug Cheat Buttons ----------####
+gbbf_debug_clear_amendments_button = {
+	name = "gbbf_debug_clear_amendments_name"
+	desc = "gbbf_debug_clear_amendments_desc"
+
 	visible = {
+		has_variable = gbbf_debug_cheats_var
+	}
+	possible = {
+		any_active_law = {
+			OR = {
+				has_amendment = amendment_type:amendment_generic_sponsor_polstr_increase
+				has_amendment = amendment_type:amendment_generic_sponsor_polstr_approval_increase
+				has_amendment = amendment_type:amendment_generic_sponsor_polstr_increase_negotiation_1
+				has_amendment = amendment_type:amendment_generic_sponsor_polstr_increase_negotiation_2
+				has_amendment = amendment_type:amendment_generic_sponsor_polstr_increase_negotiation_3
+			}
+		}
+	}
+	effect = {
+		every_active_law = {
+			limit = {
+				OR = {
+					has_amendment = amendment_type:amendment_generic_sponsor_polstr_increase
+					has_amendment = amendment_type:amendment_generic_sponsor_polstr_approval_increase
+					has_amendment = amendment_type:amendment_generic_sponsor_polstr_increase_negotiation_1
+					has_amendment = amendment_type:amendment_generic_sponsor_polstr_increase_negotiation_2
+					has_amendment = amendment_type:amendment_generic_sponsor_polstr_increase_negotiation_3
+				}
+			}
+			every_scope_amendment = {
+				remove_amendment = yes
+			}
+		}
+	}
+}
+
+gbbf_clear_quest_modifiers_button = {
+	name = "gbbf_clear_quest_modifiers_name"
+	desc = "gbbf_clear_quest_modifiers_desc"
+
+	visible = {
+		has_variable = gbbf_debug_cheats_var
+	}
+	possible = {
+		has_modifier = negotiation_failed_quest_legit
+	}
+	effect = {
+		remove_modifier = negotiation_failed_quest_legit
+		every_interest_group = {
+			limit = {
+				has_modifier = negotiation_failed_quest
+			}
+			remove_modifier = negotiation_failed_quest
+		}
+	}
+}
+
+gbbf_capital_migration_button = {
+	name = "gbbf_capital_migration_name"
+	desc = "gbbf_capital_migration_desc"
+
+	visible = {
+		always = yes
+	}
+	possible = {
+		always = yes
+	}
+	effect = {
+		capital = {
+			add_modifier = {
+				name = modifier_population_state_immigration
+				months = gbbf_normal_modifier_time
+			}
+		}
+	}
+}
+
+gbbf_law_enactment_button = {
+	name = "gbbf_law_enactment_name"
+	desc = "gbbf_law_enactment_desc"
+
+	visible = {
+		has_variable = gbbf_debug_cheats_var
+	}
+	possible = {
+		enacting_any_law = yes
+	}
+	effect = {
+		add_enactment_modifier = {
+			name = free_speech_pamphlet_risk_success
+			multiplier = 5
+		}
+	}
+}
+
+gbbf_break_ottoman_alliances = {
+	name = "gbbf_break_ottoman_alliances"
+	desc = "gbbf_break_ottoman_alliances_desc"
+
+	visible = {
+		has_variable = gbbf_debug_cheats_var
+		exists = c:TUR
+	}
+	possible = {
+		c:TUR = {
+			any_scope_treaty = {
+				any_scope_article = {
+					OR = {
+						has_type = alliance
+						has_type = defensive_pact
+					}
+				}
+			}
+		}
+	}
+	effect = {
+		c:TUR = {
+			every_scope_treaty = {
+				limit = {
+					any_scope_article = {
+						OR = {
+							has_type = alliance
+							has_type = defensive_pact
+						}
+					}
+				}
+				withdraw = {
+					country = c:TUR
+				}
+			}
+		}
+	}
+}
+
+
+####---------- Debug Test Buttons ----------####
+gbbf_debug_tag_button = {
+	name = "gbbf_debug_tag_name"
+	desc = "gbbf_debug_tag_desc"
+
+	visible = {
+		has_variable = gbbf_debug_test_var
 		NOT = {
 			exists = c:GBBF
 		}
@@ -83,10 +275,11 @@ gbbf_debug_tag_button = {
 }
 
 gbbf_activate_highlands_button = {
-	name = "gbbf_activate_highlands_button"
-	desc = "gbbf_activate_highlands_button_desc"
+	name = "gbbf_activate_highlands_name"
+	desc = "gbbf_activate_highlands_desc"
 
 	visible = {
+		has_variable = gbbf_debug_test_var
 		NOT = {
 			has_global_variable = haykfm_highlands_started
 		}
@@ -102,23 +295,43 @@ gbbf_activate_highlands_button = {
 	}
 }
 
-gbbf_clear_quest_modifiers = {
-	name = "gbbf_clear_quest_modifiers"
-	desc = "gbbf_clear_quest_modifiers_desc"
-	
+gbbf_fix_trs_subjecthood = {
+	name = "gbbf_fix_trs_subjecthood"
+	desc = "gbbf_fix_trs_subjecthood_desc"
+
 	visible = {
-		has_modifier = negotiation_failed_quest_legit
+		has_variable = gbbf_debug_test_var
+		c:TRS ?= this
+		exists = c:AUS
 	}
 	possible = {
-		has_modifier = negotiation_failed_quest_legit
+		NOT = {
+			is_subject_of = c:AUS
+		}
 	}
 	effect = {
-		remove_modifier = negotiation_failed_quest_legit
-		every_interest_group = {
-			limit = {
-				has_modifier = negotiation_failed_quest
+		c:AUS = {
+			create_diplomatic_pact = {
+				type = protectorate
+				country = c:TRS
 			}
-			remove_modifier = negotiation_failed_quest
 		}
+	}
+}
+
+gbbf_fix_yugoslavism = {
+	name = "gbbf_fix_yugoslavism"
+	desc = "gbbf_fix_yugoslavism_desc"
+
+	visible = {
+		has_variable = gbbf_debug_test_var
+		has_global_variable = balkfm_yugoslavism_failed
+	}
+	possible = {
+		has_technology_researched = nationalism
+	}
+	effect = {
+		remove_global_variable = balkfm_yugoslavism_failed
+		add_contextless_journal_entry = je_balkfm_unification_of_yugoslavia
 	}
 }

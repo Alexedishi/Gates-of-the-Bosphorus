@@ -5,8 +5,10 @@
 # For Greek & Byzantium content, see the "grefm" module
 # For Balkan Nations content, see the "balkfm" module
 # For Ottoman & Turkish content, see the "turkfm" module
-# For Eastern Question & Expeditions content, see the "eqfm" module
+# For Northern African content, see the "mgrbfm" module
 # For Armenian, Kurdish, & Assyrian content, see the "haykfm" module
+# For Levantine content, see the "levafm" module
+# For Eastern Question & Expeditions content, see the "eqfm" module
 
 ####################
 
@@ -158,7 +160,7 @@ grefm_greek_nationalism.002 = {
 		name = grefm_greek_nationalism.002.b
 		add_modifier = {
 			name = modifier_grefm_nationalist_movement
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 		add_technology_progress = {
 			progress = 1000
@@ -240,7 +242,7 @@ grefm_greek_nationalism.003 = {
 		scope:attica_scope = {
 			add_modifier = {
 				name = modifier_grefm_development_focus
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 			}
 			add_loyalists_in_state = {
 				value = small_radicals
@@ -329,7 +331,6 @@ grefm_greek_nationalism.007 = {
 	option = {
 		# listen to the people, go Demotic
 		name = grefm_greek_nationalism.007.a
-		default_option = yes
 		highlighted_option = yes
 		show_as_unavailable = {
 			always = yes
@@ -349,10 +350,12 @@ grefm_greek_nationalism.007 = {
 		}
 		add_modifier = {
 			name = modifier_grefm_embraced_demotic_greek
-			months = gbbf_duration_20_years
+			months = gbbf_very_long_modifier_time
 		}
-		set_variable = grefm_greek_language_demotic
-		remove_variable = grefm_language_var
+		set_variable = {
+			name = grefm_language_var
+			value = flag:grefm_dialect_demotic
+		}
 	}
 
 	option = {
@@ -377,10 +380,12 @@ grefm_greek_nationalism.007 = {
 		}
 		add_modifier = {
 			name = modifier_grefm_enforced_katharevousa
-			months = gbbf_duration_20_years
+			months = gbbf_very_long_modifier_time
 		}
-		set_variable = grefm_greek_language_katharevousa
-		remove_variable = grefm_language_var
+		set_variable = {
+			name = grefm_language_var
+			value = flag:grefm_dialect_katharevousa
+		}
 	}
 
 	option = {
@@ -401,10 +406,12 @@ grefm_greek_nationalism.007 = {
 		}
 		add_modifier = {
 			name = modifier_grefm_enshrined_khoine
-			months = gbbf_duration_20_years
+			months = gbbf_very_long_modifier_time
 		}
-		set_variable = grefm_greek_language_khoine
-		remove_variable = grefm_language_var
+		set_variable = {
+			name = grefm_language_var
+			value = flag:grefm_dialect_khoine
+		}
 	}
 
 	option = {
@@ -425,24 +432,25 @@ grefm_greek_nationalism.007 = {
 		}
 		add_modifier = {
 			name = modifier_grefm_elevated_rhomaiika
-			months = gbbf_duration_20_years
+			months = gbbf_very_long_modifier_time
 		}
-		set_variable = grefm_greek_language_rhomaiika
-		remove_variable = grefm_language_var
+		set_variable = {
+			name = grefm_language_var
+			value = flag:grefm_dialect_rhomaiika
+		}
 	}
 
 	option = {
 		# Fallback option
 		name = grefm_greek_nationalism.007.g
+		default_option = yes
 		highlighted_option = yes
-		custom_tooltip = {
-			text = grefm_greek_nationalism.007.tt
-			hidden_effect = {
-				remove_variable = grefm_language_var
-			}
-		}
+		custom_tooltip = grefm_greek_nationalism.007.tt
 	}
 
+	after = {
+		remove_variable = grefm_language_selection_var
+	}
 }
 
 grefm_greek_nationalism.008 = {
@@ -545,7 +553,7 @@ grefm_greek_nationalism.009 = {
 		}
 		add_modifier = {
 			name = modifier_grefm_greek_imperialism
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 		add_loyalists = {
 			culture = cu:greek
@@ -581,7 +589,7 @@ grefm_greek_nationalism.009 = {
 		}
 		add_modifier = {
 			name = modifier_grefm_greek_imperialism
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 		add_radicals = {
 			culture = cu:greek
@@ -617,7 +625,7 @@ grefm_greek_nationalism.009 = {
 		}
 		add_modifier = {
 			name = modifier_grefm_greek_imperialism
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 		add_loyalists = {
 			culture = cu:greek
@@ -803,7 +811,7 @@ grefm_greek_nationalism.042 = {
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by grefm_archeaology_alternate_site_button
+		# triggered by grefm_alternate_sites_button
 	}
 
 	cancellation_trigger = {
@@ -851,7 +859,7 @@ grefm_greek_nationalism.042 = {
 		ig:ig_intelligentsia = {
 			add_modifier = {
 				name = modifier_grefm_alternate_sites
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 				is_decaying = yes
 			}
 		}
@@ -1208,7 +1216,7 @@ grefm_greek_nationalism.050 = {
 	}
 
 	immediate = {
-		post_notification = notification_grefm_steady_progress
+		post_notification = grefm_steady_progress
 		change_variable = {
 			name = grefm_excavation_var
 			add = 4
@@ -1260,7 +1268,7 @@ grefm_greek_nationalism.051 = {
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_provided_heavy_equipment
-			months = gbbf_duration_2_plus_half_years
+			months = gbbf_short_modifier_time
 			multiplier = money_amount_multiplier_small
 		}
 		custom_tooltip = {
@@ -1346,7 +1354,7 @@ grefm_greek_nationalism.052 = {
 		}
 		add_modifier = {
 			name = modifier_grefm_unearthed_tomb
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 	}
 
@@ -1373,7 +1381,7 @@ grefm_greek_nationalism.053 = {
 	}
 
 	immediate = {
-		post_notification = notification_grefm_minor_collapse
+		post_notification = grefm_minor_collapse
 		change_variable = {
 			name = grefm_excavation_var
 			subtract = 4
@@ -1396,7 +1404,7 @@ grefm_greek_nationalism.054 = {
 
 	immediate = {
 		set_variable = grefm_collapse_lessons_learned
-		post_notification = notification_grefm_major_collapse
+		post_notification = grefm_major_collapse
 		change_variable = {
 			name = grefm_excavation_var
 			subtract = 12
@@ -1426,11 +1434,11 @@ grefm_greek_nationalism.055 = {
 			}
 			save_scope_as = grefm_excavation_site
 		}
-		post_notification = notification_grefm_popular_interest
+		post_notification = grefm_popular_interest
 		scope:grefm_excavation_site = {
 			add_modifier = {
 				name = modifier_grefm_popular_excavation_project
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 			}
 		}
 	}
@@ -1452,10 +1460,10 @@ grefm_greek_nationalism.056 = {
 	}
 
 	immediate = {
-		post_notification = notification_grefm_palace_discovered
+		post_notification = grefm_palace_discovered
 		add_modifier = {
 			name = modifier_grefm_discovered_ancient_palace
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 	}
 
@@ -1503,7 +1511,7 @@ grefm_greek_nationalism.057 = {
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_found_agammemnon
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 		scope:peloponnese_scope = {
 			add_loyalists_in_state = {
@@ -1639,7 +1647,7 @@ grefm_greek_nationalism.058 = {
 		scope:grefm_benefactor_scope = {
 			add_modifier = {
 				name = modifier_grefm_supported_excavation
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 			}
 		}
 		custom_tooltip = {
@@ -1659,7 +1667,7 @@ grefm_greek_nationalism.058 = {
 		scope:grefm_benefactor_scope = {
 			add_modifier = {
 				name = modifier_grefm_support_rejected
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 			}
 		}
 		add_radicals = {
@@ -1773,7 +1781,7 @@ grefm_greek_nationalism.059 = {
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_bad_reconstruction
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 		add_radicals = {
 			pop_type = academics

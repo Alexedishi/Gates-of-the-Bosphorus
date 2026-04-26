@@ -4,10 +4,9 @@
 	}
 }
 
-##########################################################################
-
 gbbf_on_game_start = {
 	effect = {
+		# Clean up dummy tags
 		c:GBBF_ALB ?= {
 			gbbf_play_yanya_effect = yes
 		}
@@ -23,7 +22,16 @@ gbbf_on_game_start = {
 		c:GBBF_TRB ?= {
 			gbbf_play_trabzon_effect = yes
 		}
-		c:ALK = {
+		c:GBBF_ERZ ?= {
+			gbbf_play_erzurum_effect = yes
+		}
+		c:SLK = {
+			if = {
+				limit = {
+					exists = c:GBBF_ALB
+				}
+				annex = c:GBBF_TRB
+			}
 			if = {
 				limit = {
 					exists = c:GBBF_CAP
@@ -48,6 +56,12 @@ gbbf_on_game_start = {
 				}
 				annex = c:GBBF_TRB
 			}
+			if = {
+				limit = {
+					exists = c:GBBF_ERZ
+				}
+				annex = c:GBBF_ERZ
+			}
 		}
 		if = {
 			limit = {
@@ -70,31 +84,36 @@ gbbf_on_game_start = {
 				gbbf_spawn_yanya_effect = yes
 			}
 		}
-		c:GRE ?= {
+		
+		# Country-specific Operations
+		c:GRE = {
+			balkfm_set_up_ottoman_legacies_effect = yes
 			grefm_calculate_bavarocracy_variables_effect = yes
 		}
-		c:MON ?= {
+		c:GRE_SAM = {
+			balkfm_set_up_ottoman_legacies_effect = yes
+		}
+		c:MON = {
+			balkfm_set_up_ottoman_legacies_effect = yes
 			add_treasury = {
 				value = -35000
 			}
-			create_character = {
-				template = template_balkfm_petrovic_joko
-			}
 			random_scope_character = {
 				limit = {
-					has_template = template_balkfm_petrovic_joko
+					has_template = balkfm_petrovic_joko
 				}
 				set_character_busy_and_immortal = yes
-				add_modifier = modifier_eqfm_leading_black_mountain_expedition
+				add_modifier = modifier_eqfm_leading_karadag_expedition
 			}
 			set_variable = {
 				name = eqfm_tribal_chief_cooldown_var
 				months = 12
 			}
-			eqfm_start_black_mountain_expedition_effect = yes
-			eqfm_update_black_mountain_characters_effect = yes
+			eqfm_start_karadag_expedition_effect = yes
+			eqfm_check_karadag_expeditions_effect = yes
 		}
-		c:SER ?= {
+		c:SER = {
+			balkfm_set_up_ottoman_legacies_effect = yes
 			change_variable = {
 				name = balkfm_obrenovic_support_var
 				add = 200
@@ -106,17 +125,105 @@ gbbf_on_game_start = {
 			balkfm_calculate_dynastic_rivalry_variables_effect = yes
 			balkfm_update_dynasty_character_scopes_effect = yes
 		}
-		c:TUR ?= {
+		c:MOL = {
+			balkfm_set_up_ottoman_legacies_effect = yes
+		}
+		c:WAL = {
+			balkfm_set_up_ottoman_legacies_effect = yes
+		}
+		c:TUR = {
 			turkfm_calculate_sick_man_effect = yes
 			turkfm_calculate_tanzimat_variables_effect = yes
+			turkfm_circassian_slave_trade_effect = yes
 		}
+		c:EGY = {
+			je:je_mgrbfm_egypt_muhammad_ali = {
+				set_variable = {
+					name = mgrbfm_egy_army_projection
+					value = owner.army_power_projection
+				}
+				set_variable = {
+					name = mgrbfm_egy_navy_projection
+					value = owner.naval_power_projection
+				}
+				set_variable = {
+					name = mgrbfm_tur_army_projection
+					value = c:TUR.army_power_projection
+				}
+				set_variable = {
+					name = mgrbfm_tur_navy_projection
+					value = c:TUR.naval_power_projection
+				}
+			}
+			je:je_mgrbfm_egypt_modernization = {
+				set_variable = {
+					name = gbbf_country_monopolies_var
+					value = owner.gbbf_country_monopolies_value
+				}
+				set_variable = {
+					name = mgrbfm_egypt_modernization_progress_var
+					value = owner.mgrbfm_egypt_modernization_progress_value
+				}
+			}
+		}
+		c:TRI = {
+			balkfm_set_up_ottoman_legacies_effect = yes
+		}
+		c:TUN = {
+			balkfm_set_up_ottoman_legacies_effect = yes
+		}
+
+		# State-level operations
+		s:STATE_KUBAN = {
+			set_variable = {
+				name = turkfm_circassian_slave_trade_var
+				value = {
+					scope:ottoman_capital_scope = {
+						every_scope_pop = {
+							limit = {
+								is_pop_type = aristocrats
+							}
+							add = standard_of_living
+						}
+						divide = {
+							every_scope_pop = {
+								limit = {
+									is_pop_type = aristocrats
+								}
+								add = standard_of_living
+							}
+							min = 1
+						}
+					}
+					round = yes
+				}
+			}
+		}
+		
+		# Final Operations
 		every_country = {
 			limit = {
 				gbbf_country_has_greek_culture_trigger = yes
 			}
 			grefm_annexation_variables_effect = yes
 		}
+		if = {
+			limit = {
+				has_dlc_feature = ip3_content # National Awakening
+				NAND = {
+					c:MON = {
+						is_player = yes
+					}
+					c:SER = {
+						is_player = yes
+					}
+				}
+			}
+			add_contextless_journal_entry = je_balkfm_serbia_and_montenegro
+		}
+		set_global_variable = {
+			name = balkfm_yugoslav_fervor_var
+			value = balkfm_yugoslav_fervor_value
+		}
 	}
 }
-
-##########################################################################

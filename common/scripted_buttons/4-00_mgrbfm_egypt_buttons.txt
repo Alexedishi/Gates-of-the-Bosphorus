@@ -1,0 +1,340 @@
+﻿mgrbfm_broker_colonization_button = {
+	name = mgrbfm_broker_colonization_name
+	desc = mgrbfm_broker_colonization_desc
+
+	visible = {
+		NOR = {
+			owns_entire_state_region = STATE_MATRUH
+			owns_entire_state_region = STATE_EGYPTIAN_DESERT
+		}
+	}
+	possible = {
+		has_institution = institution_colonial_affairs
+		any_scope_state = {
+			OR = {
+				state_region = s:STATE_MATRUH
+				state_region = s:STATE_EGYPTIAN_DESERT
+			}
+			is_under_colonization = yes
+			NOT = {
+				has_modifier = modifier_mgrbfm_brokered_colonization_deal_state
+			}
+		}
+	}
+	effect = {
+		every_scope_state = {
+			limit = {
+				OR = {
+					state_region = s:STATE_MATRUH
+					state_region = s:STATE_EGYPTIAN_DESERT
+				}
+				is_under_colonization = yes
+				NOT = {
+					has_modifier = modifier_mgrbfm_brokered_colonization_deal_state
+				}
+			}
+			add_modifier = {
+				name = modifier_mgrbfm_brokered_colonization_deal_state
+				months = long_modifier_time
+			}
+			remove_modifier = modifier_mgrbfm_tribal_resistance
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_modifier = modifier_mgrbfm_brokered_colonization_deal_country
+				}
+			}
+			add_modifier = {
+				name = modifier_mgrbfm_brokered_colonization_deal_country
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+		}
+	}
+}
+
+mgrbfm_repair_nilometers_button = {
+	name = mgrbfm_repair_nilometers_name
+	desc = mgrbfm_repair_nilometers_desc
+
+	visible = {
+		always = yes
+	}
+	possible = {
+		has_technology_researched = mechanical_tools
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_lower_nile
+			NOR = {
+				is_production_method_active = {
+					building_type = gbbf_building_nile_barrage
+					production_method = pm_gbbf_adequate_reservior
+				}
+				is_production_method_active = {
+					building_type = gbbf_building_nile_barrage
+					production_method = pm_gbbf_massive_reservior
+				}
+				has_modifier = modifier_mgrbfm_nilometer_system
+			}
+		}
+	}
+	effect = {
+		add_modifier = {
+			name = modifier_mgrbfm_repaired_nilometers
+			months = gbbf_short_modifier_time
+			multiplier = {
+				value = money_amount_multiplier_very_small
+				divide = 2
+				multiply = {
+					every_scope_state = {
+						limit = {
+							NOR = {
+								is_production_method_active = {
+									building_type = gbbf_building_nile_barrage
+									production_method = pm_gbbf_adequate_reservior
+								}
+								is_production_method_active = {
+									building_type = gbbf_building_nile_barrage
+									production_method = pm_gbbf_massive_reservior
+								}
+								has_modifier = modifier_mgrbfm_nilometer_system
+							}
+						}
+						add = 1
+					}
+				}
+			}
+			is_decaying = yes
+		}
+		every_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_lower_nile
+				NOR = {
+					is_production_method_active = {
+						building_type = gbbf_building_nile_barrage
+						production_method = pm_gbbf_adequate_reservior
+					}
+					is_production_method_active = {
+						building_type = gbbf_building_nile_barrage
+						production_method = pm_gbbf_massive_reservior
+					}
+					has_modifier = modifier_mgrbfm_nilometer_system
+				}
+			}
+			add_modifier = modifier_mgrbfm_nilometer_system
+		}
+	}
+}
+
+mgrbfm_embrace_misri_identity_button = {
+	name = "mgrbfm_embrace_misri_identity_name"
+	desc = "mgrbfm_embrace_misri_identity_desc"
+	
+	visible = {
+		NOT = {
+			has_variable = mgrbfm_national_identity_var
+		}
+	}
+	possible = {
+		hidden_trigger = {
+			save_temporary_scope_value_as = {
+				name = mgrbfm_loc_scope
+				value = 10
+			}
+		}
+		custom_tooltip = {
+			text = mgrbfm_identity_possible
+			var:mgrbfm_misri_identity_var >= 10
+		}
+	}
+	effect = {
+		set_variable = {
+			name = mgrbfm_national_identity_var
+			value = cu:misri
+		}
+		trigger_event = {
+			id = mgrbfm_egypt.101
+			popup = yes
+		}
+	}
+}
+
+mgrbfm_embrace_arab_identity_button = {
+	name = "mgrbfm_embrace_arab_identity_name"
+	desc = "mgrbfm_embrace_arab_identity_desc"
+	
+	visible = {
+		NOT = {
+			has_variable = mgrbfm_national_identity_var
+		}
+	}
+	possible = {
+		hidden_trigger = {
+			save_temporary_scope_value_as = {
+				name = mgrbfm_loc_scope
+				value = 10
+			}
+		}
+		custom_tooltip = {
+			text = mgrbfm_identity_possible
+			var:mgrbfm_arab_identity_var >= 10
+		}
+	}
+	effect = {
+		set_variable = {
+			name = mgrbfm_national_identity_var
+			value = cu:arab
+		}
+		trigger_event = {
+			id = mgrbfm_egypt.101
+			popup = yes
+		}
+	}
+}
+
+mgrbfm_embrace_copt_identity_button = {
+	name = "mgrbfm_embrace_copt_identity_name"
+	desc = "mgrbfm_embrace_copt_identity_desc"
+	
+	visible = {
+		NOT = {
+			has_variable = mgrbfm_national_identity_var
+		}
+	}
+	possible = {
+		hidden_trigger = {
+			save_temporary_scope_value_as = {
+				name = mgrbfm_loc_scope
+				value = 10
+			}
+		}
+		custom_tooltip = {
+			text = mgrbfm_identity_possible
+			var:mgrbfm_copt_identity_var >= 10
+		}
+	}
+	effect = {
+		set_variable = {
+			name = mgrbfm_national_identity_var
+			value = cu:coptic
+		}
+		trigger_event = {
+			id = mgrbfm_egypt.101
+			popup = yes
+		}
+	}
+}
+
+mgrbfm_red_sea_claims_button = {
+	name = "mgrbfm_red_sea_claims_name"
+	desc = "mgrbfm_red_sea_claims_desc"
+	
+	visible = {
+		OR = {
+			NOT = {
+				owns_entire_state_region = STATE_SINAI
+				has_claim = s:STATE_SINAI
+			}
+			NOT = {
+				owns_entire_state_region = STATE_TRANSJORDAN
+				has_claim = s:STATE_TRANSJORDAN
+			}
+			NOT = {
+				owns_entire_state_region = STATE_HEDJAZ
+				has_claim = s:STATE_HEDJAZ
+			}
+			NOT = {
+				owns_entire_state_region = STATE_YEMEN
+				has_claim = s:STATE_YEMEN
+			}
+		}
+	}
+	possible = {
+		has_strategic_region_interest_tier = {
+			strategic_region = sr:region_arabia
+			value >= 2
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				exists = c:GBR
+			}
+			create_incident = {
+				country = c:GBR
+				value = 10
+			}
+		}
+		else = {
+			change_infamy = 10
+		}
+		every_country_in_red_sea = {
+			limit = {
+				this != root
+				any_scope_state = {
+					state_region = {
+						OR = {
+							s:STATE_SINAI = this
+							s:STATE_TRANSJORDAN = this
+							s:STATE_HEDJAZ = this
+							s:STATE_YEMEN = this
+						}
+					}
+				}
+			}
+			change_relations = {
+				country = root
+				value = -15
+			}
+			post_notification = mgrbfm_red_sea_claimed
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_SINAI
+					owns_entire_state_region = STATE_SINAI
+				}
+			}
+			s:STATE_SINAI = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_TRANSJORDAN
+					owns_entire_state_region = STATE_TRANSJORDAN
+				}
+			}
+			s:STATE_TRANSJORDAN = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_HEDJAZ
+					owns_entire_state_region = STATE_HEDJAZ
+				}
+			}
+			s:STATE_HEDJAZ = {
+				add_claim = ROOT
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_claim = s:STATE_YEMEN
+					owns_entire_state_region = STATE_YEMEN
+				}
+			}
+			s:STATE_YEMEN = {
+				add_claim = ROOT
+			}
+		}
+	}
+	
+	ai_chance = {
+		value = 75
+	}
+}

@@ -143,7 +143,7 @@ turkfm_tanzimat_reformist_progress_value = {
 		value = {
 			add = government_legitimacy
 			subtract = 75
-			multiply = 0.01
+			divide = 100
 		}
 		desc = turkfm_value_from_legitimacy
 	}
@@ -252,7 +252,7 @@ turkfm_tanzimat_reformist_progress_value = {
 					add = investment
 				}
 			}
-			multiply = 0.1
+			divide = 10
 		}
 		desc = turkfm_value_from_institution_levels
 	}
@@ -301,7 +301,7 @@ turkfm_tanzimat_conservatist_progress_value = {
 					add = investment
 				}
 			}
-			multiply = 0.1
+			divide = 10
 		}
 		desc = turkfm_value_from_institution_levels
 	}
@@ -439,6 +439,15 @@ turkfm_young_ottomans_progress_value = {
 
 turkfm_young_turks_progress_value = {
 	value = 0
+	add = {
+		desc = turkfm_value_from_legitimacy
+		value = {
+			add = government_legitimacy
+			subtract = 75
+			divide = 100
+			round_to = 0.01
+		}
+	}
 }
 
 ## General Tanzimat Values
@@ -494,6 +503,152 @@ turkfm_total_institution_investment_value = {
 		desc = turkfm_value_from_workplace_safety
 	}
 	min = 0
+}
+
+turkfm_total_tanzimat_agendas_value = {
+	value = 0
+	add = 1 # Identity Agenda
+	if = {
+		limit = {
+			NOT = {
+				has_global_variable = turkfm_tanzimat_started
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = turkfm_tanzimat_agriculture_agenda
+				has_variable = turkfm_tanzimat_agriculture_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = turkfm_tanzimat_military_agenda
+				has_variable = turkfm_tanzimat_military_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = turkfm_tanzimat_civics_agenda
+				has_variable = turkfm_tanzimat_civics_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = turkfm_tanzimat_economy_agenda
+				has_variable = turkfm_tanzimat_economy_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = turkfm_tanzimat_education_agenda
+				has_variable = turkfm_tanzimat_education_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = turkfm_tanzimat_millet_agenda
+				has_variable = turkfm_tanzimat_millet_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = turkfm_tanzimat_security_agenda
+				has_variable = turkfm_tanzimat_security_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = turkfm_tanzimat_slavery_agenda
+				has_variable = turkfm_tanzimat_slavery_complete
+			}
+		}
+		add = 1
+	}
+}
+
+turkfm_completed_tanzimat_agendas_value = {
+	value = 0
+	if = {
+		limit = {
+			OR = {
+				has_variable = turkfm_ottomanist_identity_enforced
+				has_variable = turkfm_islamist_identity_enforced
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_tanzimat_agriculture_complete
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_tanzimat_military_complete
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_tanzimat_civics_complete
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_tanzimat_economy_complete
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_tanzimat_education_complete
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_tanzimat_millet_complete
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_tanzimat_security_complete
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_tanzimat_slavery_complete
+		}
+		add = 1
+	}
 }
 
 ## Overall Balkan Radical Values
@@ -588,7 +743,7 @@ turkfm_hellene_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = greek
@@ -604,7 +759,7 @@ turkfm_hellene_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = greek
@@ -626,7 +781,7 @@ turkfm_rhomaios_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = rhomaios
@@ -642,7 +797,7 @@ turkfm_rhomaios_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = rhomaios
@@ -664,7 +819,7 @@ turkfm_serb_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = serb
@@ -680,7 +835,7 @@ turkfm_serb_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = serb
@@ -702,7 +857,7 @@ turkfm_bulgarian_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = bulgarian
@@ -718,7 +873,7 @@ turkfm_bulgarian_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = bulgarian
@@ -740,7 +895,7 @@ turkfm_romanian_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = romanian
@@ -756,7 +911,7 @@ turkfm_romanian_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = romanian
@@ -778,7 +933,7 @@ turkfm_bosniak_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = bosniak
@@ -794,7 +949,7 @@ turkfm_bosniak_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = bosniak
@@ -816,7 +971,7 @@ turkfm_albanian_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = albanian
@@ -832,7 +987,7 @@ turkfm_albanian_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = albanian
@@ -854,7 +1009,7 @@ turkfm_croat_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = croat
@@ -870,7 +1025,7 @@ turkfm_croat_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = croat
@@ -892,7 +1047,7 @@ turkfm_slovene_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = slovene
@@ -908,7 +1063,7 @@ turkfm_slovene_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = slovene
@@ -931,7 +1086,7 @@ turkfm_hellene_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = greek
 			}
@@ -946,7 +1101,7 @@ turkfm_hellene_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = greek
 				}
@@ -967,7 +1122,7 @@ turkfm_rhomaios_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = rhomaios
 			}
@@ -982,7 +1137,7 @@ turkfm_rhomaios_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = rhomaios
 				}
@@ -1003,7 +1158,7 @@ turkfm_serb_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = serb
 			}
@@ -1018,7 +1173,7 @@ turkfm_serb_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = serb
 				}
@@ -1039,7 +1194,7 @@ turkfm_bulgarian_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = bulgarian
 			}
@@ -1054,7 +1209,7 @@ turkfm_bulgarian_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = bulgarian
 				}
@@ -1075,7 +1230,7 @@ turkfm_romanian_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = romanian
 			}
@@ -1090,7 +1245,7 @@ turkfm_romanian_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = romanian
 				}
@@ -1111,7 +1266,7 @@ turkfm_bosniak_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = bosniak
 			}
@@ -1126,7 +1281,7 @@ turkfm_bosniak_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = bosniak
 				}
@@ -1147,7 +1302,7 @@ turkfm_albanian_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = albanian
 			}
@@ -1162,7 +1317,7 @@ turkfm_albanian_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = albanian
 				}
@@ -1183,7 +1338,7 @@ turkfm_croat_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = croat
 			}
@@ -1198,7 +1353,7 @@ turkfm_croat_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = croat
 				}
@@ -1219,7 +1374,7 @@ turkfm_slovene_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = slovene
 			}
@@ -1234,7 +1389,7 @@ turkfm_slovene_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = slovene
 				}

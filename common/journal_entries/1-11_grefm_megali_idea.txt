@@ -3,7 +3,7 @@
 	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
 	weight = 10000
 
-	should_be_pinned_by_default = yes
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
 
@@ -57,7 +57,7 @@
 				gbbf_country_has_greek_culture_trigger = no
 			}
 			any_scope_state = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_aegean_sea
 				is_incorporated = yes
 			}
 		}
@@ -73,39 +73,29 @@
 			limit = {
 				country_has_primary_culture = cu:rhomaios
 			}
-			trigger_event = {
-				id = grefm_megali_idea.011 # The Legacy of Rhōmanía
-			}
+			trigger_event = grefm_megali_idea.011
 		}
 		else_if = {
 			limit = {
 				c:AST ?= this
 			}
-			trigger_event = {
-				id = grefm_emu_empire.001 # 'Straya has Landed
-			}
+			trigger_event = grefm_emu_empire.001
 			set_variable = grefm_megali_idea_aspirant
 		}
 		else_if = {
 			limit = {
 				c:BUL ?= this
 			}
-			trigger_event = {
-				id = grefm_megali_idea.002 # The Megali Idea
-			}
+			trigger_event = grefm_megali_idea.002
 		}
 		else_if = {
 			limit = {
 				c:ROM ?= this
 			}
-			trigger_event = {
-				id = balkfm_romania.720 # The Imperial Standard
-			}
+			trigger_event = balkfm_romania.720
 		}
 		else = {
-			trigger_event = {
-				id = grefm_megali_idea.002 # The Megali Idea
-			}
+			trigger_event = grefm_megali_idea.002
 		}
 		set_variable = {
 			name = grefm_megali_idea_counter_var
@@ -122,35 +112,12 @@
 		is_at_war = no
 		is_subject = no
 		owns_entire_state_region = STATE_EASTERN_THRACE
-		trigger_if = {
-			# This is the standard non-BYZ form of the Megali Idea
-			limit = {
-				NOR = {
-					has_variable = grefm_weaksauce
-					has_variable = grefm_embraced_imperial_restoration
-				}
-			}
-			custom_tooltip = {
-				text = je_grefm_megali_idea_complete_default
-				var:grefm_megali_idea_counter_var >= greek_homeland_states_owned_to_complete_min
-			}
-			country_rank >= rank_value:minor_power
+		custom_tooltip = {
+			text = je_grefm_megali_idea_complete
+			var:grefm_megali_idea_counter_var >= grefm_megali_idea_complete_value
 		}
 		trigger_if = {
-			# This is the limited form of the Megali Idea
 			limit = {
-				has_variable = grefm_weaksauce
-			}
-			custom_tooltip = {
-				text = je_grefm_megali_idea_complete_megali_idea
-				var:grefm_megali_idea_counter_var >= greek_homeland_states_owned_to_complete_max
-			}
-			country_rank >= rank_value:minor_power
-		}
-		trigger_if = {
-			# This is the full BYZ form of the Megali Idea
-			limit = {
-				has_variable = grefm_embraced_imperial_restoration
 				NOT = {
 					c:AST ?= this
 				}
@@ -159,22 +126,17 @@
 				text = grefm_greek_empire_formed
 				c:BYZ ?= this
 			}
-			custom_tooltip = {
-				text = je_grefm_megali_idea_complete_imperial_restoration
-				var:grefm_megali_idea_counter_var >= byzantium_state_region_owned_to_complete
-			}
-			country_rank >= rank_value:major_power
 		}
 		trigger_if = {
-			# This is the full BYZ form of the Megali Idea
 			limit = {
-				has_variable = grefm_embraced_imperial_restoration
-				c:AST ?= this
+				NOR = {
+					has_variable = grefm_embraced_megali_idea
+					has_variable = grefm_embraced_imperial_restoration
+				}
 			}
-			custom_tooltip = {
-				text = je_grefm_megali_idea_complete_imperial_restoration
-				var:grefm_megali_idea_counter_var >= byzantium_state_region_owned_to_complete
-			}
+			country_rank >= rank_value:minor_power
+		}
+		trigger_else = {
 			country_rank >= rank_value:major_power
 		}
 		custom_tooltip = {
@@ -185,17 +147,18 @@
 				}
 			}
 		}
-		in_default = no
-		NOT = {
-			has_modifier = declared_bankruptcy
-		}
+		gbbf_is_broke_trigger = no
 		hidden_trigger = {
 			OR = {
+				has_variable = grefm_embraced_megali_idea
 				has_variable = grefm_weaksauce
-				has_variable = grefm_embraced_imperial_restoration
-				has_variable = grefm_imperial_restoration_declined
 			}
-			has_variable = grefm_megali_idea_expansion_considered
+			trigger_if = {
+				limit = {
+					has_variable = grefm_embraced_megali_idea
+				}
+				has_variable = grefm_megali_idea_expansion_considered
+			}
 		}
 	}
 
@@ -205,9 +168,7 @@
 			limit = {
 				country_has_primary_culture = cu:rhomaios
 			}
-			trigger_event = {
-				id = grefm_megali_idea.012 # The Throne of the East
-			}
+			trigger_event = grefm_megali_idea.012
 		}
 		else_if = {
 			limit = {
@@ -220,9 +181,7 @@
 			limit = {
 				c:BUL ?= this
 			}
-			trigger_event = {
-				id = balkfm_bulgaria.218 # The Queen of Cities
-			}
+			trigger_event = balkfm_bulgaria.218
 			show_as_tooltip = {
 				change_tag = BYZ
 			}
@@ -231,17 +190,13 @@
 			limit = {
 				c:ROM ?= this
 			}
-			trigger_event = {
-				id = balkfm_romania.721 # The Queen of Cities
-			}
+			trigger_event = balkfm_romania.721
 			show_as_tooltip = {
 				change_tag = BYZ
 			}
 		}
 		else = {
-			trigger_event = {
-				id = grefm_megali_idea.003 # The Future of Greece
-			}
+			trigger_event = grefm_megali_idea.003
 		}
 		grefm_empire_name_tooltip_effect = yes
 	}
@@ -259,15 +214,13 @@
 			is_subject = yes
 			AND = {
 				country_rank < rank_value:minor_power
-				gold_reserves < 0
+				gbbf_is_broke_trigger = yes
 			}
 		}
 	}
 
 	on_fail = {
-		trigger_event = {
-			id = grefm_megali_idea.005 # The Greek Lands Lost
-		}
+		trigger_event = grefm_megali_idea.005
 	}
 
 	invalid = {
@@ -318,7 +271,7 @@
 je_grefm_the_greek_plan = {
 	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
 	group = je_group_historical_content
-	should_be_pinned_by_default = yes
+	should_be_pinned_by_default_uninvolved_or_context = yes
 
 	is_shown_in_lobby = {
 		country_has_primary_culture = cu:urum
@@ -333,9 +286,7 @@ je_grefm_the_greek_plan = {
 	}
 
 	immediate = {
-		trigger_event = {
-			id = grefm_megali_idea.020 # The Last of the Romans
-		}
+		trigger_event = grefm_megali_idea.020
 	}
 
 	complete = {
@@ -353,11 +304,12 @@ je_grefm_byzantine_restoration = {
 	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
 	weight = 10000
 
-	should_be_pinned_by_default = yes
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
 
 	scripted_button = grefm_balkans_triumph_button
+	scripted_button = grefm_aegean_triumph_button
 	scripted_button = grefm_anatolia_triumph_button
 	scripted_button = grefm_levant_triumph_button
 	scripted_button = grefm_egypt_triumph_button
@@ -400,9 +352,7 @@ je_grefm_byzantine_restoration = {
 			scope:journal_entry = {
 				add_modifier = modifier_grefm_wanakterian_aspiriations
 			}
-			trigger_event = {
-				id = grefm_emu_empire.002 # The Empire from Down Under
-			}
+			trigger_event = grefm_emu_empire.002
 		}
 		else_if = {
 			limit = {
@@ -414,9 +364,7 @@ je_grefm_byzantine_restoration = {
 			scope:journal_entry = {
 				add_modifier = modifier_grefm_hellenic_aspiriations
 			}
-			trigger_event = {
-				id = grefm_hellenic_empire.001 # The Revenge of the Greeks
-			}
+			trigger_event = grefm_hellenic_empire.001
 		}
 		else_if = {
 			limit = {
@@ -428,9 +376,7 @@ je_grefm_byzantine_restoration = {
 			scope:journal_entry = {
 				add_modifier = modifier_grefm_imperial_aspiriations
 			}
-			trigger_event = {
-				id = grefm_roman_empire.001 # The Purple Pheonix
-			}
+			trigger_event = grefm_roman_empire.001
 		}
 		else_if = {
 			limit = {
@@ -440,9 +386,7 @@ je_grefm_byzantine_restoration = {
 			scope:journal_entry = {
 				add_modifier = modifier_grefm_imperial_aspiriations
 			}
-			trigger_event = {
-				id = grefm_hybrid_empire.001 # The New Greece Rises
-			}
+			trigger_event = grefm_hybrid_empire.001
 		}
 	}
 
@@ -455,6 +399,7 @@ je_grefm_byzantine_restoration = {
 			owns_entire_state_region = STATE_LAZIO
 			country_rank >= rank_value:great_power
 			has_modifier = modifier_grefm_reclaimed_balkans
+			has_modifier = modifier_grefm_reclaimed_aegean
 			has_modifier = modifier_grefm_reclaimed_anatolia
 			has_modifier = modifier_grefm_reclaimed_levant
 			has_modifier = modifier_grefm_reclaimed_egypt
@@ -463,16 +408,14 @@ je_grefm_byzantine_restoration = {
 		trigger_else = {
 			country_rank >= rank_value:major_power
 			has_modifier = modifier_grefm_reclaimed_balkans
+			has_modifier = modifier_grefm_reclaimed_aegean
 			has_modifier = modifier_grefm_reclaimed_anatolia
 			has_modifier = modifier_grefm_reclaimed_levant
 			has_modifier = modifier_grefm_reclaimed_egypt
 		}
 		is_at_war = no
 		is_subject = no
-		in_default = no
-		NOT = {
-			has_modifier = declared_bankruptcy
-		}
+		gbbf_is_broke_trigger = no
 	}
 
 	on_complete = {
@@ -480,9 +423,7 @@ je_grefm_byzantine_restoration = {
 			limit = {
 				country_has_primary_culture = cu:australian
 			}
-			trigger_event = {
-				id = grefm_emu_empire.009
-			}
+			trigger_event = grefm_emu_empire.009
 		}
 		else_if = {
 			limit = {
@@ -491,9 +432,7 @@ je_grefm_byzantine_restoration = {
 					country_has_primary_culture = cu:rhomaios
 				}
 			}
-			trigger_event = {
-				id = grefm_hellenic_empire.009
-			}
+			trigger_event = grefm_hellenic_empire.009
 		}
 		else_if = {
 			limit = {
@@ -502,18 +441,14 @@ je_grefm_byzantine_restoration = {
 					country_has_primary_culture = cu:greek
 				}
 			}
-			trigger_event = {
-				id = grefm_roman_empire.009
-			}
+			trigger_event = grefm_roman_empire.009
 		}
 		else_if = {
 			limit = {
 				country_has_primary_culture = cu:rhomaios
 				country_has_primary_culture = cu:greek
 			}
-			trigger_event = {
-				id = grefm_hybrid_empire.009 # The Greek Realm
-			}
+			trigger_event = grefm_hybrid_empire.009
 		}
 		set_global_variable = grefm_byzantium_restored
 	}
@@ -521,10 +456,7 @@ je_grefm_byzantine_restoration = {
 	fail = {
 		OR = {
 			is_subject = yes
-			AND = {
-				country_rank < rank_value:minor_power
-				gold_reserves < 0
-			}
+			gbbf_is_broke_trigger = yes
 		}
 	}
 

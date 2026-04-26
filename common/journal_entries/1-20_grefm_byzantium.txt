@@ -1,9 +1,9 @@
-﻿je_grefm_constantinople = { # 14 Regions of Constantinople
+﻿je_grefm_constantinople = {
 	group = je_group_technology
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
 	weight = 2000
 
-	should_be_pinned_by_default = yes
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
 
@@ -28,9 +28,7 @@
 
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
-		trigger_event = {
-			id = grefm_byzantium.010 # The 14 Regions of Constantinople
-		}
+		trigger_event = grefm_byzantium.010
 	}
 
 	complete = {
@@ -40,6 +38,12 @@
 			has_building = gbbf_building_hippodrome
 			has_building = gbbf_building_mega_palation
 			total_urbanization >= 2000
+			trigger_if = {
+				limit = {
+					morgenrote_is_active = yes
+				}
+				has_modifier = gaudi_capital_expansion_level_4_modifier
+			}
 			any_scope_building = {
 				is_building_type = building_government_administration
 				OR = {
@@ -59,16 +63,6 @@
 				level >= 5
 			}
 			any_scope_building = {
-				is_building_type = building_military_shipyard
-				OR = {
-					has_active_production_method = pm_military_shipbuilding_steam
-					has_active_production_method = pm_military_shipbuilding_steam_2
-				}
-				weekly_profit > 0
-				occupancy >= 0.75
-				level >= 5
-			}
-			any_scope_building = {
 				is_building_type = building_silk_plantation
 				weekly_profit > 0
 				occupancy >= 0.75
@@ -78,9 +72,7 @@
 	}
 
 	on_complete = {
-		trigger_event = {
-			id = grefm_byzantium.014 # Notitia Urbis Constantinopolitanae
-		}
+		trigger_event = grefm_byzantium.014
 	}
 
 	fail = {
@@ -102,7 +94,7 @@ je_grefm_mega_palation_survey = {
 	icon = "gfx/interface/icons/event_icons/event_map.dds"
 	weight = 100
 
-	should_be_pinned_by_default = yes
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
 
@@ -131,9 +123,7 @@ je_grefm_mega_palation_survey = {
 	}
 
 	on_complete = {
-		trigger_event = {
-			id = grefm_byzantium.011 # Imperial Palace Ruins Identified
-		}
+		trigger_event = grefm_byzantium.011
 		remove_variable = grefm_imperial_palace_var
 	}
 
@@ -172,7 +162,7 @@ je_grefm_byzantine_nationalism = {
 	icon = "gfx/interface/icons/invention_icons/nationalism.dds"
 	weight = 1000
 
-	should_be_pinned_by_default = yes
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
 

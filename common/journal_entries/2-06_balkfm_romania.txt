@@ -3,7 +3,7 @@
 	icon = "gfx/interface/icons/invention_icons/bureaucracy.dds"
 	weight = 1000
 
-	should_be_pinned_by_default = yes
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
 
@@ -28,9 +28,7 @@
 	}
 
 	on_complete = {
-		trigger_event = {
-			id = balkfm_romania.006 # The Death of Feudalism
-		}
+		trigger_event = balkfm_romania.006
 		if = {
 			limit = {
 				ruler = {
@@ -44,7 +42,7 @@
 			}
 			hidden_effect = {
 				trigger_event = {
-					id = balkfm_romania.007 # Absolutist Aspirations
+					id = balkfm_romania.007
 					days = 120
 				}
 			}
@@ -55,16 +53,14 @@
 		OR = {
 			custom_tooltip = {
 				text = balkfm_has_formed_rom_tt
-				hidden_trigger = {
-					c:ROM ?= this
-				}
+				c:ROM ?= this
 			}
-			custom_tooltip = {
-				text = balkfm_not_turkish_subject_tt
-				hidden_trigger = {
-					NOT = {
-						is_subject_of = c:TUR
-					}
+			trigger_if = {
+				limit = {
+					exists = c:TUR
+				}
+				NOT = {
+					is_subject_of = c:TUR
 				}
 			}
 			NOT = {
@@ -86,13 +82,11 @@
 				NOT = { has_variable = balkfm_1848_succeeded }
 			}
 			show_as_tooltip = {
-				trigger_event = {
-					id = balkfm_romania.007 # Absolutist Aspirations
-				}
+				trigger_event = balkfm_romania.007
 			}
 			hidden_effect = {
 				trigger_event = {
-					id = balkfm_romania.007 # Absolutist Aspirations
+					id = balkfm_romania.007
 					days = 120
 				}
 			}
@@ -110,7 +104,7 @@
 		effect = {
 			set_variable = {
 				name = balkfm_ottoman_legacy_var
-				value = balkfm_ottoman_legacy_value
+				value = balkfm_completed_legacies_value
 			}
 			scope:journal_entry = {
 				set_bar_progress = {
@@ -190,7 +184,7 @@ je_balkfm_rom_1848 = {
 	icon = "gfx/interface/icons/event_icons/event_protest.dds"
 	weight = 500
 
-	should_be_pinned_by_default = yes
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = no
 	transferable = no
 
@@ -224,17 +218,13 @@ je_balkfm_rom_1848 = {
 			limit = {
 				c:MOL ?= this
 			}
-			trigger_event = {
-				id = balkfm_romania.104 # The Convention of Balta Liman
-			}
+			trigger_event = balkfm_romania.104
 		}
 		if = {
 			limit = {
 				c:WAL ?= this
 			}
-			trigger_event = {
-				id = balkfm_romania.204 # The Convention of Balta Liman
-			}
+			trigger_event = balkfm_romania.204
 		}
 		balkfm_cleanup_1848_variables_effect = yes
 	}
@@ -253,17 +243,13 @@ je_balkfm_rom_1848 = {
 			limit = {
 				c:MOL ?= this
 			}
-			trigger_event = {
-				id = balkfm_romania.103 # Kogălniceanu's Revolution
-			}
+			trigger_event = balkfm_romania.103
 		}
 		if = {
 			limit = {
 				c:WAL ?= this
 			}
-			trigger_event = {
-				id = balkfm_romania.203 # The Sword of the Revolution
-			}
+			trigger_event = balkfm_romania.203
 		}
 		balkfm_cleanup_1848_variables_effect = yes
 	}
@@ -275,17 +261,13 @@ je_balkfm_rom_1848 = {
 			limit = {
 				c:MOL ?= this
 			}
-			trigger_event = {
-				id = balkfm_romania.105 # Constitutional Stalemate
-			}
+			trigger_event = balkfm_romania.105
 		}
 		if = {
 			limit = {
 				c:WAL ?= this
 			}
-			trigger_event = {
-				id = balkfm_romania.205 # Constitutional Stalemate
-			}
+			trigger_event = balkfm_romania.205
 		}
 		balkfm_cleanup_1848_variables_effect = yes
 	}
@@ -342,7 +324,7 @@ je_balkfm_rom_statutul_dezvoltator = {
 	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
 	weight = 1000
 
-	should_be_pinned_by_default = yes
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
 
@@ -365,6 +347,7 @@ je_balkfm_rom_statutul_dezvoltator = {
 	complete = {
 		# Technically, Cuza's goal was to establish authoritarian rule, but with broad voting rights for the peasantry. This is cannot be represented by Victoria 3's current systems, hence the strange completion requirements
 		# TODO I've actually done more research here... this is really more complicated than I made it sound. Unfortunately, research in non-English language sources is slower than I would like; this has been tagged for a rework in the docket once I have more sources
+		# TODO Revisiting this in Feb 2026- idk when I put that last comment in, but the rework is still on the list, but no improved sources yet
 		has_law_or_variant = law_type:law_monarchy
 		OR = {
 			has_law_or_variant = law_type:law_autocracy
@@ -382,18 +365,14 @@ je_balkfm_rom_statutul_dezvoltator = {
 	}
 
 	on_complete = {
-		trigger_event = {
-			id = balkfm_romania.008 # Mandate Secured
-		}
+		trigger_event = balkfm_romania.008
 		balkfm_cleanup_dezvoltator_variables_effect = yes
 	}
 
 	timeout = 1825 # You have five years. Cuza had less.
 
 	on_timeout = {
-		trigger_event = {
-			id = balkfm_romania.009 # A Monstrous Coalition
-		}
+		trigger_event = balkfm_romania.009
 		balkfm_cleanup_dezvoltator_variables_effect = yes
 	}
 
@@ -436,7 +415,7 @@ je_balkfm_rom_1866_1 = {
 	group = je_group_internal_affairs
 	weight = 500
 
-	should_be_pinned_by_default = yes
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = no
 	transferable = no
 
@@ -460,14 +439,14 @@ je_balkfm_rom_1866_1 = {
 		}
 		OR = {
 			has_law_or_variant = law_type:law_commercialized_agriculture
-			has_law_or_variant = law_type:law_homesteading
+			has_law_or_variant = law_type:law_peasant_proprietorship
 		}
 	}
 
 	on_complete = {
 		add_modifier = {
 			name = modifier_balkfm_democratic_constitution
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 	}
 
@@ -476,7 +455,7 @@ je_balkfm_rom_1866_1 = {
 	on_timeout = {
 		add_modifier = {
 			name = modifier_balkfm_absent_reforms
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 	}
 
@@ -490,7 +469,7 @@ je_balkfm_rom_1866_2 = {
 	group = je_group_internal_affairs
 	weight = 500
 
-	should_be_pinned_by_default = yes
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = no
 	transferable = no
 
@@ -526,17 +505,13 @@ je_balkfm_rom_1866_2 = {
 		if = {
 			limit = {
 				any_scope_character = {
-					has_template = template_balkfm_candiano_alexandru
+					has_template = balkfm_candiano_alexandru
 				}
 			}
-			trigger_event = {
-				id = balkfm_romania.407 # The Republic of Romania
-			}
+			trigger_event = balkfm_romania.407
 		}
 		else = {
-			trigger_event = {
-				id = balkfm_romania.405 # The Candiano Republic
-			}
+			trigger_event = balkfm_romania.405
 		}
 		balkfm_cleanup_1866_variables_effect = yes
 	}
@@ -544,9 +519,7 @@ je_balkfm_rom_1866_2 = {
 	timeout = 1780 # You just gotta make it five years
 
 	on_timeout = {
-		trigger_event = {
-			id = balkfm_romania.406 # Monarchism Secured
-		}
+		trigger_event = balkfm_romania.406
 		balkfm_cleanup_1866_variables_effect = yes
 	}
 
@@ -616,7 +589,7 @@ je_balkfm_rom_nationalism = {
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
 	weight = 500
 
-	should_be_pinned_by_default = yes
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
 
@@ -633,17 +606,13 @@ je_balkfm_rom_nationalism = {
 		has_technology_researched = nationalism
 		custom_tooltip = {
 			text = balkfm_has_formed_rom_tt
-			hidden_trigger = {
-				c:ROM ?= this
-			}
+			c:ROM ?= this
 		}
 	}
 
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
-		trigger_event = {
-			id = balkfm_romania.600 # Forms Without Substance
-		}
+		trigger_event = balkfm_romania.600
 		balkfm_initialize_protochronism_effect = yes
 	}
 
@@ -674,9 +643,7 @@ je_balkfm_rom_nationalism = {
 	}
 
 	on_complete = {
-		trigger_event = {
-			id = balkfm_romania.602 # A Romanian Identity
-		}
+		trigger_event = balkfm_romania.602
 	}
 
 	on_weekly_pulse = {
@@ -760,8 +727,8 @@ je_balkfm_rom_united_principalities = { # this journal integrates all vanilla un
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_romania.dds"
 	weight = 1000
-
-	should_be_pinned_by_default = yes
+	
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
 
@@ -794,9 +761,7 @@ je_balkfm_rom_united_principalities = { # this journal integrates all vanilla un
 	complete = {
 		custom_tooltip = {
 			text = balkfm_has_formed_rom_tt
-			hidden_trigger = {
-				c:ROM ?= this
-			}
+			c:ROM ?= this
 		}
 	}
 
@@ -837,9 +802,7 @@ je_balkfm_rom_united_principalities = { # this journal integrates all vanilla un
 	}
 
 	on_fail = {
-		hidden_effect = {
-			remove_variable = ROM_united_principality
-		}
+		remove_variable = ROM_united_principality
 	}
 
 	on_monthly_pulse = {
@@ -869,8 +832,8 @@ je_balkfm_rom_greater_romania = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_romania.dds"
 	weight = 1000
-
-	should_be_pinned_by_default = yes
+	
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
 
@@ -887,22 +850,18 @@ je_balkfm_rom_greater_romania = {
 		has_technology_researched = nationalism
 		custom_tooltip = {
 			text = je_balkfm_rom_greater_romania_possible_tt
-			hidden_trigger = {
-				any_scope_state = {
-					state_region = {
-						is_homeland = cu:romanian
-					}
-					count >= 3
+			any_scope_state = {
+				state_region = {
+					is_homeland = cu:romanian
 				}
+				count >= 3
 			}
 		}
 	}
 
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
-		trigger_event = {
-			id = balkfm_romania.708 # The Greater Romanian Lands
-		}
+		trigger_event = balkfm_romania.708
 	}
 
 	complete = {
@@ -920,9 +879,7 @@ je_balkfm_rom_greater_romania = {
 	}
 
 	on_complete = {
-		trigger_event = {
-			id = balkfm_romania.709 # The Reunification of Romania
-		}
+		trigger_event = balkfm_romania.709
 	}
 }
 
@@ -930,8 +887,8 @@ je_balkfm_peles_castle = {
 	group = je_group_technology
 	icon = "gfx/interface/icons/event_icons/event_industry.dds"
 	weight = 500
-
-	should_be_pinned_by_default = yes
+	
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
 
@@ -961,9 +918,7 @@ je_balkfm_peles_castle = {
 	}
 
 	on_complete = {
-		trigger_event = {
-			id = balkfm_romania.501 # A Royal Estate
-		}
+		trigger_event = balkfm_romania.501
 	}
 
 	fail = {

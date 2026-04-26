@@ -5,8 +5,10 @@
 # For Greek & Byzantium content, see the "grefm" module
 # For Balkan Nations content, see the "balkfm" module
 # For Ottoman & Turkish content, see the "turkfm" module
-# For Eastern Question & Expeditions content, see the "eqfm" module
+# For Northern African content, see the "mgrbfm" module
 # For Armenian, Kurdish, & Assyrian content, see the "haykfm" module
+# For Levantine content, see the "levafm" module
+# For Eastern Question & Expeditions content, see the "eqfm" module
 
 ####################
 
@@ -75,7 +77,7 @@ grefm_hellenic_empire.001 = { # The New Greece Rises
 			limit = {
 				has_diplomatic_relevance = ROOT
 			}
-			post_notification = unification_notification_byz
+			post_notification = unification_byz
 		}
 	}
 
@@ -90,18 +92,11 @@ grefm_hellenic_empire.001 = { # The New Greece Rises
 			}
 			set_capital = STATE_EASTERN_THRACE
 		}
-		every_state_region = {
-			limit = {
-				OR = {
-					region = sr:region_anatolia
-					region = sr:region_balkans
-				}
-				any_scope_state = {
-					NOT = { owner = ROOT }
-					NOT = { has_claim_by = ROOT }
-				}
-			}
-			add_claim = ROOT
+		gbbf_add_georegion_claims_effect = {
+			georegion = rumelia
+		}
+		gbbf_add_georegion_claims_effect = {
+			georegion = anatolia
 		}
 		grefm_add_levant_claims_effect = yes
 	}
@@ -114,7 +109,7 @@ grefm_hellenic_empire.001 = { # The New Greece Rises
 		}
 		add_modifier = {
 			name = modifier_grefm_rebirth
-			months = gbbf_duration_20_years
+			months = gbbf_very_long_modifier_time
 		}
 	}
 
@@ -164,9 +159,7 @@ grefm_hellenic_empire.002 = { # The Eternal City
 	immediate = {
 		random_country = {
 			limit = {
-				capital = {
-					region = sr:region_italy
-				}
+				is_in_geographic_region = geographic_region_italia
 			}
 			save_scope_as = italy_incident_scope
 		}
@@ -179,17 +172,8 @@ grefm_hellenic_empire.002 = { # The Eternal City
 			country = scope:italy_incident_scope
 			value = 10
 		}
-		every_state_region = {
-			limit = {
-				OR = {
-					region = sr:region_italy
-				}
-				any_scope_state = {
-					NOT = { owner = ROOT }
-					NOT = { has_claim_by = ROOT }
-				}
-			}
-			add_claim = ROOT
+		gbbf_add_georegion_claims_effect = {
+			georegion = roman_italia
 		}
 		custom_tooltip = {
 			text = grefm_embraced_roman_reconquest
@@ -267,17 +251,8 @@ grefm_hellenic_empire.010 = { # The Lands of Arianōn
 	option = { # Get My Horse
 		name = grefm_hellenic_empire.010.a
 		default_option = yes
-		every_state_region = {
-			limit = {
-				OR = {
-					region = sr:region_persia
-				}
-				any_scope_state = {
-					NOT = { owner = ROOT }
-					NOT = { has_claim_by = ROOT }
-				}
-			}
-			add_claim = ROOT
+		gbbf_add_georegion_claims_effect = {
+			georegion = persia
 		}
 	}
 
@@ -312,17 +287,8 @@ grefm_hellenic_empire.011 = { # The Graveyard of Empires
 		add_journal_entry = {
 			type = je_grefm_the_graveyard_of_empires
 		}
-		every_state_region = {
-			limit = {
-				OR = {
-					region = sr:region_persia
-				}
-				any_scope_state = {
-					NOT = { owner = ROOT }
-					NOT = { has_claim_by = ROOT }
-				}
-			}
-			add_claim = ROOT
+		gbbf_add_georegion_claims_effect = {
+			georegion = persia
 		}
 	}
 }
@@ -360,7 +326,7 @@ grefm_hellenic_empire.012 = { # The Empire of the Greeks
 			random_scope_state = {
 				add_modifier = {
 					name = modifier_grefm_the_queen_of_cities
-					months = gbbf_duration_10_years
+					months = gbbf_long_modifier_time
 				}
 			}
 		}

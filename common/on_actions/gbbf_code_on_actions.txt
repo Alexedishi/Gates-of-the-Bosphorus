@@ -1,4 +1,4 @@
-﻿####---------- on_country_formed ----------##state_religion
+﻿####---------- on_country_formed ----------####
 on_country_formed = {
 	on_actions = {
 		grefm_byz_culture_validation
@@ -79,7 +79,7 @@ grefm_byz_culture_validation = {
 }
 
 
-####---------- on_country_formed ----------##
+####---------- on_country_formed ----------####
 on_country_formed = {
 	on_actions = {
 		gbbf_on_country_formed
@@ -91,32 +91,105 @@ gbbf_on_country_formed = {
 		if = {
 			limit = {
 				c:BYZ ?= root
-				var:grefm_culture_var ?= 1 # Hellene Outcome
 			}
-			remove_primary_culture = cu:rhomaios
-			add_primary_culture = cu:greek
+			if = {
+				limit = {
+					var:grefm_culture_var ?= 1 # Hellene Outcome
+				}
+				remove_primary_culture = cu:rhomaios
+				add_primary_culture = cu:greek
+			}
+			else_if = {
+				limit = {
+					var:grefm_culture_var ?= 2 # Rhomaios Outcome
+				}
+				remove_primary_culture = cu:greek
+				add_primary_culture = cu:rhomaios
+			}
+			else_if = {
+				limit = {
+					var:grefm_culture_var ?= 3 # Hybrid Outcome
+				}
+				add_primary_culture = cu:greek
+				add_primary_culture = cu:rhomaios
+			}
 		}
 		if = {
 			limit = {
-				c:BYZ ?= root
-				var:grefm_culture_var ?= 2 # Rhomaios Outcome
+				c:YUG ?= root
 			}
-			remove_primary_culture = cu:greek
-			add_primary_culture = cu:rhomaios
-		}
-		if = {
-			limit = {
-				c:BYZ ?= root
-				var:grefm_culture_var ?= 3 # Hybrid Outcome
+			if = {
+				limit = {
+					NOT = {
+						has_law_or_variant = law_type:law_multicultural
+					}
+				}
+				if = {
+					limit = {
+						was_formed_from = MON
+					}
+					balkfm_remove_yugoslav_cultures_effect = yes
+					if = {
+						limit = {
+							has_global_variable = balkfm_montegrin_culture_var
+						}
+						add_primary_culture = cu:montenegrin
+					}
+					else = {
+						add_primary_culture = cu:serb
+					}
+				}
+				else_if = {
+					limit = {
+						OR = {
+							was_formed_from = SER
+							was_formed_from = SER_RSK
+						}
+					}
+					balkfm_remove_yugoslav_cultures_effect = yes
+					add_primary_culture = cu:serb
+				}
+				else_if = {
+					limit = {
+						was_formed_from = BUL
+					}
+					balkfm_remove_yugoslav_cultures_effect = yes
+					add_primary_culture = cu:bulgarian
+				}
+				else_if = {
+					limit = {
+						was_formed_from = BOS
+					}
+					balkfm_remove_yugoslav_cultures_effect = yes
+					add_primary_culture = cu:bosniak
+				}
+				else_if = {
+					limit = {
+						was_formed_from = CRO
+					}
+					balkfm_remove_yugoslav_cultures_effect = yes
+					add_primary_culture = cu:croat
+				}
+				else_if = {
+					limit = {
+						was_formed_from = SLO
+					}
+					balkfm_remove_yugoslav_cultures_effect = yes
+					add_primary_culture = cu:slovene
+				}
+				else = {
+					error_log = "The gbbf_on_country_formed was evaluated for YUG and did not have law_multicultural, but none of the was_formed_from triggers were true."
+				}
 			}
-			add_primary_culture = cu:greek
-			add_primary_culture = cu:rhomaios
+			else = {
+				set_variable = je_balkfm_yugoslav_nationalism_complete
+			}
 		}
 	}
 }
 
 
-####---------- on_country_released ----------##
+####---------- on_country_released ----------####
 on_country_released_as_independent = {
 	on_actions = {
 		balkfm_country_release_1
@@ -140,9 +213,7 @@ balkfm_country_release_1 = {
 			scope:target = {
 				balkfm_set_bulgarian_laws = yes
 				balkfm_create_bulgarian_characters = yes
-				trigger_event = {
-					id = balkfm_bulgaria.001 # The Golden Lion Awakens
-				}
+				trigger_event = balkfm_bulgaria.001
 			}
 		}
 	}
@@ -159,9 +230,7 @@ balkfm_country_release_2 = {
 			scope:target = {
 				balkfm_set_bulgarian_laws = yes
 				balkfm_create_bulgarian_characters = yes
-				trigger_event = {
-					id = balkfm_bulgaria.001 # The Golden Lion Awakens
-				}
+				trigger_event = balkfm_bulgaria.001
 			}
 			if = {
 				limit = {
@@ -208,7 +277,7 @@ balkfm_country_release_2 = {
 }
 
 
-####---------- on_diplomatic_action ----------##
+####---------- on_diplomatic_action ----------####
 on_diplomatic_action_overlord_decrease_autonomy = {
 	on_actions = {
 		eqfm_tension_decrease_autonomy
@@ -217,7 +286,51 @@ on_diplomatic_action_overlord_decrease_autonomy = {
 
 on_diplomatic_action_overlord_increase_autonomy = {
 	on_actions = {
+		balkfm_trs_protectorate_autonomy
 		eqfm_tension_increase_autonomy
+	}
+}
+
+on_diplomatic_action_subject_increase_own_autonomy = {
+	on_actions = {
+		balkfm_trs_protectorate_autonomy
+	}
+}
+
+balkfm_trs_protectorate_autonomy = {
+	trigger = {
+		scope:actor = {
+			c:AUS ?= this
+		}
+		scope:recipient = {
+			c:TRS ?= this
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				c:TRS = {
+					NOT = {
+						is_subject_type = subject_type_protectorate
+					}
+				}
+			}
+			c:TRS = {
+				if = {
+					limit = {
+						is_subject = yes
+					}
+				}
+				make_independent = yes
+			}
+			c:AUS = {
+				create_diplomatic_pact = {
+					type = protectorate
+					country = c:TRS
+				}
+			}
+			error_log = "GotB: Transylvania's autonomy was increased, but it became independent instead. Subjecthood has been fixed."
+		}
 	}
 }
 
@@ -240,7 +353,7 @@ eqfm_tension_decrease_autonomy = {
 			limit = {
 				is_involved_in_journal_entry = je_eqfm_balkan_situation
 			}
-			post_notification = notification_eqfm_autonomy_decreased
+			post_notification = eqfm_autonomy_decreased
 		}
 		c:TUR ?= {
 			eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
@@ -267,7 +380,7 @@ eqfm_tension_increase_autonomy = {
 			limit = {
 				is_involved_in_journal_entry = je_eqfm_balkan_situation
 			}
-			post_notification = notification_eqfm_autonomy_increased
+			post_notification = eqfm_autonomy_increased
 		}
 		c:TUR ?= {
 			eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
@@ -276,7 +389,7 @@ eqfm_tension_increase_autonomy = {
 }
 
 
-####---------- on_diplomats_expelled ----------##
+####---------- on_diplomats_expelled ----------####
 # Root = Diplomatic Action
 # scope:target = the country whose diplomats were expelled
 # scope:initiator = the country doing the expelling
@@ -311,7 +424,7 @@ eqfm_tension_diplomats_expelled = {
 				limit = {
 					is_involved_in_journal_entry = je_eqfm_balkan_situation
 				}
-				post_notification = notification_eqfm_diplomats_expelled_1
+				post_notification = eqfm_diplomats_expelled_1
 			}
 		}
 		else_if = {
@@ -328,7 +441,7 @@ eqfm_tension_diplomats_expelled = {
 				limit = {
 					is_involved_in_journal_entry = je_eqfm_balkan_situation
 				}
-				post_notification = notification_eqfm_diplomats_expelled_2
+				post_notification = eqfm_diplomats_expelled_2
 			}
 			c:TUR ?= {
 				eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
@@ -337,8 +450,40 @@ eqfm_tension_diplomats_expelled = {
 	}
 }
 
+####---------- on_harvest_condition_started_in_country ----------####
+# Root = country
+# scope:area = harvest condition area
+# scope:state = affected state with the highest intensity
+# scope:duration = duration of the harvest condition in days
+# scope:num_states = the number of affected states in the country
+# scope:intensity = the highest intensity of the affected states
+on_harvest_condition_started_in_country = {
+	on_actions = {
+#		on_harvest_condition_started_in_lower_nile # TODO enable when support is provided
+	}
+}
 
-####---------- on_heir_born ----------##
+on_harvest_condition_started_in_lower_nile = {
+	trigger = {
+		has_global_variable = je_mgrbfm_egypt_nile_river
+		scope:state = {
+			is_in_geographic_region = geographic_region_lower_nile
+		}
+	}
+	effect = {
+		scope:area = {
+			save_scope_as = mgrbfm_flood_epicenter_area
+		}
+		global_var:je_mgrbfm_egypt_nile_river ?= {
+			set_variable = {
+				name = mgrbfm_flood_epicenter_area_var
+				value = scope:mgrbfm_flood_epicenter_area
+			}
+		}
+	}
+}
+
+####---------- on_heir_born ----------####
 on_heir_born = {
 	on_actions = {
 		grefm_validate_heir_dynasty
@@ -360,17 +505,17 @@ grefm_validate_heir_dynasty = {
 			limit = {
 				owner.ruler ?= {
 					OR = {
-						has_template = template_grefm_wittelsbach_otto
-						has_template = template_grefm_wittelsbach_noble
+						has_template = grefm_wittelsbach_otto
+						has_template = grefm_wittelsbach_noble
 					}
 				}
 				NOT = {
-					has_template = template_grefm_wittelsbach_noble
+					has_template = grefm_wittelsbach_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_wittelsbach_noble
+					template = grefm_wittelsbach_noble
 					heir = yes
 					age = 1
 				}
@@ -382,15 +527,15 @@ grefm_validate_heir_dynasty = {
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = template_grefm_armansperg_noble
+					has_template = grefm_armansperg_noble
 				}
 				NOT = {
-					has_template = template_grefm_armansperg_noble
+					has_template = grefm_armansperg_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_armansperg_noble
+					template = grefm_armansperg_noble
 					heir = yes
 					age = 1
 				}
@@ -402,15 +547,15 @@ grefm_validate_heir_dynasty = {
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = template_grefm_glucksburg_noble
+					has_template = grefm_glucksburg_noble
 				}
 				NOT = {
-					has_template = template_grefm_glucksburg_noble
+					has_template = grefm_glucksburg_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_glucksburg_noble
+					template = grefm_glucksburg_noble
 					heir = yes
 					age = 1
 				}
@@ -422,15 +567,15 @@ grefm_validate_heir_dynasty = {
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = template_grefm_deflandre_noble
+					has_template = grefm_deflandre_noble
 				}
 				NOT = {
-					has_template = template_grefm_deflandre_noble
+					has_template = grefm_deflandre_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_deflandre_noble
+					template = grefm_deflandre_noble
 					heir = yes
 					age = 1
 				}
@@ -442,15 +587,15 @@ grefm_validate_heir_dynasty = {
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = template_grefm_eynard_noble
+					has_template = grefm_eynard_noble
 				}
 				NOT = {
-					has_template = template_grefm_eynard_noble
+					has_template = grefm_eynard_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_eynard_noble
+					template = grefm_eynard_noble
 					heir = yes
 					age = 1
 				}
@@ -462,15 +607,15 @@ grefm_validate_heir_dynasty = {
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = template_grefm_saxe-coburg_noble
+					has_template = grefm_saxe-coburg_noble
 				}
 				NOT = {
-					has_template = template_grefm_saxe-coburg_noble
+					has_template = grefm_saxe-coburg_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_saxe-coburg_noble
+					template = grefm_saxe-coburg_noble
 					heir = yes
 					age = 1
 				}
@@ -482,15 +627,15 @@ grefm_validate_heir_dynasty = {
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = template_grefm_bourbon_noble
+					has_template = grefm_bourbon_noble
 				}
 				NOT = {
-					has_template = template_grefm_bourbon_noble
+					has_template = grefm_bourbon_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_bourbon_noble
+					template = grefm_bourbon_noble
 					heir = yes
 					age = 1
 				}
@@ -502,15 +647,15 @@ grefm_validate_heir_dynasty = {
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = template_grefm_orleans_noble
+					has_template = grefm_orleans_noble
 				}
 				NOT = {
-					has_template = template_grefm_orleans_noble
+					has_template = grefm_orleans_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_orleans_noble
+					template = grefm_orleans_noble
 					heir = yes
 					age = 1
 				}
@@ -522,15 +667,15 @@ grefm_validate_heir_dynasty = {
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = template_grefm_bonaparte_noble
+					has_template = grefm_bonaparte_noble
 				}
 				NOT = {
-					has_template = template_grefm_bonaparte_noble
+					has_template = grefm_bonaparte_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_bonaparte_noble
+					template = grefm_bonaparte_noble
 					heir = yes
 					age = 1
 				}
@@ -542,15 +687,15 @@ grefm_validate_heir_dynasty = {
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = template_grefm_romanov_noble
+					has_template = grefm_romanov_noble
 				}
 				NOT = {
-					has_template = template_grefm_romanov_noble
+					has_template = grefm_romanov_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_romanov_noble
+					template = grefm_romanov_noble
 					heir = yes
 					age = 1
 				}
@@ -562,15 +707,15 @@ grefm_validate_heir_dynasty = {
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = template_grefm_kapodistrias_noble
+					has_template = grefm_kapodistrias_noble
 				}
 				NOT = {
-					has_template = template_grefm_kapodistrias_noble
+					has_template = grefm_kapodistrias_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_kapodistrias_noble
+					template = grefm_kapodistrias_noble
 					heir = yes
 					age = 1
 				}
@@ -582,15 +727,15 @@ grefm_validate_heir_dynasty = {
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = template_grefm_mavrokordatos_noble
+					has_template = grefm_mavrokordatos_noble
 				}
 				NOT = {
-					has_template = template_grefm_mavrokordatos_noble
+					has_template = grefm_mavrokordatos_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_mavrokordatos_noble
+					template = grefm_mavrokordatos_noble
 					heir = yes
 					age = 1
 				}
@@ -602,15 +747,15 @@ grefm_validate_heir_dynasty = {
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = template_grefm_metaxas_noble
+					has_template = grefm_metaxas_noble
 				}
 				NOT = {
-					has_template = template_grefm_metaxas_noble
+					has_template = grefm_metaxas_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_metaxas_noble
+					template = grefm_metaxas_noble
 					heir = yes
 					age = 1
 				}
@@ -622,15 +767,15 @@ grefm_validate_heir_dynasty = {
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = template_grefm_ypsilantis_noble
+					has_template = grefm_ypsilantis_noble
 				}
 				NOT = {
-					has_template = template_grefm_ypsilantis_noble
+					has_template = grefm_ypsilantis_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_ypsilantis_noble
+					template = grefm_ypsilantis_noble
 					heir = yes
 					age = 1
 				}
@@ -642,15 +787,15 @@ grefm_validate_heir_dynasty = {
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = template_grefm_angelos_noble
+					has_template = grefm_angelos_noble
 				}
 				NOT = {
-					has_template = template_grefm_angelos_noble
+					has_template = grefm_angelos_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_angelos_noble
+					template = grefm_angelos_noble
 					heir = yes
 					age = 1
 				}
@@ -662,15 +807,15 @@ grefm_validate_heir_dynasty = {
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = template_grefm_doukas_noble
+					has_template = grefm_doukas_noble
 				}
 				NOT = {
-					has_template = template_grefm_doukas_noble
+					has_template = grefm_doukas_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_doukas_noble
+					template = grefm_doukas_noble
 					heir = yes
 					age = 1
 				}
@@ -682,15 +827,15 @@ grefm_validate_heir_dynasty = {
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = template_grefm_kantakouzenos_noble
+					has_template = grefm_kantakouzenos_noble
 				}
 				NOT = {
-					has_template = template_grefm_kantakouzenos_noble
+					has_template = grefm_kantakouzenos_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_kantakouzenos_noble
+					template = grefm_kantakouzenos_noble
 					heir = yes
 					age = 1
 				}
@@ -702,15 +847,15 @@ grefm_validate_heir_dynasty = {
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = template_grefm_palaiologos_noble
+					has_template = grefm_palaiologos_noble
 				}
 				NOT = {
-					has_template = template_grefm_palaiologos_noble
+					has_template = grefm_palaiologos_noble
 				}
 			}
 			owner = {
 				create_character = {
-					template = template_grefm_palaiologos_noble
+					template = grefm_palaiologos_noble
 					heir = yes
 					age = 1
 				}
@@ -722,8 +867,7 @@ grefm_validate_heir_dynasty = {
 	}
 }
 
-
-####---------- on_law_enactment_pass ----------##
+####---------- on_law_enactment_pass ----------####
 on_law_enactment_pass = {
 	on_actions = {
 		gbbf_law_enactment_pass
@@ -758,10 +902,11 @@ gbbf_law_enactment_pass = {
 }
 
 
-####---------- on_state_owner_change ----------##
+####---------- on_state_owner_change ----------####
 on_state_owner_change = {
 	on_actions = {
 		gbbf_evaluate_and_assign_state_hub_dynamic_names
+		gbbf_validate_state_modifiers
 	}
 }
 
@@ -771,8 +916,21 @@ gbbf_evaluate_and_assign_state_hub_dynamic_names = {
 	}
 }
 
+gbbf_validate_state_modifiers = {
+	trigger = {
+		OR = {
+			state_region = s:STATE_MATRUH
+			state_region = s:STATE_EGYPTIAN_DESERT
+		}
+		has_modifier = modifier_mgrbfm_tribal_resistance
+	}
+	effect = {
+		remove_modifier = modifier_mgrbfm_tribal_resistance
+	}
+}
 
-####---------- on_state_created ----------##
+
+####---------- on_state_created ----------####
 on_state_created = {
 	on_actions = {
 		gbbf_evaluate_and_assign_state_hub_dynamic_names
@@ -780,7 +938,7 @@ on_state_created = {
 }
 
 
-####---------- on_secession_start ----------##
+####---------- on_secession_start ----------####
 on_secession_start = {
 	on_actions = {
 		eqfm_secession_start
@@ -804,34 +962,31 @@ eqfm_secession_start = {
 				}
 				add_modifier = {
 					name = modifier_eqfm_nationalist_uprising
-					months = gbbf_duration_5_years
+					months = gbbf_normal_modifier_time
 				}
-				balkfm_set_up_ottoman_legacies_effect = yes
 			}
 			eqfm_add_large_deescalation_effect = yes
 			every_country = {
 				limit = {
 					is_involved_in_journal_entry = je_eqfm_balkan_situation
 				}
-				post_notification = notification_eqfm_secession_start
+				post_notification = eqfm_secession_start
 			}
-			trigger_event = {
-				id = eqfm_balkans.006
-			}
+			trigger_event = eqfm_balkans.006
 		}
 	}
 }
 
 
-####---------- on_wargoal_enforced ----------##
+####---------- on_wargoal_enforced ----------####
 # Root = Country
 # scope:target = the country the wargoal was enforced against
 # scope:diplomatic_play = the relevant diplomatic play
 # scope:wargoal_impact = the impact of the wargoal enforced
 on_wargoal_enforced = {
 	on_actions = {
-		eqfm_tension_wargoal_enforced_1
-		eqfm_tension_wargoal_enforced_2
+		eqfm_tension_wargoal_enforced_1 # Wargoal against TUR
+		eqfm_tension_wargoal_enforced_2 # Wargoal from TUR
 	}
 }
 
@@ -843,18 +998,41 @@ eqfm_tension_wargoal_enforced_1 = {
 		}
 	}
 	effect = {
-		change_global_variable = {
-			name = eqfm_escalation_var
-			add = 3
-		}
-		c:TUR ?= {
-			eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
-		}
-		every_country = {
+		if = {
 			limit = {
-				is_involved_in_journal_entry = je_eqfm_balkan_situation
+				country_rank < rank_value:great_power
 			}
-			post_notification = notification_eqfm_wargoal_enforced_1
+			change_global_variable = {
+				name = eqfm_escalation_var
+				add = 3
+			}
+			c:TUR ?= {
+				eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_balkan_situation
+				}
+				post_notification = eqfm_wargoal_enforced_by_non_gp
+			}
+		}
+		else_if = {
+			limit = {
+				country_rank >= rank_value:great_power
+			}
+			change_global_variable = {
+				name = eqfm_escalation_var
+				add = 5
+			}
+			c:TUR ?= {
+				eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_balkan_situation
+				}
+				post_notification = eqfm_wargoal_enforced_by_great_power
+			}
 		}
 	}
 }
@@ -864,22 +1042,64 @@ eqfm_tension_wargoal_enforced_2 = {
 		eqfm_can_deescalate_tension_trigger = yes
 		c:TUR ?= this
 		scope:target = {
-			country_rank >= rank_value:great_power
+			is_in_geographic_region = geographic_region_rumelia
 		}
 	}
 	effect = {
-		change_global_variable = {
-			name = eqfm_deescalation_var
-			add = 5
-		}
-		c:TUR ?= {
-			eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
-		}
-		every_country = {
+		if = {
 			limit = {
-				is_involved_in_journal_entry = je_eqfm_balkan_situation
+				scope:target = {
+					country_rank >= rank_value:great_power
+				}
 			}
-			post_notification = notification_eqfm_wargoal_enforced_2
+			change_global_variable = {
+				name = eqfm_deescalation_var
+				add = 10
+			}
+			c:TUR ?= {
+				eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_balkan_situation
+				}
+				post_notification = eqfm_wargoal_enforced_against_great_power
+			}
+		}
+		else_if = {
+			limit = {
+				scope:target = {
+					is_subject_of = c:TUR
+				}
+			}
+			change_global_variable = {
+				name = eqfm_deescalation_var
+				add = 5
+			}
+			c:TUR ?= {
+				eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_balkan_situation
+				}
+				post_notification = eqfm_wargoal_enforced_against_subject
+			}
+		}
+		else = { # Yes, this INCREASES escalation
+			change_global_variable = {
+				name = eqfm_escalation_var
+				add = 5
+			}
+			c:TUR ?= {
+				eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_balkan_situation
+				}
+				post_notification = eqfm_wargoal_enforced_against_non_gp
+			}
 		}
 	}
 }

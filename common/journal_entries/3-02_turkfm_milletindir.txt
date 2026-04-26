@@ -1,0 +1,442 @@
+﻿je_turkfm_milletindir = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_turkey.dds"
+	weight = 500
+	
+	should_be_pinned_by_default_uninvolved_or_context = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+	
+	scripted_progress_bar = turkfm_kemalism_progressbar
+	scripted_progress_bar = turkfm_turanism_progressbar
+	scripted_progress_bar = turkfm_anatolianism_progressbar
+	
+	scripted_button = turkfm_embrace_kemalism_button
+	scripted_button = turkfm_embrace_turanism_button
+	scripted_button = turkfm_embrace_anatolianism_button
+	
+	is_shown_when_inactive = {
+		always = no # TODO enable when ready
+		c:TUR ?= this
+		has_technology_researched = nationalism
+	}
+	
+	possible = {
+		NOR = {
+			has_law_or_variant = law_type:law_monarchy
+			has_law_or_variant = law_type:law_theocracy
+		}
+		custom_tooltip = {
+			text = turkfm_tanzimat_failed
+			has_global_variable = turkfm_tanzimat_failed
+		}
+	}
+	
+	immediate = {
+		scope:journal_entry = {
+			set_variable = {
+				name = turkfm_kemalism_var
+				value = turkfm_kemalism_value
+			}
+			set_variable = {
+				name = turkfm_turanism_var
+				value = turkfm_turanism_value
+			}
+			set_variable = {
+				name = turkfm_anatolianism_var
+				value = turkfm_anatolianism_value
+			}
+		}
+		trigger_event = turkfm_milletindir.001
+	}
+	
+	complete = {
+		OR = {
+			custom_tooltip = {
+				text = je_turkfm_milletindir_complete
+				has_variable = turkfm_culture_var
+			}
+			has_law_or_variant = law_type:law_ethnostate
+		}
+	}
+	
+	on_complete = {
+		trigger_event = turkfm_milletindir.002
+	}
+	
+	on_weekly_pulse = {
+		effect = {
+			scope:journal_entry = {
+				gbbf_calc_variable_effect = {
+					name = turkfm_kemalism
+				}
+				gbbf_calc_variable_effect = {
+					name = turkfm_turanism
+				}
+				gbbf_calc_variable_effect = {
+					name = turkfm_anatolianism
+				}
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		random_events = {  }
+	}
+}
+
+je_turkfm_anatolian_reconquest = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_vulpes.dds"
+	weight = 500
+
+	should_be_pinned_by_default_uninvolved_or_context = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOR = {
+			has_variable = turkfm_reconquered_anatolia
+			has_variable = turkfm_weaksauce
+		}
+		has_global_variable = turkfm_tanzimat_failed
+		any_state_in_anatolia = {
+			owner != c:TUR
+		}
+	}
+
+	possible = {
+		has_technology_researched = nationalism
+		is_subject = no
+		custom_tooltip = {
+			text = turkfm_grand_collapse_happened
+			OR = {
+				has_variable = turkfm_grand_collapse_completed
+				has_variable = turkfm_grand_collapse_failed
+			}
+		}
+	}
+
+	immediate = {
+		trigger_event = turkfm_milletindir.010
+	}
+
+	complete = {
+		any_state_in_anatolia = {
+			count = all
+			owner = root
+		}
+	}
+
+	on_complete = {
+		trigger_event = turkfm_milletindir.011
+		set_variable = turkfm_reconquered_anatolia
+	}
+	
+	fail = {
+		OR = {
+			is_subject = yes
+			gbbf_is_broke_trigger = yes
+		}
+	}
+
+	on_fail = {
+		trigger_event = turkfm_milletindir.012
+		custom_tooltip = {
+			text = turkfm_weaksauce
+			set_variable = turkfm_weaksauce
+		}
+	}
+
+	invalid = {
+		hidden_trigger = {
+			OR = {
+				has_variable = turkfm_reconquered_anatolia
+				has_variable = turkfm_weaksauce
+			}
+		}
+	}
+}
+
+je_turkfm_rampaging_wolf = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_vulpes.dds"
+	weight = 500
+
+	should_be_pinned_by_default_uninvolved_or_context = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		NOT = {
+			has_variable = turkfm_weaksauce
+		}
+	}
+
+	possible = {
+		has_technology_researched = nationalism
+		is_subject = no
+		country_rank >= rank_value:minor_power
+		NOR = {
+			has_journal_entry = je_turkfm_sick_man_main
+			has_journal_entry = je_turkfm_tanzimat_main
+		}
+		any_state_in_anatolia = {
+			count = all
+			owner = root
+		}
+	}
+
+	immediate = {
+		trigger_event = turkfm_milletindir.013
+		set_variable = turkfm_reconquered_anatolia
+	}
+	
+	modifiers_while_active = {
+		modifier_turkfm_pursuing_turan
+	}
+
+	complete = {
+		country_rank >= rank_value:great_power
+		owns_entire_state_region = STATE_EASTERN_THRACE
+		owns_entire_state_region = STATE_PALESTINE
+		gbbf_controls_georegion_trigger = {
+			georegion = anatolia
+		}
+		gbbf_controls_georegion_trigger = {
+			georegion = rumelia
+		}
+		gbbf_owns_entire_georegion_trigger = {
+			georegion = levant
+		}
+		gbbf_controls_georegion_trigger = {
+			georegion = middle_east_highlands
+		}
+	}
+
+	on_complete = {
+		trigger_event = turkfm_milletindir.014
+		set_variable = turkfm_rampaging_wolf_complete
+	}
+	
+	fail = {
+		OR = {
+			is_subject = yes
+			AND = {
+				country_rank < rank_value:minor_power
+				gbbf_is_broke_trigger = yes
+			}
+		}
+	}
+
+	on_fail = {
+		trigger_event = turkfm_milletindir.015
+		custom_tooltip = {
+			text = turkfm_weaksauce
+			set_variable = turkfm_weaksauce
+		}
+	}
+	
+	invalid = {
+		hidden_trigger = {
+			OR = {
+				has_variable = turkfm_reconquered_anatolia
+				has_variable = turkfm_weaksauce
+			}
+			
+		}
+	}
+}
+
+je_turkfm_turan = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_vulpes.dds"
+	weight = 500
+
+	should_be_pinned_by_default_uninvolved_or_context = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+
+	is_shown_when_inactive = {
+		c:TUR ?= this
+		has_variable = turkfm_reconquered_anatolia
+		NOR = {
+			has_variable = turkfm_weaksauce
+			var:turkfm_culture_var ?= flag:turkfm_anatolianism
+			var:turkfm_culture_var ?= flag:turkfm_kemalism
+		}
+	}
+
+	possible = {
+		has_technology_researched = pan-nationalism
+		custom_tooltip = {
+			text = turkfm_has_turanist_foundation
+			var:turkfm_culture_var ?= flag:turkfm_turanism
+		}
+		custom_tooltip = {
+			text = turkfm_rampaging_wolf_complete
+			has_variable = turkfm_rampaging_wolf_complete
+		}
+		is_subject = no
+	}
+
+	immediate = {
+		trigger_event = turkfm_milletindir.016
+	}
+
+	complete = {
+		custom_tooltip = {
+			text = turkfm_has_formed_turan
+			c:TURAN ?= this
+		}
+		country_rank >= rank_value:great_power
+		any_state_in_anatolia = {
+			owner = root
+		}
+		sr:region_central_asia = {
+			any_scope_state = {
+				percent >= 0.9
+				owner = root
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = turkfm_milletindir.017
+	}
+
+	fail = {
+		OR = {
+			gbbf_is_broke_trigger = yes
+			country_rank < rank_value:major_power
+			is_subject = yes
+		}
+	}
+
+	on_fail = {
+		trigger_event = turkfm_milletindir.018
+		custom_tooltip = {
+			text = turkfm_weaksauce
+			set_variable = turkfm_weaksauce
+		}
+	}
+	
+	invalid = {
+		hidden_trigger = {
+			has_variable = turkfm_weaksauce
+		}
+	}
+}
+
+je_turkfm_armenian_expulsions = {
+	group = je_group_crises
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	weight = 100
+
+	should_be_pinned_by_default_uninvolved_or_context = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+
+	scripted_button = turkfm_endorse_pogroms_button
+	scripted_button = turkfm_halt_deportations_button
+	scripted_button = turkfm_cook_the_books_button
+	scripted_button = turkfm_shoot_the_press_button
+
+	is_shown_when_inactive = {
+		has_dlc_feature = ip3_content
+		c:TUR ?= this
+		any_scope_state = {
+			state_region = {
+				is_homeland = armenian
+			}
+		}
+		OR = {
+			has_global_variable = eqfm_balkan_situation
+			has_global_variable = turkfm_tanzimat_failed
+		}
+	}
+
+	possible = {
+		has_technology_researched = nationalism
+		has_technology_researched = central_archives
+		has_journal_entry = je_turkfm_sick_man_grand_collapse
+	}
+
+	immediate = {
+		trigger_event = turkfm_milletindir.100
+	}
+
+	complete = {
+		OR = {
+			any_scope_state = {
+				filter = {
+					state_region = {
+						is_homeland = armenian
+					}
+				}
+				count = all
+				custom_tooltip = {
+					text = je_turkfm_armenian_expulsions_complete
+					culture_percent_state = {
+						target = cu:armenian
+						value <= 0.05
+					}
+				}
+			}
+		}
+	}
+
+	on_complete = {
+		trigger_event = turkfm_milletindir.101
+	}
+
+	fail = {
+		OR = {
+			NOT = {
+				any_scope_state = {
+					state_region = {
+						is_homeland = armenian
+					}
+				}
+			}
+			custom_tooltip = {
+				text = je_turkfm_armenian_expulsions_fail
+				has_variable = turkfm_armenian_deportations_halted
+			}
+		}
+	}
+
+	on_fail = {
+		if = {
+			limit = {
+				has_variable = turkfm_armenian_deportations_halted
+			}
+			trigger_event = turkfm_milletindir.102
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {  }
+		random_events = {  }
+		effect = {
+			if = {
+				limit = {
+					scope:journal_entry = {
+						has_modifier = modifier_turkfm_organized_expulsions
+						NOT = {
+							has_variable = turkfm_armenian_deportations_halted
+						}
+					}
+				}
+				turkfm_armenian_expulsion_effect = yes
+			}
+		}
+	}
+}

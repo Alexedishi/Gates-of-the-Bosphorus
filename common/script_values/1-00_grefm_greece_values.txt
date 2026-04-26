@@ -75,9 +75,7 @@ grefm_bavarocracy_support_value = {
 	}
 	if = {
 		limit = {
-			NOT = {
-				has_journal_entry = je_balkfm_land_reform
-			}
+			has_variable = balkfm_land_reform_complete
 		}
 		add = {
 			value = 0.5
@@ -86,9 +84,7 @@ grefm_bavarocracy_support_value = {
 	}
 	if = {
 		limit = {
-			NOT = {
-				has_journal_entry = je_balkfm_brigandage
-			}
+			has_variable = balkfm_security_reform_complete
 		}
 		add = {
 			value = 0.5
@@ -97,9 +93,7 @@ grefm_bavarocracy_support_value = {
 	}
 	if = {
 		limit = {
-			NOT = {
-				has_journal_entry = je_balkfm_civic_reform
-			}
+			has_variable = balkfm_civic_reform_complete
 		}
 		add = {
 			value = 0.5
@@ -189,37 +183,44 @@ grefm_bavarocracy_opposition_value = {
 	}
 	if = {
 		limit = {
-			has_journal_entry = je_balkfm_land_reform
-
+			has_journal_entry = je_balkfm_legacies
 		}
-		add = {
-			value = 0.5
-			desc = grefm_value_from_land_reform_completed_NOT
+		je:je_balkfm_legacies = {
+			if = {
+				limit = {
+					has_modifier = modifier_balkfm_land_reform_agenda
+				}
+				add = {
+					value = 0.5
+					desc = grefm_value_from_land_reform_completed_NOT
+				}
+			}
+			if = {
+				limit = {
+					has_modifier = modifier_balkfm_security_reform_agenda
+				}
+				add = {
+					value = 0.5
+					desc = grefm_value_from_brigandage_completed_NOT
+				}
+			}
+			if = {
+				limit = {
+					has_modifier = modifier_balkfm_civic_reform_agenda
+				}
+				add = {
+					value = 0.5
+					desc = grefm_value_from_civic_reform_compeleted_NOT
+				}
+			}
 		}
 	}
-	if = {
-		limit = {
-			has_journal_entry = je_balkfm_brigandage
-		}
-		add = {
-			value = 0.5
-			desc = grefm_value_from_brigandage_completed_NOT
-		}
-	}
-	if = {
-		limit = {
-			has_journal_entry = je_balkfm_civic_reform
-		}
-		add = {
-			value = 0.5
-			desc = grefm_value_from_civic_reform_compeleted_NOT
-		}
-	}
+	
 	add = {
 		value = {
 			every_scope_state = {
 				limit = {
-					has_modifier = modifier_balkfm_brigandage
+					has_modifier = modifier_balkfm_maurauding_bridgands
 				}
 				add = radical_fraction
 			}
@@ -243,7 +244,7 @@ grefm_bavarocracy_opposition_value = {
 					exists = heir
 				}
 				heir ?= {
-					has_template = template_grefm_armansperg_josef
+					has_template = grefm_armansperg_josef
 				}
 			}
 		}
@@ -312,37 +313,43 @@ grefm_bavarocracy_opposition_display_value = {
 	}
 	if = {
 		limit = {
-			has_journal_entry = je_balkfm_land_reform
-
+			has_journal_entry = je_balkfm_legacies
 		}
-		subtract = {
-			value = 0.5
-			desc = grefm_value_from_land_reform_completed_NOT
-		}
-	}
-	if = {
-		limit = {
-			has_journal_entry = je_balkfm_brigandage
-		}
-		subtract = {
-			value = 0.5
-			desc = grefm_value_from_brigandage_completed_NOT
-		}
-	}
-	if = {
-		limit = {
-			has_journal_entry = je_balkfm_civic_reform
-		}
-		subtract = {
-			value = 0.5
-			desc = grefm_value_from_civic_reform_compeleted_NOT
+		je:je_balkfm_legacies = {
+			if = {
+				limit = {
+					has_modifier = modifier_balkfm_land_reform_agenda
+				}
+				subtract = {
+					value = 0.5
+					desc = grefm_value_from_land_reform_completed_NOT
+				}
+			}
+			if = {
+				limit = {
+					has_modifier = modifier_balkfm_security_reform_agenda
+				}
+				subtract = {
+					value = 0.5
+					desc = grefm_value_from_brigandage_completed_NOT
+				}
+			}
+			if = {
+				limit = {
+					has_modifier = modifier_balkfm_civic_reform_agenda
+				}
+				subtract = {
+					value = 0.5
+					desc = grefm_value_from_civic_reform_compeleted_NOT
+				}
+			}
 		}
 	}
 	subtract = {
 		value = {
 			every_scope_state = {
 				limit = {
-					has_modifier = modifier_balkfm_brigandage
+					has_modifier = modifier_balkfm_maurauding_bridgands
 				}
 				add = radical_fraction
 			}
@@ -366,7 +373,7 @@ grefm_bavarocracy_opposition_display_value = {
 					exists = heir
 				}
 				heir ?= {
-					has_template = template_grefm_armansperg_josef
+					has_template = grefm_armansperg_josef
 				}
 			}
 		}
@@ -587,10 +594,7 @@ grefm_bavarocractic_ire_progress_value = {
 	}
 	if = {
 		limit = {
-			OR = {
-				has_modifier = declared_bankruptcy
-				in_default = yes
-			}
+			gbbf_is_broke_trigger = yes
 		}
 		add = {
 			value = 1
@@ -619,25 +623,19 @@ grefm_bavarocractic_ire_progress_value = {
 			}
 		}
 	}
-	if = {
-		limit = {
-			any_scope_state = {
-				state_region = {
-					is_homeland = cu:greek
-				}
-				loyalty >= 0.10
-			}
-		}
-		add = {
-			desc = grefm_value_from_loyalists
+	add = {
+		desc = grefm_value_from_loyalists
+		value = {
 			every_scope_state = {
 				limit = {
 					state_region = {
 						is_homeland = cu:greek
 					}
-					loyalty >= 0.10
+					loyalist_fraction = {
+						value >= 0.10
+					}
 				}
-				subtract = this.loyalty
+				subtract = loyalist_fraction
 			}
 		}
 	}
@@ -741,7 +739,7 @@ grefm_coup_progress_value = {
 		}
 		every_character_in_void = {
 			limit = {
-				has_template = template_grefm_zorbas_nikolas
+				has_template = grefm_zorbas_nikolas
 			}
 			value = commander_coup_strength
 		}
@@ -753,4 +751,185 @@ grefm_coup_progress_value = {
 	round_to = 0.01
 	min = 0
 	max = 100
+}
+
+grefm_total_venizelism_agendas_value = {
+	value = 0
+	if = {
+		limit = {
+			OR = {
+				has_variable = grefm_venizelism_identity_agenda
+				has_variable = grefm_venizelism_identity_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = grefm_venizelism_civic_agenda
+				has_variable = grefm_venizelism_civic_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = grefm_venizelism_military_agenda
+				has_variable = grefm_venizelism_military_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = grefm_venizelism_social_agenda
+				has_variable = grefm_venizelism_social_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = grefm_venizelism_education_agenda
+				has_variable = grefm_venizelism_education_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = grefm_venizelism_constitution_agenda
+				has_variable = grefm_venizelism_constitution_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = grefm_venizelism_culture_agenda
+				has_variable = grefm_venizelism_culture_complete
+			}
+		}
+		add = 1
+	}
+}
+
+grefm_completed_venizelism_agendas_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = grefm_venizelism_identity_complete
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = grefm_venizelism_civic_complete
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = grefm_venizelism_military_complete
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = grefm_venizelism_social_complete
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = grefm_venizelism_education_complete
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = grefm_venizelism_constitution_complete
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = grefm_venizelism_culture_complete
+		}
+		add = 1
+	}
+}
+
+grefm_total_metaxism_agendas_value = {
+	value = 0
+	if = {
+		limit = {
+			OR = {
+				has_variable = grefm_metaxism_tradition_agenda
+				has_variable = grefm_metaxism_tradition_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = grefm_metaxism_authoritarian_agenda
+				has_variable = grefm_metaxism_authoritarian_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = grefm_metaxism_assimilation_agenda
+				has_variable = grefm_metaxism_assimilation_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = grefm_metaxism_social_agenda
+				has_variable = grefm_metaxism_social_complete
+			}
+		}
+		add = 1
+	}
+}
+
+grefm_completed_metaxism_agendas_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = grefm_metaxism_tradition_complete
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = grefm_metaxism_authoritarian_complete
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = grefm_metaxism_assimilation_complete
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = grefm_metaxism_social_complete
+		}
+		add = 1
+	}
 }

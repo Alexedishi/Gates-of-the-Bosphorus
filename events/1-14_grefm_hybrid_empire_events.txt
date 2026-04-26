@@ -5,8 +5,10 @@
 # For Greek & Byzantium content, see the "grefm" module
 # For Balkan Nations content, see the "balkfm" module
 # For Ottoman & Turkish content, see the "turkfm" module
-# For Eastern Question & Expeditions content, see the "eqfm" module
+# For Northern African content, see the "mgrbfm" module
 # For Armenian, Kurdish, & Assyrian content, see the "haykfm" module
+# For Levantine content, see the "levafm" module
+# For Eastern Question & Expeditions content, see the "eqfm" module
 
 ####################
 
@@ -64,7 +66,7 @@ grefm_hybrid_empire.001 = { # The New Greece Rises
 			limit = {
 				has_diplomatic_relevance = ROOT
 			}
-			post_notification = unification_notification_byz
+			post_notification = unification_byz
 		}
 	}
 
@@ -79,20 +81,15 @@ grefm_hybrid_empire.001 = { # The New Greece Rises
 			}
 			set_capital = STATE_EASTERN_THRACE
 		}
-		every_state_region = {
-			limit = {
-				OR = {
-					region = sr:region_anatolia
-					region = sr:region_balkans
-				}
-				any_scope_state = {
-					NOT = { owner = ROOT }
-					NOT = { has_claim_by = ROOT }
-				}
-			}
-			add_claim = ROOT
+		gbbf_add_georegion_claims_effect = {
+			georegion = rumelia
 		}
-		grefm_add_levant_claims_effect = yes
+		gbbf_add_georegion_claims_effect = {
+			georegion = anatolia
+		}
+		gbbf_add_georegion_claims_effect = {
+			georegion = levant
+		}
 	}
 
 	option = {
@@ -103,7 +100,7 @@ grefm_hybrid_empire.001 = { # The New Greece Rises
 		}
 		add_modifier = {
 			name = modifier_grefm_rebirth
-			months = gbbf_duration_20_years
+			months = gbbf_very_long_modifier_time
 		}
 	}
 
@@ -149,9 +146,7 @@ grefm_hybrid_empire.002 = { # The Eternal City
 	immediate = {
 		random_country = {
 			limit = {
-				capital = {
-					region = sr:region_italy
-				}
+				is_in_geographic_region = geographic_region_italia
 			}
 			save_scope_as = italy_incident_scope
 		}
@@ -164,17 +159,8 @@ grefm_hybrid_empire.002 = { # The Eternal City
 			country = scope:italy_incident_scope
 			value = 10
 		}
-		every_state_region = {
-			limit = {
-				OR = {
-					region = sr:region_italy
-				}
-				any_scope_state = {
-					NOT = { owner = ROOT }
-					NOT = { has_claim_by = ROOT }
-				}
-			}
-			add_claim = ROOT
+		gbbf_add_georegion_claims_effect = {
+			georegion = roman_italia
 		}
 		custom_tooltip = {
 			text = grefm_embraced_roman_reconquest

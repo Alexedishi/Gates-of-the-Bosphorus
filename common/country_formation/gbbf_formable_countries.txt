@@ -17,17 +17,14 @@
 		STATE_CROATIA
 	}
 	required_states_fraction = 1.0
+	potential = {
+		NOR = {
+			country_tier = hegemony
+			country_tier = empire
+		}
+	}
 	possible = {
 		is_subject = no
-		custom_tooltip = {
-			text = balkfm_rank_below_empire
-			hidden_trigger = {
-				NOR = {
-					country_tier = hegemony
-					country_tier = empire
-				}
-			}
-		}
 	}
 	ai_will_do = { always = no }
 }
@@ -59,7 +56,59 @@ REPLACE:BYZ = {
 	ai_will_do = { always = yes }
 }
 
-KUR = {
+REPLACE_OR_CREATE:GRE = {
+	states = {
+		STATE_ATTICA
+		STATE_PELOPONNESE
+		STATE_THESSALIA
+		STATE_MACEDONIA
+		STATE_WESTERN_THRACE
+	}
+	required_states_fraction = 0.50
+	potential = {
+		NOR = {
+			country_tier = hegemony
+			country_tier = empire
+		}
+	}
+	possible = {
+		owns_entire_state_region = STATE_ATTICA
+	}
+	ai_will_do = { always = yes }
+}
+
+REPLACE:LBY = {
+	states = {
+		STATE_TRIPOLI
+		STATE_LIBYA
+		STATE_LIBYAN_DESERT
+	}
+
+	required_states_fraction = 1
+
+	ai_will_do = { always = yes }
+
+	potential = {
+		capital.state_region = {
+			OR = {
+				this = s:STATE_TRIPOLI
+				this = s:STATE_LIBYA
+				this = s:STATE_LIBYAN_DESERT
+			}
+		}
+		NOR = {
+			country_tier = hegemony
+			country_tier = empire
+		}
+	}
+
+	possible = {
+		has_technology_researched = nationalism
+		is_country_type =  recognized
+	}
+}
+
+REPLACE_OR_CREATE:KUR = {
 	states = {
 		STATE_MOSUL
 		STATE_DEIR_EZ_ZOR
@@ -105,7 +154,7 @@ SER_SRP = {
 			}
 		}
 		custom_tooltip = {
-			text = balkfm_has_not_formed_yug_tt
+			text = balkfm_has_not_formed_yug
 			hidden_trigger = {
 				NOT = {
 					c:YUG ?= this
@@ -114,6 +163,19 @@ SER_SRP = {
 		}
 	}
 	ai_will_do = { always = no }
+}
+
+TURAN = {
+	use_culture_states = yes
+	required_states_fraction = 0.95
+	potential = {
+		is_country_type = recognized
+	}
+	possible = {
+		is_subject = no
+		is_at_war = no
+	}
+	ai_will_do = { always = yes }
 }
 
 REPLACE:YUG = {
@@ -132,9 +194,28 @@ REPLACE:YUG = {
 		STATE_DELVIDEK
 	}
 	required_states_fraction = 0.75
+	potential = {
+		NOR = {
+			country_tier = hegemony
+			country_tier = empire
+		}
+	}
 	possible = {
 		is_subject = no
 		balkfm_is_national_empire_trigger = no
+		is_at_war = no
+		custom_tooltip = {
+			text = no_insurrectionary_movement_tt
+			NOT = {
+				any_political_movement = {
+					is_insurrectionary = yes
+				}
+			}
+		}
+		NOR = {
+			has_law = law_type:law_ethnostate
+			has_modifier = modifier_balkfm_cultural_schism
+		}
 	}
 	ai_will_do = { always = yes }
 }

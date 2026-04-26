@@ -1,5 +1,6 @@
 ﻿balkfm_mon_declare_kingdom_decision = {
 	is_shown = {
+		c:MON ?= this
 		has_modifier = modifier_balkfm_declared_principality
 		NOR = {
 			has_modifier = modifier_balkfm_declared_kingdom
@@ -11,18 +12,22 @@
 		owns_entire_state_region = STATE_MONTENEGRO
 		custom_tooltip = {
             text = balkfm_mon_elevation_buttons_tt
-			NOT = {
-		        any_country = {
-		            country_rank >= rank_value:great_power
+			any_country = {
+				filter = {
+					country_rank >= rank_value:great_power
+					has_strategic_region_interest_tier = {
+						strategic_region = ROOT.capital.region
+						value >= 1
+					}
 					OR = {
 						country_has_state_religion = rel:catholic
 						country_has_state_religion = rel:orthodox
 					}
-		            NOT = { has_war_with = ROOT }
-		            has_interest_marker_in_region = ROOT.capital.region
-		            relations:root < 0
-		        }
-	        }
+				}
+				count = all
+				NOT = { has_war_with = ROOT }
+				relations:root > 0
+			}
         }
 		is_diplomatic_play_committed_participant = no
 		is_subject = no
@@ -30,8 +35,12 @@
 	}
 	
 	when_taken = {
-		remove_modifier = modifier_balkfm_declared_principality
-		add_modifier = modifier_balkfm_declared_kingdom
+		trigger_event = balkfm_montenegro.020
+		show_as_tooltip = {
+			remove_modifier = modifier_balkfm_declared_principality
+			add_modifier = modifier_balkfm_declared_kingdom
+		}
+		
 	}
 	
 	ai_chance = {
@@ -42,10 +51,11 @@
 
 balkfm_great_montenegrivation_decision = {
 	is_shown = {
-		ruler = {
-			has_template = template_balkfm_petrovic_nikola
+		c:MON ?= this
+		ruler ?= {
+			has_template = balkfm_petrovic_nikola
 		}
-		month = 6
+		month = 6 # July, it's zero-indexed
 		NOR = {
 			has_modifier = modifier_balkfm_more_rakija
 			has_modifier = modifier_balkfm_fresh_compot
@@ -66,9 +76,7 @@ balkfm_great_montenegrivation_decision = {
 	}
 	
 	when_taken = {
-		trigger_event = {
-			id = balkfm_montenegro.100 # The Great Montenegrivation
-		}
+		trigger_event = balkfm_montenegro.100
 		set_variable = balkfm_montenegrivation_var
 	}
 	

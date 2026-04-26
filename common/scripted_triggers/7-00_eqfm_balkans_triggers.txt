@@ -1,0 +1,297 @@
+﻿eqfm_stable_phase_trigger = {
+	custom_tooltip = { 
+		text = eqfm_stable_phase_trigger
+		global_var:eqfm_balkan_situation = {
+			var:eqfm_balkans_phase_var ?= flag:eqfm_stable
+		}
+	}
+}
+
+eqfm_unrest_phase_trigger = {
+	custom_tooltip = {
+		text = eqfm_unrest_phase_trigger
+		global_var:eqfm_balkan_situation = {
+			var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
+		}
+	}
+}
+
+eqfm_hostility_phase_trigger = {
+	custom_tooltip = {
+		text = eqfm_hostility_phase_trigger
+		global_var:eqfm_balkan_situation = {
+			var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
+		}
+	}
+}
+
+eqfm_deconfliction_phase_trigger = {
+	custom_tooltip = {
+		text = eqfm_deconfliction_phase_trigger
+		global_var:eqfm_balkan_situation = {
+			var:eqfm_balkans_phase_var ?= flag:eqfm_deconfliction
+		}
+	}
+}
+
+eqfm_crisis_phase_trigger = {
+	custom_tooltip = {
+		text = eqfm_crisis_phase_trigger
+		global_var:eqfm_balkan_situation = {
+			var:eqfm_balkans_phase_var ?= flag:eqfm_crisis
+		}
+	}
+}
+
+eqfm_balkans_should_be_involved_trigger = {
+	custom_tooltip = {
+		text = eqfm_balkans_should_be_involved_trigger
+		OR = {
+			c:TUR ?= this
+			is_subject_of = c:TUR
+			is_in_geographic_region = geographic_region_rumelia
+			has_strategic_region_interest_tier = {
+				strategic_region = sr:region_balkans
+				value >= 2
+			}
+		}
+	}
+}
+
+eqfm_balkans_interloper_trigger = {
+	custom_tooltip = {
+		text = eqfm_balkans_interloper_trigger
+		eqfm_balkans_should_be_involved_trigger = no
+		has_strategic_region_interest_tier = {
+			strategic_region = ROOT.capital.region
+			value = 1
+		}
+	}
+}
+
+eqfm_balkans_uninvolved_trigger = {
+	custom_tooltip = {
+		text = eqfm_balkans_uninvolved_trigger
+		eqfm_balkans_should_be_involved_trigger = no
+		eqfm_balkans_interloper_trigger = no
+	}
+}
+
+eqfm_neutral_events_trigger = {
+	NOT = {
+		has_global_variable = eqfm_balkans_cooldown_var
+	}
+	global_var:eqfm_balkan_situation = {
+		OR = {
+			var:eqfm_balkans_phase_var ?= flag:eqfm_stable
+			var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
+			var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
+			var:eqfm_balkans_phase_var ?= flag:eqfm_crisis
+		}
+	}
+}
+
+eqfm_unrest_events_trigger = {
+	NOT = {
+		has_global_variable = eqfm_balkans_cooldown_var
+	}
+	global_var:eqfm_balkan_situation = {
+		OR = {
+			var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
+			var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
+			var:eqfm_balkans_phase_var ?= flag:eqfm_crisis
+		}
+	}
+}
+
+eqfm_hostility_events_trigger = {
+	NOT = {
+		has_global_variable = eqfm_balkans_cooldown_var
+	}
+	global_var:eqfm_balkan_situation = {
+		var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
+	}
+}
+
+eqfm_deconfliction_events_trigger = {
+	NOT = {
+		has_global_variable = eqfm_balkans_cooldown_var
+	}
+	global_var:eqfm_balkan_situation = {
+		OR = {
+			var:eqfm_balkans_phase_var ?= flag:eqfm_stable
+			var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
+			var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
+			var:eqfm_balkans_phase_var ?= flag:eqfm_deconfliction
+		}
+	}
+}
+
+eqfm_crisis_events_trigger = {
+	NOT = {
+		has_global_variable = eqfm_balkans_cooldown_var
+	}
+	global_var:eqfm_balkan_situation = {
+		var:eqfm_balkans_phase_var ?= flag:eqfm_crisis
+	}
+}
+
+eqfm_can_escalate_tension_trigger = {
+	global_var:eqfm_balkan_situation = {
+		OR = {
+			var:eqfm_balkans_phase_var ?= flag:eqfm_stable
+			var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
+			AND = {
+				var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
+				eqfm_crisis_possible_trigger = yes
+			}
+			var:eqfm_balkans_phase_var ?= flag:eqfm_deconfliction
+		}
+	}
+}
+
+eqfm_can_deescalate_tension_trigger = {
+	global_var:eqfm_balkan_situation = {
+		OR = {
+			var:eqfm_balkans_phase_var ?= flag:eqfm_unrest
+			var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
+			AND = {
+				var:eqfm_balkans_phase_var ?= flag:eqfm_crisis
+				c:TUR ?= {
+					has_any_secessionists_broken_out = no
+					has_any_secessionists_growing = no
+					is_at_war = no
+				}
+			}
+		}
+	}
+}
+
+eqfm_crisis_possible_trigger = {
+	has_dlc_feature = ip3_content # National Awakening
+	c:TUR ?= {
+		has_technology_researched = nationalism
+	}
+}
+
+eqfm_crisis_participant_trigger = { # Excludes TUR
+	OR = {
+		has_variable = eqfm_crisis_attacker
+		has_variable = eqfm_crisis_defender
+	}
+}
+
+eqfm_crisis_party_trigger = { # Excludes TUR
+	OR = {
+		has_variable = eqfm_crisis_attacker
+		has_variable = eqfm_crisis_defender
+		has_variable = eqfm_crisis_deconflicted
+	}
+}
+
+eqfm_crisis_deconfliction_trigger = {
+	has_variable = eqfm_crisis_attacker
+	trigger_if = {
+		limit = {
+			c:GBR ?= this
+		}
+		OR = {
+			c:TUR ?= {
+				owns_entire_state_region = STATE_CYPRUS
+			}
+			c:CYP ?= {
+				is_subject_of = c:TUR
+			}
+		}
+	}
+	trigger_if = {
+		limit = {
+			c:FRA ?= this
+		}
+		OR = {
+			c:TUR ?= {
+				owns_entire_state_region = STATE_TUNISIA
+			}
+			c:TUN ?= {
+				is_subject_of = c:TUR
+			}
+		}
+	}
+	trigger_if = {
+		limit = {
+			c:RUS ?= this
+		}
+		c:TUR ?= {
+			owns_entire_state_region = STATE_DOBRUDJA
+		}
+	}
+}
+
+REPLACE:eqfm_revolt_mechanics_trigger = {
+	owner = {
+		c:TUR ?= this
+		is_involved_in_journal_entry = je_eqfm_balkan_situation
+	}
+}
+
+REPLACE:eqfm_minority_revolt_possible_trigger = {
+	owner = {
+		c:TUR ?= this
+		is_involved_in_journal_entry = je_eqfm_balkan_situation
+	}
+	global_var:eqfm_balkan_situation = {
+		OR = {
+			var:eqfm_balkans_phase_var ?= flag:eqfm_hostility
+			var:eqfm_balkans_phase_var ?= flag:eqfm_crisis
+		}
+	}
+}
+
+eqfm_eligible_minority_movement_trigger = {
+	OR = {
+		is_political_movement_type = movement_cultural_minority
+		is_political_movement_type = movement_religious_minority
+	}
+	gbbf_balkans_culture_trigger = yes
+}
+
+eqfm_cultural_minority_movement_trigger = {
+	is_political_movement_type = movement_cultural_minority
+	gbbf_balkans_culture_trigger = yes
+}
+
+eqfm_religious_minority_movement_trigger = {
+	is_political_movement_type = movement_religious_minority
+	OR = {
+		religion = rel:orthodox
+		religion = rel:oriental_orthodox
+		religion = rel:jewish
+	}
+}
+
+eqfm_balkan_situation_porte_side_trigger = {
+	OR = {
+		root != c:TUR
+		gbbf_has_alliance_trigger = {
+			country = c:TUR
+		}
+		gbbf_has_defensive_pact_trigger = {
+			country = c:TUR
+		}
+		gbbf_has_military_assistance_trigger = {
+			country = c:TUR
+		}
+	}
+}
+
+eqfm_balkan_situation_balkan_side_trigger = {
+	OR = {
+		root != c:TUR
+		gbbf_has_rivalry_trigger = {
+			country = c:TUR
+		}
+		gbbf_has_embargo_trigger = {
+			country = c:TUR
+		}
+	}
+}

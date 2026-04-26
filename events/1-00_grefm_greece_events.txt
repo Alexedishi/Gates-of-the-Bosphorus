@@ -5,8 +5,10 @@
 # For Greek & Byzantium content, see the "grefm" module
 # For Balkan Nations content, see the "balkfm" module
 # For Ottoman & Turkish content, see the "turkfm" module
-# For Eastern Question & Expeditions content, see the "eqfm" module
+# For Northern African content, see the "mgrbfm" module
 # For Armenian, Kurdish, & Assyrian content, see the "haykfm" module
+# For Levantine content, see the "levafm" module
+# For Eastern Question & Expeditions content, see the "eqfm" module
 
 ####################
 
@@ -89,17 +91,31 @@ namespace = grefm_greece
 #	058 - The Informant
 #	059 - Up In Arms
 
-#060-069 - That Nonsense with Venizelos
+#060-069 - Venizelism Narrative Events
 #	060 - The Nature of the National Assembly
-#	061 - Rejuvenating the State
-#	062 - A Competent Bureaucracy
-#	063 - Reorganizing the Military
-#	064 - A Formidable Military
-#	066 - Advancing Society
-#	066 - A Modern Society
-#	067 - The Ignorant Masses
-#	068 - An Educated Populace
-#	069 - The Greek State Resurgent
+#	061 - ##Rejuvenating the State
+#	062 - ##Reorganizing the Military
+#	063 - ##Advancing Society
+#	064 - ##The Ignorant Masses
+#	065 - ##Sponsoring the Arts
+#	069 - ##The Greek State Resurgent
+
+#070-079 - Venizelism Reform Completion Events
+#	070 - ##A True Constitution
+#	071 - ##A Competent Bureaucracy
+#	072 - ##A Formidable Military
+#	073 - ##A Modern Society
+#	074 - ##An Educated Populace
+#	075 - ##A Refined Culture
+
+#080-089 - The Age of Metaxas
+#	080 - ##The Third Greece
+#	081 - ##The Archigos of Greece
+#	082 - ##The End of Metaxas
+#	083 - ##Pillars of Tradition
+#	084 - ##Suppressing Dissent
+#	085 - ##A Greece for Greeks
+#	086 - ##A Moral Society
 
 #090-099 - IP3 Bavarocracy Variant Events
 #	090 - The Regency Council (IP3 Variant)
@@ -188,25 +204,17 @@ grefm_greece.001 = {
 	}
 
 	immediate = {
-		trigger_event = {
-			id = grefm_greece.011 # King Ludwig Visits Greece
-			days = 40 # Mid-February
+		random_scope_character = {
+			limit = {
+				has_template = grefm_wittelsbach_otto
+			}
+			save_scope_as = grefm_otto_scope
 		}
-		trigger_event = {
-			id = grefm_greece.012 # Otto Leaves for Bavaria
-			days = 130 # Mid-May
-		}
-		trigger_event = {
-			id = grefm_greece.013 # A Consort Fit for a Bavarian
-			days = 270
-		}
-		trigger_event = {
-			id = grefm_greece.014 # Otto's Intellect Challenged
-			days = 270
-		}
-		trigger_event = {
-			id = grefm_greece.015 # Discharging the Regency
-			days = 390 # February 1837
+		random_scope_character = {
+			limit = {
+				has_template = grefm_armansperg_josef
+			}
+			save_scope_as = grefm_armansperg_scope
 		}
 	}
 
@@ -215,10 +223,12 @@ grefm_greece.001 = {
 		default_option = yes
 		show_as_tooltip = {
 			add_modifier = modifier_grefm_armansperg_regency
-		}
-		show_as_tooltip = {
 			add_modifier = modifier_grefm_bavarocracy
-			add_modifier = modifier_grefm_westernized_thought
+			add_modifier = {
+				name = modifier_grefm_westernized_thought
+				months = gbbf_very_long_modifier_time
+				is_decaying = yes
+			}
 		}
 	}
 
@@ -261,7 +271,7 @@ grefm_greece.002 = {
 
 	immediate = {
 		ruler = {
-			save_scope_as = king_otto_scope
+			save_scope_as = grefm_otto_scope
 		}
 		ig:ig_landowners = {
 			save_scope_as = ig_landowners_scope
@@ -310,7 +320,7 @@ grefm_greece.003 = {
 
 	immediate = {
 		ruler = {
-			save_scope_as = king_otto_scope
+			save_scope_as = grefm_otto_scope
 		}
 		ig:ig_armed_forces = {
 			leader = {
@@ -367,7 +377,7 @@ grefm_greece.003 = {
 			}
 			add_modifier = {
 				name = modifier_grefm_constitution_enforced
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 				is_decaying = yes
 			}
 		}
@@ -399,7 +409,7 @@ grefm_greece.003 = {
 		ruler = {
 			add_modifier = {
 				name = modifier_grefm_tyrant_king
-				months = gbbf_duration_10_years
+				months = gbbf_long_modifier_time
 			}
 		}
 		every_interest_group = {
@@ -411,7 +421,7 @@ grefm_greece.003 = {
 			}
 			add_modifier = {
 				name = modifier_grefm_constitution_refused
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 				is_decaying = yes
 			}
 		}
@@ -427,7 +437,7 @@ grefm_greece.003 = {
 			strata = lower
 			value = medium_radicals
 		}
-		scope:king_otto_scope = {
+		scope:grefm_otto_scope = {
 			set_as_interest_group_leader = yes # Otto discharged von Rudhart in 1837 to directly chair his privy council; this is represented here for gameplay reasons
 		}
 		if = {
@@ -524,7 +534,7 @@ grefm_greece.003 = {
 			}
 			add_modifier = {
 				name = modifier_grefm_constitution_enforced
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 				is_decaying = yes
 			}
 		}
@@ -582,7 +592,7 @@ grefm_greece.004 = {
 	immediate = {
 		set_variable = grefm_1843_revolution_happened
 		ruler = {
-			save_scope_as = king_otto_scope
+			save_scope_as = grefm_otto_scope
 		}
 		set_variable = {
 			name = grefm_tyranny_var
@@ -613,7 +623,7 @@ grefm_greece.004 = {
 			}
 			add_modifier = {
 				name = modifier_grefm_constitution_refused
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 				is_decaying = yes
 			}
 		}
@@ -629,7 +639,7 @@ grefm_greece.004 = {
 			strata = lower
 			value = medium_radicals
 		}
-		scope:king_otto_scope = {
+		scope:grefm_otto_scope = {
 			set_as_interest_group_leader = yes # Othonian Absolutism Moment
 		}
 		set_variable = {
@@ -717,7 +727,7 @@ grefm_greece.006 = {
 
 	immediate = {
 		ruler = {
-			save_scope_as = king_otto_scope
+			save_scope_as = grefm_otto_scope
 		}
 		heir = {
 			save_scope_as = otto_heir_scope
@@ -737,7 +747,7 @@ grefm_greece.006 = {
 		}
 		random_scope_character = {
 			limit = {
-				has_template = template_grefm_voulgaris_dimitrios
+				has_template = grefm_voulgaris_dimitrios
 			}
 			save_scope_as = voulgaris_scope
 		}
@@ -766,7 +776,7 @@ grefm_greece.006 = {
 		scope:voulgaris_scope = {
 			set_character_as_ruler = yes
 		}
-		scope:king_otto_scope = {
+		scope:grefm_otto_scope = {
 			exile_character = yes
 		}
 		if = {
@@ -841,7 +851,7 @@ grefm_greece.007 = {
 
 	immediate = {
 		ruler = {
-			save_scope_as = king_otto_scope
+			save_scope_as = grefm_otto_scope
 		}
 		set_variable = grefm_bavarocracy_completed
 	}
@@ -849,7 +859,7 @@ grefm_greece.007 = {
 	option = {
 		name = grefm_greece.007.a
 		default_option = yes
-		scope:king_otto_scope = {
+		scope:grefm_otto_scope = {
 			remove_trait = arrogant
 			remove_trait = romantic
 			remove_trait = political_appointee
@@ -897,7 +907,7 @@ grefm_greece.008 = {
 
 	immediate = {
 		ruler = {
-			save_scope_as = king_otto_scope
+			save_scope_as = grefm_otto_scope
 		}
 		heir = {
 			save_scope_as = otto_heir_scope
@@ -920,7 +930,7 @@ grefm_greece.008 = {
 		scope:intelligentsia_leader_scope = {
 			set_character_as_ruler = yes
 		}
-		scope:king_otto_scope = {
+		scope:grefm_otto_scope = {
 			kill_character = yes
 		}
 		hidden_effect = {
@@ -960,7 +970,9 @@ grefm_greece.008 = {
 		every_scope_character = {
 			limit = {
 				has_trait = gbbf_trait_bavarocrat
-				is_ruler = no
+				NOT = {
+					has_role_of_type = ruler
+				}
 			}
 			exile_character = yes
 		}
@@ -1051,7 +1063,7 @@ grefm_greece.009 = {
 			}
 			add_modifier = {
 				name = modifier_grefm_constitution_enforced
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 				is_decaying = yes
 			}
 		}
@@ -1163,10 +1175,17 @@ grefm_greece.011 = {
 				save_scope_as = ludwig_scope
 			}
 		}
-		ig:ig_landowners = {
-			leader = {
-				save_scope_as = armansperg_scope
+		random_scope_character = {
+			limit = {
+				has_template = grefm_wittelsbach_otto
 			}
+			save_scope_as = grefm_otto_scope
+		}
+		random_scope_character = {
+			limit = {
+				has_template = grefm_armansperg_josef
+			}
+			save_scope_as = grefm_armansperg_scope
 		}
 	}
 
@@ -1175,7 +1194,7 @@ grefm_greece.011 = {
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_bavarian_tour
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 	}
 
@@ -1214,6 +1233,18 @@ grefm_greece.012 = {
 				save_scope_as = ludwig_scope
 			}
 		}
+		random_scope_character = {
+			limit = {
+				has_template = grefm_wittelsbach_otto
+			}
+			save_scope_as = grefm_otto_scope
+		}
+		random_scope_character = {
+			limit = {
+				has_template = grefm_armansperg_josef
+			}
+			save_scope_as = grefm_armansperg_scope
+		}
 	}
 
 	option = {
@@ -1221,7 +1252,7 @@ grefm_greece.012 = {
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_absent_monarch
-			months = gbbf_duration_1_year
+			months = 12
 		}
 	}
 
@@ -1261,14 +1292,14 @@ grefm_greece.013 = {
 				save_scope_as = oldenburg_scope
 			}
 			create_character = {
-				template = template_grefm_oldenburg_amalia
+				template = grefm_oldenburg_amalia
 				on_created = {
 					place_character_in_void = 300
 				}
 			}
 			random_character_in_void = {
 				limit = {
-					has_template = template_grefm_oldenburg_amalia
+					has_template = grefm_oldenburg_amalia
 				}
 				save_scope_as = queen_amalia_scope
 			}
@@ -1508,13 +1539,17 @@ grefm_greece.014 = {
 	}
 
 	immediate = {
-		ruler = {
-			save_scope_as = king_otto_scope
-		}
-		ig:ig_landowners = {
-			leader = {
-				save_scope_as = armansperg_scope
+		random_scope_character = {
+			limit = {
+				has_template = grefm_wittelsbach_otto
 			}
+			save_scope_as = grefm_otto_scope
+		}
+		random_scope_character = {
+			limit = {
+				has_template = grefm_armansperg_josef
+			}
+			save_scope_as = grefm_armansperg_scope
 		}
 		c:BAV = {
 			ruler = {
@@ -1526,7 +1561,7 @@ grefm_greece.014 = {
 	option = {
 		name = grefm_greece.014.a
 		default_option = yes
-		scope:king_otto_scope = {
+		scope:grefm_otto_scope = {
 			add_modifier = modifier_grefm_feebleminded
 		}
 		grefm_bavarocracy_medium_opposition_effect = yes
@@ -1558,23 +1593,27 @@ grefm_greece.015 = {
 	}
 
 	immediate = {
-		ruler = {
-			save_scope_as = king_otto_scope
-		}
-		ig:ig_landowners = {
-			leader = {
-				save_scope_as = armansperg_scope
+		random_scope_character = {
+			limit = {
+				has_template = grefm_wittelsbach_otto
 			}
+			save_scope_as = grefm_otto_scope
+		}
+		random_scope_character = {
+			limit = {
+				has_template = grefm_armansperg_josef
+			}
+			save_scope_as = grefm_armansperg_scope
 		}
 		create_character = {
-			template = template_grefm_rudhart_ignaz
+			template = grefm_rudhart_ignaz
 			on_created = {
 				place_character_in_void = 12 # just for this event
 			}
 		}
 		random_character_in_void = {
 			limit = {
-				has_template = template_grefm_rudhart_ignaz
+				has_template = grefm_rudhart_ignaz
 			}
 			save_scope_as = grefm_rudhart_scope
 		}
@@ -1584,13 +1623,11 @@ grefm_greece.015 = {
 		# Kick Armansperg Out
 		name = grefm_greece.015.a
 		default_option = yes
-		scope:king_otto_scope = {
+		scope:grefm_otto_scope = {
 			remove_modifier = modifier_grefm_feebleminded
+			set_character_as_ruler = yes
 		}
-		scope:armansperg_scope = {
-			hidden_effect = {
-				disinherit_character = yes
-			}
+		scope:grefm_armansperg_scope = {
 			exile_character = yes
 		}
 		scope:grefm_rudhart_scope = {
@@ -1608,14 +1645,12 @@ grefm_greece.015 = {
 	option = {
 		# Be a Beta
 		name = grefm_greece.015.b
+		scope:grefm_otto_scope = {
+			set_character_as_ruler = yes
+		}
 		add_modifier = {
 			name = modifier_grefm_impotent_monarch
-			months = gbbf_duration_10_years
-		}
-		scope:armansperg_scope = {
-			hidden_effect = {
-				disinherit_character = yes
-			}
+			months = gbbf_long_modifier_time
 		}
 		grefm_bavarocracy_large_opposition_effect = yes
 		trigger_event = {
@@ -1694,7 +1729,7 @@ grefm_greece.016 = {
 		}
 		add_modifier = {
 			name = modifier_eocfm_ruler_accepted_conversion
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 		add_loyalists = {
 			religion = rel:orthodox
@@ -1709,7 +1744,7 @@ grefm_greece.016 = {
 		scope:eocfm_ruler_scope = {
 			add_modifier = {
 				name = modifier_eocfm_refused_conversion
-				months = gbbf_duration_20_years
+				months = gbbf_very_long_modifier_time
 			}
 		}
 		scope:eocfm_heir_scope = {
@@ -1729,18 +1764,18 @@ grefm_greece.016 = {
 		scope:eocfm_ruler_scope = {
 			add_modifier = {
 				name = modifier_eocfm_refused_conversion
-				months = gbbf_duration_20_years
+				months = gbbf_very_long_modifier_time
 			}
 		}
 		scope:eocfm_heir_scope = {
 			add_modifier = {
 				name = modifier_eocfm_refused_conversion
-				months = gbbf_duration_20_years
+				months = gbbf_very_long_modifier_time
 			}
 		}
 		add_modifier = {
 			name = modifier_eocfm_ruler_refused_conversion
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 		add_radicals = {
 			religion = rel:orthodox
@@ -1778,7 +1813,7 @@ grefm_greece.018 = {
 
 	immediate = {
 		ruler = {
-			save_scope_as = king_otto_scope
+			save_scope_as = grefm_otto_scope
 		}
 		c:BAV ?= {
 			save_scope_as = bavaria_scope
@@ -1792,7 +1827,7 @@ grefm_greece.018 = {
 		remove_modifier = modifier_grefm_funding_bavarian_auxiliaries
 		add_modifier = {
 			name = modifier_grefm_dismissed_bavarians
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 			is_decaying = yes
 		}
 		if = {
@@ -1857,7 +1892,7 @@ grefm_greece.019 = {
 		name = grefm_greece.019.a
 		default_option = yes
 		create_character = {
-			template = template_grefm_nikitaras
+			template = grefm_nikitaras
 			on_created = {
 				if = {
 					limit = {
@@ -1871,7 +1906,7 @@ grefm_greece.019 = {
 		}
 		add_modifier = {
 			name = modifier_grefm_nikitas_released
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 			is_decaying = yes
 		}
 		grefm_bavarocracy_very_small_support_effect = yes
@@ -1916,7 +1951,7 @@ grefm_greece.020 = {
 		ruler = {
 			add_modifier = {
 				name = modifier_grefm_legitimized_rule
-				months = gbbf_duration_10_years
+				months = gbbf_long_modifier_time
 			}
 		}
 		grefm_bavarocracy_small_support_effect = yes
@@ -2010,7 +2045,7 @@ grefm_greece.022 = {
 		custom_tooltip = {
 			text = grefm_greece.022.tt1
 			create_character = {
-				template = template_grefm_kapodistrias_noble
+				template = grefm_kapodistrias_noble
 				ruler = yes
 			}
 		}
@@ -2040,7 +2075,7 @@ grefm_greece.022 = {
 		custom_tooltip = {
 			text = grefm_greece.022.tt2
 			create_character = {
-				template = template_grefm_mavrokordatos_noble
+				template = grefm_mavrokordatos_noble
 				ruler = yes
 			}
 		}
@@ -2070,7 +2105,7 @@ grefm_greece.022 = {
 		custom_tooltip = {
 			text = grefm_greece.022.tt3
 			create_character = {
-				template = template_grefm_metaxas_noble
+				template = grefm_metaxas_noble
 				ruler = yes
 			}
 		}
@@ -2100,7 +2135,7 @@ grefm_greece.022 = {
 		custom_tooltip = {
 			text = grefm_greece.022.tt4
 			create_character = {
-				template = template_grefm_ypsilantis_noble
+				template = grefm_ypsilantis_noble
 				ruler = yes
 			}
 		}
@@ -2174,7 +2209,7 @@ grefm_greece.023 = {
 		custom_tooltip = {
 			text = grefm_greece.023.tt1
 			create_character = {
-				template = template_grefm_angelos_noble
+				template = grefm_angelos_noble
 				ruler = yes
 			}
 		}
@@ -2204,7 +2239,7 @@ grefm_greece.023 = {
 		custom_tooltip = {
 			text = grefm_greece.023.tt2
 			create_character = {
-				template = template_grefm_doukas_noble
+				template = grefm_doukas_noble
 				ruler = yes
 			}
 		}
@@ -2234,7 +2269,7 @@ grefm_greece.023 = {
 		custom_tooltip = {
 			text = grefm_greece.023.tt3
 			create_character = {
-				template = template_grefm_kantakouzenos_noble
+				template = grefm_kantakouzenos_noble
 				ruler = yes
 			}
 		}
@@ -2264,7 +2299,7 @@ grefm_greece.023 = {
 		custom_tooltip = {
 			text = grefm_greece.023.tt4
 			create_character = {
-				template = template_grefm_palaiologos_noble
+				template = grefm_palaiologos_noble
 				ruler = yes
 			}
 		}
@@ -2353,7 +2388,7 @@ grefm_greece.030 = {
 		custom_tooltip = {
 			text = grefm_greece.030.1.tt
 			create_character = {
-				template = template_grefm_glucksburg_noble
+				template = grefm_glucksburg_noble
 				first_name = George
 				last_name = Glucksburg
 				ruler = yes
@@ -2391,7 +2426,7 @@ grefm_greece.030 = {
 		custom_tooltip = {
 			text = grefm_greece.030.2.tt
 			create_character = {
-				template = template_grefm_deflandre_noble
+				template = grefm_deflandre_noble
 				first_name = Philippe
 				age = 25
 				historical = yes
@@ -2421,7 +2456,7 @@ grefm_greece.030 = {
 		custom_tooltip = {
 			text = grefm_greece.030.3.tt
 			create_character = {
-				template = template_grefm_eynard_noble
+				template = grefm_eynard_noble
 				first_name = Jean_Gabriel
 				age = 87
 				historical = yes
@@ -2596,26 +2631,17 @@ grefm_greece.031 = {
 	}
 
 	immediate = {
-		ruler = {
-			save_scope_as = king_of_the_hellenes_scope
-		}
-		random_scope_state = {
+		if = {
 			limit = {
-				is_capital = yes
+				NOT = {
+					any_scope_character = {
+						has_template = grefm_trikoupis_charilaos
+					}
+				}
 			}
-			save_scope_as = grefm_capital_scope
-		}
-		create_character = {
-			template = template_grefm_trikoupis_charilaos
-			on_created = {
-				place_character_in_void = 12 # just for this event
+			create_character = {
+				template = grefm_trikoupis_charilaos
 			}
-		}
-		random_character_in_void = {
-			limit = {
-				has_template = template_grefm_trikoupis_charilaos
-			}
-			save_scope_as = grefm_trikoupis_scope
 		}
 		set_variable = grefm_glucksburg_era
 	}
@@ -2635,9 +2661,6 @@ grefm_greece.031 = {
 		ruler = {
 			add_trait = gbbf_trait_elected_ruler
 		}
-		scope:grefm_trikoupis_scope = {
-			gbbf_free_from_void_leader = yes
-		}
 	}
 
 	option = {
@@ -2652,13 +2675,10 @@ grefm_greece.031 = {
 		ruler = {
 			add_trait = gbbf_trait_absolutist_ruler
 		}
-		scope:grefm_trikoupis_scope = {
-			gbbf_free_from_void_leader = yes
-		}
 	}
 
 	option = {
-		# Aternate if you got here via grefm_greece.022 # A Hellene King
+		# Alternate if you got here via grefm_greece.022 # A Hellene King
 		name = grefm_greece.031.a
 		default_option = yes
 		trigger = {
@@ -2666,9 +2686,6 @@ grefm_greece.031 = {
 		}
 		ruler = {
 			add_trait = gbbf_trait_native_ruler
-		}
-		scope:grefm_trikoupis_scope = {
-			gbbf_free_from_void_leader = yes
 		}
 	}
 
@@ -2680,9 +2697,6 @@ grefm_greece.031 = {
 		}
 		ruler = {
 			add_trait = gbbf_trait_porphyrogenitus
-		}
-		scope:grefm_trikoupis_scope = {
-			gbbf_free_from_void_leader = yes
 		}
 	}
 
@@ -2761,7 +2775,7 @@ grefm_greece.033 = {
 		add_modifier = modifier_grefm_dedilomeni_principle
 		add_modifier = {
 			name = modifier_grefm_harmonious_state
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 		add_loyalists = {
 			culture = cu:greek
@@ -2807,7 +2821,7 @@ grefm_greece.034 = {
 		remove_modifier = declared_bankruptcy
 		add_modifier = {
 			name = modifier_grefm_repudiated_loans
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 		change_infamy = {
 			add = 20
@@ -2820,7 +2834,7 @@ grefm_greece.034 = {
 		remove_modifier = declared_bankruptcy
 		add_modifier = {
 			name = modifier_grefm_reorganized_finances
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 	}
 
@@ -2871,7 +2885,7 @@ grefm_greece.035 = {
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_legacy_brigandage
-			months = gbbf_duration_2_plus_half_years
+			months = gbbf_short_modifier_time
 			is_decaying = yes
 		}
 	}
@@ -2990,7 +3004,7 @@ grefm_greece.041 = {
 			interest_group = {
 				add_modifier = {
 					name = we_are_listened_to
-					months = gbbf_duration_2_years
+					months = 24
 				}
 			}
 		}
@@ -3022,7 +3036,7 @@ grefm_greece.041 = {
 			interest_group = {
 				add_modifier = {
 					name = membership_arrested
-					months = gbbf_duration_2_months
+					months = 2
 				}
 			}
 		}
@@ -3073,28 +3087,27 @@ grefm_greece.045 = {
 		if = {
 			limit = {
 				any_character_in_void = {
-					has_template = template_grefm_venizelos_eleftherios
+					has_template = grefm_venizelos_eleftherios
 				}
 			}
 			random_character_in_void = {
 				limit = {
-					has_template = template_grefm_venizelos_eleftherios
+					has_template = grefm_venizelos_eleftherios
 				}
 				save_scope_as = grefm_venizelos_scope
 			}
 		}
 		else = {
 			create_character = {
-				template = template_grefm_venizelos_eleftherios
+				template = grefm_venizelos_eleftherios
 				on_created = {
-					set_variable = memento_mori_immunity
 					set_character_immortal = yes
 					place_character_in_void = 240
 				}
 			}
 			random_character_in_void = {
 				limit = {
-					has_template = template_grefm_venizelos_eleftherios
+					has_template = grefm_venizelos_eleftherios
 				}
 				save_scope_as = grefm_venizelos_scope
 			}
@@ -3133,7 +3146,7 @@ grefm_greece.045 = {
 			hidden_effect = {
 				add_modifier = {
 					name = modifier_gbbf_extra_agitator_1
-					months = gbbf_duration_10_years
+					months = gbbf_long_modifier_time
 				}
 			}
 		}
@@ -3177,28 +3190,27 @@ grefm_greece.046 = {
 		if = {
 			limit = {
 				any_character_in_void = {
-					has_template = template_grefm_venizelos_eleftherios
+					has_template = grefm_venizelos_eleftherios
 				}
 			}
 			random_character_in_void = {
 				limit = {
-					has_template = template_grefm_venizelos_eleftherios
+					has_template = grefm_venizelos_eleftherios
 				}
 				save_scope_as = grefm_venizelos_scope
 			}
 		}
 		else = {
 			create_character = {
-				template = template_grefm_venizelos_eleftherios
+				template = grefm_venizelos_eleftherios
 				on_created = {
-					set_variable = memento_mori_immunity
 					set_character_immortal = yes
 					place_character_in_void = 240
 				}
 			}
 			random_character_in_void = {
 				limit = {
-					has_template = template_grefm_venizelos_eleftherios
+					has_template = grefm_venizelos_eleftherios
 				}
 				save_scope_as = grefm_venizelos_scope
 			}
@@ -3227,7 +3239,7 @@ grefm_greece.046 = {
 			hidden_effect = {
 				add_modifier = {
 					name = modifier_gbbf_extra_agitator_1
-					months = gbbf_duration_10_years
+					months = gbbf_long_modifier_time
 				}
 			}
 		}
@@ -3258,11 +3270,20 @@ grefm_greece.047 = {
 	}
 
 	immediate = {
+	
 	}
 
 	option = {
 		name = grefm_greece.047.a
 		default_option = yes
+		scope:grefm_goudi_ig_scope = {
+			add_modifier = {
+				name = failed_coup
+				months = gbbf_normal_modifier_time
+				multiplier = 2
+				is_decaying = yes
+			}
+		}
 	}
 }
 
@@ -3283,18 +3304,81 @@ grefm_greece.048 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
+		# triggered by je_grefm_the_military_league
 	}
 
 	immediate = {
-		# triggered by je_grefm_the_military_league
+		if = {
+			limit = {
+				scope:golpista_ig ?= {
+					is_insurrectionary = yes
+				}
+			}
+			scope:golpista_ig ?= {
+				abandon_revolution = yes
+			}
+		}
+		if = {
+			limit = {
+				scope:grefm_goudi_ig_scope ?= {
+					has_party = yes
+				}
+			}
+			scope:grefm_goudi_ig_scope.party ?= {
+				set_ruling_party = yes
+			}
+		}
+		else = {
+			if = {
+				limit = {
+					scope:grefm_goudi_ig_scope ?= {
+						is_in_government = no
+					}
+				}
+				scope:grefm_goudi_ig_scope ?= {
+					add_ruling_interest_group = yes
+				}
+			}
+			every_interest_group = {
+				limit = {
+					is_in_government = yes
+					NOT = {
+						scope:grefm_goudi_ig_scope ?= this
+					}
+				}
+				remove_ruling_interest_group = yes
+			}
+		}
 	}
 
 	option = {
 		name = grefm_greece.048.a
 		default_option = yes
-	}
-
-	after = {
+		scope:grefm_goudi_ig_scope = {
+			add_modifier = {
+				name = modifier_successful_coup
+				months = gbbf_normal_modifier_time
+				is_decaying = yes
+			}
+		}
+		add_modifier = {
+			name = modifier_government_recently_couped
+			days = short_modifier_time
+			is_decaying = yes
+		}
+		if = {
+			limit = {
+				owner ?= {
+					country_has_voting_franchise = yes
+					in_election_campaign = no
+				}
+			}
+			owner ?= {
+				call_election = {
+					months = 3
+				}
+			}
+		}
 	}
 }
 
@@ -3318,18 +3402,6 @@ grefm_greece.049 = {
 	}
 
 	immediate = {
-		create_character = {
-			template = template_grefm_metaxas_ioannis
-			on_created = {
-				place_character_in_void = 12
-			}
-		}
-		random_character_in_void = {
-			limit = {
-				has_template = template_grefm_metaxas_ioannis
-			}
-			save_scope_as = ioannis_metaxas_scope
-		}
 	}
 
 	option = {
@@ -3338,9 +3410,6 @@ grefm_greece.049 = {
 		trigger_event = {
 			id = grefm_greece.060
 			days = 30
-		}
-		scope:ioannis_metaxas_scope = {
-			gbbf_free_from_void_leader = yes
 		}
 	}
 }
@@ -3369,8 +3438,10 @@ grefm_greece.050 = {
 
 	trigger = {
 		any_scope_character = {
-			has_role = general
-			is_ruler = no
+			has_role_of_type = general
+			NOT = {
+				has_role_of_type = ruler
+			}
 			NOT = {
 				has_variable = grefm_goudi_participant_var
 			}
@@ -3399,8 +3470,10 @@ grefm_greece.050 = {
 		grefm_save_goudi_scopes_effect = yes
 		random_scope_character = {
 			limit = {
-				has_role = general
-				is_ruler = no
+				has_role_of_type = general
+				NOT = {
+					has_role_of_type = ruler
+				}
 				NOT = {
 					has_variable = grefm_goudi_participant_var
 				}
@@ -3423,7 +3496,7 @@ grefm_greece.050 = {
 			interest_group = {
 				add_modifier = {
 					name = modifier_persecuted_general
-					days = normal_modifier_time
+					months = gbbf_normal_modifier_time
 				}
 				if = {
 					limit = {
@@ -3446,7 +3519,7 @@ grefm_greece.050 = {
 		name = grefm_greece.050.b
 		add_modifier = {
 			name = modifier_uncertain_loyalties_country
-			days = normal_modifier_time
+			months = gbbf_normal_modifier_time
 		}
 		scope:accused_general = {
 			set_variable = grefm_goudi_participant_var
@@ -3528,7 +3601,7 @@ grefm_greece.051 = {
 		scope:conflicted_loyalty_ig = {
 			add_modifier = {
 				name = modifier_appeased_regarding_coup
-				days = normal_modifier_time
+				months = gbbf_normal_modifier_time
 			}
 		}
 		grefm_remove_goudi_progress_effect = {
@@ -3541,7 +3614,7 @@ grefm_greece.051 = {
 		scope:conflicted_loyalty_ig = {
 			add_modifier = {
 				name = modifier_conflicted_about_coup
-				days = normal_modifier_time
+				months = gbbf_normal_modifier_time
 			}
 		}
 	}
@@ -3604,7 +3677,7 @@ grefm_greece.052 = {
 		scope:critical_support_ig = {
 			add_modifier = {
 				name = modifier_critical_support_against_coup
-				days = short_modifier_time
+				months = gbbf_short_modifier_time
 			}
 		}
 		grefm_remove_goudi_progress_effect = {
@@ -3617,7 +3690,7 @@ grefm_greece.052 = {
 		scope:critical_support_ig = {
 			add_modifier = {
 				name = modifier_critical_support_denied
-				days = normal_modifier_time
+				months = gbbf_normal_modifier_time
 			}
 		}
 		capital = {
@@ -3691,7 +3764,7 @@ grefm_greece.053 = {
 		default_option = yes
 		add_modifier = {
 			name = modifier_wary_investors_country
-			days = normal_modifier_time
+			months = gbbf_normal_modifier_time
 		}
 		grefm_remove_goudi_progress_effect = {
 			value = 10
@@ -3729,7 +3802,7 @@ grefm_greece.053 = {
 		ig:ig_industrialists = {
 			add_modifier = {
 				name = modifier_economic_uncertainty
-				days = normal_modifier_time
+				months = gbbf_normal_modifier_time
 			}
 		}
 		grefm_add_goudi_progress_effect = {
@@ -3793,7 +3866,7 @@ grefm_greece.054 = {
 		scope:approached_ig = {
 			add_modifier = {
 				name = modifier_new_junior_partner
-				days = normal_modifier_time
+				months = gbbf_normal_modifier_time
 			}
 		}
 		grefm_add_goudi_progress_effect = {
@@ -3863,12 +3936,12 @@ grefm_greece.055 = {
 		default_option = yes
 		add_modifier = {
 			name = modifier_widespread_protests
-			days = short_modifier_time
+			months = gbbf_short_modifier_time
 		}
 		scope:pro_government_ig = {
 			add_modifier = {
 				name = modifier_defenders_of_democracy
-				days = normal_modifier_time
+				months = gbbf_normal_modifier_time
 			}
 		}
 		grefm_remove_goudi_progress_effect = {
@@ -3887,7 +3960,7 @@ grefm_greece.055 = {
 		scope:pro_government_ig = {
 			add_modifier = {
 				name = modifier_defenders_of_democracy
-				days = normal_modifier_time
+				months = gbbf_normal_modifier_time
 			}
 		}
 	}
@@ -3950,12 +4023,12 @@ grefm_greece.056 = {
 		default_option = yes
 		add_modifier = {
 			name = modifier_in_too_deep
-			days = short_modifier_time
+			months = gbbf_short_modifier_time
 		}
 		scope:assassination_ig = {
 			add_modifier = {
 				name = modifier_investigating_suspicious_death
-				days = short_modifier_time
+				months = gbbf_short_modifier_time
 			}
 		}
 		grefm_remove_goudi_progress_effect = {
@@ -3968,7 +4041,7 @@ grefm_greece.056 = {
 		scope:assassination_ig = {
 			add_modifier = {
 				name = modifier_disregarded_suspicious_death
-				days = short_modifier_time
+				months = gbbf_short_modifier_time
 			}
 		}
 		grefm_add_goudi_progress_effect = {
@@ -4064,7 +4137,7 @@ grefm_greece.057 = {
 		scope:golpista_ig = {
 			add_modifier = {
 				name = modifier_rejected_foreign_influence_coup
-				days = normal_modifier_time
+				months = gbbf_normal_modifier_time
 			}
 		}
 	}
@@ -4130,7 +4203,7 @@ grefm_greece.058 = {
 		scope:coup_leader = {
 			add_modifier = {
 				name = modifier_blundered_defenestration
-				days = normal_modifier_time
+				months = gbbf_normal_modifier_time
 			}
 		}
 		grefm_remove_goudi_progress_effect = {
@@ -4143,7 +4216,7 @@ grefm_greece.058 = {
 		scope:grefm_goudi_ig_scope = {
 			add_modifier = {
 				name = modifier_silenced_informant
-				days = normal_modifier_time
+				months = gbbf_normal_modifier_time
 			}
 		}
 		grefm_add_goudi_progress_effect = {
@@ -4210,11 +4283,11 @@ grefm_greece.059 = {
 		scope:barracks_theft_building = {
 			add_modifier = {
 				name = modifier_siphoning_of_arms
-				days = short_modifier_time
+				months = gbbf_short_modifier_time
 			}
 		}
 		grefm_remove_goudi_progress_effect = {
-			value = gbbf_duration_10_years
+			value = gbbf_long_modifier_time
 		}
 	}
 
@@ -4223,17 +4296,20 @@ grefm_greece.059 = {
 		scope:armed_forces_ig = {
 			add_modifier = {
 				name = modifier_accused_of_theft
-				days = short_modifier_time
+				months = gbbf_short_modifier_time
 			}
 		}
 	}
 }
 
-####---------- That Nonsense with Venizelos ----------####
+####---------- Venizelism Narrative Events ----------####
 grefm_greece.060 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 
 	title = grefm_greece.060.t
 	desc = grefm_greece.060.d
@@ -4242,13 +4318,8 @@ grefm_greece.060 = {
 	event_image = {
 		video = "unspecific_politicians_arguing"
 	}
-
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 	}
 
@@ -4264,7 +4335,7 @@ grefm_greece.060 = {
 		name = grefm_greece.060.a
 		default_option = yes
 		add_journal_entry = {
-			type = je_grefm_venizelism_main
+			type = je_grefm_venizelism
 		}
 		show_as_tooltip = {
 			add_modifier = modifier_grefm_venizelist_tilt
@@ -4285,13 +4356,13 @@ grefm_greece.060 = {
 			has_law_or_variant = law_type:law_monarchy
 		}
 		add_journal_entry = {
-			type = je_grefm_venizelism_main
+			type = je_grefm_venizelism
 		}
 		show_as_tooltip = {
 			add_modifier = modifier_grefm_venizelist_tilt
 		}
-		add_journal_entry = {
-			type = je_grefm_venizelism_constitution
+		grefm_add_venizelism_agenda = {
+			type = constitution
 		}
 		if = {
 			limit = {
@@ -4305,32 +4376,44 @@ grefm_greece.060 = {
 
 	after = {
 		hidden_effect = {
-			# the National Assembly conlcuded its reforms much more quickly than this, but gameplay lol
+			# the National Assembly concluded its reforms much more quickly than this, but gameplay lol
 			trigger_event = {
-				id = grefm_greece.061 # Rejuventating the State
+				id = grefm_greece.061
 				days = 60
 			}
 			trigger_event = {
-				id = grefm_greece.063 # Reorganzing the Military
+				id = grefm_greece.062
 				days = 90
 			}
 			trigger_event = {
-				id = grefm_greece.065 # Advancing Society
+				id = grefm_greece.063
 				days = 120
 			}
 			trigger_event = {
-				id = grefm_greece.067 # The Ignorant Masses
+				id = grefm_greece.064
 				days = 150
 			}
+			if = {
+				limit = {
+					morgenrote_is_active = yes
+				}
+				trigger_event = {
+					id = grefm_greece.065
+					days = 150
+				}
+			}
+			
 		}
 	}
-
 }
 
 grefm_greece.061 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 
 	title = grefm_greece.061.t
 	desc = grefm_greece.061.d
@@ -4339,13 +4422,8 @@ grefm_greece.061 = {
 	event_image = {
 		video = "southamerica_aristocrats"
 	}
-
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 	}
 
@@ -4360,8 +4438,8 @@ grefm_greece.061 = {
 	option = {
 		name = grefm_greece.061.a
 		default_option = yes
-		add_journal_entry = {
-			type = je_grefm_venizelism_civics
+		grefm_add_venizelism_agenda = {
+			type = civic
 		}
 	}
 
@@ -4370,66 +4448,54 @@ grefm_greece.061 = {
 grefm_greece.062 = {
 	type = country_event
 	placement = root
-	icon = "gfx/interface/icons/event_icons/event_scales.dds"
-
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = grefm_greece.062.t
 	desc = grefm_greece.062.d
 	flavor = grefm_greece.062.f
 
 	event_image = {
-		video = "southamerica_election"
+		video = "middleeast_battlefield_trenches"
 	}
-
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
 
 	trigger = {
 	}
 
 	immediate = {
+		ig:ig_intelligentsia = {
+			leader = {
+				save_scope_as = grefm_venizelos_scope
+			}
+		}
 	}
 
 	option = {
 		name = grefm_greece.062.a
 		default_option = yes
-		add_modifier = {
-			name = modifier_grefm_competent_bureaucracy
-			months = gbbf_duration_5_years
+		grefm_add_venizelism_agenda = {
+			type = military
 		}
-		add_loyalists = {
-			pop_type = bureaucrats
-			value = medium_radicals
-		}
-		add_loyalists = {
-			pop_type = peasants
-			value = large_radicals
-		}
-		set_variable = grefm_venizelism_civics_completed
 	}
-
 }
 
 grefm_greece.063 = {
 	type = country_event
 	placement = root
-	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	icon = "gfx/interface/icons/event_icons/event_election.dds"
+	duration = 3
+	dlc = dlc_grefm
 
 	title = grefm_greece.063.t
 	desc = grefm_greece.063.d
 	flavor = grefm_greece.063.f
 
 	event_image = {
-		video = "middleeast_battlefield_trenches"
+		video = "europenorthamerica_sufferage"
 	}
-
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
 
 	trigger = {
 	}
@@ -4445,165 +4511,67 @@ grefm_greece.063 = {
 	option = {
 		name = grefm_greece.063.a
 		default_option = yes
-		add_journal_entry = {
-			type = je_grefm_venizelism_military
+		grefm_add_venizelism_agenda = {
+			type = social
 		}
 	}
-
 }
 
 grefm_greece.064 = {
 	type = country_event
 	placement = root
-	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 3
+	dlc = dlc_grefm
 
 	title = grefm_greece.064.t
 	desc = grefm_greece.064.d
 	flavor = grefm_greece.064.f
 
 	event_image = {
-		video = "unspecific_military_parade"
+		video = "europenorthamerica_rich_and_poor"
 	}
-
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 	}
 
 	immediate = {
+		ig:ig_intelligentsia = {
+			leader = {
+				save_scope_as = grefm_venizelos_scope
+			}
+		}
 	}
 
 	option = {
 		name = grefm_greece.064.a
 		default_option = yes
-		add_modifier = {
-			name = modifier_grefm_military_reorganized
-			months = gbbf_duration_5_years
+		grefm_add_venizelism_agenda = {
+			type = education
 		}
-		add_loyalists = {
-			pop_type = officers
-			value = medium_radicals
-		}
-		add_loyalists = {
-			pop_type = soldiers
-			value = large_radicals
-		}
-		set_variable = grefm_venizelism_military_completed
 	}
-
 }
 
 grefm_greece.065 = {
 	type = country_event
 	placement = root
-	icon = "gfx/interface/icons/event_icons/event_election.dds"
-
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = grefm_greece.065.t
 	desc = grefm_greece.065.d
 	flavor = grefm_greece.065.f
-
-	event_image = {
-		video = "europenorthamerica_sufferage"
-	}
-
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-	}
-
-	immediate = {
-		ig:ig_intelligentsia = {
-			leader = {
-				save_scope_as = grefm_venizelos_scope
-			}
-		}
-	}
-
-	option = {
-		name = grefm_greece.065.a
-		default_option = yes
-		add_journal_entry = {
-			type = je_grefm_venizelism_society
-		}
-	}
-
-}
-
-grefm_greece.066 = {
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_election.dds"
-
-	title = grefm_greece.066.t
-	desc = grefm_greece.066.d
-	flavor = grefm_greece.066.f
-
-	event_image = {
-		video = "europenorthamerica_london_center"
-	}
-
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-	}
-
-	immediate = {
-	}
-
-	option = {
-		name = grefm_greece.066.a
-		default_option = yes
-		add_modifier = {
-			name = modifier_grefm_society_modernized
-			months = gbbf_duration_5_years
-		}
-		add_loyalists = {
-			pop_type = shopkeepers
-			value = medium_radicals
-		}
-		add_loyalists = {
-			pop_type = laborers
-			value = large_radicals
-		}
-		set_variable = grefm_venizelism_society_completed
-	}
-
-}
-
-grefm_greece.067 = {
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-
-	title = grefm_greece.067.t
-	desc = grefm_greece.067.d
-	flavor = grefm_greece.067.f
-
+	
 	event_image = {
 		video = "europenorthamerica_rich_and_poor"
 	}
-
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 	}
-
+	
 	immediate = {
 		ig:ig_intelligentsia = {
 			leader = {
@@ -4611,66 +4579,22 @@ grefm_greece.067 = {
 			}
 		}
 	}
-
+	
 	option = {
-		name = grefm_greece.067.a
+		name = grefm_greece.065.a
 		default_option = yes
-		add_journal_entry = {
-			type = je_grefm_venizelism_education
+		grefm_add_venizelism_agenda = {
+			type = culture
 		}
 	}
-
-}
-
-grefm_greece.068 = {
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-
-	title = grefm_greece.068.t
-	desc = grefm_greece.068.d
-	flavor = grefm_greece.068.f
-
-	event_image = {
-		video = "unspecific_world_fair"
-	}
-
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-	}
-
-	immediate = {
-	}
-
-	option = {
-		name = grefm_greece.068.a
-		default_option = yes
-		add_modifier = {
-			name = modifier_grefm_populace_educated
-			months = gbbf_duration_5_years
-		}
-		add_loyalists = {
-			pop_type = academics
-			value = medium_radicals
-		}
-		add_loyalists = {
-			strata = lower
-			value = large_radicals
-		}
-		set_variable = grefm_venizelism_education_completed
-	}
-
 }
 
 grefm_greece.069 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
+	duration = 3
+	dlc = dlc_grefm
 
 	title = grefm_greece.069.t
 	desc = grefm_greece.069.d
@@ -4679,13 +4603,8 @@ grefm_greece.069 = {
 	event_image = {
 		video = "unspecific_signed_contract"
 	}
-
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 	}
 
@@ -4697,15 +4616,969 @@ grefm_greece.069 = {
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_venizelist_triumph
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 		add_loyalists = {
 			value = small_radicals
 		}
 	}
-
 }
 
+
+####---------- Venizelism Reform Completion Events ----------####
+grefm_greece.070 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.070.t
+	desc = grefm_greece.070.d
+	flavor = grefm_greece.070.f
+	
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_variable = grefm_venizelism_constitution_agenda
+		OR = {
+			has_law_or_variant = law_type:law_parliamentary_republic
+			has_law_or_variant = law_type:law_presidential_republic
+		}
+		country_has_voting_franchise = yes
+		electoral_confidence >= 80
+		ig:ig_landowners = {
+			is_powerful = no
+			is_insurrectionary = no
+		}
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = grefm_greece.070.a
+		default_option = yes
+		remove_variable = grefm_venizelism_constitution_agenda
+		set_variable = grefm_venizelism_constitution_complete
+	}
+}
+
+grefm_greece.071 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.071.t
+	desc = grefm_greece.071.d
+	flavor = grefm_greece.071.f
+	
+	event_image = {
+		video = "southamerica_election"
+	}
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_variable = grefm_venizelism_civic_agenda
+		has_law_or_variant = law_type:law_universal_suffrage
+		has_law_or_variant = law_type:law_elected_bureaucrats
+		OR = {
+			has_law_or_variant = law_type:law_dedicated_police
+			has_law_or_variant = law_type:law_militarized_police
+		}
+		institution_investment_level = {
+			institution = institution_home_affairs
+			value >= 3
+		}
+		any_scope_building = {
+			filter = {
+				is_building_type = building_government_administration
+			}
+			count = all
+			OR = {
+				has_active_production_method = pm_vertical_filing_cabinets
+				has_active_production_method = pm_switch_boards
+			}
+		}
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = grefm_greece.071.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_competent_bureaucracy
+			months = gbbf_normal_modifier_time
+		}
+		add_loyalists = {
+			pop_type = bureaucrats
+			value = medium_radicals
+		}
+		add_loyalists = {
+			pop_type = peasants
+			value = large_radicals
+		}
+		remove_variable = grefm_venizelism_civic_agenda
+		set_variable = grefm_venizelism_civic_complete
+	}
+}
+
+grefm_greece.072 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.072.t
+	desc = grefm_greece.072.d
+	flavor = grefm_greece.072.f
+	
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_variable = grefm_venizelism_military_agenda
+		## Some Notes on the completion requirements (drawn from Greek-language sources):
+		# The Greek Army during the First Balkan War consisted of roughly 130k men with no corps-level or higher structure in place until war was declared.
+		# The primary force was was the "Army of Thessaly", with roughly 100k men, of which 80k were organized into frontline units. The "Concise History of the Balkan Wars" states:
+		# 59 Infantry with 4 Evzones battalions
+		# 8 Cavalry Companies
+		# 32 Artillery Companies
+		# The Secondary force was of the "Army of Epirus" that varied from 10k to 13k men with various forms of organization.
+		# A third force the "Interior Army" is referenced in some sources with between 10k to 20k men, but doesn't seem to have been intended as a frontline formation.
+		# The Hellenic navy had around a dozen ships during the Balkan Wars with a rapid expansion of the Navy occurring after the outbreak of hostilities; They joined WWI with 22 surface combatants.
+		# I have contradicting sources about when exactly conscription was adopted and in which forms, but it was definitely in place as general conscription by 1917 when Greece joined WWI.
+		has_law_or_variant = law_type:law_mass_conscription
+		any_military_formation = {
+			is_army = yes
+			any_combat_unit = {
+				count >= 80 # This is based on the frontline forces of the Army of Thessaly; see above.
+				OR = {
+					has_unit_type = unit_type:combat_unit_type_trench_infantry
+					has_unit_type = unit_type:combat_unit_type_squad_infantry
+					has_unit_type = unit_type:combat_unit_type_mechanized_infantry
+					has_unit_type = unit_type:combat_unit_type_shrapnel_artillery
+					has_unit_type = unit_type:combat_unit_type_siege_artillery
+					has_unit_type = unit_type:combat_unit_type_heavy_tank
+				}
+			}
+		}
+		any_military_formation = {
+			is_fleet = yes
+			any_scope_ship = {
+				count >= 20 # This is a round number based on surface combatants at the start of WWI; see above.
+				OR = {
+					is_ship_type = ship_type:ship_type_modern_ironclad
+					is_ship_type = ship_type:ship_type_pre_dreadnought
+					is_ship_type = ship_type:ship_type_dreadnought
+					is_ship_type = ship_type:ship_type_super_dreadnought
+					
+					is_ship_type = ship_type:ship_type_light_cruiser
+					is_ship_type = ship_type:ship_type_protected_cruiser
+					is_ship_type = ship_type:ship_type_armored_cruiser
+					
+					is_ship_type = ship_type:ship_type_submarine
+					is_ship_type = ship_type:ship_type_destroyer
+				}
+			}
+		}
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = grefm_greece.072.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_military_reorganized
+			months = gbbf_normal_modifier_time
+		}
+		add_loyalists = {
+			pop_type = officers
+			value = medium_radicals
+		}
+		add_loyalists = {
+			pop_type = soldiers
+			value = large_radicals
+		}
+		remove_variable = grefm_venizelism_military_agenda
+		set_variable = grefm_venizelism_military_complete
+	}
+}
+
+grefm_greece.073 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_election.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.073.t
+	desc = grefm_greece.073.d
+	flavor = grefm_greece.073.f
+	
+	event_image = {
+		video = "europenorthamerica_london_center"
+	}
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_variable = grefm_venizelism_social_agenda
+		NOT = {
+			has_law_or_variant = law_type:law_no_womens_rights
+		}
+		institution_investment_level = {
+			institution = institution_workplace_safety
+			value >= 3
+		}
+		has_institution = institution_social_security
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = grefm_greece.073.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_society_modernized
+			months = gbbf_normal_modifier_time
+		}
+		add_loyalists = {
+			pop_type = shopkeepers
+			value = medium_radicals
+		}
+		add_loyalists = {
+			pop_type = laborers
+			value = large_radicals
+		}
+		remove_variable = grefm_venizelism_social_agenda
+		set_variable = grefm_venizelism_social_complete
+	}
+}
+
+grefm_greece.074 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.074.t
+	desc = grefm_greece.074.d
+	flavor = grefm_greece.074.f
+	
+	event_image = {
+		video = "unspecific_world_fair"
+	}
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_variable = grefm_venizelism_education_agenda
+		has_law_or_variant = law_type:law_public_schools
+		has_law_or_variant = law_type:law_compulsory_primary_school
+		institution_investment_level = {
+			institution = institution_schools
+			value >= 4
+		}
+		literacy_rate >= 0.50
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = grefm_greece.074.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_populace_educated
+			months = gbbf_normal_modifier_time
+		}
+		add_loyalists = {
+			pop_type = academics
+			value = medium_radicals
+		}
+		add_loyalists = {
+			strata = lower
+			value = large_radicals
+		}
+		remove_variable = grefm_venizelism_education_agenda
+		set_variable = grefm_venizelism_education_complete
+	}
+}
+
+grefm_greece.075 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.075.t
+	desc = grefm_greece.075.d
+	flavor = grefm_greece.075.f
+	
+	event_image = {
+		video = "unspecific_world_fair"
+	}
+	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_variable = grefm_venizelism_culture_agenda
+		var:manzoni_literary_tradition_var >= 100
+		var:elgar_music_tradition >= 100
+		var:klimt_painting_tradition_var < 100
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = grefm_greece.075.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_refined_culture
+			months = gbbf_normal_modifier_time
+		}
+		add_loyalists = {
+			pop_type = academics
+			value = medium_radicals
+		}
+		add_loyalists = {
+			pop_type = clergymen
+			value = medium_radicals
+		}
+		remove_variable = grefm_venizelism_culture_agenda
+		set_variable = grefm_venizelism_culture_complete
+	}
+}
+
+
+####---------- Metaxism Events ----------####
+grefm_greece.080 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.080.t
+	desc = grefm_greece.080.d
+	flavor = grefm_greece.080.f
+	
+	event_image = {
+		video = "ip3_agitator_reading_manifesto"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by je_grefm_metaxism
+	}
+	
+	immediate = {
+		create_character = {
+			template = grefm_metaxas_ioannis
+			on_created = {
+				place_character_in_void = 12
+			}
+		}
+		random_character_in_void = {
+			limit = {
+				has_template = grefm_metaxas_ioannis
+			}
+			save_scope_as = ioannis_metaxas_scope
+		}
+		random_political_movement = {
+			limit = {
+				is_political_movement_type = movement_fascist
+			}
+			save_scope_as = grefm_fascist_scope
+		}
+	}
+	
+	option = {
+		name = grefm_greece.080.a
+		default_option = yes
+		scope:ioannis_metaxas_scope = {
+			gbbf_free_from_void_leader = yes
+		}
+		scope:grefm_fascist_scope = {
+			add_modifier = {
+				name = modifier_grefm_reactionary_wave
+				months = gbbf_normal_modifier_time
+				is_decaying = yes
+			}
+		}
+	}
+}
+
+grefm_greece.081 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.081.t
+	desc = grefm_greece.081.d
+	flavor = grefm_greece.081.f
+	
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by je_grefm_metaxism
+	}
+	
+	immediate = {
+		random_political_movement = {
+			limit = {
+				is_political_movement_type = movement_fascist
+			}
+			save_scope_as = grefm_fascist_scope
+		}
+		ordered_interest_group = {
+			limit = {
+				OR = {
+					has_ideology = ideology:ideology_fascist
+					has_ideology = ideology:ideology_royalist
+					has_ideology = ideology:ideology_authoritarian
+				}
+			}
+			order_by = ig_clout
+			position = 0
+			check_range_bounds = no
+			leader = {
+				save_scope_as = grefm_fascist_leader_scope
+			}
+		}
+	}
+	
+	option = {
+		name = grefm_greece.081.a
+		default_option = yes
+		scope:grefm_fascist_scope = {
+			add_modifier = {
+				name = modifier_grefm_dominant_movement
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+		}
+		scope:grefm_fascist_leader_scope = {
+			if = {
+				limit = {
+					has_trait = inexperienced
+				}
+				remove_trait = inexperienced
+			}
+			if = {
+				limit = {
+					has_trait = political_appointee
+				}
+				remove_trait = political_appointee
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_trait = erudite
+					}
+				}
+				add_trait = erudite
+			}
+			if = {
+				limit = {
+					has_trait = experienced_political_operator
+				}
+				remove_trait = experienced_political_operator
+				add_trait = expert_political_operator
+			}
+			else_if = {
+				limit = {
+					has_trait = basic_political_operator
+				}
+				remove_trait = basic_political_operator
+				add_trait = experienced_political_operator
+			}
+			else = {
+				add_trait = basic_political_operator
+			}
+		}
+		add_modifier = {
+			name = modifier_grefm_second_aristotle
+			months = long_modifier_time
+		}
+	}
+	
+	option = {
+		name = grefm_greece.081.b
+		scope:grefm_fascist_scope = {
+			add_modifier = {
+				name = modifier_grefm_dominant_movement
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+		}
+		scope:grefm_fascist_leader_scope = {
+			if = {
+				limit = {
+					has_trait = inexperienced
+				}
+				remove_trait = inexperienced
+			}
+			if = {
+				limit = {
+					has_trait = political_appointee
+				}
+				remove_trait = political_appointee
+			}
+			if = {
+				limit = {
+					has_trait = popular_commander
+				}
+				remove_trait = popular_commander
+				add_trait = celebrity_commander
+			}
+			else_if = {
+				limit = {
+					has_trait = traditionalist_commander
+				}
+				remove_trait = traditionalist_commander
+				add_trait = popular_commander
+			}
+			else = {
+				add_trait = traditionalist_commander
+			}
+			if = {
+				limit = {
+					has_trait = experienced_offensive_planner
+				}
+				remove_trait = experienced_offensive_planner
+				add_trait = expert_offensive_planner
+			}
+			else_if = {
+				limit = {
+					has_trait = basic_offensive_planner
+				}
+				remove_trait = basic_offensive_planner
+				add_trait = experienced_offensive_planner
+			}
+			else = {
+				add_trait = basic_offensive_planner
+			}
+		}
+		add_modifier = {
+			name = modifier_grefm_second_belisarius
+			months = gbbf_long_modifier_time
+		}
+	}
+}
+
+grefm_greece.082 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.082.t
+	desc = grefm_greece.082.d
+	flavor = grefm_greece.082.f
+	
+	event_image = {
+		video = "ip4_abdication"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by je_grefm_metaxism
+	}
+	
+	immediate = {
+		random_political_movement = {
+			limit = {
+				is_political_movement_type = movement_fascist
+			}
+			save_scope_as = grefm_fascist_scope
+		}
+	}
+	
+	option = {
+		name = grefm_greece.082.a
+		default_option = yes
+		every_scope_character = {
+			limit = {
+				OR = {
+					has_ideology = ideology:ideology_gbbf_metaxist_leader
+					has_ideology = ideology:ideology_fascist
+				}
+			}
+			exile_character = yes
+		}
+		scope:grefm_fascist_scope ?= {
+			add_modifier = {
+				name = modifier_grefm_reactionary_failure
+				months = long_modifier_time
+			}
+		}
+	}
+}
+
+grefm_greece.083 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.083.t
+	desc = grefm_greece.083.d
+	flavor = grefm_greece.083.f
+	
+	event_image = {
+		video = "ip4_abdication"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_variable = grefm_metaxism_tradition_agenda
+		has_law_or_variant = law_type:law_monarchy
+		has_law_or_variant = law_type:law_state_religion
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+		random_interest_group = {
+			limit = {
+				has_ideology = ideology:ideology_gbbf_metaxist_leader
+			}
+			save_scope_as = grefm_fascist_ig_scope
+			leader = {
+				save_scope_as = grefm_facist_leader_scope
+			}
+		}
+	}
+	
+	option = {
+		name = grefm_greece.083.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_military_guardians
+			months = gbbf_normal_modifier_time
+		}
+		add_loyalists = {
+			interest_group = ig:ig_landowners
+			value = large_radicals
+		}
+		add_loyalists = {
+			strata = lower
+			value = medium_radicals
+		}
+	}
+	
+	option = {
+		name = grefm_greece.083.b
+		add_modifier = {
+			name = modifier_grefm_clerical_guardians
+			months = gbbf_normal_modifier_time
+		}
+		add_loyalists = {
+			interest_group = ig:ig_devout
+			value = large_radicals
+		}
+		add_loyalists = {
+			strata = lower
+			value = medium_radicals
+		}
+	}
+	
+	option = {
+		name = grefm_greece.083.c
+		trigger = {
+			has_law_or_variant = law_type:law_single_party_state
+			scope:grefm_fascist_ig_scope = {
+				is_in_government = yes
+			}
+		}
+		scope:grefm_facist_leader_scope ?= {
+			set_character_as_ruler = yes
+			add_modifier = {
+				name = modifier_grefm_archigos_leader
+				months = gbbf_normal_modifier_time
+			}
+		}
+		hidden_effect = {
+			heir ?= {
+				kill_character = yes
+			}
+		}
+		add_modifier = {
+			name = modifier_grefm_archigos_country
+			months = gbbf_normal_modifier_time
+		}
+		add_loyalists = {
+			strata = lower
+			value = medium_radicals
+		}
+	}
+	
+	after = { 
+		set_variable = grefm_metaxism_tradition_complete
+	}
+}
+
+grefm_greece.084 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.084.t
+	desc = grefm_greece.084.d
+	flavor = grefm_greece.084.f
+	
+	event_image = {
+		video = "ip3_official_reading_dictate"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_variable = grefm_metaxism_tradition_agenda
+		has_law_or_variant = law_type:law_single_party_state
+		OR = {
+			has_law_or_variant = law_type:law_censorship
+			has_law_or_variant = law_type:law_outlawed_dissent
+		}
+		has_law_or_variant = law_type:law_militarized_police
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = grefm_greece.084.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_allowed_opposition_country
+			months = gbbf_long_modifier_time
+		}
+		every_interest_group = {
+			limit = {
+				OR = {
+					is_in_government = no
+					law_stance = {
+						law = law_type:law_single_party_state
+						value < neutral
+					}
+				}
+			}
+			add_modifier = {
+				name = modifier_grefm_allowed_opposition_ig
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+		}
+	}
+	
+	option = {
+		name = grefm_greece.084.b
+		add_modifier = {
+			name = modifier_grefm_crushed_opposition_country
+			months = gbbf_long_modifier_time
+		}
+		every_interest_group = {
+			limit = {
+				OR = {
+					is_in_government = no
+					law_stance = {
+						law = law_type:law_single_party_state
+						value < neutral
+					}
+				}
+			}
+			add_modifier = {
+				name = modifier_grefm_crushed_opposition_country
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+		}
+		every_scope_character = {
+			limit = {
+				has_role_of_type = agitator
+				law_stance = {
+					law = law_type:law_single_party_state
+					value < neutral
+				}
+			}
+			exile_character = yes
+		}
+	}
+	
+	after = { 
+		set_variable = grefm_metaxism_authoritarian_complete
+	}
+}
+
+grefm_greece.085 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.085.t
+	desc = grefm_greece.085.d
+	flavor = grefm_greece.085.f
+	
+	event_image = {
+		video = "ip3_village_school"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_variable = grefm_metaxism_assimilation_agenda
+		has_law_or_variant = law_type:law_ethnostate
+		has_law_or_variant = law_type:law_public_schools
+		has_law_or_variant = law_type:law_compulsory_primary_school
+		institution_investment_level = {
+			institution = institution_schools
+			value >= 4
+		}
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = grefm_greece.085.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_enforced_assimilation
+			months = gbbf_long_modifier_time
+		}
+	}
+	
+	option = {
+		name = grefm_greece.085.b
+		add_modifier = {
+			name = modifier_grefm_enforced_conversion
+			months = gbbf_long_modifier_time
+		}
+	}
+	
+	after = {
+		set_variable = grefm_metaxism_assimilation_complete
+	}
+}
+
+grefm_greece.086 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_greece.086.t
+	desc = grefm_greece.086.d
+	flavor = grefm_greece.086.f
+	
+	event_image = {
+		video = "unspecific_ruler_speaking_to_people"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_variable = grefm_metaxism_social_agenda
+		NOT = {
+			has_law_or_variant = law_type:law_no_womens_rights
+		}
+		has_law_or_variant = law_type:law_corporatized_unions
+		institution_investment_level = {
+			institution = institution_social_security
+			value >= 3
+		}
+		institution_investment_level = {
+			institution = institution_workplace_safety
+			value >= 3
+		}
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = grefm_greece.086.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_popular_social_reforms
+			months = gbbf_long_modifier_time
+		}
+		add_loyalists = {
+			strata = middle
+			value = medium_radicals
+		}
+		add_loyalists = {
+			strata = lower
+			value = large_radicals
+		}
+	}
+	
+	after = {
+		set_variable = grefm_metaxism_social_complete
+	}
+}
 
 ####---------- Bavarocracy IP3 Events ----------####
 # Note, several variables from the default GotB journals are re-used here
@@ -4730,36 +5603,33 @@ grefm_greece.090 = {
 	}
 
 	immediate = {
-		trigger_event = {
-			id = grefm_greece.011 # King Ludwig Visits Greece
-			days = 40 # Mid-February
+		random_scope_character = {
+			limit = {
+				has_template = grefm_wittelsbach_otto
+			}
+			save_scope_as = grefm_otto_scope
 		}
-		trigger_event = {
-			id = grefm_greece.012 # Otto Leaves for Bavaria
-			days = 130 # Mid-May
-		}
-		trigger_event = {
-			id = grefm_greece.014 # Otto's Intellect Challenged
-			days = 270
-		}
-		trigger_event = {
-			id = grefm_greece.015 # Discharging the Regency
-			days = 390 # February 1837
+		random_scope_character = {
+			limit = {
+				has_template = grefm_armansperg_josef
+			}
+			save_scope_as = grefm_armansperg_scope
 		}
 	}
 
 	option = {
-		name = grefm_greece.091.a
+		name = grefm_greece.090.a
 		default_option = yes
 		show_as_tooltip = {
 			add_modifier = modifier_grefm_armansperg_regency
-		}
-		show_as_tooltip = {
 			add_modifier = modifier_foreign_administration
-			add_modifier = modifier_grefm_westernized_thought
+			add_modifier = {
+				name = modifier_grefm_westernized_thought
+				months = gbbf_very_long_modifier_time
+				is_decaying = yes
+			}
 		}
 	}
-
 }
 
 grefm_greece.091 = {
@@ -4788,7 +5658,7 @@ grefm_greece.091 = {
 
 	immediate = {
 		ruler = {
-			save_scope_as = king_otto_scope
+			save_scope_as = grefm_otto_scope
 		}
 		ig:ig_landowners = {
 			save_scope_as = ig_landowners_scope
@@ -4801,7 +5671,6 @@ grefm_greece.091 = {
 		default_option = yes
 		grefm_bavarocracy_large_support_effect = yes
 	}
-
 }
 
 grefm_greece.092 = {
@@ -4830,7 +5699,7 @@ grefm_greece.092 = {
 
 	immediate = {
 		ruler = {
-			save_scope_as = king_otto_scope
+			save_scope_as = grefm_otto_scope
 		}
 		set_variable = grefm_tyranny_var
 		set_variable = grefm_1843_revolution_happened
@@ -4859,7 +5728,7 @@ grefm_greece.092 = {
 			}
 			add_modifier = {
 				name = modifier_grefm_constitution_refused
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 				is_decaying = yes
 			}
 		}
@@ -4875,12 +5744,11 @@ grefm_greece.092 = {
 			strata = lower
 			value = medium_radicals
 		}
-		scope:king_otto_scope = {
+		scope:grefm_otto_scope = {
 			set_as_interest_group_leader = yes # Othonian Absolutism Moment
 		}
 		grefm_bavarocracy_medium_opposition_effect = yes
 	}
-
 }
 
 grefm_greece.093 = {
@@ -4913,7 +5781,7 @@ grefm_greece.093 = {
 			change_character_religion = rel:orthodox
 			add_modifier = {
 				name = modifier_suspected_crypto_catholic
-				months = gbbf_duration_20_years
+				months = gbbf_very_long_modifier_time
 				is_decaying = yes
 			}
 			random_list = {
@@ -4972,7 +5840,6 @@ grefm_greece.093 = {
 			}
 		}
 	}
-
 }
 
 grefm_greece.096 = {
@@ -5015,7 +5882,7 @@ grefm_greece.096 = {
 			}
 			add_modifier = {
 				name = modifier_grefm_constitution_enforced
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 				is_decaying = yes
 			}
 		}
@@ -5029,7 +5896,6 @@ grefm_greece.096 = {
 		}
 		grefm_bavarocracy_large_support_effect = yes
 	}
-
 }
 
 grefm_greece.097 = {
@@ -5092,7 +5958,7 @@ grefm_greece.097 = {
 		custom_tooltip = {
 			text = grefm_greece.097.1_tt
 			create_character = {
-				template = template_grefm_glucksburg_george
+				template = grefm_glucksburg_noble
 				first_name = George
 				historical = yes
 				dna = mr_gre_george_i
@@ -5158,7 +6024,7 @@ grefm_greece.097 = {
 		custom_tooltip = {
 			text = grefm_greece.097.2_tt
 			create_character = {
-				template = template_grefm_deflandre_noble
+				template = grefm_deflandre_noble
 				first_name = George
 				birth_date = 1837.3.24
 				ruler = yes
@@ -5223,7 +6089,7 @@ grefm_greece.097 = {
 		custom_tooltip = {
 			text = grefm_greece.097.3_tt
 			create_character = {
-				template = template_grefm_eynard_noble
+				template = grefm_eynard_noble
 				first_name = Ioannis
 				historical = yes
 				ruler = yes
@@ -5277,7 +6143,7 @@ grefm_greece.097 = {
 					year < 1845
 				}
 				create_character = {
-					template = template_grefm_saxe-coburg_alfred
+					template = grefm_saxe-coburg_noble
 					first_name = George
 					age = 1
 					ruler = yes
@@ -5287,7 +6153,7 @@ grefm_greece.097 = {
 			}
 			else = {
 				create_character = {
-					template = template_grefm_saxe-coburg_alfred
+					template = grefm_saxe-coburg_noble
 					first_name = George
 					birth_date = 1844.8.6
 					ruler = yes
@@ -5326,15 +6192,13 @@ grefm_greece.097 = {
 		if = {
 			limit = {
 				c:FRA ?= {
-					ruler = {
-						has_variable = legitimist_leader
-					}
+					has_variable = legitimist_restoration_var
 				}
 			}
 			custom_tooltip = {
 				text = grefm_greece.097.5_tt_bourbon
 				create_character = {
-					template = template_grefm_bourbon_noble
+					template = grefm_bourbon_noble
 					first_name = George
 					ruler = yes
 					age = 35
@@ -5346,15 +6210,13 @@ grefm_greece.097 = {
 		else_if = {
 			limit = {
 				c:FRA ?= {
-					ruler = {
-						has_variable = orleanist_leader
-					}
+					has_variable = orleanist_restoration_var
 				}
 			}
 			custom_tooltip = {
 				text = grefm_greece.097.5_tt_orleans
 				create_character = {
-					template = template_grefm_orleans_noble
+					template = grefm_orleans_noble
 					first_name = George
 					ruler = yes
 					age = 35
@@ -5366,15 +6228,13 @@ grefm_greece.097 = {
 		else_if = {
 			limit = {
 				c:FRA ?= {
-					ruler = {
-						has_variable = bonapartist_leader
-					}
+					has_variable = bonapartist_restoration_var
 				}
 			}
 			custom_tooltip = {
 				text = grefm_greece.097.5_tt_bonaparte
 				create_character = {
-					template = template_grefm_bonaparte_noble
+					template = grefm_bonaparte_noble
 					first_name = George
 					ruler = yes
 					age = 35
@@ -5388,11 +6248,10 @@ grefm_greece.097 = {
 			custom_tooltip = {
 				text = grefm_greece.097.5_tt
 				create_character = {
-					first_name = George# I LITERALLY PICKED A RANDOM NAME, FIGHT ME
+					first_name = George
 					noble = yes
 					culture = cu:french
 					ideology = ideology_moderate
-					age = default
 					ruler = yes
 				}
 			}
@@ -5433,7 +6292,7 @@ grefm_greece.097 = {
 		custom_tooltip = {
 			text = grefm_greece.097.6_tt
 			create_character = {
-				template = template_grefm_romanov_noble
+				template = grefm_romanov_noble
 				first_name = George
 				noble = yes
 				birth_date = 1831.8.8
@@ -5503,7 +6362,7 @@ grefm_greece.097 = {
 			}
 			add_modifier = {
 				name = modifier_revolutionary_king
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 			}
 		}
 		every_interest_group = {
@@ -5515,7 +6374,7 @@ grefm_greece.097 = {
 			}
 			add_modifier = {
 				name = modifier_architects_of_the_second_republic
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 			}
 		}
 	}
@@ -5536,7 +6395,7 @@ grefm_greece.097 = {
 			}
 			add_modifier = {
 				name = modifier_an_inconvenient_republic
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 			}
 		}
 		every_interest_group = {
@@ -5548,7 +6407,7 @@ grefm_greece.097 = {
 			}
 			add_modifier = {
 				name = modifier_architects_of_the_second_republic
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 			}
 		}
 		every_country = {
@@ -5632,7 +6491,7 @@ grefm_greece.098 = {
 
 	immediate = {
 		ruler = {
-			save_scope_as = king_otto_scope
+			save_scope_as = grefm_otto_scope
 		}
 		set_variable = grefm_bavarocracy_completed
 	}
@@ -5642,11 +6501,11 @@ grefm_greece.098 = {
 		default_option = yes
 		add_modifier = {
 			name = modifier_ottonian_renaissance
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 		add_modifier = {
 			name = modifier_bavarocracy_democratic
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 		ruler = {
 			if = {
@@ -5693,11 +6552,11 @@ grefm_greece.098 = {
 		default_option = yes
 		add_modifier = {
 			name = modifier_ottonian_reforms
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 		add_modifier = {
 			name = modifier_bavarocracy_democratic
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 		ruler = {
 			if = {
@@ -5763,7 +6622,7 @@ grefm_greece.099 = {
 
 	immediate = {
 		ruler = {
-			save_scope_as = king_otto_scope
+			save_scope_as = grefm_otto_scope
 		}
 		set_variable = grefm_bavarocracy_completed
 	}
@@ -5773,11 +6632,11 @@ grefm_greece.099 = {
 		default_option = yes
 		add_modifier = {
 			name = modifier_ottonian_renaissance
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 		add_modifier = {
 			name = modifier_bavarocracy_autocratic
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 		ruler = {
 			if = {
@@ -5824,11 +6683,11 @@ grefm_greece.099 = {
 		default_option = yes
 		add_modifier = {
 			name = modifier_ottonian_reforms
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 		add_modifier = {
 			name = modifier_bavarocracy_autocratic
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 		ruler = {
 			if = {
@@ -5918,7 +6777,7 @@ grefm_greece.100 = {
 			random_scope_state = {
 				add_modifier = {
 					name = modifier_grefm_fix_brewery
-					months = gbbf_duration_20_years
+					months = gbbf_very_long_modifier_time
 				}
 			}
 		}
@@ -5987,13 +6846,13 @@ grefm_greece.101 = {
 		scope:attica_state_scope = {
 			add_modifier = {
 				name = modifier_grefm_railway_production
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 			}
 		}
 		scope:grefm_thessaly_scope = {
 			add_modifier = {
 				name = modifier_grefm_railway_production
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 			}
 		}
 	}
@@ -6044,7 +6903,7 @@ grefm_greece.102 = {
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_aviation
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 		scope:attica_scope = {
 			add_loyalists_in_state = {
@@ -6120,7 +6979,7 @@ grefm_greece.110 = {
 		}
 		add_modifier = {
 			name = modifier_grefm_funding_royal_art_school
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 			multiplier = money_amount_multiplier_small
 		}
 	}
@@ -6153,7 +7012,7 @@ grefm_greece.112 = {
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by je_grefm_land_reclaimation
+		# triggered by je_grefm_land_reclamation
 	}
 
 	immediate = {
@@ -6164,7 +7023,7 @@ grefm_greece.112 = {
 		default_option = yes
 		add_modifier = {
 			name = land_reclamation_complete
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 	}
 
@@ -6359,7 +7218,7 @@ grefm_greece.119 = {
 	dlc = dlc_grefm
 
 	trigger = {
-		# triggered by je_grefm_land_reclaimation
+		# triggered by je_grefm_land_reclamation
 	}
 
 	immediate = {
@@ -6441,12 +7300,12 @@ grefm_greece.121 = {
 		scope:university_state = {
 			add_modifier = {
 				name = modifier_grefm_university_of_athens
-				months = gbbf_duration_10_years
+				months = gbbf_long_modifier_time
 			}
 		}
 		add_modifier = {
 			name = modifier_grefm_funding_royal_university
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 			multiplier = money_amount_multiplier_small
 		}
 	}
@@ -6456,7 +7315,7 @@ grefm_greece.121 = {
 		scope:university_benefactor = {
 			add_modifier = {
 				name = modifier_grefm_blocked_funding_university
-				months = gbbf_duration_10_years
+				months = gbbf_long_modifier_time
 				is_decaying = yes
 			}
 		}
@@ -6524,7 +7383,7 @@ grefm_greece.122 = {
 		scope:university_benefactor.interest_group = {
 			add_modifier = {
 				name = modifier_university_built
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 			}
 		}
 	}
@@ -6539,7 +7398,7 @@ grefm_greece.122 = {
 		scope:university_state = {
 			add_modifier = {
 				name = modifier_grefm_great_school_of_the_nation
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 			}
 		}
 	}
@@ -6549,7 +7408,7 @@ grefm_greece.122 = {
 		scope:university_benefactor.interest_group = {
 			add_modifier = {
 				name = modifier_blocked_building_university
-				months = gbbf_duration_5_years
+				months = gbbf_normal_modifier_time
 			}
 		}
 	}
@@ -6585,7 +7444,7 @@ grefm_greece.123 = {
 		grefm_create_feminism_characters_effect = yes
 		random_character_in_void = {
 			limit = {
-				has_template = template_grefm_parren_kalliroi
+				has_template = grefm_parren_kalliroi
 			}
 			save_scope_as = kalliroi_scope
 		}
@@ -6641,13 +7500,13 @@ grefm_greece.124 = {
 	immediate = {
 		random_character_in_void = {
 			limit = {
-				has_template = template_grefm_parren_kalliroi
+				has_template = grefm_parren_kalliroi
 			}
 			save_scope_as = kalliroi_scope
 		}
 		random_character_in_void = {
 			limit = {
-				has_template = template_grefm_theodoropoulou_avra
+				has_template = grefm_theodoropoulou_avra
 			}
 			save_scope_as = theodoropoulou_scope
 		}
@@ -6664,7 +7523,7 @@ grefm_greece.124 = {
 		}
 		add_modifier = {
 			name = modifier_grefm_greek_feminism
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 	}
 
@@ -6672,7 +7531,7 @@ grefm_greece.124 = {
 		name = grefm_greece.124.b
 		add_modifier = {
 			name = modifier_grefm_greek_feminism
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 	}
 }
@@ -6946,7 +7805,7 @@ grefm_greece.161 = {
 		}
 		add_modifier = {
 			name = modifier_grefm_abandoned_don_pacifico
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 		ai_chance = {
 			base = 1 # should almost never happen
@@ -6977,7 +7836,7 @@ grefm_greece.161 = {
 			c:GBR = {
 				save_scope_as = uk_scope
 			}
-			post_notification = notification_don_pacifico_gbr1
+			post_notification = don_pacifico_gbr1
 		}
 	}
 
@@ -6999,7 +7858,7 @@ grefm_greece.161 = {
 			c:GBR = {
 				save_scope_as = uk_scope
 			}
-			post_notification = notification_don_pacifico_gbr2
+			post_notification = don_pacifico_gbr2
 		}
 	}
 
@@ -7013,17 +7872,17 @@ grefm_greece.161 = {
 			c:GRE = {
 				save_scope_as = greece_scope
 			}
-			post_notification = notification_don_pacifico_gre1
+			post_notification = don_pacifico_gre1
 		}
 		c:POR = {
 			c:GRE = {
 				save_scope_as = greece_scope
 			}
-			post_notification = notification_don_pacifico_gre1
+			post_notification = don_pacifico_gre1
 		}
 		add_modifier = {
 			name = modifier_grefm_chastized_mob
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 		add_treasury = -35700 # Don Pacifico demanded £32,000 plus 10% interest for his property plus an additional £500 for physical mistreatment
 		add_radicals = {
@@ -7050,17 +7909,17 @@ grefm_greece.161 = {
 			c:GRE = {
 				save_scope_as = greece_scope
 			}
-			post_notification = notification_don_pacifico_gre2
+			post_notification = don_pacifico_gre2
 		}
 		c:POR = {
 			c:GRE = {
 				save_scope_as = greece_scope
 			}
-			post_notification = notification_don_pacifico_gre2
+			post_notification = don_pacifico_gre2
 		}
 		add_modifier = {
 			name = modifier_grefm_rejected_compromise
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 		add_loyalists = {
 			strata = lower
@@ -7193,14 +8052,14 @@ grefm_greece.180 = {
 	immediate = {
 		set_global_variable = jonas_king_started
 		create_character = {
-			template = template_grefm_king_jonas
+			template = grefm_king_jonas
 			on_created = {
 				place_character_in_void = 300
 			}
 		}
 		random_character_in_void = {
 			limit = {
-				has_template = template_grefm_king_jonas
+				has_template = grefm_king_jonas
 			}
 			save_scope_as = grefm_jonas_scope
 		}
@@ -7266,7 +8125,7 @@ grefm_greece.181 = {
 	immediate = {
 		random_character_in_void = {
 			limit = {
-				has_template = template_grefm_king_jonas
+				has_template = grefm_king_jonas
 			}
 			save_scope_as = grefm_jonas_scope
 		}
@@ -7283,7 +8142,7 @@ grefm_greece.181 = {
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_ejected_jonas
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 		add_radicals = {
 			religion = rel:protestant
@@ -7318,7 +8177,7 @@ grefm_greece.182 = {
 		has_variable = grefm_jonas_yeeted
 		country_has_state_religion = rel:orthodox
 		any_character_in_void = {
-			has_template = template_grefm_king_jonas
+			has_template = grefm_king_jonas
 		}
 	}
 
@@ -7326,7 +8185,7 @@ grefm_greece.182 = {
 		remove_variable = grefm_jonas_yeeted
 		random_character_in_void = {
 			limit = {
-				has_template = template_grefm_king_jonas
+				has_template = grefm_king_jonas
 			}
 			save_scope_as = grefm_jonas_scope
 		}
@@ -7364,7 +8223,7 @@ grefm_greece.182 = {
 		}
 		add_modifier = {
 			name = modifier_grefm_religious_deconfliction
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 	}
 
@@ -7395,7 +8254,7 @@ grefm_greece.183 = {
 	immediate = {
 		random_character_in_void = {
 			limit = {
-				has_template = template_grefm_king_jonas
+				has_template = grefm_king_jonas
 			}
 			save_scope_as = grefm_jonas_scope
 		}
@@ -7413,7 +8272,7 @@ grefm_greece.183 = {
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_religious_deconfliction
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 		add_radicals = {
 			pop_type = clergymen
@@ -7426,7 +8285,7 @@ grefm_greece.183 = {
 		name = grefm_greece.183.b
 		add_modifier = {
 			name = modifier_grefm_religious_witchhunt
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 		create_incident = {
 			country = c:USA

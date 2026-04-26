@@ -1,0 +1,290 @@
+﻿je_balkfm_cultural_identity = { #
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	weight = 1000
+
+	should_be_pinned_by_default_uninvolved_or_context = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	scripted_progress_bar = balkfm_cultural_identity_progressbar
+
+	scripted_button = balkfm_revivalist_support_button
+
+	is_shown_in_lobby = {
+		has_dlc_feature = ip3_content # National Awakening
+		is_country_type = unrecognized
+	}
+
+	is_shown_when_inactive = {
+		balkfm_balkans_native_trigger = yes
+		is_country_type = unrecognized
+	}
+
+	possible = {
+		has_technology_researched = academia
+	}
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		set_variable = {
+			name = balkfm_revivalism_var
+			value = 0
+		}
+		if = {
+			limit = {
+				c:BUL ?= this
+			}
+			set_variable = {
+				name = eocfm_schism_var # Silistra isn't Orthodox so the on_actions won't trigger this
+				value = 0
+			}
+		}
+		trigger_event = balkfm_revivalism.001
+	}
+
+	complete = {
+		has_technology_researched = nationalism
+		is_country_type = recognized
+		NOT = {
+			has_law_or_variant = law_type:law_subjecthood
+		}
+		OR = {
+			is_subject_type = subject_type_protectorate
+			is_subject_type = subject_type_personal_union
+			is_subject_type = subject_type_gbbf_eyalet
+			is_subject = no
+		}
+	}
+
+	on_complete = {
+		trigger_event = balkfm_revivalism.009
+		balkfm_cleanup_revivalism_effect = yes
+	}
+
+	fail = {
+		has_journal_entry = je_balkfm_national_awakening
+	}
+
+	on_fail = {
+		balkfm_cleanup_revivalism_effect = yes
+	}
+
+	invalid = {
+		trigger_if = {
+			limit = {
+				OR = {
+					country_has_primary_culture = cu:slovene
+					country_has_primary_culture = cu:croat
+					country_has_primary_culture = cu:serb
+					country_has_primary_culture = cu:bosniak
+					country_has_primary_culture = cu:bulgarian
+				}
+			}
+			custom_tooltip = {
+				text = has_formed_yugoslavia_tt
+				c:YUG ?= ROOT
+			}
+		}
+	}
+
+	on_invalid = {
+		balkfm_cleanup_revivalism_effect = yes
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			set_variable = {
+				name = balkfm_revivalism_progress_var
+				value = balkfm_revivalism_progress_value
+			}
+			set_variable = {
+				name = balkfm_revivalism_recognition_var
+				value = balkfm_revivalism_recognition_value
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		events = {
+			balkfm_revivalism.002 # The National Question
+			balkfm_revivalism.003 # The National Revival
+			balkfm_bulgaria.201 # Tsarigradski Vestnik
+			# balkfm_bulgaria.206 # The Bulgarian Legion
+		}
+		random_events = {
+			chance_of_no_event = 95
+			5 = balkfm_bulgaria.200 # Insurgency in Niš
+			# 5 = balkfm_bulgaria.207 # The Legion Strikes Again!
+		}
+		effect = {
+			change_variable = {
+				name = balkfm_revivalism_var
+				add = var:balkfm_revivalism_progress_var
+			}
+			clamp_variable = {
+				name = balkfm_revivalism_var
+				max = 1000
+				min = 0
+			}
+			if = {
+				limit = {
+					has_journal_entry = je_earn_recognition
+				}
+				je:je_earn_recognition = {
+					add_progress = {
+						name = earn_recognition_progress_bar
+						value = root.var:balkfm_revivalism_recognition_var
+					}
+				}
+			}
+		}
+	}
+
+	status_desc = {
+		triggered_desc = {
+			desc = je_balkfm_cultural_identity_status
+			trigger = {
+				has_journal_entry = je_earn_recognition
+			}
+		}
+	}
+
+}
+
+je_balkfm_national_awakening = {
+	# Overriding vanilla entry to integrate with GOTB systems
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	weight = 1000
+
+	should_be_pinned_by_default_uninvolved_or_context = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	scripted_progress_bar = balkfm_national_awakening_progressbar
+
+	is_shown_in_lobby = {
+		has_dlc_feature = ip3_content # National Awakening
+		balkfm_balkans_native_trigger = yes
+		is_country_type = recognized
+	}
+
+	is_shown_when_inactive = {
+		has_dlc_feature = ip3_content # National Awakening
+		balkfm_balkans_native_trigger = yes
+	}
+
+	possible = {
+		has_technology_researched = nationalism
+		NOT = {
+			has_law_or_variant = law_type:law_subjecthood
+		}
+		OR = {
+			is_subject_type = subject_type_protectorate
+			is_subject_type = subject_type_personal_union
+			is_subject_type = subject_type_gbbf_eyalet
+			is_subject = no
+		}
+	}
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		random_primary_culture = {
+			save_scope_as = primary_culture_scope
+		}
+		if = {
+			limit = {
+				scope:primary_culture_scope ?= {
+					culture_national_awakening_occurred = no
+				}
+			}
+			start_national_awakening = {
+				culture = scope:primary_culture_scope
+				months = 120
+				state_region = capital.state_region
+			}
+		}
+		set_variable = {
+			name = fervour_bar_var
+			value = 0
+		}
+		ig:ig_armed_forces ?= {
+			save_scope_as = armed_forces_ig
+		}
+		je:je_balkfm_national_awakening ?= {
+			add_modifier = {
+				name = support_separatism_nationalist_propaganda
+				multiplier = 5
+			}
+		}
+		add_journal_entry = {
+			type = je_balkan_national_awakenings
+		}
+	}
+
+	complete = {
+		is_subject = no
+		NOT = {
+			has_law_or_variant = law_type:law_subjecthood
+		}
+		scope:primary_culture_scope ?= { culture_current_fervor >= 75 }
+	}
+
+	on_complete = {
+		trigger_event = national_awakening.1
+	}
+
+	event_outcome_completed_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = event_effects_national_awakening.1_tt
+			}
+		}
+	}
+
+	fail = {
+		trigger_if = {
+			limit = {
+				OR = {
+					country_has_primary_culture = cu:slovene
+					country_has_primary_culture = cu:croat
+					country_has_primary_culture = cu:serb
+					country_has_primary_culture = cu:bosniak
+					country_has_primary_culture = cu:bulgarian
+				}
+			}
+			custom_tooltip = {
+				text = has_formed_yugoslavia_tt
+				c:YUG ?= ROOT
+			}
+		}
+	}
+
+	on_weekly_pulse = {
+		effect = {
+			set_variable = {
+				name = fervour_bar_var
+				value = scope:primary_culture_scope.culture_current_fervor
+			}
+			scope:journal_entry = {
+				set_bar_progress = {
+					name = balkfm_national_awakening_progressbar
+					value = root.var:fervour_bar_var
+				}
+			}
+		}
+	}
+
+	on_monthly_pulse = {
+		random_events = {
+			60 = 0
+			1 = national_awakening.2
+			1 = national_awakening.3
+			1 = national_awakening.4
+			1 = national_awakening.5
+			1 = national_awakening.6
+			1 = national_awakening.7
+		}
+	}
+}

@@ -1,0 +1,86 @@
+﻿gbbf_suppress_senusiyya = {
+	groups = {
+		general
+	}
+	
+	is_hostile = no
+	requires_approval = no
+	show_effect_in_tooltip = yes
+	can_use_obligations = no
+	should_notify_third_parties = no
+	show_confirmation_box = no
+	
+	unlocking_technologies = {
+		nationalism
+	}
+	
+	selectable = {
+		is_involved_in_journal_entry = je_eqfm_senusiyya
+	}
+	
+	potential = {
+		scope:target_country = {
+			has_variable = eqfm_senusiyya_influence_var
+		}
+	}
+	
+	possible = {
+		eqfm_has_hostile_stance_trigger = yes
+		OR = {
+			scope:target_country = {
+				is_subject_of = root
+			}
+			AND = {
+				gbbf_is_muslim_trigger = yes
+				scope:target_country = {
+					is_adjacent_to_country = root
+				}
+			}
+		}
+	}
+	
+	pact = {
+		cost = 75
+		is_hostile = no
+		is_two_sided_pact = no
+		show_in_outliner = yes
+		
+		requirement_to_maintain = {
+			trigger = {
+				custom_tooltip = {
+					text = eqfm_target_has_senusiyya_influence
+					scope:target_country = {
+						has_variable = eqfm_senusiyya_influence_var
+					}
+				}
+			}
+		}
+		
+		requirement_to_maintain = {
+			trigger = {
+				OR = {
+					scope:target_country = {
+						is_subject_of = root
+					}
+					AND = {
+						gbbf_is_muslim_trigger = yes
+						scope:target_country = {
+							is_adjacent_to_country = root
+						}
+					}
+				}
+			}
+		}
+		
+		requirement_to_maintain = {
+			trigger = {
+				custom_tooltip = {
+					text = eqfm_both_have_hostile_stance
+					var:eqfm_senusiyya_stance_var ?= flag:eqfm_senusiyya_stance_hostile
+				}
+			}
+		}
+	}
+	
+	ai = {}
+}

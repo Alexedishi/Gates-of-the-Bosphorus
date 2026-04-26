@@ -1,0 +1,405 @@
+﻿je_eqfm_senusiyya = {
+	group = je_group_global_international_situations
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	weight = 100
+	
+	should_be_pinned_by_default_involved = yes
+	
+	is_shown_in_lobby = {
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_senusiyya
+		}
+	}
+	
+	scripted_progress_bar = eqfm_senusiyya_pressure_progressbar
+
+	scripted_button = eqfm_broker_power_deal_button
+	scripted_button = eqfm_embrace_senusiyya_button
+	scripted_button = eqfm_expell_senusiyya_button
+	scripted_button = eqfm_adopt_welcoming_stance_button
+	scripted_button = eqfm_adopt_aloof_stance_button
+	scripted_button = eqfm_adopt_hostile_stance_button
+	scripted_button = eqfm_send_armed_delegation_button
+	scripted_button = eqfm_expel_senusiyya_libya_button
+	scripted_button = eqfm_expel_senusiyya_libyan_desert_button
+	scripted_button = eqfm_expel_senusiyya_tripoli_button
+	scripted_button = eqfm_expel_senusiyya_egyptian_desert_button
+	scripted_button = eqfm_expel_senusiyya_matruh_button
+	scripted_button = eqfm_expel_senusiyya_chad_button
+	
+	widget = {
+		gui = "gui/com_journal_injects/injects.gui"
+		name = "com_journal_entry_characters"
+		container = "custom_widget_container_1"
+	}
+	
+	is_shown_when_inactive = {
+		always = no # TODO enable when ready
+		OR = {
+			exists = c:TRI
+			exists = c:FZN
+		}
+		any_country_in_senusiyya = {
+			NOT = {
+				country_has_primary_culture = cu:bedouin
+			}
+		}
+	}
+	
+	should_be_involved = {
+		OR = {
+			any_scope_state = {
+				is_in_geographic_region = geographic_region_senusiyya
+			}
+			any_subject_or_below = {
+				any_scope_state = {
+					is_in_geographic_region = geographic_region_senusiyya
+				}
+				gbbf_is_muslim_trigger = yes
+			}
+		}
+	}
+	
+	possible = {
+		any_country_in_senusiyya = {
+			capital = {
+				is_in_geographic_region = geographic_region_senusiyya
+			}
+			gbbf_is_muslim_trigger = yes
+			has_technology_researched = mass_communication
+		}
+	}
+	
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		eqfm_initialize_global_senusiyya_variables = yes
+	}
+	
+	immediate_all_involved = {
+		eqfm_initialize_local_senusiyya_variables_effect = yes
+	}
+	
+	should_show_when_not_involved = {
+		OR = {
+			has_strategic_region_interest_tier = {
+				strategic_region = sr:region_north_africa
+				value >= 1
+			}
+			has_strategic_region_interest_tier = {
+				strategic_region = sr:region_nile_basin
+				value >= 1
+			}
+		}
+	}
+	
+	on_become_involved_after_activation = {
+		eqfm_initialize_local_senusiyya_variables_effect = yes
+	}
+	
+	on_no_longer_involved = {
+		eqfm_cleanup_senusiyya_effect = yes
+	}
+	
+	complete = {
+		any_country_in_senusiyya = {
+			count = all
+			OR = {
+				custom_tooltip = {
+					text = eqfm_embraced_senusiyya_situation
+					has_variable = eqfm_embraced_senusiyya
+				}
+				custom_tooltip = {
+					text = eqfm_expelled_senusiyya_situation
+					any_state_in_senusiyya = {
+						count = all
+						state_region = {
+							has_variable = eqfm_expelled_senusiyya
+						}
+					}
+
+				}
+			}
+		}
+	}
+	
+	on_complete = {
+		eqfm_cleanup_global_senusiyya_variables_effect = yes
+		custom_tooltip = {
+			text = je_eqfm_senusiyya_on_complete_senusiyya_survives
+			if = {
+				limit = {
+					any_country_in_senusiyya = {
+						has_variable = eqfm_embraced_senusiyya
+					}
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_eqfm_senusiyya
+					}
+					trigger_event = eqfm_senusiyya.008
+				}
+			}
+		}
+		custom_tooltip = {
+			text = je_eqfm_senusiyya_on_complete_senusiyya_extinguished
+			if = {
+				limit = {
+					NOT = {
+						any_country_in_senusiyya = {
+							has_variable = eqfm_embraced_senusiyya
+						}
+					}
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_eqfm_senusiyya
+					}
+					trigger_event = eqfm_senusiyya.009
+				}
+			}
+		}
+	}
+	
+	on_complete_all_involved = {
+		hidden_effect = {
+			eqfm_cleanup_senusiyya_effect = yes
+		}
+
+	}
+	
+	on_weekly_pulse = {
+		effect = {
+			eqfm_update_senussi_character_effect = yes
+			eqfm_update_global_senusiyya_variables_effect = yes
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_senusiyya
+				}
+				eqfm_update_senusiyya_modifier_effect = yes
+			}
+		}
+	}
+	
+	on_monthly_pulse = {
+		effect = {
+			eqfm_monthly_entrenchment_effect = yes
+			eqfm_validate_senusiyya_involvement_effect = yes
+			scope:journal_entry = {
+				change_variable = {
+					name = eqfm_senusiyya_pressure_var
+					add = var:eqfm_senusiyya_pressure_progress_var
+				}
+				clamp_variable = {
+					name = eqfm_senusiyya_pressure_var
+					max = 100
+					min = 0
+				}
+				set_bar_progress = {
+					name = eqfm_senusiyya_pressure_progressbar
+					value = var:eqfm_senusiyya_pressure_var
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_global_variable = eqfm_intimidated_sensussi
+					}
+					global_var:je_eqfm_senusiyya.var:eqfm_senusiyya_pressure_var >= 50
+				}
+				set_global_variable = eqfm_intimidated_sensussi
+				s:STATE_TRIPOLI = {
+					remove_variable = eqfm_senusiyya_entrenchment_var
+				}
+				s:STATE_LIBYA = {
+					set_variable = {
+						name = eqfm_senusiyya_entrenchment_var
+						value = 25
+					}
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_eqfm_senusiyya
+					}
+					trigger_event = eqfm_senusiyya.003
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_global_variable = eqfm_senussi_brokered_peace
+					}
+					has_global_variable = eqfm_intimidated_sensussi
+					exists = c:ZWY
+					exists = c:TBI
+					s:STATE_LIBYA = {
+						has_variable = eqfm_senusiyya_entrenchment_var
+						var:eqfm_senusiyya_entrenchment_var >= 50
+					}
+					s:STATE_CHAD = {
+						NOR = {
+							has_variable = eqfm_senusiyya_entrenchment_var
+							has_variable = eqfm_senusiyya_explusion_var
+						}
+					}
+				}
+				set_global_variable = eqfm_senussi_brokered_peace
+				s:STATE_CHAD = {
+					set_variable = {
+						name = eqfm_senusiyya_entrenchment_var
+						value = 25
+					}
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_eqfm_senusiyya
+					}
+					trigger_event = eqfm_senusiyya.006
+				}
+			}
+		}
+	}
+	
+	status_desc = {
+		triggered_desc = {
+			desc = je_eqfm_senusiyya_status
+			trigger = {
+				has_global_variable = je_eqfm_senusiyya
+			}
+		}
+	}
+}
+
+je_eqfm_senusiyya_expedition = {
+	group = je_group_expeditions
+	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	weight = 100
+	
+	should_be_pinned_by_default_uninvolved_or_context = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+	
+	scripted_progress_bar = eqfm_senusiyya_expedition_progress_bar
+	scripted_progress_bar = eqfm_senusiyya_expedition_peril_bar
+
+	scripted_button = eqfm_resupply_senusiyya_expedition_button
+	scripted_button = eqfm_recall_senusiyya_expedition_button
+	
+	immediate = {
+		trigger_event = {
+			id = eqfm_senusiyya.301
+			days = { 20 30 }
+		}
+	}
+	
+	modifiers_while_active = {
+	}
+	
+	complete = {
+		custom_tooltip = {
+			text = je_eqfm_senusiyya_expedition_complete
+			has_variable = eqfm_senusiyya_expedition_progress_var
+			var:eqfm_senusiyya_expedition_progress_var >= 8
+		}
+	}
+	
+	on_complete = {
+		trigger_event = eqfm_senusiyya.304
+		set_variable = {
+			name = eqfm_senusiyya_expedition_transit_var
+			months = 3
+		}
+	}
+	
+	fail = {
+		OR = {
+			eqfm_expedition_peril_greater_than_or_equals_trigger = {
+				type = senusiyya
+				value = 5
+			}
+			NOT = {
+				eqfm_expedition_has_leader_trigger = {
+					type = senusiyya
+				}
+			}
+		}
+	}
+	
+	on_fail = {
+		hidden_effect = {
+			if = {
+				limit = {
+					has_variable = eqfm_senusiyya_expedition_peril_var
+					var:eqfm_senusiyya_expedition_peril_var >= 5
+				}
+				trigger_event = eqfm_senusiyya.303
+			}
+			else = {
+				trigger_event = eqfm_senusiyya.302
+			}
+		}
+	}
+	
+	invalid = {
+		OR = {
+			eqfm_has_senusiyya_expedition_trigger = no
+			NOT = {
+				is_involved_in_journal_entry = je_eqfm_senusiyya
+			}
+		}
+	}
+	
+	on_invalid = {
+		eqfm_clear_senusiyya_expedition_effect = yes
+	}
+	
+	on_weekly_pulse = {
+		events = {
+		}
+		random_events = {
+			chance_of_no_event = 50
+			5 = eqfm_senusiyya.310
+			5 = eqfm_senusiyya.311
+			5 = eqfm_senusiyya.312
+			5 = eqfm_senusiyya.313
+			5 = eqfm_senusiyya.314
+			5 = eqfm_senusiyya.315
+			5 = eqfm_senusiyya.316
+			5 = eqfm_senusiyya.317
+			5 = eqfm_senusiyya.318
+			5 = eqfm_senusiyya.319
+			5 = eqfm_senusiyya.320
+			5 = eqfm_senusiyya.321
+		}
+		effect = {
+			eqfm_update_senusiyya_expedition_variables_effect = yes
+		}
+	}
+	
+	on_monthly_pulse = {
+		events = {
+		}
+		random_events = {
+		}
+		effect = {
+			eqfm_annual_senusiyya_expedition_progress_effect = yes
+		}
+	}
+	
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_eqfm_senusiyya_expedition_status_transit
+				trigger = {
+					has_variable = eqfm_senusiyya_expedition_transit_var
+				}
+			}
+			triggered_desc = {
+				desc = je_eqfm_senusiyya_expedition_status_default
+				trigger = {
+					has_variable = eqfm_senusiyya_expedition_var
+				}
+			}
+		}
+	}
+}

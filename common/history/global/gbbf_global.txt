@@ -3,28 +3,51 @@
     ### Technical Tag Creation
 	create_country = {
 		tag = GBBF_ALB
-		origin = c:ATB
-		province = p:x55BDBD
+		origin = c:SLK
+		province = p:x706090
 	}
 	create_country = {
 		tag = GBBF_CAP
-		origin = c:ATB
-		province = p:x5C9007
+		origin = c:SLK
+		province = p:xFA990A
 	}
 	create_country = {
 		tag = GBBF_SIL
-		origin = c:ATB
-		province = p:xF423DB
+		origin = c:SLK
+		province = p:xA5B2DA
 	}
 	create_country = {
 		tag = GBBF_THE
-		origin = c:ATB
-		province = p:x63A92C
+		origin = c:SLK
+		province = p:xA8029D
 	}
 	create_country = {
 		tag = GBBF_TRB
-		origin = c:ATB
-		province = p:x2C4A4D
+		origin = c:SLK
+		province = p:x06CB06
+	}
+	create_country = {
+		tag = GBBF_ERZ
+		origin = c:SLK
+		province = p:x4CF080
+	}
+	
+	### Poke the Sundanese with a Stick
+	c:EGY = {
+		every_scope_state = {
+			limit = {
+				state_region = {
+					OR = {
+						s:STATE_KORDOFAN = this
+						s:STATE_DONGOLA = this
+						s:STATE_BLUE_NILE = this
+					}
+				}
+			}
+			add_radicals_in_state = {
+				value = 0.35
+			}
+		}
 	}
 
 	### State Name Assignment
@@ -32,31 +55,30 @@
 		region_state:TRI = {
 			set_state_name = STATE_LIBYA_arabic
 		}
+		region_state:ZWY = {
+			set_state_name = STATE_LIBYA_arabic
+		}
 	}
 
-	### Move Russian Kars to Bazid
+	### Clean up empty states
 	s:STATE_KARS = {
 		region_state:RUS = {
 			set_state_owner = c:KUR_BAY
 		}
 	}
 
-	### Specific Country Setups
-	c:EGY ?= {
-		if = {
-			limit = {
-				jotn_is_active_trigger = no
-			}
-			trigger_event = {
-				id = turkfm_egypt.001 # The Man Who Would be Khedive
-			}
-		}
-	}
-
 	### Open Global Journals
+	add_contextless_journal_entry = je_mgrbfm_egypt_nile_river
+#	add_contextless_journal_entry = je_haykfm_highlands
 	add_contextless_journal_entry = je_eqfm_balkan_situation
 	add_contextless_journal_entry = je_eqfm_pirates_of_the_adriatic
-#	add_contextless_journal_entry = je_haykfm_highlands
+	if = {
+		limit = {
+			has_dlc_feature = ip3_content
+		}
+		add_contextless_journal_entry = je_eqfm_karadag
+		eqfm_initialize_karadag_effect = yes
+	}
 
 	## Hiding the Tzatziki Sauce
 	com_hide_journal_entry_group = {

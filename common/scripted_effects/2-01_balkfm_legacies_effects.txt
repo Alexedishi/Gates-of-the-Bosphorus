@@ -2,11 +2,32 @@
 	if = {
 		limit = {
 			NOT = {
-				has_variable = balkfm_ottoman_legacies_started # There's a tiny corner case where Bulgaria can fire this effect twice
+				has_journal_entry = je_balkfm_legacies
+				# There's a tiny corner case where Bulgaria can fire this effect twice
 			}
 		}
+		add_journal_entry = {
+			type = je_balkfm_legacies
+		}
+		## Tax Reform
 		if = {
 			limit = {
+				always = no # TODO enable when ready
+				NOT = {
+					has_variable = balkfm_tax_reform_complete
+				}
+			}
+			je:je_balkfm_legacies = {
+				add_modifier = modifier_balkfm_tax_reform_agenda
+			}
+		}
+		
+		## Land Reform
+		if = {
+			limit = {
+				NOT = {
+					has_variable = balkfm_land_reform_complete
+				}
 				OR = {
 					has_law_or_variant = law_type:law_serfdom
 					has_law_or_variant = law_type:law_tenant_farmers
@@ -14,62 +35,123 @@
 					has_law_or_variant = law_type:law_agrarianism
 				}
 			}
-			add_journal_entry = {
-				type = je_balkfm_land_reform
+			je:je_balkfm_legacies = {
+				add_modifier = modifier_balkfm_land_reform_agenda
 			}
 		}
-		add_journal_entry = {
-			type = je_balkfm_civic_reform
-		}
+		
+		## Civic Reform
 		if = {
 			limit = {
-				balkfm_balkans_native_trigger = yes
+				NOT = {
+					has_variable = balkfm_civic_reform_complete
+				}
+				OR = {
+					has_law_or_variant = law_type:law_hereditary_bureaucrats
+					ig:ig_landowners = {
+						is_powerful = yes
+					}
+					ig:ig_intelligentsia = {
+						is_marginal = yes
+					}
+				}
+			}
+			je:je_balkfm_legacies = {
+				add_modifier = modifier_balkfm_civic_reform_agenda
+			}
+		}
+		
+		## Brigandage
+		if = {
+			limit = {
+				NOT = {
+					has_variable = balkfm_security_reform_complete
+				}
+				any_scope_state = {
+					is_in_geographic_region = geographic_region_rumelia
+				}
 				institution_investment_level = {
 					institution = institution_police
 					value < 3
 				}
 			}
-			add_journal_entry = {
-				type = je_balkfm_brigandage
+			je:je_balkfm_legacies = {
+				add_modifier = modifier_balkfm_security_reform_agenda
 			}
 		}
+		
+		## State Reform
 		if = {
 			limit = {
-				always = no
+				OR = {
+					country_has_primary_culture = cu:romanian
+				}
 			}
-			add_journal_entry = {
-				type = je_balkfm_tax_reform
-			}
-		}
-		if = {
-			limit = {
-				country_has_primary_culture = cu:romanian
-			}
-			add_journal_entry = {
-				type = je_balkfm_state_reform
-			}
-			add_journal_entry = {
-				type = je_balkfm_economic_reform
-			}
-			add_journal_entry = {
-				type = je_balkfm_social_reform
+			je:je_balkfm_legacies = {
+				add_modifier = modifier_balkfm_state_reform_agenda
+				add_modifier = modifier_balkfm_economic_reform_agenda
+				add_modifier = modifier_balkfm_social_reform_agenda
 			}
 		}
 		else_if = {
 			limit = {
 				country_has_primary_culture = cu:bosniak
 			}
-			add_journal_entry = {
-				type = je_balkfm_state_reform
-			}
-			add_journal_entry = {
-				type = je_balkfm_economic_reform
+			je:je_balkfm_legacies = {
+				add_modifier = modifier_balkfm_state_reform_agenda
+				add_modifier = modifier_balkfm_economic_reform_agenda
 			}
 		}
-		set_variable = balkfm_ottoman_legacies_started
-		trigger_event = {
-			id = balkfm_legacies.009 # An Ottoman Legacy
-			days = 15 # Provides a buffer from Day 1 events
+	}
+	else = {
+		error_log = "balkfm_set_up_ottoman_legacies_effect was called, but the country calling it already has an active je_balkfm_legacies journal entry."
+	}
+	set_variable = {
+		name = balkfm_completed_legacies_var
+		value = balkfm_completed_legacies_value
+	}
+	set_variable = {
+		name = balkfm_total_legacies_var
+		value = balkfm_total_legacies_value
+	}
+}
+
+balkfm_add_legacy_agenda_effect = {
+	if = {
+		limit = {
+			NOR = {
+				has_journal_entry = je_balkfm_legacies
+				has_variable = balkfm_$type$_reform_complete
+			}
 		}
+		add_journal_entry = {
+			type = je_balkfm_legacies
+		}
+		custom_tooltip = {
+			text = balkfm_add_$type$_reform_agenda
+			je:je_balkfm_legacies = {
+				add_modifier = modifier_balkfm_$type$_reform_agenda
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_journal_entry = je_balkfm_legacies
+			NOR = {
+				je:je_balkfm_legacies ?= {
+					has_modifier = modifier_balkfm_$type$_reform_agenda
+				}
+				has_variable = balkfm_$type$_reform_complete
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_add_$type$_reform_agenda
+			je:je_balkfm_legacies = {
+				add_modifier = modifier_balkfm_$type$_reform_agenda
+			}
+		}
+	}
+	else = {
+		error_log = "balkfm_add_legacy_agenda_effect was called, but the specified agenda is either active or already completed."
 	}
 }

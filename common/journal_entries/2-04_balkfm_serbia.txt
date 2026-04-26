@@ -3,7 +3,7 @@
 	group = je_group_historical_content
 	weight = 1000
 
-	should_be_pinned_by_default = yes
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = no
 	transferable = no
 	
@@ -13,6 +13,12 @@
 	scripted_button = balkfm_cement_monarchy_button
 
 	scripted_progress_bar = balkfm_dynastic_rivalry_progressbar
+	
+	widget = {
+		gui = "gui/com_journal_injects/injects.gui"
+		name = "com_journal_entry_characters"
+		container = "custom_widget_container_1"
+	}
 
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
@@ -46,9 +52,7 @@
 						balkfm_has_obrenovic_ruler_trigger = yes
 					}
 				}
-				trigger_event = {
-					id = balkfm_serbia.029 # The Reckoning
-				}
+				trigger_event = balkfm_serbia.029
 			}
 			custom_tooltip = {
 				text = je_balkfm_ser_monarchism_karadordevic_outcome
@@ -57,15 +61,11 @@
 						balkfm_has_karadordevic_ruler_trigger = yes
 					}
 				}
-				trigger_event = {
-					id = balkfm_serbia.028 # Here to Stay
-				}
+				trigger_event = balkfm_serbia.028
 			}
 		}
 		else = {
-			trigger_event = {
-				id = balkfm_serbia.019 # Mandate Secured
-			}
+			trigger_event = balkfm_serbia.019
 		}
 		hidden_effect = {
 			balkfm_cleanup_dynastic_rivalry_effect = yes
@@ -86,7 +86,7 @@
 
 	on_weekly_pulse = {
 		effect = {
-			balkfm_validate_ruler_character = yes
+			balkfm_validate_serbian_characters = yes
 			balkfm_calculate_dynastic_rivalry_variables_effect = yes
 			balkfm_update_dynasty_character_scopes_effect = yes
 		}
@@ -94,21 +94,21 @@
 
 	on_monthly_pulse = {
 		events = {
-			balkfm_serbia.002 # Constitution Imposed
-			balkfm_serbia.007 # Defenders of the Constitution
-			balkfm_serbia.010 # House Karađorđević Takes the Throne
-			balkfm_serbia.011 # House Obrenović Takes the Throne
-			balkfm_serbia.012 # Austria/Russia Requests Primacy
+			balkfm_serbia.002
+			balkfm_serbia.007
+			balkfm_serbia.010
+			balkfm_serbia.011
+			balkfm_serbia.012
 		}
 		random_events = {
 			400 = 0
-			5 =	balkfm_serbia.013 # Plague Outbreak!
-			5 = balkfm_serbia.014 # Abusive Garrison
-			5 = balkfm_serbia.020 # Clerical Publicity
-			5 = balkfm_serbia.022 # Exposing Hypocrites
-			5 = balkfm_serbia.023 # Renegade Hajduks
-			5 = balkfm_serbia.024 # Urban Rebels
-			5 = balkfm_serbia.025 # Plea for Aid
+			5 =	balkfm_serbia.013
+			5 = balkfm_serbia.014
+			5 = balkfm_serbia.020
+			5 = balkfm_serbia.022
+			5 = balkfm_serbia.023
+			5 = balkfm_serbia.024
+			5 = balkfm_serbia.025
 		}
 		effect = {
 			balkfm_dynastic_rivalry_monthly_effect = yes
@@ -125,7 +125,7 @@ je_balkfm_ser_defenders = {
 	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
 	weight = 500
 
-	should_be_pinned_by_default = yes
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = no
 	transferable = no
 
@@ -160,9 +160,7 @@ je_balkfm_ser_defenders = {
 	}
 
 	on_complete = {
-		trigger_event = {
-			id = balkfm_serbia.009 # Serbia Reforged
-		}
+		trigger_event = balkfm_serbia.009
 		set_variable = balkfm_defenders_completed
 	}
 
@@ -171,7 +169,7 @@ je_balkfm_ser_defenders = {
 			balkfm_has_obrenovic_ruler_trigger = yes
 			NOT = {
 				any_scope_character = {
-					has_role = agitator
+					has_role_of_type = agitator
 					law_stance = {
 						law = law_type:law_autocracy
 						value < neutral
@@ -186,9 +184,7 @@ je_balkfm_ser_defenders = {
 	}
 
 	on_fail = {
-		trigger_event = {
-			id = balkfm_serbia.008 # Absent Reform
-		}
+		trigger_event = balkfm_serbia.008
 		set_variable = balkfm_defenders_completed
 	}
 
@@ -216,7 +212,7 @@ je_balkfm_ser_serbian_heartlands = {
 	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
 	weight = 1000
 
-	should_be_pinned_by_default = yes
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
 
@@ -229,16 +225,14 @@ je_balkfm_ser_serbian_heartlands = {
 	}
 
 	possible = {
-		has_journal_entry = je_balkfm_nacertanije
+		has_technology_researched = nationalism
 		owns_entire_state_region = STATE_WESTERN_SERBIA
 		owns_entire_state_region = STATE_EASTERN_SERBIA
 	}
 
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
-		trigger_event = {
-			id = balkfm_serbia.200 # The Serbian Heartlands
-		}
+		trigger_event = balkfm_serbia.200
 	}
 
 	complete = {
@@ -249,21 +243,19 @@ je_balkfm_ser_serbian_heartlands = {
 	}
 
 	on_complete = {
-		trigger_event = {
-			id = balkfm_serbia.201 # Greater Serbia
-		}
+		trigger_event = balkfm_serbia.201
 	}
 
 	fail = {
 		OR = {
 			custom_tooltip = {
-				text = je_balkfm_nacertanije_complete_tt
+				text = je_balkfm_unification_of_yugoslavia_complete
 				hidden_trigger = {
 					c:YUG ?= this
 				}
 			}
 			custom_tooltip = {
-				text = balkfm_weaksauce_trigger_tt
+				text = balkfm_weaksauce_trigger
 				hidden_trigger = {
 					has_variable = balkfm_weaksauce
 				}
@@ -277,7 +269,7 @@ je_balkfm_ser_greater_serbia = {
 	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
 	weight = 1000
 
-	should_be_pinned_by_default = yes
+	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
 
@@ -288,31 +280,23 @@ je_balkfm_ser_greater_serbia = {
 	complete = {
 		custom_tooltip = {
 			text = je_balkfm_ser_greater_serbia_complete
-			hidden_trigger = {
-				c:SER_SRP ?= this
-			}
+			c:SER_SRP ?= this
 		}
 	}
 
 	on_complete = {
-		trigger_event = {
-			id = balkfm_serbia.202 # The Rebirth of the Serbian Empire
-		}
+		trigger_event = balkfm_serbia.202
 	}
 
 	fail = {
 		OR = {
 			custom_tooltip = {
-				text = je_balkfm_nacertanije_complete_tt
-				hidden_trigger = {
-					c:YUG ?= this
-				}
+				text = je_balkfm_unification_of_yugoslavia_complete
+				c:YUG ?= this
 			}
 			custom_tooltip = {
-				text = balkfm_weaksauce_trigger_tt
-				hidden_trigger = {
-					has_variable = balkfm_weaksauce
-				}
+				text = balkfm_weaksauce_trigger
+				has_variable = balkfm_weaksauce
 			}
 		}
 	}

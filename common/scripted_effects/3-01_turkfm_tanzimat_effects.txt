@@ -41,17 +41,13 @@
 	
 	# Supporting Variables
 	set_variable = {
-		name = turkfm_tanzimat_completion_var
+		name = turkfm_total_tanzimat_agendas_var
+		value = 2
+	}
+	set_variable = {
+		name = turkfm_completed_tanzimat_agendas_var
 		value = 0
 	}
-	
-	# Modifiers
-	add_modifier = modifier_turkfm_feudal_argiculture
-	add_modifier = modifier_turkfm_cizye_tax
-	add_modifier = modifier_turkfm_outmoded_bureaucracy
-	add_modifier = modifier_turkfm_stagnant_economy
-	add_modifier = modifier_turkfm_illiterate_populace
-	add_modifier = modifier_turkfm_insecure_countryside
 }
 
 turkfm_calculate_tanzimat_variables_effect = {
@@ -88,6 +84,70 @@ turkfm_calculate_tanzimat_variables_effect = {
 	}
 }
 
+turkfm_add_tanzimat_agenda_effect = {
+	if = {
+		limit = {
+			has_journal_entry = je_turkfm_tanzimat_reforms
+		}
+		custom_tooltip = {
+			text = turkfm_add_$type$_agenda
+			if = {
+				limit = {
+					NOR = {
+						has_variable = turkfm_tanzimat_$type$_agenda
+						has_variable = turkfm_tanzimat_$type$_complete
+					}
+				}
+				set_variable = turkfm_tanzimat_$type$_agenda
+			}
+			else = {
+				error_log = "turkfm_add_tanzimat_agenda_effect was called, but the specified agenda is either already active or complete."
+			}
+		}
+	}
+	else = {
+		error_log = "turkfm_add_tanzimat_agenda_effect was called, but the calling country does not have an active je_turkfm_tanzimat_reforms journal entry."
+	}
+	set_variable = {
+		name = turkfm_total_tanzimat_agendas_var
+		value = turkfm_total_tanzimat_agendas_value
+	}
+	set_variable = {
+		name = turkfm_completed_tanzimat_agendas_var
+		value = turkfm_completed_tanzimat_agendas_value
+	}
+}
+
+turkfm_complete_tanzimat_agenda_effect = {
+	if = {
+		limit = {
+			has_journal_entry = je_turkfm_tanzimat_reforms
+		}
+		if = {
+			limit = {
+				has_variable = turkfm_tanzimat_$type$_agenda
+			}
+			remove_variable = turkfm_tanzimat_$type$_agenda
+			set_variable = turkfm_tanzimat_$type$_complete
+			turkfm_advance_ottomanism1_effect = yes
+		}
+		else = {
+			error_log = "turkfm_complete_tanzimat_agenda_effect was called, but the specified agenda is not active in je_turkfm_tanzimat_reforms."
+		}
+	}
+	else = {
+		error_log = "turkfm_complete_tanzimat_agenda_effect was called, but the calling country does not have an active je_turkfm_tanzimat_reforms journal entry."
+	}
+	set_variable = {
+		name = turkfm_total_tanzimat_agendas_var
+		value = turkfm_total_tanzimat_agendas_value
+	}
+	set_variable = {
+		name = turkfm_completed_tanzimat_agendas_var
+		value = turkfm_completed_tanzimat_agendas_value
+	}
+}
+
 turkfm_cleanup_tanzimat_effect = {
 	set_global_variable = turkfm_tanzimat_complete
 	remove_variable = turkfm_tanzimat_identity_var
@@ -99,55 +159,8 @@ turkfm_cleanup_tanzimat_effect = {
 	remove_variable = turkfm_tanzimat_reformist_progress_var
 	remove_variable = turkfm_tanzimat_conservatist_progress_var
 	remove_variable = turkfm_tanzimat_reform_progress_var
-	remove_variable = turkfm_tanzimat_completion_var
-	hidden_effect = {
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_feudal_argiculture
-			}
-			remove_modifier = modifier_turkfm_feudal_argiculture
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_cizye_tax
-			}
-			remove_modifier = modifier_turkfm_cizye_tax
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_outmoded_bureaucracy
-			}
-			remove_modifier = modifier_turkfm_outmoded_bureaucracy
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_stagnant_economy
-			}
-			remove_modifier = modifier_turkfm_stagnant_economy
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_illiterate_populace
-			}
-			remove_modifier = modifier_turkfm_illiterate_populace
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_insecure_countryside
-			}
-			remove_modifier = modifier_turkfm_insecure_countryside
-		}
-	}
-}
-
-turkfm_complete_reform_effect = {
-	custom_tooltip = {
-		text = turkfm_reform_completed
-		change_variable = {
-			name = turkfm_tanzimat_completion_var
-			add = 1
-		}
-	}
+	remove_variable = turkfm_total_tanzimat_agendas_var
+	remove_variable = turkfm_completed_tanzimat_agendas_var
 }
 
 turkfm_advance_ottomanism1_effect = {
@@ -318,6 +331,67 @@ turkfm_advance_islamism3_effect = {
 	}
 }
 
+turkfm_circassian_slave_trade_effect = {
+	if = {
+		limit = {
+			active_law:lawgroup_slavery = {
+				has_amendment = amendment_type:amendment_gbbf_esir_pazari
+			}
+			s:STATE_KUBAN = {
+				has_variable = turkfm_circassian_slave_trade_var
+			}
+		}
+		c:TUR ?= {
+			capital = {
+				save_scope_as = ottoman_capital_scope
+			}
+		}
+		s:STATE_KUBAN = {
+			set_variable = {
+				name = turkfm_circassian_slave_trade_var
+				value = {
+					scope:ottoman_capital_scope = {
+						every_scope_pop = {
+							limit = {
+								is_pop_type = aristocrats
+							}
+							add = standard_of_living
+						}
+						divide = {
+							every_scope_pop = {
+								limit = {
+									is_pop_type = aristocrats
+								}
+								add = standard_of_living
+							}
+							min = 1
+						}
+					}
+					round = yes # idk, unless you want a shipment of slaves plus like a hand and a few ears.
+				}
+			}
+			random_scope_state = {
+				limit = {
+					any_scope_pop = {
+						has_pop_culture = circassian
+						total_size >= s:STATE_KUBAN.var:turkfm_circassian_slave_trade_var
+					}
+				}
+				random_scope_pop = {
+					limit = {
+						has_pop_culture = circassian
+						total_size >= s:STATE_KUBAN.var:turkfm_circassian_slave_trade_var
+					}
+					move_partial_pop = {
+						state = scope:ottoman_capital_scope
+						population = s:STATE_KUBAN.var:turkfm_circassian_slave_trade_var
+					}
+				}
+			}
+		}
+	}
+}
+
 turkfm_initialize_young_ottomans_effect = {
 	set_variable = {
 		name = turkfm_young_ottomans_var
@@ -331,19 +405,19 @@ turkfm_initialize_young_ottomans_effect = {
 
 turkfm_create_young_ottomans_effect = {
 	create_character = {
-		template = template_turkfm_kemal_namik
+		template = turkfm_kemal_namik
 		on_created = {
 			add_character_role = agitator
 		}
 	}
 	create_character = {
-		template = template_turkfm_sinasi_ibrahim
+		template = turkfm_sinasi_ibrahim
 		on_created = {
 			add_character_role = agitator
 		}
 	}
 	create_character = {
-		template = template_turkfm_murad_osmanoglu
+		template = turkfm_murad_osmanoglu
 		on_created = {
 			place_character_in_void = 1200
 		}
@@ -363,24 +437,29 @@ turkfm_cleanup_young_ottomans_effect = {
 }
 
 turkfm_initialize_young_turks_effect = {
-	set_variable = {
-		name = turkfm_young_turks_progress_var
-		value = 50
+	scope:journal_entry = {
+		set_variable = {
+			name = turkfm_young_turks_var
+			value = 50
+		}
+		set_variable = {
+			name = turkfm_young_turks_progress_var
+			value = turkfm_young_turks_progress_value
+		}
 	}
-	set_variable = {
-		name = turkfm_young_turks_var
-		value = turkfm_young_turks_progress_value
-	}
+	set_variable = turkfm_young_turks_started
+	set_variable = coup_immunity
 }
 
 turkfm_calculate_young_turks_effect = {
-	set_variable = {
-		name = turkfm_young_turks_progress_var
-		value = turkfm_young_turks_progress_value
+	scope:journal_entry = {
+		set_variable = {
+			name = turkfm_young_turks_progress_var
+			value = turkfm_young_turks_progress_value
+		}
 	}
 }
 
 turkfm_cleanup_young_turks_effect = {
-	remove_variable = turkfm_young_turks_var
-	remove_variable = turkfm_young_turks_progress_var
+	remove_variable = coup_immunity
 }

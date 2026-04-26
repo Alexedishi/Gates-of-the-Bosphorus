@@ -1,0 +1,224 @@
+﻿je_balkfm_legacies = {
+	group = je_group_technology
+	icon = "gfx/interface/icons/invention_icons/urbanization.dds"
+	weight = 1000
+	
+	should_be_pinned_by_default_uninvolved_or_context = yes
+	can_revolution_inherit = yes
+	transferable = no
+	
+	widget = {
+		gui = "gui/com_journal_injects/injects.gui"
+		name = "com_journal_entry_header"
+		container = "com_custom_widget_container_scripted_progress_bars"
+	}
+	
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		if = {
+			limit = {
+				NOT = {
+					has_variable = balkfm_ottoman_legacies_started
+				}
+			}
+			set_variable = balkfm_ottoman_legacies_started
+			trigger_event = {
+				id = balkfm_legacies.009
+				days = 15
+			}
+		}
+	}
+	
+	complete = {
+		## Tax Reform
+		trigger_if = {
+			limit = {
+				scope:journal_entry = {
+					has_modifier = modifier_balkfm_tax_reform_agenda
+				}
+			}
+			custom_tooltip = {
+				text = balkfm_tax_reform_complete
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = balkfm_tax_reform_complete
+			}
+			custom_tooltip = {
+				text = balkfm_tax_reform_complete
+				always = yes
+			}
+		}
+
+		## Land Reform
+		trigger_if = {
+			limit = {
+				scope:journal_entry = {
+					has_modifier = modifier_balkfm_land_reform_agenda
+				}
+			}
+			custom_tooltip = {
+				text = balkfm_land_reform_complete
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = balkfm_land_reform_complete
+			}
+			custom_tooltip = {
+				text = balkfm_land_reform_complete
+				always = yes
+			}
+		}
+		
+		## Civic Reform
+		trigger_if = {
+			limit = {
+				scope:journal_entry = {
+					has_modifier = modifier_balkfm_civic_reform_agenda
+				}
+			}
+			custom_tooltip = {
+				text = balkfm_civic_reform_complete
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = balkfm_civic_reform_complete
+			}
+			custom_tooltip = {
+				text = balkfm_civic_reform_complete
+				always = yes
+			}
+		}
+		
+		## Brigandage
+		trigger_if = {
+			limit = {
+				scope:journal_entry = {
+					has_modifier = modifier_balkfm_security_reform_agenda
+				}
+			}
+			custom_tooltip = {
+				text = balkfm_security_reform_complete
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = balkfm_security_reform_complete
+			}
+			custom_tooltip = {
+				text = balkfm_security_reform_complete
+				always = yes
+			}
+		}
+		
+		## State Reform
+		trigger_if = {
+			limit = {
+				scope:journal_entry = {
+					has_modifier = modifier_balkfm_state_reform_agenda
+				}
+			}
+			custom_tooltip = {
+				text = balkfm_state_reform_complete
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = balkfm_state_reform_complete
+			}
+			custom_tooltip = {
+				text = balkfm_state_reform_complete
+				always = yes
+			}
+		}
+		
+		## Economic Reform
+		trigger_if = {
+			limit = {
+				scope:journal_entry = {
+					has_modifier = modifier_balkfm_economic_reform_agenda
+				}
+			}
+			custom_tooltip = {
+				text = balkfm_economic_reform_complete
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = balkfm_economic_reform_complete
+			}
+			custom_tooltip = {
+				text = balkfm_economic_reform_complete
+				always = yes
+			}
+		}
+		
+		## Social Reform
+		trigger_if = {
+			limit = {
+				scope:journal_entry = {
+					has_modifier = modifier_balkfm_social_reform_agenda
+				}
+			}
+			custom_tooltip = {
+				text = balkfm_social_reform_complete
+				always = no
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_variable = balkfm_social_reform_complete
+			}
+			custom_tooltip = {
+				text = balkfm_social_reform_complete
+				always = yes
+			}
+		}
+	}
+	
+	on_complete = {
+		remove_variable = balkfm_completed_legacies_var
+		remove_variable = balkfm_total_legacies_var
+	}
+	
+	on_monthly_pulse = {
+		events = {
+			balkfm_legacies.001
+			balkfm_legacies.002
+			balkfm_legacies.003
+			balkfm_legacies.004
+			balkfm_legacies.005
+			balkfm_legacies.006
+			balkfm_legacies.007
+			balkfm_legacies.011
+		}
+		random_events = {
+			chance_of_no_event = 95
+			5 = balkfm_legacies.010
+		}
+		effect = {
+			set_variable = {
+				name = balkfm_completed_legacies_var
+				value = balkfm_completed_legacies_value
+			}
+			set_variable = {
+				name = balkfm_total_legacies_var
+				value = balkfm_total_legacies_value
+			}
+		}
+	}
+	
+	status_desc = {
+		triggered_desc = {
+			desc = je_balkfm_legacies_status
+		}
+	}
+}

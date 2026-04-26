@@ -1,0 +1,271 @@
+﻿je_eqfm_pirates_of_the_adriatic = {
+	group = je_group_global_international_situations
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+	weight = 1000
+
+	should_be_pinned_by_default_involved = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	is_shown_in_lobby = {
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_adriatic_sea
+		}
+	}
+
+	scripted_progress_bar = eqfm_jack_sparrow_progress_bar
+	
+	scripted_button = eqfm_hire_retired_pirates_button
+	scripted_button = eqfm_deploy_adriatic_expedition_button
+	
+	widget = {
+		gui = "gui/com_journal_injects/injects.gui"
+		name = "com_journal_entry_characters"
+		container = "custom_widget_container_1"
+	}
+
+	should_be_involved = {
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_adriatic_sea
+			is_coastal = yes
+		}
+	}
+	
+	should_show_when_not_involved = {
+		any_scope_state = {
+			OR = {
+				region = sr:region_balkans
+				region = sr:region_southern_europe
+			}
+		}
+	}
+	
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		eqfm_initialize_adriatic_journal_effect = yes
+	}
+	
+	immediate_all_involved = {
+		trigger_event = {
+			id = eqfm_pirates.001
+			days = 15
+		}
+	}
+	
+	on_become_involved_after_activation = {
+		if = {
+			limit = {
+				NOT = {
+					has_variable = eqfm_piracy_started
+				}
+			}
+			trigger_event = eqfm_pirates.001
+		}
+	}
+
+	complete = {
+		custom_tooltip = {
+			text = je_eqfm_pirates_of_the_adriatic_complete
+			has_global_variable = eqfm_jack_sparrow_whacked
+		}
+	}
+	
+	on_complete = {
+		remove_global_variable = je_eqfm_pirates_of_the_adriatic
+	}
+	
+	on_complete_all_involved = {
+		eqfm_clear_adriatic_expedition_effect = yes
+	}
+	
+	on_no_longer_involved = {
+		eqfm_clear_adriatic_expedition_effect = yes
+	}
+	
+	on_weekly_pulse = {
+		effect = {
+			eqfm_update_adriatic_journal_variables_effect = yes
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			eqfm_validate_adriatic_journal_involvement = yes
+		}
+	}
+
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = eqfm_jack_sparrow_scared
+				trigger = {
+					has_global_variable = je_eqfm_pirates_of_the_adriatic
+					global_var:je_eqfm_pirates_of_the_adriatic.var:eqfm_pirates_var >= 3
+					exists = global_var:je_eqfm_pirates_of_the_adriatic.var:eqfm_jack_sparrow_var
+				}
+			}
+			triggered_desc = {
+				desc = eqfm_jack_sparrow_cautious
+				trigger = {
+					has_global_variable = je_eqfm_pirates_of_the_adriatic
+					global_var:je_eqfm_pirates_of_the_adriatic.var:eqfm_pirates_var >= 2
+					exists = global_var:je_eqfm_pirates_of_the_adriatic.var:eqfm_jack_sparrow_var
+				}
+			}
+			triggered_desc = {
+				desc = eqfm_jack_sparrow_cocky
+				trigger = {
+					has_global_variable = je_eqfm_pirates_of_the_adriatic
+					global_var:je_eqfm_pirates_of_the_adriatic.var:eqfm_pirates_var >= 0
+					exists = global_var:je_eqfm_pirates_of_the_adriatic.var:eqfm_jack_sparrow_var
+				}
+			}
+		}
+	}
+}
+
+je_eqfm_expedition_to_the_adriatic = {
+	group = je_group_expeditions
+	icon = "gfx/interface/icons/event_icons/event_piracy.dds"
+	weight = 1000
+	
+	should_be_pinned_by_default_uninvolved_or_context = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+	
+	scripted_progress_bar = eqfm_cutler_beckett_progress_bar
+	scripted_progress_bar = eqfm_cutler_beckett_peril_bar
+	
+	scripted_button = eqfm_recall_adriatic_expedition_button
+	scripted_button = eqfm_resupply_adriatic_expedition_button
+	
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+	}
+	
+	complete = {
+		eqfm_expedition_progress_greater_than_or_equals_trigger = {
+			type = adriatic
+			value = 8
+		}
+	}
+	
+	on_complete = {
+		if = {
+			limit = {
+				has_variable = eqfm_piracy_chase_var
+			}
+			trigger_event = eqfm_pirates.007
+		}
+		else = {
+			trigger_event = eqfm_pirates.006
+		}
+	}
+	
+	fail = {
+		OR = {
+			NOT = {
+				eqfm_has_expedition_trigger = {
+					type = adriatic
+				}
+			}
+			eqfm_expedition_peril_greater_than_or_equals_trigger = {
+				type = adriatic
+				value = 5
+			}
+			NOT = {
+				eqfm_expedition_has_leader_trigger = {
+					type = adriatic
+				}
+			}
+		}
+	}
+	
+	on_fail = {
+		if = {
+			limit = {
+				eqfm_expedition_has_leader_trigger = {
+					type = adriatic
+				}
+			}
+			trigger_event = eqfm_pirates.004
+		}
+		else = {
+			trigger_event = eqfm_pirates.005
+		}
+	}
+	
+	invalid = {
+		OR = {
+			NOT = {
+				is_involved_in_journal_entry = je_eqfm_pirates_of_the_adriatic
+			}
+			custom_tooltip = {
+				text = je_eqfm_pirates_of_the_adriatic_complete
+				has_global_variable = eqfm_jack_sparrow_whacked
+			}
+		}
+	}
+	
+	on_invalid = {
+		eqfm_clear_adriatic_expedition_effect = yes
+	}
+	
+	on_weekly_pulse = {
+		random_events = { # Chase Events
+			15 = eqfm_pirates.031 # Man Overboard!
+			35 = eqfm_pirates.032 # The Pillagers' Wake
+			# 5 = eqfm_pirates.033 #
+			5 = eqfm_pirates.034 # Without a Trace
+			45 = eqfm_pirates.035 # Bearing Down
+			10 = eqfm_pirates.036 # Cut and Run
+			30 = eqfm_pirates.037 # Action Along the Coast
+			10 = eqfm_pirates.038 # Naval Duel on the High Seas!
+		}
+		effect = {
+			eqfm_update_adriatic_expedition_variables_effect = yes
+		}
+	}
+	
+	on_monthly_pulse = {
+		random_events = { # Expedition Events
+			chance_of_no_event = 50
+			150 = eqfm_pirates.020 # Local Informants
+			150 = eqfm_pirates.021 # A Suspicious Inlet
+			50 = eqfm_pirates.022 # The Runaway
+			75 = eqfm_pirates.023 # Spoiled Provisions
+			50 = eqfm_pirates.024 # Circular Bearing
+			50 = eqfm_pirates.025 # Windstorms in the Adriatic
+			50 = eqfm_pirates.026 # Foul Waters
+			150 = eqfm_pirates.027 # Scouts Pick Up Leads
+			75 = eqfm_pirates.028 # Emergency Repairs
+			125 = eqfm_pirates.029 # Port of Call
+			100 = eqfm_pirates.030 # Pirates Spotted!
+		}
+		effect = {
+			eqfm_yearly_expedition_progress_effect = {
+				type = adriatic
+				progress_timer = 6
+			}
+		}
+	}
+	
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = eqfm_cutler_beckett_expedition_chase
+				trigger = {
+					has_variable = eqfm_piracy_chase_var
+				}
+			}
+			triggered_desc = {
+				desc = eqfm_cutler_beckett_expedition_default
+				trigger = {
+					has_variable = eqfm_cutler_beckett_var
+					exists = var:eqfm_cutler_beckett_var
+				}
+			}
+		}
+	}
+}

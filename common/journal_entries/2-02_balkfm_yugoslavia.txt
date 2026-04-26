@@ -1,15 +1,170 @@
-﻿je_balkfm_nacertanije = {
-	group = je_group_historical_content
+﻿je_balkfm_serbia_and_montenegro = {
+	group = je_group_global_international_situations
+	icon = "gfx/interface/icons/event_icons/event_montenegro.dds"
+	weight = 100
+	
+	should_be_pinned_by_default_involved = yes
+	
+	is_shown_in_lobby = {
+		has_dlc_feature = ip3_content # National Awakening
+		country_has_primary_culture = cu:serb
+	}
+	
+	should_be_involved = {
+		country_has_primary_culture = cu:serb
+	}
+	
+	should_show_when_not_involved = {
+		has_strategic_region_interest_tier = {
+			strategic_region = sr:region_balkans
+			value >= 1
+		}
+	}
+	
+	immediate = {
+		c:RUS ?= {
+			save_scope_as = russia
+		}
+		c:TUR ?= {
+			save_scope_as = ottoman
+		}
+		c:MON ?= {
+			save_scope_as = montenegro
+		}
+		c:SER ?= {
+			save_scope_as = serbia
+		}
+	}
+	
+	complete = {
+		c:MON ?= {
+			is_subject = no
+			NOT = {
+				has_modifier = modifier_balkfm_cultural_schism
+			}
+		}
+		c:SER ?= {
+			is_subject = no
+		}
+		custom_tooltip = {
+			text = je_balkfm_serbia_and_montenegro_complete
+			c:MON ?= {
+				any_neighbouring_state = { owner = c:SER }
+			}
+		}
+	}
+	
+	on_complete = {
+		custom_tooltip = {
+			text = je_balkfm_serbia_and_montenegro_on_complete
+			if = {
+				limit = {
+					c:MON = {
+						is_player = yes
+					}
+				}
+				c:MON = {
+					trigger_event = {
+						id = balkfm_yugoslavia.007
+						popup = yes
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					c:SER = {
+						is_player = yes
+					}
+				}
+				c:SER = {
+					trigger_event = {
+						id = balkfm_yugoslavia.007
+						popup = yes
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					c:MON.prestige >= c:SER.prestige
+				}
+				c:MON = {
+					trigger_event = balkfm_yugoslavia.007
+				}
+			}
+			else = {
+				c:SER = {
+					trigger_event = balkfm_yugoslavia.007
+				}
+			}
+		}
+	}
+	
+	fail = {
+		OR = {
+			AND = {
+				c:MON ?= {
+					is_subject = no
+				}
+				c:SER ?= {
+					is_subject = no
+					has_war_with = c:MON
+				}
+			}
+			custom_tooltip = {
+				text = je_balkfm_serbia_and_montenegro_fail
+				c:MON ?= {
+					NOT = {
+						country_has_primary_culture = cu:serb
+					}
+				}
+			}
+		}
+	}
+	
+	on_fail = {
+		custom_tooltip = {
+			text = je_balkfm_serbia_and_montenegro_on_fail
+			c:MON ?= {
+				create_diplomatic_catalyst = {
+					type = catalyst_event_negative
+					target = c:SER
+				}
+			}
+			c:SER ?= {
+				create_diplomatic_catalyst = {
+					type = catalyst_event_negative
+					target = c:MON
+				}
+			}
+		}
+	}
+	
+	invalid = {
+		OR = {
+			c:MON ?= {
+				is_country_alive = no
+			}
+			c:SER ?= {
+				is_country_alive = no
+			}
+			AND = { # Retained from IP3 just in case this somehow gets added after history execution
+				c:MON ?= {
+					is_player = yes
+				}
+				c:SER ?= {
+					is_player = yes
+				}
+			}
+		}
+	}
+}
+
+je_balkfm_unification_of_yugoslavia = {
+	group = je_group_global_international_situations
 	icon = "gfx/interface/icons/event_icons/event_flag_yug.dds"
 	weight = 1000
 
-	should_be_pinned_by_default = yes
-	can_revolution_inherit = yes
-	transferable = no
-
-	scripted_button = balkfm_austrian_gunrunners_button
-	scripted_button = balkfm_ottoman_gunrunners_button
-	scripted_button = balkfm_form_yugoslavia_button # this is a fallback for Bulgaria
+	should_be_pinned_by_default_involved = yes
 
 	is_shown_in_lobby = {
 		has_dlc_feature = ip3_content # National Awakening
@@ -22,183 +177,673 @@
 		}
 	}
 
+	scripted_button = balkfm_form_yugoslavia_button # this is a fallback for Bulgaria
+	scripted_button = balkfm_annex_mon_button
+	scripted_button = balkfm_annex_ser_button
+	scripted_button = balkfm_annex_bul_button
+	scripted_button = balkfm_annex_bos_button
+	scripted_button = balkfm_annex_cro_button
+	scripted_button = balkfm_annex_slo_button
+
 	is_shown_when_inactive = {
-		NOR = { # not Danubian State
-			has_global_variable = balkfm_yugoslavism_failed
-			exists = c:YUG
+		NOR = {
 			has_global_variable = has_formed_yug
-			c:KUK ?= this
-			c:HRE ?= this # https://media.tenor.com/Z16slmCnZFcAAAAM/stare-christian-bale.gif
-			has_journal_entry = je_danubian_federation
+			has_global_variable = balkfm_yugoslavism_failed
 		}
+	}
+
+	should_be_involved = {
 		OR = {
-			country_has_primary_culture = cu:serb
-			country_has_primary_culture = cu:croat
-			country_has_primary_culture = cu:bosniak
-			country_has_primary_culture = cu:slovene
 			AND = {
-				has_variable = bul_pursued_greater_yugoslavism # Inherited from IP3
-				country_has_primary_culture = cu:bulgarian
+				balkfm_country_is_eligible_for_yugoslavism_trigger = yes
+				has_technology_researched = nationalism
+			}
+			any_scope_state = {
+				is_in_geographic_region = geographic_region_yugoslavia
+			}
+			any_subject_or_below = {
+				balkfm_country_has_yugoslav_culture_trigger = yes
+				has_technology_researched = nationalism
 			}
 		}
-		aggressive_diplomatic_plays_permitted = yes
+	}
+
+	should_show_when_not_involved = {
+		has_strategic_region_interest_tier = {
+			strategic_region = sr:region_balkans
+			value >= 1
+		}
 	}
 
 	possible = {
-		has_technology_researched = nationalism
-		is_subject = no
-		hidden_trigger = { # blocks journal before a tag has independence
-			is_secessionist = no
+		any_country_in_balkans = {
+			balkfm_country_is_eligible_for_yugoslavism_trigger = yes
 		}
 	}
 
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
-		root = {
-			save_scope_as = root_country_scope
-		}
-		cu:serb = {
-			save_scope_as = serbian_scope
-		}
-		cu:bulgarian = {
-			save_scope_as = bulgarian_scope
-		}
-		cu:bosniak = {
-			save_scope_as = bosniak_scope
-		}
-		cu:croat = {
-			save_scope_as = croatian_scope
-		}
-		cu:slovene = {
-			save_scope_as = slovene_scope
-		}
-		trigger_event = {
-			id = balkfm_yugoslavia.001 # Yugoslavism Starter Event
-		}
 		set_global_variable = balkfm_yugoslavism_started
-		set_variable = je_yugoslavia_is_active
+		scope:journal_entry = {
+			save_scope_as = balkfm_yugoslavia_journal_scope
+		}
+		set_global_variable = {
+			name = balkfm_yugoslavia_journal_var
+			value = scope:balkfm_yugoslavia_journal_scope
+		}
+	}
+
+	immediate_all_involved = {
+		trigger_event = balkfm_yugoslavia.001
+	}
+
+	on_become_involved_after_activation = {
+		if = {
+			limit = {
+				balkfm_country_has_yugoslav_culture_trigger = yes
+				NOT = {
+					has_variable = je_yugoslavia_is_active
+				}
+			}
+			trigger_event = balkfm_yugoslavia.001
+		}
 	}
 
 	complete = {
 		custom_tooltip = {
-			text = je_balkfm_nacertanije_complete_tt
-			c:YUG ?= this
-		}
-		government_legitimacy >= 50
-		is_at_war = no
-		custom_tooltip = {
-			text = no_insurrectionary_movement_tt
-			NOT = {
-				any_political_movement = {
-					is_insurrectionary = yes
-				}
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = bul_pursued_greater_yugoslavism # Inherited from IP3
-			}
-			owns_entire_state_region = STATE_BULGARIA
-			owns_entire_state_region = STATE_NORTHERN_THRACE
-			owns_entire_state_region = STATE_DOBRUDJA
+			text = je_balkfm_unification_of_yugoslavia_complete
+			exists = c:YUG
 		}
 	}
 
 	on_complete = {
+		set_global_variable = {
+			name = je_yugoslavism_cooldown_var # Blocks event spam
+			months = 3
+		}
 		if = {
 			limit = {
-				has_variable = bul_pursued_greater_yugoslavism # Inherited from IP3
+				exists = c:YUG # Error suppression
 			}
-			trigger_event = {
-				id = balkfm_bulgaria.217 # The Slavic Balkans
+			every_country = {
+				limit = {
+					has_diplomatic_relevance = c:YUG
+					balkfm_country_has_yugoslav_culture_trigger = no
+				}
+				c:YUG ?= {
+					save_scope_as = yug_scope
+					ruler = {
+						save_scope_as = ruler_scope
+					}
+				}
+				post_notification = yug_unification
+			}
+			every_country = {
+				limit = {
+					balkfm_country_has_yugoslav_culture_trigger = yes
+				}
+				balkfm_cleanup_yugoslav_unification_variables_effect = yes
 			}
 		}
-		else = {
-			trigger_event = {
-				id = balkfm_yugoslavia.009 # The Birth of Yugoslavia
+	}
+
+	on_complete_all_involved = {
+		custom_tooltip = {
+			text = je_balkfm_unification_of_yugoslavia_on_complete_all_involved
+			if = {
+				limit = {
+					exists = c:YUG # Error suppression
+				}
+				if = {
+					limit = {
+						balkfm_country_has_yugoslav_culture_trigger = yes
+						c:YUG != this
+					}
+					trigger_event = balkfm_yugoslavia.009
+				}
 			}
 		}
-		balkfm_cleanup_yugoslavism_effect = yes
 	}
 
 	fail = {
-		OR = {
-			is_subject = yes
-			balkfm_is_national_empire_trigger = yes
+		NOT = {
+			any_country_in_balkans = {
+				balkfm_country_has_yugoslav_culture_trigger = yes
+			}
 		}
 	}
 
 	on_fail = {
-		balkfm_cleanup_yugoslavism_effect = yes
-		post_notification = yugoslavia_failed_message
-	}
-
-	invalid = {
-		OR = {
-			custom_tooltip = {
-				text = balkfm_yugoslavism_completed_tt
-				hidden_trigger = {
-					has_global_variable = has_formed_yug
-					NOT = {
-						c:YUG ?= this
+		custom_tooltip = {
+			text = je_balkfm_unification_of_yugoslavia_on_fail
+			every_country = {
+				limit = {
+					has_strategic_region_interest_tier = {
+						strategic_region = sr:region_balkans
+						value >= 1
 					}
 				}
+				trigger_event = balkfm_yugoslavia.008
 			}
-			custom_tooltip = {
-				text = balkfm_yugoslavism_failed_tt
-				hidden_trigger = {
-					has_global_variable = balkfm_yugoslavism_failed
+			every_country = {
+				limit = {
+					balkfm_country_has_yugoslav_culture_trigger = yes
 				}
+				balkfm_cleanup_yugoslav_unification_variables_effect = yes
 			}
-			custom_tooltip = {
-				text = balkfm_weaksauce_trigger_tt
-				hidden_trigger = {
-					has_variable = balkfm_weaksauce
-				}
-			}
+		}
+	}
+
+	invalid = { # I smell a rat... can't tell you why
+		NOT = {
+			has_dlc_feature = ip3_content
 		}
 	}
 
 	on_invalid = {
-		balkfm_cleanup_yugoslavism_effect = yes
+		every_country = {
+			limit = {
+				balkfm_country_has_yugoslav_culture_trigger = yes
+			}
+			balkfm_cleanup_yugoslav_unification_variables_effect = yes
+		}
 	}
 
 	on_weekly_pulse = {
 		effect = {
-			balkfm_determine_yugoslav_leader_effect = yes
+			ordered_country = {
+				limit = {
+					is_involved_in_journal_entry = je_balkfm_unification_of_yugoslavia
+					balkfm_country_has_yugoslav_culture_trigger = yes
+				}
+				order_by = prestige
+				position = 0
+				check_range_bounds = no
+				save_scope_as = balkfm_yugoslav_leader_scope
+			}
+			if = {
+				limit = {
+					exists = scope:balkfm_yugoslav_leader_scope
+				}
+				scope:journal_entry = {
+					set_variable = {
+						name = balkfm_yugoslav_leader_var
+						value = scope:balkfm_yugoslav_leader_scope
+					}
+					set_variable = {
+						name = balkfm_yugoslav_leader_prestige_var
+						value = var:balkfm_yugoslav_leader_var.prestige
+					}
+				}
+			}
+			else = {
+				scope:journal_entry = {
+					remove_variable = balkfm_yugoslav_leader_var
+					remove_variable = balkfm_yugoslav_leader_prestige_var
+				}
+			}
 		}
 	}
 
 	on_monthly_pulse = {
-		random_events = {
-			chance_of_no_event = 50
-			5 = balkfm_yugoslavia.015 # Yugoslav Country Seeks Union (Same Culture)
-			5 = balkfm_yugoslavia.016 # Yugoslav Country Seeks Union (Different Culture)
+		effect = {
+			every_country = {
+				if = {
+					limit = {
+						is_involved_in_journal_entry = je_balkfm_unification_of_yugoslavia
+						NOR = {
+							balkfm_country_is_eligible_for_yugoslavism_trigger = yes
+							any_scope_state = {
+								is_in_geographic_region = geographic_region_yugoslavia
+							}
+							any_subject_or_below = {
+								balkfm_country_has_yugoslav_culture_trigger = yes
+							}
+						}
+					}
+					global_var:balkfm_yugoslavia_journal_var = {
+						remove_involved_country = prev
+					}
+				}
+				if = {
+					limit = {
+						NOT = {
+							is_involved_in_journal_entry = je_balkfm_unification_of_yugoslavia
+						}
+						OR = {
+							balkfm_country_has_yugoslav_culture_trigger = yes
+							has_variable = bul_pursued_greater_yugoslavism
+							any_scope_state = {
+								is_in_geographic_region = geographic_region_yugoslavia
+							}
+							any_subject_or_below = {
+								balkfm_country_has_yugoslav_culture_trigger = yes
+							}
+						}
+					}
+					global_var:balkfm_yugoslavia_journal_var = {
+						add_involved_country = prev
+					}
+				}
+			}
 		}
 	}
 
 	status_desc = {
 		first_valid = {
 			triggered_desc ={
-				desc = je_balkfm_nacertanije_no_leader_tt
+				desc = je_balkfm_unification_of_yugoslavia_status
 				trigger = {
-					NOT = {
-						has_global_variable = balkfm_yugoslav_leader_var
-					}
-				}
-			}
-			triggered_desc ={
-				desc = je_balkfm_nacertanije_no_leader_tt
-				trigger = {
-					NOT = {
-						exists = global_var:balkfm_yugoslav_leader_var
+					has_global_variable = balkfm_yugoslavism_started
+					scope:journal_entry = {
+						has_variable = balkfm_yugoslav_leader_var
+						exists = var:balkfm_yugoslav_leader_var
 					}
 				}
 			}
 			triggered_desc = {
-				desc = je_balkfm_nacertanije_leader_tt
-				trigger = {
-					exists = global_var:balkfm_yugoslav_leader_var
+				desc = je_balkfm_unification_of_yugoslavia_status_idle
+			}
+		}
+	}
+}
+
+je_balkfm_yugoslav_nationalism = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_flag_yug.dds"
+	weight = 1000
+	
+	should_be_pinned_by_default_uninvolved_or_context = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+
+	scripted_button = balkfm_promote_montegrin_button
+	scripted_button = balkfm_promote_serb_button
+	scripted_button = balkfm_promote_bulgarian_button
+	scripted_button = balkfm_promote_bosniak_button
+	scripted_button = balkfm_promote_croat_button
+	scripted_button = balkfm_promote_slovene_button
+
+	scripted_progress_bar = balkfm_yugoslavism_progressbar
+	
+	is_shown_when_inactive = {
+		always = no # TODO enable when ready
+		c:YUG ?= this
+		NOR = {
+			has_global_variable = je_yugoslavism_cooldown_var
+			has_variable = je_balkfm_yugoslav_nationalism_complete
+			has_law_or_variant = law_type:law_multicultural
+		}
+	}
+	
+	possible = {
+		NOT = {
+			has_journal_entry = je_balkfm_unification_of_yugoslavia
+		}
+		has_technology_researched = pan-nationalism
+		has_technology_researched = central_archives
+	}
+	
+	widget = {
+		gui = "gui/com_journal_injects/injects.gui"
+		name = "com_journal_entry_progress_bars"
+		container = "com_custom_widget_container_scripted_progress_bars"
+	}
+	
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		trigger_event = balkfm_yugoslavia.100
+		if = {
+			limit = {
+				NOT = {
+					any_political_movement = {
+						is_political_movement_type = movement_gbbf_yugoslav_integralist
+					}
+				}
+			}
+			create_political_movement = {
+				type = movement_gbbf_yugoslav_integralist
+			}
+			random_political_movement = {
+				limit = {
+					is_political_movement_type = movement_gbbf_yugoslav_integralist
+				}
+				add_modifier = {
+					name = initial_movement_enthusiasm
+					multiplier = 2 # Might be too much? idk, can't say I gaf until there's a report lol
+					months = 300
+					is_decaying = yes
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_global_variable = balkfm_montegrin_culture_var
+				NOR = {
+					country_has_primary_culture = cu:montenegrin
+					any_political_movement = {
+						is_political_movement_type = movement_cultural_minority
+						culture ?= cu:montenegrin
+					}
+				}
+			}
+			create_political_movement = { 
+				type = movement_cultural_minority
+				culture = cu:montenegrin
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					country_has_primary_culture = cu:serb
+					any_political_movement = {
+						is_political_movement_type = movement_cultural_minority
+						culture ?= cu:serb
+					}
+				}
+			}
+			create_political_movement = {
+				type = movement_cultural_minority
+				culture = cu:serb
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					country_has_primary_culture = cu:bulgarian
+					any_political_movement = {
+						is_political_movement_type = movement_cultural_minority
+						culture ?= cu:bulgarian
+					}
+				}
+			}
+			create_political_movement = {
+				type = movement_cultural_minority
+				culture = cu:bulgarian
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					country_has_primary_culture = cu:bosniak
+					any_political_movement = {
+						is_political_movement_type = movement_cultural_minority
+						culture ?= cu:bosniak
+					}
+				}
+			}
+			create_political_movement = {
+				type = movement_cultural_minority
+				culture = cu:bosniak
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					country_has_primary_culture = cu:croat
+					any_political_movement = {
+						is_political_movement_type = movement_cultural_minority
+						culture ?= cu:croat
+					}
+				}
+			}
+			create_political_movement = {
+				type = movement_cultural_minority
+				culture = cu:croat
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					country_has_primary_culture = cu:slovene
+					any_political_movement = {
+						is_political_movement_type = movement_cultural_minority
+						culture ?= cu:slovene
+					}
+				}
+			}
+			create_political_movement = {
+				type = movement_cultural_minority
+				culture = cu:slovene
+			}
+		}
+		every_political_movement = {
+			limit = {
+				is_political_movement_type = movement_cultural_minority
+				NOT = {
+					has_modifier = initial_movement_enthusiasm
+				}
+				OR = {
+					culture = cu:montenegrin
+					culture = cu:serb
+					culture = cu:bulgarian
+					culture = cu:bosniak
+					culture = cu:croat
+					culture = cu:slovene
+				}
+			}
+			add_modifier = {
+				name = initial_movement_enthusiasm
+				months = 300
+				is_decaying = yes
+			}
+		}
+		scope:journal_entry = {
+			set_variable = {
+				name = balkfm_yugoslavism_var
+				value = 100
+			}
+			set_variable = {
+				name = balkfm_yugoslavism_progress_var
+				value = 0
+			}
+			set_variable = {
+				name = balkfm_yugoslavism_tilt_var
+				value = 0
+			}
+			set_variable = {
+				name = balkfm_yugoslavism_integralist_progress_var
+				value = 0
+			}
+			set_variable = {
+				name = balkfm_yugoslavism_federalist_progress_var
+				value = 0
+			}
+			set_variable = {
+				name = balkfm_yugoslavism_pluralist_progress_var
+				value = 0
+			}
+			save_scope_as = balkfm_yugoslav_nationalism_scope
+		}
+		set_variable = {
+			name = je_balkfm_yugoslav_nationalism
+			value = scope:balkfm_yugoslav_nationalism_scope
+		}
+		create_com_progress_bar = {
+			progress_bar = balkfm_yugoslavism_progressbar
+			index = 0
+			color = gold
+		}
+	}
+	
+	modifiers_while_active = {
+		modifier_balkfm_unstable_identity
+	}
+	
+	complete = {
+		OR = {
+			AND = {
+				custom_tooltip = {
+					text = je_balkfm_yugoslav_nationalism_complete
+					scope:journal_entry = {
+						has_variable = balkfm_yugoslavism_var
+						var:balkfm_yugoslavism_var >= 200
+					}
+				}
+				OR = {
+					has_law_or_variant = law_type:law_ethnostate
+					has_law_or_variant = law_type:law_national_supremacy
+				}
+				literacy_rate >= 0.75
+				is_subject = no
+			}
+			AND = {
+				trigger_if = {
+					limit = {
+						has_global_variable = balkfm_montegrin_culture_var
+						any_scope_pop = {
+							has_pop_culture = montenegrin
+						}
+					}
+					country_has_primary_culture = cu:montenegrin
+				}
+				trigger_if = {
+					limit = {
+						any_scope_pop = {
+							has_pop_culture = serb
+						}
+					}
+					country_has_primary_culture = cu:serb
+				}
+				trigger_if = {
+					limit = {
+						has_variable = bul_pursued_greater_yugoslavism # Inherited from IP3
+						any_scope_pop = {
+							has_pop_culture = bulgarian
+						}
+					}
+					country_has_primary_culture = cu:bulgarian
+				}
+				trigger_if = {
+					limit = {
+						any_scope_pop = {
+							has_pop_culture = bosniak
+						}
+					}
+					country_has_primary_culture = cu:bosniak
+				}
+				trigger_if = {
+					limit = {
+						any_scope_pop = {
+							has_pop_culture = croat
+						}
+					}
+					country_has_primary_culture = cu:croat
+				}
+				trigger_if = {
+					limit = {
+						any_scope_pop = {
+							has_pop_culture = slovene
+						}
+					}
+					country_has_primary_culture = cu:slovene
+				}
+			}
+		}
+	}
+	
+	on_complete = {
+		custom_tooltip = {
+			text = je_balkfm_yugoslav_nationalism_on_complete_integralist
+			trigger_event = balkfm_yugoslavia.102
+			
+		}
+		custom_tooltip = {
+			text = je_balkfm_yugoslav_nationalism_on_complete_pluralist
+			trigger_event = balkfm_yugoslavia.103
+		}
+		remove_variable = je_balkfm_yugoslav_nationalism
+		set_variable = je_balkfm_yugoslav_nationalism_complete
+	}
+	
+	fail = {
+		OR = {
+			custom_tooltip = {
+				text = je_balkfm_yugoslav_nationalism_fail
+				scope:journal_entry = {
+					has_variable = balkfm_yugoslavism_var
+					var:balkfm_yugoslavism_var <= 0
+				}
+			}
+		}
+	}
+	
+	on_fail = {
+		trigger_event = balkfm_yugoslavia.101
+		custom_tooltip = balkfm_federalist_outcome
+		remove_variable = je_balkfm_yugoslav_nationalism
+	}
+	
+	invalid = {
+		custom_tooltip = {
+			text = je_balkfm_yugoslav_nationalism_invalid
+			NOT = {
+				c:YUG ?= this
+			}
+		}
+	}
+	
+	on_invalid = {
+		remove_variable = je_balkfm_yugoslav_nationalism
+	}
+	
+	on_weekly_pulse = {
+		events = {
+			balkfm_yugoslavia.104
+		}
+		effect = {
+			scope:journal_entry = {
+				gbbf_calc_variable_effect = {
+					name = balkfm_yugoslavism_integralist_progress
+				}
+				gbbf_calc_variable_effect = {
+					name = balkfm_yugoslavism_federalist_progress
+				}
+				gbbf_calc_variable_effect = {
+					name = balkfm_yugoslavism_pluralist_progress
+				}
+				gbbf_calc_variable_effect = {
+					name = balkfm_yugoslavism_progress
+				}
+				gbbf_gated_calc_and_push_variable_effect = {
+					name = balkfm_yugoslav_promotion
+					max = 100
+					min = 0
+				}
+			}
+		}
+	}
+	
+	on_monthly_pulse = {
+		events = {
+		}
+		random_events = {
+		}
+		effect = {
+			scope:journal_entry = {
+				gbbf_push_variable_effect = {
+					name = balkfm_yugoslavism
+					max = 200
+					min = 0
+				}
+				set_bar_progress = {
+					name = balkfm_yugoslavism_progressbar
+					value = var:balkfm_yugoslavism_var
+				}
+				gbbf_calc_variable_effect = {
+					name = balkfm_yugoslavism_tilt
+				}
+			}
+		}
+	}
+	
+	status_desc = {
+		triggered_desc = {
+			desc = je_balkfm_yugoslav_nationalism_status
+			trigger = {
+				var:je_balkfm_yugoslav_nationalism ?= {
+					has_variable = balkfm_yugoslav_promotion_var
 				}
 			}
 		}

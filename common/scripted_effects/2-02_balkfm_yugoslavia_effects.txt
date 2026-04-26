@@ -1,73 +1,293 @@
-﻿balkfm_determine_yugoslav_leader_effect = {
-	ordered_country = {
+﻿balkfm_initialize_yugoslav_unification_variables = {
+	set_variable = {
+		name = balkfm_mon_annex_var
+		value = 0
+	}
+	set_variable = {
+		name = balkfm_ser_annex_var
+		value = 0
+	}
+	set_variable = {
+		name = balkfm_bul_annex_var
+		value = 0
+	}
+	set_variable = {
+		name = balkfm_bos_annex_var
+		value = 0
+	}
+	set_variable = {
+		name = balkfm_cro_annex_var
+		value = 0
+	}
+	set_variable = {
+		name = balkfm_slo_annex_var
+		value = 0
+	}
+	set_variable = {
+		name = balkfm_ser_rsk_annex_var
+		value = 0
+	}
+	set_variable = je_yugoslavia_is_active
+}
+
+balkfm_update_yugoslav_unification_variables = {
+	# Montenegro Variable
+	if = {
 		limit = {
-			has_journal_entry = je_balkfm_nacertanije
+			exists = c:MON
+			c:MON != this
 		}
-		order_by = prestige
-		max = 1
-		check_range_bounds = no
-		save_scope_as = balkfm_yugoslav_leader_scope
-	}
-	scope:balkfm_yugoslav_leader_scope = {
-		set_global_variable = {
-			name = balkfm_yugoslav_leader_prestige_var
-			value = root.prestige
+		if = {
+			limit = {
+				NOT = {
+					has_variable = balkfm_mon_annex_var
+				}
+			}
+			set_variable = {
+				name = balkfm_mon_annex_var
+				value = 0
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = balkfm_mon_annex_var
+				c:MON.relations:root >= relations_threshold:cordial
+			}
+			change_variable = {
+				name = balkfm_mon_annex_var
+				add = 1
+			}
 		}
 	}
-	set_global_variable = {
-		name = balkfm_yugoslav_leader_var
-		value = scope:balkfm_yugoslav_leader_scope
+	else = {
+		remove_variable = balkfm_mon_annex_var
+	}
+	
+	# Serbia Variable
+	if = {
+		limit = {
+			exists = c:SER
+			c:SER != this
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_variable = balkfm_ser_annex_var
+				}
+			}
+			set_variable = {
+				name = balkfm_ser_annex_var
+				value = 0
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = balkfm_ser_annex_var
+				c:SER.relations:root >= relations_threshold:cordial
+			}
+			change_variable = {
+				name = balkfm_ser_annex_var
+				add = 1
+			}
+		}
+	}
+	else = {
+		remove_variable = balkfm_ser_annex_var
+	}
+	
+	# Bulgaria Variable
+	if = {
+		limit = {
+			c:BUL ?= {
+				has_variable = bul_pursued_greater_yugoslavism # Inherited from IP3
+			}
+			c:BUL != this
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_variable = balkfm_bul_annex_var
+				}
+			}
+			set_variable = {
+				name = balkfm_bul_annex_var
+				value = 0
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = balkfm_bul_annex_var
+				c:BUL.relations:root >= relations_threshold:cordial
+			}
+			change_variable = {
+				name = balkfm_bul_annex_var
+				add = 1
+			}
+		}
+	}
+	else = {
+		remove_variable = balkfm_bul_annex_var
+	}
+	
+	# Bosnia Variable
+	if = {
+		limit = {
+			exists = c:BOS
+			c:BOS != this
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_variable = balkfm_bos_annex_var
+				}
+			}
+			set_variable = {
+				name = balkfm_bos_annex_var
+				value = 0
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = balkfm_bos_annex_var
+				c:BOS.relations:root >= relations_threshold:cordial
+			}
+			change_variable = {
+				name = balkfm_bos_annex_var
+				add = 1
+			}
+		}
+	}
+	else = {
+		remove_variable = balkfm_bos_annex_var
+	}
+	
+	# Croatia Variable
+	if = {
+		limit = {
+			exists = c:CRO
+			c:CRO != this
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_variable = balkfm_cro_annex_var
+				}
+			}
+			set_variable = {
+				name = balkfm_cro_annex_var
+				value = 0
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = balkfm_cro_annex_var
+				c:CRO.relations:root >= relations_threshold:cordial
+			}
+			change_variable = {
+				name = balkfm_cro_annex_var
+				add = 1
+			}
+		}
+	}
+	else = {
+		remove_variable = balkfm_cro_annex_var
+	}
+	
+	# Slovenia Variable
+	if = {
+		limit = {
+			exists = c:SLO
+			c:SLO != this
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_variable = balkfm_slo_annex_var
+				}
+			}
+			set_variable = {
+				name = balkfm_slo_annex_var
+				value = 0
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = balkfm_slo_annex_var
+				c:SLO.relations:root >= relations_threshold:cordial
+			}
+			change_variable = {
+				name = balkfm_slo_annex_var
+				add = 1
+			}
+		}
+	}
+	else = {
+		remove_variable = balkfm_slo_annex_var
+	}
+	
+	# Republika Srpska Variable
+	if = {
+		limit = {
+			exists = c:SER_RSK
+			c:SER_RSK != this
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_variable = balkfm_ser_rsk_annex_var
+				}
+			}
+			set_variable = {
+				name = balkfm_ser_rsk_annex_var
+				value = 0
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = balkfm_ser_rsk_annex_var
+				c:SER_RSK.relations:root >= relations_threshold:cordial
+			}
+			change_variable = {
+				name = balkfm_ser_rsk_annex_var
+				add = 1
+			}
+		}
+	}
+	else = {
+		remove_variable = balkfm_ser_rsk_annex_var
 	}
 }
 
-balkfm_cleanup_yugoslavism_effect = {
-	remove_global_variable = balkfm_yugoslav_leader_prestige_var
-	remove_global_variable = balkfm_yugoslav_leader_var
+balkfm_cleanup_yugoslav_unification_variables_effect = {
+	remove_variable = balkfm_mon_annex_var
+	remove_variable = balkfm_ser_annex_var
+	remove_variable = balkfm_bul_annex_var
+	remove_variable = balkfm_bos_annex_var
+	remove_variable = balkfm_cro_annex_var
+	remove_variable = balkfm_slo_annex_var
 }
 
-balkfm_rile_up_yugoslavs_effect = {
+balkfm_add_yugoslav_loyalists_or_radicals_effect = {
+	if = {
+		limit = {
+			any_scope_pop = {
+				has_pop_culture = montenegrin
+			}
+		}
+		add_$type$ = {
+			culture = cu:montenegrin
+			value = $value$
+		}
+	}
 	if = {
 		limit = {
 			any_scope_pop = {
 				has_pop_culture = serb
 			}
 		}
-		add_radicals_in_state = {
+		add_$type$ = {
 			culture = cu:serb
-			value = large_radicals
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = croat
-			}
-		}
-		add_radicals_in_state = {
-			culture = cu:croat
-			value = large_radicals
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = bosniak
-			}
-		}
-		add_radicals_in_state = {
-			culture = cu:bosniak
-			value = large_radicals
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = slovene
-			}
-		}
-		add_radicals_in_state = {
-			culture = cu:slovene
-			value = large_radicals
+			value = $value$
 		}
 	}
 	if = {
@@ -76,34 +296,9 @@ balkfm_rile_up_yugoslavs_effect = {
 				has_pop_culture = bulgarian
 			}
 		}
-		add_radicals_in_state = {
+		add_$type$ = {
 			culture = cu:bulgarian
-			value = large_radicals
-		}
-	}
-}
-
-balkfm_calm_down_yugoslavs_effect = {
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = serb
-			}
-		}
-		add_loyalists_in_state = {
-			culture = cu:serb
-			value = large_radicals
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = croat
-			}
-		}
-		add_loyalists_in_state = {
-			culture = cu:croat
-			value = large_radicals
+			value = $value$
 		}
 	}
 	if = {
@@ -112,45 +307,9 @@ balkfm_calm_down_yugoslavs_effect = {
 				has_pop_culture = bosniak
 			}
 		}
-		add_loyalists_in_state = {
+		add_$type$ = {
 			culture = cu:bosniak
-			value = large_radicals
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = slovene
-			}
-		}
-		add_loyalists_in_state = {
-			culture = cu:slovene
-			value = large_radicals
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = bulgarian
-			}
-		}
-		add_loyalists_in_state = {
-			culture = cu:bulgarian
-			value = large_radicals
-		}
-	}
-}
-
-balkfm_sad_yugoslavs_effect = {
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = serb
-			}
-		}
-		add_radicals = {
-			culture = cu:serb
-			value = medium_radicals
+			value = $value$
 		}
 	}
 	if = {
@@ -159,20 +318,9 @@ balkfm_sad_yugoslavs_effect = {
 				has_pop_culture = croat
 			}
 		}
-		add_radicals = {
+		add_$type$ = {
 			culture = cu:croat
-			value = medium_radicals
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = bosniak
-			}
-		}
-		add_radicals = {
-			culture = cu:bosniak
-			value = medium_radicals
+			value = $value$
 		}
 	}
 	if = {
@@ -181,194 +329,601 @@ balkfm_sad_yugoslavs_effect = {
 				has_pop_culture = slovene
 			}
 		}
-		add_radicals = {
+		add_$type$ = {
 			culture = cu:slovene
-			value = medium_radicals
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = bulgarian
-			}
-		}
-		add_radicals = {
-			culture = cu:bulgarian
-			value = medium_radicals
+			value = $value$
 		}
 	}
 }
 
-balkfm_very_sad_yugoslavs_effect = {
+balkfm_add_primary_yugoslav_loyalists_or_radicals_effect = {
 	if = {
 		limit = {
+			country_has_primary_culture = cu:montenegrin
+			any_scope_pop = {
+				has_pop_culture = montenegrin
+			}
+		}
+		add_$type$ = {
+			culture = cu:montenegrin
+			value = $value$
+		}
+	}
+	if = {
+		limit = {
+			country_has_primary_culture = cu:serb
 			any_scope_pop = {
 				has_pop_culture = serb
 			}
 		}
-		add_radicals = {
+		add_$type$ = {
 			culture = cu:serb
-			value = large_radicals
+			value = $value$
 		}
 	}
 	if = {
 		limit = {
-			any_scope_pop = {
-				has_pop_culture = croat
-			}
-		}
-		add_radicals = {
-			culture = cu:croat
-			value = large_radicals
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = bosniak
-			}
-		}
-		add_radicals = {
-			culture = cu:bosniak
-			value = large_radicals
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = slovene
-			}
-		}
-		add_radicals = {
-			culture = cu:slovene
-			value = large_radicals
-		}
-	}
-	if = {
-		limit = {
+			country_has_primary_culture = cu:bulgarian
 			any_scope_pop = {
 				has_pop_culture = bulgarian
 			}
 		}
-		add_radicals = {
+		add_$type$ = {
 			culture = cu:bulgarian
-			value = large_radicals
+			value = $value$
+		}
+	}
+	if = {
+		limit = {
+			country_has_primary_culture = cu:bosniak
+			any_scope_pop = {
+				has_pop_culture = bosniak
+			}
+		}
+		add_$type$ = {
+			culture = cu:bosniak
+			value = $value$
+		}
+	}
+	if = {
+		limit = {
+			country_has_primary_culture = cu:croat
+			any_scope_pop = {
+				has_pop_culture = croat
+			}
+		}
+		add_$type$ = {
+			culture = cu:croat
+			value = $value$
+		}
+	}
+	if = {
+		limit = {
+			country_has_primary_culture = cu:slovene
+			any_scope_pop = {
+				has_pop_culture = slovene
+			}
+		}
+		add_$type$ = {
+			culture = cu:slovene
+			value = $value$
 		}
 	}
 }
 
-balkfm_happy_yugoslavs_effect = {
+balkfm_remove_yugoslav_cultures_effect = {
+	remove_primary_culture = cu:montenegrin
+	remove_primary_culture = cu:serb
+	remove_primary_culture = cu:bulgarian
+	remove_primary_culture = cu:bosniak
+	remove_primary_culture = cu:croat
+	remove_primary_culture = cu:slovene
+}
+
+balkfm_create_federal_montenegro = {
 	if = {
 		limit = {
-			any_scope_pop = {
-				has_pop_culture = serb
+			has_state_in_state_region = STATE_MONTENEGRO
+		}
+		custom_tooltip = {
+			text = balkfm_create_federal_montenegro
+			s:STATE_MONTENEGRO = {
+				random_scope_state = {
+					limit = {
+						owner = root
+					}
+					save_scope_as = montenegro_state_scope
+				}
+			}
+			create_country = {
+				tag = MON
+				origin = root
+				state = scope:montenegro_state_scope
+			}
+			create_diplomatic_pact = {
+				country = c:MON
+				type = puppet
+			}
+			create_bidirectional_truce = {
+				country = c:MON
+				months = 120
 			}
 		}
-		add_loyalists = {
-			culture = cu:serb
-			value = medium_radicals
+		custom_tooltip = balkfm_federal_transfer_montenegro
+	}
+}
+
+balkfm_create_federal_serbia = {
+	if = {
+		limit = {
+			OR = {
+				has_state_in_state_region = STATE_EASTERN_SERBIA
+				has_state_in_state_region = STATE_WESTERN_SERBIA
+				has_state_in_state_region = STATE_BANAT
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_create_federal_serbia
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_EASTERN_SERBIA
+				}
+				s:STATE_EASTERN_SERBIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						save_scope_as = serbia_state_scope
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_state_in_state_region = STATE_WESTERN_SERBIA
+				}
+				s:STATE_WESTERN_SERBIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						save_scope_as = serbia_state_scope
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_state_in_state_region = STATE_BANAT
+				}
+				s:STATE_BANAT = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						save_scope_as = serbia_state_scope
+					}
+				}
+			}
+			create_country = {
+				tag = SER
+				origin = root
+				state = scope:montenegro_state_scope
+			}
+			create_diplomatic_pact = {
+				country = c:SER
+				type = puppet
+			}
+			create_bidirectional_truce = {
+				country = c:SER
+				months = 120
+			}
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_WESTERN_SERBIA
+				}
+				s:STATE_WESTERN_SERBIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						set_state_owner = c:SER
+					}
+				}
+			}
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_BANAT
+				}
+				s:STATE_BANAT = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						set_state_owner = c:SER
+					}
+				}
+			}
 		}
 	}
 	if = {
 		limit = {
-			any_scope_pop = {
-				has_pop_culture = croat
-			}
+			has_state_in_state_region = STATE_EASTERN_SERBIA
 		}
-		add_loyalists = {
-			culture = cu:croat
-			value = medium_radicals
-		}
+		custom_tooltip = balkfm_federal_transfer_eastern_serbia
 	}
 	if = {
 		limit = {
-			any_scope_pop = {
-				has_pop_culture = bosniak
-			}
+			has_state_in_state_region = STATE_WESTERN_SERBIA
 		}
-		add_loyalists = {
-			culture = cu:bosniak
-			value = medium_radicals
-		}
+		custom_tooltip = balkfm_federal_transfer_western_serbia
 	}
 	if = {
 		limit = {
-			any_scope_pop = {
-				has_pop_culture = slovene
-			}
+			has_state_in_state_region = STATE_BANAT
 		}
-		add_loyalists = {
-			culture = cu:slovene
-			value = medium_radicals
-		}
+		custom_tooltip = balkfm_federal_transfer_banat
 	}
+}
+
+balkfm_create_federal_bulgaria = {
 	if = {
 		limit = {
-			any_scope_pop = {
-				has_pop_culture = bulgarian
+			OR = {
+				has_state_in_state_region = STATE_BULGARIA
+				has_state_in_state_region = STATE_NORTHERN_THRACE
+				has_state_in_state_region = STATE_SKOPIA
+				has_state_in_state_region = STATE_MACEDONIA # Someone WILL send me a pipebomb over this
 			}
 		}
-		add_loyalists = {
-			culture = cu:bulgarian
-			value = medium_radicals
+		custom_tooltip = {
+			text = balkfm_create_federal_bulgaria
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_BULGARIA
+				}
+				s:STATE_BULGARIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						save_scope_as = bulgaria_state_scope
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_state_in_state_region = STATE_NORTHERN_THRACE
+				}
+				s:STATE_NORTHERN_THRACE = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						save_scope_as = bulgaria_state_scope
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_state_in_state_region = STATE_SKOPIA
+				}
+				s:STATE_SKOPIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						save_scope_as = bulgaria_state_scope
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_state_in_state_region = STATE_MACEDONIA
+				}
+				s:STATE_MACEDONIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						save_scope_as = bulgaria_state_scope
+					}
+				}
+			}
+			create_country = {
+				tag = BUL
+				origin = root
+				state = scope:bulgaria_state_scope
+			}
+			create_diplomatic_pact = {
+				country = c:BUL
+				type = puppet
+			}
+			create_bidirectional_truce = {
+				country = c:BUL
+				months = 120
+			}
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_NORTHERN_THRACE
+				}
+				s:STATE_NORTHERN_THRACE = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						set_state_owner = c:BUL
+					}
+				}
+			}
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_SKOPIA
+				}
+				s:STATE_SKOPIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						set_state_owner = c:BUL
+					}
+				}
+			}
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_MACEDONIA
+				}
+				s:STATE_MACEDONIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						set_state_owner = c:BUL
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_state_in_state_region = STATE_BULGARIA
+			}
+			custom_tooltip = balkfm_federal_transfer_bulgaria
+		}
+		if = {
+			limit = {
+				has_state_in_state_region = STATE_NORTHERN_THRACE
+			}
+			custom_tooltip = balkfm_federal_transfer_northern_thrace
+		}
+		if = {
+			limit = {
+				has_state_in_state_region = STATE_MACEDONIA
+			}
+			custom_tooltip = balkfm_federal_transfer_macedonia
+		}
+		if = {
+			limit = {
+				has_state_in_state_region = STATE_SKOPIA
+			}
+			custom_tooltip = balkfm_federal_transfer_skopia
 		}
 	}
 }
 
-balkfm_very_happy_yugoslavs_effect = {
+balkfm_create_federal_bosnia = {
 	if = {
 		limit = {
-			any_scope_pop = {
-				has_pop_culture = serb
+			has_state_in_state_region = STATE_BOSNIA
+		}
+		custom_tooltip = {
+			text = balkfm_create_federal_bosnia
+			s:STATE_BOSNIA = {
+				random_scope_state = {
+					limit = {
+						owner = root
+					}
+					save_scope_as = bosnia_state_scope
+				}
+			}
+			create_country = {
+				tag = BOS
+				origin = root
+				state = scope:bosnia_state_scope
+			}
+			create_diplomatic_pact = {
+				country = c:BOS
+				type = puppet
+			}
+			create_bidirectional_truce = {
+				country = c:BOS
+				months = 120
 			}
 		}
-		add_loyalists = {
-			culture = cu:serb
-			value = large_radicals
+		custom_tooltip = balkfm_federal_transfer_bosnia
+	}
+}
+
+balkfm_create_federal_croatia = {
+	if = {
+		limit = {
+			OR = {
+				has_state_in_state_region = STATE_CROATIA
+				has_state_in_state_region = STATE_DALMATIA
+				has_state_in_state_region = STATE_SLAVONIA
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_create_federal_croatia
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_CROATIA
+				}
+				s:STATE_CROATIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						save_scope_as = croatia_state_scope
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_state_in_state_region = STATE_DALMATIA
+				}
+				s:STATE_DALMATIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						save_scope_as = croatia_state_scope
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_state_in_state_region = STATE_SLAVONIA
+				}
+				s:STATE_SLAVONIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						save_scope_as = croatia_state_scope
+					}
+				}
+			}
+			create_country = {
+				tag = CRO
+				origin = root
+				state = scope:croatia_state_scope
+			}
+			create_diplomatic_pact = {
+				country = c:CRO
+				type = puppet
+			}
+			create_bidirectional_truce = {
+				country = c:CRO
+				months = 120
+			}
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_DALMATIA
+				}
+				s:STATE_DALMATIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						set_state_owner = c:CRO
+					}
+				}
+			}
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_SLAVONIA
+				}
+				s:STATE_DALMATIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						set_state_owner = c:CRO
+					}
+				}
+			}
 		}
 	}
 	if = {
 		limit = {
-			any_scope_pop = {
-				has_pop_culture = croat
-			}
+			has_state_in_state_region = STATE_CROATIA
 		}
-		add_loyalists = {
-			culture = cu:croat
-			value = large_radicals
+		custom_tooltip = balkfm_federal_transfer_croatia
+	}
+	if = {
+		limit = {
+			has_state_in_state_region = STATE_DALMATIA
+		}
+		custom_tooltip = balkfm_federal_transfer_dalmatia
+	}
+	if = {
+		limit = {
+			has_state_in_state_region = STATE_SLAVONIA
+		}
+		custom_tooltip = balkfm_federal_transfer_slavonia
+	}
+}
+
+balkfm_create_federal_slovenia = {
+	if = {
+		limit = {
+			has_state_in_state_region = STATE_SLOVENIA
+			has_state_in_state_region = STATE_ISTRIA
+		}
+		custom_tooltip = {
+			text = balkfm_create_federal_slovenia
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_SLOVENIA
+				}
+				s:STATE_SLOVENIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						save_scope_as = slovenia_state_scope
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_state_in_state_region = STATE_ISTRIA
+				}
+				s:STATE_ISTRIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						save_scope_as = slovenia_state_scope
+					}
+				}
+			}
+			create_country = {
+				tag = SLO
+				origin = root
+				state = scope:slovenia_state_scope
+			}
+			create_diplomatic_pact = {
+				country = c:SLO
+				type = puppet
+			}
+			create_bidirectional_truce = {
+				country = c:SLO
+				months = 120
+			}
+			if = {
+				limit = {
+					has_state_in_state_region = STATE_ISTRIA
+				}
+				s:STATE_ISTRIA = {
+					random_scope_state = {
+						limit = {
+							owner = root
+						}
+						set_state_owner = c:SLO
+					}
+				}
+			}
 		}
 	}
 	if = {
 		limit = {
-			any_scope_pop = {
-				has_pop_culture = bosniak
-			}
+			has_state_in_state_region = STATE_SLOVENIA
 		}
-		add_loyalists = {
-			culture = cu:bosniak
-			value = large_radicals
-		}
+		custom_tooltip = balkfm_federal_transfer_slovenia
 	}
 	if = {
 		limit = {
-			any_scope_pop = {
-				has_pop_culture = slovene
-			}
+			has_state_in_state_region = STATE_ISTRIA
 		}
-		add_loyalists = {
-			culture = cu:slovene
-			value = large_radicals
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = bulgarian
-			}
-		}
-		add_loyalists = {
-			culture = cu:bulgarian
-			value = large_radicals
-		}
+		custom_tooltip = balkfm_federal_transfer_istria
 	}
 }

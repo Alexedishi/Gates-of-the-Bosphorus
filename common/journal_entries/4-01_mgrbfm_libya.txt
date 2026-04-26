@@ -1,0 +1,79 @@
+﻿je_mgrbfm_libya_centralization = {
+	group = je_group_historical_content
+	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	weight = 2000
+
+	should_be_pinned_by_default_uninvolved_or_context = yes
+	can_revolution_inherit = yes
+	transferable = no
+
+	is_shown_in_lobby = {
+		c:TRI ?= this
+	}
+
+	is_shown_when_inactive = {
+		c:TRI ?= this
+	}
+
+	possible = {
+		is_at_war = no
+	}
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		scope:journal_entry = {
+			set_variable = {
+				name = mgrbfm_institution_investment_var
+				value = owner.turkfm_total_institution_investment_value
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					has_modifier = modifier_mgrbfm_informal_administration
+				}
+				remove_modifier = modifier_mgrbfm_informal_administration
+			}
+		}
+		trigger_event = mgrbfm_libya.002
+	}
+
+	modifiers_while_active = {
+		modifier_mgrbfm_informal_administration
+	}
+
+	complete = {
+		owns_entire_state_region = STATE_TRIPOLI
+		NOR = {
+			has_law_or_variant = law_type:law_hereditary_bureaucrats
+			has_law_or_variant = law_type:law_peasant_levies
+			has_law_or_variant = law_type:law_no_police
+		}
+		government_legitimacy >= 75
+		custom_tooltip = {
+			text = je_mgrbfm_libya_centralization_complete
+			scope:journal_entry.var:mgrbfm_institution_investment_var >= 10
+		}
+		bureaucracy >= 0
+		approaching_bureaucracy_shortage = no
+		ig:ig_intelligentsia = {
+			is_marginal = no
+		}
+		gbbf_no_revolutionary_ig_trigger = yes
+	}
+
+	on_complete = {
+		trigger_event = mgrbfm_libya.009
+	}
+	
+	on_weekly_pulse = {
+		effect = {
+			scope:journal_entry = {
+				set_variable = {
+					name = mgrbfm_institution_investment_var
+					value = owner.turkfm_total_institution_investment_value
+				}
+			}
+		}
+	}
+}

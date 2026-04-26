@@ -1,0 +1,574 @@
+﻿## Karadag Decision Buttons ##
+eqfm_renounce_headtaking_button = {
+	name = "eqfm_renounce_headtaking_name"
+	desc = "eqfm_renounce_headtaking_desc"
+	
+	visible = {
+		OR = {
+            has_modifier = modifier_eqfm_practicing_headtaking_mon
+            has_modifier = modifier_eqfm_practicing_headtaking_tur
+        }
+	}
+	possible = {
+		custom_tooltip = {
+			text = eqfm_renounce_headtaking_possible
+			NOT = {
+				has_global_variable = turkfm_headtaking_cooldown_var
+			}
+		}
+		trigger_if = {
+			limit = {
+				c:MON ?= this
+			}
+			c:TUR.relations:root >= relations_threshold:neutral
+		}
+		trigger_if = {
+			limit = {
+				c:TUR ?= this
+			}
+			c:MON.relations:root >= relations_threshold:neutral
+		}
+	}
+	effect = {
+		c:MON ?= {
+			if = {
+				limit = {
+					this != root
+					has_modifier = modifier_eqfm_practicing_headtaking_mon
+				}
+				trigger_event = {
+					id = eqfm_karadag.010
+					days = { 7 14 }
+				}
+				hidden_effect = {
+					trigger_event = {
+						id = eqfm_karadag.011
+						days = 45
+					}
+				}
+			}
+		}
+		c:TUR ?= {
+			if = {
+				limit = {
+					this != root
+					has_modifier = modifier_eqfm_practicing_headtaking_tur
+				}
+				trigger_event = {
+					id = eqfm_karadag.010
+					days = { 7 14 }
+				}
+				hidden_effect = {
+					trigger_event = {
+						id = eqfm_karadag.011
+						days = 45
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			text = eqfm_renounce_headtaking_effect
+			set_variable = {
+				name = turkfm_negociated_headtaking
+				months = 3
+			}
+			trigger_event = {
+				id = eqfm_karadag.011
+				days = 45
+			}
+		}
+		custom_tooltip = {
+			text = eqfm_headtaking_cooldown_GET
+			set_global_variable = {
+				name = turkfm_headtaking_cooldown_var
+				years = 5
+			}
+		}
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+## Karadag Montenegrin Buttons
+eqfm_increase_raiding_button = {
+	name = "eqfm_increase_raiding_name"
+	desc = "eqfm_increase_raiding_desc"
+	
+	visible = {
+		NOT = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+		}
+		c:MON ?= this
+	}
+	possible = {
+		custom_tooltip = {
+			text = eqfm_raiding_status_cooldown
+			NOT = {
+				has_variable = eqfm_raiding_status_cooldown_var
+			}
+		}
+		custom_tooltip = {
+			text = eqfm_raiding_less_than_max
+			var:raiding_intensity < 100
+		}
+	}
+	selected = {
+		has_variable = mon_more_raiding
+	}
+	effect = {
+		if = {
+			limit = {
+				has_variable = mon_more_raiding
+			}
+			remove_variable = mon_more_raiding
+		}
+		else = {
+			custom_tooltip = {
+				text = eqfm_increase_raiding_effect
+				set_variable = mon_more_raiding
+			}
+			custom_tooltip = {
+				text = eqfm_raiding_status_cooldown_GET
+				set_variable = {
+					name = eqfm_raiding_status_cooldown_var
+					years = 2
+				}
+			}
+			c:RUS = {
+				change_relations = {
+					country = root
+					value = -15
+				}
+			}
+			c:TUR = {
+				change_relations = {
+					country = root
+					value = -35
+				}
+			}
+		}
+	}
+}
+
+eqfm_decrease_raiding_button = {
+	name = "eqfm_decrease_raiding_name"
+	desc = "eqfm_decrease_raiding_desc"
+	
+	visible = {
+		NOT = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+		}
+		c:MON ?= this
+	}
+	possible = {
+		custom_tooltip = {
+			text = eqfm_raiding_status_cooldown
+			NOT = {
+				has_variable = eqfm_raiding_status_cooldown_var
+			}
+		}
+		custom_tooltip = {
+			text = eqfm_raiding_more_than_min
+			var:raiding_intensity > 0
+		}
+	}
+	selected = {
+		has_variable = mon_less_raiding
+	}
+	effect = {
+		if = {
+			limit = {
+				has_variable = mon_less_raiding
+			}
+			remove_variable = mon_less_raiding
+		}
+		else = {
+			custom_tooltip = {
+				text = eqfm_decrease_raiding_effect
+				set_variable = mon_less_raiding
+			}
+			custom_tooltip = {
+				text = eqfm_raiding_status_cooldown_GET
+				set_variable = {
+					name = eqfm_raiding_status_cooldown_var
+					years = 2
+				}
+			}
+			c:RUS = {
+				change_relations = {
+					country = root
+					value = 10
+				}
+			}
+			c:TUR = {
+				change_relations = {
+					country = root
+					value = 25
+				}
+			}
+		}
+	}
+	
+}
+
+eqfm_appoint_tribal_chief_button = {
+	name = "eqfm_appoint_tribal_chief_name"
+	desc = "eqfm_appoint_tribal_chief_desc"
+	
+	visible = {
+		NOT = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+		}
+		c:MON ?= this
+		eqfm_has_karadag_expedition_trigger = no
+	}
+	possible = {
+		eqfm_has_karadag_expedition_trigger = no
+	}
+	effect = {
+		trigger_event = {
+			id = eqfm_karadag.020
+			popup = yes
+		}
+        custom_tooltip = {
+            text = eqfm_tribal_chief_cooldown
+            set_variable = {
+                name = eqfm_tribal_chief_cooldown_var
+                months = 12
+            }
+        }
+		set_variable = eqfm_karadag_expedition_var
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+eqfm_dismiss_tribal_chief_button = {
+	name = "eqfm_dismiss_tribal_chief_name"
+	desc = "eqfm_dismiss_tribal_chief_desc"
+	
+	visible = {
+		c:MON ?= this
+		eqfm_has_karadag_expedition_trigger = yes
+	}
+	possible = {
+		eqfm_has_karadag_expedition_trigger = yes
+        custom_tooltip = {
+            text = eqfm_has_tribal_chief_cooldown_NOT
+            NOT = {
+                has_variable = eqfm_tribal_chief_cooldown_var
+            }
+        }
+	}
+	effect = {
+		eqfm_dismiss_tribal_chief_effect = yes
+	}
+	ai_chance = {
+		value = -1000
+	}
+}
+
+eqfm_ransom_captives_button = {
+	name = "eqfm_ransom_captives_name"
+	desc = "eqfm_ransom_captives_desc"
+	
+	visible = {
+		c:MON ?= this
+		NOT = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+		}
+	}
+	
+	selected = {
+		has_variable = eqfm_ransom_var
+	}
+	
+	possible = {
+		custom_tooltip = {
+			text = eqfm_has_captive_nobles
+			hidden_trigger = {
+				eqfm_captured_nobles_value > 0
+			}
+		}
+		NOR = {
+			has_modifier = modifier_eqfm_ransomed_noble
+			has_modifier = modifier_eqfm_ransom_failed
+			has_modifier = modifier_eqfm_executed_noble
+		}
+	}
+	
+	effect = {
+		trigger_event = {
+			id = eqfm_karadag.014
+			popup = yes
+		}
+		set_variable = {
+			name = eqfm_ransom_var
+			months = 6
+		}
+	}
+	
+	ai_chance = {
+		value = 5
+	}
+}
+
+eqfm_negotiate_kotor_button = {
+	name = "eqfm_negotiate_kotor_name"
+	desc = "eqfm_negotiate_kotor_desc"
+	
+	visible = {
+		c:MON ?= this
+		NOT = {
+			has_variable = turkfm_negotiated_kotor
+		}
+		p:x90A0E0 = { # Kotor
+			owner = {
+				c:AUS ?= this
+			}
+		}
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				NOT = {
+					has_dlc_feature = ip3_content # National Awakening
+				}
+			}
+			OR = {
+				is_subject_of = c:AUS
+				is_in_same_power_bloc = c:AUS
+				gbbf_has_alliance_trigger = {
+					country = c:AUS
+				}
+				gbbf_has_defensive_pact_trigger = {
+					country = c:AUS
+				}
+			}
+			c:AUS = {
+				relations:root >= relations_threshold:amicable
+			}
+			NOT = {
+				owes_obligation_to = c:AUS
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_dlc_feature = ip3_content # National Awakening
+			}
+			government_legitimacy > 50
+			c:RUS ?= {
+				relations:root <= relations_threshold:poor
+			}
+			c:AUS = {
+				relations:root >= relations_threshold:friendly
+			}
+			trigger_if = {
+				limit = {
+					has_journal_entry = je_montenegrin_raiding
+				}
+				custom_tooltip = {
+					text = raiding_income_greater_tt
+					eqfm_raiding_income_value < 700
+				}
+			}
+		}
+	}
+	effect = {
+		c:AUS = {
+			trigger_event = {
+				id = eqfm_karadag.012
+				days = { 7 14 }
+			}
+		}
+		set_variable = turkfm_negotiated_kotor
+	}
+	ai_chance = {
+		value = 100
+	}
+}
+
+## Karadag Bosnian Buttons
+eqfm_abandon_karadag_button = {
+	name = "eqfm_abandon_karadag_name"
+	desc = "eqfm_abandon_karadag_desc"
+	
+	visible = {
+		c:BOS ?= this
+		has_claim = s:STATE_MONTENEGRO
+	}
+	
+	possible = {
+		has_claim = s:STATE_MONTENEGRO
+		trigger_if = {
+			limit = {
+				exists = c:MON
+			}
+			NOT = {
+				has_truce_with = c:MON
+			}
+		}
+	}
+	
+	effect = {
+		s:STATE_MONTENEGRO = {
+			remove_claim = root
+		}
+		if = {
+			limit = {
+				exists = c:MON
+			}
+			create_unidirectional_truce = {
+				country = c:MON
+				months = 240
+			}
+		}
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_start_scheming_button = {
+	name = "eqfm_start_scheming_name"
+	desc = "eqfm_start_scheming_desc"
+	
+	visible = {
+		NOT = {
+			has_global_variable = eqfm_ali_rizvanbegovic_waxed
+		}
+		c:BOS ?= this
+		exists = c:MON
+		exists = c:SER
+		any_scope_character = {
+			has_template = balkfm_cengic_smail
+			has_modifier = modifier_balkfm_accomplished_warlord
+		}
+	}
+	selected = {
+		has_variable = eqfm_scheme_var
+	}
+	possible = {
+		hidden_trigger = {
+			NOT = {
+				has_variable = eqfm_scheme_var
+			}
+		}
+		OR = {
+			c:MON.relations:root >= relations_threshold:cold
+			c:SER.relations:root >= relations_threshold:cold
+		}
+		NOR = {
+			has_truce_with = c:MON
+			has_truce_with = c:SER
+		}
+	}
+	effect = {
+		trigger_event = eqfm_karadag.111
+		set_variable = eqfm_scheme_var
+	}
+	ai_chance = {
+		value = 10
+	}
+}
+
+## Karadag Ottoman Buttons
+eqfm_assign_border_guard_button = {
+	name = "eqfm_assign_border_guard_name"
+	desc = "eqfm_assign_border_guard_desc"
+	
+	visible = {
+		NOT = {
+			has_global_variable = eqfm_montenegrin_raiding_settled
+		}
+		c:TUR ?= this
+		eqfm_has_karadag_expedition_trigger = no
+	}
+	possible = {
+		eqfm_has_karadag_expedition_trigger = no
+		NOT = {
+			has_modifier = modifier_eqfm_failed_karadag_expedition_country
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = eqfm_karadag.021
+			popup = yes
+		}
+		set_variable = eqfm_karadag_expedition_var
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_recall_karadag_expedition_button = {
+	name = "eqfm_recall_expedition_name"
+	desc = "eqfm_recall_expedition_desc"
+	
+	visible = {
+		c:TUR ?= this
+		eqfm_has_karadag_expedition_trigger = yes
+	}
+	possible = {
+		eqfm_has_karadag_expedition_trigger = yes
+	}
+	effect = {
+		eqfm_cancel_karadag_expedition_effect = yes
+	}
+}
+
+eqfm_arrest_ali_pasha_button = {
+	name = "eqfm_arrest_ali_pasha_name"
+	desc = "eqfm_arrest_ali_pasha_desc"
+	
+	visible ={
+		NOT = {
+			has_global_variable = eqfm_ali_rizvanbegovic_waxed
+		}
+		c:TUR ?= this
+		c:BOS ?= {
+			ruler = {
+				OR = {
+					has_template = balkfm_rizvanbegovic_ali
+					has_template = balkfm_rizvanbegovic_mehmed
+					has_template = mon_ali_pasha_rizvanbegovic
+				}
+			}
+			is_subject_of = root
+		}
+	}
+	possible = {
+		NOT = {
+			has_truce_with = c:BOS
+		}
+		c:BOS ?= {
+			liberty_desire < 25
+			relations:root <= relations_threshold:cold
+			NOT = { is_diplomatic_play_enemy_of = root }
+			OR = {
+				is_subject_type = subject_type_puppet
+				is_subject_type = subject_type_tributary
+				is_subject_type = subject_type_gbbf_eyalet
+			}
+		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = turkfm_planning_hit_var
+			}
+		}
+	}
+	effect = {
+		trigger_event = eqfm_karadag.105
+		set_variable = {
+			name = turkfm_planning_hit_var
+			months = 2
+		}
+	}
+	ai_chance = {
+		value = 90
+	}
+}

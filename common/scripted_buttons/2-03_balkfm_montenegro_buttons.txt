@@ -1,6 +1,6 @@
 ﻿balkfm_visit_tsar_button = {
-	name = "balkfm_visit_tsar_button"
-	desc = "balkfm_visit_tsar_button_desc"
+	name = "balkfm_visit_tsar_name"
+	desc = "balkfm_visit_tsar_desc"
 	
 	visible = {
 		NOT = {
@@ -8,7 +8,7 @@
 			has_variable = balkfm_visited_tsar
 		}
 		ruler = {
-			has_template = template_balkfm_petrovic_petar
+			has_template = balkfm_petrovic_petar
 		}
 	}
 	
@@ -19,13 +19,12 @@
 	}
 	
 	effect = {
-		trigger_event = {
-			id = balkfm_montenegro.005 # The Court of the Tsar
-		}
+		trigger_event = balkfm_montenegro.005
 		set_variable = balkfm_visited_tsar
 	}
 	
 }
+
 REPLACE:je_montenegrin_visit_moscow = {
 	# Overriding IP3 entry for visibility
 	name = "je_montenegrin_visit_moscow"
@@ -57,7 +56,7 @@ REPLACE:je_montenegrin_visit_moscow = {
 	effect = {
 		add_modifier = {
 			name = modifier_mon_no_passing_laws
-			months = gbbf_duration_2_years
+			months = 24
 		}
 		ROOT.Ruler = {
 			set_variable = is_away #stops certain events, but character can still die in Moscow.
@@ -74,9 +73,55 @@ REPLACE:je_montenegrin_visit_moscow = {
 	}
 }
 
+REPLACE:je_montenegrin_make_saint = {
+	name = "je_montenegrin_make_saint"
+	desc = "je_montenegrin_make_saint_desc"
+	
+	visible = {
+		NOT = {
+			has_variable = mon_saint_made
+		}
+	}
+	possible = {
+		ruler = {
+			is_busy = no
+		}
+		gold_reserves > 15000
+		ig:ig_devout = {
+			is_insurrectionary = no
+		}
+	}
+	effect = {
+		add_modifier = {
+			name = mon_saint_nephew
+			days = long_modifier_time
+			is_decaying = yes
+		}
+		add_treasury = -15000
+		ig:ig_devout ?= {
+			add_modifier = {
+				name = saints_are_nice
+				days = long_modifier_time
+				is_decaying = yes
+			}
+		}
+		trigger_event = {
+			id = mon_state_formation.3
+			popup = yes
+		}
+	}
+	ai_chance = {
+		value = -3 # Token amount to make Montenegro wait a bit before doing this
+		add = {
+			value = gold_reserves
+			divide = 10000
+		}
+	}
+}
+
 balkfm_mon_principality_button = {
-	name = "balkfm_mon_principality_button"
-	desc = "balkfm_mon_principality_button_desc"
+	name = "balkfm_mon_principality_name"
+	desc = "balkfm_mon_principality_desc"
 	
 	visible = {
 		NOR = {
@@ -91,18 +136,22 @@ balkfm_mon_principality_button = {
 		}
 		custom_tooltip = {
 			text = balkfm_mon_elevation_buttons_tt
-			NOT = {
-				any_country = {
+			any_country = {
+				filter = {
 					country_rank >= rank_value:great_power
+					has_strategic_region_interest_tier = {
+						strategic_region = ROOT.capital.region
+						value >= 1
+					}
 					OR = {
 						country_has_state_religion = rel:catholic
 						country_has_state_religion = rel:orthodox
 					}
-					NOT = { has_war_with = ROOT }
-					has_interest_marker_in_region = ROOT.capital.region
-					relations:root < 0
 				}
+				count = all
 			}
+			NOT = { has_war_with = ROOT }
+			relations:root > 0
 		}
 		is_diplomatic_play_committed_participant = no
 	}
@@ -117,8 +166,8 @@ balkfm_mon_principality_button = {
 }
 
 balkfm_mon_kingdom_button = {
-	name = "balkfm_mon_kingdom_button"
-	desc = "balkfm_mon_kingdom_button_desc"
+	name = "balkfm_mon_kingdom_name"
+	desc = "balkfm_mon_kingdom_desc"
 	
 	visible = {
 		has_modifier = modifier_balkfm_declared_principality
@@ -131,17 +180,21 @@ balkfm_mon_kingdom_button = {
 		owns_entire_state_region = STATE_MONTENEGRO
 		custom_tooltip = {
 			text = balkfm_mon_elevation_buttons_tt
-			NOT = {
-				any_country = {
+			any_country = {
+				filter = {
 					country_rank >= rank_value:great_power
+					has_strategic_region_interest_tier = {
+						strategic_region = ROOT.capital.region
+						value >= 1
+					}
 					OR = {
 						country_has_state_religion = rel:catholic
 						country_has_state_religion = rel:orthodox
 					}
-					NOT = { has_war_with = ROOT }
-					has_interest_marker_in_region = ROOT.capital.region
-					relations:root < 0
 				}
+				count = all
+				NOT = { has_war_with = ROOT }
+				relations:root < 0
 			}
 		}
 		is_diplomatic_play_committed_participant = no
@@ -156,5 +209,46 @@ balkfm_mon_kingdom_button = {
 	
 	ai_chance = {
 		value = 100
+	}
+}
+
+balkfm_montnegrin_identity_button = {
+	name = "balkfm_montnegrin_identity_name"
+	desc = "balkfm_montnegrin_identity_desc"
+	
+	visible = {
+		always = yes
+	}
+	selected = {
+		has_modifier = modifier_balkfm_cultural_schism
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				NOT = {
+					has_modifier = modifier_balkfm_cultural_schism
+				}
+			}
+			institution_investment_level = {
+				institution = institution_schools
+				value >= 4
+			}
+			literacy_rate >= 0.5
+			is_subject = no
+		}
+		trigger_else = {
+			always = yes
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				has_modifier = modifier_balkfm_cultural_schism
+			}
+			remove_modifier = modifier_balkfm_cultural_schism
+		}
+		else = {
+			add_modifier = modifier_balkfm_cultural_schism
+		}
 	}
 }

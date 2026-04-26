@@ -1,0 +1,379 @@
+﻿je_eqfm_karadag = {
+	# This journal integrates je_montenegrin_raiding with GotB content
+	group = je_group_global_international_situations
+	icon = "gfx/interface/icons/alert_icons/secession.dds"
+	weight = 10000
+	
+	should_be_pinned_by_default_involved = yes
+
+	is_shown_in_lobby = {
+		OR = {
+			c:MON ?= this
+			c:BOS ?= this
+			c:TUR ?= this
+		}
+	}
+	
+	# Montenegrin Buttons
+	scripted_button = eqfm_increase_raiding_button
+	scripted_button = eqfm_decrease_raiding_button
+	scripted_button = eqfm_appoint_tribal_chief_button
+	scripted_button = eqfm_dismiss_tribal_chief_button
+	scripted_button = eqfm_ransom_captives_button
+	scripted_button = eqfm_negotiate_kotor_button
+	
+	# Bosnian Buttons
+	scripted_button = eqfm_abandon_karadag_button
+	scripted_button = eqfm_start_scheming_button
+	
+	# Ottoman Buttons
+	scripted_button = eqfm_assign_border_guard_button
+	scripted_button = eqfm_recall_karadag_expedition_button
+	scripted_button = eqfm_arrest_ali_pasha_button
+	
+	# Shared Buttons
+	scripted_button = eqfm_renounce_headtaking_button
+	
+	widget = {
+		gui = "gui/com_journal_injects/injects.gui"
+		name = "com_journal_entry_characters"
+		container = "custom_widget_container_1"
+	}
+	
+	should_be_involved = {
+		OR = {
+			c:MON ?= this
+			c:BOS ?= this
+			c:TUR ?= this
+		}
+	}
+	
+	should_show_when_not_involved = {
+		OR = {
+			has_strategic_region_interest_tier = {
+				strategic_region = sr:region_balkans
+				value >= 3
+			}
+			has_state_in_state_region = STATE_MONTENEGRO
+		}
+	}
+
+	immediate = {
+		gbbf_assign_dlc_icon_effect = yes
+		scope:journal_entry = {
+			save_scope_as = je_eqfm_karadag
+		}
+		set_global_variable = {
+			name = je_eqfm_karadag
+			value = scope:je_eqfm_karadag
+		}
+		c:MON ?= {
+			trigger_event = {
+				id = eqfm_karadag.100
+				days = { 70 100 }
+			}
+		}
+		c:TUR ?= {
+			trigger_event = {
+				id = eqfm_karadag.104
+				days = { 45 90 }
+			}
+		}
+	}
+	
+	modifiers_while_active = {
+		modifier_eqfm_border_raids
+	}
+	
+	on_no_longer_involved = {
+		eqfm_cleanup_karadag_effect = yes
+	}
+
+	complete = {
+		OR = {
+			# Montenegrin Objectives
+			trigger_if = {
+				limit = {
+					c:MON ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
+					}
+				}
+				AND = {
+					c:MON = {
+						owns_entire_state_region = STATE_MONTENEGRO
+					}
+					trigger_if = {
+						limit = {
+							exists = c:BOS
+						}
+						c:BOS = {
+							OR = {
+								NOT = {
+									has_claim = s:STATE_MONTENEGRO
+								}
+								is_subject_of = c:MON
+							}
+						}
+					}
+					trigger_if = {
+						limit = {
+							exists = c:TUR
+						}
+						c:MON = {
+							NOT = {
+								is_subject_of = c:TUR
+							}
+						}
+					}
+				}
+			}
+			
+			# Bosnian Objectives
+			trigger_if = {
+				limit = {
+					c:BOS ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
+					}
+				}
+				AND = {
+					c:BOS = {
+						owns_entire_state_region = STATE_MONTENEGRO
+					}
+					trigger_if = {
+						limit = {
+							exists = c:TUR
+						}
+						c:BOS = {
+							NOT = {
+								is_subject_of = c:TUR
+							}
+						}
+					}
+				}
+			}
+			
+			# Turkish Objectives
+			trigger_if = {
+				limit = {
+					c:TUR ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
+					}
+				}
+				OR = {
+					c:TUR = {
+						owns_entire_state_region = STATE_MONTENEGRO
+					}
+					AND = {
+						custom_tooltip = {
+							text = eqfm_ottomans_top_overlord_of_montenegro
+							s:STATE_MONTENEGRO = {
+								any_scope_state = {
+									count = all
+									owner = {
+										top_overlord = c:TUR
+									}
+								}
+							}
+						}
+						trigger_if = {
+							limit = {
+								exists = c:BOS
+							}
+							c:BOS = {
+								NOR = {
+									has_claim = s:STATE_MONTENEGRO
+									custom_tooltip = {
+										text = eqfm_ali_rizvanbegovic_waxed
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	on_complete = {
+		if = {
+			limit = {
+				c:MON ?= {
+					is_involved_in_journal_entry = je_eqfm_karadag
+				}
+				custom_tooltip = je_eqfm_karadag_on_complete_montenegro
+			}
+		}
+		if = {
+			limit = {
+				c:BOS ?= {
+					is_involved_in_journal_entry = je_eqfm_karadag
+				}
+				custom_tooltip = je_eqfm_karadag_on_complete_bosnia
+			}
+		}
+		if = {
+			limit = {
+				c:TUR ?= {
+					is_involved_in_journal_entry = je_eqfm_karadag
+				}
+				custom_tooltip = je_eqfm_karadag_on_complete_ottomans
+			}
+		}
+	}
+	
+	on_complete_all_involved = {
+		hidden_effect = {
+			# Montenegrin Objectives
+			if = {
+				limit = {
+					c:MON ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
+						owns_entire_state_region = STATE_MONTENEGRO
+					}
+					trigger_if = {
+						limit = {
+							exists = c:BOS
+						}
+						c:BOS = {
+							OR = {
+								NOT = {
+									has_claim = s:STATE_MONTENEGRO
+								}
+								is_subject_of = c:MON
+							}
+						}
+					}
+					trigger_if = {
+						limit = {
+							exists = c:TUR
+						}
+						c:MON = {
+							NOT = {
+								is_subject_of = c:TUR
+							}
+						}
+					}
+				}
+				trigger_event = eqfm_karadag.001
+			}
+			
+			# Bosnian Objectives
+			if = {
+				limit = {
+					c:BOS ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
+						owns_entire_state_region = STATE_MONTENEGRO
+					}
+					trigger_if = {
+						limit = {
+							exists = c:TUR
+						}
+						c:BOS = {
+							NOT = {
+								is_subject_of = c:TUR
+							}
+						}
+					}
+				}
+				trigger_event = eqfm_karadag.003
+			}
+			
+			# Turkish Objectives
+			if = {
+				limit = {
+					c:TUR ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
+						s:STATE_MONTENEGRO = {
+							any_scope_state = {
+								count = all
+								owner = {
+									top_overlord = c:TUR
+								}
+							}
+						}
+						trigger_if = {
+							limit = {
+								exists = c:BOS
+							}
+							c:BOS = {
+								NOT = {
+									has_claim = s:STATE_MONTENEGRO
+								}
+							}
+						}
+					}
+				}
+				trigger_event = eqfm_karadag.002
+			}
+		}
+		eqfm_cleanup_karadag_effect = yes
+	}
+	
+	fail = {
+		NOR = {
+			trigger_if = {
+				limit = {
+					c:MON ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
+					}
+				}
+				c:MON = {
+					has_state_in_state_region = STATE_MONTENEGRO
+				}
+			}
+			trigger_if = {
+				limit = {
+					c:BOS ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
+					}
+				}
+				c:BOS = {
+					has_claim = s:STATE_MONTENEGRO
+				}
+			}
+			trigger_if = {
+				limit = {
+					c:TUR ?= {
+						is_involved_in_journal_entry = je_eqfm_karadag
+					}
+				}
+				c:TUR = {
+					has_state_in_state_region = STATE_MONTENEGRO
+				}
+			}
+		}
+	}
+	
+	on_fail_all_involved = {
+		eqfm_cleanup_karadag_effect = yes
+		hidden_effect = {
+			trigger_event = eqfm_karadag.004
+		}
+	}
+	
+	invalid = {
+		NOT = {
+			has_dlc_feature = ip3_content
+		}
+	}
+	
+	on_weekly_pulse = {
+		effect = {
+			eqfm_check_karadag_involvement_effect = yes
+			eqfm_check_karadag_expeditions_effect = yes
+			eqfm_update_karadag_variables_effect = yes
+			eqfm_village_skirmish_monitor_effect = yes
+		}
+	}
+	
+	status_desc = {
+		triggered_desc = {
+			trigger = {
+				NOT = {
+					has_global_variable = eqfm_montenegrin_raiding_settled
+				}
+			}
+			desc = je_eqfm_karadag_status
+		}
+	}
+}

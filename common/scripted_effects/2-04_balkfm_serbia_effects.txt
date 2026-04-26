@@ -30,41 +30,182 @@
 	set_variable = com_no_regencies
 }
 
-balkfm_validate_ruler_character = {
-		if = {
-		limit = {
-			var:balkfm_ruling_dynasty_var ?= flag:balkfm_house_obrenovic
-			ruler = {
-				balkfm_is_obrenovic_character_trigger = no
-			}
-		}
-		create_character = {
-			template = template_balkfm_obrenovic_dynamic
-			ruler = yes
-		}
-		error_log = "Error! Ruler for Serbia has been regenerated. House Obrenović rules Serbia."
-	}
-	else_if = {
-		limit = {
-			var:balkfm_ruling_dynasty_var ?= flag:balkfm_house_karadordevic
-			ruler = {
-				balkfm_is_karadordevic_character_trigger = no
-			}
-		}
-		create_character = {
-			template = template_balkfm_karadordevic_dynamic
-			ruler = yes
-		}
-		error_log = "Error! Ruler for Serbia has been regenerated. House Karađorđević rules Serbia."
-	}
-	else_if = {
+balkfm_validate_serbian_characters = {
+	if = {
 		limit = {
 			has_variable = balkfm_ruling_dynasty_var
 		}
-		error_log = "Error! Variable balkfm_ruling_dynasty_var is set, but its value does not correspond to a valid house flag. Unable to generate compatible ruler for Serbia."
+		# Obrenović Validation Branch
+		if = {
+			limit = {
+				var:balkfm_ruling_dynasty_var ?= flag:balkfm_house_obrenovic
+			}
+			# Ruler Validation
+			if = {
+				limit = {
+					ruler = {
+						balkfm_is_obrenovic_character_trigger = no
+					}
+				}
+				create_character = {
+					template = balkfm_obrenovic_dynamic
+					ruler = yes
+				}
+				error_log = "Serbia is marked as being ruled by House Obrenović, but the ruler does not have an Obrenović template. Ruler for Serbia has been regenerated. House Obrenović rules Serbia."
+			}
+			# Heir Validation
+			if = {
+				limit = {
+					exists = heir
+					heir = {
+						balkfm_is_obrenovic_character_trigger = no
+					}
+				}
+				heir = {
+					disinherit_character = yes
+				}
+				error_log = "Serbia has a ruler with an Obrenović template, but the heir does not. Heir has been liquidated."
+			}
+			# Heir Regeneration
+			if = {
+				limit = {
+					NOR = {
+						exists = heir
+						has_variable = balkfm_constitution_pending # Blocks heir shenanigans until the initial event chain is complete
+					}
+				}
+				if = {
+					limit = {
+						ruler = {
+							has_template = balkfm_obrenovic_milosh
+						}
+					}
+					create_character = {
+						template = balkfm_obrenovic_milan
+						heir = yes
+					}
+				}
+				else_if = {
+					limit = {
+						ruler = {
+							has_template = balkfm_obrenovic_milan
+						}
+					}
+					create_character = {
+						template = balkfm_obrenovic_mihailo
+						heir = yes
+					}
+				}
+				else_if = {
+					limit = {
+						ruler = {
+							has_template = balkfm_obrenovic_mihailo
+						}
+					}
+					if = {
+						limit = {
+							year >= 1855
+						}
+						create_character = {
+							template = balkfm_obrenovic_dynamic_heir
+						}
+					}
+					else = {
+						create_character = {
+							template = balkfm_obrenovic_milan_IV
+							heir = yes
+						}
+					}
+				}
+				error_log = "Generated an Obrenović template heir for Serbia."
+			}
+			
+		}
+		# House Karadordevic Validation Branch
+		else_if = {
+			limit = {
+				var:balkfm_ruling_dynasty_var ?= flag:balkfm_house_karadordevic
+			}
+			# Ruler Validation
+			if = {
+				limit = {
+					ruler = {
+						balkfm_is_karadordevic_character_trigger = no
+					}
+				}
+				create_character = {
+					template = balkfm_karadordevic_dynamic
+					ruler = yes
+				}
+				error_log = "Serbia is marked as being ruled by House Karađorđević, but the ruler does not have a Karađorđević template. Ruler for Serbia has been regenerated. House Karađorđević rules Serbia."
+			}
+			# Heir Validation
+			if = {
+				limit = {
+					exists = heir
+					heir ?= {
+						balkfm_is_karadordevic_character_trigger = no
+					}
+				}
+				heir = {
+					disinherit_character = yes
+				}
+				error_log = "Serbia has a ruler with a Karađorđević template, but the heir does not. Heir has been liquidated."
+			}
+			# Heir Regeneration
+			if = {
+				limit = {
+					NOR = {
+						exists = heir
+						has_variable = balkfm_constitution_pending # Blocks heir shenanigans until the initial event chain is complete
+					}
+				}
+				if = {
+					limit = {
+						ruler = {
+							has_template = balkfm_karadordevic_aleksander
+						}
+					}
+					if = {
+						limit = {
+							year >= 1844
+						}
+						create_character = {
+							template = balkfm_karadordevic_petar
+							heir = yes
+						}
+					}
+					else = {
+						create_character = {
+							template = balkfm_karadordevic_dynamic_heir
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						ruler = {
+							has_template = balkfm_karadordevic_petar
+						}
+					}
+					create_character = {
+						template = balkfm_karadordevic_aleksander_I
+						heir = yes
+					}
+				}
+				else = {
+					create_character = {
+						template = balkfm_karadordevic_dynamic_heir
+					}
+				}
+				error_log = "Generated a Karađorđević template heir for Serbia."
+			}
+		}
+		else = {
+			error_log = "Variable balkfm_ruling_dynasty_var is set, but its value does not correspond to a valid house flag. Unable to generate compatible ruler for Serbia."
+		}
 	}
 	else = {
-		error_log = "Error! Variable balkfm_ruling_dynasty_var is not set. Unable to generate compatible ruler for Serbia."
+		error_log = "Variable balkfm_ruling_dynasty_var is not set. Unable to validate or generate compatible ruler for Serbia."
 	}
 }
 
@@ -119,7 +260,7 @@ balkfm_dynastic_rivalry_monthly_effect = {
 				balkfm_has_karadordevic_ruler_trigger = yes
 			}
 			create_character = {
-				template = template_balkfm_karadordevic_dynamic_heir
+				template = balkfm_karadordevic_dynamic_heir
 			}
 		}
 		else_if = {
@@ -127,7 +268,7 @@ balkfm_dynastic_rivalry_monthly_effect = {
 				balkfm_has_obrenovic_ruler_trigger = yes
 			}
 			create_character = {
-				template = template_balkfm_obrenovic_dynamic_heir
+				template = balkfm_obrenovic_dynamic_heir
 			}
 		}
 	}
@@ -334,7 +475,7 @@ balkfm_find_obrenovic_effect = {
 				var:balkfm_obrenovic_counter_var ?= 1
 			}
 			create_character = { 
-				template = template_balkfm_obrenovic_milan
+				template = balkfm_obrenovic_milan
 				on_created = {
 					place_character_in_void = 150 # characters will expire after 15 years
 				}
@@ -349,7 +490,7 @@ balkfm_find_obrenovic_effect = {
 				var:balkfm_obrenovic_counter_var ?= 2
 			}
 			create_character = {
-				template = template_balkfm_obrenovic_mihailo
+				template = balkfm_obrenovic_mihailo
 				on_created = {
 					place_character_in_void = 150 # characters will expire after 15 years
 				}
@@ -364,7 +505,7 @@ balkfm_find_obrenovic_effect = {
 				var:balkfm_obrenovic_counter_var ?= 3
 			}
 			create_character = {
-				template = template_balkfm_obrenovic_milan_IV
+				template = balkfm_obrenovic_milan_IV
 				on_created = {
 					place_character_in_void = 150 # characters will expire after 15 years
 				}
@@ -376,7 +517,7 @@ balkfm_find_obrenovic_effect = {
 		}
 		else = {
 			create_character = {
-				template = template_balkfm_obrenovic_dynamic
+				template = balkfm_obrenovic_dynamic
 				on_created = {
 					place_character_in_void = 150 # characters will expire after 15 years
 				}
@@ -431,7 +572,7 @@ balkfm_find_karadordevic_effect = {
 				var:balkfm_karadordevic_counter_var ?= 1
 			}
 			create_character = {
-				template = template_balkfm_karadordevic_petar
+				template = balkfm_karadordevic_petar
 				on_created = {
 					place_character_in_void = 150 # characters will expire after 15 years
 				}
@@ -446,7 +587,7 @@ balkfm_find_karadordevic_effect = {
 				var:balkfm_karadordevic_counter_var ?= 2
 			}
 			create_character = {
-				template = template_balkfm_karadordevic_aleksander_I
+				template = balkfm_karadordevic_aleksander_I
 				on_created = {
 					place_character_in_void = 150 # characters will expire after 15 years
 				}
@@ -458,7 +599,7 @@ balkfm_find_karadordevic_effect = {
 		}
 		else = {
 			create_character = {
-				template = template_balkfm_karadordevic_dynamic
+				template = balkfm_karadordevic_dynamic
 				on_created = {
 					place_character_in_void = 150 # characters will expire after 15 years
 				}

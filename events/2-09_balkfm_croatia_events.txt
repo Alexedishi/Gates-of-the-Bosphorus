@@ -5,8 +5,10 @@
 # For Greek & Byzantium content, see the "grefm" module
 # For Balkan Nations content, see the "balkfm" module
 # For Ottoman & Turkish content, see the "turkfm" module
-# For Eastern Question & Expeditions content, see the "eqfm" module
+# For Northern African content, see the "mgrbfm" module
 # For Armenian, Kurdish, & Assyrian content, see the "haykfm" module
+# For Levantine content, see the "levafm" module
+# For Eastern Question & Expeditions content, see the "eqfm" module
 
 ####################
 
@@ -71,7 +73,7 @@ balkfm_croatia.200 = { # Illyrian Sentiment
 	immediate = {
 		random_character_in_void = {
 			limit = {
-				has_template = template_balkfm_draskovic_janko
+				has_template = balkfm_draskovic_janko
 			}
 			save_scope_as = balkfm_draskovic_scope
 		}
@@ -143,14 +145,14 @@ balkfm_croatia.201 = { # An Austro-Slavic Proposal
 	immediate = {
 		set_variable = balkfm_austro_slavic_proposal_var
 		create_character = {
-			template = template_balkfm_borovsky_karel
+			template = balkfm_borovsky_karel
 			on_created = {
 				place_character_in_void = 12
 			}
 		}
 		random_character_in_void = {
 			limit = {
-				has_template = template_balkfm_borovsky_karel
+				has_template = balkfm_borovsky_karel
 			}
 			save_scope_as = balkfm_borovsky_scope
 		}
@@ -163,7 +165,10 @@ balkfm_croatia.201 = { # An Austro-Slavic Proposal
 			culture = cu:hungarian
 			value = medium_radicals
 		}
-		balkfm_happy_yugoslavs_effect = yes
+		balkfm_add_yugoslav_loyalists_or_radicals_effect = {
+			type = loyalists
+			value = medium_radicals
+		}
 	}
 
 	option = { # Oppose the Proposal
@@ -172,7 +177,10 @@ balkfm_croatia.201 = { # An Austro-Slavic Proposal
 			culture = cu:hungarian
 			value = medium_radicals
 		}
-		balkfm_sad_yugoslavs_effect = yes
+		balkfm_add_yugoslav_loyalists_or_radicals_effect = {
+			type = radicals
+			value = medium_radicals
+		}
 	}
 
 }
@@ -217,19 +225,20 @@ balkfm_croatia.202 = { # Vienna Literary Agreement (Austrian Variant)
 	option = {
 		name = balkfm_croatia.202.a
 		default_option = yes
-		balkfm_sad_yugoslavs_effect = yes
+		balkfm_add_yugoslav_loyalists_or_radicals_effect = {
+			type = radicals
+			value = medium_radicals
+		}
 		every_country = {
 			limit = {
-				balkfm_has_yugoslav_culture_trigger = yes
+				balkfm_country_has_yugoslav_culture_trigger = yes
 				NOT = {
 					has_technology_researched = nationalism
 				}
 			}
-			trigger_event = {
-				id = balkfm_yugoslavia.003 # Vienna Literary Agreement
-			}
+			trigger_event = balkfm_yugoslavia.003
 		}
-		custom_tooltip = balkfm_yugoslav_nationalism_boost_tt
+		custom_tooltip = balkfm_yugoslav_nationalism_boost
 	}
 
 }
@@ -360,7 +369,7 @@ balkfm_croatia.209 = { # Croatian–Hungarian Settlement / Austro-Croatian Compr
 		c:CRO ?= {
 			add_modifier = {
 				name = modifier_balkfm_croatian_autonomy
-				months = gbbf_duration_10_years
+				months = gbbf_long_modifier_time
 			}
 		}
 	}
@@ -383,7 +392,7 @@ balkfm_croatia.209 = { # Croatian–Hungarian Settlement / Austro-Croatian Compr
 		}
 		add_modifier = {
 			name = dual_monarchy_compromise
-			months = gbbf_duration_20_years
+			months = gbbf_very_long_modifier_time
 		}
 	}
 
@@ -405,7 +414,7 @@ balkfm_croatia.209 = { # Croatian–Hungarian Settlement / Austro-Croatian Compr
 			}
 			add_modifier = {
 				name = modifier_balkfm_croatian_compromise_rejected
-				months = gbbf_duration_10_years
+				months = gbbf_long_modifier_time
 			}
 		}
 	}
@@ -451,7 +460,7 @@ balkfm_croatia.209 = { # Croatian–Hungarian Settlement / Austro-Croatian Compr
 		c:CRO ?= {
 			add_modifier = {
 				name = modifier_balkfm_croatian_autonomy
-				months = gbbf_duration_10_years
+				months = gbbf_long_modifier_time
 			}
 		}
 		add_radicals = {
@@ -486,7 +495,7 @@ balkfm_croatia.209 = { # Croatian–Hungarian Settlement / Austro-Croatian Compr
 		}
 		add_modifier = {
 			name = dual_monarchy_compromise
-			months = gbbf_duration_20_years
+			months = gbbf_very_long_modifier_time
 		}
 	}
 
@@ -515,7 +524,7 @@ balkfm_croatia.209 = { # Croatian–Hungarian Settlement / Austro-Croatian Compr
 			}
 			add_modifier = {
 				name = modifier_balkfm_croatian_compromise_rejected
-				months = gbbf_duration_10_years
+				months = gbbf_long_modifier_time
 			}
 		}
 	}
@@ -630,7 +639,7 @@ balkfm_croatia.301 = { # Restoration of the Triune Kingdom
 		default_option = yes
 		add_modifier = {
 			name = modifier_balkfm_triune_resurgence
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 		add_loyalists = {
 			culture = cu:croat

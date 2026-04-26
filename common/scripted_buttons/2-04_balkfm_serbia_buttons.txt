@@ -11,22 +11,24 @@
 		balkfm_has_matching_consul_trigger = yes
 		custom_tooltip = {
 			text = balkfm_cement_monarchy_possible
-			hidden_trigger = {
-				NOT = {
-					has_variable = balkfm_constitution_pending
-				}
+			NOT = {
+				has_variable = balkfm_constitution_pending
 			}
 		}
 		custom_tooltip = {
 			text = balkfm_friend_with_all_great_powers_tt
-			hidden_trigger = {
-				any_country = {
-					country_rank >= rank_value:great_power
+			any_country = {
+				filter = {
 					NOT = { c:TUR ?= this }
-					NOT = { has_war_with = ROOT }
-					has_interest_marker_in_region = ROOT.capital.region
-					relations:root > 0
+					country_rank >= rank_value:great_power
+					has_strategic_region_interest_tier = {
+						strategic_region = ROOT.capital.region
+						value >= 1
+					}
 				}
+				count = all
+				relations:root > 0
+				NOT = { has_war_with = ROOT }
 			}
 		}
 		legitimacy > 50
@@ -37,16 +39,14 @@
 		}
 	}
 	effect = {
-		trigger_event = {
-			id = balkfm_serbia.018 # Cementing the Monarchy
-		}
+		trigger_event = balkfm_serbia.018
 		set_variable = balkfm_cement_monarchy_var
 	}
 }
 
 balkfm_ser_flip_consul_button = {
-	name = "balkfm_ser_flip_consul_button"
-	desc = "balkfm_ser_flip_consul_button_desc"
+	name = "balkfm_ser_flip_consul_name"
+	desc = "balkfm_ser_flip_consul_desc"
 	
 	visible = {
 		OR = {
@@ -134,9 +134,7 @@ balkfm_ser_slander_button = {
 		scope:journal_entry = {
 			set_variable = { name = je_tot_slander_button_cooldown months = 48 }
 		}
-		trigger_event = {
-			id = balkfm_serbia.021 # Slander Pamphlets
-		}
+		trigger_event = balkfm_serbia.021
 		if = {
 			limit = {
 				scope:journal_entry = {
@@ -149,7 +147,7 @@ balkfm_ser_slander_button = {
 					var:balkfm_opposition_leader_var = {
 						add_modifier = {
 							name = modifier_balkfm_reputation_slandered
-							months = gbbf_duration_2_plus_half_years
+							months = gbbf_short_modifier_time
 						}
 					}
 				}
@@ -159,12 +157,12 @@ balkfm_ser_slander_button = {
 		show_as_tooltip = {
 			add_modifier = {
 				name = serbia_pamphlet_money_mod
-				months = gbbf_duration_2_plus_half_years
+				months = gbbf_short_modifier_time
 				multiplier = money_amount_multiplier_medium
 			}
 			add_modifier = {
 				name = serbia_pamphlet_auth_mod
-				months = gbbf_duration_2_plus_half_years
+				months = gbbf_short_modifier_time
 			}
 		}
 	}
@@ -196,9 +194,7 @@ balkfm_ser_campaign_button = {
 	effect = {
 		custom_tooltip = {
 			text = je_tot_campaign_button_tt
-			trigger_event = {
-				id = balkfm_serbia.030 # Campaign Planning
-			}
+			trigger_event = balkfm_serbia.030
 		}
 		show_as_tooltip = {
 			add_modifier = {

@@ -1,14 +1,11 @@
 ﻿## National Identity Buttons ##
 grefm_declare_national_language_button = {
-	name = "grefm_declare_national_language_button"
-	desc = "grefm_declare_national_language_button_desc"
+	name = "grefm_declare_national_language_name"
+	desc = "grefm_declare_national_language_desc"
 	
 	visible = {
-		NOR = {
-			has_variable = grefm_greek_language_demotic
-			has_variable = grefm_greek_language_katharevousa
-			has_variable = grefm_greek_language_khoine
-			has_variable = grefm_greek_language_rhomaiika
+		NOT = {
+			has_variable = grefm_language_var
 		}
 	}
 	possible = {
@@ -18,7 +15,7 @@ grefm_declare_national_language_button = {
 		}
 		literacy_rate > 0.40
 		custom_tooltip = {
-			text = grefm_declare_national_language_button_possible
+			text = grefm_declare_national_language_possible
 			hidden_trigger = {
 				je:je_grefm_national_language = {
 					OR = {
@@ -30,26 +27,36 @@ grefm_declare_national_language_button = {
 				}
 			}
 		}
+		trigger_if = {
+			limit = {
+				morgenrote_is_active = yes
+			}
+			custom_tooltip = {
+				text = je_grefm_national_language_complete_mgr
+				var:manzoni_literary_tradition_var >= 50
+			}
+		}
 		hidden_trigger = {
 			NOT = {
-				has_variable = grefm_language_var
+				has_variable = grefm_language_selection_var
 			}
 		}
 	}
 	selected = {
-		has_variable = grefm_language_var
+		has_variable = grefm_language_selection_var
 	}
 	effect = {
-		trigger_event = {
-			id = grefm_greek_nationalism.007 # A National Language
+		trigger_event = grefm_greek_nationalism.007
+		set_variable = {
+			name = grefm_language_selection_var
+			months = 3
 		}
-		set_variable = grefm_language_var
 	}
 }
 
 grefm_embrace_hellenic_identity_button = {
-	name = "grefm_embrace_hellenic_identity_button"
-	desc = "grefm_embrace_hellenic_identity_button_desc"
+	name = "grefm_embrace_hellenic_identity_name"
+	desc = "grefm_embrace_hellenic_identity_desc"
 	
 	visible = {
 		NOR = {
@@ -60,7 +67,7 @@ grefm_embrace_hellenic_identity_button = {
 	possible = {
 		has_technology_researched = pan-nationalism
 		custom_tooltip = {
-			text = grefm_embrace_hellenic_identity_button_possible
+			text = grefm_embrace_hellenic_identity_possible
 			hidden_trigger = {
 				has_variable = grefm_hellene_culture_var
 				var:grefm_hellene_culture_var >= 10
@@ -77,9 +84,7 @@ grefm_embrace_hellenic_identity_button = {
 			name = grefm_culture_var
 			value = 1
 		}
-		trigger_event = {
-			id = grefm_greek_nationalism.009 # The Greek Ethnogenesis
-		}
+		trigger_event = grefm_greek_nationalism.009
 		show_as_tooltip = {
 			if = {
 				limit = {
@@ -103,8 +108,8 @@ grefm_embrace_hellenic_identity_button = {
 }
 
 grefm_embrace_roman_identity_button = {
-	name = "grefm_embrace_roman_identity_button"
-	desc = "grefm_embrace_roman_identity_button_desc"
+	name = "grefm_embrace_roman_identity_name"
+	desc = "grefm_embrace_roman_identity_desc"
 	
 	visible = {
 		NOR = {
@@ -115,7 +120,7 @@ grefm_embrace_roman_identity_button = {
 	possible = {
 		has_technology_researched = pan-nationalism
 		custom_tooltip = {
-			text = grefm_embrace_roman_identity_button_possible
+			text = grefm_embrace_roman_identity_possible
 			hidden_trigger = {
 				has_variable = grefm_rhomaios_culture_var
 				var:grefm_rhomaios_culture_var >= 10
@@ -132,9 +137,7 @@ grefm_embrace_roman_identity_button = {
 			name = grefm_culture_var
 			value = 2
 		}
-		trigger_event = {
-			id = grefm_greek_nationalism.009 # The Greek Ethnogenesis
-		}
+		trigger_event = grefm_greek_nationalism.009
 		show_as_tooltip = {
 			if = {
 				limit = {
@@ -158,8 +161,8 @@ grefm_embrace_roman_identity_button = {
 }
 
 grefm_embrace_hybrid_identity_button = {
-	name = "grefm_embrace_hybrid_identity_button"
-	desc = "grefm_embrace_hybrid_identity_button_desc"
+	name = "grefm_embrace_hybrid_identity_name"
+	desc = "grefm_embrace_hybrid_identity_desc"
 	
 	visible = {
 		NOR = {
@@ -170,14 +173,14 @@ grefm_embrace_hybrid_identity_button = {
 	possible = {
 		has_technology_researched = pan-nationalism
 		custom_tooltip = {
-			text = grefm_embrace_hellenic_identity_button_possible
+			text = grefm_embrace_hellenic_identity_possible
 			hidden_trigger = {
 				has_variable = grefm_hellene_culture_var
 				var:grefm_hellene_culture_var >= 10
 			}
 		}
 		custom_tooltip = {
-			text = grefm_embrace_roman_identity_button_possible
+			text = grefm_embrace_roman_identity_possible
 			hidden_trigger = {
 				has_variable = grefm_rhomaios_culture_var
 				var:grefm_rhomaios_culture_var >= 10
@@ -194,9 +197,7 @@ grefm_embrace_hybrid_identity_button = {
 			name = grefm_culture_var
 			value = 3
 		}
-		trigger_event = {
-			id = grefm_greek_nationalism.009 # The Greek Ethnogenesis
-		}
+		trigger_event = grefm_greek_nationalism.009
 		show_as_tooltip = {
 			if = {
 				limit = {
@@ -223,8 +224,8 @@ grefm_embrace_hybrid_identity_button = {
 
 ## Archaeology Buttons ##
 grefm_archeaology_cancel_button = {
-	name = "grefm_cancel_button"
-	desc = "grefm_cancel_button_desc"
+	name = "grefm_cancel_dig_name"
+	desc = "grefm_cancel_dig_desc"
 	
 	visible = {
 		has_modifier = modifier_grefm_active_excavation
@@ -238,11 +239,12 @@ grefm_archeaology_cancel_button = {
 	}
 }
 
-grefm_archeaology_greek_sites_button = {
-	name = "grefm_archeaology_greek_sites_button"
-	desc = "grefm_archeaology_greek_sites_button_desc"
+grefm_greek_sites_button = {
+	name = "grefm_greek_sites_name"
+	desc = "grefm_greek_sites_desc"
 	
 	visible = {
+		morgenrote_is_active = no
 		has_variable = grefm_archeaology_sites_var
 		OR = {
 			country_has_primary_culture = cu:greek
@@ -257,7 +259,7 @@ grefm_archeaology_greek_sites_button = {
 	}
 	effect = {
 		custom_tooltip = {
-			text = grefm_show_hellenic_sites_tt
+			text = grefm_greek_sites_effect
 			if = {
 				limit = {
 					var:grefm_archeaology_sites_var != 1
@@ -277,11 +279,12 @@ grefm_archeaology_greek_sites_button = {
 	}
 }
 
-grefm_archeaology_roman_sites_button = {
-	name = "grefm_archeaology_roman_sites_button"
-	desc = "grefm_archeaology_roman_sites_button_desc"
+grefm_roman_sites_button = {
+	name = "grefm_roman_sites_name"
+	desc = "grefm_roman_sites_desc"
 	
 	visible = {
+		morgenrote_is_active = no
 		has_variable = grefm_archeaology_sites_var
 		OR = {
 			country_has_primary_culture = cu:rhomaios
@@ -296,7 +299,7 @@ grefm_archeaology_roman_sites_button = {
 	}
 	effect = {
 		custom_tooltip = {
-			text = grefm_show_roman_sites_tt
+			text = grefm_roman_sites_effect
 			if = {
 				limit = {
 					var:grefm_archeaology_sites_var != 2
@@ -316,11 +319,12 @@ grefm_archeaology_roman_sites_button = {
 	}
 }
 
-grefm_archeaology_alternate_site_button = {
-	name = "grefm_archeaology_alternate_site_button"
-	desc = "grefm_archeaology_alternate_site_button_desc"
+grefm_alternate_sites_button = {
+	name = "grefm_alternate_sites_name"
+	desc = "grefm_alternate_sites_desc"
 	
 	visible = {
+		morgenrote_is_active = no
 		OR = {
 			AND = {
 				country_has_primary_culture = cu:greek
@@ -344,9 +348,7 @@ grefm_archeaology_alternate_site_button = {
 		}
 	}
 	effect = {
-		trigger_event = {
-			id = grefm_greek_nationalism.042 # Alternative Dig Sites Considered
-		}
+		trigger_event = grefm_greek_nationalism.042
 		set_variable = grefm_considering_sites
 	}
 }
@@ -386,7 +388,7 @@ grefm_archeaology_parthenon_button_1 = {
 			}
 		}
 		trigger_event = {
-			id = grefm_greek_nationalism.041 # Excavation Team Departs
+			id = grefm_greek_nationalism.041
 			popup = yes
 		}
 		show_as_tooltip = {
@@ -434,7 +436,7 @@ grefm_archeaology_parthenon_button_2 = {
 			}
 		}
 		trigger_event = {
-			id = grefm_greek_nationalism.041 # Excavation Team Departs
+			id = grefm_greek_nationalism.041
 			popup = yes
 		}
 		show_as_tooltip = {
@@ -478,7 +480,7 @@ grefm_archeaology_mycenae_button_1 = {
 			}
 		}
 		trigger_event = {
-			id = grefm_greek_nationalism.041 # Excavation Team Departs
+			id = grefm_greek_nationalism.041
 			popup = yes
 		}
 		show_as_tooltip = {
@@ -528,7 +530,7 @@ grefm_archeaology_mycenae_button_2 = {
 			}
 		}
 		trigger_event = {
-			id = grefm_greek_nationalism.041 # Excavation Team Departs
+			id = grefm_greek_nationalism.041
 			popup = yes
 		}
 		show_as_tooltip = {
@@ -538,8 +540,8 @@ grefm_archeaology_mycenae_button_2 = {
 }
 
 grefm_archeaology_gla_button = {
-	name = "grefm_gla_button"
-	desc = "grefm_gla_button_desc"
+	name = "grefm_gla_name"
+	desc = "grefm_gla_desc"
 	
 	visible = {
 		owner = {
@@ -578,7 +580,7 @@ grefm_archeaology_gla_button = {
 			}
 		}
 		trigger_event = {
-			id = grefm_greek_nationalism.041 # Planning an Expedition
+			id = grefm_greek_nationalism.041
 			popup = yes
 		}
 		show_as_tooltip = {
@@ -588,8 +590,8 @@ grefm_archeaology_gla_button = {
 }
 
 grefm_archeaology_delos_button = {
-	name = "grefm_delos_button"
-	desc = "grefm_delos_button_desc"
+	name = "grefm_delos_name"
+	desc = "grefm_delos_desc"
 	
 	visible = {
 		owner = {
@@ -622,7 +624,7 @@ grefm_archeaology_delos_button = {
 			}
 		}
 		trigger_event = {
-			id = grefm_greek_nationalism.041 # Excavation Team Departs
+			id = grefm_greek_nationalism.041
 			popup = yes
 		}
 		show_as_tooltip = {
@@ -632,8 +634,8 @@ grefm_archeaology_delos_button = {
 }
 
 grefm_archeaology_larissa_button = {
-	name = "grefm_larissa_button"
-	desc = "grefm_larissa_button_desc"
+	name = "grefm_larissa_name"
+	desc = "grefm_larissa_desc"
 	
 	visible = {
 		owner = {
@@ -666,7 +668,7 @@ grefm_archeaology_larissa_button = {
 			}
 		}
 		trigger_event = {
-			id = grefm_greek_nationalism.041 # Excavation Team Departs
+			id = grefm_greek_nationalism.041
 			popup = yes
 		}
 		show_as_tooltip = {
@@ -676,8 +678,8 @@ grefm_archeaology_larissa_button = {
 }
 
 grefm_archeaology_rhodes_button = {
-	name = "grefm_rhodes_button"
-	desc = "grefm_rhodes_button_desc"
+	name = "grefm_rhodes_name"
+	desc = "grefm_rhodes_desc"
 	
 	visible = {
 		owner = {
@@ -710,7 +712,7 @@ grefm_archeaology_rhodes_button = {
 			}
 		}
 		trigger_event = {
-			id = grefm_greek_nationalism.041 # Excavation Team Departs
+			id = grefm_greek_nationalism.041
 			popup = yes
 		}
 		show_as_tooltip = {
@@ -754,7 +756,7 @@ grefm_archeaology_corinth_button_1 = {
 			}
 		}
 		trigger_event = {
-			id = grefm_greek_nationalism.041 # Excavation Team Departs
+			id = grefm_greek_nationalism.041
 			popup = yes
 		}
 		show_as_tooltip = {
@@ -805,7 +807,7 @@ grefm_archeaology_corinth_button_2 = {
 			}
 		}
 		trigger_event = {
-			id = grefm_greek_nationalism.041 # Excavation Team Departs
+			id = grefm_greek_nationalism.041
 			popup = yes
 		}
 		show_as_tooltip = {
@@ -816,8 +818,8 @@ grefm_archeaology_corinth_button_2 = {
 
 # Heptapyrgion
 grefm_archeaology_thessaloniki_button = {
-	name = "grefm_archeaology_thessaloniki_button"
-	desc = "grefm_archeaology_thessaloniki_button_desc"
+	name = "grefm_archeaology_thessaloniki_name"
+	desc = "grefm_archeaology_thessaloniki_desc"
 	
 	visible = {
 		owner = {
@@ -850,7 +852,7 @@ grefm_archeaology_thessaloniki_button = {
 			}
 		}
 		trigger_event = {
-			id = grefm_greek_nationalism.041 # Excavation Team Departs
+			id = grefm_greek_nationalism.041
 			popup = yes
 		}
 		show_as_tooltip = {
@@ -861,8 +863,8 @@ grefm_archeaology_thessaloniki_button = {
 
 # Silk Workshops
 grefm_archeaology_thebes_button = {
-	name = "grefm_archeaology_thebes_button"
-	desc = "grefm_archeaology_thebes_button_desc"
+	name = "grefm_archeaology_thebes_name"
+	desc = "grefm_archeaology_thebes_desc"
 	
 	visible = {
 		owner = {
@@ -895,7 +897,7 @@ grefm_archeaology_thebes_button = {
 			}
 		}
 		trigger_event = {
-			id = grefm_greek_nationalism.041 # Excavation Team Departs
+			id = grefm_greek_nationalism.041
 			popup = yes
 		}
 		show_as_tooltip = {
@@ -906,8 +908,8 @@ grefm_archeaology_thebes_button = {
 
 grefm_archeaology_nicomedia_button = {
 	# Hexamillion
-	name = "grefm_archeaology_nicomedia_button"
-	desc = "grefm_archeaology_nicomedia_button_desc"
+	name = "grefm_archeaology_nicomedia_name"
+	desc = "grefm_archeaology_nicomedia_desc"
 	
 	visible = {
 		owner = {
@@ -940,7 +942,7 @@ grefm_archeaology_nicomedia_button = {
 			}
 		}
 		trigger_event = {
-			id = grefm_greek_nationalism.041 # Excavation Team Departs
+			id = grefm_greek_nationalism.041
 			popup = yes
 		}
 		show_as_tooltip = {
@@ -951,8 +953,8 @@ grefm_archeaology_nicomedia_button = {
 
 grefm_archeaology_smyrna_button = {
 	# Smyrna
-	name = "grefm_archeaology_smyrna_button"
-	desc = "grefm_archeaology_smyrna_button_desc"
+	name = "grefm_archeaology_smyrna_name"
+	desc = "grefm_archeaology_smyrna_desc"
 	
 	visible = {
 		owner = {
@@ -985,7 +987,7 @@ grefm_archeaology_smyrna_button = {
 			}
 		}
 		trigger_event = {
-			id = grefm_greek_nationalism.041 # Excavation Team Departs
+			id = grefm_greek_nationalism.041
 			popup = yes
 		}
 		show_as_tooltip = {
@@ -995,8 +997,8 @@ grefm_archeaology_smyrna_button = {
 }
 
 grefm_archeaology_tyana_button = {
-	name = "grefm_archeaology_tyana_button"
-	desc = "grefm_archeaology_tyana_button_desc"
+	name = "grefm_archeaology_tyana_name"
+	desc = "grefm_archeaology_tyana_desc"
 	
 	visible = {
 		owner = {
@@ -1029,7 +1031,7 @@ grefm_archeaology_tyana_button = {
 			}
 		}
 		trigger_event = {
-			id = grefm_greek_nationalism.041 # Excavation Team Departs
+			id = grefm_greek_nationalism.041
 			popup = yes
 		}
 		show_as_tooltip = {
@@ -1039,8 +1041,8 @@ grefm_archeaology_tyana_button = {
 }
 
 grefm_archeaology_chios_button = {
-	name = "grefm_archeaology_chios_button"
-	desc = "grefm_archeaology_chios_button_desc"
+	name = "grefm_archeaology_chios_name"
+	desc = "grefm_archeaology_chios_desc"
 	
 	visible = {
 		owner = {
@@ -1073,7 +1075,7 @@ grefm_archeaology_chios_button = {
 			}
 		}
 		trigger_event = {
-			id = grefm_greek_nationalism.041 # Excavation Team Departs
+			id = grefm_greek_nationalism.041
 			popup = yes
 		}
 		show_as_tooltip = {

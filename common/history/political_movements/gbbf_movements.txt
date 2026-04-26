@@ -27,10 +27,52 @@
 			}
 			add_modifier = {
 				name = initial_movement_enthusiasm
-				months = gbbf_duration_25_years
+				months = 300
 				multiplier = 1.5
 				is_decaying = yes
 			}
+		}
+	}
+	c:EGY ?= {
+		create_political_movement = {
+			type = movement_modernizer
+		}
+		if = {
+			limit = {
+				NOT = {
+					any_political_movement = {
+						is_political_movement_type = movement_cultural_minority
+						culture ?= cu:sudanese
+					}
+				}
+			}
+			create_political_movement = {
+				type = movement_cultural_minority
+				culture = cu:sudanese
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					any_political_movement = {
+						is_political_movement_type = movement_cultural_minority
+						culture ?= cu:nuba
+					}
+				}
+			}
+			create_political_movement = {
+				type = movement_cultural_minority
+				culture = cu:nuba
+			}
+		}
+		every_political_movement = {
+			limit = {
+				is_political_movement_type = movement_cultural_minority
+				NOT = {
+					has_modifier = initial_movement_enthusiasm
+				}
+			}
+			add_movement_enthusiasm_modifier = yes
 		}
 	}
 }

@@ -81,6 +81,10 @@
 		}
 		region_state:BOS = {
 			create_pop = {
+				culture = bosniak
+				size = 15000
+			}
+			create_pop = {
 				culture = romani
 				size = 180
 			}
@@ -484,7 +488,45 @@
 			}
 			create_pop = {
 				culture = greek
-				size = 83424
+				size = 23424
+			}
+			create_pop = {
+				culture = rhomaios
+				size = 63424
+			}
+		}
+	}
+	s:STATE_EGYPTIAN_DESERT = {
+		region_state:EGY_FAR = {
+			create_pop = {
+				culture = bedouin
+				size = 7152
+			}
+		}
+		region_state:EGY_DAK = {
+			create_pop = {
+				culture = bedouin
+				size = 6423
+			}
+			create_pop = {
+				culture = teda
+				size = 2000
+			}
+		}
+	}
+	s:STATE_MATRUH = {
+		region_state:EGY_FAR = {
+			create_pop = {
+				culture = bedouin
+				size = 2000
+			}
+		}
+	}
+	s:STATE_DONGOLA = {
+		region_state:EGY_DAK = {
+			create_pop = {
+				culture = bedouin
+				size = 5821
 			}
 		}
 	}
@@ -546,7 +588,7 @@
 	# Greek Pop Conversions
 	every_state = {
 		limit = {
-			gbbf_demotic_greek_geography_trigger = yes
+			is_in_geographic_region = geographic_region_demotic_greek
 		}
 		every_scope_pop = {
 			limit = {
@@ -572,7 +614,9 @@
 	}
 	every_state = {
 		limit = {
-			gbbf_demotic_greek_geography_trigger = no
+			NOT = {
+				is_in_geographic_region = geographic_region_demotic_greek
+			}
 		}
 		every_scope_pop = {
 			limit = {
@@ -588,7 +632,7 @@
 	# Romaniote Jew Conversions
 	every_state = {
 		limit = {
-			gbbf_demotic_greek_geography_trigger = yes
+			is_in_geographic_region = geographic_region_demotic_greek
 		}
 		every_scope_pop = {
 			limit = {
@@ -638,6 +682,37 @@
 			change_pop_religion = {
 				target = rel:catholic
 				value = 1
+			}
+		}
+	}
+
+	# Misri Orthodox into Coptic
+	sr:region_nile_basin = {
+		every_scope_state = {
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = misri
+					has_pop_religion = oriental_orthodox
+				}
+				change_pop_culture = {
+					target = cu:coptic
+					value = 1
+				}
+			}
+		}
+	}
+	
+	# Change mongolian to altaic in STATE_ALTAI
+	s:STATE_ALTAI = {
+		every_scope_state = {
+			every_scope_pop = {
+				limit = {
+					has_pop_culture = mongol
+				}
+				change_pop_culture = { # This is PDX's placeholder for Altaic
+					target = cu:altaic
+					value = 1
+				}
 			}
 		}
 	}

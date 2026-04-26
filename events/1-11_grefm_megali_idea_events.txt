@@ -5,8 +5,10 @@
 # For Greek & Byzantium content, see the "grefm" module
 # For Balkan Nations content, see the "balkfm" module
 # For Ottoman & Turkish content, see the "turkfm" module
-# For Eastern Question & Expeditions content, see the "eqfm" module
+# For Northern African content, see the "mgrbfm" module
 # For Armenian, Kurdish, & Assyrian content, see the "haykfm" module
+# For Levantine content, see the "levafm" module
+# For Eastern Question & Expeditions content, see the "eqfm" module
 
 ####################
 
@@ -40,6 +42,7 @@ namespace = grefm_megali_idea
 #	032 - ##The Levant Reclaimed
 #	033 - ##Aegyptus Reclaimed
 #	034 - ##Italy Reclaimed
+#	035 - ##Aegean Reclaimed
 
 #100-109 - Hellene Annexation Events
 #	100 - ION Annexation
@@ -167,7 +170,7 @@ grefm_megali_idea.002 = { # The Megali Idea
 			limit = {
 				exists = c:RUS
 				any_scope_state = {
-					region = sr:region_balkans
+					is_in_geographic_region = geographic_region_rumelia
 					has_claim_by = c:RUS
 				}
 			}
@@ -197,9 +200,7 @@ grefm_megali_idea.002 = { # The Megali Idea
 		name = grefm_megali_idea.002.b
 		custom_tooltip = {
 			text = grefm_weaksauce
-			hidden_effect = {
-				set_variable = grefm_weaksauce
-			}
+			set_variable = grefm_weaksauce
 		}
 		if = {
 			limit = {
@@ -222,7 +223,7 @@ grefm_megali_idea.002 = { # The Megali Idea
 			limit = {
 				exists = c:RUS
 				any_scope_state = {
-					region = sr:region_balkans
+					is_in_geographic_region = geographic_region_rumelia
 					has_claim_by = c:RUS
 				}
 			}
@@ -232,7 +233,6 @@ grefm_megali_idea.002 = { # The Megali Idea
 			}
 		}
 	}
-
 }
 
 grefm_megali_idea.003 = { # The Future of Greece
@@ -266,10 +266,9 @@ grefm_megali_idea.003 = { # The Future of Greece
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_greek_imperialism
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 	}
-
 }
 
 grefm_megali_idea.004 = { # The Empire of the Greeks
@@ -302,9 +301,18 @@ grefm_megali_idea.004 = { # The Empire of the Greeks
 			country_rank >= rank_value:major_power
 		}
 	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_grefm_megali_idea
+		}
+	}
+	
+	cooldown = {
+		years = 1
+	}
 
 	immediate = {
-		set_variable = grefm_megali_idea_expansion_considered
 	}
 
 	option = { # Go all the way
@@ -319,7 +327,7 @@ grefm_megali_idea.004 = { # The Empire of the Greeks
 			limit = {
 				exists = c:RUS
 				any_scope_state = {
-					region = sr:region_balkans
+					is_in_geographic_region = geographic_region_rumelia
 					has_claim_by = c:RUS
 				}
 			}
@@ -333,6 +341,7 @@ grefm_megali_idea.004 = { # The Empire of the Greeks
 			remove_variable = grefm_embraced_megali_idea
 			set_variable = grefm_embraced_imperial_restoration
 		}
+		custom_tooltip = grefm_byzantine_restoration_path
 	}
 
 	option = { # Hold back
@@ -342,7 +351,10 @@ grefm_megali_idea.004 = { # The Empire of the Greeks
 			set_variable = grefm_imperial_restoration_declined
 		}
 	}
-
+	
+	after = {
+		set_variable = grefm_megali_idea_expansion_considered
+	}
 }
 
 grefm_megali_idea.005 = { # The Greek Lands Lost
@@ -379,13 +391,13 @@ grefm_megali_idea.005 = { # The Greek Lands Lost
 			}
 			add_modifier = {
 				name = modifier_grefm_failed_megali_idea
-				months = gbbf_duration_20_years
+				months = gbbf_very_long_modifier_time
 				multiplier = 3
 			}
 			ruler = {
 				add_modifier = {
 					name = greek_ruler_negative_popularity_3
-					months = gbbf_duration_20_years
+					months = gbbf_very_long_modifier_time
 				}
 			}
 			grefm_treaty_of_lausanne_effect = yes
@@ -396,25 +408,25 @@ grefm_megali_idea.005 = { # The Greek Lands Lost
 			}
 			add_modifier = {
 				name = modifier_grefm_failed_megali_idea
-				months = gbbf_duration_20_years
+				months = gbbf_very_long_modifier_time
 				multiplier = 2
 			}
 			ruler = {
 				add_modifier = {
 					name = greek_ruler_negative_popularity_2
-					months = gbbf_duration_20_years
+					months = gbbf_very_long_modifier_time
 				}
 			}
 		}
 		else = {
 			add_modifier = {
 				name = modifier_grefm_failed_megali_idea
-				months = gbbf_duration_20_years
+				months = gbbf_very_long_modifier_time
 			}
 			ruler = {
 				add_modifier = {
 					name = greek_ruler_negative_popularity_1
-					months = gbbf_duration_20_years
+					months = gbbf_very_long_modifier_time
 				}
 			}
 		}
@@ -424,7 +436,7 @@ grefm_megali_idea.005 = { # The Greek Lands Lost
 			}
 			add_modifier = {
 				name = failed_greek_je_ig_attraction
-				months = gbbf_duration_20_years
+				months = gbbf_very_long_modifier_time
 				is_decaying = yes
 			}
 		}
@@ -435,7 +447,7 @@ grefm_megali_idea.005 = { # The Greek Lands Lost
 			}
 			add_modifier = {
 				name = failed_greek_je_opposition_ig_pol_str
-				months = gbbf_duration_20_years
+				months = gbbf_very_long_modifier_time
 				is_decaying = yes
 			}
 		}
@@ -502,7 +514,7 @@ grefm_megali_idea.009 = { # adds claims to greek countries if they go independen
 				add_claim = ROOT
 			}
 		}
-		post_notification = notification_grefm_claims_added
+		post_notification = grefm_claims_added
 	}
 }
 
@@ -681,7 +693,7 @@ grefm_megali_idea.012 = { # The Throne of the East
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_greek_imperialism
-			months = gbbf_duration_10_years
+			months = gbbf_long_modifier_time
 		}
 	}
 
@@ -913,6 +925,42 @@ grefm_megali_idea.034 = { #
 		default_option = yes
 		add_modifier = {
 			name = modifier_grefm_reclaimed_italy
+		}
+		add_loyalists = {
+			value = small_radicals
+		}
+		remove_variable = grefm_triumph_var
+	}
+}
+
+grefm_megali_idea.035 = { #
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = grefm_megali_idea.035.t
+	desc = grefm_megali_idea.035.d
+	flavor = grefm_megali_idea.035.f
+	
+	event_image = {
+		video = "unspecific_military_parade"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by grefm_aegean_triumph_button
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = grefm_megali_idea.034.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_grefm_reclaimed_aegean
 		}
 		add_loyalists = {
 			value = small_radicals
@@ -1455,18 +1503,13 @@ grefm_megali_idea.201 = { # A Question of Homelands
 			}
 		}
 		scope:turkish_homeland_state = {
-			show_as_tooltip = {
-				remove_homeland = cu:turkish # This strange bit of janky ensures a tooltip is presented to the player
+			state_region = {
+				remove_homeland = cu:turkish
 			}
 			add_culture_standard_of_living_modifier = {
 				culture = cu:turkish
-				months = gbbf_duration_20_years
+				months = gbbf_very_long_modifier_time
 				multiplier = -2
-			}
-			state_region = {
-				hidden_effect = {
-					remove_homeland = cu:turkish # having this in the state_region executes the effect, but doesn't show a tooltip
-				}
 			}
 		}
 		add_radicals = { # They will NOT take this lying down
@@ -1485,7 +1528,7 @@ grefm_megali_idea.201 = { # A Question of Homelands
 		scope:turkish_homeland_state = {
 			add_culture_standard_of_living_modifier = {
 				culture = cu:turkish
-				months = gbbf_duration_20_years
+				months = gbbf_very_long_modifier_time
 				multiplier = 2
 			}
 			add_loyalists_in_state = {
@@ -1514,7 +1557,7 @@ grefm_megali_idea.201 = { # A Question of Homelands
 			}
 			add_culture_standard_of_living_modifier = {
 				culture = cu:turkish
-				months = gbbf_duration_20_years
+				months = gbbf_very_long_modifier_time
 				multiplier = -2
 			}
 			state_region = {
@@ -1557,7 +1600,7 @@ grefm_megali_idea.202 = { # Greek Expansion in X
 				country_has_primary_culture = cu:greek
 				any_scope_state = {
 					is_incorporated = yes
-					gbbf_dejure_byzantium_greography_trigger = yes
+					is_in_geographic_region = geographic_region_byzantine_empire
 					grefm_is_hellene_homeland_trigger = no
 				}
 			}
@@ -1565,7 +1608,7 @@ grefm_megali_idea.202 = { # Greek Expansion in X
 				country_has_primary_culture = cu:rhomaios
 				any_scope_state = {
 					is_incorporated = yes
-					gbbf_dejure_byzantium_greography_trigger = yes
+					is_in_geographic_region = geographic_region_byzantine_empire
 					grefm_is_rhomaios_homeland_trigger = no
 				}
 			}
@@ -1578,14 +1621,14 @@ grefm_megali_idea.202 = { # Greek Expansion in X
 				country_has_primary_culture = cu:greek
 				any_scope_state = {
 					is_incorporated = yes
-					gbbf_dejure_byzantium_greography_trigger = yes
+					is_in_geographic_region = geographic_region_byzantine_empire
 					grefm_is_hellene_homeland_trigger = no
 				}
 			}
 			random_scope_state = {
 				limit = {
 					is_incorporated = yes
-					gbbf_dejure_byzantium_greography_trigger = yes
+					is_in_geographic_region = geographic_region_byzantine_empire
 					grefm_is_hellene_homeland_trigger = no
 				}
 				save_scope_as = grefm_expansion_state
@@ -1596,14 +1639,14 @@ grefm_megali_idea.202 = { # Greek Expansion in X
 				country_has_primary_culture = cu:rhomaios
 				any_scope_state = {
 					is_incorporated = yes
-					gbbf_dejure_byzantium_greography_trigger = yes
+					is_in_geographic_region = geographic_region_byzantine_empire
 					grefm_is_rhomaios_homeland_trigger = no
 				}
 			}
 			random_scope_state = {
 				limit = {
 					is_incorporated = yes
-					gbbf_dejure_byzantium_greography_trigger = yes
+					is_in_geographic_region = geographic_region_byzantine_empire
 					grefm_is_rhomaios_homeland_trigger = no
 				}
 				save_scope_as = grefm_expansion_state

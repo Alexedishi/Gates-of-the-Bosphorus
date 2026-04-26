@@ -1,0 +1,164 @@
+﻿## Expedition Maintenance Effects ##
+eqfm_update_expedition_costs_effect = {
+	hidden_effect = {
+		remove_modifier = modifier_eqfm_deployed_expedition
+		if = {
+			limit = {
+				eqfm_expedition_value > 0
+			}
+			add_modifier = {
+				name = modifier_eqfm_deployed_expedition
+				multiplier = eqfm_expedition_value
+			}
+		}
+	}
+}
+
+## Expedition Progress/Peril Effects ##
+# GotB uses the following expedition keys:
+# senusiyya
+# karadag
+# adriatic
+# desert
+
+eqfm_start_expedition_effect = {
+	set_variable = {
+		name = eqfm_$type$_expedition_progress_var
+		value = 0
+	}
+	set_variable = {
+		name = eqfm_$type$_expedition_peril_var
+		value = 0
+	}
+	set_variable = {
+		name = eqfm_$type$_expedition_progress_timer
+		value = $progress_timer$
+	}
+	remove_variable = eqfm_$type$_expedition_transit_var
+}
+
+eqfm_add_expedition_cooldown_effect = {
+	set_variable = {
+		name = eqfm_$type$_expedition_cooldown_var
+		months = $months$
+	}
+}
+
+eqfm_add_expedition_progress_effect = {
+	custom_tooltip = eqfm_add_expedition_progress
+	set_local_variable = {
+		name = eqfm_expedition_loc_var
+		value = $value$
+	}
+	set_variable = {
+		name = eqfm_$type$_expedition_progress_var
+		value = {
+			add = var:eqfm_$type$_expedition_progress_var
+			add = $value$
+			min = 0
+			max = 8
+		}
+	}
+}
+
+eqfm_add_expedition_peril_effect = {
+	custom_tooltip = eqfm_add_expedition_peril
+	set_local_variable = {
+		name = eqfm_expedition_loc_var
+		value = $value$
+	}
+	set_variable = {
+		name = eqfm_$type$_expedition_peril_var
+		value = {
+			add = var:eqfm_$type$_expedition_peril_var
+			add = $value$
+			min = 0
+			max = 5
+		}
+	}
+}
+
+eqfm_remove_all_progress_effect = {
+	custom_tooltip = {
+		text = eqfm_remove_all_progress
+		set_variable = {
+			name = eqfm_$type$_expedition_progress_var
+			value = 0
+		}
+	}
+}
+
+eqfm_remove_all_peril_effect = {
+	custom_tooltip = {
+		text = eqfm_remove_all_peril
+		set_variable = {
+			name = eqfm_$type$_expedition_peril_var
+			value = 0
+		}
+	}
+}
+
+eqfm_yearly_expedition_progress_effect = {
+	if = {
+		limit = {
+			has_variable = eqfm_$type$_expedition_progress_var
+			NOT = {
+				has_variable = eqfm_$type$_expedition_transit_var
+			}
+		}
+		if = {
+			limit = {
+				has_variable = eqfm_$type$_expedition_progress_timer
+			}
+			set_variable = {
+				name = eqfm_$type$_expedition_progress_timer
+				value = {
+					if = {
+						limit = {
+							has_variable = eqfm_$type$_expedition_progress_timer
+						}
+						add = var:eqfm_$type$_expedition_progress_timer
+					}
+					subtract = 1
+					min = 0
+				}
+			}
+			if = {
+				limit = {
+					var:eqfm_$type$_expedition_progress_timer <= 0
+				}
+				eqfm_add_expedition_progress_effect = {
+					type = $type$
+					value = 1
+				}
+				set_variable = {
+					name = eqfm_$type$_expedition_progress_timer
+					value = $progress_timer$
+				}
+				post_notification = eqfm_$type$_yearly_progress
+			}
+		}
+		else = {
+			set_variable = {
+				name = eqfm_$type$_expedition_progress_timer
+				value = $progress_timer$
+			}
+		}
+	}
+}
+
+eqfm_clear_expedition_variables_effect = {
+	remove_variable = eqfm_$type$_expedition_var
+	remove_variable = eqfm_$type$_expedition_progress_var
+	remove_variable = eqfm_$type$_expedition_peril_var
+}
+
+eqfm_clear_expedition_modifiers_effect = {
+	every_scope_character = {
+		limit = {
+			has_modifier = modifier_eqfm_leading_$type$_expedition
+		}
+		remove_modifier = modifier_eqfm_leading_$type$_expedition
+		set_character_busy_and_immortal = no
+	}
+}
