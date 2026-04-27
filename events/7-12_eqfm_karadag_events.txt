@@ -4095,6 +4095,10 @@ eqfm_karadag.112 = { # Disruptive Influence
 				change_infamy = 10
 			}
 		}
+		set_variable = {
+			name = eqfm_karadag_whistleblower_var
+			months = 6
+		}
 	}
 }
 
@@ -4496,29 +4500,29 @@ eqfm_karadag.118 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
+		# triggered by eqfm_karadag.112
 	}
 	
 	immediate = {
+		random_country = {
+			limit = {
+				has_variable = eqfm_karadag_whistleblower_var
+			}
+			save_scope_as = eqfm_karadag_whistleblower_scope
+		}
+		random_scope_character = {
+			limit = {
+				has_template = balkfm_cengic_smail
+			}
+			save_scope_as = smail_aga_scope
+		}
 	}
 	
 	option = {
 		name = eqfm_karadag.118.a
 		default_option = yes
 		create_incident = {
-			country = c:MON
-			value = 10
-		}
-		add_modifier = {
-			name = modifier_balkfm_skulduggery
-			months = gbbf_normal_modifier_time
-			is_decaying = yes
-		}
-	}
-	
-	option = {
-		name = eqfm_karadag.118.b
-		create_incident = {
-			country = c:MON
+			country = scope:eqfm_karadag_whistleblower_scope
 			value = 10
 		}
 		add_modifier = {
