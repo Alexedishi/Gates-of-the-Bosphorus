@@ -1394,17 +1394,19 @@ eqfm_pirates.015 = { # Slavers Intercepted
 		NOT = {
 			has_variable = eqfm_adriatic_piracy_cooldown_var
 		}
+		c:TUR != this
 		c:TUR ?= {
+			is_involved_in_journal_entry = je_eqfm_pirates_of_the_adriatic
 			NOT = {
 				has_law_or_variant = law_type:law_slavery_banned
 			}
 		}
-		any_country = {
-			c:TUR != this
-			has_journal_entry = je_eqfm_pirates_of_the_adriatic
-		}
-		any_scope_state = {
-			is_coastal = yes
+		any_country_in_adriatic_sea = {
+			is_involved_in_journal_entry = je_eqfm_pirates_of_the_adriatic
+			NOR = {
+				c:TUR ?= this
+				this = root
+			}
 		}
 	}
 

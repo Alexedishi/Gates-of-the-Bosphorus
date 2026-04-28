@@ -368,6 +368,9 @@ eqfm_balkans.005 = { # Riots Break Out in State
 			value = eqfm_riot_counter_value
 		}
 		if = {
+			limit = {
+				global_var:eqfm_riot_counter_var = 1
+			}
 			every_country = {
 				limit = {
 					is_involved_in_journal_entry = je_eqfm_balkan_situation
@@ -508,7 +511,7 @@ eqfm_balkans.007 = { # State Rebellion Suppressed
 	flavor = eqfm_balkans.007.f
 
 	event_image = {
-		video = "votp_prison"
+		video = "ip3_police_raid"
 	}
 
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
@@ -578,7 +581,7 @@ eqfm_balkans.008 = { # Rumelia Lost
 	flavor = eqfm_balkans.008.f
 
 	event_image = {
-		video = "middleeast_battlefield_trenches"
+		video = "ip4_abdication"
 	}
 
 	icon = "gfx/interface/icons/event_icons/event_skull.dds"
@@ -1192,30 +1195,15 @@ eqfm_balkans.103 = { # The Language of Paperwork
 			}
 			save_scope_as = eqfm_tension_state_scope
 		}
-		random_list = {
-			5 = {
-				trigger = {
-					scope:eqfm_tension_state_scope = {
-						any_scope_pop = {
-							has_pop_religion = jewish
-						}
+		scope:eqfm_tension_state_scope = {
+			random_scope_pop = {
+				limit = {
+					OR = {
+						has_pop_religion = jewish
+						has_pop_religion = orthodox
 					}
 				}
-				rel:jewish = {
-					save_scope_as = eqfm_tension_religion_scope
-				}
-			}
-			5 = {
-				trigger = {
-					scope:eqfm_tension_state_scope = {
-						any_scope_pop = {
-							has_pop_religion = orthodox
-						}
-					}
-				}
-				rel:orthodox = {
-					save_scope_as = eqfm_tension_religion_scope
-				}
+				save_scope_as = eqfm_tension_pop_scope
 			}
 		}
 	}
@@ -1229,7 +1217,7 @@ eqfm_balkans.103 = { # The Language of Paperwork
 				months = gbbf_normal_modifier_time
 			}
 			add_radicals_in_state = {
-				religion = scope:eqfm_tension_religion_scope
+				religion = scope:eqfm_tension_pop_scope.religion
 				value = medium_radicals
 			}
 		}
@@ -1252,7 +1240,7 @@ eqfm_balkans.103 = { # The Language of Paperwork
 				months = gbbf_normal_modifier_time
 			}
 			add_loyalists_in_state = {
-				religion = scope:eqfm_tension_religion_scope
+				religion = scope:eqfm_tension_pop_scope.religion
 				value = medium_radicals
 			}
 			add_radicals_in_state = {
@@ -1393,7 +1381,7 @@ eqfm_balkans.105 = { # Peasants March in State
 	flavor = eqfm_balkans.105.f
 
 	event_image = {
-		video = "votp_cops_march"
+		video = "ip3_agitator_reading_manifesto"
 	}
 
 	icon = "gfx/interface/icons/event_icons/event_protest.dds"
@@ -1683,7 +1671,7 @@ eqfm_balkans.108 = { # Villages Request Schools
 	flavor = eqfm_balkans.108.f
 
 	event_image = {
-		video = "africa_public_protest"
+		video = "ip3_village_school"
 	}
 
 	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
@@ -2063,7 +2051,7 @@ eqfm_balkans.111 = { # Minority Rejects Classification
 	flavor = eqfm_balkans.111.f
 
 	event_image = {
-		video = "africa_public_protest"
+		video = "ip3_agitator_reading_manifesto"
 	}
 
 	icon = "gfx/interface/icons/event_icons/event_protest.dds"
@@ -2178,7 +2166,7 @@ eqfm_balkans.112 = { # Shipping Merchants Held Up
 	flavor = eqfm_balkans.112.f
 
 	event_image = {
-		video = "unspecific_naval_battle"
+		video = "votp_gunboat_diplomacy"
 	}
 
 	icon = "gfx/interface/icons/event_icons/event_trade.dds"
@@ -2916,7 +2904,7 @@ eqfm_balkans.118 = { # Villagers Displaced in State
 	flavor = eqfm_balkans.118.f
 
 	event_image = {
-		video = "southamerica_war_civilians"
+		video = "ip3_angry_mob_raiding_minorities"
 	}
 
 	icon = "gfx/interface/icons/event_icons/event_skull.dds"
@@ -3201,7 +3189,7 @@ eqfm_balkans.120 = { # Churches Burned in State
 	flavor = eqfm_balkans.120.f
 
 	event_image = {
-		video = "unspecific_vandalized_storefront"
+		video = "ip3_angry_mob_raiding_minorities"
 	}
 
 	icon = "gfx/interface/icons/event_icons/event_fire.dds"
@@ -3299,7 +3287,7 @@ eqfm_balkans.121 = { # Popular Speaker Lynched in State
 	flavor = eqfm_balkans.121.f
 
 	event_image = {
-		video = "unspecific_vandalized_storefront"
+		video = "ip3_angry_mob_raiding_minorities"
 	}
 
 	icon = "gfx/interface/icons/event_icons/event_fire.dds"
@@ -3390,7 +3378,7 @@ eqfm_balkans.122 = { # Brigandage in State
 	flavor = eqfm_balkans.122.f
 
 	event_image = {
-		video = "unspecific_vandalized_storefront"
+		video = "rp1_social_banditry"
 	}
 
 	icon = "gfx/interface/icons/event_icons/event_fire.dds"
@@ -3481,7 +3469,7 @@ eqfm_balkans.123 = { # Port Burned in State
 	flavor = eqfm_balkans.123.f
 
 	event_image = {
-		video = "unspecific_vandalized_storefront"
+		video = "ip3_angry_mob_raiding_minorities"
 	}
 
 	icon = "gfx/interface/icons/event_icons/event_fire.dds"
@@ -3601,7 +3589,7 @@ eqfm_balkans.124 = { # Blood Libel
 	flavor = eqfm_balkans.124.f
 
 	event_image = {
-		video = "votp_agitator_speaking"
+		video = "ip3_angry_mob_raiding_minorities"
 	}
 
 	icon = "gfx/interface/icons/event_icons/event_skull.dds"
@@ -3622,6 +3610,7 @@ eqfm_balkans.124 = { # Blood Libel
 					has_pop_religion = oriental_orthodox
 					has_pop_religion = jewish
 				}
+				pop_acceptance < 60
 			}
 		}
 	}
@@ -4304,7 +4293,7 @@ eqfm_balkans.131 = { # Inter-faith Dialogue
 	flavor = eqfm_balkans.131.f
 
 	event_image = {
-		video = "ep1_power_blocs"
+		video = "africa_diplomats_negotiating"
 	}
 
 	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
@@ -4621,7 +4610,7 @@ eqfm_balkans.141 = { # Crowds Burn Administrative Palace
 	flavor = eqfm_balkans.141.f
 	
 	event_image = {
-		video = "unspecific_vandalized_storefront"
+		video = "ip3_angry_mob_raiding_minorities"
 	}
 	
 	icon = "gfx/interface/icons/event_icons/event_fire.dds"
@@ -4827,7 +4816,7 @@ eqfm_balkans.143 = { # Ulema Mobilizes the Faithful
 	flavor = eqfm_balkans.143.f
 	
 	event_image = {
-		video = "votp_agitator_speaking"
+		video = "ip3_agitator_reading_manifesto"
 	}
 	
 	icon = "gfx/interface/icons/event_icons/event_fire.dds"
@@ -5270,7 +5259,7 @@ eqfm_balkans.148 = { # Massacre in State
 	flavor = eqfm_balkans.148.f
 	
 	event_image = {
-		video = "middleeast_police_breaking_door"
+		video = "ip3_police_raid"
 	}
 	
 	icon = "gfx/interface/icons/event_icons/event_skull.dds"
