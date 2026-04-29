@@ -208,11 +208,11 @@ New Additions:
 New Additions:
 - Added a game rule to change the Ottoman map color to red
 
-Balancing/Adjustments:
-- ##
-
 Fixes:
-- ##Added missing loc for mgrbfm_egypt.111
+- ##Added missing loc for mgrbfm_egypt.008
+- ##Added missing loc for mgrbfm_egypt.110/111
+- ##Added missing loc for mgrbfm_egypt.20x
+- ##Added missing loc for mgrbfm_egypt.21x
 
 
 ####---------- Published Updates ----------####
