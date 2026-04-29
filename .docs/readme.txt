@@ -184,7 +184,16 @@ bulfm_: Once contained content for Bulgaria; expanded into balkfm_
 
  Last Words by Koert Davidse: vimeo . com / 88034680
 
+
 ####---------- Planned Updates ----------####
+--Update TEMPLATE--
+New Additions:
+-##
+Balancing/Adjustments:
+-##
+Fixes:
+-##
+
 --Update 4.1.0--
 New Additions:
 - ##New journal "The Nature of Yugoslavia" Promote a Centralized or Federalist approach to the Yugoslav state
@@ -195,19 +204,25 @@ New Additions:
 
 
 ####---------- Published Updates ----------####
---Update 4.0.0-- **Major Update**
-V3 Patch 1.13 Related Changes:
-- Replaced most scopes to sr: with geographic region triggers
-- Updated journals to comply with new pinning params and widget injection
-- History-generated haracters now have defined home states
-- Updated DLC icon
 
+--Update 4.0.1--
+Balancing/Adjustments:
+- Reworked modifiers for Greek language outcomes
+- Blocked Abdulmecid getting put into a regency if he's still a minor
+
+Fixes:
+- Added missing name loc for Djemal
+- Fixed turkfm_sick_man.019 making Abdulmecid ruler just to immediately yeet him out the window
+
+
+--Update 4.0.0-- **Major Update**
 New Additions (grefm):
 - New journal entry "Metaxism" representing the emergence of anti-monarchism and authoritarianism in Greece
 - Added Metaxism ideology for Greece's version of Fascist-related thought
 - Added Greece as a formable country
 - Added several geographic regions to support Megali Idea content
 - Ludwig von Armansperg starts as the ruler of Greece with Otto in a regency
+- Added additional dynamic hub names for Constantinople
 
 New Additions (balkfm):
 - Rebuilt "Nacertanije" into a global journal "The Yugoslav Project"
@@ -220,10 +235,10 @@ New Additions (balkfm):
 - BOS starts with a claim on Montenegro
 
 New Additions (turkfm):
-- ##New journal "The Young Turks" representing an alternative fail state to the Tanzimat
+- New journal "The Young Turks" representing an alternative fail state to the Tanzimat
 - New journal "Restoring Anadolu" in the event post-Ottoman TUR does not control all of Anatolia
 - New journal chain "The Rampaging Wolf" for post-Ottoman Turkish expansion
-- ##New journal "The Armenian Expulsions"
+- New journal "The Armenian Expulsions"
 - New building "Avret Pazarları" (Slave Market of Constantinople) with scripting for the Carcassian slave trade
 - New amendments "Çiftlik" for Land Reform and "Esir Pazari" for Slavery
 - New "Young Turks" political movement with "İttihadism" and "Kemalism" ideologies
@@ -263,6 +278,13 @@ Mod Integrations:
 -- Added multiple flags for Moldavia and Wallachia
 -- Added DNA for Alexandru Ioan Cuza, Alexandru Ghica, and Carol and Ferdinand Hohenzollern
 
+V3 Patch 1.13 Related Changes:
+- Replaced most scopes to sr: with geographic region triggers
+- Updated journals to comply with new pinning params and widget injection
+- History-generated haracters now have defined home states
+- Updated DLC icon
+- Removed usage of Memento Mori variable
+
 Compatibility:
 - GotB now has built in compatibility with Morgenröte: Dawn of Flavor:
 -- The "Greek Cultural Roots" journal now supports Morgenröte's archaeology mechanics (Greek tags)
@@ -270,6 +292,7 @@ Compatibility:
 -- The "14 Regions of Constantinople" now supports Morgenröte's Architect mechanics (Byzantium)
 
 Balancing/Adjustments:
+- Updated several event videos to use IP3/IP4 gfx
 - Merged all Ottoman Legacy sub-journals into a singular journal
 - Merged all Venizelism sub-journals into the primary journal
 - Merged all Tanzimat Reform sub-journals into a singular journal
@@ -279,6 +302,7 @@ Balancing/Adjustments:
 - je_balkfm_mon_military_reform now requires 10 military units and an Arms Industries building
 - Refactored multiple Romanian characters to use templates
 - Both TRI's and FZN's starting journals will activate after their war is resolved
+- Reworked wargoal enforcement detection for Balkan Situation escalation/deescalation
 - Merged je_eqfm_senusiyya_main and je_eqfm_senusiyya_sub into je_eqfm_senusiyya
 - Added 6 Sulfur resources to Kosovo
 - Added Silk Plantation resource to Bosnia
@@ -297,7 +321,7 @@ Balancing/Adjustments:
 Fixes:
 - Large localization pass to fix typos, formatting, puncutation, etc.
 - Reworked script handling the creation and tracking of Serbian dynastic heads
-- Removed usage of Memento Mori variable
+- Updated Balkan situation localization to better indicate sources of escalation/descalation
 - Fixed a case where subjects could get stuck as Eyalets
 - Building the Biljarda is now mandatory for the "Prince-Bishopric" journal if IP3 is active
 - Declaring the Principality of Montenegro is now mandatory if IP3 is active
@@ -323,6 +347,7 @@ Fixes:
 - Refactored geographic_region_balkan_situation to geographic_region_rumelia
 - Fixed confusing localization in Greek king election buttons
 - Updated progress bars to use CMF's colored progress bars
+- Fixed an effect sequencing mistake that would jam the Piracy expedition progress
 - Fixed several scoping issues in Piracy events
 - Fixed an issue were several Piracy events could fire despite there being no expedition
 - Fixed eqfm_pirates.030 being very eager to let you know that pirates have been spotted
@@ -331,12 +356,25 @@ Fixes:
 - Pirate raid events will only occur if the involved country has a coastal state
 - "Brigands Raid Again" event will only occur if the affected country has more than one state
 - "Canonize Ancestor" scripted button is now correctly visible in je_balkfm_mon_prince_bishopric
-- Added missing effects and localization to grefm_greece.047
+- Added missing effects and localization to grefm_greece.047/048
+- Graia now has the correct map color instead of neon pink
+- Fixed a trigger fail in the Megali Idea journal that could brick the journal
+- The Mehmed II death event no longer domes Abdulmecid instead
+- Reworked the trigger block for eqfm_pirates.015
+- eqfm_karadag.022/023 now use the correct event icon
+- Fixed broken scopes in eqfm_balkans.103 and .124
 
 Notes:
+- [!!] The "Young Turks," "Amrenian Expulsions, and "Metaxism" journals are in a beta state, please report issues to the Steam page/Discord
 - The journal entry "The Teachings of al-Sanusi" has been temporarily disabled; this needs a few more weeks of work to be ready
 - Egypt and Fezzan are now in scope- Arabian Peninsular, Pan-Arab, and Muslim content remain *out of scope*
 - Libyan and Tunisian content split from "turkfm" into "mgrbfm"
+
+
+--Update 3.4.12--
+Fixes:
+- BOS and TUR now start with Debt Slavery
+- Added scripted button to form BYZ to the Megali Idea Journal
 
 
 --Update 3.4.11--
