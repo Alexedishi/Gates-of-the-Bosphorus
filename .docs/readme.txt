@@ -206,7 +206,7 @@ New Additions:
 
 --Update 4.0.2--
 New Additions:
-- ##Added a game rule to turn the Ottomans a red color
+- Added a game rule to change the Ottoman map color to red
 
 Balancing/Adjustments:
 - ##
