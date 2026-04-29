@@ -194,6 +194,7 @@ Balancing/Adjustments:
 Fixes:
 -##
 
+
 --Update 4.1.0--
 New Additions:
 - ##New journal "The Nature of Yugoslavia" Promote a Centralized or Federalist approach to the Yugoslav state
@@ -201,6 +202,17 @@ New Additions:
 - ##New journal "The Foundation of the State" representing the multiple outcomes of Turkish identity after the failure of the Tanzimat
 - ##Added several new events and interactions to the "Power Keg of Europe" global journal
 - ##Rebuilt "The Teachings of al-Sanusi" into a global journal with new mechanics, events, and modifiers
+
+
+--Update 4.0.2--
+New Additions:
+- ##Added a game rule to turn the Ottomans a red color
+
+Balancing/Adjustments:
+- ##
+
+Fixes:
+- ##Added missing loc for mgrbfm_egypt.111
 
 
 ####---------- Published Updates ----------####
