@@ -208,6 +208,8 @@ New Additions:
 --Update 4.0.1--
 Balancing/Adjustments:
 - Reworked modifiers for Greek language outcomes
+- Blocked Abdulmecid getting put into a regency if he's still a minor
+
 Fixes:
 - Added missing name loc for Djemal
 - Fixed turkfm_sick_man.019 making Abdulmecid ruler just to immediately yeet him out the window
