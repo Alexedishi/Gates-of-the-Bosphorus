@@ -884,12 +884,14 @@ turkfm_sick_man.018 = { # A Consuming Sickness
 		name = turkfm_sick_man.018.a
 		default_option = yes
 		show_as_tooltip = {
-			ruler = {
+			scope:turkfm_ruler_scope = {
 				add_trait = gbbf_trait_tuberculosis
+				hidden_effect = {
+					set_character_immortal = yes
+				}
 			}
 		}
 	}
-
 }
 
 turkfm_sick_man.019 = { # The Ascent of Abdulmecid
@@ -924,6 +926,7 @@ turkfm_sick_man.019 = { # The Ascent of Abdulmecid
 		heir ?= {
 			save_scope_as = turkfm_heir_scope
 		}
+		set_variable = com_no_regencies
 	}
 
 	cancellation_trigger = {
@@ -937,10 +940,16 @@ turkfm_sick_man.019 = { # The Ascent of Abdulmecid
 	option = {
 		name = turkfm_sick_man.019.a
 		default_option = yes
-		heir ?= {
+		scope:turkfm_heir_scope ?= {
+			hidden_effect = {
+				set_as_adult = yes
+			}
 			set_character_as_ruler = yes
 		}
-		ruler ?= {
+		scope:turkfm_ruler_scope ?= {
+			hidden_effect = {
+				set_character_immortal = no
+			}
 			kill_character = yes
 		}
 		hidden_effect = {
@@ -952,10 +961,16 @@ turkfm_sick_man.019 = { # The Ascent of Abdulmecid
 	
 	option = {
 		name = turkfm_sick_man.019.b
-		heir ?= {
+		scope:turkfm_heir_scope ?= {
+			hidden_effect = {
+				set_as_adult = yes
+			}
 			set_character_as_ruler = yes
 		}
-		ruler ?= {
+		scope:turkfm_ruler_scope ?= {
+			hidden_effect = {
+				set_character_immortal = no
+			}
 			kill_character = yes
 		}
 		hidden_effect = {
@@ -1020,5 +1035,9 @@ turkfm_sick_man.019 = { # The Ascent of Abdulmecid
 			}
 		}
 		set_global_variable = turkfm_tanzimat_started
+	}
+	
+	after = {
+		remove_variable = com_no_regencies
 	}
 }
