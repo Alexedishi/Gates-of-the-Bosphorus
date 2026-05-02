@@ -218,7 +218,7 @@ je_grefm_bavarocracy_ip3 = {
 		name = "com_journal_entry_progress_bars"
 		container = "com_custom_widget_container_scripted_progress_bars"
 	}
-
+	
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
 		set_variable = {
@@ -742,21 +742,14 @@ je_grefm_venizelism = {
 
 	is_shown_when_inactive = {
 		c:GRE ?= this
-		grefm_venizelos_has_landed_trigger = yes
+		has_technology_researched = pan-nationalism
 	}
 
 	possible = {
 		custom_tooltip = {
 			text = je_grefm_venizelism_possible
-			OR = {
-				ig:ig_intelligentsia = {
-					leader = {
-						has_template = grefm_venizelos_eleftherios
-					}
-				}
-				any_scope_character = {
-					has_template = grefm_venizelos_eleftherios
-				}
+			any_scope_character = {
+				has_template = grefm_venizelos_eleftherios
 			}
 		}
 		NOT = {
@@ -766,7 +759,6 @@ je_grefm_venizelism = {
 
 	immediate = {
 		gbbf_assign_dlc_icon_effect = yes
-		trigger_event = grefm_greece.049
 		if = {
 			limit = {
 				NOT = {
@@ -778,9 +770,6 @@ je_grefm_venizelism = {
 			create_political_movement = {
 				type = movement_gbbf_venizelist
 			}
-		}
-		grefm_add_venizelism_agenda = {
-			type = identity
 		}
 		if = {
 			limit = {
@@ -809,6 +798,7 @@ je_grefm_venizelism = {
 				}
 			}
 		}
+		trigger_event = grefm_greece.049
 	}
 
 	modifiers_while_active = {
@@ -816,6 +806,24 @@ je_grefm_venizelism = {
 	}
 
 	complete = {
+		##
+		trigger_if = {
+			limit = {
+				scope:journal_entry.journal_entry_age <= {
+					value = 120
+					if = {
+						limit = {
+							morgenrote_is_active = yes
+						}
+						add = 60
+					}
+				}
+			}
+			custom_tooltip = {
+				text = grefm_venizelism_assembly_complete
+				always = no
+			}
+		}
 		## Constitution Agenda
 		trigger_if = {
 			limit = {
@@ -996,6 +1004,7 @@ je_grefm_venizelism = {
 			if = {
 				limit = {
 					has_variable = grefm_venizelism_identity_agenda
+					scope:journal_entry.journal_entry_age > 150
 					has_variable = grefm_culture_var
 					any_scope_state = {
 						count >= 7

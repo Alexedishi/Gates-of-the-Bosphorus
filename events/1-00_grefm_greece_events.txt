@@ -74,10 +74,10 @@ namespace = grefm_greece
 #	043 - ##
 #	044 - ##
 #	045 - A Cretan Champion
-#	046 - A Cretan Champion (Alternate)
-#	047 - ##A Loyalist Victory
-#	048 - ##The Goudi Coup
-#	049 - ##The Rise of the Ethnarch
+#	046 - ##
+#	047 - A Loyalist Victory
+#	048 - The Goudi Coup
+#	049 - The Rise of the Ethnarch
 
 #050-059 - The Rise of Venizelos Support Events (IP4 Imported)
 #	050 - General Accused of Joining Plot
@@ -93,20 +93,20 @@ namespace = grefm_greece
 
 #060-069 - Venizelism Narrative Events
 #	060 - The Nature of the National Assembly
-#	061 - ##Rejuvenating the State
-#	062 - ##Reorganizing the Military
-#	063 - ##Advancing Society
-#	064 - ##The Ignorant Masses
-#	065 - ##Sponsoring the Arts
-#	069 - ##The Greek State Resurgent
+#	061 - Rejuvenating the State
+#	062 - Reorganizing the Military
+#	063 - Advancing Society
+#	064 - The Ignorant Masses
+#	065 - Sponsoring the Arts
+#	069 - The Greek State Resurgent
 
 #070-079 - Venizelism Reform Completion Events
-#	070 - ##A True Constitution
-#	071 - ##A Competent Bureaucracy
-#	072 - ##A Formidable Military
-#	073 - ##A Modern Society
-#	074 - ##An Educated Populace
-#	075 - ##A Refined Culture
+#	070 - A True Constitution
+#	071 - A Competent Bureaucracy
+#	072 - A Formidable Military
+#	073 - A Modern Society
+#	074 - An Educated Populace
+#	075 - A Refined Culture
 
 #080-089 - The Age of Metaxas
 #	080 - ##The Third Greece
@@ -3068,7 +3068,7 @@ grefm_greece.045 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
-	duration = 3
+	duration = 2
 	dlc = dlc_grefm
 
 	title = grefm_greece.045.t
@@ -3086,21 +3086,30 @@ grefm_greece.045 = {
 
 	trigger = {
 		has_variable = grefm_goudi_coup_var
-		var:grefm_goudi_coup_var >= 70
-		NOT = {
-			has_global_variable = grefm_venizelos_has_landed
+		OR = {
+			AND = {
+				var:grefm_goudi_coup_var >= 70
+				NOT = {
+					has_global_variable = grefm_venizelos_has_landed
+				}
+			}
+			AND = {
+				var:grefm_goudi_coup_var >= 50
+				any_scope_character = {
+					has_template = grefm_venizelos_eleftherios
+				}
+			}
 		}
 	}
 
 	immediate = {
-		set_global_variable = grefm_venizelos_has_landed
 		if = {
 			limit = {
-				any_character_in_void = {
+				any_scope_character = {
 					has_template = grefm_venizelos_eleftherios
 				}
 			}
-			random_character_in_void = {
+			random_scope_character = {
 				limit = {
 					has_template = grefm_venizelos_eleftherios
 				}
@@ -3110,10 +3119,6 @@ grefm_greece.045 = {
 		else = {
 			create_character = {
 				template = grefm_venizelos_eleftherios
-				on_created = {
-					set_character_immortal = yes
-					place_character_in_void = 240
-				}
 			}
 			random_character_in_void = {
 				limit = {
@@ -3132,7 +3137,13 @@ grefm_greece.045 = {
 		name = grefm_greece.045.a
 		default_option = yes
 		scope:grefm_venizelos_scope = {
-			gbbf_free_from_void_leader = yes
+			if = {
+				limit = {
+					is_interest_group_leader = no
+				}
+				set_as_interest_group_leader = yes
+			}
+			add_trait = gbbf_trait_ethnarch
 		}
 		grefm_remove_goudi_progress_effect = {
 			value = 20
@@ -3161,100 +3172,7 @@ grefm_greece.045 = {
 			}
 		}
 		scope:grefm_venizelos_scope = {
-			gbbf_free_from_void_agitator = yes
-		}
-	}
-}
-
-grefm_greece.046 = {
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/event_icons/event_venizelos.dds"
-	duration = 3
-	dlc = dlc_grefm
-
-	title = grefm_greece.046.t
-	desc = grefm_greece.046.d
-	flavor = grefm_greece.046.f
-
-	event_image = {
-		video = "ip3_agitator_reading_manifesto"
-	}
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	trigger = {
-		NOR = {
-			has_global_variable = grefm_venizelos_has_landed
-			has_journal_entry = je_grefm_the_military_league
-		}
-		has_journal_entry = je_grefm_megali_idea
-		has_technology_researched = pan-nationalism
-		has_technology_researched = political_agitation
-		capital = {
-			state_region = s:STATE_ATTICA
-		}
-	}
-
-	immediate = {
-		set_global_variable = grefm_venizelos_has_landed
-		if = {
-			limit = {
-				any_character_in_void = {
-					has_template = grefm_venizelos_eleftherios
-				}
-			}
-			random_character_in_void = {
-				limit = {
-					has_template = grefm_venizelos_eleftherios
-				}
-				save_scope_as = grefm_venizelos_scope
-			}
-		}
-		else = {
-			create_character = {
-				template = grefm_venizelos_eleftherios
-				on_created = {
-					set_character_immortal = yes
-					place_character_in_void = 240
-				}
-			}
-			random_character_in_void = {
-				limit = {
-					has_template = grefm_venizelos_eleftherios
-				}
-				save_scope_as = grefm_venizelos_scope
-			}
-		}
-	}
-
-	option = {
-		name = grefm_greece.046.a
-		default_option = yes
-		scope:grefm_venizelos_scope = {
-			gbbf_free_from_void_leader = yes
-		}
-		set_variable = grefm_intercontinental_ballistic_venizelos_var
-	}
-
-	option = {
-		name = grefm_greece.046.b
-		add_radicals = {
-			culture = cu:greek
-			value = medium_radicals
-		}
-		if = {
-			limit = {
-				empty_agitator_slots < 1
-			}
-			hidden_effect = {
-				add_modifier = {
-					name = modifier_gbbf_extra_agitator_1
-					months = gbbf_long_modifier_time
-				}
-			}
-		}
-		scope:grefm_venizelos_scope = {
-			gbbf_free_from_void_agitator = yes
+			add_character_role = agitator
 		}
 	}
 }
@@ -3280,7 +3198,6 @@ grefm_greece.047 = {
 	}
 
 	immediate = {
-	
 	}
 
 	option = {
@@ -3409,9 +3326,16 @@ grefm_greece.049 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
+		# triggered by je_grefm_venizelism
 	}
 
 	immediate = {
+		random_scope_character = {
+			limit = {
+				has_template = grefm_venizelos_eleftherios
+			}
+			save_scope_as = grefm_venizelos_scope
+		}
 	}
 
 	option = {
@@ -3420,6 +3344,9 @@ grefm_greece.049 = {
 		trigger_event = {
 			id = grefm_greece.060
 			days = 30
+		}
+		grefm_add_venizelism_agenda = {
+			type = identity
 		}
 	}
 }
@@ -4412,7 +4339,6 @@ grefm_greece.060 = {
 					days = 150
 				}
 			}
-			
 		}
 	}
 }
@@ -4567,7 +4493,7 @@ grefm_greece.065 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	duration = 3
+	duration = 2
 	dlc = dlc_grefm
 	
 	title = grefm_greece.065.t
