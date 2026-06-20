@@ -3002,6 +3002,12 @@ grefm_greece.041 = {
 		name = grefm_greece.041.a
 		default_option = yes
 		scope:armed_forces_scope = {
+			add_modifier = {
+				name = we_are_listened_to
+				months = 24
+			}
+		}
+		scope:armed_forces_leader_scope = {
 			if = {
 				limit = {
 					NOT = {
@@ -3010,12 +3016,6 @@ grefm_greece.041 = {
 				}
 				set_ideology = ideology:ideology_jingoist_leader
 				set_variable = grefm_goudi_participant_var
-			}
-			interest_group = {
-				add_modifier = {
-					name = we_are_listened_to
-					months = 24
-				}
 			}
 		}
 		grefm_add_goudi_progress_effect = {
@@ -3439,13 +3439,17 @@ grefm_greece.050 = {
 					limit = {
 						is_same_interest_group_type = scope:grefm_goudi_ig_scope
 					}
-					grefm_remove_goudi_progress_effect = {
-						value = 10
+					root = {
+						grefm_remove_goudi_progress_effect = {
+							value = 10
+						}
 					}
 				}
 				else = {
-					grefm_add_goudi_progress_effect = {
-						value = 10
+					root = {
+						grefm_add_goudi_progress_effect = {
+							value = 10
+						}
 					}
 				}
 			}
@@ -3466,13 +3470,17 @@ grefm_greece.050 = {
 						is_same_interest_group_type = scope:grefm_goudi_ig_scope
 					}
 				}
-				grefm_add_goudi_progress_effect = {
-					value = 10
+				root = {
+					grefm_add_goudi_progress_effect = {
+						value = 10
+					}
 				}
 			}
 			else = {
-				grefm_remove_goudi_progress_effect = {
-					value = 10
+				root = {
+					grefm_remove_goudi_progress_effect = {
+						value = 10
+					}
 				}
 			}
 		}
@@ -3519,12 +3527,13 @@ grefm_greece.051 = {
 			limit = {
 				any_member = {
 					is_in_government = no
+					scope:grefm_goudi_ig_scope ?= this
 				}
-				scope:grefm_goudi_ig_scope ?= this
 			}
 			random_member = {
 				limit = {
 					is_in_government = no
+					scope:grefm_goudi_ig_scope ?= this
 				}
 				save_scope_as = conflicted_loyalty_ig
 			}
@@ -5377,7 +5386,7 @@ grefm_greece.084 = {
 				}
 			}
 			add_modifier = {
-				name = modifier_grefm_crushed_opposition_country
+				name = modifier_grefm_crushed_opposition_ig
 				months = gbbf_long_modifier_time
 				is_decaying = yes
 			}
@@ -7187,22 +7196,22 @@ grefm_greece.121 = {
 	type = country_event
 	placement = scope:university_state
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-
+	
 	title = grefm_greece.121.t
 	desc = grefm_greece.121.d
 	flavor = grefm_greece.121.f
-
+	
 	gui_window = event_window_1char_tabloid
-
+	
 	left_icon = scope:university_benefactor
-
+	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
-
+	
 	duration = 3
-
+	
 	dlc = dlc_grefm
-
+	
 	trigger = {
 		morgenrote_is_active = no
 		NOT = {
@@ -7219,7 +7228,7 @@ grefm_greece.121 = {
 			}
 		}
 	}
-
+	
 	immediate = {
 		ruler = {
 			save_scope_as = university_benefactor
@@ -7229,7 +7238,7 @@ grefm_greece.121 = {
 		}
 		set_variable = grefm_athens_university_considered
 	}
-
+	
 	option = {
 		name = grefm_greece.121.a
 		default_option = yes
@@ -7245,18 +7254,19 @@ grefm_greece.121 = {
 			multiplier = money_amount_multiplier_small
 		}
 	}
-
+	
 	option = {
 		name = grefm_greece.121.b
 		scope:university_benefactor = {
-			add_modifier = {
-				name = modifier_grefm_blocked_funding_university
-				months = gbbf_long_modifier_time
-				is_decaying = yes
+			interest_group = {
+				add_modifier = {
+					name = modifier_grefm_blocked_funding_university
+					months = gbbf_long_modifier_time
+					is_decaying = yes
+				}
 			}
 		}
 	}
-
 }
 
 grefm_greece.122 = {
