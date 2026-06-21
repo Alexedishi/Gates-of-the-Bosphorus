@@ -172,19 +172,6 @@ balkfm_bulgaria.001 = { # The Golden Lion Awakens
 				days = 180
 			}
 		}
-		hidden_effect = {
-			if = {
-				limit = {
-					NOT = {
-						has_variable = eocfm_is_autocephalous
-					}
-				}
-				trigger_event = {
-					id = balkfm_bulgaria.160
-					days = 240
-				}
-			}
-		}
 	}
 
 }
@@ -700,10 +687,10 @@ balkfm_bulgaria.008 = { # Mandate Secured
 		default_option = yes
 		scope:balkfm_alex_scope = {
 			gbbf_free_from_void_ruler = yes
-			add_modifier = {
-				name = modifier_balkfm_throne_secured
-				months = gbbf_normal_modifier_time
-			}
+		}
+		add_modifier = {
+			name = modifier_balkfm_throne_secured
+			months = gbbf_normal_modifier_time
 		}
 	}
 
@@ -2332,84 +2319,6 @@ balkfm_bulgaria.032 = { # Spring in Constantinople
 
 }
 
-#### BULGARIAN ORTHODOX CHURCH EVENTS ####
-balkfm_bulgaria.160 = { # Threats of Schism
-	type = country_event
-	placement = root
-
-	title = balkfm_bulgaria.160.t
-	desc = balkfm_bulgaria.160.d
-	flavor = balkfm_bulgaria.160.f
-
-	event_image = {
-		video = "southamerica_christianity"
-	}
-
-	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
-
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-	}
-
-	immediate = {
-		# triggered by balkfm_bulgaria.001
-	}
-
-	option = { # Declare Autocephaly
-		name = balkfm_bulgaria.160.a
-		default_option = yes
-		add_modifier = modifier_eocfm_schismatic
-		every_country = {
-			limit = {
-				has_variable = eocfm_is_autocephalous
-			}
-			change_relations = {
-				country = PREV
-				value = -25
-			}
-		}
-		if = {
-			limit = {
-				NOT = {
-					has_variable = eocfm_schism_var
-				}
-			}
-			set_variable = {
-				name = eocfm_schism_var
-				value = 0
-			}
-		}
-	}
-
-	option = { # Be a Soyboy
-		name = balkfm_bulgaria.160.b
-		add_modifier = {
-			name = modifier_eocfm_autocephaly_abandoned
-			months = gbbf_long_modifier_time
-		}
-		add_radicals = {
-			religion = rel:orthodox
-			value = medium_radicals
-		}
-		every_country = {
-			limit = {
-				has_variable = eocfm_is_autocephalous
-			}
-			change_relations = {
-				country = PREV
-				value = 25
-			}
-		}
-		remove_variable = eocfm_schism_var
-	}
-
-}
-
 balkfm_bulgaria.161 = { # Royal Wedding; this is a chopped up version of PDX's vanilla wedding event
 	type = country_event
 	placement = root
@@ -2754,86 +2663,7 @@ balkfm_bulgaria.163 = { # An Orthodox Heir
 
 }
 
-balkfm_bulgaria.164 = { # Restoring the Exarchate
-	type = country_event
-	placement = root
-
-	title = balkfm_bulgaria.164.t
-	desc = balkfm_bulgaria.164.d
-	flavor = balkfm_bulgaria.164.f
-
-	event_image = {
-		video = "africa_leader_arguing"
-	}
-
-	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
-
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-		# triggered by je_balkfm_bul_bulgarian_exarchate
-	}
-
-	immediate = {
-	}
-
-	option = {
-		name = balkfm_bulgaria.164.a
-		default_option = yes
-		show_as_tooltip = {
-			add_modifier = modifier_balkfm_schismatic_efforts
-		}
-	}
-
-}
-
-balkfm_bulgaria.169 = { # The Exarchate of Bulgaria
-	type = country_event
-	placement = root
-
-	title = balkfm_bulgaria.169.t
-	desc = balkfm_bulgaria.169.d
-	flavor = balkfm_bulgaria.169.f
-
-	event_image = {
-		video = "southamerica_christianity"
-	}
-
-	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
-
-	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
-		# triggered by je_balkfm_bul_bulgarian_exarchate
-	}
-
-	immediate = {
-		remove_variable = eocfm_schism_var
-		set_variable = eocfm_is_autocephalous
-		eocfm_schism_cleanup_effect = yes
-	}
-
-	option = {
-		name = balkfm_bulgaria.169.a
-		default_option = yes
-		add_modifier = {
-			name = modifier_eocfm_autocephaly_granted
-			months = gbbf_long_modifier_time
-		}
-	}
-
-}
-
 #### BULGARIAN REVIVAL EVENTS ####
-
 balkfm_bulgaria.200 = { # Insurgency in Niš
 	type = country_event
 	placement = root
@@ -3309,9 +3139,6 @@ balkfm_bulgaria.209 = { # Securing our Sovereignty
 
 	option = { # Emmanuel Bogoridi, grandson of Stefanos Bogoridi
 		name = balkfm_bulgaria.209.2
-		trigger = {
-			has_variable = eocfm_is_autocephalous
-		}
 		scope:balkfm_bogoridi_scope = {
 			gbbf_free_from_void_ruler = yes
 		}
@@ -3320,9 +3147,6 @@ balkfm_bulgaria.209 = { # Securing our Sovereignty
 
 	option = { # Alexander Exarch, prominent Bulgarian revivalist
 		name = balkfm_bulgaria.209.3
-		trigger = {
-			has_technology_researched = nationalism
-		}
 		scope:balkfm_exarch_scope = {
 			gbbf_free_from_void_ruler = yes
 		}
