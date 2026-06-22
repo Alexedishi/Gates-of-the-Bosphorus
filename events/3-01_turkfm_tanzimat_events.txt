@@ -1988,7 +1988,48 @@ turkfm_tanzimat.200 = {
 			limit = {
 				is_political_movement_type = movement_gbbf_young_turks
 			}
-			save_scope_as = young_turks_scope
+			save_scope_as = young_turks_movement_scope
+		}
+		random_country = {
+			limit = {
+				is_in_geographic_region = geographic_region_europe
+				country_rank >= rank_value:great_power
+				relations:root <= relations_threshold:neutral
+				NOT = {
+					has_law = law_type:law_outlawed_dissent
+				}
+			}
+			save_scope_as = young_turks_host_scope
+		}
+		if = {
+			limit = {
+				NOT = {
+					exists = scope:young_turks_host_scope
+				}
+			}
+			random_country = {
+				limit = {
+					is_in_geographic_region = geographic_region_europe
+					country_rank >= rank_value:minor_power
+					NOT = {
+						has_law = law_type:law_outlawed_dissent
+					}
+				}
+				save_scope_as = young_turks_host_scope
+			}
+		}
+		create_character = {
+			template = turkfm_sojliu_ibrahim
+			on_created = {
+				save_scope_as = young_turks_leader_scope
+				place_character_in_void = 12
+			}
+		}
+		create_character = {
+			template = turkfm_sabahaddin_mehmed
+			on_created = {
+				save_scope_as = turkfm_sabahaddin_scope
+			}
 		}
 	}
 
@@ -2030,5 +2071,9 @@ turkfm_tanzimat.201 = {
 	option = {
 		name = turkfm_tanzimat.201.a
 		default_option = yes
+	}
+	
+	option = {
+		name = turkfm_tanzimat.201.b
 	}
 }
