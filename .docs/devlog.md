@@ -198,7 +198,7 @@ Fixes:
 -##
 
 
---Update 4.1.0--
+--Update 4.X.0--
 New Additions:
 - ##New journal "The Nature of Yugoslavia" Promote a Centralized or Federalist approach to the Yugoslav state
 - ##Added "Yugoslav Integralist" ideologies and movement representing the Integralist movement in Yugoslavia
@@ -210,6 +210,22 @@ Unfinished Content:
 - The Young Turks
 - Amrenian Expulsions
 - Metaxism
+
+
+
+
+
+
+
+
+--Update 4.1.0--
+New Additions:
+- ##Reworked the "Powderkeg of Europe" journal to include a custom widget and several new events
+- ##Fully Implemented the Young Turks content with varying outcomes for the Republican movements in the Ottoman Empire
+
+
+
+
 
 ####---------- Published Updates ----------####
 --Update 4.0.7--
