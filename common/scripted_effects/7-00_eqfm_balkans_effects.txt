@@ -62,13 +62,13 @@ eqfm_validate_balkan_powder_keg_involvement_effect = {
 	every_country = {
 		limit = {
 			OR = {
-				is_involved_in_journal_entry = je_eqfm_balkan_situation
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 				eqfm_balkans_should_be_involved_trigger = yes
 			}
 		}
 		if = {
 			limit = {
-				is_involved_in_journal_entry = je_eqfm_balkan_situation
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 				eqfm_balkans_should_be_involved_trigger = no
 			}
 			global_var:eqfm_balkan_situation = {
@@ -78,7 +78,7 @@ eqfm_validate_balkan_powder_keg_involvement_effect = {
 		if = {
 			limit = {
 				NOT = {
-					is_involved_in_journal_entry = je_eqfm_balkan_situation
+					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 				}
 				eqfm_balkans_should_be_involved_trigger = yes
 			}
@@ -147,6 +147,17 @@ eqfm_calculate_balkan_powder_keg_variables_effect = {
 			value = local_var:eqfm_crisis_duration_local_var
 		}
 	}
+	else = {
+		remove_from_global_variable_map = {
+			name = eqfm_balkan_powder_keg_varmap
+			key = flag:eqfm_balkan_powder_keg_crisis_progress_var
+		}
+		add_to_global_variable_map = {
+			name = eqfm_balkan_powder_keg_varmap
+			key = flag:eqfm_balkan_powder_keg_crisis_progress_var
+			value = 0
+		}
+	}
 	if = {
 		limit = {
 			OR = {
@@ -154,7 +165,7 @@ eqfm_calculate_balkan_powder_keg_variables_effect = {
 				eqfm_crisis_phase_trigger = yes
 			}
 		}
-		eqfm_update_riot_variables = yes
+		eqfm_update_balkan_powder_keg_race_riot_variables_effect = yes
 	}
 }
 
@@ -218,6 +229,17 @@ eqfm_advance_balkan_powder_keg_variables_effect = {
 			value = local_var:eqfm_balkan_powder_keg_crisis_var
 		}
 	}
+	else = {
+		remove_from_global_variable_map = {
+			name = eqfm_balkan_powder_keg_varmap
+			key = flag:eqfm_balkan_powder_keg_crisis_var
+		}
+		add_to_global_variable_map = {
+			name = eqfm_balkan_powder_keg_varmap
+			key = flag:eqfm_balkan_powder_keg_crisis_var
+			value = eqfm_balkan_powder_keg_crisis_max_value
+		}
+	}
 }
 
 eqfm_check_balkan_powder_keg_phase_effect = {
@@ -229,12 +251,11 @@ eqfm_check_balkan_powder_keg_phase_effect = {
 		}
 		every_country = {
 			limit = {
-				is_involved_in_journal_entry = je_eqfm_balkan_situation
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
 			trigger_event = eqfm_balkans.028
 		}
-		eqfm_cleanup_crisis_effect = yes
-		eqfm_force_deconfliction_effect = yes
+		eqfm_force_balkan_powder_keg_deconfliction_phase_effect = yes
 	}
 	# Next, check if either transition value is at maximum
 	else_if = {
@@ -271,7 +292,7 @@ eqfm_check_balkan_powder_keg_phase_effect = {
 				}
 				every_country = {
 					limit = {
-						is_involved_in_journal_entry = je_eqfm_balkan_situation
+						is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 					}
 					post_notification = eqfm_transition_unrest
 				}
@@ -292,7 +313,7 @@ eqfm_check_balkan_powder_keg_phase_effect = {
 				}
 				every_country = {
 					limit = {
-						is_involved_in_journal_entry = je_eqfm_balkan_situation
+						is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 					}
 					post_notification = eqfm_transition_hostility
 				}
@@ -314,7 +335,7 @@ eqfm_check_balkan_powder_keg_phase_effect = {
 				}
 				every_country = {
 					limit = {
-						is_involved_in_journal_entry = je_eqfm_balkan_situation
+						is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 					}
 					post_notification = eqfm_transition_crisis
 				}
@@ -336,7 +357,7 @@ eqfm_check_balkan_powder_keg_phase_effect = {
 				}
 				every_country = {
 					limit = {
-						is_involved_in_journal_entry = je_eqfm_balkan_situation
+						is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 					}
 					post_notification = eqfm_transition_stable
 				}
@@ -355,7 +376,7 @@ eqfm_check_balkan_powder_keg_phase_effect = {
 				}
 				every_country = {
 					limit = {
-						is_involved_in_journal_entry = je_eqfm_balkan_situation
+						is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 					}
 					post_notification = eqfm_averted_crisis
 				}
@@ -366,7 +387,7 @@ eqfm_check_balkan_powder_keg_phase_effect = {
 			else = {
 				every_country = {
 					limit = {
-						is_involved_in_journal_entry = je_eqfm_balkan_situation
+						is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 					}
 					post_notification = eqfm_transition_deconfliction
 				}
@@ -383,7 +404,7 @@ eqfm_check_balkan_powder_keg_phase_effect = {
 		}
 		
 		# Reset progress variables to zero
-		eqfm_reset_powder_keg_phase_progress_effect = yes
+		eqfm_reset_balkan_powder_keg_phase_progress_effect_ = yes
 	}
 	eqfm_update_balkan_powder_keg_modifiers_effect = yes
 }
@@ -594,7 +615,7 @@ eqfm_clear_balkan_powder_keg_modifiers_effect = {
 	}
 }
 
-eqfm_reset_powder_keg_phase_progress_effect = {
+eqfm_reset_balkan_powder_keg_phase_progress_effect_ = {
 	remove_from_global_variable_map = {
 		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_escalation_var
@@ -624,7 +645,7 @@ eqfm_reset_powder_keg_phase_progress_effect = {
 	}
 }
 
-eqfm_powder_keg_event_cooldown_effect = {
+eqfm_balkan_powder_keg_event_cooldown_effect_ = {
 	if = {
 		limit = {
 			OR = {
@@ -661,10 +682,75 @@ eqfm_powder_keg_event_cooldown_effect = {
 	}
 }
 
+eqfm_cleanup_balkan_powder_keg_situation_effect = {
+	remove_global_variable = eqfm_balkan_situation
+	clear_global_variable_map = eqfm_balkan_powder_keg_varmap
+	c:TUR ?= {
+		eqfm_clear_balkan_powder_keg_modifiers_effect = yes
+	}
+}
+
+eqfm_cleanup_local_balkan_powder_keg_content_effect = {
+	if = {
+		limit = {
+			has_diplomatic_pact = {
+				who = c:TUR
+				type = gbbf_accelerate_tensions
+			}
+		}
+		remove_diplomatic_pact = {
+			country = c:TUR
+			type = gbbf_accelerate_tensions
+		}
+	}
+	if = {
+		limit = {
+			has_diplomatic_pact = {
+				who = c:TUR
+				type = gbbf_decelerate_tensions
+			}
+		}
+		remove_diplomatic_pact = {
+			country = c:TUR
+			type = gbbf_decelerate_tensions
+		}
+	}
+	if = {
+		limit = {
+			has_diplomatic_pact = {
+				who = c:TUR
+				type = gbbf_denounce_suzerainty
+			}
+		}
+		remove_diplomatic_pact = {
+			country = c:TUR
+			type = gbbf_denounce_suzerainty
+		}
+	}
+	if = {
+		limit = {
+			has_diplomatic_pact = {
+				who = c:TUR
+				type = gbbf_declare_fealty
+			}
+		}
+		remove_diplomatic_pact = {
+			country = c:TUR
+			type = gbbf_declare_fealty
+		}
+	}
+	if = {
+		limit = {
+			has_modifier = modifier_eqfm_supporting_gunrunners
+		}
+		remove_modifier = modifier_eqfm_supporting_gunrunners
+	}
+}
+
 
 ####---------- Powder Keg Phase Effects ----------####
-eqfm_force_powder_keg_stable_phase_effect = {
-	eqfm_reset_powder_keg_phase_progress_effect = yes
+eqfm_force_balkan_powder_keg_stable_phase_effect = {
+	eqfm_reset_balkan_powder_keg_phase_progress_effect_ = yes
 	remove_from_global_variable_map = {
 		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_phase_var
@@ -674,18 +760,18 @@ eqfm_force_powder_keg_stable_phase_effect = {
 		key = flag:eqfm_balkan_powder_keg_phase_var
 		value = flag:eqfm_stable
 	}
-	eqfm_clear_powder_keg_race_riot_modifiers_effect = yes
+	eqfm_cleanup_balkan_powder_keg_race_riots_effect = yes
 	eqfm_update_balkan_powder_keg_modifiers_effect = yes
 	every_country = {
 		limit = {
-			is_involved_in_journal_entry = je_eqfm_balkan_situation
+			is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 		}
 		post_notification = eqfm_transition_stable
 	}
 }
 
-eqfm_force_powder_keg_unrest_phase_effect = {
-	eqfm_reset_powder_keg_phase_progress_effect = yes
+eqfm_force_balkan_powder_keg_unrest_phase_effect = {
+	eqfm_reset_balkan_powder_keg_phase_progress_effect_ = yes
 	remove_from_global_variable_map = {
 		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_phase_var
@@ -695,18 +781,18 @@ eqfm_force_powder_keg_unrest_phase_effect = {
 		key = flag:eqfm_balkan_powder_keg_phase_var
 		value = flag:eqfm_unrest
 	}
-	eqfm_clear_powder_keg_race_riot_modifiers_effect = yes
+	eqfm_cleanup_balkan_powder_keg_race_riots_effect = yes
 	eqfm_update_balkan_powder_keg_modifiers_effect = yes
 	every_country = {
 		limit = {
-			is_involved_in_journal_entry = je_eqfm_balkan_situation
+			is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 		}
 		post_notification = eqfm_transition_unrest
 	}
 }
 
-eqfm_force_powder_keg_hostility_phase_effect = {
-	eqfm_reset_powder_keg_phase_progress_effect = yes
+eqfm_force_balkan_powder_keg_hostility_phase_effect = {
+	eqfm_reset_balkan_powder_keg_phase_progress_effect_ = yes
 	remove_from_global_variable_map = {
 		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_phase_var
@@ -719,14 +805,14 @@ eqfm_force_powder_keg_hostility_phase_effect = {
 	eqfm_update_balkan_powder_keg_modifiers_effect = yes
 	every_country = {
 		limit = {
-			is_involved_in_journal_entry = je_eqfm_balkan_situation
+			is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 		}
 		post_notification = eqfm_transition_hostility
 	}
 }
 
-eqfm_force_powder_keg_deconfliction_phase_effect = {
-	eqfm_reset_powder_keg_phase_progress_effect = yes
+eqfm_force_balkan_powder_keg_deconfliction_phase_effect = {
+	eqfm_reset_balkan_powder_keg_phase_progress_effect_ = yes
 	remove_from_global_variable_map = {
 		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_phase_var
@@ -736,18 +822,18 @@ eqfm_force_powder_keg_deconfliction_phase_effect = {
 		key = flag:eqfm_balkan_powder_keg_phase_var
 		value = flag:eqfm_deconfliction
 	}
-	eqfm_clear_powder_keg_race_riot_modifiers_effect = yes
+	eqfm_cleanup_balkan_powder_keg_race_riots_effect = yes
 	eqfm_update_balkan_powder_keg_modifiers_effect = yes
 	every_country = {
 		limit = {
-			is_involved_in_journal_entry = je_eqfm_balkan_situation
+			is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 		}
 		post_notification = eqfm_transition_deconfliction
 	}
 }
 
-eqfm_force_powder_keg_crisis_phase_effect = {
-	eqfm_reset_powder_keg_phase_progress_effect = yes
+eqfm_force_balkan_powder_keg_crisis_phase_effect = {
+	eqfm_reset_balkan_powder_keg_phase_progress_effect_ = yes
 	remove_from_global_variable_map = {
 		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_phase_var
@@ -760,7 +846,7 @@ eqfm_force_powder_keg_crisis_phase_effect = {
 	eqfm_update_balkan_powder_keg_modifiers_effect = yes
 	every_country = {
 		limit = {
-			is_involved_in_journal_entry = je_eqfm_balkan_situation
+			is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 		}
 		post_notification = eqfm_transition_crisis
 	}
@@ -768,7 +854,7 @@ eqfm_force_powder_keg_crisis_phase_effect = {
 
 
 ####---------- Powder Keg Race Riot Effects ----------####
-eqfm_update_powder_key_race_riot_variables_effect = {
+eqfm_update_balkan_powder_keg_race_riot_variables_effect = {
 	remove_from_global_variable_map = {
 		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_riot_state_1_var
@@ -865,284 +951,26 @@ eqfm_update_powder_key_race_riot_variables_effect = {
 	}
 }
 
-turkfm_reduce_state_sol_effect = {
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = greek
-			}
-		}
-		add_culture_standard_of_living_modifier = {
-			culture = cu:greek
-			months = gbbf_normal_modifier_time
-			multiplier = -1
-		}
+eqfm_cleanup_balkan_powder_keg_race_riots_effect = {
+	remove_from_global_variable_map = {
+		name = eqfm_balkan_powder_keg_varmap
+		key = flag:eqfm_balkan_powder_keg_riot_state_1_var
 	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = rhomaios
-			}
-		}
-		add_culture_standard_of_living_modifier = {
-			culture = cu:rhomaios
-			months = gbbf_normal_modifier_time
-			multiplier = -1
-		}
+	remove_from_global_variable_map = {
+		name = eqfm_balkan_powder_keg_varmap
+		key = flag:eqfm_balkan_powder_keg_riot_state_2_var
 	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = serb
-			}
-		}
-		add_culture_standard_of_living_modifier = {
-			culture = cu:serb
-			months = gbbf_normal_modifier_time
-			multiplier = -1
-		}
+	remove_from_global_variable_map = {
+		name = eqfm_balkan_powder_keg_varmap
+		key = flag:eqfm_balkan_powder_keg_riot_state_3_var
 	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = bulgarian
+	c:TUR ?= {
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_nationalist_insurrection
 			}
+			remove_modifier = modifier_eqfm_nationalist_insurrection
 		}
-		add_culture_standard_of_living_modifier = {
-			culture = cu:bulgarian
-			months = gbbf_normal_modifier_time
-			multiplier = -1
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = bosniak
-			}
-		}
-		add_culture_standard_of_living_modifier = {
-			culture = cu:bosniak
-			months = gbbf_normal_modifier_time
-			multiplier = -1
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = albanian
-			}
-		}
-		add_culture_standard_of_living_modifier = {
-			culture = cu:albanian
-			months = gbbf_normal_modifier_time
-			multiplier = -1
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = croat
-			}
-		}
-		add_culture_standard_of_living_modifier = {
-			culture = cu:croat
-			months = gbbf_normal_modifier_time
-			multiplier = -1
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = slovene
-			}
-		}
-		add_culture_standard_of_living_modifier = {
-			culture = cu:croat
-			months = gbbf_normal_modifier_time
-			multiplier = -1
-		}
-	}
-}
-
-turkfm_select_balkan_pop_effect = { # execute this from the state scope
-	random_list = {
-		1 = {
-			trigger = {
-				any_scope_pop = {
-					has_pop_culture = greek
-				}
-			}
-			cu:greek = {
-				save_scope_as = eqfm_tension_culture_scope
-			}
-		}
-		1 = {
-			trigger = {
-				any_scope_pop = {
-					has_pop_culture = rhomaios
-				}
-			}
-			cu:rhomaios = {
-				save_scope_as = eqfm_tension_culture_scope
-			}
-		}
-		1 = {
-			trigger = {
-				any_scope_pop = {
-					has_pop_culture = serb
-				}
-			}
-			cu:serb = {
-				save_scope_as = eqfm_tension_culture_scope
-			}
-		}
-		1 = {
-			trigger = {
-				any_scope_pop = {
-					has_pop_culture = bulgarian
-				}
-			}
-			cu:bulgarian = {
-				save_scope_as = eqfm_tension_culture_scope
-			}
-		}
-		1 = {
-			trigger = {
-				any_scope_pop = {
-					has_pop_culture = bosniak
-				}
-			}
-			cu:bosniak = {
-				save_scope_as = eqfm_tension_culture_scope
-			}
-		}
-		1 = {
-			trigger = {
-				any_scope_pop = {
-					has_pop_culture = albanian
-				}
-			}
-			cu:albanian = {
-				save_scope_as = eqfm_tension_culture_scope
-			}
-		}
-		1 = {
-			trigger = {
-				any_scope_pop = {
-					has_pop_culture = croat
-				}
-			}
-			cu:croat = {
-				save_scope_as = eqfm_tension_culture_scope
-			}
-		}
-		1 = {
-			trigger = {
-				any_scope_pop = {
-					has_pop_culture = slovene
-				}
-			}
-			cu:slovene = {
-				save_scope_as = eqfm_tension_culture_scope
-			}
-		}
-	}
-}
-
-turkfm_massacre_effect = {
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = greek
-			}
-		}
-		kill_population_percent_in_state = {
-			percent = 0.05
-			culture = cu:greek
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = rhomaios
-			}
-		}
-		kill_population_percent_in_state = {
-			percent = 0.05
-			culture = cu:rhomaios
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = serb
-			}
-		}
-		kill_population_percent_in_state = {
-			percent = 0.05
-			culture = cu:serb
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = bulgarian
-			}
-		}
-		kill_population_percent_in_state = {
-			percent = 0.05
-			culture = cu:bulgarian
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = bosniak
-			}
-		}
-		kill_population_percent_in_state = {
-			percent = 0.05
-			culture = cu:bosniak
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = albanian
-			}
-		}
-		kill_population_percent_in_state = {
-			percent = 0.05
-			culture = cu:albanian
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = croat
-			}
-		}
-		kill_population_percent_in_state = {
-			percent = 0.05
-			culture = cu:croat
-		}
-	}
-	if = {
-		limit = {
-			any_scope_pop = {
-				has_pop_culture = slovene
-			}
-		}
-		kill_population_percent_in_state = {
-			percent = 0.05
-			culture = cu:slovene
-		}
-	}
-}
-
-eqfm_cleanup_riots_effect = {
-	hidden_effect = {
-		remove_modifier = modifier_eqfm_nationalist_insurrection
 		every_scope_state = {
 			limit = {
 				has_modifier = modifier_eqfm_race_riots
@@ -1150,42 +978,34 @@ eqfm_cleanup_riots_effect = {
 			remove_modifier = modifier_eqfm_race_riots
 		}
 		every_political_movement = {
+			limit = {
+				has_modifier = modifier_eqfm_nationalist_insurrection_movement
+			}
 			remove_modifier = modifier_eqfm_nationalist_insurrection_movement
 		}
 	}
 }
 
-eqfm_cleanup_balkans_situation_effect = {
-	remove_variable = eqfm_balkans_cooldown_var
-	hidden_effect = {
-		remove_modifier = modifier_eqfm_stable_phase
-		remove_modifier = modifier_eqfm_unrest_phase
-		remove_modifier = modifier_eqfm_hostility_phase
-		remove_modifier = modifier_eqfm_deconfliction_phase
-		remove_modifier = modifier_eqfm_crisis_phase
-	}
-}
-
 
 ####---------- Powder Keg Crisis Phase Effects ----------####
-eqfm_initialize_crisis_effect = {
-	global_var:eqfm_balkan_situation = {
-		set_variable = {
-			name = eqfm_crisis_var
-			value = 125
-		}
-		set_variable = {
-			name = eqfm_crisis_progress_var
-			value = eqfm_crisis_progress_value
-		}
-		set_variable = {
-			name = eqfm_crisis_duration_var
-			value = 0
-		}
-		change_variable = {
-			name = eqfm_crisis_counter_var
-			add = 1
-		}
+eqfm_balkan_powder_keg_start_crisis_effect = {
+	remove_from_global_variable_map = {
+		name = eqfm_balkan_powder_keg_varmap
+		key = flag:eqfm_balkan_powder_keg_crisis_var
+	}
+	add_to_global_variable_map = {
+		name = eqfm_balkan_powder_keg_varmap
+		key = flag:eqfm_balkan_powder_keg_crisis_var
+		value = eqfm_balkan_powder_keg_crisis_start_value
+	}
+	remove_from_global_variable_map = {
+		name = eqfm_balkan_powder_keg_varmap
+		key = flag:eqfm_balkan_powder_keg_crisis_progress_var
+	}
+	add_to_global_variable_map = {
+		name = eqfm_balkan_powder_keg_varmap
+		key = flag:eqfm_balkan_powder_keg_crisis_progress_var
+		value = eqfm_balkan_powder_keg_crisis_progress_value
 	}
 	c:TUR ?= {
 		add_journal_entry = {
@@ -1194,7 +1014,7 @@ eqfm_initialize_crisis_effect = {
 	}
 }
 
-eqfm_crisis_success_effect = {
+eqfm_balkan_powder_keg_crisis_success_effect = {
 	# Stolen from chris_scripted_effects
 	# TODO replace with GotB-specific scripting once ready
 	c:TUR ?= {
@@ -1323,7 +1143,7 @@ eqfm_crisis_success_effect = {
 	}
 }
 
-eqfm_crisis_fail_effect = {
+eqfm_balkan_powder_keg_crisis_failure_effect = {
 	c:TUR ?= {
 		add_modifier = {
 			name = eastern_crisis_not_controlled
@@ -1494,27 +1314,6 @@ eqfm_crisis_fail_effect = {
 				months = gbbf_normal_modifier_time
 				multiplier = eastern_crisis_fervor_gain
 			}
-		}
-	}
-}
-
-eqfm_cleanup_crisis_effect = {
-	global_var:eqfm_balkan_situation = {
-		set_variable = {
-			name = eqfm_crisis_var
-			value = 250
-		}
-		set_variable = {
-			name = eqfm_crisis_progress_var
-			value = 0
-		}
-		set_variable = {
-			name = eqfm_crisis_duration_var
-			value = 0
-		}
-		set_bar_progress = {
-			name = eqfm_balkans_crisis_progress_bar
-			value = 250
 		}
 	}
 }
@@ -2371,12 +2170,6 @@ turkfm_hellenic_separatism_effect = {
 }
 
 ## Technical Effects ##
-eqfm_cleanup_eqfm_effect = {
-	hidden_effect = {
-		remove_modifier = modifier_eqfm_supporting_gunrunners
-	}
-}
-
 turkfm_split_bulgaria_effect = {
 	create_country = {
 		tag = BUL_RUM
