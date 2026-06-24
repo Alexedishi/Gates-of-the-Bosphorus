@@ -14,13 +14,6 @@
 		}
 	}
 
-	scripted_progress_bar = eqfm_balkans_escalation_progress_bar
-	scripted_progress_bar = eqfm_balkans_deescalation_progress_bar
-	scripted_progress_bar = eqfm_balkans_crisis_progress_bar
-	
-	scripted_button = eqfm_gui_end_balkan_powderkeg_unity
-	scripted_button = eqfm_gui_end_balkan_powderkeg_fracture
-
 	scripted_button = eqfm_accelerate_tensions_button
 	scripted_button = eqfm_decelerate_tensions_button
 	scripted_button = eqfm_declare_disloyalty_button
@@ -42,28 +35,19 @@
 	}
 
 	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
-		eqfm_initialize_balkan_variables_effect = yes
-		c:TUR ?= {
-			save_scope_as = ottoman_scope
-			add_modifier = modifier_eqfm_stable_phase
-		}
 		scope:journal_entry = {
-			set_variable = {
-				name = ottoman_scope
-				value = scope:ottoman_scope
-			}
 			save_scope_as = eqfm_balkan_situation
+			set_global_variable = {
+				name = eqfm_balkan_situation
+				value = scope:eqfm_balkan_situation
+			}
+			c:TUR ?= {
+				add_modifier = modifier_eqfm_stable_phase
+				save_scope_as = ottoman_scope
+			}
+			eqfm_initialize_balkan_powderkeg_variable_map_effect = yes
+			com_hide_all_journal_elements_for_interorg_effect = yes
 		}
-		set_global_variable = {
-			name = eqfm_balkan_situation
-			value = scope:eqfm_balkan_situation
-		}
-#		create_com_progress_bar = { # TODO 1.13 enable once CMF script is updated
-#			progress_bar = eqfm_balkans_crisis_progress_bar
-#			index = 2
-#			color = gold
-#		}
 	}
 
 	immediate_all_involved = {
@@ -99,9 +83,6 @@
 		else = {
 			post_notification = notitication_eqfm_balkans_involved
 		}
-	}
-
-	modifiers_while_active = {
 	}
 
 	complete = {
@@ -282,7 +263,7 @@
 
 	on_fail = {
 		set_global_variable = eqfm_balkan_situation_resolved
-		remove_global_variable = ottoman_scope
+		remove_global_variable =
 	}
 	
 	on_fail_all_involved = {

@@ -1,9 +1,15 @@
 ﻿## General Situation Effects
 eqfm_initialize_balkan_powderkeg_variable_map_effect = {
+	# Initialize Variable Map
+	add_to_global_variable_map = {
+		name = eqfm_balkan_powderkeg_varmap
+		key = flag:eqfm_balkan_powderkeg_ottoman_var
+		value = scope:ottoman_scope
+	}
 	add_to_global_variable_map = {
 		name = eqfm_balkan_powderkeg_varmap
 		key = flag:eqfm_balkan_powderkeg_phase_var
-		value = flag:eqfm_stable # We start in the stable phase
+		value = flag:eqfm_stable
 	}
 	add_to_global_variable_map = {
 		name = eqfm_balkan_powderkeg_varmap
@@ -150,7 +156,6 @@ eqfm_calculate_balkan_powderkeg_variables_effect = {
 		}
 		eqfm_update_riot_variables = yes
 	}
-	eqfm_update_balkan_situation_progressbar_effect = yes
 }
 
 eqfm_advance_balkan_powderkeg_variables_effect = {
@@ -211,35 +216,6 @@ eqfm_advance_balkan_powderkeg_variables_effect = {
 			name = eqfm_balkan_powderkeg_varmap
 			key = flag:eqfm_balkan_powderkeg_crisis_var
 			value = local_var:eqfm_balkan_powderkeg_crisis_var
-		}
-	}
-	eqfm_update_balkan_situation_progressbar_effect = yes
-}
-
-eqfm_update_balkan_powderkeg_progress_bars_effect = {
-	global_var:eqfm_balkan_situation = {
-		set_bar_progress = {
-			name = eqfm_balkans_escalation_progress_bar
-			value = "global_variable_map(eqfm_balkan_powderkeg_varmap|flag:eqfm_balkan_powderkeg_escalation_var)"
-		}
-		set_bar_progress = {
-			name = eqfm_balkans_deescalation_progress_bar
-			value = "global_variable_map(eqfm_balkan_powderkeg_varmap|flag:eqfm_balkan_powderkeg_deescalation_var)"
-		}
-		if = {
-			limit = {
-				eqfm_crisis_phase_trigger = yes
-			}
-			set_bar_progress = {
-				name = eqfm_balkans_crisis_progress_bar
-				value = "global_variable_map(eqfm_balkan_powderkeg_varmap|flag:eqfm_balkan_powderkeg_crisis_var)"
-			}
-		}
-		else = {
-			set_bar_progress = {
-				name = eqfm_balkans_crisis_progress_bar
-				value = eqfm_balkan_powderkeg_crisis_max_value
-			}
 		}
 	}
 }
@@ -903,12 +879,6 @@ eqfm_add_escalation_effect = {
 				key = flag:eqfm_balkan_powderkeg_escalation_var
 				value = local_var:eqfm_escalation_value
 			}
-			global_var:je_eqfm_balkan_powderkeg = {
-				set_bar_progress = {
-					name = eqfm_balkans_escalation_progress_bar
-					value = "global_variable_map(eqfm_balkan_powderkeg_varmap|flag:eqfm_balkan_powderkeg_escalation_var)"
-				}
-			}
 		}
 		eqfm_check_balkan_situation_phase_effect = yes
 	}
@@ -967,12 +937,6 @@ eqfm_add_deescalation_effect = {
 				name = eqfm_balkan_powderkeg_varmap
 				key = flag:eqfm_balkan_powderkeg_deescalation_var
 				value = local_var:eqfm_deescalation_value
-			}
-			global_var:je_eqfm_balkan_powderkeg = {
-				set_bar_progress = {
-					name = eqfm_balkans_escalation_progress_bar
-					value = "global_variable_map(eqfm_balkan_powderkeg_varmap|flag:eqfm_balkan_powderkeg_deescalation_var)"
-				}
 			}
 		}
 		eqfm_check_balkan_situation_phase_effect = yes
