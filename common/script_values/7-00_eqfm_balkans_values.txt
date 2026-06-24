@@ -162,7 +162,7 @@ eqfm_deescalation_progress_value = {
 		}
 		if = {
 			limit = {
-				je:je_eqfm_balkan_situation.var:eqfm_balkans_phase_var = flag:eqfm_hostility
+				eqfm_hostility_phase_trigger = yes
 				NOT = {
 					any_scope_state = {
 						has_modifier = modifier_eqfm_race_riots
@@ -176,8 +176,8 @@ eqfm_deescalation_progress_value = {
 		}
 		if = {
 			limit = {
-				je:je_eqfm_balkan_situation.var:eqfm_balkans_phase_var = flag:eqfm_crisis
-				je:je_eqfm_balkan_situation.var:eqfm_crisis_var >= 250
+				eqfm_crisis_phase_trigger = yes
+				"global_variable_map(eqfm_balkan_powder_keg_varmap|flag:eqfm_balkan_powder_keg_crisis_var)" >= eqfm_balkan_powder_keg_crisis_max_value
 				c:TUR ?= {
 					is_at_war = no
 				}
@@ -201,8 +201,8 @@ eqfm_deescalation_progress_value = {
 		}
 		if = {
 			limit = {
-				je:je_eqfm_balkan_situation.var:eqfm_balkans_phase_var = flag:eqfm_crisis
-				je:je_eqfm_balkan_situation.var:eqfm_crisis_var < 250
+				eqfm_crisis_phase_trigger = yes
+				"global_variable_map(eqfm_balkan_powder_keg_varmap|flag:eqfm_balkan_powder_keg_crisis_var)" < eqfm_balkan_powder_keg_crisis_max_value
 			}
 			multiply = {
 				value = 0
@@ -217,19 +217,6 @@ eqfm_deescalation_progress_value = {
 		multiply = 0
 	}
 	min = 0
-}
-
-eqfm_tension_progress_value = {
-	value = 0
-	if = {
-		limit = {
-			je:je_eqfm_balkan_situation.var:eqfm_deescalation_var > je:je_eqfm_balkan_situation.var:eqfm_escalation_var
-		}
-		add = je:je_eqfm_balkan_situation.var:eqfm_deescalation_var
-	}
-	else = {
-		add = je:je_eqfm_balkan_situation.var:eqfm_escalation_var
-	}
 }
 
 ## Race Riot Values
