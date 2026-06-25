@@ -1,4 +1,4 @@
-﻿####---------- Powder Keg Primary Mechanic & Maintenance Effects ----------####
+﻿####---------- Balkan Powder Keg Primary Mechanic & Maintenance Effects ----------####
 eqfm_initialize_balkan_powder_keg_variable_map_effect = {
 	# Initialize Variable Map
 	add_to_global_variable_map = {
@@ -645,43 +645,6 @@ eqfm_reset_balkan_powder_keg_phase_progress_effect_ = {
 	}
 }
 
-eqfm_balkan_powder_keg_event_cooldown_effect_ = {
-	if = {
-		limit = {
-			OR = {
-				eqfm_stable_phase_trigger = yes
-				eqfm_deconfliction_phase_trigger = yes
-			}
-		}
-		set_global_variable = {
-			name = eqfm_balkans_cooldown_var
-			years = 2
-		}
-	}
-	if = {
-		limit = {
-			eqfm_unrest_phase_trigger = yes
-			
-		}
-		set_global_variable = {
-			name = eqfm_balkans_cooldown_var
-			years = 1
-		}
-	}
-	else_if = {
-		limit = {
-			OR = {
-				eqfm_hostility_phase_trigger = yes
-				eqfm_crisis_phase_trigger = yes
-			}
-		}
-		set_global_variable = {
-			name = eqfm_balkans_cooldown_var
-			months = 3
-		}
-	}
-}
-
 eqfm_cleanup_balkan_powder_keg_situation_effect = {
 	remove_global_variable = je_eqfm_balkan_powder_keg
 	clear_global_variable_map = eqfm_balkan_powder_keg_varmap
@@ -748,7 +711,7 @@ eqfm_cleanup_local_balkan_powder_keg_content_effect = {
 }
 
 
-####---------- Powder Keg Phase Effects ----------####
+####---------- Balkan Powder Keg Phase Effects ----------####
 eqfm_force_balkan_powder_keg_stable_phase_effect = {
 	eqfm_reset_balkan_powder_keg_phase_progress_effect_ = yes
 	remove_from_global_variable_map = {
@@ -853,7 +816,7 @@ eqfm_force_balkan_powder_keg_crisis_phase_effect = {
 }
 
 
-####---------- Powder Keg Race Riot Effects ----------####
+####---------- Balkan Powder Keg Race Riot Effects ----------####
 eqfm_update_balkan_powder_keg_race_riot_variables_effect = {
 	remove_from_global_variable_map = {
 		name = eqfm_balkan_powder_keg_varmap
@@ -987,7 +950,7 @@ eqfm_cleanup_balkan_powder_keg_race_riots_effect = {
 }
 
 
-####---------- Powder Keg Crisis Phase Effects ----------####
+####---------- Balkan Powder Keg Crisis Phase Effects ----------####
 eqfm_balkan_powder_keg_start_crisis_effect = {
 	remove_from_global_variable_map = {
 		name = eqfm_balkan_powder_keg_varmap
@@ -1319,7 +1282,7 @@ eqfm_balkan_powder_keg_crisis_failure_effect = {
 }
 
 
-####---------- Powder Keg Escalation Effects ----------####
+####---------- Balkan Powder Keg Escalation Effects ----------####
 eqfm_add_escalation_effect = {
 	if = {
 		limit = {
@@ -1332,10 +1295,10 @@ eqfm_add_escalation_effect = {
 				value = $value$
 			}
 			set_local_variable = {
-				name = varmap_value
+				name = eqfm_varmap_escalation_value
 				value = {
 					add = "global_variable_map(eqfm_balkan_powder_keg_varmap|flag:eqfm_balkan_powder_keg_escalation_var)"
-					add = $value$
+					add = local_var:eqfm_escalation_value
 					max = 500
 					min = 0
 				}
@@ -1347,7 +1310,7 @@ eqfm_add_escalation_effect = {
 			add_to_global_variable_map = {
 				name = eqfm_balkan_powder_keg_varmap
 				key = flag:eqfm_balkan_powder_keg_escalation_var
-				value = local_var:eqfm_escalation_value
+				value = local_var:eqfm_varmap_escalation_value
 			}
 		}
 		eqfm_check_balkan_powder_keg_phase_effect = yes
@@ -1379,7 +1342,7 @@ eqfm_add_very_large_escalation_effect = {
 }
 
 
-####---------- Powder Keg Deescalation Effects ----------####
+####---------- Balkan Powder Keg Deescalation Effects ----------####
 eqfm_add_deescalation_effect = {
 	if = {
 		limit = {
@@ -1392,10 +1355,10 @@ eqfm_add_deescalation_effect = {
 				value = $value$
 			}
 			set_local_variable = {
-				name = varmap_value
+				name = eqfm_varmap_deescalation_value
 				value = {
 					add = "global_variable_map(eqfm_balkan_powder_keg_varmap|flag:eqfm_balkan_powder_keg_deescalation_var)"
-					add = $value$
+					add = local_var:eqfm_deescalation_value
 					max = 500
 					min = 0
 				}
@@ -1407,7 +1370,7 @@ eqfm_add_deescalation_effect = {
 			add_to_global_variable_map = {
 				name = eqfm_balkan_powder_keg_varmap
 				key = flag:eqfm_balkan_powder_keg_deescalation_var
-				value = local_var:eqfm_deescalation_value
+				value = local_var:eqfm_varmap_deescalation_value
 			}
 		}
 		eqfm_check_balkan_powder_keg_phase_effect = yes
@@ -1445,7 +1408,56 @@ eqfm_add_extremely_large_deescalation_effect = {
 }
 
 
-####---------- Old Effects ----------####
+####---------- Balkan Powder Keg Event Effects ----------####
+eqfm_balkan_powder_keg_event_cooldown_effect_ = {
+	if = {
+		limit = {
+			OR = {
+				eqfm_stable_phase_trigger = yes
+				eqfm_deconfliction_phase_trigger = yes
+			}
+		}
+		set_global_variable = {
+			name = eqfm_balkans_cooldown_var
+			years = 2
+		}
+	}
+	if = {
+		limit = {
+			eqfm_unrest_phase_trigger = yes
+			
+		}
+		set_global_variable = {
+			name = eqfm_balkans_cooldown_var
+			years = 1
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				eqfm_hostility_phase_trigger = yes
+				eqfm_crisis_phase_trigger = yes
+			}
+		}
+		set_global_variable = {
+			name = eqfm_balkans_cooldown_var
+			months = 3
+		}
+	}
+}
+
+eqfm_select_random_balkan_powder_keg_eligible_pop_effect = {
+	random_scope_pop = {
+		limit = {
+			eqfm_pop_has_balkan_native_culture_trigger = yes
+		}
+		save_scope_as = eqfm_tension_pop_scope
+		culture = {
+			save_scope_as = eqfm_tension_culture_scope
+		}
+	}
+}
+
 ## Situation Movement Effects
 eqfm_add_medium_movement_radicalism_effect = {
 	every_political_movement = {
@@ -2046,6 +2058,7 @@ turkfm_add_very_large_radicals_effect = {
 }
 
 
+####---------- Old Effects ----------####
 ## Separatism Effects ##
 turkfm_hellenic_separatism_effect = {
 	if = {
