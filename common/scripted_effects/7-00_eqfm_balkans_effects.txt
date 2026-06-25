@@ -58,14 +58,11 @@ eqfm_initialize_balkan_powder_keg_variable_map_effect = {
 	}
 }
 
-eqfm_validate_balkan_powder_keg_involvement_effect = {
+eqfm_update_balkan_powder_keg_involvement_effect = {
+	global_var:je_eqfm_balkan_powder_keg = {
+		clear_variable_list = eqfm_balkan_powder_keg_interloper_list
+	}
 	every_country = {
-		limit = {
-			OR = {
-				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				eqfm_balkans_should_be_involved_trigger = yes
-			}
-		}
 		if = {
 			limit = {
 				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
@@ -80,10 +77,25 @@ eqfm_validate_balkan_powder_keg_involvement_effect = {
 				NOT = {
 					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 				}
-				eqfm_balkans_should_be_involved_trigger = yes
 			}
-			global_var:je_eqfm_balkan_powder_keg = {
-				add_involved_country = prev
+			if = {
+				limit = {
+					eqfm_balkans_should_be_involved_trigger = yes
+				}
+				global_var:je_eqfm_balkan_powder_keg = {
+					add_involved_country = prev
+				}
+			}
+			else_if = {
+				limit = {
+					eqfm_balkans_interloper_trigger = yes
+				}
+				global_var:je_eqfm_balkan_powder_keg = {
+					add_to_variable_list = {
+						name = eqfm_balkan_powder_keg_interloper_list
+						target = prev
+					}
+				}
 			}
 		}
 	}
