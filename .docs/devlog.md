@@ -189,14 +189,6 @@ bulfm_: Once contained content for Bulgaria; expanded into balkfm_
 
 
 ####---------- Planned Updates ----------####
---Update TEMPLATE--
-New Additions:
--##
-Balancing/Adjustments:
--##
-Fixes:
--##
-
 
 --Update 4.X.0--
 New Additions:
@@ -206,25 +198,23 @@ New Additions:
 - ##Added several new events and interactions to the "Power Keg of Europe" global journal
 - ##Rebuilt "The Teachings of al-Sanusi" into a global journal with new mechanics, events, and modifiers
 
-Unfinished Content:
-- The Young Turks
-- Amrenian Expulsions
-- Metaxism
 
-
-
-
-
-
+--Update 4.2.0--
+New Additions:
+- ##Fully implemented the Metaxism journal content
 
 
 --Update 4.1.0--
 New Additions:
-- ##Reworked the "Powderkeg of Europe" journal to include a custom widget and several new events
-- ##Fully Implemented the Young Turks content with varying outcomes for the Republican movements in the Ottoman Empire
+- ##Completely rebuilt the "Powderkeg of Europe" journal:
+  -- Scripting refactored to use variable maps & effects/triggers reviewed and improved in many cases
+  -- Several new events to better integrate with features from 1.10 and 1.13
+  -- Custom journal widget to better present the journal content
+- ##Fully implemented the Young Turks content with varying outcomes for the Republican movements in the Ottoman Empire
+- ##Fully implemented the Armenian Expulsions content
 
-
-
+Notes:
+- The Metaxism journal entry remains in a beta state, this will be completed soon
 
 
 ####---------- Published Updates ----------####
