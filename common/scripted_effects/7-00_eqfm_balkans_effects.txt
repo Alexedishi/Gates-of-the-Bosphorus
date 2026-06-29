@@ -132,22 +132,43 @@ eqfm_initialize_balkan_powder_keg_journal_effect = {
 		name = com_deescalation_factors_var
 		value = flag:eqfm_deescalation_factors_desc
 	}
-	add_modifier = modifier_eqfm_stable_phase_1
-	add_modifier = modifier_eqfm_stable_phase_2
+	every_country = {
+		limit = {
+			eqfm_balkans_interloper_trigger = yes
+		}
+		global_var:je_eqfm_balkan_powder_keg = {
+			add_to_variable_list = {
+				name = com_situation_interloper_list
+				target = prev
+			}
+		}
+	}
 }
 
 eqfm_initialize_balkan_powder_keg_modifiers_effect = {
+	add_modifier = modifier_eqfm_stable_phase_1
+	add_modifier = modifier_eqfm_stable_phase_2
 	c:TUR ?= {
 		add_modifier = modifier_eqfm_stable_phase
+	}
+	every_state_region = {
+		limit = {
+			is_in_geographic_region = geographic_region_rumelia
+		}
+		add_state_trait = gbbf_state_trait_stable_phase
 	}
 }
 
 eqfm_validate_balkan_powder_keg_involvement_effect = {
+	global_var:je_eqfm_balkan_powder_keg = {
+		clear_variable_list = com_situation_interloper_list
+	}
 	every_country = {
 		limit = {
 			OR = {
 				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 				eqfm_balkans_should_be_involved_trigger = yes
+				eqfm_balkans_interloper_trigger = yes
 			}
 		}
 		if = {
@@ -168,6 +189,17 @@ eqfm_validate_balkan_powder_keg_involvement_effect = {
 			}
 			global_var:je_eqfm_balkan_powder_keg = {
 				add_involved_country = prev
+			}
+		}
+		if = {
+			limit = {
+				eqfm_balkans_interloper_trigger = yes
+			}
+			global_var:je_eqfm_balkan_powder_keg = {
+				add_to_variable_list = {
+					name = com_situation_interloper_list
+					target = prev
+				}
 			}
 		}
 	}
