@@ -209,7 +209,8 @@ New Additions:
 - ##Completely rebuilt the "Powderkeg of Europe" journal:
   -- Scripting refactored to use variable maps & effects/triggers reviewed and improved in many cases
   -- Several new events to better integrate with features from 1.10 and 1.13
-  -- Custom journal widget to better present the journal content
+  -- Integration with the new CMF Situations UI widget to better present the journal content
+- Added new Balkan Powderkeg and Black Mountain text icons
 - ##Fully implemented the Young Turks content with varying outcomes for the Republican movements in the Ottoman Empire
 - ##Fully implemented the Armenian Expulsions content
 
