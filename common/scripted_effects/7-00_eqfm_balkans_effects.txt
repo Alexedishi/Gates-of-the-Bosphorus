@@ -520,6 +520,24 @@ eqfm_update_balkan_powder_keg_progress_bar_effect = {
 			name = eqfm_balkans_crisis_progress_bar
 			value = "global_variable_map(eqfm_balkan_powder_keg_varmap|flag:eqfm_balkan_powder_keg_crisis_var)"
 		}
+		if = {
+			limit = {
+				eqfm_balkan_powder_keg_can_escalate_trigger = yes
+			}
+			com_update_indexed_situation_phase_progress_effect = {
+				index = 1
+				progress_value = "global_variable_map(eqfm_balkan_powder_keg_varmap|flag:eqfm_balkan_powder_keg_escalation_var)"
+			}
+		}
+		if = {
+			limit = {
+				eqfm_balkan_powder_keg_can_deescalate_trigger = yes
+			}
+			com_update_indexed_situation_phase_progress_effect = {
+				index = 2
+				progress_value = "global_variable_map(eqfm_balkan_powder_keg_varmap|flag:eqfm_balkan_powder_keg_deescalation_var)"
+			}
+		}
 	}
 }
 
@@ -751,6 +769,36 @@ eqfm_reset_balkan_powder_keg_phase_progress_effect_ = {
 		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_crisis_var
 		value = eqfm_balkan_powder_keg_crisis_max_value
+	}
+	global_var:je_eqfm_balkan_powder_keg = {
+		if = {
+			limit = {
+				eqfm_balkan_powder_keg_can_escalate_trigger = yes
+			}
+			com_update_indexed_situation_phase_progress_effect = {
+				index = 1
+				progress_value = eqfm_balkan_powder_keg_escalation_start_value
+			}
+		}
+		else = {
+			com_remove_indexed_stiuation_phase_progress_details_effect = {
+				index = 1
+			}
+		}
+		if = {
+			limit = {
+				eqfm_balkan_powder_keg_can_deescalate_trigger = yes
+			}
+			com_update_indexed_situation_phase_progress_effect = {
+				index = 2
+				progress_value = eqfm_balkan_powder_keg_deescalation_start_value
+			}
+		}
+		else = {
+			com_remove_indexed_stiuation_phase_progress_details_effect = {
+				index = 2
+			}
+		}
 	}
 }
 
@@ -1561,10 +1609,10 @@ eqfm_balkan_powder_keg_event_cooldown_effect_ = {
 	}
 }
 
-eqfm_select_random_balkan_powder_keg_eligible_pop_effect = {
+eqfm_balkan_powder_keg_select_random_rumelian_pop_effect = {
 	random_scope_pop = {
 		limit = {
-			eqfm_pop_has_balkan_native_culture_trigger = yes
+			gbbf_pop_has_rumelian_culture_trigger = yes
 		}
 		save_scope_as = eqfm_tension_pop_scope
 		culture = {
@@ -1581,7 +1629,7 @@ eqfm_add_medium_movement_radicalism_effect = {
 				is_political_movement_type = movement_cultural_minority
 				is_political_movement_type = movement_religious_minority
 			}
-			gbbf_balkans_culture_trigger = yes
+			gbbf_has_rumelian_culture_trigger = yes
 		}
 		add_modifier = {
 			name = modifier_eqfm_increased_radicalism
@@ -1598,7 +1646,7 @@ eqfm_add_large_movement_radicalism_effect = {
 				is_political_movement_type = movement_cultural_minority
 				is_political_movement_type = movement_religious_minority
 			}
-			gbbf_balkans_culture_trigger = yes
+			gbbf_has_rumelian_culture_trigger = yes
 		}
 		add_modifier = {
 			name = modifier_eqfm_greatly_increased_radicalism
@@ -1615,7 +1663,7 @@ eqfm_add_very_large_movement_radicalism_effect = {
 				is_political_movement_type = movement_cultural_minority
 				is_political_movement_type = movement_religious_minority
 			}
-			gbbf_balkans_culture_trigger = yes
+			gbbf_has_rumelian_culture_trigger = yes
 		}
 		add_modifier = {
 			name = modifier_eqfm_critically_increased_radicalism
