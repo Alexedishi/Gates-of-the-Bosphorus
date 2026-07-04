@@ -38,6 +38,11 @@ eqfm_initialize_balkan_powder_keg_variable_map_effect = {
 	}
 	add_to_global_variable_map = {
 		name = eqfm_balkan_powder_keg_varmap
+		key = flag:eqfm_balkan_powder_keg_riot_potential_var
+		value = 1
+	}
+	add_to_global_variable_map = {
+		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_crisis_var
 		value = 250
 	}
@@ -201,6 +206,10 @@ eqfm_calculate_balkan_powder_keg_variables_effect = {
 		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_riot_counter_var
 	}
+	remove_from_global_variable_map = {
+		name = eqfm_balkan_powder_keg_varmap
+		key = flag:eqfm_balkan_powder_keg_riot_potential_var
+	}
 	add_to_global_variable_map = {
 		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_escalation_progress_var
@@ -215,6 +224,11 @@ eqfm_calculate_balkan_powder_keg_variables_effect = {
 		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_riot_counter_var
 		value = eqfm_balkan_powder_keg_riot_counter_value
+	}
+	add_to_global_variable_map = {
+		name = eqfm_balkan_powder_keg_varmap
+		key = flag:eqfm_balkan_powder_keg_riot_potential_var
+		value = eqfm_balkan_powder_keg_riot_potential_value
 	}
 	if = {
 		limit = {
@@ -1524,7 +1538,7 @@ eqfm_add_very_large_balkan_powder_keg_deescalation_effect = {
 
 
 ####---------- Balkan Powder Keg Event Effects ----------####
-eqfm_balkan_powder_keg_event_cooldown_effect_ = {
+eqfm_balkan_powder_keg_event_cooldown_effect = {
 	if = {
 		limit = {
 			OR = {
@@ -1573,59 +1587,6 @@ eqfm_balkan_powder_keg_select_random_rumelian_pop_effect = {
 	}
 }
 
-## Situation Movement Effects
-eqfm_add_medium_movement_radicalism_effect = {
-	every_political_movement = {
-		limit = {
-			OR = {
-				is_political_movement_type = movement_cultural_minority
-				is_political_movement_type = movement_religious_minority
-			}
-			gbbf_has_rumelian_culture_trigger = yes
-		}
-		add_modifier = {
-			name = modifier_eqfm_increased_radicalism
-			months = gbbf_normal_modifier_time
-			is_decaying = yes
-		}
-	}
-}
-
-eqfm_add_large_movement_radicalism_effect = {
-	every_political_movement = {
-		limit = {
-			OR = {
-				is_political_movement_type = movement_cultural_minority
-				is_political_movement_type = movement_religious_minority
-			}
-			gbbf_has_rumelian_culture_trigger = yes
-		}
-		add_modifier = {
-			name = modifier_eqfm_greatly_increased_radicalism
-			months = gbbf_normal_modifier_time
-			is_decaying = yes
-		}
-	}
-}
-
-eqfm_add_very_large_movement_radicalism_effect = {
-	every_political_movement = {
-		limit = {
-			OR = {
-				is_political_movement_type = movement_cultural_minority
-				is_political_movement_type = movement_religious_minority
-			}
-			gbbf_has_rumelian_culture_trigger = yes
-		}
-		add_modifier = {
-			name = modifier_eqfm_critically_increased_radicalism
-			months = gbbf_normal_modifier_time
-			is_decaying = yes
-		}
-	}
-}
-
-## Situation Loyalist/Radicals Effects
 eqfm_balkan_powder_keg_rumelian_loyalists_effect = {
 	if = {
 		limit = {
@@ -1852,6 +1813,16 @@ eqfm_balkan_powder_keg_rumelian_radicals_effect = {
 	}
 }
 
+eqfm_post_balkan_powder_keg_notification_effect = {
+	every_country = {
+		limit = {
+			is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+		}
+		post_notification = $notification$
+	}
+}
+
+
 
 ####---------- Effects Not Categorized Elsewhere ----------####
 eqfm_balkan_powder_keg_hellenic_separatism_effect = {
@@ -1976,7 +1947,7 @@ eqfm_balkan_powder_keg_hellenic_separatism_effect = {
 	}
 }
 
-eqfm_balkan_powder_keg__split_bulgaria_effect = {
+eqfm_balkan_powder_keg_split_bulgaria_effect = {
 	create_country = {
 		tag = BUL_RUM
 		origin = c:TUR
@@ -1986,6 +1957,57 @@ eqfm_balkan_powder_keg__split_bulgaria_effect = {
 		create_diplomatic_pact = {
 			country = c:BUL_RUM
 			type = protectorate
+		}
+	}
+}
+
+eqfm_add_medium_movement_radicalism_effect = {
+	every_political_movement = {
+		limit = {
+			OR = {
+				is_political_movement_type = movement_cultural_minority
+				is_political_movement_type = movement_religious_minority
+			}
+			gbbf_has_rumelian_culture_trigger = yes
+		}
+		add_modifier = {
+			name = modifier_eqfm_increased_radicalism
+			months = gbbf_normal_modifier_time
+			is_decaying = yes
+		}
+	}
+}
+
+eqfm_add_large_movement_radicalism_effect = {
+	every_political_movement = {
+		limit = {
+			OR = {
+				is_political_movement_type = movement_cultural_minority
+				is_political_movement_type = movement_religious_minority
+			}
+			gbbf_has_rumelian_culture_trigger = yes
+		}
+		add_modifier = {
+			name = modifier_eqfm_greatly_increased_radicalism
+			months = gbbf_normal_modifier_time
+			is_decaying = yes
+		}
+	}
+}
+
+eqfm_add_very_large_movement_radicalism_effect = {
+	every_political_movement = {
+		limit = {
+			OR = {
+				is_political_movement_type = movement_cultural_minority
+				is_political_movement_type = movement_religious_minority
+			}
+			gbbf_has_rumelian_culture_trigger = yes
+		}
+		add_modifier = {
+			name = modifier_eqfm_critically_increased_radicalism
+			months = gbbf_normal_modifier_time
+			is_decaying = yes
 		}
 	}
 }
