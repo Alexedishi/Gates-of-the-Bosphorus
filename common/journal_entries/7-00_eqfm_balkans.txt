@@ -125,136 +125,18 @@
 	}
 
 	complete = {
-		c:TUR ?= {
-			OR = {
-				custom_tooltip = {
-					text = je_eqfm_balkan_powder_keg_complete
-					trigger_if = {
-						limit = {
-							any_scope_state = {
-								state_region = {
-									is_homeland = cu:greek
-								}
-							}
-						}
-						country_average_cultural_acceptance = {
-							target = cu:greek
-							value >= acceptance_status_5
-						}
-					}
-					trigger_if = {
-						limit = {
-							any_scope_state = {
-								state_region = {
-									is_homeland = cu:rhomaios
-								}
-							}
-						}
-						country_average_cultural_acceptance = {
-							target = cu:rhomaios
-							value >= acceptance_status_5
-						}
-					}
-					trigger_if = {
-						limit = {
-							any_scope_state = {
-								state_region = {
-									is_homeland = cu:serb
-								}
-							}
-						}
-						country_average_cultural_acceptance = {
-							target = cu:serb
-							value >= acceptance_status_5
-						}
-					}
-					trigger_if = {
-						limit = {
-							any_scope_state = {
-								state_region = {
-									is_homeland = cu:bulgarian
-								}
-							}
-						}
-						country_average_cultural_acceptance = {
-							target = cu:bulgarian
-							value >= acceptance_status_5
-						}
-					}
-					trigger_if = {
-						limit = {
-							any_scope_state = {
-								state_region = {
-									is_homeland = cu:romanian
-								}
-							}
-						}
-						country_average_cultural_acceptance = {
-							target = cu:romanian
-							value >= acceptance_status_5
-						}
-					}
-					trigger_if = {
-						limit = {
-							any_scope_state = {
-								state_region = {
-									is_homeland = cu:bosniak
-								}
-							}
-						}
-						country_average_cultural_acceptance = {
-							target = cu:bosniak
-							value >= acceptance_status_5
-						}
-					}
-					trigger_if = {
-						limit = {
-							any_scope_state = {
-								state_region = {
-									is_homeland = cu:albanian
-								}
-							}
-						}
-						country_average_cultural_acceptance = {
-							target = cu:albanian
-							value >= acceptance_status_5
-						}
-					}
-					trigger_if = {
-						limit = {
-							any_scope_state = {
-								state_region = {
-									is_homeland = cu:croat
-								}
-							}
-						}
-						country_average_cultural_acceptance = {
-							target = cu:croat
-							value >= acceptance_status_5
-						}
-					}
-					trigger_if = {
-						limit = {
-							any_scope_state = {
-								state_region = {
-									is_homeland = cu:slovene
-								}
-							}
-						}
-						country_average_cultural_acceptance = {
-							target = cu:slovene
-							value >= acceptance_status_5
-						}
-					}
+		any_state_in_rumelia = {
+			count = all
+			is_incorporated = yes
+			pop_radical_fraction < 0.15
+			owner = {
+				legitimacy >= 80
+				NOR = {
+					has_any_secessionists_broken_out = yes
+					has_any_secessionists_growing = yes
+					is_diplomatic_play_committed_participant = yes
 				}
-				country_has_primary_culture = cu:ottoman
 			}
-			legitimacy >= 80
-			radical_fraction = {
-				value < 0.20
-			}
-			gbbf_no_revolutionary_ig_trigger = yes
-			is_at_war = no
 		}
 	}
 
@@ -270,33 +152,15 @@
 	custom_completion_header = gbbf_placeholder_text
 	
 	fail = {
-		OR = {
-			custom_tooltip = {
-				text = je_eqfm_balkan_powder_keg_fail_1
-				exists = c:TUR
-				NOT = {
-					any_state_in_rumelia = {
-						owner = c:TUR
-					}
+		any_state_in_rumelia = {
+			count = all
+			owner = {
+				gbbf_country_has_rumelian_culture_trigger = yes
+				NOR = {
+					has_any_secessionists_broken_out = yes
+					has_any_secessionists_growing = yes
+					is_diplomatic_play_committed_participant = yes
 				}
-			}
-			AND = {
-				custom_tooltip = {
-					text = je_eqfm_balkan_powder_keg_fail_2
-					has_global_variable = turkfm_sick_man_failed
-				}
-				custom_tooltip = {
-					text = je_eqfm_balkan_powder_keg_fail_3
-					has_global_variable = turkfm_tanzimat_failed
-				}
-			}
-		}
-		hidden_trigger = {
-			c:TUR ?= {
-				has_any_secessionists_broken_out = no
-				has_any_secessionists_growing = no
-				is_at_war = no
-				has_revolution = no
 			}
 		}
 	}
