@@ -143,6 +143,38 @@ eqfm_initialize_balkan_powder_keg_modifiers_effect = {
 	}
 }
 
+eqfm_update_local_balkan_powder_keg_variables_effect = {
+	every_country = {
+		limit = {
+			is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+		}
+		if = {
+			limit = {
+				any_scope_state = {
+					is_in_geographic_region = geographic_region_rumelia
+				}
+			}
+			set_variable = {
+				name = eqfm_rumelian_movements_var
+				value = eqfm_rumelian_movements_value
+			}
+		}
+		else = {
+			remove_variable = eqfm_rumelian_movements_var
+		}
+	}
+	every_state_region_in_rumelia = {
+		set_variable = {
+			name = eqfm_state_region_loyalist_fraction_var
+			value = eqfm_state_region_loyalist_fraction_value
+		}
+		set_variable = {
+			name = eqfm_state_region_radical_fraction_var
+			value = eqfm_state_region_radical_fraction_value
+		}
+	}
+}
+
 eqfm_update_balkan_powder_keg_involvement_effect = {
 	global_var:je_eqfm_balkan_powder_keg = {
 		clear_variable_list = com_situation_interloper_list
@@ -534,18 +566,26 @@ eqfm_update_balkan_powder_keg_progress_bar_effect = {
 			limit = {
 				eqfm_balkan_powder_keg_can_escalate_trigger = yes
 			}
+			save_temporary_scope_value_as = {
+				name = eqfm_balkan_powder_keg_escalation_var_scope
+				value = "global_variable_map(eqfm_balkan_powder_keg_varmap|flag:eqfm_balkan_powder_keg_escalation_var)"
+			}
 			com_update_indexed_situation_phase_progress_effect = {
 				index = 1
-				progress_value = "global_variable_map(eqfm_balkan_powder_keg_varmap|flag:eqfm_balkan_powder_keg_escalation_var)"
+				progress_value = scope:eqfm_balkan_powder_keg_escalation_var_scope # Lexer has a wobble if the varmap call is made here
 			}
 		}
 		if = {
 			limit = {
 				eqfm_balkan_powder_keg_can_deescalate_trigger = yes
 			}
+			save_temporary_scope_value_as = {
+				name = eqfm_balkan_powder_keg_deescalation_var_scope
+				value = "global_variable_map(eqfm_balkan_powder_keg_varmap|flag:eqfm_balkan_powder_keg_deescalation_var)"
+			}
 			com_update_indexed_situation_phase_progress_effect = {
 				index = 2
-				progress_value = "global_variable_map(eqfm_balkan_powder_keg_varmap|flag:eqfm_balkan_powder_keg_deescalation_var)"
+				progress_value = scope:eqfm_balkan_powder_keg_deescalation_var_scope # Lexer has a wobble if the varmap call is made here
 			}
 		}
 	}
