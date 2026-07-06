@@ -158,8 +158,8 @@ turkfm_sick_man.005 = { # Region Lost
 				gbbf_controls_nile_river_trigger = no
 			}
 			AND = {
-				has_variable = gbbf_controls_middle_east_highlands
-				gbbf_controls_middle_east_highlands_trigger = no
+				has_variable = gbbf_controls_armenian_highlands
+				gbbf_controls_armenian_highlands_trigger = no
 			}
 			AND = {
 				has_variable = gbbf_controls_arabia
@@ -241,13 +241,13 @@ turkfm_sick_man.005 = { # Region Lost
 		}
 		else_if = {
 			limit = {
-				has_variable = gbbf_controls_middle_east_highlands
-				gbbf_controls_middle_east_highlands_trigger = no
+				has_variable = gbbf_controls_armenian_highlands
+				gbbf_controls_armenian_highlands_trigger = no
 			}
-			remove_variable = gbbf_controls_middle_east_highlands
+			remove_variable = gbbf_controls_armenian_highlands
 			set_variable = {
 				name = gbbf_control_event_var
-				value = flag:geographic_region_middle_east_highlands
+				value = flag:geographic_region_armenian_highlands
 			}
 		}
 		else_if = {
@@ -351,9 +351,9 @@ turkfm_sick_man.006 = { # Region Secured
 			}
 			AND = {
 				NOT = {
-					has_variable = gbbf_controls_middle_east_highlands
+					has_variable = gbbf_controls_armenian_highlands
 				}
-				gbbf_controls_middle_east_highlands_trigger = yes
+				gbbf_controls_armenian_highlands_trigger = yes
 			}
 			AND = {
 				NOT = {
@@ -449,14 +449,14 @@ turkfm_sick_man.006 = { # Region Secured
 		else_if = {
 			limit = {
 				NOT = {
-					has_variable = gbbf_controls_middle_east_highlands
+					has_variable = gbbf_controls_armenian_highlands
 				}
-				gbbf_controls_middle_east_highlands_trigger = yes
+				gbbf_controls_armenian_highlands_trigger = yes
 			}
-			set_variable = gbbf_controls_middle_east_highlands
+			set_variable = gbbf_controls_armenian_highlands
 			set_variable = {
 				name = gbbf_control_event_var
-				value = flag:geographic_region_middle_east_highlands
+				value = flag:geographic_region_armenian_highlands
 			}
 		}
 		else_if = {
@@ -884,12 +884,14 @@ turkfm_sick_man.018 = { # A Consuming Sickness
 		name = turkfm_sick_man.018.a
 		default_option = yes
 		show_as_tooltip = {
-			ruler = {
+			scope:turkfm_ruler_scope = {
 				add_trait = gbbf_trait_tuberculosis
+				hidden_effect = {
+					set_character_immortal = yes
+				}
 			}
 		}
 	}
-
 }
 
 turkfm_sick_man.019 = { # The Ascent of Abdulmecid
@@ -924,6 +926,7 @@ turkfm_sick_man.019 = { # The Ascent of Abdulmecid
 		heir ?= {
 			save_scope_as = turkfm_heir_scope
 		}
+		set_variable = com_no_regencies
 	}
 
 	cancellation_trigger = {
@@ -937,10 +940,16 @@ turkfm_sick_man.019 = { # The Ascent of Abdulmecid
 	option = {
 		name = turkfm_sick_man.019.a
 		default_option = yes
-		heir ?= {
+		scope:turkfm_heir_scope ?= {
+			hidden_effect = {
+				set_as_adult = yes
+			}
 			set_character_as_ruler = yes
 		}
-		ruler ?= {
+		scope:turkfm_ruler_scope ?= {
+			hidden_effect = {
+				set_character_immortal = no
+			}
 			kill_character = yes
 		}
 		hidden_effect = {
@@ -952,16 +961,17 @@ turkfm_sick_man.019 = { # The Ascent of Abdulmecid
 	
 	option = {
 		name = turkfm_sick_man.019.b
-		heir ?= {
+		scope:turkfm_heir_scope ?= {
+			hidden_effect = {
+				set_as_adult = yes
+			}
 			set_character_as_ruler = yes
 		}
-		ruler ?= {
-			kill_character = yes
-		}
-		hidden_effect = {
-			create_character = {
-				template = template_turfkm_osmanoglu_abdulaziz
+		scope:turkfm_ruler_scope ?= {
+			hidden_effect = {
+				set_character_immortal = no
 			}
+			kill_character = yes
 		}
 		trigger_event = {
 			id = turkfm_tanzimat.002
@@ -1019,6 +1029,36 @@ turkfm_sick_man.019 = { # The Ascent of Abdulmecid
 				}
 			}
 		}
+		hidden_effect = {
+			create_character = {
+				template = template_turfkm_osmanoglu_abdulaziz
+			}
+			turkfm_add_tanzimat_agenda_effect = {
+				type = agriculture
+			}
+			turkfm_add_tanzimat_agenda_effect = {
+				type = military
+			}
+			turkfm_add_tanzimat_agenda_effect = {
+				type = civics
+			}
+			turkfm_add_tanzimat_agenda_effect = {
+				type = economy
+			}
+			turkfm_add_tanzimat_agenda_effect = {
+				type = education
+			}
+			turkfm_add_tanzimat_agenda_effect = {
+				type = security
+			}
+			turkfm_add_tanzimat_agenda_effect = {
+				type = slavery
+			}
+		}
 		set_global_variable = turkfm_tanzimat_started
+	}
+	
+	after = {
+		remove_variable = com_no_regencies
 	}
 }
