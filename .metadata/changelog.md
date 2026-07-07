@@ -21,6 +21,12 @@
 #		1.0.0		....	1.5.6
 
 ####################################
+--Update 4.0.7--
+Fixes:
+- Fixed an issue with the Tanzimat "Organize the Bureaucracy" agenda not correctly displaying its requirements
+- Fixed several mismatched modifiers and variables in the "An Ottoman Legacy" journal
+- Replaced country_law_enactment_time_mult with country_law_enactment_speed_mult
+
 --Update 4.0.6--
 New Additions:
 - Added a game rule to reduce the number of starting Kurdish tags
