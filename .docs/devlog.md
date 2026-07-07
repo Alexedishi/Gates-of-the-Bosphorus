@@ -214,14 +214,19 @@ New Additions:
 - ##Fully implemented the Young Turks content with varying outcomes for the Republican movements in the Ottoman Empire
 - ##Fully implemented the Armenian Expulsions content
 
+Fixes:
+- 
+
 Notes:
 - The Metaxism journal entry remains in a beta state, this will be completed soon
 
 
 ####---------- Published Updates ----------####
 --Update 4.0.7--
-New Additions:
--
+Fixes:
+- Fixed an issue with the Tanzimat "Organize the Bureaucracy" agenda not correctly displaying its requirements
+- Fixed several mismatched modifiers and variables in the "An Ottoman Legacy" journal
+- Replaced country_law_enactment_time_mult with country_law_enactment_speed_mult
 
 
 --Update 4.0.6--

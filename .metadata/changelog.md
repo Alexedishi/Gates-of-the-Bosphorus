@@ -27,6 +27,7 @@ Fixes:
 - Fixed several mismatched modifiers and variables in the "An Ottoman Legacy" journal
 - Replaced country_law_enactment_time_mult with country_law_enactment_speed_mult
 
+
 --Update 4.0.6--
 New Additions:
 - Added a game rule to reduce the number of starting Kurdish tags
