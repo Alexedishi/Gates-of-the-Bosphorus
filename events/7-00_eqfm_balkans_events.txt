@@ -120,36 +120,38 @@ namespace = eqfm_balkans
 
 ####---------- Balkan Situation Narrative Events ----------####
 # Event IDs 001-099 -  Events in this group are for major changes in the situation such as race riots/phase transitions
-eqfm_balkans.001 = { # The Peoples of the Empire
+
+# The Peoples of the Empire
+eqfm_balkans.001 = {
 	type = country_event
 	placement = root
-
+	
 	title = eqfm_balkans.001.t
 	desc = eqfm_balkans.001.d
 	flavor = eqfm_balkans.001.f
-
+	
 	gui_window = event_window_widescreen_newspaper
-
+	
 	event_image = {
 		video = "gbbf_golden_horn"
 	}
-
+	
 	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
-
+	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
+	
 	duration = 3
-
+	
 	dlc = dlc_grefm
-
+	
 	trigger = {
 		# triggered by je_eqfm_balkan_powder_keg
 	}
-
+	
 	immediate = {
 		set_variable = eqfm_has_been_involved_in_balkan_powder_keg_var
 	}
-
+	
 	option = {
 		name = eqfm_balkans.001.a
 		default_option = yes
@@ -157,9 +159,13 @@ eqfm_balkans.001 = { # The Peoples of the Empire
 	}
 }
 
-eqfm_balkans.002 = { # Dominion Over Rumelia
+# Dominion Over Rumelia
+eqfm_balkans.002 = {
 	type = country_event
 	placement = root
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.002.t
 	desc = eqfm_balkans.002.d
@@ -168,35 +174,39 @@ eqfm_balkans.002 = { # Dominion Over Rumelia
 	event_image = {
 		video = "unspecific_military_parade"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/event_military.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
-	duration = 3
+	trigger = {
+		# triggered by je_eqfm_balkan_powder_keg
+	}
 	
-	dlc = dlc_grefm
-	
-	trigger = {}
-	
-	immediate = {}
+	immediate = { }
 	
 	option = {
 		name = eqfm_balkans.002.a
 		default_option = yes
-		add_modifier = {
-			name = modifier_eqfm_rumelia_secured
-			months = gbbf_long_modifier_time
-		}
-		add_loyalists = {
-			value = medium_radicals
+		every_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_rumelia
+			}
+			add_modifier = {
+				name = modifier_eqfm_rumelia_secured
+				months = gbbf_long_modifier_time
+			}
+			add_loyalists_in_state = {
+				value = medium_radicals
+			}
 		}
 	}
 }
 
-eqfm_balkans.003 = { # Rumelia Lost
+# Rumelia Lost
+eqfm_balkans.003 = {
 	type = country_event
 	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.003.t
 	desc = eqfm_balkans.003.d
@@ -205,69 +215,59 @@ eqfm_balkans.003 = { # Rumelia Lost
 	event_image = {
 		video = "ip4_abdication"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/event_skull.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
-	duration = 3
+	trigger = {
+		# triggered by je_eqfm_balkan_powder_keg
+	}
 	
-	dlc = dlc_grefm
-	
-	trigger = {}
-	
-	immediate = {}
+	immediate = { }
 	
 	option = {
 		name = eqfm_balkans.003.a
 		default_option = yes
-		add_modifier = {
-			name = modifier_eqfm_rumelia_lost
-			months = gbbf_long_modifier_time
-			is_decaying = yes
-		}
-		add_radicals = {
-			value = medium_radicals
+		every_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_rumelia
+			}
+			add_modifier = {
+				name = modifier_eqfm_rumelia_lost
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+			add_radicals_in_state = {
+				value = medium_radicals
+			}
 		}
 	}
 }
 
-eqfm_balkans.004 = { # The Rise of Nationalism
+# The Rise of Nationalism
+eqfm_balkans.004 = {
 	type = country_event
 	placement = root
-
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.004.t
 	desc = eqfm_balkans.004.d
 	flavor = eqfm_balkans.004.f
-
+	
 	event_image = {
 		video = "middleeast_middleclass_cafe"
 	}
-
-	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
+	
+	trigger = {	}
+	
+	cancellation_trigger = {
 		NOT = {
-			has_variable = turkfm_nationalism_wave_happened
-		}
-		OR = {
-			has_technology_researched = nationalism
-			any_country = {
-				is_subject_of = root
-				is_in_geographic_region = geographic_region_rumelia
-				has_technology_researched = nationalism
-			}
+			has_global_variable = je_eqfm_balkan_powder_keg
 		}
 	}
-
+	
 	immediate = {
-		set_variable = turkfm_nationalism_wave_happened
 		if = {
 			limit = {
 				has_technology_researched = nationalism
@@ -276,7 +276,7 @@ eqfm_balkans.004 = { # The Rise of Nationalism
 		}
 		else = {
 			random_country = {
-				limit =	{
+				limit = {
 					is_subject_of = root
 					is_in_geographic_region = geographic_region_rumelia
 					has_technology_researched = nationalism
@@ -285,49 +285,39 @@ eqfm_balkans.004 = { # The Rise of Nationalism
 			}
 		}
 	}
-
+	
 	option = {
 		name = eqfm_balkans.004.a
 		default_option = yes
 		custom_tooltip = eqfm_nationalism_warning
 	}
-
 }
 
-eqfm_balkans.005 = { # Nationalist Movements Intensify
+# Nationalist Movements Intensify
+eqfm_balkans.005 = {
 	type = country_event
 	placement = root
-
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.005.t
 	desc = eqfm_balkans.005.d
 	flavor = eqfm_balkans.005.f
-
+	
 	event_image = {
 		video = "europenorthamerica_political_extremism"
 	}
-
-	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
-	trigger = {
+	
+	trigger = { }
+	
+	cancellation_trigger = {
 		NOT = {
-			has_variable = turkfm_nationalism_wave_intensified
-		}
-		OR = {
-			has_technology_researched = nationalism
-			any_country = {
-				is_subject_of = root
-				is_in_geographic_region = geographic_region_rumelia
-				has_technology_researched = nationalism
-			}
+			has_global_variable = je_eqfm_balkan_powder_keg
 		}
 	}
-
+	
 	immediate = {
 		set_variable = turkfm_nationalism_wave_intensified
 		if = {
@@ -338,7 +328,7 @@ eqfm_balkans.005 = { # Nationalist Movements Intensify
 		}
 		else = {
 			random_country = {
-				limit =	{
+				limit = {
 					is_subject_of = root
 					is_in_geographic_region = geographic_region_rumelia
 					has_technology_researched = pan-nationalism
@@ -347,18 +337,21 @@ eqfm_balkans.005 = { # Nationalist Movements Intensify
 			}
 		}
 	}
-
+	
 	option = {
 		name = eqfm_balkans.005.a
 		default_option = yes
 		custom_tooltip = eqfm_pan_nationalism_warning
 	}
-
 }
 
-eqfm_balkans.006 = { # Riots Break Out in State
+eqfm_balkans.006 = {
+	# Riots Break Out in State
 	type = country_event
 	placement = scope:eqfm_riot_state_scope
+	icon = "gfx/interface/icons/event_icons/bicorne_hat.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.006.t
 	desc = eqfm_balkans.006.d
@@ -367,14 +360,7 @@ eqfm_balkans.006 = { # Riots Break Out in State
 	event_image = {
 		video = "votp_agitator_speaking"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/bicorne_hat.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
@@ -387,6 +373,12 @@ eqfm_balkans.006 = { # Riots Break Out in State
 			NOT = {
 				has_modifier = modifier_eqfm_race_riots
 			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
 		}
 	}
 	
@@ -440,12 +432,15 @@ eqfm_balkans.006 = { # Riots Break Out in State
 			}
 		}
 	}
-	
 }
 
-eqfm_balkans.007 = { # State Rebellion Suppressed
+# State Rebellion Suppressed
+eqfm_balkans.007 = {
 	type = country_event
 	placement = root
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.007.t
 	desc = eqfm_balkans.007.d
@@ -454,20 +449,19 @@ eqfm_balkans.007 = { # State Rebellion Suppressed
 	event_image = {
 		video = "ip3_police_raid"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/event_military.dds"
-	
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		has_variable = eqfm_riot_var
 		var:eqfm_riot_var <= 50
 		any_scope_state = {
 			has_modifier = modifier_eqfm_race_riots
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
 		}
 	}
 	
@@ -510,12 +504,15 @@ eqfm_balkans.007 = { # State Rebellion Suppressed
 			post_notification = eqfm_riot_suppressed
 		}
 	}
-	
 }
 
-eqfm_balkans.008 = { # Balkan Country Rebellion
+# Balkan Country Rebellion
+eqfm_balkans.008 = {
 	type = country_event
 	placement = scope:eqfm_rebellion_scope
+	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	duration = 1
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.008.t
 	desc = eqfm_balkans.008.d
@@ -524,17 +521,16 @@ eqfm_balkans.008 = { # Balkan Country Rebellion
 	event_image = {
 		video = "votp_agitator_speaking"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
-	
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 1
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		# triggered by eqfm_secession_start on_action
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
 	}
 	
 	immediate = {
@@ -566,7 +562,8 @@ eqfm_balkans.008 = { # Balkan Country Rebellion
 		}
 	}
 	
-	option = { # Assert Our Dominion
+	option = {
+		# Assert Our Dominion
 		name = eqfm_balkans.008.a
 		default_option = yes
 		custom_tooltip = turkfm_play_continues
@@ -578,7 +575,8 @@ eqfm_balkans.008 = { # Balkan Country Rebellion
 		}
 	}
 	
-	option = { # Let Them Go
+	option = {
+		# Let Them Go
 		name = eqfm_balkans.008.b
 		scope:eqfm_rebellion_play_scope = {
 			end_play = yes
@@ -599,19 +597,17 @@ eqfm_balkans.008 = { # Balkan Country Rebellion
 			name = modifier_eqfm_caved_to_separatists
 			months = gbbf_normal_modifier_time
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_revolt_protectorate
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_revolt_protectorate
 		}
 	}
-	
 }
 
-eqfm_balkans.009 = { # A Crisis in Rumelia
+# A Crisis in Rumelia
+eqfm_balkans.009 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
@@ -634,6 +630,12 @@ eqfm_balkans.009 = { # A Crisis in Rumelia
 		# triggered by eqfm_check_balkan_powder_keg_phase_effect
 	}
 	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		c:TUR = {
 			ruler = {
@@ -650,7 +652,8 @@ eqfm_balkans.009 = { # A Crisis in Rumelia
 	}
 }
 
-eqfm_balkans.010 = { # Rumelia in Disarray
+# Rumelia in Disarray
+eqfm_balkans.010 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_fire.dds"
@@ -671,7 +674,9 @@ eqfm_balkans.010 = { # Rumelia in Disarray
 	}
 	
 	cancellation_trigger = {
-		has_global_variable = eqfm_balkan_situation_resolved
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
 	}
 	
 	immediate = {
@@ -706,7 +711,8 @@ eqfm_balkans.010 = { # Rumelia in Disarray
 	}
 }
 
-eqfm_balkans.011 = { # Order Returns to Rumelia
+# Order Returns to Rumelia
+eqfm_balkans.011 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
@@ -728,6 +734,12 @@ eqfm_balkans.011 = { # Order Returns to Rumelia
 	
 	trigger = {
 		# triggered by eqfm_check_balkan_powder_keg_phase_effect
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
 	}
 	
 	immediate = {
@@ -765,26 +777,24 @@ eqfm_balkans.011 = { # Order Returns to Rumelia
 
 ####---------- Balkan Situation Neutral Events ----------####
 # Event IDs 100-199 - Events in this group will occur in ANY phase
-eqfm_balkans.100 = { # Extortionate Taxation in State
+
+# Extortionate Taxation in State
+eqfm_balkans.100 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.100.t
 	desc = eqfm_balkans.100.d
 	flavor = eqfm_balkans.100.f
-
+	
 	event_image = {
 		video = "europenorthamerica_russian_serfs"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
-
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_neutral_events_trigger = yes
 		has_law = law_type:law_millet_system
@@ -796,7 +806,13 @@ eqfm_balkans.100 = { # Extortionate Taxation in State
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		random_scope_state = {
 			limit = {
@@ -806,8 +822,9 @@ eqfm_balkans.100 = { # Extortionate Taxation in State
 		}
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 	}
-
-	option = { # Maintain Taxation
+	
+	option = {
+		# Maintain Taxation
 		name = eqfm_balkans.100.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -816,18 +833,17 @@ eqfm_balkans.100 = { # Extortionate Taxation in State
 				months = gbbf_normal_modifier_time
 			}
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_overtaxed
-			}
-		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_overtaxed
+		}
 	}
-
-	option = { # Reduce Taxation
+	
+	option = {
+		# Reduce Taxation
 		name = eqfm_balkans.100.b
 		add_modifier = {
 			name = modifier_eqfm_tax_break_given
@@ -839,39 +855,33 @@ eqfm_balkans.100 = { # Extortionate Taxation in State
 				value = medium_radicals
 			}
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_tax_break
-			}
-		}
 		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_tax_break
+		}
 	}
-
 }
 
-eqfm_balkans.101 = { # Plague Outbreak in State
+# Plague Outbreak in State
+eqfm_balkans.101 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.101.t
 	desc = eqfm_balkans.101.d
 	flavor = eqfm_balkans.101.f
-
+	
 	event_image = {
 		video = "unspecific_factory_closed"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_skull.dds"
-
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_neutral_events_trigger = yes
 		institution_investment_level = {
@@ -886,7 +896,13 @@ eqfm_balkans.101 = { # Plague Outbreak in State
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		random_scope_state = {
 			limit = {
@@ -896,8 +912,9 @@ eqfm_balkans.101 = { # Plague Outbreak in State
 		}
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 	}
-
-	option = { # Let Them Die
+	
+	option = {
+		# Let Them Die
 		name = eqfm_balkans.101.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -910,18 +927,17 @@ eqfm_balkans.101 = { # Plague Outbreak in State
 				months = gbbf_normal_modifier_time
 			}
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_plague
-			}
-		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_plague
+		}
 	}
-
-	option = { # Implement Quarantine
+	
+	option = {
+		# Implement Quarantine
 		name = eqfm_balkans.101.b
 		scope:eqfm_balkan_state_scope = {
 			add_loyalists_in_state = {
@@ -932,39 +948,33 @@ eqfm_balkans.101 = { # Plague Outbreak in State
 				months = gbbf_short_modifier_time
 			}
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_quarantine
-			}
-		}
 		eqfm_add_small_balkan_powder_keg_escalation_effect = yes
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_quarantine
+		}
 	}
-
 }
 
-eqfm_balkans.102 = { # Ecumenical Patriarch Demands Protections
+# Ecumenical Patriarch Demands Protections
+eqfm_balkans.102 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.102.t
 	desc = eqfm_balkans.102.d
 	flavor = eqfm_balkans.102.f
-
+	
 	event_image = {
 		video = "southamerica_christianity"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
-
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_neutral_events_trigger = yes
 		NOT = {
@@ -972,7 +982,13 @@ eqfm_balkans.102 = { # Ecumenical Patriarch Demands Protections
 		}
 		owns_entire_state_region = STATE_EASTERN_THRACE
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		s:STATE_EASTERN_THRACE = {
@@ -982,8 +998,9 @@ eqfm_balkans.102 = { # Ecumenical Patriarch Demands Protections
 		}
 		set_variable = turkfm_firman_requested
 	}
-
-	option = { # Patriarch? More like Faketriarch!
+	
+	option = {
+		# Patriarch? More like Faketriarch!
 		name = eqfm_balkans.102.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -992,18 +1009,17 @@ eqfm_balkans.102 = { # Ecumenical Patriarch Demands Protections
 				value = medium_radicals
 			}
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_faketriarch
-			}
-		}
 		eqfm_add_small_balkan_powder_keg_escalation_effect = yes
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_faketriarch
+		}
 	}
-
-	option = { # Help a Beggar Out
+	
+	option = {
+		# Help a Beggar Out
 		name = eqfm_balkans.102.b
 		scope:eqfm_balkan_state_scope = {
 			add_loyalists_in_state = {
@@ -1015,39 +1031,33 @@ eqfm_balkans.102 = { # Ecumenical Patriarch Demands Protections
 				months = gbbf_short_modifier_time
 			}
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_firman
-			}
-		}
 		eqfm_add_small_balkan_powder_keg_deescalation_effect = yes
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_firman
+		}
 	}
-
 }
 
-eqfm_balkans.103 = { # The Language of Paperwork
+# The Language of Paperwork
+eqfm_balkans.103 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.103.t
 	desc = eqfm_balkans.103.d
 	flavor = eqfm_balkans.103.f
-
+	
 	event_image = {
 		video = "africa_leader_arguing"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_neutral_events_trigger = yes
 		has_law = law_type:law_millet_system
@@ -1065,7 +1075,7 @@ eqfm_balkans.103 = { # The Language of Paperwork
 			}
 		}
 	}
-
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -1090,8 +1100,9 @@ eqfm_balkans.103 = { # The Language of Paperwork
 			}
 		}
 	}
-
-	option = { # Punt it to the Millets
+	
+	option = {
+		# Punt it to the Millets
 		name = eqfm_balkans.103.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -1104,18 +1115,17 @@ eqfm_balkans.103 = { # The Language of Paperwork
 				value = medium_radicals
 			}
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_translations_denied
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_translations_denied
 		}
 		eqfm_add_small_balkan_powder_keg_escalation_effect = yes
 	}
-
-	option = { # Provide Translation Services
+	
+	option = {
+		# Provide Translation Services
 		name = eqfm_balkans.103.b
 		scope:eqfm_balkan_state_scope = {
 			add_modifier = {
@@ -1135,39 +1145,33 @@ eqfm_balkans.103 = { # The Language of Paperwork
 			name = modifier_eqfm_adhoc_translations
 			months = gbbf_normal_modifier_time
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_translations_provided
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_translations_provided
 		}
 		eqfm_add_small_balkan_powder_keg_deescalation_effect = yes
 	}
-
 }
 
-eqfm_balkans.104 = { # Food Shortages in State
+# Food Shortages in State
+eqfm_balkans.104 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.104.t
 	desc = eqfm_balkans.104.d
 	flavor = eqfm_balkans.104.f
-
+	
 	event_image = {
 		video = "asia_dead_cattle_poor_harvest"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_skull.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		always = no # TODO remove when ready; don't forget the loc!
 		eqfm_neutral_events_trigger = yes
@@ -1184,11 +1188,17 @@ eqfm_balkans.104 = { # Food Shortages in State
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	cooldown = {
 		years = 3
 	}
-
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -1211,7 +1221,7 @@ eqfm_balkans.104 = { # Food Shortages in State
 			save_scope_as = eqfm_balkan_state_scope
 		}
 	}
-
+	
 	option = {
 		name = eqfm_balkans.104.a
 		default_option = yes
@@ -1225,16 +1235,14 @@ eqfm_balkans.104 = { # Food Shortages in State
 				value = medium_radicals
 			}
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_relief_provided
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_relief_provided
 		}
 	}
-
+	
 	option = {
 		name = eqfm_balkans.104.b
 		scope:eqfm_balkan_state_scope = {
@@ -1243,54 +1251,55 @@ eqfm_balkans.104 = { # Food Shortages in State
 				value = large_radicals
 			}
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_relief_denied
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_relief_denied
 		}
 	}
-
 }
 
-eqfm_balkans.105 = { # Peasants March in State
+# Peasants March in State
+eqfm_balkans.105 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.105.t
 	desc = eqfm_balkans.105.d
 	flavor = eqfm_balkans.105.f
-
+	
 	event_image = {
 		video = "ip3_agitator_reading_manifesto"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_protest.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_neutral_events_trigger = yes
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	cooldown = {
 		years = 2
 	}
-
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
 			save_scope_as = eqfm_balkan_state_scope
 		}
 	}
-
-	option = { # End the Marches
+	
+	option = {
+		# End the Marches
 		name = eqfm_balkans.105.a
 		default_option = yes
 		show_as_unavailable = {
@@ -1315,8 +1324,9 @@ eqfm_balkans.105 = { # Peasants March in State
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
 	}
-
-	option = { # Tolerate the Marches
+	
+	option = {
+		# Tolerate the Marches
 		name = eqfm_balkans.105.b
 		scope:eqfm_balkan_state_scope = {
 			add_loyalists_in_state = {
@@ -1330,29 +1340,25 @@ eqfm_balkans.105 = { # Peasants March in State
 		}
 		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
 	}
-
 }
 
-eqfm_balkans.106 = { # Local Bey Exceeds Authority
+# Local Bey Exceeds Authority
+eqfm_balkans.106 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.106.t
 	desc = eqfm_balkans.106.d
 	flavor = eqfm_balkans.106.f
-
+	
 	event_image = {
 		video = "votp_cops_march"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_protest.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_neutral_events_trigger = yes
 		has_law = law_type:law_millet_system
@@ -1364,7 +1370,13 @@ eqfm_balkans.106 = { # Local Bey Exceeds Authority
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -1377,8 +1389,9 @@ eqfm_balkans.106 = { # Local Bey Exceeds Authority
 			save_scope_as = eqfm_balkan_state_scope
 		}
 	}
-
-	option = { # Sanction his actions
+	
+	option = {
+		# Sanction his actions
 		name = eqfm_balkans.106.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -1391,18 +1404,17 @@ eqfm_balkans.106 = { # Local Bey Exceeds Authority
 				value = medium_radicals
 			}
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_domineering_bey
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_domineering_bey
 		}
 		eqfm_add_small_balkan_powder_keg_escalation_effect = yes
 	}
-
-	option = { # Recall the Bey
+	
+	option = {
+		# Recall the Bey
 		name = eqfm_balkans.106.b
 		scope:eqfm_balkan_state_scope = {
 			add_modifier = {
@@ -1418,40 +1430,33 @@ eqfm_balkans.106 = { # Local Bey Exceeds Authority
 				value = medium_radicals
 			}
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_recalled_bey
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_recalled_bey
 		}
 		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
 	}
-
-
 }
 
-eqfm_balkans.107 = { # Church Services Disrupted
+# Church Services Disrupted
+eqfm_balkans.107 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.107.t
 	desc = eqfm_balkans.107.d
 	flavor = eqfm_balkans.107.f
-
+	
 	event_image = {
 		video = "southamerica_christianity"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_orthodox.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_neutral_events_trigger = yes
 		has_law = law_type:law_millet_system
@@ -1468,11 +1473,17 @@ eqfm_balkans.107 = { # Church Services Disrupted
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	cooldown = {
 		years = 4
 	}
-
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -1488,8 +1499,9 @@ eqfm_balkans.107 = { # Church Services Disrupted
 			save_scope_as = eqfm_balkan_state_scope
 		}
 	}
-
-	option = { # Stick up for the Churches
+	
+	option = {
+		# Stick up for the Churches
 		name = eqfm_balkans.107.a
 		default_option = yes
 		ig:ig_devout = {
@@ -1510,17 +1522,16 @@ eqfm_balkans.107 = { # Church Services Disrupted
 			}
 		}
 		eqfm_add_small_balkan_powder_keg_deescalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_protected_churches
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_protected_churches
 		}
 	}
-
-	option = { # lol who cares
+	
+	option = {
+		# lol who cares
 		name = eqfm_balkans.107.b
 		scope:eqfm_balkan_state_scope = {
 			add_modifier = {
@@ -1533,38 +1544,32 @@ eqfm_balkans.107 = { # Church Services Disrupted
 			}
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_churches_disrupted
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_churches_disrupted
 		}
 	}
-
 }
 
-eqfm_balkans.108 = { # Villages Request Schools
+# Villages Request Schools
+eqfm_balkans.108 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.108.t
 	desc = eqfm_balkans.108.d
 	flavor = eqfm_balkans.108.f
-
+	
 	event_image = {
 		video = "ip3_village_school"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_neutral_events_trigger = yes
 		any_scope_state = {
@@ -1584,11 +1589,17 @@ eqfm_balkans.108 = { # Villages Request Schools
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	cooldown = {
 		years = 10
 	}
-
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -1627,8 +1638,9 @@ eqfm_balkans.108 = { # Villages Request Schools
 			}
 		}
 	}
-
-	option = { # Deny Funding
+	
+	option = {
+		# Deny Funding
 		name = eqfm_balkans.108.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -1641,18 +1653,17 @@ eqfm_balkans.108 = { # Villages Request Schools
 				value = medium_radicals
 			}
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_schools_denied
-			}
-		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_schools_denied
+		}
 	}
-
-	option = { # Grant Funding
+	
+	option = {
+		# Grant Funding
 		name = eqfm_balkans.108.b
 		add_modifier = {
 			name = modifier_eqfm_funding_schools
@@ -1673,39 +1684,33 @@ eqfm_balkans.108 = { # Villages Request Schools
 				value = medium_radicals
 			}
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_schools_approved
-			}
-		}
 		eqfm_add_small_balkan_powder_keg_deescalation_effect = yes
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_schools_approved
+		}
 	}
-
 }
 
-eqfm_balkans.109 = { # Revivalist Publications
+# Revivalist Publications
+eqfm_balkans.109 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.109.t
 	desc = eqfm_balkans.109.d
 	flavor = eqfm_balkans.109.f
-
+	
 	event_image = {
 		video = "ep1_printing_press"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_neutral_events_trigger = yes
 		eqfm_balkan_powder_keg_can_escalate_trigger = yes
@@ -1722,7 +1727,13 @@ eqfm_balkans.109 = { # Revivalist Publications
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -1743,8 +1754,9 @@ eqfm_balkans.109 = { # Revivalist Publications
 			}
 		}
 	}
-
-	option = { # Shut it Down
+	
+	option = {
+		# Shut it Down
 		name = eqfm_balkans.109.a
 		default_option = yes
 		show_as_unavailable = {
@@ -1771,18 +1783,17 @@ eqfm_balkans.109 = { # Revivalist Publications
 			name = modifier_eqfm_censored_paper
 			months = gbbf_normal_modifier_time
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_newspaper_censored
-			}
-		}
 		eqfm_add_large_balkan_powder_keg_escalation_effect = yes
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_newspaper_censored
+		}
 	}
-
-	option = { # Tolerate It
+	
+	option = {
+		# Tolerate It
 		name = eqfm_balkans.109.b
 		scope:eqfm_balkan_state_scope = {
 			add_modifier = {
@@ -1794,22 +1805,24 @@ eqfm_balkans.109 = { # Revivalist Publications
 				value = large_radicals
 			}
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_newspaper_ignored
-			}
-		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_newspaper_ignored
+		}
 	}
-
+	
 }
 
-eqfm_balkans.110 = { # Dragoman Reduces Tensions
+# Dragoman Reduces Tensions
+eqfm_balkans.110 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.110.t
 	desc = eqfm_balkans.110.d
@@ -1818,17 +1831,16 @@ eqfm_balkans.110 = { # Dragoman Reduces Tensions
 	event_image = {
 		video = "middleeast_middleclass_cafe"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		eqfm_deconfliction_events_trigger = yes
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
 	}
 	
 	cooldown = {
@@ -1865,12 +1877,15 @@ eqfm_balkans.110 = { # Dragoman Reduces Tensions
 			months = gbbf_short_modifier_time
 		}
 	}
-	
 }
 
-eqfm_balkans.111 = { # Inter-faith Dialogue
+# Inter-faith Dialogue
+eqfm_balkans.111 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.111.t
 	desc = eqfm_balkans.111.d
@@ -1879,17 +1894,16 @@ eqfm_balkans.111 = { # Inter-faith Dialogue
 	event_image = {
 		video = "africa_diplomats_negotiating"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		eqfm_deconfliction_events_trigger = yes
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
 	}
 	
 	cooldown = {
@@ -1917,12 +1931,15 @@ eqfm_balkans.111 = { # Inter-faith Dialogue
 		}
 		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
 	}
-	
 }
 
-eqfm_balkans.112 = { # Great Power Mediates Local Conflict
+# Great Power Mediates Local Conflict
+eqfm_balkans.112 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.112.t
 	desc = eqfm_balkans.112.d
@@ -1931,14 +1948,7 @@ eqfm_balkans.112 = { # Great Power Mediates Local Conflict
 	event_image = {
 		video = "ep1_power_blocs"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		# triggered by eqfm_balkans.700
@@ -1959,7 +1969,8 @@ eqfm_balkans.112 = { # Great Power Mediates Local Conflict
 		}
 	}
 	
-	option = { # Accept the Assist
+	option = {
+		# Accept the Assist
 		name = eqfm_balkans.112.a
 		default_option = yes
 		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
@@ -1982,7 +1993,8 @@ eqfm_balkans.112 = { # Great Power Mediates Local Conflict
 		}
 	}
 	
-	option = { # Reject the Assist
+	option = {
+		# Reject the Assist
 		name = eqfm_balkans.112.b
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
 		change_relations = {
@@ -2007,12 +2019,15 @@ eqfm_balkans.112 = { # Great Power Mediates Local Conflict
 			remove_variable = turkfm_intervention_var
 		}
 	}
-	
 }
 
-eqfm_balkans.113 = { # Spy Ring Busted
+# Spy Ring Busted
+eqfm_balkans.113 = {
 	type = country_event
 	placement = root
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.113.t
 	desc = eqfm_balkans.113.d
@@ -2021,14 +2036,7 @@ eqfm_balkans.113 = { # Spy Ring Busted
 	event_image = {
 		video = "ep1_clandestine_meeting"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/event_default.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		NOT = {
@@ -2038,6 +2046,12 @@ eqfm_balkans.113 = { # Spy Ring Busted
 			eqfm_unrest_phase_trigger = yes
 			eqfm_hostility_phase_trigger = yes
 			eqfm_crisis_phase_trigger = yes
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
 		}
 	}
 	
@@ -2057,7 +2071,8 @@ eqfm_balkans.113 = { # Spy Ring Busted
 		}
 	}
 	
-	option = { # Arrest the Ring
+	option = {
+		# Arrest the Ring
 		name = eqfm_balkans.113.a
 		default_option = yes
 		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
@@ -2073,36 +2088,34 @@ eqfm_balkans.113 = { # Spy Ring Busted
 		}
 	}
 	
-	option = { # Keep an Eye on Them
+	option = {
+		# Keep an Eye on Them
 		name = eqfm_balkans.113.b
 		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
 	}
-	
 }
 
 
 ####---------- Balkan Situation Unrest Phase Events ----------####
 # Event IDs 200-299 - Events in this group will occur in the UNREST phase
-eqfm_balkans.200 = { # Storefronts Ransacked
+
+# Storefronts Ransacked
+eqfm_balkans.200 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.200.t
 	desc = eqfm_balkans.200.d
 	flavor = eqfm_balkans.200.f
-
+	
 	event_image = {
 		video = "unspecific_vandalized_storefront"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_unrest_events_trigger = yes
 		any_scope_state = {
@@ -2116,11 +2129,17 @@ eqfm_balkans.200 = { # Storefronts Ransacked
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	cooldown = {
 		years = 3
 	}
-
+	
 	immediate = {
 		random_scope_state = {
 			limit = {
@@ -2139,8 +2158,9 @@ eqfm_balkans.200 = { # Storefronts Ransacked
 			}
 		}
 	}
-
-	option = { # Take No Action
+	
+	option = {
+		# Take No Action
 		name = eqfm_balkans.200.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -2158,18 +2178,17 @@ eqfm_balkans.200 = { # Storefronts Ransacked
 				value = medium_radicals
 			}
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_stores_ransacked
-			}
-		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_stores_ransacked
+		}
 	}
-
-	option = { # Provide Reparations
+	
+	option = {
+		# Provide Reparations
 		name = eqfm_balkans.200.b
 		add_modifier = {
 			name = modifier_eqfm_providing_reparations
@@ -2190,39 +2209,33 @@ eqfm_balkans.200 = { # Storefronts Ransacked
 				value = medium_radicals
 			}
 		}
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_stores_ransacked
-			}
-		}
 		eqfm_add_small_balkan_powder_keg_escalation_effect = yes
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_stores_ransacked
+		}
 	}
-
 }
 
-eqfm_balkans.201 = { # Minority Rejects Classification
+# Minority Rejects Classification
+eqfm_balkans.201 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.201.t
 	desc = eqfm_balkans.201.d
 	flavor = eqfm_balkans.201.f
-
+	
 	event_image = {
 		video = "ip3_agitator_reading_manifesto"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_protest.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_unrest_events_trigger = yes
 		has_law = law_type:law_millet_system
@@ -2241,11 +2254,17 @@ eqfm_balkans.201 = { # Minority Rejects Classification
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	cooldown = {
 		years = 20
 	}
-
+	
 	immediate = {
 		random_scope_state = {
 			limit = {
@@ -2264,8 +2283,9 @@ eqfm_balkans.201 = { # Minority Rejects Classification
 			}
 		}
 	}
-
-	option = { # Enforce the Classification
+	
+	option = {
+		# Enforce the Classification
 		name = eqfm_balkans.201.a
 		default_option = yes
 		add_radicals = {
@@ -2281,17 +2301,16 @@ eqfm_balkans.201 = { # Minority Rejects Classification
 			months = gbbf_long_modifier_time
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_millets_enforced
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_millets_enforced
 		}
 	}
-
-	option = { # Relent on Classifications
+	
+	option = {
+		# Relent on Classifications
 		name = eqfm_balkans.201.b
 		add_loyalists = {
 			religion = rel:orthodox
@@ -2306,38 +2325,32 @@ eqfm_balkans.201 = { # Minority Rejects Classification
 			months = gbbf_long_modifier_time
 		}
 		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_millets_eroding
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_millets_eroding
 		}
 	}
-
 }
 
-eqfm_balkans.202 = { # Shipping Merchants Held Up
+# Shipping Merchants Held Up
+eqfm_balkans.202 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_trade.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.202.t
 	desc = eqfm_balkans.202.d
 	flavor = eqfm_balkans.202.f
-
+	
 	event_image = {
 		video = "votp_gunboat_diplomacy"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_trade.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_unrest_events_trigger = yes
 		NOT = {
@@ -2354,11 +2367,17 @@ eqfm_balkans.202 = { # Shipping Merchants Held Up
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	cooldown = {
 		years = 5
 	}
-
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -2378,7 +2397,7 @@ eqfm_balkans.202 = { # Shipping Merchants Held Up
 			save_scope_as = eqfm_jack_sparrow_scope
 		}
 	}
-
+	
 	option = {
 		name = eqfm_balkans.202.a
 		default_option = yes
@@ -2393,38 +2412,32 @@ eqfm_balkans.202 = { # Shipping Merchants Held Up
 			value = medium_radicals
 		}
 		eqfm_add_small_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_jack_sparrowed
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_jack_sparrowed
 		}
 	}
-
 }
 
-eqfm_balkans.203 = { # Crowds Gather in City Hub
+# Crowds Gather in City Hub
+eqfm_balkans.203 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.203.t
 	desc = eqfm_balkans.203.d
 	flavor = eqfm_balkans.203.f
-
+	
 	event_image = {
 		video = "europenorthamerica_political_extremism"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_protest.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_unrest_events_trigger = yes
 		any_scope_state = {
@@ -2437,7 +2450,13 @@ eqfm_balkans.203 = { # Crowds Gather in City Hub
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -2464,8 +2483,9 @@ eqfm_balkans.203 = { # Crowds Gather in City Hub
 			}
 		}
 	}
-
-	option = { # Disperse the Crowds
+	
+	option = {
+		# Disperse the Crowds
 		name = eqfm_balkans.203.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -2475,17 +2495,16 @@ eqfm_balkans.203 = { # Crowds Gather in City Hub
 			}
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_crowds_dispersed
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_crowds_dispersed
 		}
 	}
-
-	option = { # Give them a Space
+	
+	option = {
+		# Give them a Space
 		name = eqfm_balkans.203.b
 		scope:eqfm_balkan_state_scope = {
 			add_radicals_in_state = {
@@ -2498,17 +2517,16 @@ eqfm_balkans.203 = { # Crowds Gather in City Hub
 			months = gbbf_normal_modifier_time
 		}
 		eqfm_add_small_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_crowds_tolerated
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_crowds_tolerated
 		}
 	}
-
-	option = { # Beat Them Down
+	
+	option = {
+		# Beat Them Down
 		name = eqfm_balkans.203.c
 		show_as_unavailable = {
 			always = yes
@@ -2540,38 +2558,32 @@ eqfm_balkans.203 = { # Crowds Gather in City Hub
 			}
 		}
 		eqfm_add_large_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_crowds_beaten
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_crowds_beaten
 		}
 	}
-
 }
 
-eqfm_balkans.204 = { # Language Bans in State
+# Language Bans in State
+eqfm_balkans.204 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.204.t
 	desc = eqfm_balkans.204.d
 	flavor = eqfm_balkans.204.f
-
+	
 	event_image = {
 		video = "africa_leader_arguing"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		NOT = {
 			has_variable = turkfm_language_ban_considered
@@ -2592,7 +2604,13 @@ eqfm_balkans.204 = { # Language Bans in State
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		set_variable = turkfm_language_ban_considered
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
@@ -2609,8 +2627,9 @@ eqfm_balkans.204 = { # Language Bans in State
 			save_scope_as = eqfm_balkan_state_scope
 		}
 	}
-
-	option = { # Ignore the Ban
+	
+	option = {
+		# Ignore the Ban
 		name = eqfm_balkans.204.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -2628,17 +2647,16 @@ eqfm_balkans.204 = { # Language Bans in State
 			}
 		}
 		eqfm_add_large_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_local_language_ban
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_local_language_ban
 		}
 	}
-
-	option = { # Rescind the Ban
+	
+	option = {
+		# Rescind the Ban
 		name = eqfm_balkans.204.b
 		scope:eqfm_balkan_state_scope = {
 			add_modifier = {
@@ -2655,17 +2673,16 @@ eqfm_balkans.204 = { # Language Bans in State
 			}
 		}
 		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_languages_protected
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_languages_protected
 		}
 	}
-
-	option = { # Extend the Ban Empire-wide
+	
+	option = {
+		# Extend the Ban Empire-wide
 		name = eqfm_balkans.204.c
 		show_as_unavailable = {
 			always = yes
@@ -2692,50 +2709,50 @@ eqfm_balkans.204 = { # Language Bans in State
 			}
 		}
 		eqfm_add_very_large_balkan_powder_keg_escalation_effect = yes
-		change_infamy = 10
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_total_language_ban
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_total_language_ban
 		}
+		change_infamy = 10
 	}
-
 }
 
-eqfm_balkans.205 = { # Gun-Runners Intercepted (Greek)
+# Gun-Runners Intercepted (Greek)
+eqfm_balkans.205 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.205.t
 	desc = eqfm_balkans.205.d
 	flavor = eqfm_balkans.205.f
-
+	
 	event_image = {
 		video = "rp1_social_banditry"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_unrest_events_trigger = yes
 		any_country = {
 			has_modifier = modifier_eqfm_supporting_gunrunners
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	cooldown = {
 		years = 4
 	}
-
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_list = {
@@ -2807,8 +2824,9 @@ eqfm_balkans.205 = { # Gun-Runners Intercepted (Greek)
 			save_scope_as = eqfm_balkan_country_scope
 		}
 	}
-
-	option = { # Press the Issue
+	
+	option = {
+		# Press the Issue
 		name = eqfm_balkans.205.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -2828,17 +2846,16 @@ eqfm_balkans.205 = { # Gun-Runners Intercepted (Greek)
 			}
 		}
 		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_greek_gunrunners_arrested
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_greek_gunrunners_arrested
 		}
 	}
-
-	option = { # Grant Amnesty
+	
+	option = {
+		# Grant Amnesty
 		name = eqfm_balkans.205.b
 		scope:eqfm_balkan_state_scope = {
 			add_modifier = {
@@ -2855,45 +2872,45 @@ eqfm_balkans.205 = { # Gun-Runners Intercepted (Greek)
 			}
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_greek_gunrunners_released
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_greek_gunrunners_released
 		}
 	}
-
 }
 
-eqfm_balkans.206 = { # Gun-Runners Intercepted (Yugoslav)
+# Gun-Runners Intercepted (Yugoslav)
+eqfm_balkans.206 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.206.t
 	desc = eqfm_balkans.206.d
 	flavor = eqfm_balkans.206.f
-
+	
 	event_image = {
 		video = "rp1_social_banditry"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_unrest_events_trigger = yes
 		any_country = {
 			has_modifier = modifier_balkfm_ottoman_gunrunners
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_country = {
@@ -2909,8 +2926,9 @@ eqfm_balkans.206 = { # Gun-Runners Intercepted (Yugoslav)
 			save_scope_as = eqfm_balkan_state_scope
 		}
 	}
-
-	option = { # Press the Issue
+	
+	option = {
+		# Press the Issue
 		name = eqfm_balkans.206.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -2930,17 +2948,16 @@ eqfm_balkans.206 = { # Gun-Runners Intercepted (Yugoslav)
 			}
 		}
 		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_yugoslav_gunrunners_arrested
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_yugoslav_gunrunners_arrested
 		}
 	}
-
-	option = { # Grant Amnesty
+	
+	option = {
+		# Grant Amnesty
 		name = eqfm_balkans.206.b
 		scope:eqfm_balkan_state_scope = {
 			add_modifier = {
@@ -2957,38 +2974,32 @@ eqfm_balkans.206 = { # Gun-Runners Intercepted (Yugoslav)
 			}
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_yugoslav_gunrunners_released
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_yugoslav_gunrunners_released
 		}
 	}
-
 }
 
-eqfm_balkans.207 = { # Piracy in State
+# Piracy in State
+eqfm_balkans.207 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_trade.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.207.t
 	desc = eqfm_balkans.207.d
 	flavor = eqfm_balkans.207.f
-
+	
 	event_image = {
 		video = "unspecific_naval_battle"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_trade.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_unrest_events_trigger = yes
 		NOT = {
@@ -3005,11 +3016,17 @@ eqfm_balkans.207 = { # Piracy in State
 			has_template = eqfm_jack_sparrow
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	cooldown = {
 		years = 3
 	}
-
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -3029,7 +3046,7 @@ eqfm_balkans.207 = { # Piracy in State
 			save_scope_as = eqfm_jack_sparrow_scope
 		}
 	}
-
+	
 	option = {
 		name = eqfm_balkans.207.a
 		default_option = yes
@@ -3044,38 +3061,32 @@ eqfm_balkans.207 = { # Piracy in State
 			}
 		}
 		eqfm_add_small_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_jack_sparrow_strikes_again
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_jack_sparrow_strikes_again
 		}
 	}
-
 }
 
-eqfm_balkans.208 = { # Villagers Displaced in State
+# Villagers Displaced in State
+eqfm_balkans.208 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.208.t
 	desc = eqfm_balkans.208.d
 	flavor = eqfm_balkans.208.f
-
+	
 	event_image = {
 		video = "ip3_angry_mob_raiding_minorities"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_skull.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_unrest_events_trigger = yes
 		any_scope_state = {
@@ -3088,11 +3099,17 @@ eqfm_balkans.208 = { # Villagers Displaced in State
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	cooldown = {
 		years = 5
 	}
-
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -3120,8 +3137,9 @@ eqfm_balkans.208 = { # Villagers Displaced in State
 			}
 		}
 	}
-
-	option = { # Ignore the Issue
+	
+	option = {
+		# Ignore the Issue
 		name = eqfm_balkans.208.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -3141,17 +3159,16 @@ eqfm_balkans.208 = { # Villagers Displaced in State
 			}
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_ignored_displacement
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_ignored_displacement
 		}
 	}
-
-	option = { # Restrict Settlements
+	
+	option = {
+		# Restrict Settlements
 		name = eqfm_balkans.208.b
 		scope:eqfm_balkan_state_scope = {
 			add_culture_standard_of_living_modifier = {
@@ -3169,17 +3186,16 @@ eqfm_balkans.208 = { # Villagers Displaced in State
 			}
 		}
 		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_restricted_displacement
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_restricted_displacement
 		}
 	}
-
-	option = { # Support Settlements
+	
+	option = {
+		# Support Settlements
 		name = eqfm_balkans.208.c
 		show_as_unavailable = { always = yes }
 		highlighted_option = yes
@@ -3219,29 +3235,25 @@ eqfm_balkans.208 = { # Villagers Displaced in State
 			}
 		}
 	}
-
 }
 
-eqfm_balkans.209 = { # Brigands Cross the Border
+# Brigands Cross the Border
+eqfm_balkans.209 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.209.t
 	desc = eqfm_balkans.209.d
 	flavor = eqfm_balkans.209.f
-
+	
 	event_image = {
 		video = "votp_cops_march"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_unrest_events_trigger = yes
 		any_scope_state = {
@@ -3260,7 +3272,13 @@ eqfm_balkans.209 = { # Brigands Cross the Border
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -3282,8 +3300,9 @@ eqfm_balkans.209 = { # Brigands Cross the Border
 			save_scope_as = eqfm_balkan_country_scope
 		}
 	}
-
-	option = { # Seek Redress
+	
+	option = {
+		# Seek Redress
 		name = eqfm_balkans.209.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -3299,17 +3318,16 @@ eqfm_balkans.209 = { # Brigands Cross the Border
 			}
 		}
 		eqfm_add_small_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_brigandage_dispute
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_brigandage_dispute
 		}
 	}
-
-	option = { # Extend an Olive Branch
+	
+	option = {
+		# Extend an Olive Branch
 		name = eqfm_balkans.209.b
 		scope:eqfm_balkan_state_scope = {
 			add_modifier = {
@@ -3325,44 +3343,38 @@ eqfm_balkans.209 = { # Brigands Cross the Border
 			post_notification = eqfm_brigandage_ignored
 		}
 		eqfm_add_small_balkan_powder_keg_deescalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-					NOT = {
-						scope:eqfm_balkan_country_scope = this
-					}
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+				NOT = {
+					scope:eqfm_balkan_country_scope = this
 				}
-				post_notification = eqfm_brigandage_conciliation
 			}
+			post_notification = eqfm_brigandage_conciliation
 		}
 	}
-
 }
 
 
 ####---------- Balkan Situation Hostility Phase Events ----------####
 # Event IDs 300-399 - Events in this group will occur in the HOSTILITY phase
-eqfm_balkans.300 = { # Churches Burned in State
+eqfm_balkans.300 = {
+	# Churches Burned in State
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.300.t
 	desc = eqfm_balkans.300.d
 	flavor = eqfm_balkans.300.f
-
+	
 	event_image = {
 		video = "ip3_angry_mob_raiding_minorities"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
 		NOT = {
@@ -3371,7 +3383,13 @@ eqfm_balkans.300 = { # Churches Burned in State
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -3384,8 +3402,9 @@ eqfm_balkans.300 = { # Churches Burned in State
 			save_scope_as = eqfm_balkan_state_scope
 		}
 	}
-
-	option = { # They Can Deal With It
+	
+	option = {
+		# They Can Deal With It
 		name = eqfm_balkans.300.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -3399,17 +3418,16 @@ eqfm_balkans.300 = { # Churches Burned in State
 			}
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_churches_burned
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_churches_burned
 		}
 	}
-
-	option = { # Pay Them Back
+	
+	option = {
+		# Pay Them Back
 		name = eqfm_balkans.300.b
 		scope:eqfm_balkan_state_scope = {
 			add_loyalists_in_state = {
@@ -3429,38 +3447,32 @@ eqfm_balkans.300 = { # Churches Burned in State
 			}
 		}
 		eqfm_add_small_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_church_reparations
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_church_reparations
 		}
 	}
-
 }
 
-eqfm_balkans.301 = { # Popular Speaker Lynched in State
+# Popular Speaker Lynched in State
+eqfm_balkans.301 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.301.t
 	desc = eqfm_balkans.301.d
 	flavor = eqfm_balkans.301.f
-
+	
 	event_image = {
 		video = "ip3_angry_mob_raiding_minorities"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
 		NOT = {
@@ -3473,7 +3485,13 @@ eqfm_balkans.301 = { # Popular Speaker Lynched in State
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -3486,8 +3504,9 @@ eqfm_balkans.301 = { # Popular Speaker Lynched in State
 			save_scope_as = eqfm_balkan_state_scope
 		}
 	}
-
-	option = { # Let the Killers Go
+	
+	option = {
+		# Let the Killers Go
 		name = eqfm_balkans.301.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -3500,17 +3519,16 @@ eqfm_balkans.301 = { # Popular Speaker Lynched in State
 			}
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_speaker_lynched
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_speaker_lynched
 		}
 	}
-
-	option = { # Bring Them to Justice
+	
+	option = {
+		# Bring Them to Justice
 		name = eqfm_balkans.301.b
 		add_modifier = {
 			name = modifier_eqfm_protected_minorities
@@ -3522,38 +3540,32 @@ eqfm_balkans.301 = { # Popular Speaker Lynched in State
 			is_decaying = yes
 		}
 		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_lynch_arrests
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_lynch_arrests
 		}
 	}
-
 }
 
-eqfm_balkans.302 = { # Brigandage in State
+# Brigandage in State
+eqfm_balkans.302 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.302.t
 	desc = eqfm_balkans.302.d
 	flavor = eqfm_balkans.302.f
-
+	
 	event_image = {
 		video = "rp1_social_banditry"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
 		any_scope_state = {
@@ -3564,7 +3576,13 @@ eqfm_balkans.302 = { # Brigandage in State
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -3577,8 +3595,9 @@ eqfm_balkans.302 = { # Brigandage in State
 			save_scope_as = eqfm_balkan_state_scope
 		}
 	}
-
-	option = { # They'll be Fine
+	
+	option = {
+		# They'll be Fine
 		name = eqfm_balkans.302.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -3588,17 +3607,16 @@ eqfm_balkans.302 = { # Brigandage in State
 			}
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_brigandage
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_brigandage
 		}
 	}
-
-	option = { # Extend Assistance
+	
+	option = {
+		# Extend Assistance
 		name = eqfm_balkans.302.b
 		add_modifier = {
 			name = modifier_eqfm_local_garrison_deployed
@@ -3613,38 +3631,32 @@ eqfm_balkans.302 = { # Brigandage in State
 			}
 		}
 		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_garrison_deployed
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_garrison_deployed
 		}
 	}
-
 }
 
-eqfm_balkans.303 = { # Port Burned in State
+# Port Burned in State
+eqfm_balkans.303 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.303.t
 	desc = eqfm_balkans.303.d
 	flavor = eqfm_balkans.303.f
-
+	
 	event_image = {
 		video = "ip3_angry_mob_raiding_minorities"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
 		any_scope_state = {
@@ -3652,7 +3664,13 @@ eqfm_balkans.303 = { # Port Burned in State
 			has_building = building_port
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -3663,8 +3681,9 @@ eqfm_balkans.303 = { # Port Burned in State
 			save_scope_as = eqfm_balkan_state_scope
 		}
 	}
-
-	option = { # Make Arrests
+	
+	option = {
+		# Make Arrests
 		name = eqfm_balkans.303.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -3678,17 +3697,16 @@ eqfm_balkans.303 = { # Port Burned in State
 			}
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_ports_burned
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_ports_burned
 		}
 	}
-
-	option = { # Do Nothing
+	
+	option = {
+		# Do Nothing
 		name = eqfm_balkans.303.b
 		scope:eqfm_balkan_state_scope = {
 			add_modifier = {
@@ -3701,17 +3719,16 @@ eqfm_balkans.303 = { # Port Burned in State
 			}
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_ports_burned
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_ports_burned
 		}
 	}
-
-	option = { # Spend Money
+	
+	option = {
+		# Spend Money
 		name = eqfm_balkans.303.c
 		scope:eqfm_balkan_state_scope = {
 			add_modifier = {
@@ -3733,38 +3750,32 @@ eqfm_balkans.303 = { # Port Burned in State
 			multiplier = money_amount_multiplier_small
 		}
 		eqfm_add_large_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_ports_burned
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_ports_burned
 		}
 	}
-
 }
 
-eqfm_balkans.304 = { # Blood Libel
+# Blood Libel
+eqfm_balkans.304 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.304.t
 	desc = eqfm_balkans.304.d
 	flavor = eqfm_balkans.304.f
-
+	
 	event_image = {
 		video = "ip3_angry_mob_raiding_minorities"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_skull.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
 		any_scope_state = {
@@ -3779,11 +3790,17 @@ eqfm_balkans.304 = { # Blood Libel
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	cooldown = {
 		years = 2
 	}
-
+	
 	immediate = {
 		random_scope_state = {
 			limit = {
@@ -3816,8 +3833,9 @@ eqfm_balkans.304 = { # Blood Libel
 			}
 		}
 	}
-
-	option = { # Not our problem
+	
+	option = {
+		# Not our problem
 		name = eqfm_balkans.304.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -3832,17 +3850,16 @@ eqfm_balkans.304 = { # Blood Libel
 			}
 		}
 		eqfm_add_large_balkan_powder_keg_escalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_blood_libel_ignored
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_blood_libel_ignored
 		}
 	}
-
-	option = { # Put a lid on their antics
+	
+	option = {
+		# Put a lid on their antics
 		name = eqfm_balkans.304.b
 		scope:eqfm_balkan_state_scope = {
 			add_culture_standard_of_living_modifier = {
@@ -3860,38 +3877,32 @@ eqfm_balkans.304 = { # Blood Libel
 			}
 		}
 		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
-		hidden_effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_blood_libel_supressed
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
+			post_notification = eqfm_blood_libel_supressed
 		}
 	}
-
 }
 
-eqfm_balkans.305 = { # Administrative Offices Ransacked
+# Administrative Offices Ransacked
+eqfm_balkans.305 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.305.t
 	desc = eqfm_balkans.305.d
 	flavor = eqfm_balkans.305.f
-
+	
 	event_image = {
 		video = "unspecific_vandalized_storefront"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
 		any_scope_state = {
@@ -3902,7 +3913,13 @@ eqfm_balkans.305 = { # Administrative Offices Ransacked
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -3916,8 +3933,9 @@ eqfm_balkans.305 = { # Administrative Offices Ransacked
 			save_scope_as = eqfm_balkan_state_scope
 		}
 	}
-
-	option = { # Where are the cops?
+	
+	option = {
+		# Where are the cops?
 		name = eqfm_balkans.305.a
 		default_option = yes
 		random_list = {
@@ -3933,8 +3951,9 @@ eqfm_balkans.305 = { # Administrative Offices Ransacked
 			}
 		}
 	}
-
-	option = { # Deploy the Garrison
+	
+	option = {
+		# Deploy the Garrison
 		name = eqfm_balkans.305.b
 		trigger = {
 			scope:eqfm_riot_state_scope = {
@@ -3965,29 +3984,25 @@ eqfm_balkans.305 = { # Administrative Offices Ransacked
 			months = gbbf_short_modifier_time
 		}
 	}
-
 }
 
-eqfm_balkans.306 = { # Military Column Attacked
+# Military Column Attacked
+eqfm_balkans.306 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.306.t
 	desc = eqfm_balkans.306.d
 	flavor = eqfm_balkans.306.f
-
+	
 	event_image = {
 		video = "ep1_redcoats"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
 		any_scope_state = {
@@ -3998,7 +4013,13 @@ eqfm_balkans.306 = { # Military Column Attacked
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -4023,8 +4044,9 @@ eqfm_balkans.306 = { # Military Column Attacked
 			}
 		}
 	}
-
-	option = { # Launch an Expedition
+	
+	option = {
+		# Launch an Expedition
 		name = eqfm_balkans.306.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -4051,8 +4073,9 @@ eqfm_balkans.306 = { # Military Column Attacked
 		}
 		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
 	}
-
-	option = { # Limit Patrols
+	
+	option = {
+		# Limit Patrols
 		name = eqfm_balkans.306.b
 		scope:eqfm_balkan_state_scope = {
 			add_modifier = {
@@ -4074,29 +4097,29 @@ eqfm_balkans.306 = { # Military Column Attacked
 		}
 		eqfm_add_large_balkan_powder_keg_escalation_effect = yes
 	}
-
 }
 
-eqfm_balkans.307 = { # Muslim Militia Organizes in State
+# Muslim Militia Organizes in State
+eqfm_balkans.307 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	
 	title = eqfm_balkans.307.t
 	desc = eqfm_balkans.307.d
 	flavor = eqfm_balkans.307.f
-
+	
 	event_image = {
 		video = "rp1_social_banditry"
 	}
-
+	
 	icon = "gfx/interface/icons/event_icons/event_protest.dds"
-
+	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
+	
 	duration = 3
-
+	
 	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
 		any_scope_state = {
@@ -4107,7 +4130,13 @@ eqfm_balkans.307 = { # Muslim Militia Organizes in State
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -4121,8 +4150,9 @@ eqfm_balkans.307 = { # Muslim Militia Organizes in State
 			save_scope_as = eqfm_balkan_state_scope
 		}
 	}
-
-	option = { # Encourage this effort
+	
+	option = {
+		# Encourage this effort
 		name = eqfm_balkans.307.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -4195,8 +4225,9 @@ eqfm_balkans.307 = { # Muslim Militia Organizes in State
 		}
 		eqfm_add_large_balkan_powder_keg_escalation_effect = yes
 	}
-
-	option = { # Discourage this effort
+	
+	option = {
+		# Discourage this effort
 		name = eqfm_balkans.307.b
 		scope:eqfm_balkan_state_scope = {
 			set_variable = {
@@ -4210,29 +4241,25 @@ eqfm_balkans.307 = { # Muslim Militia Organizes in State
 		}
 		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
 	}
-
 }
 
-eqfm_balkans.308 = { # Local Garrison Fires into Crowd
+# Local Garrison Fires into Crowd
+eqfm_balkans.308 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.308.t
 	desc = eqfm_balkans.308.d
 	flavor = eqfm_balkans.308.f
-
+	
 	event_image = {
 		video = "votp_cops_march"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_skull.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
 		any_scope_state = {
@@ -4242,7 +4269,13 @@ eqfm_balkans.308 = { # Local Garrison Fires into Crowd
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -4257,8 +4290,9 @@ eqfm_balkans.308 = { # Local Garrison Fires into Crowd
 			eqfm_balkan_powder_keg_select_random_rumelian_pop_effect = yes
 		}
 	}
-
-	option = { # Recall the Garrison
+	
+	option = {
+		# Recall the Garrison
 		name = eqfm_balkans.308.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
@@ -4282,8 +4316,9 @@ eqfm_balkans.308 = { # Local Garrison Fires into Crowd
 		}
 		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
 	}
-
-	option = { # Encourage the Garrison
+	
+	option = {
+		# Encourage the Garrison
 		name = eqfm_balkans.308.b
 		scope:eqfm_balkan_state_scope = {
 			kill_population_in_state = {
@@ -4310,29 +4345,25 @@ eqfm_balkans.308 = { # Local Garrison Fires into Crowd
 		}
 		eqfm_add_large_balkan_powder_keg_escalation_effect = yes
 	}
-
 }
 
-eqfm_balkans.309 = { # Railways Bombed in State
+# Railways Bombed in State
+eqfm_balkans.309 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
 	title = eqfm_balkans.309.t
 	desc = eqfm_balkans.309.d
 	flavor = eqfm_balkans.309.f
-
+	
 	event_image = {
 		video = "unspecific_trains"
 	}
-
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	duration = 3
-
-	dlc = dlc_grefm
-
+	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
 		any_scope_state = {
@@ -4343,7 +4374,13 @@ eqfm_balkans.309 = { # Railways Bombed in State
 			}
 		}
 	}
-
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
@@ -4356,7 +4393,7 @@ eqfm_balkans.309 = { # Railways Bombed in State
 			}
 		}
 	}
-
+	
 	option = {
 		name = eqfm_balkans.309.a
 		default_option = yes
@@ -4368,7 +4405,7 @@ eqfm_balkans.309 = { # Railways Bombed in State
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
 	}
-
+	
 	option = {
 		name = eqfm_balkans.309.b
 		scope:eqfm_balkan_state_scope = {
@@ -4384,15 +4421,65 @@ eqfm_balkans.309 = { # Railways Bombed in State
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
 	}
-
 }
 
+# Minister Taken Hostage in [State]
+eqfm_balkans.310 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_balkans.310.t
+	desc = eqfm_balkans.310.d
+	flavor = eqfm_balkans.310.f
+	
+	gui_window = event_window_com_default
+	
+	event_image = {
+		video = "ip3_agitator_reading_manifesto"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		eqfm_hostility_events_trigger = yes
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
+	immediate = {
+		eqfm_balkan_powder_keg_event_cooldown_effect = yes
+	}
+	
+	option = {
+		name = eqfm_balkans.310.a
+		default_option = yes
+	}
+	
+	option = {
+		name = eqfm_balkans.310.b
+	}
+	
+	option = {
+		name = eqfm_balkans.310.c
+	}
+}
 
 ####---------- Balkan Situation Race Riot Events ----------####
 # Event IDs 400-499 - Events in this group will occur in states with the RACE RIOTS modifier
-eqfm_balkans.400 = { # Fortress in State Besieged
+
+# Fortress in State Besieged
+eqfm_balkans.400 = {
 	type = country_event
 	placement = scope:eqfm_riot_state_scope
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.400.t
 	desc = eqfm_balkans.400.d
@@ -4401,14 +4488,7 @@ eqfm_balkans.400 = { # Fortress in State Besieged
 	event_image = {
 		video = "votp_barricade"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/event_military.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
@@ -4425,7 +4505,8 @@ eqfm_balkans.400 = { # Fortress in State Besieged
 	}
 	
 	cancellation_trigger = {
-		NOT = {
+		NOR = {
+			has_global_variable = je_eqfm_balkan_powder_keg
 			any_scope_state = {
 				has_modifier = modifier_eqfm_race_riots
 			}
@@ -4449,7 +4530,8 @@ eqfm_balkans.400 = { # Fortress in State Besieged
 		}
 	}
 	
-	option = { # Soldiers mad they can't leave
+	option = {
+		# Soldiers mad they can't leave
 		name = eqfm_balkans.400.a
 		default_option = yes
 		scope:eqfm_riot_state_scope = {
@@ -4472,7 +4554,8 @@ eqfm_balkans.400 = { # Fortress in State Besieged
 		}
 	}
 	
-	option = { # Officers mad you let them leave
+	option = {
+		# Officers mad you let them leave
 		name = eqfm_balkans.400.b
 		scope:eqfm_riot_state_scope = {
 			add_radicals_in_state = {
@@ -4493,12 +4576,15 @@ eqfm_balkans.400 = { # Fortress in State Besieged
 			}
 		}
 	}
-	
 }
 
-eqfm_balkans.401 = { # Crowds Burn Administrative Palace
+# Crowds Burn Administrative Palace
+eqfm_balkans.401 = {
 	type = country_event
 	placement = scope:eqfm_riot_state_scope
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.401.t
 	desc = eqfm_balkans.401.d
@@ -4507,14 +4593,7 @@ eqfm_balkans.401 = { # Crowds Burn Administrative Palace
 	event_image = {
 		video = "ip3_angry_mob_raiding_minorities"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
@@ -4530,7 +4609,8 @@ eqfm_balkans.401 = { # Crowds Burn Administrative Palace
 	}
 	
 	cancellation_trigger = {
-		NOT = {
+		NOR = {
+			has_global_variable = je_eqfm_balkan_powder_keg
 			any_scope_state = {
 				has_modifier = modifier_eqfm_race_riots
 			}
@@ -4550,7 +4630,8 @@ eqfm_balkans.401 = { # Crowds Burn Administrative Palace
 		}
 	}
 	
-	option = { # Where are the cops?
+	option = {
+		# Where are the cops?
 		name = eqfm_balkans.401.a
 		default_option = yes
 		random_list = {
@@ -4567,7 +4648,8 @@ eqfm_balkans.401 = { # Crowds Burn Administrative Palace
 		}
 	}
 	
-	option = { # Deploy the Garrison
+	option = {
+		# Deploy the Garrison
 		name = eqfm_balkans.401.b
 		trigger = {
 			scope:eqfm_riot_state_scope = {
@@ -4600,9 +4682,13 @@ eqfm_balkans.401 = { # Crowds Burn Administrative Palace
 	}
 }
 
-eqfm_balkans.402 = { # IG Sides with Minorities
+# IG Sides with Minorities
+eqfm_balkans.402 = {
 	type = country_event
 	placement = scope:eqfm_riot_state_scope
+	icon = "gfx/interface/icons/event_icons/bicorne_hat.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.402.t
 	desc = eqfm_balkans.402.d
@@ -4611,14 +4697,7 @@ eqfm_balkans.402 = { # IG Sides with Minorities
 	event_image = {
 		video = "africa_leader_arguing"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/bicorne_hat.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
@@ -4643,7 +4722,8 @@ eqfm_balkans.402 = { # IG Sides with Minorities
 	}
 	
 	cancellation_trigger = {
-		NOT = {
+		NOR = {
+			has_global_variable = je_eqfm_balkan_powder_keg
 			any_scope_state = {
 				has_modifier = modifier_eqfm_race_riots
 			}
@@ -4675,7 +4755,8 @@ eqfm_balkans.402 = { # IG Sides with Minorities
 		}
 	}
 	
-	option = { # Round them up!
+	option = {
+		# Round them up!
 		name = eqfm_balkans.402.a
 		default_option = yes
 		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
@@ -4690,7 +4771,8 @@ eqfm_balkans.402 = { # IG Sides with Minorities
 		}
 	}
 	
-	option = { # Publish an expose
+	option = {
+		# Publish an expose
 		name = eqfm_balkans.402.b
 		scope:eqfm_riot_ig_scope = {
 			add_modifier = {
@@ -4699,12 +4781,15 @@ eqfm_balkans.402 = { # IG Sides with Minorities
 			}
 		}
 	}
-	
 }
 
-eqfm_balkans.403 = { # Ulema Mobilizes the Faithful
+# Ulema Mobilizes the Faithful
+eqfm_balkans.403 = {
 	type = country_event
 	placement = scope:eqfm_riot_state_scope
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.403.t
 	desc = eqfm_balkans.403.d
@@ -4713,14 +4798,7 @@ eqfm_balkans.403 = { # Ulema Mobilizes the Faithful
 	event_image = {
 		video = "ip3_agitator_reading_manifesto"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
@@ -4735,7 +4813,8 @@ eqfm_balkans.403 = { # Ulema Mobilizes the Faithful
 	}
 	
 	cancellation_trigger = {
-		NOT = {
+		NOR = {
+			has_global_variable = je_eqfm_balkan_powder_keg
 			any_scope_state = {
 				has_modifier = modifier_eqfm_race_riots
 			}
@@ -4755,7 +4834,8 @@ eqfm_balkans.403 = { # Ulema Mobilizes the Faithful
 		}
 	}
 	
-	option = { # Our Imams know best
+	option = {
+		# Our Imams know best
 		name = eqfm_balkans.403.a
 		default_option = yes
 		add_modifier = {
@@ -4781,7 +4861,8 @@ eqfm_balkans.403 = { # Ulema Mobilizes the Faithful
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
 	}
 	
-	option = { # Shut him up before things get worse
+	option = {
+		# Shut him up before things get worse
 		name = eqfm_balkans.403.b
 		add_modifier = {
 			name = modifier_eqfm_religious_fervor
@@ -4805,12 +4886,15 @@ eqfm_balkans.403 = { # Ulema Mobilizes the Faithful
 		}
 		eqfm_add_small_balkan_powder_keg_deescalation_effect = yes
 	}
-	
 }
 
-eqfm_balkans.404 = { # Armed Forces Requests Intervention
+# Armed Forces Requests Intervention
+eqfm_balkans.404 = {
 	type = country_event
 	placement = root
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.404.t
 	desc = eqfm_balkans.404.d
@@ -4819,14 +4903,7 @@ eqfm_balkans.404 = { # Armed Forces Requests Intervention
 	event_image = {
 		video = "europenorthamerica_before_the_battle"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/event_military.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
@@ -4850,7 +4927,8 @@ eqfm_balkans.404 = { # Armed Forces Requests Intervention
 	}
 	
 	cancellation_trigger = {
-		NOT = {
+		NOR = {
+			has_global_variable = je_eqfm_balkan_powder_keg
 			any_scope_state = {
 				has_modifier = modifier_eqfm_race_riots
 			}
@@ -4870,7 +4948,8 @@ eqfm_balkans.404 = { # Armed Forces Requests Intervention
 		}
 	}
 	
-	option = { # Grant the Order
+	option = {
+		# Grant the Order
 		name = eqfm_balkans.404.a
 		default_option = yes
 		ig:ig_armed_forces = {
@@ -4899,7 +4978,8 @@ eqfm_balkans.404 = { # Armed Forces Requests Intervention
 		}
 	}
 	
-	option = { # Have them pack up and leave
+	option = {
+		# Have them pack up and leave
 		name = eqfm_balkans.404.b
 		ig:ig_armed_forces = {
 			add_modifier = {
@@ -4913,12 +4993,15 @@ eqfm_balkans.404 = { # Armed Forces Requests Intervention
 		}
 		eqfm_add_small_balkan_powder_keg_escalation_effect = yes
 	}
-	
 }
 
-eqfm_balkans.407 = { # Rioting Worsens in State
+# Rioting Worsens in State
+eqfm_balkans.407 = {
 	type = country_event
 	placement = scope:eqfm_riot_state_scope
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.407.t
 	desc = eqfm_balkans.407.d
@@ -4927,14 +5010,7 @@ eqfm_balkans.407 = { # Rioting Worsens in State
 	event_image = {
 		video = "europenorthamerica_springtime_of_nations"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
@@ -4944,7 +5020,8 @@ eqfm_balkans.407 = { # Rioting Worsens in State
 	}
 	
 	cancellation_trigger = {
-		NOT = {
+		NOR = {
+			has_global_variable = je_eqfm_balkan_powder_keg
 			any_scope_state = {
 				has_modifier = modifier_eqfm_race_riots
 			}
@@ -4962,7 +5039,8 @@ eqfm_balkans.407 = { # Rioting Worsens in State
 		}
 	}
 	
-	option = { # Leave it to local officers
+	option = {
+		# Leave it to local officers
 		name = eqfm_balkans.407.a
 		default_option = yes
 		add_modifier = {
@@ -5027,7 +5105,8 @@ eqfm_balkans.407 = { # Rioting Worsens in State
 		}
 	}
 	
-	option = { # Let them protest
+	option = {
+		# Let them protest
 		name = eqfm_balkans.407.b
 		scope:eqfm_riot_state_scope = {
 			add_modifier = {
@@ -5075,7 +5154,8 @@ eqfm_balkans.407 = { # Rioting Worsens in State
 		eqfm_add_large_balkan_powder_keg_escalation_effect = yes
 	}
 	
-	option = { # Send the military
+	option = {
+		# Send the military
 		name = eqfm_balkans.407.c
 		add_modifier = {
 			name = modifier_eqfm_deployed_army
@@ -5142,12 +5222,15 @@ eqfm_balkans.407 = { # Rioting Worsens in State
 			}
 		}
 	}
-	
 }
 
-eqfm_balkans.408 = { # Massacre in State
+# Massacre in State
+eqfm_balkans.408 = {
 	type = country_event
 	placement = root
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.408.t
 	desc = eqfm_balkans.408.d
@@ -5156,21 +5239,15 @@ eqfm_balkans.408 = { # Massacre in State
 	event_image = {
 		video = "ip3_police_raid"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/event_skull.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		# triggered by eqfm_balkans.407
 	}
 	
 	cancellation_trigger = {
-		NOT = {
+		NOR = {
+			has_global_variable = je_eqfm_balkan_powder_keg
 			any_scope_state = {
 				has_modifier = modifier_eqfm_race_riots
 			}
@@ -5187,7 +5264,8 @@ eqfm_balkans.408 = { # Massacre in State
 		}
 	}
 	
-	option = { # Bring out the big guns
+	option = {
+		# Bring out the big guns
 		name = eqfm_balkans.408.a
 		default_option = yes
 		create_incident = {
@@ -5235,7 +5313,8 @@ eqfm_balkans.408 = { # Massacre in State
 		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
 	}
 	
-	option = { # Order them to stand down
+	option = {
+		# Order them to stand down
 		name = eqfm_balkans.408.b
 		scope:eqfm_riot_state_scope = {
 			if = {
@@ -5277,12 +5356,15 @@ eqfm_balkans.408 = { # Massacre in State
 		}
 		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
 	}
-	
 }
 
-eqfm_balkans.409 = { # Crowds Dispersed in State
+# Crowds Dispersed in State
+eqfm_balkans.409 = {
 	type = country_event
 	placement = root
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.409.t
 	desc = eqfm_balkans.409.d
@@ -5291,21 +5373,15 @@ eqfm_balkans.409 = { # Crowds Dispersed in State
 	event_image = {
 		video = "votp_cops_march"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/event_military.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		# triggered by eqfm_balkans.407
 	}
 	
 	cancellation_trigger = {
-		NOT = {
+		NOR = {
+			has_global_variable = je_eqfm_balkan_powder_keg
 			any_scope_state = {
 				has_modifier = modifier_eqfm_race_riots
 			}
@@ -5373,7 +5449,6 @@ eqfm_balkans.409 = { # Crowds Dispersed in State
 		}
 		eqfm_add_very_large_balkan_powder_keg_deescalation_effect = yes
 	}
-	
 }
 
 ####---------- Balkan Situation Crisis Phase Events ----------####
@@ -5382,9 +5457,14 @@ eqfm_balkans.409 = { # Crowds Dispersed in State
 
 ####---------- Balkan Situation Native Events ----------####
 # Event IDs 600-699 - Events in this group will occur in BALKAN COUNTRIES with a Rumelian culture
-eqfm_balkans.600 = { # Brigands Raid Turkish Lands
+
+# Brigands Raid Turkish Lands
+eqfm_balkans.600 = {
 	type = country_event
 	placement = scope:turkfm_brigandage_event_scope
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.600.t
 	desc = eqfm_balkans.600.d
@@ -5393,14 +5473,7 @@ eqfm_balkans.600 = { # Brigands Raid Turkish Lands
 	event_image = {
 		video = "rp1_social_banditry"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		# triggered by eqfm_balkans.209
@@ -5431,7 +5504,8 @@ eqfm_balkans.600 = { # Brigands Raid Turkish Lands
 		}
 	}
 	
-	option = { # Offer Compensation
+	option = {
+		# Offer Compensation
 		name = eqfm_balkans.600.a
 		default_option = yes
 		add_modifier = {
@@ -5453,7 +5527,8 @@ eqfm_balkans.600 = { # Brigands Raid Turkish Lands
 		}
 	}
 	
-	option = { # Ignore the Complaint
+	option = {
+		# Ignore the Complaint
 		name = eqfm_balkans.600.b
 		c:TUR = {
 			post_notification = eqfm_brigandage_permitted
@@ -5467,12 +5542,15 @@ eqfm_balkans.600 = { # Brigands Raid Turkish Lands
 	after = {
 		remove_global_variable = turkfm_global_reference_var
 	}
-	
 }
 
-eqfm_balkans.601 = { # Gun-Runners Arrested
+# Gun-Runners Arrested
+eqfm_balkans.601 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.601.t
 	desc = eqfm_balkans.601.d
@@ -5481,14 +5559,7 @@ eqfm_balkans.601 = { # Gun-Runners Arrested
 	event_image = {
 		video = "votp_hostile_court"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		# triggered by eqfm_balkans.205/226
@@ -5507,7 +5578,8 @@ eqfm_balkans.601 = { # Gun-Runners Arrested
 		}
 	}
 	
-	option = { # Halt Support
+	option = {
+		# Halt Support
 		name = eqfm_balkans.601.a
 		default_option = yes
 		if = {
@@ -5531,7 +5603,8 @@ eqfm_balkans.601 = { # Gun-Runners Arrested
 		}
 	}
 	
-	option = { # Continue Support
+	option = {
+		# Continue Support
 		name = eqfm_balkans.601.b
 		create_incident = {
 			country = c:TUR
@@ -5549,9 +5622,14 @@ eqfm_balkans.601 = { # Gun-Runners Arrested
 
 ####---------- Balkan Situation International Events ----------####
 # Event IDs 700-799 - Events in this group will occur in INVOLVED & INTERLOPER COUNTRIES with NO states or subjects in the Balkans
-eqfm_balkans.700 = { # Diplomat Offers Mediation
+
+# Diplomat Offers Mediation
+eqfm_balkans.700 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+	duration = 3
+	dlc = dlc_grefm
 	
 	title = eqfm_balkans.700.t
 	desc = eqfm_balkans.700.d
@@ -5560,14 +5638,7 @@ eqfm_balkans.700 = { # Diplomat Offers Mediation
 	event_image = {
 		video = "ep1_power_blocs"
 	}
-	
-	icon = "gfx/interface/icons/event_icons/event_default.dds"
-	
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	duration = 3
-	
-	dlc = dlc_grefm
 	
 	trigger = {
 		always = no # TODO enable when ready
@@ -5625,5 +5696,4 @@ eqfm_balkans.700 = { # Diplomat Offers Mediation
 		name = eqfm_balkans.700.b
 		custom_tooltip = gbbf_nothing_happens
 	}
-	
 }
