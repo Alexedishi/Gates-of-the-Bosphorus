@@ -50,6 +50,7 @@ namespace = eqfm_balkans
 #	113 - Spy Ring Busted
 #	114 - ##Unfair Rent
 #	115 - ##Community Refuses to Pay Jizya
+#	116 - [Greek] Gun-Runners Intercepted
 
 #200-299 - Balkan Situation Outsider Unrest Events
 #	200 - Storefronts Ransacked
@@ -57,8 +58,8 @@ namespace = eqfm_balkans
 #	202 - Shipping Merchants Held Up
 #	203 - Crowds Gather in [City Hub]
 #	204 - Language Bans in [State]
-#	205 - [Greek] Gun-Runners Intercepted
-#	206 - [Yugoslav] Gun-Runners Intercepted
+#	205 - ##
+#	206 - ##
 #	207 - Piracy in [State]
 #	208 - Villagers Displaced in [State]
 #	209 - Brigands Cross the Border
@@ -2189,6 +2190,7 @@ eqfm_balkans.112 = {
 	option = { # Allow the Millets to govern themselves
 		name = eqfm_balkans.112.a
 		default_option = yes
+		
 	}
 	
 	option = { # Enforce Qanun
@@ -2274,6 +2276,248 @@ eqfm_balkans.113 = {
 	}
 }
 
+# Unfair Rent in State
+# 114
+
+# Community Refuses to Pay Jizya
+# 115
+
+eqfm_balkans.116 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_balkans.116.t
+	desc = eqfm_balkans.116.d
+	flavor = eqfm_balkans.116.f
+	
+	gui_window = event_window_com_default
+	
+	event_image = {
+		video = "ip3_officer_inspecting_peasant_conscripts"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_rumelia
+			NOT = {
+				has_modifier = modifier_eqfm_gunrunner_raids
+			}
+			any_neighbouring_state = {
+				owner = {
+					has_diplomatic_pact = {
+						type = gbbf_supporting_balkan_gunrunners
+						who = root
+					}
+				}
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
+	cooldown = {
+		years = 3
+	}
+	
+	immediate = {
+		random_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_rumelia
+				any_scope_pop = {
+					gbbf_pop_has_rumelian_culture_trigger = yes
+				}
+				NOT = {
+					has_modifier = modifier_eqfm_gunrunner_raids
+				}
+				any_neighbouring_state = {
+					owner = {
+						has_diplomatic_pact = {
+							type = gbbf_supporting_balkan_gunrunners
+							who = root
+						}
+					}
+				}
+			}
+			save_scope_as = eqfm_balkan_state_scope
+			random_neighbouring_state = {
+				limit = {
+					owner = {
+						has_diplomatic_pact = {
+							type = gbbf_supporting_balkan_gunrunners
+							who = root
+						}
+					}
+				}
+				owner = {
+					save_scope_as = eqfm_balkan_country_scope
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_balkans.116.a
+		default_option = yes
+		scope:eqfm_balkan_country_scope = {
+			add_modifier = {
+				name = modifier_eqfm_gunrunner_raids
+				months = normal_modifier_time
+			}
+			eqfm_balkan_powder_keg_rumelian_radicals_effect = {
+				value = small_radicals
+			}
+			add_religion_standard_of_living_modifier = {
+				religion = rel:sunni
+				multiplier = -1
+				months = normal_modifier_time
+			}
+		}
+	}
+}
+
+# Gun-Runners Intercepted (Greek)
+eqfm_balkans.117 = {
+	type = country_event
+	placement = scope:eqfm_balkan_state_scope
+	icon = "gfx/interface/icons/event_icons/event_fire.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_balkans.117.t
+	desc = eqfm_balkans.117.d
+	flavor = eqfm_balkans.117.f
+	
+	event_image = {
+		video = "rp1_social_banditry"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_rumelia
+			has_modifier = modifier_eqfm_gunrunner_raids
+			any_neighbouring_state = {
+				owner = {
+					has_diplomatic_pact = {
+						type = gbbf_supporting_balkan_gunrunners
+						who = root
+					}
+				}
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
+	cooldown = {
+		years = 4
+	}
+	
+	immediate = {
+		eqfm_balkan_powder_keg_event_cooldown_effect = yes
+		random_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_rumelia
+				has_modifier = modifier_eqfm_gunrunner_raids
+				any_neighbouring_state = {
+					owner = {
+						has_diplomatic_pact = {
+							type = gbbf_supporting_balkan_gunrunners
+							who = root
+						}
+					}
+				}
+			}
+			eqfm_balkan_powder_keg_save_state_and_random_rumelian_pop_effect = yes
+			random_neighbouring_state = {
+				limit = {
+					owner = {
+						has_diplomatic_pact = {
+							type = gbbf_supporting_balkan_gunrunners
+							who = root
+						}
+					}
+				}
+				owner = {
+					save_scope_as = eqfm_balkan_country_scope
+				}
+			}
+		}
+		save_scope_as = eqfm_balkan_arrester_scope
+	}
+	
+	option = {
+		# Press the Issue
+		name = eqfm_balkans.117.a
+		default_option = yes
+		scope:eqfm_balkan_state_scope = {
+			add_modifier = {
+				name = modifier_eqfm_arrested_gunrunners
+				months = gbbf_normal_modifier_time
+			}
+			add_radicals_in_state = {
+				culture = scope:eqfm_balkan_culture_scope
+				value = medium_radicals
+			}
+			remove_modifier = modifier_eqfm_gunrunner_raids
+		}
+		scope:eqfm_balkan_country_scope = {
+			trigger_event = {
+				id = eqfm_balkans.601
+			}
+			create_incident = {
+				country = root
+				value = 5
+			}
+		}
+		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_greek_gunrunners_arrested
+		}
+	}
+	
+	option = {
+		# Grant Amnesty
+		name = eqfm_balkans.117.b
+		scope:eqfm_balkan_state_scope = {
+			add_modifier = {
+				name = modifier_eqfm_gunrunner_amnesty
+				months = gbbf_normal_modifier_time
+			}
+			add_radicals_in_state = {
+				pop_type = officers
+				value = medium_radicals
+			}
+			add_radicals_in_state = {
+				pop_type = soldiers
+				value = small_radicals
+			}
+		}
+		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_greek_gunrunners_released
+		}
+	}
+}
+
 
 ####---------- Balkan Situation Unrest Phase Events ----------####
 # Event IDs 200-299 - Events in this group will occur in the UNREST phase
@@ -2320,6 +2564,7 @@ eqfm_balkans.200 = {
 	}
 	
 	immediate = {
+		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
 			limit = {
 				is_in_geographic_region = geographic_region_rumelia
@@ -2333,7 +2578,7 @@ eqfm_balkans.200 = {
 					has_pop_religion = orthodox
 					pop_acceptance < acceptance_status_4
 				}
-				save_scope_as = eqfm_balkan_culture_scope
+				save_scope_as = eqfm_balkan_pop_scope
 			}
 		}
 	}
@@ -2348,9 +2593,9 @@ eqfm_balkans.200 = {
 				months = gbbf_short_modifier_time
 			}
 			add_culture_standard_of_living_modifier = {
-				culture = scope:eqfm_balkan_culture_scope
+				culture = scope:eqfm_balkan_pop_scope.culture
 				months = gbbf_normal_modifier_time
-				multiplier = -2
+				multiplier = -3
 			}
 			add_radicals_in_state = {
 				religion = rel:orthodox
@@ -2380,12 +2625,17 @@ eqfm_balkans.200 = {
 				months = gbbf_short_modifier_time
 			}
 			add_loyalists_in_state = {
-				culture = scope:eqfm_balkan_culture_scope
+				culture = scope:eqfm_balkan_pop_scope.culture
 				value = medium_radicals
 			}
 			add_radicals_in_state = {
 				culture = cu:turkish
 				value = medium_radicals
+			}
+			add_culture_standard_of_living_modifier = {
+				culture = scope:eqfm_balkan_pop_scope.culture
+				months = gbbf_normal_modifier_time
+				multiplier = -1
 			}
 		}
 		eqfm_add_small_balkan_powder_keg_escalation_effect = yes
@@ -2424,12 +2674,8 @@ eqfm_balkans.201 = {
 		}
 		any_scope_state = {
 			is_in_geographic_region = geographic_region_rumelia
-			any_scope_pop = {
-				has_pop_religion = orthodox
-				NOR = {
-					has_pop_culture = greek
-					has_pop_culture = rhomaios
-				}
+			any_scope_pop = { 
+				gbbf_pop_has_rumelian_culture_trigger = yes
 			}
 		}
 	}
@@ -2445,21 +2691,15 @@ eqfm_balkans.201 = {
 	}
 	
 	immediate = {
+		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
 			limit = {
 				is_in_geographic_region = geographic_region_rumelia
-			}
-			save_scope_as = eqfm_balkan_state_scope
-			random_scope_pop = {
-				limit = {
-					has_pop_religion = orthodox
-					NOR = {
-						has_pop_culture = greek
-						has_pop_culture = rhomaios
-					}
+				any_scope_pop = { 
+					gbbf_pop_has_rumelian_culture_trigger = yes
 				}
-				save_scope_as = eqfm_balkan_culture_scope
 			}
+			eqfm_balkan_powder_keg_save_state_and_random_rumelian_pop_effect = yes
 		}
 	}
 	
@@ -2467,17 +2707,23 @@ eqfm_balkans.201 = {
 		# Enforce the Classification
 		name = eqfm_balkans.201.a
 		default_option = yes
+		add_modifier = {
+			name = modifier_eqfm_enforced_millets
+			months = gbbf_long_modifier_time
+		}
 		add_radicals = {
-			religion = rel:orthodox
+			culture = scope:eqfm_balkan_pop_scope.culture
 			value = medium_radicals
 		}
 		add_loyalists = {
 			pop_type = clergymen
 			value = large_radicals
 		}
-		add_modifier = {
-			name = modifier_eqfm_enforced_millets
-			months = gbbf_long_modifier_time
+		add_culture_acceptance_modifier = { 
+			culture = scope:eqfm_balkan_pop_scope.culture
+			months = gbbf_normal_modifier_time
+			multiplier = -15
+			is_decaying = yes
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
 		every_country = {
@@ -2491,17 +2737,19 @@ eqfm_balkans.201 = {
 	option = {
 		# Relent on Classifications
 		name = eqfm_balkans.201.b
-		add_loyalists = {
-			religion = rel:orthodox
-			value = medium_radicals
-		}
-		add_radicals = {
-			religion = rel:sunni
-			value = small_radicals
-		}
 		add_modifier = {
 			name = modifier_eqfm_millets_eroding
 			months = gbbf_long_modifier_time
+		}
+		add_radicals = {
+			religion = rel:sunni
+			value = medium_radicals
+		}
+		add_culture_acceptance_modifier = {
+			culture = scope:eqfm_balkan_pop_scope.culture
+			months = gbbf_normal_modifier_time
+			multiplier = 10
+			is_decaying = yes
 		}
 		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
 		every_country = {
@@ -2765,7 +3013,7 @@ eqfm_balkans.204 = {
 	
 	trigger = {
 		NOT = {
-			has_variable = turkfm_language_ban_considered
+			has_variable = eqfm_balkan_powder_keg_language_ban_culture_var
 		}
 		eqfm_unrest_events_trigger = yes
 		has_law = law_type:law_millet_system
@@ -2776,10 +3024,7 @@ eqfm_balkans.204 = {
 		any_scope_state = {
 			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
-				OR = {
-					has_pop_religion = orthodox
-					has_pop_religion = jewish
-				}
+				gbbf_has_rumelian_culture_trigger = yes
 			}
 		}
 	}
@@ -2790,20 +3035,20 @@ eqfm_balkans.204 = {
 		}
 	}
 	
+	cooldown = { 
+		years = 10
+	}
+	
 	immediate = {
-		set_variable = turkfm_language_ban_considered
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
 			limit = {
 				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
-					OR = {
-						has_pop_religion = orthodox
-						has_pop_religion = jewish
-					}
+					gbbf_pop_has_rumelian_culture_trigger = yes
 				}
 			}
-			save_scope_as = eqfm_balkan_state_scope
+			eqfm_balkan_powder_keg_save_state_and_random_rumelian_pop_effect = yes
 		}
 	}
 	
@@ -2817,13 +3062,25 @@ eqfm_balkans.204 = {
 				months = gbbf_long_modifier_time
 			}
 			add_radicals_in_state = {
-				value = medium_radicals
-				religion = rel:orthodox
+				value = very_large_radicals
+				religion = scope:eqfm_balkan_culture_scope
 			}
-			add_radicals_in_state = {
-				value = medium_radicals
-				religion = rel:jewish
+			add_culture_standard_of_living_modifier = { 
+				culture = scope:eqfm_balkan_culture_scope
+				multiplier = -4
 			}
+		}
+		add_radicals = {
+			value = medium_radicals
+			religion = scope:eqfm_balkan_culture_scope
+		}
+		set_variable = {
+			name = eqfm_balkan_powder_keg_language_ban_culture_var
+			value = scope:eqfm_balkan_culture_scope
+		}
+		set_variable = {
+			name = eqfm_balkan_powder_keg_language_ban_state_var
+			value = scope:eqfm_balkan_state_scope
 		}
 		eqfm_add_large_balkan_powder_keg_escalation_effect = yes
 		every_country = {
@@ -2869,23 +3126,28 @@ eqfm_balkans.204 = {
 		highlighted_option = yes
 		trigger = {
 			has_law = law_type:law_millet_system
+			has_law_or_variant = law_type:law_censorship
 		}
 		every_scope_state = {
 			limit = {
 				is_in_geographic_region = geographic_region_rumelia
 			}
-			add_modifier = {
-				name = modifier_eqfm_languages_banned
-				months = gbbf_long_modifier_time
+			add_culture_standard_of_living_modifier = {
+				culture = scope:eqfm_balkan_culture_scope
+				multiplier = -4
 			}
-			add_radicals_in_state = {
-				value = medium_radicals
-				religion = rel:orthodox
-			}
-			add_radicals_in_state = {
-				value = medium_radicals
-				religion = rel:jewish
-			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_mass_language_ban
+			months = gbbf_long_modifier_time
+		}
+		add_radicals = {
+			value = very_large_radicals
+			religion = scope:eqfm_balkan_culture_scope
+		}
+		set_variable = {
+			name = eqfm_balkan_powder_keg_language_ban_culture_var
+			value = scope:eqfm_balkan_culture_scope
 		}
 		eqfm_add_very_large_balkan_powder_keg_escalation_effect = yes
 		every_country = {
@@ -2894,273 +3156,13 @@ eqfm_balkans.204 = {
 			}
 			post_notification = eqfm_total_language_ban
 		}
-		change_infamy = 10
+		change_infamy = 15
 	}
 }
 
-# Gun-Runners Intercepted (Greek)
-eqfm_balkans.205 = {
-	type = country_event
-	placement = scope:eqfm_balkan_state_scope
-	icon = "gfx/interface/icons/event_icons/event_fire.dds"
-	duration = 3
-	dlc = dlc_grefm
-	
-	title = eqfm_balkans.205.t
-	desc = eqfm_balkans.205.d
-	flavor = eqfm_balkans.205.f
-	
-	event_image = {
-		video = "rp1_social_banditry"
-	}
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	trigger = {
-		eqfm_unrest_events_trigger = yes
-		any_country = {
-			has_modifier = modifier_eqfm_supporting_gunrunners
-		}
-	}
-	
-	cancellation_trigger = {
-		NOT = {
-			has_global_variable = je_eqfm_balkan_powder_keg
-		}
-	}
-	
-	cooldown = {
-		years = 4
-	}
-	
-	immediate = {
-		eqfm_balkan_powder_keg_event_cooldown_effect = yes
-		random_list = {
-			1 = {
-				trigger = {
-					owns_entire_state_region = STATE_THESSALIA
-				}
-				s:STATE_THESSALIA = {
-					random_scope_state = {
-						save_scope_as = eqfm_balkan_state_scope
-					}
-				}
-			}
-			1 = {
-				trigger = {
-					owns_entire_state_region = STATE_MACEDONIA
-				}
-				s:STATE_MACEDONIA = {
-					random_scope_state = {
-						save_scope_as = eqfm_balkan_state_scope
-					}
-				}
-			}
-			1 = {
-				trigger = {
-					owns_entire_state_region = STATE_SKOPIA
-				}
-				s:STATE_SKOPIA = {
-					random_scope_state = {
-						save_scope_as = eqfm_balkan_state_scope
-					}
-				}
-			}
-			1 = {
-				trigger = {
-					owns_entire_state_region = STATE_CRETE
-				}
-				s:STATE_CRETE = {
-					random_scope_state = {
-						save_scope_as = eqfm_balkan_state_scope
-					}
-				}
-			}
-			1 = {
-				trigger = {
-					owns_entire_state_region = STATE_AYDIN
-				}
-				s:STATE_AYDIN = {
-					random_scope_state = {
-						save_scope_as = eqfm_balkan_state_scope
-					}
-				}
-			}
-			1 = {
-				trigger = {
-					owns_entire_state_region = STATE_CYPRUS
-				}
-				s:STATE_CYPRUS = {
-					random_scope_state = {
-						save_scope_as = eqfm_balkan_state_scope
-					}
-				}
-			}
-		}
-		random_country = {
-			limit = {
-				has_modifier = modifier_eqfm_supporting_gunrunners
-			}
-			save_scope_as = eqfm_balkan_country_scope
-		}
-	}
-	
-	option = {
-		# Press the Issue
-		name = eqfm_balkans.205.a
-		default_option = yes
-		scope:eqfm_balkan_state_scope = {
-			add_modifier = {
-				name = modifier_eqfm_arrested_gunrunners
-				months = gbbf_normal_modifier_time
-			}
-			set_variable = turkfm_gunrunners_var
-		}
-		scope:eqfm_balkan_country_scope = {
-			trigger_event = {
-				id = eqfm_balkans.601 # Gun-Runners Arrested
-			}
-			create_incident = {
-				country = root
-				value = 5
-			}
-		}
-		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
-		every_country = {
-			limit = {
-				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-			}
-			post_notification = eqfm_greek_gunrunners_arrested
-		}
-	}
-	
-	option = {
-		# Grant Amnesty
-		name = eqfm_balkans.205.b
-		scope:eqfm_balkan_state_scope = {
-			add_modifier = {
-				name = modifier_eqfm_gunrunner_amnesty
-				months = gbbf_normal_modifier_time
-			}
-			add_radicals_in_state = {
-				pop_type = officers
-				value = medium_radicals
-			}
-			add_radicals_in_state = {
-				pop_type = soldiers
-				value = small_radicals
-			}
-		}
-		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
-		every_country = {
-			limit = {
-				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-			}
-			post_notification = eqfm_greek_gunrunners_released
-		}
-	}
-}
 
-# Gun-Runners Intercepted (Yugoslav)
-eqfm_balkans.206 = {
-	type = country_event
-	placement = scope:eqfm_balkan_state_scope
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
-	duration = 3
-	dlc = dlc_grefm
-	
-	title = eqfm_balkans.206.t
-	desc = eqfm_balkans.206.d
-	flavor = eqfm_balkans.206.f
-	
-	event_image = {
-		video = "rp1_social_banditry"
-	}
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	trigger = {
-		eqfm_unrest_events_trigger = yes
-		any_country = {
-			has_modifier = modifier_balkfm_ottoman_gunrunners
-		}
-	}
-	
-	cancellation_trigger = {
-		NOT = {
-			has_global_variable = je_eqfm_balkan_powder_keg
-		}
-	}
-	
-	immediate = {
-		eqfm_balkan_powder_keg_event_cooldown_effect = yes
-		random_country = {
-			limit = {
-				has_modifier = modifier_balkfm_ottoman_gunrunners
-			}
-			save_scope_as = eqfm_balkan_country_scope
-		}
-		random_scope_state = {
-			limit = {
-				balkfm_is_yugoslav_homeland_trigger = yes
-			}
-			save_scope_as = eqfm_balkan_state_scope
-		}
-	}
-	
-	option = {
-		# Press the Issue
-		name = eqfm_balkans.206.a
-		default_option = yes
-		scope:eqfm_balkan_state_scope = {
-			add_modifier = {
-				name = modifier_eqfm_arrested_gunrunners
-				months = gbbf_normal_modifier_time
-			}
-			set_variable = turkfm_gunrunners_var
-		}
-		scope:eqfm_balkan_country_scope = {
-			trigger_event = {
-				id = eqfm_balkans.601 # Gun-Runners Arrested
-			}
-			create_incident = {
-				country = root
-				value = 5
-			}
-		}
-		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
-		every_country = {
-			limit = {
-				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-			}
-			post_notification = eqfm_yugoslav_gunrunners_arrested
-		}
-	}
-	
-	option = {
-		# Grant Amnesty
-		name = eqfm_balkans.206.b
-		scope:eqfm_balkan_state_scope = {
-			add_modifier = {
-				name = modifier_eqfm_gunrunner_amnesty
-				months = gbbf_normal_modifier_time
-			}
-			add_radicals_in_state = {
-				pop_type = officers
-				value = medium_radicals
-			}
-			add_radicals_in_state = {
-				pop_type = soldiers
-				value = small_radicals
-			}
-		}
-		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
-		every_country = {
-			limit = {
-				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-			}
-			post_notification = eqfm_yugoslav_gunrunners_released
-		}
-	}
-}
+
+
 
 # Piracy in State
 eqfm_balkans.207 = {
@@ -5741,19 +5743,15 @@ eqfm_balkans.601 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
-		# triggered by eqfm_balkans.205/226
+		# triggered by eqfm_balkans.117/226
 	}
 	
 	immediate = {
-		c:TUR = {
-			save_scope_as = ottoman_scope
+		scope:eqfm_balkan_arrester_scope = {
 			random_scope_state = {
-				limit = {
-					has_variable = turkfm_gunrunners_var
-				}
-				save_scope_as = eqfm_balkan_state_scope
-				remove_variable = turkfm_gunrunners_var
+				has_modifier = modifier_eqfm_gunrunner_raids
 			}
+			save_scope_as = eqfm_balkan_state_scope
 		}
 	}
 	
