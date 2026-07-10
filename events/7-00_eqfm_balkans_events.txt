@@ -46,11 +46,10 @@ namespace = eqfm_balkans
 #	109 - ##Revivalist Publications
 #	110 - Dragoman Reduces Tensions
 #	111 - Inter-faith Dialogue
-#	112 - [Great Power] Mediates Local Conflict
+#	112 - ##Conflicting Legal Systems
 #	113 - Spy Ring Busted
 #	114 - ##Unfair Rent
 #	115 - ##Community Refuses to Pay Jizya
-#	116 - ##Conflicting Legal Systems
 
 #200-299 - Balkan Situation Outsider Unrest Events
 #	200 - Storefronts Ransacked
@@ -112,9 +111,10 @@ namespace = eqfm_balkans
 #	603 - ##Exiled Rumelian Opens Print Shop
 
 #700-799 - Balkan Situation Involved Events
-#	700 - Diplomat Offers Mediation -> eqfm_balkans.112
-#	701 - ##Activists Call for Famine Relief
-# 	702 - ##Activists Denounce Riots
+#	700 - Diplomat Offers Mediation
+#	701 - [Great Power] Mediates Local Conflict
+#	702 - ##Activists Call for Famine Relief
+# 	703 - ##Activists Denounce Riots
 
 ########################################
 
@@ -903,6 +903,9 @@ eqfm_balkans.101 = {
 				has_modifier = modifier_eqfm_plague_outbreak
 				has_modifier = modifier_eqfm_mitigated_plague
 			}
+			any_scope_pop = {
+				gbbf_pop_has_rumelian_culture_trigger = yes
+			}
 		}
 	}
 	
@@ -916,8 +919,21 @@ eqfm_balkans.101 = {
 		random_scope_state = {
 			limit = {
 				is_in_geographic_region = geographic_region_rumelia
+				NOR = {
+					has_modifier = modifier_eqfm_plague_outbreak
+					has_modifier = modifier_eqfm_mitigated_plague
+				}
+				any_scope_pop = {
+					gbbf_pop_has_rumelian_culture_trigger = yes
+				}
 			}
 			save_scope_as = eqfm_balkan_state_scope
+			random_scope_pop = {
+				limit = {
+					gbbf_pop_has_rumelian_culture_trigger = yes
+				}
+				save_scope_as = eqfm_balkan_pop_scope
+			}
 		}
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 	}
@@ -934,7 +950,18 @@ eqfm_balkans.101 = {
 			add_modifier = {
 				name = modifier_eqfm_plague_outbreak
 				months = gbbf_normal_modifier_time
+				is_decaying = yes
 			}
+			kill_population_percent_in_state = {
+				strata = lower
+				percent = 0.0005
+			}
+		}
+		add_culture_acceptance_modifier = {
+			culture = scope:eqfm_balkan_pop_scope.culture
+			years = 3
+			multiplier = -25
+			is_decaying = yes
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
 		every_country = {
@@ -956,6 +983,16 @@ eqfm_balkans.101 = {
 				name = modifier_eqfm_mitigated_plague
 				months = gbbf_short_modifier_time
 			}
+			kill_population_percent_in_state = {
+				strata = lower
+				percent = 0.00025
+			}
+		}
+		add_culture_acceptance_modifier = {
+			culture = scope:eqfm_balkan_pop_scope.culture
+			years = 5
+			multiplier = -10
+			is_decaying = yes
 		}
 		eqfm_add_small_balkan_powder_keg_escalation_effect = yes
 		every_country = {
@@ -985,11 +1022,19 @@ eqfm_balkans.102 = {
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
-		eqfm_neutral_events_trigger = yes
 		NOT = {
-			has_variable = turkfm_firman_requested
+			has_global_variable = eqfm_religious_firman_requested
 		}
+		eqfm_neutral_events_trigger = yes
+		has_law = law_type:law_millet_system
 		owns_entire_state_region = STATE_EASTERN_THRACE
+		s:STATE_EASTERN_THRACE = {
+			any_scope_state = {
+				any_scope_pop = {
+					has_pop_religion = orthodox
+				}
+			}
+		}
 	}
 	
 	cancellation_trigger = {
@@ -1005,7 +1050,7 @@ eqfm_balkans.102 = {
 				save_scope_as = eqfm_balkan_state_scope
 			}
 		}
-		set_variable = turkfm_firman_requested
+		set_global_variable = eqfm_religious_firman_requested
 	}
 	
 	option = {
@@ -1017,13 +1062,17 @@ eqfm_balkans.102 = {
 				religion = rel:orthodox
 				value = medium_radicals
 			}
+			add_modifier = {
+				name = modifier_eqfm_denied_religious_firman
+				months = gbbf_short_modifier_time
+			}
 		}
 		eqfm_add_small_balkan_powder_keg_escalation_effect = yes
 		every_country = {
 			limit = {
 				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
-			post_notification = eqfm_faketriarch
+			post_notification = eqfm_protection_firman_denied
 		}
 	}
 	
@@ -1045,7 +1094,7 @@ eqfm_balkans.102 = {
 			limit = {
 				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
-			post_notification = eqfm_firman
+			post_notification = eqfm_protection_firman_granted
 		}
 	}
 }
@@ -1123,6 +1172,11 @@ eqfm_balkans.103 = {
 				religion = scope:eqfm_balkan_pop_scope.religion
 				value = medium_radicals
 			}
+			add_religion_standard_of_living_modifier = {
+				religion = scope:eqfm_balkan_pop_scope.religion
+				multiplier = -1
+				months = gbbf_normal_modifier_time
+			}
 		}
 		every_country = {
 			limit = {
@@ -1148,6 +1202,11 @@ eqfm_balkans.103 = {
 			add_radicals_in_state = {
 				religion = rel:sunni
 				value = small_radicals
+			}
+			add_religion_standard_of_living_modifier = {
+				religion = scope:eqfm_balkan_pop_scope.religion
+				multiplier = 1
+				months = gbbf_normal_modifier_time
 			}
 		}
 		add_modifier = {
@@ -1182,7 +1241,6 @@ eqfm_balkans.104 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
-		always = no # TODO remove when ready; don't forget the loc!
 		eqfm_neutral_events_trigger = yes
 		any_scope_state = {
 			is_in_geographic_region = geographic_region_rumelia
@@ -1191,9 +1249,6 @@ eqfm_balkans.104 = {
 					has_harvest_condition = drought
 					has_harvest_condition = flood
 				}
-			}
-			NOT = {
-				has_variable = turkfm_food_shortage_var
 			}
 		}
 	}
@@ -1205,7 +1260,7 @@ eqfm_balkans.104 = {
 	}
 	
 	cooldown = {
-		years = 3
+		years = 8
 	}
 	
 	immediate = {
@@ -1219,13 +1274,6 @@ eqfm_balkans.104 = {
 						has_harvest_condition = flood
 					}
 				}
-				NOT = {
-					has_variable = turkfm_food_shortage_var
-				}
-			}
-			set_variable = {
-				name = turkfm_food_shortage_var
-				years = 5
 			}
 			save_scope_as = eqfm_balkan_state_scope
 		}
@@ -1236,13 +1284,22 @@ eqfm_balkans.104 = {
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
 			add_modifier = {
-				name = modifier_eqfm_sent_relief_column
+				name = modifier_eqfm_sent_relief_column_state
 				months = gbbf_short_modifier_time
 			}
 			add_loyalists_in_state = {
-				religion = rel:orthodox
+				strata = middle
+				value = small_radicals
+			}
+			add_loyalists_in_state = {
+				strata = lower
 				value = medium_radicals
 			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_sent_relief_column_country
+			months = short_modifier_time
+			multiplier = money_amount_multiplier_small
 		}
 		every_country = {
 			limit = {
@@ -1256,8 +1313,12 @@ eqfm_balkans.104 = {
 		name = eqfm_balkans.104.b
 		scope:eqfm_balkan_state_scope = {
 			add_radicals_in_state = {
-				religion = rel:orthodox
-				value = large_radicals
+				strata = middle
+				value = medium_radicals
+			}
+			add_radicals_in_state = {
+				strata = lower
+				value = medium_radicals
 			}
 		}
 		every_country = {
@@ -1288,6 +1349,14 @@ eqfm_balkans.105 = {
 	
 	trigger = {
 		eqfm_neutral_events_trigger = yes
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_rumelia
+		}
+		any_political_movement = {
+			gbbf_has_rumelian_culture_trigger = yes
+			political_movement_support > 0.5
+			political_movement_radicalism > 0.25
+		}
 	}
 	
 	cancellation_trigger = {
@@ -1303,7 +1372,18 @@ eqfm_balkans.105 = {
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
 		random_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_rumelia
+			}
 			save_scope_as = eqfm_balkan_state_scope
+		}
+		random_political_movement = {
+			limit = {
+				gbbf_has_rumelian_culture_trigger = yes
+				political_movement_support > 0.5
+				political_movement_radicalism > 0.25
+			}
+			save_scope_as = eqfm_balkan_movement_scope
 		}
 	}
 	
@@ -1323,12 +1403,19 @@ eqfm_balkans.105 = {
 		}
 		scope:eqfm_balkan_state_scope = {
 			add_radicals_in_state = {
-				strata = lower
+				culture = scope:eqfm_balkan_movement_scope.culture
 				value = medium_radicals
 			}
 			add_modifier = {
-				name = modifier_eqfm_supressed_marches
+				name = modifier_eqfm_suppressed_marches_state
 				months = gbbf_short_modifier_time
+			}
+		}
+		scope:eqfm_balkan_movement_scope = {
+			add_modifier = {
+				name = modifier_eqfm_suppressed_marches_movement
+				months = gbbf_normal_modifier_time
+				is_decaying = yes
 			}
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
@@ -1337,15 +1424,22 @@ eqfm_balkans.105 = {
 	option = {
 		# Tolerate the Marches
 		name = eqfm_balkans.105.b
+		add_modifier = {
+			name = modifier_eqfm_tolerated_marches_state
+			months = gbbf_normal_modifier_time
+		}
 		scope:eqfm_balkan_state_scope = {
 			add_loyalists_in_state = {
 				strata = lower
 				value = medium_radicals
 			}
 		}
-		add_modifier = {
-			name = modifier_eqfm_tolerated_dissent
-			months = gbbf_normal_modifier_time
+		scope:eqfm_balkan_movement_scope = {
+			add_modifier = {
+				name = modifier_eqfm_tolerated_marches_movement
+				months = gbbf_normal_modifier_time
+				is_decaying = yes
+			}
 		}
 		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
 	}
@@ -1391,8 +1485,9 @@ eqfm_balkans.106 = {
 		random_scope_state = {
 			limit = {
 				is_in_geographic_region = geographic_region_rumelia
-				NOT = {
+				NOR = {
 					has_modifier = modifier_eqfm_domineering_bey
+					has_modifier = modifier_eqfm_recalled_bey
 				}
 			}
 			save_scope_as = eqfm_balkan_state_scope
@@ -1506,6 +1601,12 @@ eqfm_balkans.107 = {
 				}
 			}
 			save_scope_as = eqfm_balkan_state_scope
+			random_scope_pop = {
+				limit = {
+					gbbf_pop_has_rumelian_culture_trigger = yes
+				}
+				save_scope_as = eqfm_balkan_pop_scope
+			}
 		}
 	}
 	
@@ -1515,12 +1616,17 @@ eqfm_balkans.107 = {
 		default_option = yes
 		ig:ig_devout = {
 			add_modifier = {
-				name = modifier_eqfm_protected_churches
+				name = modifier_eqfm_protected_churches_ig
 				months = gbbf_normal_modifier_time
 				is_decaying = yes
 			}
 		}
 		scope:eqfm_balkan_state_scope = {
+			add_religion_standard_of_living_modifier = {
+				religion = rel:orthodox
+				months = gbbf_normal_modifier_time
+				multiplier = 1
+			}
 			add_loyalists_in_state = {
 				religion = rel:orthodox
 				value = medium_radicals
@@ -1542,7 +1648,18 @@ eqfm_balkans.107 = {
 	option = {
 		# lol who cares
 		name = eqfm_balkans.107.b
+		add_culture_acceptance_modifier = {
+			culture = scope:eqfm_balkan_pop_scope
+			months = gbbf_short_modifier_time
+			multiplier = -15
+			is_decaying = yes
+		}
 		scope:eqfm_balkan_state_scope = {
+			add_religion_standard_of_living_modifier = {
+				religion = rel:orthodox
+				months = gbbf_normal_modifier_time
+				multiplier = -2
+			}
 			add_modifier = {
 				name = modifier_eqfm_churches_disrupted
 				months = gbbf_normal_modifier_time
@@ -1692,6 +1809,11 @@ eqfm_balkans.108 = {
 				culture = scope:eqfm_balkan_culture_scope
 				value = medium_radicals
 			}
+			add_culture_standard_of_living_modifier = { 
+				culture = scope:eqfm_balkan_culture_scope
+				months = gbbf_long_modifier_time
+				multiplier = 2
+			}
 		}
 		eqfm_add_small_balkan_powder_keg_deescalation_effect = yes
 		every_country = {
@@ -1727,7 +1849,7 @@ eqfm_balkans.109 = {
 		any_scope_state = {
 			is_in_geographic_region = geographic_region_rumelia
 			NOT = {
-				has_modifier = modifier_eqfm_nationalist_newspaper
+				has_modifier = modifier_eqfm_nationalist_newspaper_state
 			}
 			any_scope_pop = {
 				has_pop_religion = orthodox
@@ -1749,7 +1871,7 @@ eqfm_balkans.109 = {
 			limit = {
 				is_in_geographic_region = geographic_region_rumelia
 				NOT = {
-					has_modifier = modifier_eqfm_nationalist_newspaper
+					has_modifier = modifier_eqfm_nationalist_newspaper_state
 				}
 			}
 			save_scope_as = eqfm_balkan_state_scope
@@ -1759,7 +1881,7 @@ eqfm_balkans.109 = {
 					pop_acceptance < acceptance_status_4
 					literacy_rate > 0.33
 				}
-				save_scope_as = eqfm_balkan_culture_scope
+				save_scope_as = eqfm_balkan_pop_scope
 			}
 		}
 	}
@@ -1773,25 +1895,34 @@ eqfm_balkans.109 = {
 		}
 		highlighted_option = yes
 		trigger = {
-			NOR = {
-				has_law_or_variant = law_type:law_right_of_assembly
+			NOT = {
 				has_law_or_variant = law_type:law_protected_speech
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_censored_paper_country
+			months = gbbf_normal_modifier_time
+		}
+		random_political_movement = {
+			limit = {
+				culture = scope:eqfm_balkan_pop_scope.culture
+			}
+			add_modifier = {
+				name = modifier_eqfm_censored_paper_movement
+				months = gbbf_normal_modifier_time
 			}
 		}
 		scope:eqfm_balkan_state_scope = {
 			add_modifier = {
-				name = modifier_eqfm_nationalist_newspaper
+				name = modifier_eqfm_censored_paper_state
 				months = gbbf_normal_modifier_time
 			}
 			add_radicals_in_state = {
-				religion = rel:orthodox
+				culture = scope:eqfm_balkan_pop_scope.culture
 				value = large_radicals
 			}
 		}
-		add_modifier = {
-			name = modifier_eqfm_censored_paper
-			months = gbbf_normal_modifier_time
-		}
+		
 		eqfm_add_large_balkan_powder_keg_escalation_effect = yes
 		every_country = {
 			limit = {
@@ -1804,14 +1935,19 @@ eqfm_balkans.109 = {
 	option = {
 		# Tolerate It
 		name = eqfm_balkans.109.b
-		scope:eqfm_balkan_state_scope = {
+		random_political_movement = {
+			limit = {
+				culture = scope:eqfm_balkan_pop_scope.culture
+			}
 			add_modifier = {
-				name = modifier_eqfm_nationalist_newspaper
+				name = modifier_eqfm_nationalist_newspaper_movement
 				months = gbbf_normal_modifier_time
 			}
-			add_radicals_in_state = {
-				religion = rel:orthodox
-				value = large_radicals
+		}
+		scope:eqfm_balkan_state_scope = {
+			add_modifier = {
+				name = modifier_eqfm_nationalist_newspaper_state
+				months = gbbf_normal_modifier_time
 			}
 		}
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
@@ -1822,7 +1958,6 @@ eqfm_balkans.109 = {
 			post_notification = eqfm_newspaper_ignored
 		}
 	}
-	
 }
 
 # Dragoman Reduces Tensions
@@ -1844,6 +1979,17 @@ eqfm_balkans.110 = {
 	
 	trigger = {
 		eqfm_deconfliction_events_trigger = yes
+		has_law_or_variant = law_type:law_subjecthood
+		has_law = law_type:law_millet_system
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_rumelia
+			radical_fraction = {
+				value > 0.25
+			}
+			any_scope_pop = {
+				gbbf_has_rumelian_culture_trigger = yes
+			}
+		}
 	}
 	
 	cancellation_trigger = {
@@ -1853,7 +1999,7 @@ eqfm_balkans.110 = {
 	}
 	
 	cooldown = {
-		years = 2
+		years = 25
 	}
 	
 	immediate = {
@@ -1861,29 +2007,61 @@ eqfm_balkans.110 = {
 		random_scope_state = {
 			limit = {
 				is_in_geographic_region = geographic_region_rumelia
+				radical_fraction = {
+					value > 0.25
+				}
+				any_scope_pop = {
+					gbbf_has_rumelian_culture_trigger = yes
+				}
 			}
 			save_scope_as = eqfm_balkan_state_scope
 			random_scope_pop = {
 				limit = {
-					has_pop_religion = orthodox
+					gbbf_has_rumelian_culture_trigger = yes
 				}
-				culture = {
-					save_scope_as = eqfm_balkan_culture_scope
-				}
+				save_scope_as = eqfm_balkan_pop_scope
+			}
+		}
+		create_character = {
+			culture = scope:eqfm_balkan_pop_scope.culture
+			religion = rel:sunni
+			ideology = ideology_gbbf_ottomanist_leader
+			role = character_role_politician
+			on_created = {
+				save_scope_as = eqfm_balkan_character_scope
 			}
 		}
 	}
 	
 	option = {
-		name = eqfm_balkans.111.a
+		name = eqfm_balkans.110.a
 		default_option = yes
-		add_loyalists = {
-			culture = scope:eqfm_balkan_culture_scope
-			value = very_large_radicals
+		scope:eqfm_balkan_state_scope = {
+			add_loyalists_in_state = {
+				culture = scope:eqfm_balkan_pop_scope.culture
+				value = very_large_radicals
+			}
 		}
-		add_modifier = {
-			name = modifier_eqfm_expert_dragoman
-			months = gbbf_short_modifier_time
+		add_loyalists = {
+			religion = scope:eqfm_balkan_pop_scope.religion
+			value = medium_radicals
+		}
+	}
+	
+	option = {
+		name = eqfm_balkans.110.b
+		scope:eqfm_balkan_state_scope = {
+			add_loyalists_in_state = {
+				culture = scope:eqfm_balkan_pop_scope.culture
+				value = large_radicals
+			}
+		}
+		add_loyalists = {
+			religion = scope:eqfm_balkan_pop_scope.religion
+			value = medium_radicals
+		}
+		scope:eqfm_balkan_character_scope = {
+			add_trait = gbbf_trait_dragoman
 		}
 	}
 }
@@ -1907,6 +2085,15 @@ eqfm_balkans.111 = {
 	
 	trigger = {
 		eqfm_deconfliction_events_trigger = yes
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_rumelia
+			any_scope_pop = {
+				has_pop_religion = orthodox
+			}
+			any_scope_pop = {
+				has_pop_religion = sunni
+			}
+		}
 	}
 	
 	cancellation_trigger = {
@@ -1916,7 +2103,7 @@ eqfm_balkans.111 = {
 	}
 	
 	cooldown = {
-		years = 2
+		years = 10
 	}
 	
 	immediate = {
@@ -1926,7 +2113,6 @@ eqfm_balkans.111 = {
 				is_in_geographic_region = geographic_region_rumelia
 			}
 			save_scope_as = eqfm_balkan_state_scope
-			eqfm_balkan_powder_keg_select_random_rumelian_pop_effect = yes
 		}
 	}
 	
@@ -1934,19 +2120,29 @@ eqfm_balkans.111 = {
 		name = eqfm_balkans.111.a
 		default_option = yes
 		scope:eqfm_balkan_state_scope = {
-			eqfm_balkan_powder_keg_rumelian_loyalists_effect = {
-				value = very_large_radicals
+			add_loyalists_in_state = {
+				religion = rel:orthodox
+				value = large_radicals
+			}
+			add_loyalists_in_state = {
+				religion = rel:orthodox
+				value = large_radicals
+			}
+			add_religion_standard_of_living_modifier = { 
+				religion = rel:orthodox
+				months = gbbf_normal_modifier_time
+				multiplier = 1
 			}
 		}
 		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
 	}
 }
 
-# Great Power Mediates Local Conflict
+# Conflicting Legal Systems
 eqfm_balkans.112 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
-	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
 	duration = 3
 	dlc = dlc_grefm
 	
@@ -1954,79 +2150,63 @@ eqfm_balkans.112 = {
 	desc = eqfm_balkans.112.d
 	flavor = eqfm_balkans.112.f
 	
+	gui_window = event_window_com_default
+	
 	event_image = {
-		video = "ep1_power_blocs"
+		video = "middleeast_courtroom_upheaval"
 	}
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
-		# triggered by eqfm_balkans.700
+		OR = {
+			eqfm_neutral_events_trigger = yes
+			eqfm_unrest_events_trigger = yes
+		}
+		has_law = law_type:law_millet_system
+		has_law_or_variant = law_type:law_subjecthood
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_rumelia
+			any_scope_pop = {
+				has_pop_religion = orthodox
+			}
+			any_scope_pop = {
+				has_pop_religion = sunni
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
+	cooldown = {
+		years = 3
 	}
 	
 	immediate = {
-		random_country = {
-			limit = {
-				has_variable = eqfm_balkans_third_party_var
-			}
-			save_scope_as = eqfm_balkan_country_scope
-		}
 		random_scope_state = {
 			limit = {
-				has_variable = turkfm_intervention_var
+				is_in_geographic_region = geographic_region_rumelia
+				any_scope_pop = {
+					has_pop_religion = orthodox
+				}
+				any_scope_pop = {
+					has_pop_religion = sunni
+				}
 			}
 			save_scope_as = eqfm_balkan_state_scope
 		}
 	}
 	
-	option = {
-		# Accept the Assist
+	option = { # Allow the Millets to govern themselves
 		name = eqfm_balkans.112.a
 		default_option = yes
-		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
-		change_relations = {
-			country = scope:eqfm_balkan_country_scope
-			value = 15
-		}
-		create_diplomatic_catalyst = {
-			type = catalyst_relations_level_increased
-			target = scope:eqfm_balkan_country_scope
-		}
-		scope:eqfm_balkan_state_scope = {
-			add_modifier = {
-				name = modifier_eqfm_tensions_defused
-				months = gbbf_short_modifier_time
-			}
-		}
-		scope:eqfm_balkan_country_scope = {
-			post_notification = eqfm_tensions_defused
-		}
 	}
 	
-	option = {
-		# Reject the Assist
+	option = { # Enforce Qanun
 		name = eqfm_balkans.112.b
-		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
-		change_relations = {
-			country = scope:eqfm_balkan_country_scope
-			value = -25
-		}
-		create_diplomatic_catalyst = {
-			type = catalyst_relations_level_decreased
-			target = scope:eqfm_balkan_country_scope
-		}
-		scope:eqfm_balkan_country_scope = {
-			post_notification = eqfm_tensions_ignored
-		}
-		
-	}
-	
-	after = {
-		scope:eqfm_balkan_country_scope = {
-			remove_variable = eqfm_balkans_third_party_var
-		}
-		scope:eqfm_balkan_state_scope = {
-			remove_variable = turkfm_intervention_var
-		}
 	}
 }
 
@@ -2048,13 +2228,13 @@ eqfm_balkans.113 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
-		NOT = {
-			has_global_variable = eqfm_balkans_cooldown_var
-		}
 		OR = {
-			eqfm_unrest_phase_trigger = yes
-			eqfm_hostility_phase_trigger = yes
-			eqfm_crisis_phase_trigger = yes
+			eqfm_neutral_events_trigger = yes
+			eqfm_unrest_events_trigger = yes
+			eqfm_hostility_events_trigger = yes
+		}
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_rumelia
 		}
 	}
 	
@@ -2074,8 +2254,6 @@ eqfm_balkans.113 = {
 				is_in_geographic_region = geographic_region_rumelia
 			}
 			save_scope_as = eqfm_balkan_state_scope
-		}
-		scope:eqfm_balkan_state_scope = {
 			eqfm_balkan_powder_keg_select_random_rumelian_pop_effect = yes
 		}
 	}
@@ -2084,7 +2262,6 @@ eqfm_balkans.113 = {
 		# Arrest the Ring
 		name = eqfm_balkans.113.a
 		default_option = yes
-		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
 		scope:eqfm_balkan_state_scope = {
 			add_radicals_in_state = {
 				culture = scope:eqfm_balkan_culture_scope
@@ -2095,6 +2272,13 @@ eqfm_balkans.113 = {
 				value = medium_radicals
 			}
 		}
+		add_culture_acceptance_modifier = {
+			culture = scope:eqfm_balkan_pop_scope.culture
+			months = normal_modifier_time
+			multiplier = -15
+			is_decaying = yes
+		}
+		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
 	}
 	
 	option = {
@@ -5693,7 +5877,7 @@ eqfm_balkans.700 = {
 		set_variable = eqfm_balkans_third_party_var
 		c:TUR = {
 			trigger_event = {
-				id = eqfm_balkans.112 # Great Power Mediates Local Conflict
+				id = eqfm_balkans.701 # Great Power Mediates Local Conflict
 			}
 		}
 		scope:eqfm_balkan_state_scope = {
@@ -5704,5 +5888,93 @@ eqfm_balkans.700 = {
 	option = {
 		name = eqfm_balkans.700.b
 		custom_tooltip = gbbf_nothing_happens
+	}
+}
+
+# Great Power Mediates Local Conflict
+eqfm_balkans.701 = {
+	type = country_event
+	placement = scope:eqfm_balkan_state_scope
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_balkans.701.t
+	desc = eqfm_balkans.701.d
+	flavor = eqfm_balkans.701.f
+	
+	event_image = {
+		video = "ep1_power_blocs"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by eqfm_balkans.700
+	}
+	
+	immediate = {
+		random_country = {
+			limit = {
+				has_variable = eqfm_balkans_third_party_var
+			}
+			save_scope_as = eqfm_balkan_country_scope
+		}
+		random_scope_state = {
+			limit = {
+				has_variable = turkfm_intervention_var
+			}
+			save_scope_as = eqfm_balkan_state_scope
+		}
+	}
+	
+	option = {
+		# Accept the Assist
+		name = eqfm_balkans.701.a
+		default_option = yes
+		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
+		change_relations = {
+			country = scope:eqfm_balkan_country_scope
+			value = 15
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_relations_level_increased
+			target = scope:eqfm_balkan_country_scope
+		}
+		scope:eqfm_balkan_state_scope = {
+			add_modifier = {
+				name = modifier_eqfm_tensions_defused
+				months = gbbf_short_modifier_time
+			}
+		}
+		scope:eqfm_balkan_country_scope = {
+			post_notification = eqfm_tensions_defused
+		}
+	}
+	
+	option = {
+		# Reject the Assist
+		name = eqfm_balkans.701.b
+		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
+		change_relations = {
+			country = scope:eqfm_balkan_country_scope
+			value = -25
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_relations_level_decreased
+			target = scope:eqfm_balkan_country_scope
+		}
+		scope:eqfm_balkan_country_scope = {
+			post_notification = eqfm_tensions_ignored
+		}
+		
+	}
+	
+	after = {
+		scope:eqfm_balkan_country_scope = {
+			remove_variable = eqfm_balkans_third_party_var
+		}
+		scope:eqfm_balkan_state_scope = {
+			remove_variable = turkfm_intervention_var
+		}
 	}
 }
