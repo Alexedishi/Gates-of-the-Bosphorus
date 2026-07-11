@@ -346,6 +346,7 @@ eqfm_balkans.005 = {
 	}
 }
 
+# Riots in [State]
 eqfm_balkans.006 = {
 	# Riots Break Out in State
 	type = country_event
@@ -435,7 +436,7 @@ eqfm_balkans.006 = {
 	}
 }
 
-# State Rebellion Suppressed
+# Rioting in [State] Suppressed
 eqfm_balkans.007 = {
 	type = country_event
 	placement = root
@@ -507,7 +508,7 @@ eqfm_balkans.007 = {
 	}
 }
 
-# Balkan Country Rebellion
+# The [Balkan Country] Rebellion
 eqfm_balkans.008 = {
 	type = country_event
 	placement = scope:eqfm_rebellion_scope
@@ -2277,10 +2278,152 @@ eqfm_balkans.113 = {
 }
 
 # Unfair Rent in State
-
+eqfm_balkans.114 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_balkans.114.t
+	desc = eqfm_balkans.114.d
+	flavor = eqfm_balkans.114.f
+	
+	gui_window = event_window_com_default
+	
+	event_image = {
+		video = "ip3_agitator_reading_manifesto"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		any_scope_state = { 
+			is_in_geographic_region = geographic_region_rumelia
+			any_scope_pop = { 
+				gbbf_pop_has_rumelian_culture_trigger = yes
+				pop_acceptance < acceptance_status_4
+				standard_of_living < state.average_expected_sol
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
+	cooldown = {
+		years = 5
+	}
+	
+	immediate = {
+		eqfm_balkan_powder_keg_event_cooldown_effect = yes
+		random_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_rumelia
+				any_scope_pop = {
+					gbbf_pop_has_rumelian_culture_trigger = yes
+					pop_acceptance < acceptance_status_4
+					standard_of_living < state.average_expected_sol
+				}
+			}
+			save_scope_as = eqfm_balkan_state_scope
+			random_scope_pop = { 
+				limit = {
+					gbbf_pop_has_rumelian_culture_trigger = yes
+					pop_acceptance < acceptance_status_4
+					standard_of_living < state.average_expected_sol
+				}
+				save_scope_as = eqfm_balkan_pop_scope
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_balkans.114.a
+		default_option = yes
+	}
+	
+	option = {
+		name = eqfm_balkans.114.b
+	}
+}
 
 # Community Refuses to Pay Jizya
-# 115
+eqfm_balkans.115 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_balkans.115.t
+	desc = eqfm_balkans.115.d
+	flavor = eqfm_balkans.115.f
+	
+	gui_window = event_window_com_default
+	
+	event_image = {
+		video = "middleeast_courtroom_upheaval"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		any_active_law = {
+			has_amendment = amendment_type:amendment_gbbf_cizye_tax
+		}
+	}
+	
+	cancellation_trigger = {
+		OR = {
+			NOT = {
+				has_global_variable = je_eqfm_balkan_powder_keg
+			}
+			NOT = {
+				any_active_law = {
+					has_amendment = amendment_type:amendment_gbbf_cizye_tax
+				}
+			}
+		}
+	}
+	
+	cooldown = {
+		years = 3
+	}
+	
+	immediate = {
+		eqfm_balkan_powder_keg_event_cooldown_effect = yes
+		random_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_rumelia
+				any_scope_pop = {
+					religion != rel:sunni
+				}
+			}
+			save_scope_as = eqfm_balkan_state_scope
+			random_scope_pop = {
+				limit = {
+					religion != rel:sunni
+				}
+				save_scope_as = eqfm_balkan_pop_scope
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_balkans.115.a
+		default_option = yes
+	}
+	
+	option = {
+		name = eqfm_balkans.115.b
+	}
+	
+	option = {
+		name = eqfm_balkans.115.c
+	}
+}
 
 eqfm_balkans.116 = {
 	type = country_event
