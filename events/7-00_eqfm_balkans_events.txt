@@ -2277,7 +2277,7 @@ eqfm_balkans.113 = {
 }
 
 # Unfair Rent in State
-# 114
+
 
 # Community Refuses to Pay Jizya
 # 115
@@ -5749,7 +5749,9 @@ eqfm_balkans.601 = {
 	immediate = {
 		scope:eqfm_balkan_arrester_scope = {
 			random_scope_state = {
-				has_modifier = modifier_eqfm_gunrunner_raids
+				limit = {
+					has_modifier = modifier_eqfm_gunrunner_raids
+				}
 			}
 			save_scope_as = eqfm_balkan_state_scope
 		}
@@ -5818,21 +5820,35 @@ eqfm_balkans.700 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
-		always = no # TODO enable when ready
 		OR = {
-			has_diplomatic_pact = {
-				who = c:TUR
-				type = increase_relations
+			any_scope_diplomatic_pact = {
+				is_diplomatic_action_type = increase_relations
+				"diplomatic_pact_other_country(root)" = {
+					any_scope_state = {
+						is_in_geographic_region = geographic_region_rumelia
+						gbbf_country_has_rumelian_culture_trigger = no
+					}
+				}
 			}
-			gbbf_has_alliance_trigger = {
-				country = c:TUR
+			any_scope_treaty = {
+				any_scope_article = {
+					has_type = alliance
+				}
+				binds = scope:other_country
+				scope:other_country = {
+					any_scope_state = {
+						is_in_geographic_region = geographic_region_rumelia
+						gbbf_country_has_rumelian_culture_trigger = no
+					}
+				}
 			}
 		}
 	}
 	
 	cancellation_trigger = {
-		NOT = {
+		NAND = {
 			exists = c:TUR
+			exists = scope:eqfm_balkan_country_scope
 		}
 	}
 	
@@ -5841,31 +5857,61 @@ eqfm_balkans.700 = {
 	}
 	
 	immediate = {
-		c:TUR = {
-			save_scope_as = ottoman_scope
+		eqfm_balkan_powder_keg_event_cooldown_effect = yes
+		random_scope_diplomatic_pact = {
+			limit = {
+				is_diplomatic_action_type = increase_relations
+				"diplomatic_pact_other_country(root)" = {
+					any_scope_state = {
+						is_in_geographic_region = geographic_region_rumelia
+						gbbf_country_has_rumelian_culture_trigger = no
+					}
+				}
+			}
+			scope:other_country = {
+				save_scope_as = eqfm_balkan_country_scope
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					exists = scope:eqfm_balkan_country_scope
+				}
+			}
+			random_scope_treaty = {
+				limit = {
+					any_scope_article = {
+						has_type = alliance
+					}
+					binds = scope:other_country
+					scope:other_country = {
+						any_scope_state = {
+							is_in_geographic_region = geographic_region_rumelia
+							gbbf_country_has_rumelian_culture_trigger = no
+						}
+					}
+				}
+				scope:other_country = {
+					save_scope_as = eqfm_balkan_country_scope
+				}
+			}
+		}
+		scope:eqfm_balkan_country_scope = {
 			random_scope_state = {
 				limit = {
 					is_in_geographic_region = geographic_region_rumelia
-					NOT = {
-						has_modifier = modifier_eqfm_tensions_defused
-					}
 				}
 				save_scope_as = eqfm_balkan_state_scope
 			}
 		}
+		save_scope_as = eqfm_balkan_mediator_scope
 	}
 	
 	option = {
 		name = eqfm_balkans.700.a
 		default_option = yes
-		set_variable = eqfm_balkans_third_party_var
-		c:TUR = {
-			trigger_event = {
-				id = eqfm_balkans.701 # Great Power Mediates Local Conflict
-			}
-		}
-		scope:eqfm_balkan_state_scope = {
-			set_variable = turkfm_intervention_var
+		scope:eqfm_balkan_country_scope = {
+			trigger_event = eqfm_balkans.701
 		}
 	}
 	
@@ -5897,18 +5943,6 @@ eqfm_balkans.701 = {
 	}
 	
 	immediate = {
-		random_country = {
-			limit = {
-				has_variable = eqfm_balkans_third_party_var
-			}
-			save_scope_as = eqfm_balkan_country_scope
-		}
-		random_scope_state = {
-			limit = {
-				has_variable = turkfm_intervention_var
-			}
-			save_scope_as = eqfm_balkan_state_scope
-		}
 	}
 	
 	option = {
@@ -5917,12 +5951,12 @@ eqfm_balkans.701 = {
 		default_option = yes
 		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
 		change_relations = {
-			country = scope:eqfm_balkan_country_scope
+			country = scope:eqfm_balkan_mediator_scope
 			value = 15
 		}
 		create_diplomatic_catalyst = {
 			type = catalyst_relations_level_increased
-			target = scope:eqfm_balkan_country_scope
+			target = scope:eqfm_balkan_mediator_scope
 		}
 		scope:eqfm_balkan_state_scope = {
 			add_modifier = {
@@ -5930,7 +5964,7 @@ eqfm_balkans.701 = {
 				months = gbbf_short_modifier_time
 			}
 		}
-		scope:eqfm_balkan_country_scope = {
+		scope:eqfm_balkan_mediator_scope = {
 			post_notification = eqfm_tensions_defused
 		}
 	}
@@ -5940,25 +5974,15 @@ eqfm_balkans.701 = {
 		name = eqfm_balkans.701.b
 		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
 		change_relations = {
-			country = scope:eqfm_balkan_country_scope
+			country = scope:eqfm_balkan_mediator_scope
 			value = -25
 		}
 		create_diplomatic_catalyst = {
 			type = catalyst_relations_level_decreased
-			target = scope:eqfm_balkan_country_scope
+			target = scope:eqfm_balkan_mediator_scope
 		}
-		scope:eqfm_balkan_country_scope = {
+		scope:eqfm_balkan_mediator_scope = {
 			post_notification = eqfm_tensions_ignored
-		}
-		
-	}
-	
-	after = {
-		scope:eqfm_balkan_country_scope = {
-			remove_variable = eqfm_balkans_third_party_var
-		}
-		scope:eqfm_balkan_state_scope = {
-			remove_variable = turkfm_intervention_var
 		}
 	}
 }
