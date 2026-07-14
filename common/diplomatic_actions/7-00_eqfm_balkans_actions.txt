@@ -1,0 +1,203 @@
+eqfm_support_balkan_gunrunners = {
+	groups = {
+		general
+	}
+	
+	requires_approval = no
+	show_effect_in_tooltip = yes
+	can_use_obligations = no
+	should_notify_third_parties = no
+	show_confirmation_box = no
+	
+	unlocking_technologies = {
+		nationalism
+	}
+	
+	selectable = {
+		is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+	}
+	
+	potential = {
+		scope:target_country = {
+			is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			any_scope_state = {
+				is_in_geographic_region = geographic_region_rumelia
+			}
+			gbbf_country_has_rumelian_culture_trigger = no
+		}
+	}
+	
+	possible = {
+		NOT = {
+			any_primary_culture = {
+				is_primary_culture_of = scope:target_country
+			}
+		}
+		scope:target_country.relations:root <= relations_threshold:cold
+	}
+	
+	accept_effect = {  }
+	
+	pact = {
+		cost = 100
+		is_hostile = yes
+		is_two_sided_pact = no
+		show_in_outliner = yes
+		
+		max_target_involvement = 1000
+		target_involvement_applies_to = source_country
+		
+		relations_progress_per_day = -1 # At -100, -1 relations
+		relations_improvement_min = -25
+		
+		requirement_to_maintain = {
+			trigger = {
+				has_diplomatic_relevance = scope:target_country
+			}
+		}
+		
+		requirement_to_maintain = {
+			trigger = {
+				scope:target_country.relations:root <= relations_threshold:cold
+			}
+		}
+		
+		requirement_to_maintain = {
+			trigger = {
+				scope:target_country = {
+					any_primary_culture = {
+						NOT = { is_primary_culture_of = root }
+					}
+				}
+			}
+		}
+	}
+	
+	ai = {
+		max_influence_spending_fraction = 0.25
+		
+		evaluation_chance = {
+			value = 0
+			if = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+				}
+				add = 100
+			}
+			else_if = {
+				limit = {
+					eqfm_balkans_interloper_trigger = yes
+				}
+				add = 0.25
+			}
+		}
+		
+		propose_score = {
+			value = 10
+			if = {
+				limit = {
+					scope:target_country.relations:root > relations_threshold:cold
+				}
+				add = -1000
+			}
+			if = {
+				limit = {
+					OR = {
+						has_attitude = {
+							who = scope:target_country
+							attitude = belligerent
+						}
+						has_attitude = {
+							who = scope:target_country
+							attitude = domineering
+						}
+						has_attitude = {
+							who = scope:target_country
+							attitude = antagonistic
+						}
+						has_attitude = {
+							who = scope:target_country
+							attitude = defiant
+						}
+						has_attitude = {
+							who = scope:target_country
+							attitude = rebellious
+						}
+					}
+				}
+				add = 10
+			}
+			if = {
+				limit = {
+					any_primary_culture = {
+						culture_has_national_awakening = yes
+					}
+				}
+				multiply = 2
+			}
+			if = {
+				limit = {
+					is_subject_of = scope:target_country
+					gbbf_country_has_rumelian_culture_trigger = yes
+				}
+				multiply = 5
+			}
+		}
+		
+		will_propose = {
+			OR = {
+				AND = {
+					has_attitude = {
+						who = scope:target_country
+						attitude = antagonistic
+					}
+					scope:target_country.relations:root <= relations_threshold:poor
+				}
+				has_attitude = {
+					who = scope:target_country
+					attitude = belligerent
+				}
+				has_attitude = {
+					who = scope:target_country
+					attitude = domineering
+				}
+				has_attitude = {
+					who = scope:target_country
+					attitude = defiant
+				}
+				has_attitude = {
+					who = scope:target_country
+					attitude = rebellious
+				}
+			}
+		}
+		
+		will_break = {
+			OR = {
+				scope:target_country.relations:root >= relations_threshold:neutral
+				NOR = {
+					has_attitude = {
+						who = scope:target_country
+						attitude = belligerent
+					}
+					has_attitude = {
+						who = scope:target_country
+						attitude = domineering
+					}
+					has_attitude = {
+						who = scope:target_country
+						attitude = defiant
+					}
+					has_attitude = {
+						who = scope:target_country
+						attitude = antagonistic
+					}
+					has_attitude = {
+						who = scope:target_country
+						attitude = rebellious
+					}
+				}
+			}
+		}
+	}
+}
