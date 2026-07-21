@@ -102,3 +102,57 @@
 		}
 	}
 }
+
+eqfm_revoke_language_ban = {
+	is_shown = {
+		c:TUR ?= this
+		has_variable = eqfm_balkan_powder_keg_language_ban_state_var
+		var:eqfm_balkan_powder_keg_language_ban_state_var = {
+			owner = root
+		}
+	}
+	possible = {
+		legitimacy > 70
+		var:eqfm_balkan_powder_keg_language_ban_state_var = {
+			radical_fraction = {
+				value < 0.20
+			}
+		}
+		NOR = {
+			has_law_or_variant = law_type:law_ethnostate
+			has_insurrectionary_interest_groups = yes
+			has_revolution = yes
+		}
+	}
+	when_taken = {
+		var:eqfm_balkan_powder_keg_language_ban_state_var = {
+			remove_modifier = modifier_eqfm_languages_banned
+			add_modifier = {
+				name = modifier_eqfm_languages_restored
+				months = gbbf_long_modifier_time
+			}
+			add_loyalists_in_state = {
+				value = large_radicals
+				religion = var:eqfm_balkan_powder_keg_language_ban_culture_var
+			}
+			add_culture_standard_of_living_modifier = {
+				culture = var:eqfm_balkan_powder_keg_language_ban_culture_var
+				multiplier = -4
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_restored_languages
+			months = gbbf_normal_modifier_time
+		}
+		every_interest_group = {
+			limit = {
+				has_conservative_ideology = yes
+			}
+			add_modifier = {
+				name = modifier_eqfm_hates_languages
+				months = gbbf_normal_modifier_time
+			}
+		}
+	}
+	ai_chance = {  }
+}
