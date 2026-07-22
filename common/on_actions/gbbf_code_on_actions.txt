@@ -930,34 +930,33 @@ on_secession_start = {
 }
 
 eqfm_balkan_secession_start = {
+	trigger = {
+		is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+		scope:target = {
+			is_in_geographic_region = geographic_region_rumelia
+			gbbf_country_has_rumelian_culture_trigger = yes
+		}
+	}
 	effect = {
-		if = {
+		save_scope_as = eqfm_post_origin_scope
+		scope:target = {
+			save_scope_as = eqfm_rebellion_scope
+			every_scope_state = {
+				remove_modifier = modifier_eqfm_race_riots
+			}
+			add_modifier = {
+				name = modifier_eqfm_nationalist_uprising
+				months = gbbf_normal_modifier_time
+			}
+		}
+		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
+		every_country = {
 			limit = {
 				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				scope:target = {
-					is_in_geographic_region = geographic_region_rumelia
-					gbbf_country_has_rumelian_culture_trigger = yes
-				}
 			}
-			scope:target = {
-				save_scope_as = eqfm_balkan_rebel_scope
-				every_scope_state = {
-					remove_modifier = modifier_eqfm_race_riots
-				}
-				add_modifier = {
-					name = modifier_eqfm_nationalist_uprising
-					months = gbbf_normal_modifier_time
-				}
-			}
-			eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
-				}
-				post_notification = eqfm_balkan_secession_start
-			}
-			trigger_event = eqfm_balkans.008
+			post_notification = eqfm_balkan_secession_start
 		}
+		trigger_event = eqfm_balkans.008
 	}
 }
 
