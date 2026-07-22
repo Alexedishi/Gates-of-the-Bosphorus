@@ -13,7 +13,7 @@ Special Thanks: RationaLess, Bahmut|Chris
 
 ####---------- Version Compatibility ----------####
 #		GotB Patch	....	Victoria 3 Patch
-#		4.0.0		....	1.13
+#		4.0.0		....	1.13.9
 #		3.4.12		.... 	1.12.3
 #		3.3.7		.... 	1.10.6 / 1.11.1
 #		3.2.8		.... 	1.9.8
@@ -204,6 +204,15 @@ New Additions:
 - ##Fully implemented the Metaxism journal content
 
 
+
+Fixes:
+- 
+
+Notes:
+- The Metaxism journal entry remains in a beta state, this will be completed soon
+
+
+####---------- Published Updates ----------####
 --Update 4.1.0--
 New Additions:
 - ##Completely rebuilt the "Powderkeg of Europe" journal:
@@ -215,13 +224,13 @@ New Additions:
 - ##Fully implemented the Armenian Expulsions content
 
 Fixes:
-- 
+// Can't press declare the princedom entry for montenegro
+// I found a bug for both the Topkapi Palace and Dolmabahce Palace production method. Since the start of the game, Topkapi Palace has all 3 production methods greyed out
+// crashes when using BPM as serbia if you mouse over the tooltips explaining liberal and conservative forces.
+// The buttons that let me hold a Triumph for different parts of conquest do nothing. I don't get the Event and the tool tip says nothing happens when I click it.
+// I think the Throne of Thorns JE might be bugged...the Karađorđevićs have been sitting on 0 support for years while the Obrenovićs have 500 support and nothing has happened
 
-Notes:
-- The Metaxism journal entry remains in a beta state, this will be completed soon
 
-
-####---------- Published Updates ----------####
 --Update 4.0.7--
 Fixes:
 - Fixed an issue with the Tanzimat "Organize the Bureaucracy" agenda not correctly displaying its requirements
