@@ -186,17 +186,58 @@ eqfm_balkans.002 = {
 	option = {
 		name = eqfm_balkans.002.a
 		default_option = yes
-		every_scope_state = {
+		if = {
 			limit = {
-				is_in_geographic_region = geographic_region_rumelia
+				eqfm_balkan_powder_keg_outsider_trigger = yes
 			}
 			add_modifier = {
-				name = modifier_eqfm_rumelia_secured
+				name = modifier_eqfm_rumelia_dominated_country
+				months = gbbf_very_long_modifier_time
+				multiplier = gbbf_georegion_rumelia_owned_value
+			}
+			every_scope_state = {
+				limit = {
+					is_in_geographic_region = geographic_region_rumelia
+				}
+				add_modifier = { 
+					name = modifier_eqfm_rumelia_dominated_state
+					months = gbbf_long_modifier_time
+					is_decaying = yes
+				}
+			}
+			every_political_movement = {
+				limit = {
+					gbbf_has_rumelian_culture_trigger = yes
+				}
+				add_modifier = {
+					name = modifier_eqfm_rumelia_dominated_movement
+					months = gbbf_long_modifier_time
+					is_decaying = yes
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				eqfm_balkan_powder_keg_native_trigger = yes
+			}
+			add_modifier = {
+				name = modifier_eqfm_rumelia_dominated_subject
 				months = gbbf_long_modifier_time
+				is_decaying = yes
 			}
-			add_loyalists_in_state = {
-				value = medium_radicals
+			every_scope_state = {
+				limit = {
+					is_in_geographic_region = geographic_region_rumelia
+				}
+				add_modifier = {
+					name = modifier_eqfm_rumelia_dominated_state
+					months = gbbf_long_modifier_time
+					is_decaying = yes
+				}
 			}
+		}
+		else = {
+			custom_tooltip = gbbf_no_effects
 		}
 	}
 }
@@ -227,18 +268,60 @@ eqfm_balkans.003 = {
 	option = {
 		name = eqfm_balkans.003.a
 		default_option = yes
-		every_scope_state = {
+		if = {
 			limit = {
-				is_in_geographic_region = geographic_region_rumelia
+				eqfm_balkan_powder_keg_outsider_trigger = yes
 			}
 			add_modifier = {
-				name = modifier_eqfm_rumelia_lost
+				name = modifier_eqfm_rumelia_fractured_country
+				months = gbbf_very_long_modifier_time
+				multiplier = gbbf_georegion_rumelia_owned_value
+			}
+			every_scope_state = {
+				limit = {
+					is_in_geographic_region = geographic_region_rumelia
+				}
+				add_modifier = {
+					name = modifier_eqfm_rumelia_fractured_state
+					months = gbbf_long_modifier_time
+					is_decaying = yes
+				}
+			}
+			every_political_movement = {
+				limit = {
+					gbbf_has_rumelian_culture_trigger = yes
+				}
+				add_modifier = {
+					name = modifier_eqfm_rumelia_fractured_movement
+					months = gbbf_long_modifier_time
+					is_decaying = yes
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				eqfm_balkan_powder_keg_native_trigger = yes
+			}
+			add_modifier = {
+				name = modifier_eqfm_rumelia_fractured_subject
 				months = gbbf_long_modifier_time
+				
+				multiplier = gbbf_georegion_rumelia_owned_value
 				is_decaying = yes
 			}
-			add_radicals_in_state = {
-				value = medium_radicals
+			every_scope_state = {
+				limit = {
+					is_in_geographic_region = geographic_region_rumelia
+				}
+				add_modifier = {
+					name = modifier_eqfm_rumelia_fractured_state
+					months = gbbf_long_modifier_time
+					is_decaying = yes
+				}
 			}
+		}
+		else = {
+			custom_tooltip = gbbf_no_effects
 		}
 	}
 }
@@ -371,8 +454,9 @@ eqfm_balkans.006 = {
 		}
 		any_scope_state = {
 			is_in_geographic_region = geographic_region_rumelia
-			NOT = {
+			NOR = {
 				has_modifier = modifier_eqfm_race_riots
+				has_variable = eqfm_riot_state_var
 			}
 		}
 	}
@@ -403,6 +487,7 @@ eqfm_balkans.006 = {
 				name = modifier_eqfm_race_riots
 				months = 24
 			}
+			set_variable = eqfm_riot_state_var
 		}
 		if = {
 			limit = {
@@ -453,10 +538,12 @@ eqfm_balkans.007 = {
 	on_opened_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
-		has_variable = eqfm_riot_var
-		var:eqfm_riot_var <= 50
 		any_scope_state = {
-			has_modifier = modifier_eqfm_race_riots
+			is_in_geographic_region = geographic_region_rumelia
+			has_variable = eqfm_riot_state_var
+			NOT = {
+				has_modifier = modifier_eqfm_race_riots
+			}
 		}
 	}
 	
@@ -473,14 +560,14 @@ eqfm_balkans.007 = {
 	immediate = {
 		random_scope_state = {
 			limit = {
-				has_modifier = modifier_eqfm_race_riots
+				is_in_geographic_region = geographic_region_rumelia
+				has_variable = eqfm_riot_state_var
+				NOT = {
+					has_modifier = modifier_eqfm_race_riots
+				}
 			}
 			save_scope_as = eqfm_riot_state_scope
-			remove_modifier = modifier_eqfm_race_riots
-		}
-		set_variable = {
-			name = eqfm_riot_var
-			value = 100
+			remove_variable = eqfm_riot_state_var
 		}
 	}
 	
