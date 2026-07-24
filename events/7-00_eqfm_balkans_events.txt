@@ -46,11 +46,12 @@ namespace = eqfm_balkans
 #	109 - Revivalist Publications
 #	110 - Dragoman Reduces Tensions
 #	111 - Inter-faith Dialogue
-#	112 - ##Conflicting Legal Systems
+#	112 - Conflicting Legal Systems
 #	113 - Spy Ring Busted
-#	114 - ##Unfair Rent
-#	115 - ##Community Refuses to Pay Jizya
-#	116 - [Greek] Gun-Runners Intercepted
+#	114 - Unfair Rent
+#	115 - Community Refuses to Pay Jizya
+#	116 - Gun-Runners Raid [State]
+#	117 - Gun-Runners Intercepted in [State]
 
 #200-299 - Balkan Situation Outsider Unrest Events
 #	200 - Storefronts Ransacked
@@ -2081,6 +2082,7 @@ eqfm_balkans.110 = {
 		scope:eqfm_balkan_character_scope = {
 			add_trait = gbbf_trait_dragoman
 		}
+		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
 		eqfm_post_balkan_powder_keg_notification_effect = {
 			notification = eqfm_dragoman_promoted
 		}
@@ -2260,6 +2262,7 @@ eqfm_balkans.112 = {
 				months = gbbf_normal_modifier_time
 			}
 		}
+		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
 		eqfm_post_balkan_powder_keg_notification_effect = {
 			notification = eqfm_millet_law_tolerated
 		}
@@ -2293,6 +2296,7 @@ eqfm_balkans.112 = {
 				months = gbbf_normal_modifier_time
 			}
 		}
+		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
 		eqfm_post_balkan_powder_keg_notification_effect = {
 			notification = eqfm_qanun_law_enforced
 		}
@@ -2440,18 +2444,62 @@ eqfm_balkans.114 = {
 		}
 	}
 	
-	option = {
+	option = { # Ignore the situation
 		name = eqfm_balkans.114.a
 		default_option = yes
-		
+		scope:eqfm_balkan_state_scope = {
+			add_modifier = {
+				name = modifier_eqfm_extortionate_rent
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+			add_religion_standard_of_living_modifier = {
+				religion = scope:eqfm_balkan_religion_scope
+				multiplier = -1
+			}
+			add_radicals_in_state = {
+				religion = scope:eqfm_balkan_religion_scope
+				strata = middle
+				value = medium_radicals
+			}
+			add_radicals_in_state = {
+				religion = scope:eqfm_balkan_religion_scope
+				strata = lower
+				value = large_radicals
+			}
+		}
+		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
 		eqfm_post_balkan_powder_keg_notification_effect = {
 			notification = eqfm_rent_ignored
 		}
 	}
 	
-	option = {
+	option = { # Address the problem
 		name = eqfm_balkans.114.b
-		
+		add_modifier = {
+			name = modifier_eqfm_addressed_rent_country
+			months = normal_modifier_time
+			multiplier = money_amount_multiplier_small
+			is_decaying = yes
+		}
+		scope:eqfm_balkan_state_scope = {
+			add_modifier = {
+				name = modifier_eqfm_addressed_rent_state
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+			add_radicals_in_state = {
+				religion = scope:eqfm_balkan_religion_scope
+				strata = middle
+				value = medium_radicals
+			}
+			add_radicals_in_state = {
+				religion = scope:eqfm_balkan_religion_scope
+				strata = lower
+				value = large_radicals
+			}
+		}
+		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
 		eqfm_post_balkan_powder_keg_notification_effect = {
 			notification = eqfm_rent_addressed
 		}
@@ -2528,6 +2576,7 @@ eqfm_balkans.115 = {
 				months = gbbf_normal_modifier_time
 			}
 		}
+		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
 		eqfm_post_balkan_powder_keg_notification_effect = {
 			notification = eqfm_cizya_enforced
 		}
@@ -2541,6 +2590,7 @@ eqfm_balkans.115 = {
 				months = gbbf_normal_modifier_time
 			}
 		}
+		eqfm_add_medium_balkan_powder_keg_deescalation_effect = yes
 		eqfm_post_balkan_powder_keg_notification_effect = {
 			notification = eqfm_cizya_suspended
 		}
@@ -2558,6 +2608,7 @@ eqfm_balkans.115 = {
 				months = gbbf_normal_modifier_time
 			}
 		}
+		eqfm_add_large_balkan_powder_keg_escalation_effect = yes
 		eqfm_post_balkan_powder_keg_notification_effect = {
 			notification = eqfm_cizya_increased
 		}
@@ -2662,13 +2713,14 @@ eqfm_balkans.116 = {
 				months = normal_modifier_time
 			}
 		}
+		eqfm_add_small_balkan_powder_keg_escalation_effect = yes
 		eqfm_post_balkan_powder_keg_notification_effect = {
 			notification = eqfm_gunrunners_raid
 		}
 	}
 }
 
-# Gun-Runners Intercepted (Greek)
+# Gun-Runners Intercepted
 eqfm_balkans.117 = {
 	type = country_event
 	placement = scope:eqfm_balkan_state_scope
