@@ -231,6 +231,11 @@ Fixes:
 // I think the Throne of Thorns JE might be bugged...the Karađorđevićs have been sitting on 0 support for years while the Obrenovićs have 500 support and nothing has happened
 
 
+--Update 4.0.8--
+Fixes:
+- Fixed incorrectly gated effects in eqfm_balkans.008/9
+
+
 --Update 4.0.7--
 Fixes:
 - Fixed an issue with the Tanzimat "Organize the Bureaucracy" agenda not correctly displaying its requirements
