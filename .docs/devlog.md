@@ -13,7 +13,7 @@ Special Thanks: RationaLess, Bahmut|Chris
 
 ####---------- Version Compatibility ----------####
 #		GotB Patch	....	Victoria 3 Patch
-#		4.0.0		....	1.13.9
+#		4.0.8		....	1.13.9
 #		3.4.12		.... 	1.12.3
 #		3.3.7		.... 	1.10.6 / 1.11.1
 #		3.2.8		.... 	1.9.8
@@ -229,6 +229,11 @@ Fixes:
 // crashes when using BPM as serbia if you mouse over the tooltips explaining liberal and conservative forces.
 // The buttons that let me hold a Triumph for different parts of conquest do nothing. I don't get the Event and the tool tip says nothing happens when I click it.
 // I think the Throne of Thorns JE might be bugged...the Karađorđevićs have been sitting on 0 support for years while the Obrenovićs have 500 support and nothing has happened
+
+
+--Update 4.0.8--
+Fixes:
+- Fixed incorrectly gated effects in eqfm_balkans.008/9
 
 
 --Update 4.0.7--
