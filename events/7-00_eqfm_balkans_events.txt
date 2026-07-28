@@ -59,8 +59,8 @@ namespace = eqfm_balkans
 #	202 - Shipping Merchants Held Up
 #	203 - Crowds Gather in [City Hub]
 #	204 - Language Bans in [State]
-#	205 - ##
-#	206 - ##
+#	205 - ##Local Bishops Petition Governor
+#	206 - ##Popular Leader Apprehended
 #	207 - Piracy in [State]
 #	208 - Villagers Displaced in [State]
 #	209 - Brigands Cross the Border
@@ -68,8 +68,8 @@ namespace = eqfm_balkans
 #	211 - ##Grain Stores Spoiled
 #	212 - ##An Irregular Marriage
 #	213 - ##Students Rally for Reform
-#	214 - ##Popular Leader Apprehended
-#	215 - ##Local Bishops Petition Governor
+#	214 - ##
+#	215 - ##
 
 #300-399 - Balkan Situation Outsider Hostility Events
 #	300 - Churches Burned in [State]
@@ -3482,9 +3482,110 @@ eqfm_balkans.204 = {
 	}
 }
 
+# Local Bishops Petition Governor
+eqfm_balkans.205 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_balkans.205.t
+	desc = eqfm_balkans.205.d
+	flavor = eqfm_balkans.205.f
+	
+	gui_window = event_window_com_default
+	
+	event_image = {
+		video = "ip3_agitator_reading_manifesto"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		eqfm_unrest_events_trigger = yes
+		has_law_or_variant = law_type:law_state_religion
+		religion != rel:orthodox
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_rumelia
+			any_scope_pop = {
+				religion = rel:orthodox
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_global_variable = je_eqfm_balkan_powder_keg
+		}
+	}
+	
+	cooldown = {
+		years = 5
+	}
+	
+	immediate = {
+		random_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_rumelia
+				any_scope_pop = {
+					religion = rel:orthodox
+				}
+			}
+			eqfm_save_state_and_random_rumelian_pop_effect = yes
+		}
+	}
+	
+	option = { # Who Cares?
+		name = eqfm_balkans.205.a
+		default_option = yes
+		
+	}
+	
+	option = { # OK Fine, We'll Do Something
+		name = eqfm_balkans.205.b
+	}
+}
 
-
-
+# Popular Leader Apprehended
+eqfm_balkans.206 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_balkans.206.t
+	desc = eqfm_balkans.206.d
+	flavor = eqfm_balkans.206.f
+	
+	gui_window = event_window_com_default
+	
+	event_image = {
+		video = "ip3_agitator_reading_manifesto"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+	}
+	
+	cancellation_trigger = {
+	}
+	
+	cooldown = {
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = eqfm_balkans.206.a
+		default_option = yes
+	}
+	
+	option = {
+		name = eqfm_balkans.206.b
+	}
+}
 
 # Piracy in State
 eqfm_balkans.207 = {
