@@ -54,7 +54,7 @@ eqfm_balkan_powder_keg_escalation_progress_value = {
 							}
 						}
 					}
-					add = var:eqfm_state_region_radical_fraction_var
+					add = var:eqfm_state_region_rumelian_radical_fraction_var
 				}
 				round_to = 0.01
 			}
@@ -99,7 +99,7 @@ eqfm_balkan_powder_keg_escalation_progress_value = {
 							has_modifier = modifier_eqfm_race_riots
 						}
 					}
-					add = var:eqfm_state_region_radical_fraction_var # Yes, Race Riot states will double-dip
+					add = var:eqfm_state_region_rumelian_radical_fraction_var # Yes, Race Riot states will double-dip
 				}
 				round_to = 0.01
 			}
@@ -165,7 +165,7 @@ eqfm_balkan_powder_keg_deescalation_progress_value = {
 					limit = {
 						is_in_geographic_region = geographic_region_rumelia
 					}
-					add = var:eqfm_state_region_loyalist_fraction_var
+					add = var:eqfm_state_region_rumelian_loyalist_fraction_var
 				}
 				round_to = 0.01
 			}
@@ -334,50 +334,82 @@ eqfm_balkan_powder_keg_crisis_progress_value = {
 }
 
 ####---------- Balkan Powder Keg Primary Mechanic Sub-Values ----------####
-eqfm_state_loyalist_fraction_value = {
+eqfm_rumelian_loyalist_fraction_value = {
 	value = 0
-	every_state_region = {
+	every_state_region_in_rumelia = {
 		limit = {
-			is_in_geographic_region = geographic_region_rumelia
-			has_variable = eqfm_state_region_loyalist_fraction_var
+			has_variable = eqfm_state_region_rumelian_loyalist_fraction_var
 		}
-		add = var:eqfm_state_region_loyalist_fraction_var
+		add = var:eqfm_state_region_rumelian_loyalist_fraction_var
 	}
 }
 
-eqfm_state_region_loyalist_fraction_value = {
+eqfm_state_region_rumelian_loyalist_fraction_value = {
 	value = 0
-	every_scope_pop = {
-		add = pop_loyalist_fraction
+	every_scope_state = {
+		limit = {
+			owner = {
+				eqfm_balkan_powder_keg_outsider_trigger = yes
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				gbbf_pop_has_rumelian_culture_trigger = yes
+			}
+			add = total_size
+			multiply = {
+				add = pop_loyalist_fraction
+				min = 1
+			}
+		}
 	}
 	divide = {
 		every_scope_pop = {
-			add = 1
+			limit = {
+				gbbf_pop_has_rumelian_culture_trigger = yes
+			}
+			add = total_size
 		}
 		min = 1
 	}
 	round_to = 0.01
 }
 
-eqfm_state_rumelian_radical_fraction_value = {
+eqfm_rumelian_radical_fraction_value = {
 	value = 0
-	every_state_region = {
+	every_state_region_in_rumelia = {
 		limit = {
-			is_in_geographic_region = geographic_region_rumelia
-			has_variable = eqfm_state_region_radical_fraction_var
+			has_variable = eqfm_state_region_rumelian_radical_fraction_var
 		}
-		add = var:eqfm_state_region_radical_fraction_var
+		add = var:eqfm_state_region_rumelian_radical_fraction_var
 	}
 }
 
-eqfm_state_region_radical_fraction_value = {
+eqfm_state_region_rumelian_radical_fraction_value = {
 	value = 0
-	every_scope_pop = {
-		add = pop_radical_fraction
+	every_scope_state = {
+		limit = {
+			owner = {
+				eqfm_balkan_powder_keg_outsider_trigger = yes
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				gbbf_pop_has_rumelian_culture_trigger = yes
+			}
+			add = total_size
+			multiply = {
+				add = pop_radical_fraction
+				min = 1
+			}
+		}
 	}
 	divide = {
 		every_scope_pop = {
-			add = 1
+			limit = {
+				gbbf_pop_has_rumelian_culture_trigger = yes
+			}
+			add = total_size
 		}
 		min = 1
 	}
