@@ -230,107 +230,120 @@ eqfm_balkan_powder_keg_crisis_progress_value = {
 	value = 0
 	if = {
 		limit = {
-			any_country_in_rumelia = {
-				is_subject = yes
-				overlord ?= {
-					gbbf_country_has_rumelian_culture_trigger = no
+			eqfm_crisis_phase_trigger = yes
+		}
+		if = {
+			limit = {
+				any_country_in_rumelia = {
+					is_subject = yes
+					overlord ?= {
+						gbbf_country_has_rumelian_culture_trigger = no
+					}
 				}
 			}
-		}
-		add = {
-			desc = eqfm_value_from_rumelian_overlord_legitimacy
-			value = {
-				every_country_in_rumelia = {
-					limit = {
-						is_subject = yes
-						overlord ?= {
-							gbbf_country_has_rumelian_culture_trigger = no
+			add = {
+				desc = eqfm_value_from_rumelian_overlord_legitimacy
+				value = {
+					every_country_in_rumelia = {
+						limit = {
+							is_subject = yes
+							overlord ?= {
+								gbbf_country_has_rumelian_culture_trigger = no
+							}
+						}
+						overlord = {
+							add = legitimacy
+							subtract = eqfm_balkan_powder_keg_overlord_crisis_legitimacy_threshold
+							multiply = 0.01
+							multiply = eqfm_rumelian_control_multiplier_value
 						}
 					}
-					overlord = {
-						add = legitimacy
-						subtract = eqfm_balkan_powder_keg_overlord_crisis_legitimacy_threshold
-						multiply = 0.01
-						multiply = eqfm_rumelian_control_multiplier_value
-					}
+					round_to = 0.01
 				}
-				round_to = 0.01
 			}
 		}
-	}
-	if = {
-		limit = {
-			NOT = {
+		if = {
+			limit = {
+				NOT = {
+					any_country_in_rumelia = {
+						is_at_war = yes
+					}
+				}
+			}
+			add = {
+				desc = eqfm_value_from_no_rumelian_wars
+				value = 1
+			}
+		}
+		if = {
+			limit = {
 				any_country_in_rumelia = {
 					is_at_war = yes
 				}
 			}
-		}
-		add = {
-			desc = eqfm_value_from_no_rumelian_wars
-			value = 1
-		}
-	}
-	if = {
-		limit = {
-			any_country_in_rumelia = {
-				is_at_war = yes
-			}
-		}
-		subtract = {
-			desc = eqfm_value_from_active_rumelian_wars
-			value = {
-				every_diplomatic_play = {
-					limit = {
-						any_scope_play_involved = {
-							is_in_geographic_region = geographic_region_rumelia
+			subtract = {
+				desc = eqfm_value_from_active_rumelian_wars
+				value = {
+					every_diplomatic_play = {
+						limit = {
+							any_scope_play_involved = {
+								is_in_geographic_region = geographic_region_rumelia
+							}
 						}
+						add = 2
 					}
-					add = 2
 				}
 			}
 		}
-	}
-	if = {
-		limit = {
-			any_country_in_rumelia = {
-				gbbf_country_has_rumelian_culture_trigger = no # skip this math if the Balkans are all subjects of outsiders
-				has_any_secessionists_growing = yes # if a secession has not organized, none of them count; yes this will cause the value to snap upwards once any secession organizes. This is intentional.
+		if = {
+			limit = {
+				any_country_in_rumelia = {
+					gbbf_country_has_rumelian_culture_trigger = no # skip this math if the Balkans are all subjects of outsiders
+					has_any_secessionists_growing = yes # if a secession has not organized, none of them count; yes this will cause the value to snap upwards once any secession organizes. This is intentional.
+				}
+			}
+			subtract = {
+				desc = eqfm_value_from_rumelian_growing_secessions
+				value = {
+					every_country_in_rumelia = {
+						limit = {
+							gbbf_country_has_rumelian_culture_trigger = no
+							has_any_secessionists_growing = yes
+						}
+						every_political_movement = {
+							limit = {
+								gbbf_has_rumelian_culture_trigger = yes
+								political_movement_radicalism > define:NPolitics|MIN_RADICALISM_FOR_CIVIL_WAR_PROGRESSION
+							}
+							add = political_movement_radicalism # Yes, this scales VERY horribly if a lot of countries have their fingers in the pie
+						}
+					}
+					round = 0.01
+				}
 			}
 		}
-		subtract = {
-			desc = eqfm_value_from_rumelian_growing_secessions
-			value = {
-				every_country_in_rumelia = {
-					limit = {
-						gbbf_country_has_rumelian_culture_trigger = no
+		if = {
+			limit = {
+				NOT = {
+					any_country_in_rumelia = {
 						has_any_secessionists_growing = yes
 					}
-					every_political_movement = {
-						limit = {
-							gbbf_has_rumelian_culture_trigger = yes
-							political_movement_radicalism > define:NPolitics|MIN_RADICALISM_FOR_CIVIL_WAR_PROGRESSION
-						}
-						add = political_movement_radicalism # Yes, this scales VERY horribly if a lot of countries have their fingers in the pie
-					}
 				}
-				round = 0.01
+			}
+			add = {
+				desc = eqfm_value_from_no_growing_rumelian_secessions
+				value = 2
 			}
 		}
 	}
-	if = {
-		limit = {
-			NOT = {
-				any_country_in_rumelia = {
-					has_any_secessionists_growing = yes
-				}
-			}
-		}
+	else = {
 		add = {
-			desc = eqfm_value_from_no_growing_rumelian_secessions
-			value = 2
+			desc = eqfm_value_from_non_crisis_phase
+			add = 250
+			subtract = global_variable_map(eqfm_balkan_powder_keg_varmap|flag:eqfm_balkan_powder_keg_crisis_var)
 		}
 	}
+	round_to = 0.01
 }
 
 ####---------- Balkan Powder Keg Primary Mechanic Sub-Values ----------####
