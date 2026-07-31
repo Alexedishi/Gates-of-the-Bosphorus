@@ -129,6 +129,112 @@ eqfm_initialize_balkan_powder_keg_journal_effect = {
 	}
 }
 
+eqfm_update_balkan_powder_keg_next_phase_flags_effect = {
+	if = {
+		limit = {
+			eqfm_stable_phase_trigger = yes
+		}
+		global_var:je_eqfm_balkan_powder_keg = {
+			com_update_indexed_stiuation_phase_flags_effect = {
+				index = 1
+				next_phase_name = eqfm_unrest_no_icon
+				next_phase_icon = eqfm_unrest_icon_only
+				factors = eqfm_balkan_powder_keg_escalation_factors_desc
+			}
+			com_set_indexed_stiuation_phase_progress_details_effect = {
+				index = 2
+				next_phase_name = eqfm_deconfliction_no_icon
+				next_phase_icon = eqfm_deconfliction_icon_only
+				progress_value = eqfm_balkan_powder_keg_deescalation_start_value
+				max_value = eqfm_balkan_powder_keg_deescalation_max_value
+				min_value = eqfm_balkan_powder_keg_deescalation_min_value
+				factors = eqfm_balkan_powder_keg_deescalation_factors_desc
+			}
+		}
+	}
+	else_if = {
+		if = {
+			limit = {
+				eqfm_unrest_phase_trigger = yes
+			}
+			global_var:je_eqfm_balkan_powder_keg = {
+				com_update_indexed_stiuation_phase_flags_effect = {
+					index = 1
+					next_phase_name = eqfm_hostility_no_icon
+					next_phase_icon = eqfm_hostility_icon_only
+					factors = eqfm_balkan_powder_keg_escalation_factors_desc
+				}
+				com_update_indexed_stiuation_phase_flags_effect = {
+					index = 2
+					next_phase_name = eqfm_deconfliction_no_icon
+					next_phase_icon = eqfm_deconfliction_icon_only
+					factors = eqfm_balkan_powder_keg_deescalation_factors_desc
+				}
+			}
+		}
+	}
+	else_if = {
+		if = {
+			limit = {
+				eqfm_hostility_phase_trigger = yes
+			}
+			global_var:je_eqfm_balkan_powder_keg = {
+				com_update_indexed_stiuation_phase_flags_effect = {
+					index = 1
+					next_phase_name = eqfm_crisis_no_icon
+					next_phase_icon = eqfm_crisis_icon_only
+					factors = eqfm_balkan_powder_keg_escalation_factors_desc
+				}
+				com_update_indexed_stiuation_phase_flags_effect = {
+					index = 2
+					next_phase_name = eqfm_deconfliction_no_icon
+					next_phase_icon = eqfm_deconfliction_icon_only
+					factors = eqfm_balkan_powder_keg_deescalation_factors_desc
+				}
+			}
+		}
+	}
+	else_if = {
+		if = {
+			limit = {
+				eqfm_crisis_phase_trigger = yes
+			}
+			global_var:je_eqfm_balkan_powder_keg = {
+				com_remove_indexed_stiuation_phase_progress_details_effect = {
+					index = 1
+				}
+				com_update_indexed_stiuation_phase_flags_effect = {
+					index = 2
+					next_phase_name = eqfm_deconfliction_no_icon
+					next_phase_icon = eqfm_deconfliction_icon_only
+					factors = eqfm_balkan_powder_keg_deescalation_factors_desc
+				}
+			}
+		}
+	}
+	else_if = {
+		if = {
+			limit = {
+				eqfm_deconfliction_events_trigger = yes
+			}
+			global_var:je_eqfm_balkan_powder_keg = {
+				com_set_indexed_stiuation_phase_progress_details_effect = {
+					index = 1
+					next_phase_name = eqfm_unrest_no_icon
+					next_phase_icon = eqfm_unrest_icon_only
+					progress_value = eqfm_balkan_powder_keg_escalation_start_value
+					max_value = eqfm_balkan_powder_keg_escalation_max_value
+					min_value = eqfm_balkan_powder_keg_escalation_min_value
+					factors = eqfm_balkan_powder_keg_escalation_factors_desc
+				}
+				com_remove_indexed_stiuation_phase_progress_details_effect = {
+					index = 2
+				}
+			}
+		}
+	}
+}
+
 eqfm_initialize_balkan_powder_keg_content_effect = {
 	eqfm_update_local_balkan_powder_keg_variables_effect = yes
 	add_modifier = modifier_eqfm_stable_phase_1
@@ -989,6 +1095,24 @@ eqfm_force_balkan_powder_keg_stable_phase_effect = {
 		}
 		post_notification = eqfm_transition_stable
 	}
+	com_set_indexed_stiuation_phase_progress_details_effect = {
+		index = 1
+		next_phase_name = eqfm_unrest_no_icon
+		next_phase_icon = eqfm_unrest_icon_only
+		progress_value = eqfm_balkan_powder_keg_escalation_start_value
+		max_value = eqfm_balkan_powder_keg_escalation_max_value
+		min_value = eqfm_balkan_powder_keg_escalation_min_value
+		factors = eqfm_balkan_powder_keg_escalation_factors_desc
+	}
+	com_set_indexed_stiuation_phase_progress_details_effect = {
+		index = 2
+		next_phase_name = eqfm_deconfliction_no_icon
+		next_phase_icon = eqfm_deconfliction_icon_only
+		progress_value = eqfm_balkan_powder_keg_deescalation_start_value
+		max_value = eqfm_balkan_powder_keg_deescalation_max_value
+		min_value = eqfm_balkan_powder_keg_deescalation_min_value
+		factors = eqfm_balkan_powder_keg_deescalation_factors_desc
+	}
 }
 
 eqfm_force_balkan_powder_keg_unrest_phase_effect = {
@@ -1011,6 +1135,24 @@ eqfm_force_balkan_powder_keg_unrest_phase_effect = {
 		}
 		post_notification = eqfm_transition_unrest
 	}
+	com_set_indexed_stiuation_phase_progress_details_effect = {
+		index = 1
+		next_phase_name = eqfm_hostility_no_icon
+		next_phase_icon = eqfm_hostility_icon_only
+		progress_value = eqfm_balkan_powder_keg_escalation_start_value
+		max_value = eqfm_balkan_powder_keg_escalation_max_value
+		min_value = eqfm_balkan_powder_keg_escalation_min_value
+		factors = eqfm_balkan_powder_keg_escalation_factors_desc
+	}
+	com_set_indexed_stiuation_phase_progress_details_effect = {
+		index = 2
+		next_phase_name = eqfm_deconfliction_no_icon
+		next_phase_icon = eqfm_deconfliction_icon_only
+		progress_value = eqfm_balkan_powder_keg_deescalation_start_value
+		max_value = eqfm_balkan_powder_keg_deescalation_max_value
+		min_value = eqfm_balkan_powder_keg_deescalation_min_value
+		factors = eqfm_balkan_powder_keg_deescalation_factors_desc
+	}
 }
 
 eqfm_force_balkan_powder_keg_hostility_phase_effect = {
@@ -1031,6 +1173,24 @@ eqfm_force_balkan_powder_keg_hostility_phase_effect = {
 			is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 		}
 		post_notification = eqfm_transition_hostility
+	}
+	com_set_indexed_stiuation_phase_progress_details_effect = {
+		index = 1
+		next_phase_name = eqfm_crisis_no_icon
+		next_phase_icon = eqfm_crisis_icon_only
+		progress_value = eqfm_balkan_powder_keg_escalation_start_value
+		max_value = eqfm_balkan_powder_keg_escalation_max_value
+		min_value = eqfm_balkan_powder_keg_escalation_min_value
+		factors = eqfm_balkan_powder_keg_escalation_factors_desc
+	}
+	com_set_indexed_stiuation_phase_progress_details_effect = {
+		index = 2
+		next_phase_name = eqfm_deconfliction_no_icon
+		next_phase_icon = eqfm_deconfliction_icon_only
+		progress_value = eqfm_balkan_powder_keg_deescalation_start_value
+		max_value = eqfm_balkan_powder_keg_deescalation_max_value
+		min_value = eqfm_balkan_powder_keg_deescalation_min_value
+		factors = eqfm_balkan_powder_keg_deescalation_factors_desc
 	}
 }
 
@@ -1054,6 +1214,18 @@ eqfm_force_balkan_powder_keg_deconfliction_phase_effect = {
 		}
 		post_notification = eqfm_transition_deconfliction
 	}
+	com_set_indexed_stiuation_phase_progress_details_effect = {
+		index = 1
+		next_phase_name = eqfm_unrest_no_icon
+		next_phase_icon = eqfm_unrest_icon_only
+		progress_value = eqfm_balkan_powder_keg_escalation_start_value
+		max_value = eqfm_balkan_powder_keg_escalation_max_value
+		min_value = eqfm_balkan_powder_keg_escalation_min_value
+		factors = eqfm_balkan_powder_keg_escalation_factors_desc
+	}
+	com_remove_indexed_stiuation_phase_progress_details_effect = {
+		index = 2
+	}
 }
 
 eqfm_force_balkan_powder_keg_crisis_phase_effect = {
@@ -1074,6 +1246,18 @@ eqfm_force_balkan_powder_keg_crisis_phase_effect = {
 			is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 		}
 		post_notification = eqfm_transition_crisis
+	}
+	com_remove_indexed_stiuation_phase_progress_details_effect = {
+		index = 1
+	}
+	com_set_indexed_stiuation_phase_progress_details_effect = {
+		index = 2
+		next_phase_name = eqfm_deconfliction_no_icon
+		next_phase_icon = eqfm_deconfliction_icon_only
+		progress_value = eqfm_balkan_powder_keg_deescalation_start_value
+		max_value = eqfm_balkan_powder_keg_deescalation_max_value
+		min_value = eqfm_balkan_powder_keg_deescalation_min_value
+		factors = eqfm_balkan_powder_keg_deescalation_factors_desc
 	}
 }
 
