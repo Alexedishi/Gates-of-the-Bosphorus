@@ -218,7 +218,8 @@ New Additions:
 
 Fixes:
 - ##Fixed broken effects in the Triumph buttons
- - Moved grefm_byzantium.020 into state on_action
+ - Moved grefm_byzantium.020's scripting into monthly state pulse
+ - Fixed Amalia of Oldenburg being a transgender icon :sadge:
 
 
 --Update 4.0.8--
