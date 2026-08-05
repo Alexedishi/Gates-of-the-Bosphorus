@@ -36,6 +36,12 @@ on_monthly_pulse_country = {
 	}
 }
 
+on_monthly_pulse_state = {
+	on_actions = {
+		grefm_chariot_pulse
+	}
+}
+
 #### GBBF GENERAL PULSES
 gbbf_monthly_pulse_country = {
 	# These events are monitored from all scopes
@@ -67,7 +73,6 @@ grefm_monthly_pulse_hellene = {
 		grefm_megali_idea.001
 		grefm_megali_idea.009
 		grefm_megali_idea.200
-		grefm_byzantium.020
 		grefm_byzantium.021
 		grefm_byzantium.028
 	}
@@ -126,6 +131,146 @@ grefm_monthly_pulse_urum = {
 	}
 	effect = {
 		grefm_annexation_variables_effect = yes
+	}
+}
+
+grefm_chariot_pulse = {
+	trigger = {
+		state_region = s:STATE_EASTERN_THRACE
+		NOT = {
+			has_global_variable = grefm_chariot_race_cooldown_var
+		}
+		OR = {
+			is_production_method_active = {
+				building_type = gbbf_building_hippodrome
+				production_method = pm_gbbf_original_roster
+			}
+			is_production_method_active = {
+				building_type = gbbf_building_hippodrome
+				production_method = pm_gbbf_expanded_roster
+			}
+		}
+		month = 7 # August, it's zero-indexed
+	}
+	effect = {
+		if = {
+			limit = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_original_roster
+				}
+			}
+			owner = {
+				random_list = {
+					40 = {
+						set_variable = {
+							name = grefm_chariot_race_var
+							value = flag:grefm_chariot_team_reds
+						}
+						trigger_event = grefm_byzantium.023
+					}
+					40 = {
+						set_variable = {
+							name = grefm_chariot_race_var
+							value = flag:grefm_chariot_team_whites
+						}
+						trigger_event = grefm_byzantium.023
+					}
+					40 = {
+						set_variable = {
+							name = grefm_chariot_race_var
+							value = flag:grefm_chariot_team_greens
+						}
+						trigger_event = grefm_byzantium.023
+					}
+					40 = {
+						set_variable = {
+							name = grefm_chariot_race_var
+							value = flag:grefm_chariot_team_blues
+						}
+						trigger_event = grefm_byzantium.023
+					}
+					1 = {
+						trigger_event = grefm_byzantium.024
+					}
+					1 = {
+						trigger_event = grefm_byzantium.025
+					}
+					1 = {
+						trigger_event = grefm_byzantium.026
+					}
+					1 = {
+						trigger_event = grefm_byzantium.027
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				is_production_method_active = {
+					building_type = gbbf_building_hippodrome
+					production_method = pm_gbbf_expanded_roster
+				}
+			}
+			owner = {
+				random_list = {
+					25 = {
+						set_variable = {
+							name = grefm_chariot_race_var
+							value = flag:grefm_chariot_team_reds
+						}
+						trigger_event = grefm_byzantium.023
+					}
+					25 = {
+						set_variable = {
+							name = grefm_chariot_race_var
+							value = flag:grefm_chariot_team_whites
+						}
+						trigger_event = grefm_byzantium.023
+					}
+					25 = {
+						set_variable = {
+							name = grefm_chariot_race_var
+							value = flag:grefm_chariot_team_greens
+						}
+						trigger_event = grefm_byzantium.023
+					}
+					25 = {
+						set_variable = {
+							name = grefm_chariot_race_var
+							value = flag:grefm_chariot_team_blues
+						}
+						trigger_event = grefm_byzantium.023
+					}
+					25 = {
+						set_variable = {
+							name = grefm_chariot_race_var
+							value = flag:grefm_chariot_team_purples
+						}
+						trigger_event = grefm_byzantium.023
+					}
+					25 = {
+						set_variable = {
+							name = grefm_chariot_race_var
+							value = flag:grefm_chariot_team_golds
+						}
+						trigger_event = grefm_byzantium.023
+					}
+					1 = {
+						trigger_event = grefm_byzantium.024
+					}
+					1 = {
+						trigger_event = grefm_byzantium.025
+					}
+					1 = {
+						trigger_event = grefm_byzantium.026
+					}
+					1 = {
+						trigger_event = grefm_byzantium.027
+					}
+				}
+			}
+		}
 	}
 }
 
