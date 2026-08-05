@@ -189,46 +189,36 @@ bulfm_: Once contained content for Bulgaria; expanded into balkfm_
 
 
 ####---------- Planned Updates ----------####
-
---Update 4.X.0--
+--Update 4.3.0--
 New Additions:
 - ##New journal "The Nature of Yugoslavia" Promote a Centralized or Federalist approach to the Yugoslav state
 - ##Added "Yugoslav Integralist" ideologies and movement representing the Integralist movement in Yugoslavia
 - ##New journal "The Foundation of the State" representing the multiple outcomes of Turkish identity after the failure of the Tanzimat
-- ##Added several new events and interactions to the "Power Keg of Europe" global journal
-- ##Rebuilt "The Teachings of al-Sanusi" into a global journal with new mechanics, events, and modifiers
 
 
 --Update 4.2.0--
 New Additions:
-- ##Fully implemented the Metaxism journal content
-
-
-
-Fixes:
-- 
-
-Notes:
-- The Metaxism journal entry remains in a beta state, this will be completed soon
+- ##Rebuilt "The Teachings of al-Sanusi" into a global journal with new mechanics, events, and modifiers
 
 
 ####---------- Published Updates ----------####
 --Update 4.1.0--
 New Additions:
+- ##Fully implemented the Metaxism journal content
+- ##Reworked the "Throne of Thorns" journal:
+  -- Scripting refactored to use variable maps & effects/triggers reviewed
+  -- New custom journal widget showcasing the two dynastic leaders
+  -- ##Fixed several issues where the Dynastic changeover events would not fire
 - ##Completely rebuilt the "Powderkeg of Europe" journal:
   -- Scripting refactored to use variable maps & effects/triggers reviewed and improved in many cases
   -- Several new events to better integrate with features from 1.10 and 1.13
   -- Integration with the new CMF Situations UI widget to better present the journal content
-- Added new Balkan Powderkeg and Black Mountain text icons
 - ##Fully implemented the Young Turks content with varying outcomes for the Republican movements in the Ottoman Empire
 - ##Fully implemented the Armenian Expulsions content
 
 Fixes:
-// Can't press declare the princedom entry for montenegro
-// I found a bug for both the Topkapi Palace and Dolmabahce Palace production method. Since the start of the game, Topkapi Palace has all 3 production methods greyed out
-// crashes when using BPM as serbia if you mouse over the tooltips explaining liberal and conservative forces.
-// The buttons that let me hold a Triumph for different parts of conquest do nothing. I don't get the Event and the tool tip says nothing happens when I click it.
-// I think the Throne of Thorns JE might be bugged...the Karađorđevićs have been sitting on 0 support for years while the Obrenovićs have 500 support and nothing has happened
+- ##Fixed broken effects in the Triumph buttons
+ - Moved grefm_byzantium.020 into state on_action
 
 
 --Update 4.0.8--
