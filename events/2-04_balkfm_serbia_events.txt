@@ -260,7 +260,7 @@ balkfm_serbia.007 = { # Defenders of the Constitution
 			has_variable = balkfm_constitution_pending
 		}
 		balkfm_has_obrenovic_ruler_trigger = yes
-		var:balkfm_obrenovic_support_var < 20
+		"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_obrenovic_support_var)" < 20
 	}
 
 	immediate = {
@@ -508,11 +508,29 @@ balkfm_serbia.010 = { # House Karađorđević Takes the Throne
 		scope:balkfm_ousted_ruler_scope = {
 			add_character_role = gbbf_character_role_pretender
 			com_block_exile_interaction = yes
+			if = {
+				limit = {
+					has_role = character_role_general
+				}
+				com_block_retire_interaction_with_reason = {
+					text = com_block_retire_interaction
+					reason = balkfm_ser_block_retire_interaction_trigger
+				}
+			}
 		}
 		scope:balkfm_heir_scope ?= {
 			add_character_role = gbbf_character_role_pretender
 			disinherit_character = yes
 			com_block_exile_interaction = yes
+			if = {
+				limit = {
+					has_role = character_role_general
+				}
+				com_block_retire_interaction_with_reason = {
+					text = com_block_retire_interaction
+					reason = balkfm_ser_block_retire_interaction_trigger
+				}
+			}
 		}
 		scope:balkfm_new_ruler_scope = {
 			set_character_as_ruler = yes
@@ -523,6 +541,7 @@ balkfm_serbia.010 = { # House Karađorđević Takes the Throne
 				remove_character_role = gbbf_character_role_pretender
 			}
 			com_unblock_exile_interaction = yes
+			com_unblock_retire_interaction = yes
 		}
 		random_scope_character = {
 			limit = {
@@ -537,6 +556,7 @@ balkfm_serbia.010 = { # House Karađorđević Takes the Throne
 				remove_character_role = gbbf_character_role_pretender
 			}
 			com_unblock_exile_interaction = yes
+			com_unblock_retire_interaction = yes
 			root = {
 				set_heir = scope:balkfm_new_heir_scope
 			}
@@ -642,11 +662,29 @@ balkfm_serbia.011 = { # House Obrenović Takes the Throne
 		scope:balkfm_ousted_ruler_scope = {
 			add_character_role = gbbf_character_role_pretender
 			com_block_exile_interaction = yes
+			if = {
+				limit = {
+					has_role = character_role_general
+				}
+				com_block_retire_interaction_with_reason = {
+					text = com_block_retire_interaction
+					reason = balkfm_ser_block_retire_interaction_trigger
+				}
+			}
 		}
 		scope:balkfm_heir_scope ?= {
 			add_character_role = gbbf_character_role_pretender
 			disinherit_character = yes
 			com_block_exile_interaction = yes
+			if = {
+				limit = {
+					has_role = character_role_general
+				}
+				com_block_retire_interaction_with_reason = {
+					text = com_block_retire_interaction
+					reason = balkfm_ser_block_retire_interaction_trigger
+				}
+			}
 		}
 		scope:balkfm_new_ruler_scope = {
 			set_character_as_ruler = yes
@@ -657,6 +695,7 @@ balkfm_serbia.011 = { # House Obrenović Takes the Throne
 				remove_character_role = gbbf_character_role_pretender
 			}
 			com_unblock_exile_interaction = yes
+			com_unblock_retire_interaction = yes
 		}
 		random_scope_character = {
 			limit = {
@@ -671,6 +710,7 @@ balkfm_serbia.011 = { # House Obrenović Takes the Throne
 				remove_character_role = gbbf_character_role_pretender
 			}
 			com_unblock_exile_interaction = yes
+			com_unblock_retire_interaction = yes
 			root = {
 				set_heir = scope:balkfm_new_heir_scope
 			}
@@ -746,7 +786,7 @@ balkfm_serbia.012 = { # Austria/Russia Requests Primacy
 			AND = {
 				balkfm_has_karadordevic_ruler_trigger = yes
 				NOT = {
-					has_variable = balkfm_russia_consul_var
+					"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:RUS
 				}
 				c:RUS ?= {
 					relations:root >= relations_threshold:cordial
@@ -755,7 +795,7 @@ balkfm_serbia.012 = { # Austria/Russia Requests Primacy
 			AND = {
 				balkfm_has_obrenovic_ruler_trigger = yes
 				NOT = {
-					has_variable = balkfm_austria_consul_var
+					"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:AUS
 				}
 				c:AUS ?= {
 					relations:root >= relations_threshold:cordial
@@ -767,7 +807,7 @@ balkfm_serbia.012 = { # Austria/Russia Requests Primacy
 	immediate = {
 		if = {
 			limit = {
-				has_variable = balkfm_russia_consul_var
+				"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:RUS
 			}
 			c:RUS ?= {
 				save_scope_as = balkfm_consul_scope
@@ -778,7 +818,7 @@ balkfm_serbia.012 = { # Austria/Russia Requests Primacy
 		}
 		else_if = {
 			limit = {
-				has_variable = balkfm_austria_consul_var
+				"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:AUS
 			}
 			c:RUS ?= {
 				save_scope_as = balkfm_supplicant_scope
@@ -844,17 +884,23 @@ balkfm_serbia.012 = { # Austria/Russia Requests Primacy
 		balkfm_minor_dynasty_support_gain_effect = yes
 		if = {
 			limit = {
-				has_variable = balkfm_russia_consul_var
+				"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:RUS
 			}
-			remove_variable = balkfm_russia_consul_var
-			set_variable = balkfm_austria_consul_var
+			com_update_value_in_variable_map = {
+				name = balkfm_dynastic_rivalry_varmap
+				key = flag:balkfm_consul_var
+				value = flag:AUS
+			}
 		}
 		else_if = {
 			limit = {
-				has_variable = balkfm_austria_consul_var
+				"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:AUS
 			}
-			remove_variable = balkfm_austria_consul_var
-			set_variable = balkfm_russia_consul_var
+			com_update_value_in_variable_map = {
+				name = balkfm_dynastic_rivalry_varmap
+				key = flag:balkfm_consul_var
+				value = flag:RUS
+			}
 		}
 	}
 
@@ -1004,7 +1050,7 @@ balkfm_serbia.017 = { # Austria/Russia Requests Primacy
 	immediate = {
 		if = {
 			limit = {
-				has_variable = balkfm_russia_consul_var
+				"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:RUS
 			}
 			c:RUS ?= {
 				save_scope_as = balkfm_consul_scope
@@ -1015,7 +1061,7 @@ balkfm_serbia.017 = { # Austria/Russia Requests Primacy
 		}
 		else_if = {
 			limit = {
-				has_variable = balkfm_austria_consul_var
+				"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:AUS
 			}
 			c:RUS ?= {
 				save_scope_as = balkfm_supplicant_scope
@@ -1051,17 +1097,23 @@ balkfm_serbia.017 = { # Austria/Russia Requests Primacy
 		balkfm_minor_dynasty_support_gain_effect = yes
 		if = {
 			limit = {
-				has_variable = balkfm_russia_consul_var
+				"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:RUS
 			}
-			remove_variable = balkfm_russia_consul_var
-			set_variable = balkfm_austria_consul_var
+			com_update_value_in_variable_map = {
+				name = balkfm_dynastic_rivalry_varmap
+				key = flag:balkfm_consul_var
+				value = flag:AUS
+			}
 		}
 		else_if = {
 			limit = {
-				has_variable = balkfm_austria_consul_var
+				"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:AUS
 			}
-			remove_variable = balkfm_austria_consul_var
-			set_variable = balkfm_russia_consul_var
+			com_update_value_in_variable_map = {
+				name = balkfm_dynastic_rivalry_varmap
+				key = flag:balkfm_consul_var
+				value = flag:RUS
+			}
 		}
 	}
 
