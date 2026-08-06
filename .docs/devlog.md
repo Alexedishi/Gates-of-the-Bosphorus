@@ -205,10 +205,10 @@ New Additions:
 --Update 4.1.0--
 New Additions:
 - ##Fully implemented the Metaxism journal content
-- ##Reworked the "Throne of Thorns" journal:
+- Reworked the "Throne of Thorns" journal:
   -- Scripting refactored to use variable maps & effects/triggers reviewed
   -- New custom journal widget showcasing the two dynastic leaders
-  -- ##Fixed several issues where the Dynastic changeover events would not fire
+  -- Fixed several issues where the Dynastic changeover events would not fire
 - ##Completely rebuilt the "Powderkeg of Europe" journal:
   -- Scripting refactored to use variable maps & effects/triggers reviewed and improved in many cases
   -- Several new events to better integrate with features from 1.10 and 1.13
