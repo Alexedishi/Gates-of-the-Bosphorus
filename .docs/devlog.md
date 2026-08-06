@@ -204,7 +204,6 @@ New Additions:
 ####---------- Published Updates ----------####
 --Update 4.1.0--
 New Additions:
-- ##Fully implemented the Metaxism journal content
 - Reworked the "Throne of Thorns" journal:
   -- Scripting refactored to use variable maps & effects/triggers reviewed
   -- New custom journal widget showcasing the two dynastic leaders
@@ -214,12 +213,13 @@ New Additions:
   -- Several new events to better integrate with features from 1.10 and 1.13
   -- Integration with the new CMF Situations UI widget to better present the journal content
 - ##Fully implemented the Young Turks content with varying outcomes for the Republican movements in the Ottoman Empire
-- ##Fully implemented the Armenian Expulsions content
 
 Fixes:
+- ##Fixed several issues that could derail Greece's "Military League" journal
+- Added missing localization for Metaxism content
 - ##Fixed broken effects in the Triumph buttons
- - Moved grefm_byzantium.020's scripting into monthly state pulse
- - Fixed Amalia of Oldenburg being a transgender icon :sadge:
+- Moved grefm_byzantium.020's scripting into monthly state pulse
+- Fixed Amalia of Oldenburg being a transgender icon :sadge:
 
 
 --Update 4.0.8--
