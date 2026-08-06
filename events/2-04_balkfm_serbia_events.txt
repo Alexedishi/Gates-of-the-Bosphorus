@@ -471,8 +471,8 @@ balkfm_serbia.010 = { # House Karađorđević Takes the Throne
 	dlc = dlc_grefm
 
 	trigger = {
-		balkfm_leading_dynasty_value < 1
 		balkfm_has_obrenovic_ruler_trigger = yes
+		"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_obrenovic_support_var)" <= 0
 	}
 
 	cooldown = {
@@ -480,53 +480,108 @@ balkfm_serbia.010 = { # House Karađorđević Takes the Throne
 	}
 
 	immediate = {
+		balkfm_update_dynastic_rivalary_heads_effect = yes
 		ruler = {
-			save_scope_as = balkfm_ruler_scope
+			save_scope_as = balkfm_ousted_ruler_scope
 		}
-		heir = {
-			save_scope_as = balkfm_heir_scope
+		heir ?= {
+			save_scope_as = balkfm_ousted_heir_scope
 		}
-		balkfm_find_karadordevic_effect = yes
-		set_variable = {
-			name = balkfm_karadordevic_support_var
-			value = 200
+		set_local_variable = {
+			# Provides the outgoing dynasty name without custom locs
+			name = balkfm_prior_dynasty_flag
+			value = "variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_ruling_dynasty_var)"
 		}
-		set_variable = {
-			name = balkfm_obrenovic_support_var
+		com_update_value_in_variable_map = {
+			name = balkfm_dynastic_rivalry_varmap
+			key = flag:balkfm_obrenovic_support_var
 			value = 0
 		}
-	}
-
-	option = {
-		name = balkfm_serbia.010.a
-		default_option = yes
+		com_update_value_in_variable_map = {
+			name = balkfm_dynastic_rivalry_varmap
+			key = flag:balkfm_karadordevic_support_var
+			value = 200
+		}
+		"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_karadordevic_head_var)" = {
+			save_scope_as = balkfm_new_ruler_scope
+		}
+		scope:balkfm_ousted_ruler_scope = {
+			add_character_role = gbbf_character_role_pretender
+			com_block_exile_interaction = yes
+		}
+		scope:balkfm_heir_scope ?= {
+			add_character_role = gbbf_character_role_pretender
+			disinherit_character = yes
+			com_block_exile_interaction = yes
+		}
+		scope:balkfm_new_ruler_scope = {
+			set_character_as_ruler = yes
+			if = {
+				limit = {
+					has_role = gbbf_character_role_pretender
+				}
+				remove_character_role = gbbf_character_role_pretender
+			}
+			com_unblock_exile_interaction = yes
+		}
+		random_scope_character = {
+			limit = {
+				balkfm_is_karadordevic_character_trigger = yes
+				is_ruler_of_own_country = no
+			}
+			save_scope_as = balkfm_new_heir_scope
+			if = {
+				limit = {
+					has_role = gbbf_character_role_pretender
+				}
+				remove_character_role = gbbf_character_role_pretender
+			}
+			com_unblock_exile_interaction = yes
+			root = {
+				set_heir = scope:balkfm_new_heir_scope
+			}
+		}
+		com_update_value_in_variable_map = {
+			name = balkfm_dynastic_rivalry_varmap
+			key = flag:balkfm_ruling_dynasty_var
+			value = flag:balkfm_house_karadordevic
+		}
 		add_modifier = {
 			name = modifier_balkfm_royal_turmoil
 			months = gbbf_short_modifier_time
 			is_decaying = yes
 		}
-		scope:balkfm_karadordevic_scope = {
-			set_character_as_ruler = yes
-		}
-		scope:balkfm_ruler_scope = {
-			place_character_in_void = 150 # characters will expire after 15 years
-		}
-		if = {
-			limit = {
-				exists = scope:balkfm_heir_scope
-			}
-			scope:balkfm_heir_scope = {
-				disinherit_character = yes
-			}
-		}
-		set_variable = {
-			name = balkfm_ruling_dynasty_var
-			value = flag:balkfm_house_karadordevic
-		}
 		serbian_throne_modifier_cleanser = yes
 		serbian_throne_variable_cleanser = yes
 	}
-
+	
+	option = {
+		name = balkfm_serbia.010.a
+		default_option = yes
+		custom_tooltip = balkfm_serbian_dynasty_overthrown
+		show_as_tooltip = {
+			add_modifier = {
+				name = modifier_balkfm_royal_turmoil
+				months = gbbf_short_modifier_time
+				is_decaying = yes
+			}
+		}
+		scope:balkfm_new_ruler_scope = {
+			show_as_tooltip = {
+				set_character_as_ruler = yes
+			}
+			com_block_exile_interaction_with_reason = {
+				text = balkfm_ser_block_exile_interaction_ruler
+				reason = balkfm_ser_block_exile_interaction_trigger
+			}
+		}
+		scope:balkfm_new_heir_scope ?= {
+			com_block_exile_interaction_with_reason = {
+				text = balkfm_ser_block_exile_interaction_heir
+				reason = balkfm_ser_block_exile_interaction_trigger
+			}
+		}
+	}
 }
 
 balkfm_serbia.011 = { # House Obrenović Takes the Throne
@@ -559,52 +614,108 @@ balkfm_serbia.011 = { # House Obrenović Takes the Throne
 	}
 
 	immediate = {
+		balkfm_update_dynastic_rivalary_heads_effect = yes
 		ruler = {
-			save_scope_as = balkfm_ruler_scope
+			save_scope_as = balkfm_ousted_ruler_scope
 		}
-		heir = {
-			save_scope_as = balkfm_heir_scope
+		heir ?= {
+			save_scope_as = balkfm_ousted_heir_scope
 		}
-		balkfm_find_obrenovic_effect = yes
-		set_variable = {
-			name = balkfm_obrenovic_support_var
-			value = 300
+		set_local_variable = {
+			# Provides the outgoing dynasty name without custom locs
+			name = balkfm_prior_dynasty_flag
+			value = "variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_ruling_dynasty_var)"
 		}
-		set_variable = {
-			name = balkfm_karadordevic_support_var
+		com_update_value_in_variable_map = {
+			name = balkfm_dynastic_rivalry_varmap
+			key = flag:balkfm_obrenovic_support_var
+			value = 200
+		}
+		com_update_value_in_variable_map = {
+			name = balkfm_dynastic_rivalry_varmap
+			key = flag:balkfm_karadordevic_support_var
 			value = 0
 		}
-	}
-
-	option = {
-		name = balkfm_serbia.011.a
-		default_option = yes
+		"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_obrenovic_head_var)" = {
+			save_scope_as = balkfm_new_ruler_scope
+		}
+		scope:balkfm_ousted_ruler_scope = {
+			add_character_role = gbbf_character_role_pretender
+			com_block_exile_interaction = yes
+		}
+		scope:balkfm_heir_scope ?= {
+			add_character_role = gbbf_character_role_pretender
+			disinherit_character = yes
+			com_block_exile_interaction = yes
+		}
+		scope:balkfm_new_ruler_scope = {
+			set_character_as_ruler = yes
+			if = {
+				limit = {
+					has_role = gbbf_character_role_pretender
+				}
+				remove_character_role = gbbf_character_role_pretender
+			}
+			com_unblock_exile_interaction = yes
+		}
+		random_scope_character = {
+			limit = {
+				balkfm_is_obrenovic_character_trigger = yes
+				is_ruler_of_own_country = no
+			}
+			save_scope_as = balkfm_new_heir_scope
+			if = {
+				limit = {
+					has_role = gbbf_character_role_pretender
+				}
+				remove_character_role = gbbf_character_role_pretender
+			}
+			com_unblock_exile_interaction = yes
+			root = {
+				set_heir = scope:balkfm_new_heir_scope
+			}
+		}
+		com_update_value_in_variable_map = {
+			name = balkfm_dynastic_rivalry_varmap
+			key = flag:balkfm_ruling_dynasty_var
+			value = flag:balkfm_house_obrenovic
+		}
 		add_modifier = {
 			name = modifier_balkfm_royal_turmoil
 			months = gbbf_short_modifier_time
-		}
-		scope:balkfm_obrenovic_scope = {
-			set_character_as_ruler = yes
-		}
-		scope:balkfm_ruler_scope = {
-			place_character_in_void = 150 # characters will expire after 15 years
-		}
-		if = {
-			limit = {
-				exists = scope:balkfm_heir_scope
-			}
-			scope:balkfm_heir_scope = {
-				disinherit_character = yes
-			}
-		}
-		set_variable = {
-			name = balkfm_ruling_dynasty_var
-			value = flag:balkfm_house_obrenovic
+			is_decaying = yes
 		}
 		serbian_throne_modifier_cleanser = yes
 		serbian_throne_variable_cleanser = yes
 	}
 
+	option = {
+		name = balkfm_serbia.011.a
+		default_option = yes
+		custom_tooltip = balkfm_serbian_dynasty_overthrown
+		show_as_tooltip = {
+			add_modifier = {
+				name = modifier_balkfm_royal_turmoil
+				months = gbbf_short_modifier_time
+				is_decaying = yes
+			}
+		}
+		scope:balkfm_new_ruler_scope = {
+			show_as_tooltip = {
+				set_character_as_ruler = yes
+			}
+			com_block_exile_interaction_with_reason = {
+				text = balkfm_ser_block_exile_interaction_ruler
+				reason = balkfm_ser_block_exile_interaction_trigger
+			}
+		}
+		scope:balkfm_new_heir_scope ?= {
+			com_block_exile_interaction_with_reason = {
+				text = balkfm_ser_block_exile_interaction_heir
+				reason = balkfm_ser_block_exile_interaction_trigger
+			}
+		}
+	}
 }
 
 balkfm_serbia.012 = { # Austria/Russia Requests Primacy
@@ -1093,7 +1204,7 @@ balkfm_serbia.020 = { # Clerical Publicity
 	}
 	
 	immediate = {
-		balkfm_find_karadordevic_effect = yes
+		balkfm_update_dynastic_rivalary_heads_effect = yes
 		random_interest_group = {
 			limit = {
 				is_interest_group_type = ig_devout

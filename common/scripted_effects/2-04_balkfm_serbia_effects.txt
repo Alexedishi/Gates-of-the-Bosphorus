@@ -1,31 +1,43 @@
 ﻿balkfm_initialize_dynastic_rivalry_variables_effect = {
-	set_variable = {
-		name = balkfm_obrenovic_support_var
+	add_to_variable_map = { 
+		name = balkfm_dynastic_rivalry_varmap
+		key = flag:balkfm_obrenovic_support_var
+		value = 250
+	}
+	add_to_variable_map = {
+		name = balkfm_dynastic_rivalry_varmap
+		key = flag:balkfm_obrenovic_progress_var
+		value = balkfm_obrenovic_progress_value
+	}
+	add_to_variable_map = {
+		name = balkfm_dynastic_rivalry_varmap
+		key = flag:balkfm_obrenovic_counter_var
+		value = 2
+	}
+	add_to_variable_map = {
+		name = balkfm_dynastic_rivalry_varmap
+		key = flag:balkfm_karadordevic_support_var
 		value = 0
 	}
-	set_variable = {
-		name = balkfm_karadordevic_support_var
-		value = 0
+	add_to_variable_map = {
+		name = balkfm_dynastic_rivalry_varmap
+		key = flag:balkfm_karadordevic_progress_var
+		value = balkfm_karadordevic_progress_value
 	}
-	set_variable = {
-		name = balkfm_obrenovic_progress_var
-		value = 0
-	}
-	set_variable = {
-		name = balkfm_karadordevic_progress_var
-		value = 0
-	}
-	set_variable = {
-		name = balkfm_obrenovic_counter_var
+	add_to_variable_map = {
+		name = balkfm_dynastic_rivalry_varmap
+		key = flag:balkfm_karadordevic_counter_var
 		value = 1
 	}
-	set_variable = {
-		name = balkfm_karadordevic_counter_var
-		value = 1
-	}
-	set_variable = {
-		name = balkfm_ruling_dynasty_var
+	add_to_variable_map = {
+		name = balkfm_dynastic_rivalry_varmap
+		key = flag:balkfm_ruling_dynasty_var
 		value = flag:balkfm_house_obrenovic
+	}
+	add_to_variable_map = {
+		name = balkfm_dynastic_rivalry_varmap
+		key = flag:balkfm_consul_var
+		value = c:AUS
 	}
 	set_variable = com_no_regencies
 }
@@ -33,12 +45,15 @@
 balkfm_validate_serbian_characters = {
 	if = {
 		limit = {
-			has_variable = balkfm_ruling_dynasty_var
+			is_key_in_variable_map = { 
+				name = balkfm_dynastic_rivalry_varmap
+				target = flag:balkfm_ruling_dynasty_var
+			}
 		}
 		# Obrenović Validation Branch
 		if = {
 			limit = {
-				var:balkfm_ruling_dynasty_var ?= flag:balkfm_house_obrenovic
+				"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_ruling_dynasty_var)" ?= flag:balkfm_house_obrenovic
 			}
 			# Ruler Validation
 			if = {
@@ -124,7 +139,7 @@ balkfm_validate_serbian_characters = {
 		# House Karadordevic Validation Branch
 		else_if = {
 			limit = {
-				var:balkfm_ruling_dynasty_var ?= flag:balkfm_house_karadordevic
+				"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_ruling_dynasty_var)"  ?= flag:balkfm_house_karadordevic
 			}
 			# Ruler Validation
 			if = {
@@ -201,21 +216,23 @@ balkfm_validate_serbian_characters = {
 			}
 		}
 		else = {
-			error_log = "Variable balkfm_ruling_dynasty_var is set, but its value does not correspond to a valid house flag. Unable to generate compatible ruler for Serbia."
+			error_log = "Key balkfm_ruling_dynasty_var is present in balkfm_dynastic_rivalry_varmap, but its value does not correspond to a valid house flag. Unable to generate compatible ruler for Serbia."
 		}
 	}
 	else = {
-		error_log = "Variable balkfm_ruling_dynasty_var is not set. Unable to validate or generate compatible ruler for Serbia."
+		error_log = "Key balkfm_ruling_dynasty_var was not found in balkfm_dynastic_rivalry_varmap. Unable to validate or generate compatible ruler for Serbia."
 	}
 }
 
 balkfm_calculate_dynastic_rivalry_variables_effect = {
-	set_variable = {
-		name = balkfm_obrenovic_progress_var
+	com_update_value_in_variable_map = {
+		name = balkfm_dynastic_rivalry_varmap
+		key = flag:balkfm_obrenovic_progress_var
 		value = balkfm_obrenovic_progress_value
 	}
-	set_variable = {
-		name = balkfm_karadordevic_progress_var
+	com_update_value_in_variable_map = {
+		name = balkfm_dynastic_rivalry_varmap
+		key = flag:balkfm_karadordevic_progress_var
 		value = balkfm_karadordevic_progress_value
 	}
 	je:je_balkfm_ser_monarchism = {
@@ -227,23 +244,35 @@ balkfm_calculate_dynastic_rivalry_variables_effect = {
 }
 
 balkfm_dynastic_rivalry_monthly_effect = {
-	change_variable = {
-		name = balkfm_obrenovic_support_var
-		add = balkfm_obrenovic_net_progress_value
+	set_local_variable = { 
+		name = balkfm_obrenovic_local_var
+		value = {
+			add = "variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_obrenovic_support_var)"
+			add = "variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_obrenovic_progress_var)"
+			max = 500
+			min = 0
+			round_to = 0.01
+		}
 	}
-	clamp_variable = {
-		name = balkfm_obrenovic_support_var
-		max = 500
-		min = 0
+	set_local_variable = {
+		name = balkfm_karadordevic_local_var
+		value = {
+			add = "variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_karadordevic_support_var)"
+			add = "variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_karadordevic_progress_var)"
+			max = 500
+			min = 0
+			round_to = 0.01
+		}
 	}
-	change_variable = {
-		name = balkfm_karadordevic_support_var
-		add = balkfm_karadordevic_net_progress_value
+	com_update_value_in_variable_map = {
+		name = balkfm_dynastic_rivalry_varmap
+		key = flag:balkfm_obrenovic_support_var
+		value = local_var:balkfm_obrenovic_local_var
 	}
-	clamp_variable = {
-		name = balkfm_karadordevic_support_var
-		max = 500
-		min = 0
+	com_update_value_in_variable_map = {
+		name = balkfm_dynastic_rivalry_varmap
+		key = flag:balkfm_karadordevic_support_var
+		value = local_var:balkfm_karadordevic_local_var
 	}
 	if = {
 		limit = {
@@ -274,361 +303,76 @@ balkfm_dynastic_rivalry_monthly_effect = {
 	}
 }
 
-balkfm_minor_dynasty_support_loss_effect = {
+balkfm_change_ruling_dynasty_support_effect = {
+	set_local_variable = { 
+		name = balkfm_ruling_dynasty_support_value
+		value = $value$
+	}
 	if = {
 		limit = {
 			balkfm_has_obrenovic_ruler_trigger = yes
 		}
-		custom_tooltip = {
-			text = balkfm_obrenovic_minus_50
-			hidden_effect = {
-				change_variable = {
-					name = balkfm_obrenovic_support_var
-					subtract = 50
-				}
+		set_local_variable = {
+			name = balkfm_obrenovic_local_var
+			value = {
+				add = "variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_obrenovic_support_var)"
+				add = local_var:balkfm_ruling_dynasty_support_value
+				max = 500
+				min = 0
+				round_to = 0.01
 			}
 		}
+		com_update_value_in_variable_map = {
+			name = balkfm_dynastic_rivalry_varmap
+			key = flag:balkfm_obrenovic_support_var
+			value = local_var:balkfm_obrenovic_local_var
+		}
 	}
-	else_if = {
+	else_if = { 
 		limit = {
 			balkfm_has_karadordevic_ruler_trigger = yes
 		}
-		custom_tooltip = {
-			text = balkfm_karadordevic_minus_50
-			hidden_effect = {
-				change_variable = {
-					name = balkfm_karadordevic_support_var
-					subtract = 50
-				}
+		set_local_variable = {
+			name = balkfm_karadordevic_local_var
+			value = {
+				add = "variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_karadordevic_support_var)"
+				add = local_var:balkfm_ruling_dynasty_support_value
+				max = 500
+				min = 0
+				round_to = 0.01
 			}
 		}
+		com_update_value_in_variable_map = {
+			name = balkfm_dynastic_rivalry_varmap
+			key = flag:balkfm_karadordevic_support_var
+			value = local_var:balkfm_karadordevic_local_var
+		}
 	}
+	custom_tooltip = balkfm_change_ruling_dynasty_support_effect
 	balkfm_calculate_dynastic_rivalry_variables_effect = yes
+}
+
+balkfm_minor_dynasty_support_loss_effect = {
+	balkfm_change_ruling_dynasty_support_effect = {
+		value = -50
+	}
 }
 
 balkfm_major_dynasty_support_loss_effect = {
-	if = {
-		limit = {
-			balkfm_has_obrenovic_ruler_trigger = yes
-		}
-		custom_tooltip = {
-			text = balkfm_obrenovic_minus_100
-			hidden_effect = {
-				change_variable = {
-					name = balkfm_obrenovic_support_var
-					subtract = 100
-				}
-			}
-		}
+	balkfm_change_ruling_dynasty_support_effect = {
+		value = -100
 	}
-	else_if = {
-		limit = {
-			balkfm_has_karadordevic_ruler_trigger = yes
-		}
-		custom_tooltip = {
-			text = balkfm_karadordevic_minus_100
-			hidden_effect = {
-				change_variable = {
-					name = balkfm_karadordevic_support_var
-					subtract = 100
-				}
-			}
-		}
-	}
-	balkfm_calculate_dynastic_rivalry_variables_effect = yes
 }
 
 balkfm_minor_dynasty_support_gain_effect = {
-	if = {
-		limit = {
-			balkfm_has_obrenovic_ruler_trigger = yes
-		}
-		custom_tooltip = {
-			text = balkfm_obrenovic_plus_50
-			hidden_effect = {
-				change_variable = {
-					name = balkfm_obrenovic_support_var
-					add = 50
-				}
-			}
-		}
-	}
-	else_if = {
-		limit = {
-			balkfm_has_karadordevic_ruler_trigger = yes
-		}
-		custom_tooltip = {
-			text = balkfm_karadordevic_plus_50
-			hidden_effect = {
-				change_variable = {
-					name = balkfm_karadordevic_support_var
-					add = 50
-				}
-			}
-		}
-	}
-	balkfm_calculate_dynastic_rivalry_variables_effect = yes
-}
-
-balkfm_update_dynasty_character_scopes_effect = {
-	je:je_balkfm_ser_monarchism = {
-		clear_variable_list = com_journal_characters
-		remove_variable = balkfm_opposition_leader_var
-	}
-	if = {
-		limit = {
-			balkfm_has_obrenovic_ruler_trigger = yes
-		}
-		ruler = {
-			save_scope_as = balkfm_obrenovic_scope
-		}
-	}
-	else_if = {
-		limit = {
-			any_scope_character = {
-				balkfm_is_obrenovic_character_trigger = yes
-			}
-		}
-		random_scope_character = {
-			limit = {
-				balkfm_is_obrenovic_character_trigger = yes
-			}
-			save_scope_as = balkfm_obrenovic_scope
-		}
-	}
-	else = {
-		balkfm_find_obrenovic_effect = yes
-	}
-	if = {
-		limit = {
-			balkfm_has_karadordevic_ruler_trigger = yes
-		}
-		ruler = {
-			save_scope_as = balkfm_karadordevic_scope
-		}
-	}
-	else_if = {
-		limit = {
-			any_scope_character = {
-				balkfm_is_karadordevic_character_trigger = yes
-			}
-		}
-		random_scope_character = {
-			limit = {
-				balkfm_is_karadordevic_character_trigger = yes
-			}
-			save_scope_as = balkfm_karadordevic_scope
-		}
-	}
-	else = {
-		balkfm_find_karadordevic_effect = yes
-	}
-	balkfm_save_opposition_dynasty_scope_effect = yes
-	je:je_balkfm_ser_monarchism = {
-		add_to_variable_list = {
-			name = com_journal_characters
-			target = scope:balkfm_obrenovic_scope
-		}
-		add_to_variable_list = {
-			name = com_journal_characters
-			target = scope:balkfm_karadordevic_scope
-		}
-		set_variable = {
-			name = balkfm_opposition_leader_var
-			value = scope:balkfm_dynastic_opposition_scope
-		}
+	balkfm_change_ruling_dynasty_support_effect = {
+		value = 50
 	}
 }
 
-balkfm_find_obrenovic_effect = {
-	if = {
-		limit = {
-			any_scope_character = {
-				balkfm_is_obrenovic_character_trigger = yes
-			}
-		}
-		random_character = {
-			limit = {
-				balkfm_is_obrenovic_character_trigger = yes
-			}
-			save_scope_as = balkfm_dynastic_opposition_scope
-			save_scope_as = balkfm_obrenovic_scope
-		}
-	}
-	else_if = {
-		limit = {
-			any_character_in_void = {
-				balkfm_is_obrenovic_character_trigger = yes
-			}
-		}
-		random_character_in_void = {
-			limit = {
-				balkfm_is_obrenovic_character_trigger = yes
-			}
-			save_scope_as = balkfm_dynastic_opposition_scope
-			save_scope_as = balkfm_obrenovic_scope
-		}
-	}
-	else = {
-		if = {
-			limit = {
-				var:balkfm_obrenovic_counter_var ?= 1
-			}
-			create_character = { 
-				template = balkfm_obrenovic_milan
-				on_created = {
-					place_character_in_void = 150 # characters will expire after 15 years
-				}
-			}
-			change_variable = { 
-				name = balkfm_obrenovic_counter_var
-				add = 1
-			}
-		}
-		if = {
-			limit = {
-				var:balkfm_obrenovic_counter_var ?= 2
-			}
-			create_character = {
-				template = balkfm_obrenovic_mihailo
-				on_created = {
-					place_character_in_void = 150 # characters will expire after 15 years
-				}
-			}
-			change_variable = {
-				name = balkfm_obrenovic_counter_var
-				add = 1
-			}
-		}
-		if = {
-			limit = {
-				var:balkfm_obrenovic_counter_var ?= 3
-			}
-			create_character = {
-				template = balkfm_obrenovic_milan_IV
-				on_created = {
-					place_character_in_void = 150 # characters will expire after 15 years
-				}
-			}
-			change_variable = {
-				name = balkfm_obrenovic_counter_var
-				add = 1
-			}
-		}
-		else = {
-			create_character = {
-				template = balkfm_obrenovic_dynamic
-				on_created = {
-					place_character_in_void = 150 # characters will expire after 15 years
-				}
-			}
-			change_variable = {
-				name = balkfm_obrenovic_counter_var
-				add = 1
-			}
-		}
-	}
-	random_character_in_void = {
-		limit = {
-			balkfm_is_obrenovic_character_trigger = yes
-		}
-		save_scope_as = balkfm_dynastic_opposition_scope
-		save_scope_as = balkfm_obrenovic_scope
-	}
-}
-
-balkfm_find_karadordevic_effect = {
-	if = {
-		limit = {
-			any_scope_character = {
-				balkfm_is_karadordevic_character_trigger = yes
-			}
-		}
-		random_character = {
-			limit = {
-				balkfm_is_karadordevic_character_trigger = yes
-			}
-			save_scope_as = balkfm_dynastic_opposition_scope
-			save_scope_as = balkfm_karadordevic_scope
-		}
-	}
-	else_if = {
-		limit = {
-			any_character_in_void = {
-				balkfm_is_karadordevic_character_trigger = yes
-			}
-		}
-		random_character_in_void = {
-			limit = {
-				balkfm_is_karadordevic_character_trigger = yes
-			}
-			save_scope_as = balkfm_dynastic_opposition_scope
-			save_scope_as = balkfm_karadordevic_scope
-		}
-	}
-	else = {
-		if = {
-			limit = {
-				var:balkfm_karadordevic_counter_var ?= 1
-			}
-			create_character = {
-				template = balkfm_karadordevic_petar
-				on_created = {
-					place_character_in_void = 150 # characters will expire after 15 years
-				}
-			}
-			change_variable = {
-				name = balkfm_karadordevic_counter_var
-				add = 1
-			}
-		}
-		if = {
-			limit = {
-				var:balkfm_karadordevic_counter_var ?= 2
-			}
-			create_character = {
-				template = balkfm_karadordevic_aleksander_I
-				on_created = {
-					place_character_in_void = 150 # characters will expire after 15 years
-				}
-			}
-			change_variable = {
-				name = balkfm_karadordevic_counter_var
-				add = 1
-			}
-		}
-		else = {
-			create_character = {
-				template = balkfm_karadordevic_dynamic
-				on_created = {
-					place_character_in_void = 150 # characters will expire after 15 years
-				}
-			}
-			change_variable = {
-				name = balkfm_karadordevic_counter_var
-				add = 1
-			}
-		}
-	}
-	random_character_in_void = {
-		limit = {
-			balkfm_is_karadordevic_character_trigger = yes
-		}
-		save_scope_as = balkfm_karadordevic_scope
-		save_scope_as = balkfm_dynastic_opposition_scope
-	}
-}
-
-balkfm_save_opposition_dynasty_scope_effect = {
-	# Remember, this effect returns the balkfm_dynastic_opposition_scope alongside the appropriate house scope
-	if = {
-		limit = {
-			balkfm_has_obrenovic_ruler_trigger = yes
-		}
-		balkfm_find_karadordevic_effect = yes
-	}
-	else = {
-		balkfm_find_obrenovic_effect = yes
+balkfm_major_dynasty_support_gain_effect = {
+	balkfm_change_ruling_dynasty_support_effect = {
+		value = 100
 	}
 }
 
@@ -665,6 +409,229 @@ balkfm_ruling_dynasty_progress_loss_tooltip_effect = {
 	}
 	else = {
 		custom_tooltip = balkfm_obrenovic_loyalty_decrease
+	}
+}
+
+balkfm_update_dynastic_rivalary_heads_effect = {
+	# Find Obrenovic Ruler and regenerate if missing
+	ordered_scope_character = {
+		limit = {
+			balkfm_is_obrenovic_character_trigger = yes
+		}
+		order_by = age
+		save_scope_as = balkfm_obrenovic_scope
+	}
+	if = {
+		limit = {
+			NOT = {
+				exists = scope:balkfm_obrenovic_scope
+			}
+		}
+		ordered_character_in_void = { 
+			limit = { 
+				balkfm_is_obrenovic_character_trigger = yes
+			}
+			order_by = age
+			save_scope_as = balkfm_obrenovic_scope
+		}
+		if = {
+			limit = {
+				NOT = {
+					exists = scope:balkfm_obrenovic_scope
+				}
+			}
+			balkfm_generate_obrenovic_character_effect = yes
+			random_scope_character = { 
+				limit = {
+					balkfm_is_obrenovic_character_trigger = yes
+				}
+			}
+		}
+	}
+	com_update_value_in_variable_map = {
+		name = balkfm_dynastic_rivalry_varmap
+		key = flag:balkfm_obrenovic_head_var
+		value = scope:balkfm_obrenovic_scope
+	}
+	
+	# Find Karadordevic head and regenerate if missing
+	ordered_scope_character = {
+		limit = {
+			balkfm_is_karadordevic_character_trigger = yes
+		}
+		order_by = age
+		save_scope_as = balkfm_karadordevic_scope
+	}
+	if = {
+		limit = {
+			NOT = {
+				exists = scope:balkfm_karadordevic_scope
+			}
+		}
+		ordered_character_in_void = {
+			limit = {
+				balkfm_is_karadordevic_character_trigger = yes
+			}
+			order_by = age
+			save_scope_as = balkfm_karadordevic_scope
+		}
+		if = {
+			limit = {
+				NOT = {
+					exists = scope:balkfm_karadordevic_scope
+				}
+			}
+			balkfm_generate_karadordevic_character_effect = yes
+			random_scope_character = {
+				limit = {
+					balkfm_is_karadordevic_character_trigger = yes
+				}
+			}
+		}
+	}
+	com_update_value_in_variable_map = {
+		name = balkfm_dynastic_rivalry_varmap
+		key = flag:balkfm_karadordevic_head_var
+		value = scope:balkfm_karadordevic_scope
+	}
+}
+
+balkfm_generate_obrenovic_character_effect = {
+	if = {
+		limit = {
+			is_key_in_variable_map = { 
+				name = balkfm_dynastic_rivalry_varmap
+				target = flag:balkfm_obrenovic_counter_var
+			}
+		}
+		if = {
+			limit = {
+				"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_obrenovic_counter_var)" = 1
+			}
+			create_character = { # Do not regenerate Milan
+				template = balkfm_obrenovic_mihailo
+				on_created = { 
+					add_character_role = gbbf_character_role_pretender
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_obrenovic_counter_var)" = 2
+			}
+			create_character = {
+				template = balkfm_obrenovic_milan_IV
+				on_created = {
+					add_character_role = gbbf_character_role_pretender
+				}
+			}
+		}
+		else = {
+			create_character = {
+				template = balkfm_obrenovic_dynamic
+				on_created = {
+					add_character_role = gbbf_character_role_pretender
+				}
+			}
+		}
+		set_local_variable = { 
+			name = balkfm_obrenovic_country_local_var
+			value = {
+				add = "variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_obrenovic_counter_var)"
+				add = 1
+			}
+		}
+		com_update_value_in_variable_map = {
+			name = balkfm_dynastic_rivalry_varmap
+			key = flag:balkfm_obrenovic_counter_var
+			value = local_var:balkfm_obrenovic_country_local_var
+		}
+	}
+	else = {
+		create_character = {
+			template = balkfm_obrenovic_dynamic
+			on_created = {
+				add_character_role = gbbf_character_role_pretender
+			}
+		}
+	}
+}
+
+balkfm_generate_karadordevic_character_effect = {
+	if = {
+		limit = {
+			is_key_in_variable_map = {
+				name = balkfm_dynastic_rivalry_varmap
+				target = flag:balkfm_karadordevic_counter_var
+			}
+		}
+		if = {
+			limit = {
+				"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_karadordevic_counter_var)" = 1
+			}
+			create_character = {
+				template = balkfm_karadordevic_petar
+				on_created = {
+					add_character_role = gbbf_character_role_pretender
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_karadordevic_counter_var)" = 2
+			}
+			create_character = {
+				template = balkfm_karadordevic_aleksander_I
+				on_created = {
+					add_character_role = gbbf_character_role_pretender
+				}
+			}
+		}
+		else = {
+			create_character = {
+				template = balkfm_karadordevic_dynamic
+				on_created = {
+					add_character_role = gbbf_character_role_pretender
+				}
+			}
+		}
+		set_local_variable = {
+			name = balkfm_karadordevic_country_local_var
+			value = {
+				add = "variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_karadordevic_counter_var)"
+				add = 1
+			}
+		}
+		com_update_value_in_variable_map = {
+			name = balkfm_dynastic_rivalry_varmap
+			key = flag:balkfm_karadordevic_counter_var
+			value = local_var:balkfm_karadordevic_country_local_var
+		}
+	}
+	else = {
+		create_character = {
+			template = balkfm_karadordevic_dynamic
+			on_created = {
+				add_character_role = gbbf_character_role_pretender
+			}
+		}
+	}
+}
+
+balkfm_save_opposition_dynasty_scope_effect = {
+	balkfm_update_dynastic_rivalary_heads_effect = yes
+	if = {
+		limit = {
+			balkfm_has_obrenovic_ruler_trigger = yes
+		}
+		"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_karadordevic_head_var)" = {
+			save_scope_as = balkfm_dynastic_opposition_scope
+		}
+	}
+	else = {
+		"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_obrenovic_head_var)" = {
+			save_scope_as = balkfm_dynastic_opposition_scope
+		}
 	}
 }
 
@@ -706,11 +673,6 @@ balkfm_cleanup_dynastic_rivalry_effect = {
 		serbian_throne_modifier_cleanser = yes
 		serbian_throne_variable_cleanser = yes
 	}
-	remove_variable = balkfm_obrenovic_support_var
-	remove_variable = balkfm_karadordevic_support_var
-	remove_variable = balkfm_obrenovic_progress_var
-	remove_variable = balkfm_karadordevic_progress_var
-	remove_variable = balkfm_obrenovic_counter_var
-	remove_variable = balkfm_karadordevic_counter_var
+	clear_variable_map = balkfm_dynastic_rivalry_varmap
 	remove_variable = com_no_regencies
 }
