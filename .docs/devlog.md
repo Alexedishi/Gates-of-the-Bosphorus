@@ -189,16 +189,21 @@ bulfm_: Once contained content for Bulgaria; expanded into balkfm_
 
 
 ####---------- Planned Updates ----------####
---Update 4.3.0--
+--Update 4.4.0--
 New Additions:
 - ##New journal "The Nature of Yugoslavia" Promote a Centralized or Federalist approach to the Yugoslav state
 - ##Added "Yugoslav Integralist" ideologies and movement representing the Integralist movement in Yugoslavia
-- ##New journal "The Foundation of the State" representing the multiple outcomes of Turkish identity after the failure of the Tanzimat
+
+
+--Update 4.3.0--
+New Additions:
+- ##Rebuilt "The Teachings of al-Sanusi" into a global journal with new mechanics, events, and modifiers
 
 
 --Update 4.2.0--
 New Additions:
-- ##Rebuilt "The Teachings of al-Sanusi" into a global journal with new mechanics, events, and modifiers
+- ##Fully implemented the Young Turks content with varying outcomes for the Republican movements in the Ottoman Empire
+- ##New journal "The Foundation of the State" representing the multiple outcomes of Turkish identity after the failure of the Tanzimat
 
 
 ####---------- Published Updates ----------####
@@ -212,7 +217,7 @@ New Additions:
   -- Scripting refactored to use variable maps & effects/triggers reviewed and improved in many cases
   -- Several new events to better integrate with features from 1.10 and 1.13
   -- Integration with the new CMF Situations UI widget to better present the journal content
-- ##Fully implemented the Young Turks content with varying outcomes for the Republican movements in the Ottoman Empire
+- Added a "Charioteer" trait in the event your redneck ruler joins the chariot races
 
 Fixes:
 - ##Fixed several issues that could derail Greece's "Military League" journal
