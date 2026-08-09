@@ -1,8 +1,8 @@
 ﻿##########################
 # GATES OF THE BOSPHORUS #
 ##########################
-Mod Version: 4.0.6
-Game Version: 1.13.8
+Mod Version: 4.1.0
+Game Version: 1.13.9
 
 Mod Author: Alexedishi
 Contributors: LordR, Caelreader, CipherParadox
@@ -111,11 +111,12 @@ bulfm_: Once contained content for Bulgaria; expanded into balkfm_
     "_started", "_completed", "_failed", "_happened", "_cooldown", "_tracker", "_target"
  -- If a variable(s) is used only for a specific journal entry and its direct content, store the variable(s) in that journal
  -- Scripted effects are provided to aid in variable management
- -- Deviation from this system is encouraged if it makes the variable more readable or intuitive
 
 - Other conventions:
  -- Variable lists shoud be suffixed with "_list"
  -- Variable maps should be suffixed with "_varmap"
+
+*Deviation from these systems is encouraged if it makes the object more readable or intuitive*
 
 
 ####---------- Planned Content/Reworks ----------####
@@ -211,13 +212,13 @@ New Additions:
 New Additions:
 - Reworked the "Throne of Thorns" journal:
   -- Scripting refactored to use variable maps & effects/triggers reviewed
-  -- New custom journal widget showcasing the two dynastic leaders
-  -- Fixed several issues where the Dynastic changeover events would not fire
-- ##Completely rebuilt the "Powderkeg of Europe" journal:
+  -- ##New custom journal widget showcasing the two dynastic leaders
+  -- ##Fixed several issues where the Dynastic changeover events would not fire
+- ##Completely rebuilt the "Powderkeg of Europe" journal & associated content:
   -- Scripting refactored to use variable maps & effects/triggers reviewed and improved in many cases
-  -- Several new events to better integrate with features from 1.10 and 1.13
+  -- ##Several new events to better integrate with features from 1.10 and 1.13
   -- Integration with the new CMF Situations UI widget to better present the journal content
-- Added a "Charioteer" trait in the event your redneck ruler joins the chariot races
+- Added a "Charioteer" trait in the event your redneck ruler joins a chariot races
 
 Fixes:
 - ##Fixed several issues that could derail Greece's "Military League" journal
