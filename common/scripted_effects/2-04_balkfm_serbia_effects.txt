@@ -44,19 +44,27 @@
 }
 
 balkfm_initialize_dynastic_rivalry_journal_effect = {
-	set_variable = com_hide_modifiers
-	com_set_situation_illustration_background_effect = {
-		texture = gbbf_situation_background_stari_dvor
+	"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_obrenovic_head_var)" = {
+		save_scope_as = balkfm_obrenovic_scope
 	}
-	com_set_situation_left_character = {
-		character = "variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_obrenovic_counter_var)"
+	"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_karadordevic_head_var)" = {
+		save_scope_as = balkfm_karadordevic_scope
 	}
-	com_set_situation_right_character = {
-		character = "variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_karadordevic_head_var)"
-	}
-	com_set_situation_start_date_effect = {
-		month = JULY
-		year = 1817
+	scope:journal_entry = {
+		set_variable = com_hide_modifiers
+		com_set_situation_illustration_background_effect = {
+			texture = gbbf_situation_background_stari_dvor
+		}
+		com_set_situation_left_character = {
+			character = scope:balkfm_obrenovic_scope
+		}
+		com_set_situation_right_character = {
+			character = scope:balkfm_karadordevic_scope
+		}
+		com_set_situation_start_date_effect = {
+			month = JULY
+			year = 1817
+		}
 	}
 }
 
@@ -253,7 +261,7 @@ balkfm_calculate_dynastic_rivalry_variables_effect = {
 		key = flag:balkfm_karadordevic_progress_var
 		value = balkfm_karadordevic_progress_value
 	}
-	je:je_balkfm_ser_monarchism = {
+	scope:journal_entry = {
 		set_bar_progress = {
 			name = balkfm_dynastic_rivalry_progressbar
 			value = owner.balkfm_leading_dynasty_value
