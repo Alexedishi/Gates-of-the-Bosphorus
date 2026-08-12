@@ -214,11 +214,13 @@ New Additions:
   -- Scripting refactored to use variable maps & effects/triggers reviewed
   -- ##New custom journal widget showcasing the two dynastic leaders
   -- ##Fixed several issues where the Dynastic changeover events would not fire
+  -- New character role "Pretender" for the non-ruling dynasts
 - ##Completely rebuilt the "Powderkeg of Europe" journal & associated content:
   -- Scripting refactored to use variable maps & effects/triggers reviewed and improved in many cases
   -- ##Several new events to better integrate with features from 1.10 and 1.13
   -- Integration with the new CMF Situations UI widget to better present the journal content
 - Added a "Charioteer" trait in the event your redneck ruler joins a chariot races
+- Replaced and updated several icons and gfx
 
 Fixes:
 - ##Fixed several issues that could derail Greece's "Military League" journal
