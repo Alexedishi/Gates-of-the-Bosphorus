@@ -121,6 +121,8 @@ eqfm_initialize_balkan_powder_keg_journal_effect = {
 }
 
 eqfm_update_balkan_powder_keg_next_phase_flags_effect = {
+	# NOTE this effect only sets the flags to their appropriate sets; this does not zero the progress value
+	# Regardless, do not use these values since it would create a chimera state between GotB's logic variables and CMF's display variables
 	if = {
 		limit = {
 			eqfm_stable_phase_trigger = yes
@@ -132,14 +134,8 @@ eqfm_update_balkan_powder_keg_next_phase_flags_effect = {
 				next_phase_icon = eqfm_unrest_icon_only
 				factors = eqfm_balkan_powder_keg_escalation_factors_desc
 			}
-			com_set_indexed_stiuation_phase_progress_details_effect = {
+			com_hide_indexed_stiuation_phase_progress_details_effect = {
 				index = 2
-				next_phase_name = eqfm_deconfliction_no_icon
-				next_phase_icon = eqfm_deconfliction_icon_only
-				progress_value = eqfm_balkan_powder_keg_deescalation_start_value
-				max_value = eqfm_balkan_powder_keg_deescalation_max_value
-				min_value = eqfm_balkan_powder_keg_deescalation_min_value
-				factors = eqfm_balkan_powder_keg_deescalation_factors_desc
 			}
 		}
 	}
@@ -170,11 +166,21 @@ eqfm_update_balkan_powder_keg_next_phase_flags_effect = {
 				eqfm_hostility_phase_trigger = yes
 			}
 			global_var:je_eqfm_balkan_powder_keg = {
-				com_update_indexed_stiuation_phase_flags_effect = {
-					index = 1
-					next_phase_name = eqfm_crisis_no_icon
-					next_phase_icon = eqfm_crisis_icon_only
-					factors = eqfm_balkan_powder_keg_escalation_factors_desc
+				if = {
+					limit = {
+						eqfm_crisis_possible_trigger = yes
+					}
+					com_update_indexed_stiuation_phase_flags_effect = {
+						index = 1
+						next_phase_name = eqfm_crisis_no_icon
+						next_phase_icon = eqfm_crisis_icon_only
+						factors = eqfm_balkan_powder_keg_escalation_factors_desc
+					}
+				}
+				else = {
+					com_hide_indexed_stiuation_phase_progress_details_effect = {
+						index = 1
+					}
 				}
 				com_update_indexed_stiuation_phase_flags_effect = {
 					index = 2
@@ -191,7 +197,7 @@ eqfm_update_balkan_powder_keg_next_phase_flags_effect = {
 				eqfm_crisis_phase_trigger = yes
 			}
 			global_var:je_eqfm_balkan_powder_keg = {
-				com_remove_indexed_stiuation_phase_progress_details_effect = {
+				com_hide_indexed_stiuation_phase_progress_details_effect = {
 					index = 1
 				}
 				com_update_indexed_stiuation_phase_flags_effect = {
@@ -209,16 +215,13 @@ eqfm_update_balkan_powder_keg_next_phase_flags_effect = {
 				eqfm_deconfliction_events_trigger = yes
 			}
 			global_var:je_eqfm_balkan_powder_keg = {
-				com_set_indexed_stiuation_phase_progress_details_effect = {
+				com_update_indexed_stiuation_phase_flags_effect = {
 					index = 1
 					next_phase_name = eqfm_unrest_no_icon
 					next_phase_icon = eqfm_unrest_icon_only
-					progress_value = eqfm_balkan_powder_keg_escalation_start_value
-					max_value = eqfm_balkan_powder_keg_escalation_max_value
-					min_value = eqfm_balkan_powder_keg_escalation_min_value
 					factors = eqfm_balkan_powder_keg_escalation_factors_desc
 				}
-				com_remove_indexed_stiuation_phase_progress_details_effect = {
+				com_hide_indexed_stiuation_phase_progress_details_effect = {
 					index = 2
 				}
 			}
@@ -640,8 +643,9 @@ eqfm_check_balkan_powder_keg_phase_effect = {
 		}
 		
 		# Reset progress variables to zero
-		eqfm_reset_balkan_powder_keg_phase_progress_effect_ = yes
+		eqfm_reset_balkan_powder_keg_phase_progress_effect = yes
 	}
+	eqfm_update_balkan_powder_keg_next_phase_flags_effect = yes
 	eqfm_update_balkan_powder_keg_modifiers_effect = yes
 	eqfm_update_balkan_powder_keg_progress_bars_effect = yes
 }
@@ -986,7 +990,7 @@ eqfm_clear_balkan_powder_keg_modifiers_effect = {
 	}
 }
 
-eqfm_reset_balkan_powder_keg_phase_progress_effect_ = {
+eqfm_reset_balkan_powder_keg_phase_progress_effect = {
 	remove_from_global_variable_map = {
 		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_escalation_var
@@ -1015,17 +1019,19 @@ eqfm_reset_balkan_powder_keg_phase_progress_effect_ = {
 		value = eqfm_balkan_powder_keg_crisis_max_value
 	}
 	global_var:je_eqfm_balkan_powder_keg = {
+		com_update_indexed_situation_phase_progress_effect = {
+			index = 1
+			progress_value = eqfm_balkan_powder_keg_escalation_start_value
+		}
+		com_update_indexed_situation_phase_progress_effect = {
+			index = 2
+			progress_value = eqfm_balkan_powder_keg_deescalation_start_value
+		}
 		if = {
 			limit = {
-				eqfm_balkan_powder_keg_can_escalate_trigger = yes
+				eqfm_balkan_powder_keg_can_escalate_trigger = no
 			}
-			com_update_indexed_situation_phase_progress_effect = {
-				index = 1
-				progress_value = eqfm_balkan_powder_keg_escalation_start_value
-			}
-		}
-		else = {
-			com_remove_indexed_stiuation_phase_progress_details_effect = {
+			com_hide_indexed_stiuation_phase_progress_details_effect = {
 				index = 1
 			}
 		}
@@ -1033,13 +1039,7 @@ eqfm_reset_balkan_powder_keg_phase_progress_effect_ = {
 			limit = {
 				eqfm_balkan_powder_keg_can_deescalate_trigger = yes
 			}
-			com_update_indexed_situation_phase_progress_effect = {
-				index = 2
-				progress_value = eqfm_balkan_powder_keg_deescalation_start_value
-			}
-		}
-		else = {
-			com_remove_indexed_stiuation_phase_progress_details_effect = {
+			com_hide_indexed_stiuation_phase_progress_details_effect = {
 				index = 2
 			}
 		}
@@ -1067,7 +1067,7 @@ eqfm_cleanup_local_balkan_powder_keg_content_effect = {
 
 ####---------- Balkan Powder Keg Phase Effects ----------####
 eqfm_force_balkan_powder_keg_stable_phase_effect = {
-	eqfm_reset_balkan_powder_keg_phase_progress_effect_ = yes
+	eqfm_reset_balkan_powder_keg_phase_progress_effect = yes
 	remove_from_global_variable_map = {
 		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_phase_var
@@ -1107,7 +1107,7 @@ eqfm_force_balkan_powder_keg_stable_phase_effect = {
 }
 
 eqfm_force_balkan_powder_keg_unrest_phase_effect = {
-	eqfm_reset_balkan_powder_keg_phase_progress_effect_ = yes
+	eqfm_reset_balkan_powder_keg_phase_progress_effect = yes
 	remove_from_global_variable_map = {
 		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_phase_var
@@ -1147,7 +1147,7 @@ eqfm_force_balkan_powder_keg_unrest_phase_effect = {
 }
 
 eqfm_force_balkan_powder_keg_hostility_phase_effect = {
-	eqfm_reset_balkan_powder_keg_phase_progress_effect_ = yes
+	eqfm_reset_balkan_powder_keg_phase_progress_effect = yes
 	remove_from_global_variable_map = {
 		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_phase_var
@@ -1186,7 +1186,7 @@ eqfm_force_balkan_powder_keg_hostility_phase_effect = {
 }
 
 eqfm_force_balkan_powder_keg_deconfliction_phase_effect = {
-	eqfm_reset_balkan_powder_keg_phase_progress_effect_ = yes
+	eqfm_reset_balkan_powder_keg_phase_progress_effect = yes
 	remove_from_global_variable_map = {
 		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_phase_var
@@ -1220,7 +1220,7 @@ eqfm_force_balkan_powder_keg_deconfliction_phase_effect = {
 }
 
 eqfm_force_balkan_powder_keg_crisis_phase_effect = {
-	eqfm_reset_balkan_powder_keg_phase_progress_effect_ = yes
+	eqfm_reset_balkan_powder_keg_phase_progress_effect = yes
 	remove_from_global_variable_map = {
 		name = eqfm_balkan_powder_keg_varmap
 		key = flag:eqfm_balkan_powder_keg_phase_var
