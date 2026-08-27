@@ -13,7 +13,7 @@ Special Thanks: RationaLess, Bahmut|Chris
 
 ####---------- Version Compatibility ----------####
 #		GotB Patch	....	Victoria 3 Patch
-#		4.0.8		....	1.13.9
+#		4.1.0		....	1.13.11
 #		3.4.12		.... 	1.12.3
 #		3.3.7		.... 	1.10.6 / 1.11.1
 #		3.2.8		.... 	1.9.8
@@ -228,6 +228,8 @@ Fixes:
 - ##Fixed broken effects in the Triumph buttons
 - Moved grefm_byzantium.020's scripting into monthly state pulse
 - Fixed Amalia of Oldenburg being a transgender icon :sadge:
+- balkfm_croatia.300 will not try to add a journal that already exists
+- Several small localization mistakes
 
 
 --Update 4.0.8--
