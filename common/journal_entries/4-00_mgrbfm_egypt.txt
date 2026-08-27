@@ -412,6 +412,13 @@ je_mgrbfm_egypt_nile_river = {
 			is_in_geographic_region = geographic_region_nile_river
 		}
 	}
+	
+	should_show_when_not_involved = {
+		has_strategic_region_interest_tier = {
+			strategic_region = sr:region_nile_basin
+			value >= 3
+		}
+	}
 
 	scripted_button = mgrbfm_repair_nilometers_button
 
@@ -506,30 +513,33 @@ je_mgrbfm_egypt_nile_river = {
 
 	on_monthly_pulse = {
 		effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
-					NOT = {
+			scope:journal_entry = {
+				every_scope_je_involved = {
+					limit = {
+						NOT = {
+							any_scope_state = {
+								is_in_geographic_region = geographic_region_lower_nile
+							}
+						}
+					}
+					scope:journal_entry = {
+						remove_involved_country = prev
+					}
+				}
+			}
+			sr:region_nile_basin = {
+				every_scope_country = {
+					limit = {
+						NOT = {
+							is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
+						}
 						any_scope_state = {
 							is_in_geographic_region = geographic_region_lower_nile
 						}
 					}
-				}
-				scope:journal_entry = {
-					remove_involved_country = prev
-				}
-			}
-			every_country = {
-				limit = {
-					any_scope_state = {
-						is_in_geographic_region = geographic_region_lower_nile
+					scope:journal_entry = {
+						add_involved_country = prev
 					}
-					NOT = {
-						is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
-					}
-				}
-				scope:journal_entry = {
-					add_involved_country = prev
 				}
 			}
 			if = {
