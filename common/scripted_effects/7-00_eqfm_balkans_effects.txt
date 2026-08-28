@@ -107,6 +107,18 @@ eqfm_initialize_balkan_powder_keg_journal_effect = {
 		min_value = eqfm_balkan_powder_keg_escalation_min_value
 		factors = eqfm_balkan_powder_keg_escalation_factors_desc
 	}
+	com_set_indexed_situation_phase_progress_details_effect = {
+		index = 2
+		next_phase_name = eqfm_deconfliction_no_icon
+		next_phase_icon = eqfm_deconfliction_icon_only
+		progress_value = eqfm_balkan_powder_keg_deescalation_start_value
+		max_value = eqfm_balkan_powder_keg_deescalation_max_value
+		min_value = eqfm_balkan_powder_keg_deescalation_min_value
+		factors = eqfm_balkan_powder_keg_deescalation_factors_desc
+	}
+	com_hide_indexed_situation_phase_progress_details_effect = {
+		index = 2
+	}
 	every_country = {
 		limit = {
 			eqfm_balkans_interloper_trigger = yes
@@ -120,7 +132,15 @@ eqfm_initialize_balkan_powder_keg_journal_effect = {
 	}
 }
 
-eqfm_update_balkan_powder_keg_next_phase_flags_effect = {
+eqfm_update_balkan_powder_keg_character_effect = {
+	global_var:je_eqfm_balkan_powder_keg = {
+		com_set_situation_left_character = {
+			character = c:TUR.ruler
+		}
+	}
+}
+
+eqfm_update_balkan_powder_keg_phase_flags_effect = {
 	# NOTE this effect only sets the flags to their appropriate sets; this does not zero the progress value
 	# Regardless, do not use these values since it would create a chimera state between GotB's logic variables and CMF's display variables
 	if = {
@@ -128,6 +148,10 @@ eqfm_update_balkan_powder_keg_next_phase_flags_effect = {
 			eqfm_stable_phase_trigger = yes
 		}
 		global_var:je_eqfm_balkan_powder_keg = {
+			com_set_situation_phase_effect = {
+				phase_icon = eqfm_stable_icon_only
+				phase_name = eqfm_stable_no_icon
+			}
 			com_update_indexed_situation_phase_flags_effect = {
 				index = 1
 				next_phase_name = eqfm_unrest_no_icon
@@ -145,6 +169,10 @@ eqfm_update_balkan_powder_keg_next_phase_flags_effect = {
 				eqfm_unrest_phase_trigger = yes
 			}
 			global_var:je_eqfm_balkan_powder_keg = {
+				com_set_situation_phase_effect = {
+					phase_icon = eqfm_unrest_icon_only
+					phase_name = eqfm_unrest_no_icon
+				}
 				com_update_indexed_situation_phase_flags_effect = {
 					index = 1
 					next_phase_name = eqfm_hostility_no_icon
@@ -166,6 +194,10 @@ eqfm_update_balkan_powder_keg_next_phase_flags_effect = {
 				eqfm_hostility_phase_trigger = yes
 			}
 			global_var:je_eqfm_balkan_powder_keg = {
+				com_set_situation_phase_effect = {
+					phase_icon = eqfm_hostility_icon_only
+					phase_name = eqfm_hostility_no_icon
+				}
 				if = {
 					limit = {
 						eqfm_crisis_possible_trigger = yes
@@ -184,8 +216,8 @@ eqfm_update_balkan_powder_keg_next_phase_flags_effect = {
 				}
 				com_update_indexed_situation_phase_flags_effect = {
 					index = 2
-					next_phase_name = eqfm_deconfliction_no_icon
-					next_phase_icon = eqfm_deconfliction_icon_only
+					next_phase_name = eqfm_deconfliction_icon_only
+					next_phase_icon = eqfm_deconfliction_no_icon
 					factors = eqfm_balkan_powder_keg_deescalation_factors_desc
 				}
 			}
@@ -197,6 +229,10 @@ eqfm_update_balkan_powder_keg_next_phase_flags_effect = {
 				eqfm_crisis_phase_trigger = yes
 			}
 			global_var:je_eqfm_balkan_powder_keg = {
+				com_set_situation_phase_effect = {
+					phase_icon = eqfm_crisis_icon_only
+					phase_name = eqfm_crisis_no_icon
+				}
 				com_hide_indexed_situation_phase_progress_details_effect = {
 					index = 1
 				}
@@ -215,6 +251,10 @@ eqfm_update_balkan_powder_keg_next_phase_flags_effect = {
 				eqfm_deconfliction_events_trigger = yes
 			}
 			global_var:je_eqfm_balkan_powder_keg = {
+				com_set_situation_phase_effect = {
+					phase_icon = eqfm_deconfliction_icon_only
+					phase_name = eqfm_deconfliction_no_icon
+				}
 				com_update_indexed_situation_phase_flags_effect = {
 					index = 1
 					next_phase_name = eqfm_unrest_no_icon
@@ -645,7 +685,7 @@ eqfm_check_balkan_powder_keg_phase_effect = {
 		# Reset progress variables to zero
 		eqfm_reset_balkan_powder_keg_phase_progress_effect = yes
 	}
-	eqfm_update_balkan_powder_keg_next_phase_flags_effect = yes
+	eqfm_update_balkan_powder_keg_phase_flags_effect = yes
 	eqfm_update_balkan_powder_keg_modifiers_effect = yes
 	eqfm_update_balkan_powder_keg_progress_bars_effect = yes
 }
