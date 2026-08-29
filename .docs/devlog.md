@@ -212,12 +212,12 @@ New Additions:
 New Additions:
 - Reworked the "Throne of Thorns" journal:
   -- Scripting refactored to use variable maps & effects/triggers reviewed
-  -- ##New custom journal widget showcasing the two dynastic leaders
+  -- New custom journal widget showcasing the two dynastic leaders
   -- ##Fixed several issues where the Dynastic changeover events would not fire
   -- New character role "Pretender" for the non-ruling dynasts
 - ##Completely rebuilt the "Powderkeg of Europe" journal & associated content:
   -- Scripting refactored to use variable maps & effects/triggers reviewed and improved in many cases
-  -- ##Several new events to better integrate with features from 1.10 and 1.13
+  -- Improved event scripting to better integrate with features from 1.10 and 1.13
   -- Integration with the new CMF Situations UI widget to better present the journal content
 - Added a "Charioteer" trait in the event your redneck ruler joins a chariot races
 - Replaced and updated several icons and gfx
@@ -230,6 +230,7 @@ Fixes:
 - Fixed Amalia of Oldenburg being a transgender icon :sadge:
 - balkfm_croatia.300 will not try to add a journal that already exists
 - Added scope assertions to the options in balkfm_romania.004/5
+- Added handling for headtaking modifiers in the event MON or TUR are dead
 - Several small localization mistakes
 
 
