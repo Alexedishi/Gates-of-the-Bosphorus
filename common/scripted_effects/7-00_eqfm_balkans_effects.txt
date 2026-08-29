@@ -690,11 +690,6 @@ eqfm_check_balkan_powder_keg_phase_effect = {
 	eqfm_update_balkan_powder_keg_progress_bars_effect = yes
 }
 
-eqfm_update_balkan_powder_keg_modifiers_effect = {
-	eqfm_clear_balkan_powder_keg_modifiers_effect = yes
-	eqfm_add_balkan_powder_keg_modifiers_effect = yes
-}
-
 eqfm_update_balkan_powder_keg_progress_bars_effect = {
 	global_var:je_eqfm_balkan_powder_keg = {
 		set_bar_progress = {
@@ -730,227 +725,233 @@ eqfm_update_balkan_powder_keg_progress_bars_effect = {
 	}
 }
 
-eqfm_add_balkan_powder_keg_modifiers_effect = {
+eqfm_update_balkan_powder_keg_modifiers_effect = {
 	global_var:je_eqfm_balkan_powder_keg = {
-		every_scope_je_involved = { 
-			limit = {
-				eqfm_balkan_powder_keg_outsider_trigger = yes
-			}
-			if = {
+		every_scope_je_involved = {
+			eqfm_clear_balkan_powder_keg_modifiers_effect = yes
+			eqfm_add_balkan_powder_keg_modifiers_effect = yes
+		}
+	}
+}
+
+eqfm_add_balkan_powder_keg_modifiers_effect = {
+	hidden_effect = {
+		global_var:je_eqfm_balkan_powder_keg = {
+			every_scope_je_involved = {
 				limit = {
-					eqfm_stable_phase_trigger = yes
+					eqfm_balkan_powder_keg_outsider_trigger = yes
 				}
-				add_modifier = modifier_eqfm_stable_phase
-				every_political_movement = {
+				if = {
 					limit = {
-						eqfm_eligible_minority_movement_trigger = yes
+						eqfm_stable_phase_trigger = yes
 					}
-					save_scope_as = eqfm_balkan_movement_scope
-					set_variable = {
-						name = eqfm_current_adjustment_var
-						value = eqfm_movement_activism_multiplier_value
-					}
-					add_modifier = {
-						name = modifier_eqfm_stable_phase_movement
-						multiplier = {
-							value = 0
-							if = {
-								limit = {
-									scope:eqfm_balkan_movement_scope ?= {
-										has_variable = eqfm_current_adjustment_var
+					every_political_movement = {
+						limit = {
+							eqfm_eligible_minority_movement_trigger = yes
+						}
+						save_scope_as = eqfm_balkan_movement_scope
+						set_variable = {
+							name = eqfm_current_adjustment_var
+							value = eqfm_movement_activism_multiplier_value
+						}
+						add_modifier = {
+							name = modifier_eqfm_stable_phase_movement
+							multiplier = {
+								value = 0
+								if = {
+									limit = {
+										scope:eqfm_balkan_movement_scope ?= {
+											has_variable = eqfm_current_adjustment_var
+										}
 									}
+									add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 								}
-								add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 							}
 						}
-					}
-					set_variable = {
-						name = eqfm_previous_adjustment_var
-						value = {
-							value = 0
-							if = {
-								limit = {
-									scope:eqfm_balkan_movement_scope ?= {
-										has_variable = eqfm_current_adjustment_var
+						set_variable = {
+							name = eqfm_previous_adjustment_var
+							value = {
+								value = 0
+								if = {
+									limit = {
+										scope:eqfm_balkan_movement_scope ?= {
+											has_variable = eqfm_current_adjustment_var
+										}
 									}
+									add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 								}
-								add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 							}
 						}
 					}
 				}
-			}
-			else_if = {
-				limit = {
-					eqfm_unrest_phase_trigger = yes
-				}
-				add_modifier = modifier_eqfm_unrest_phase
-				every_political_movement = {
+				else_if = {
 					limit = {
-						eqfm_eligible_minority_movement_trigger = yes
+						eqfm_unrest_phase_trigger = yes
 					}
-					save_scope_as = eqfm_balkan_movement_scope
-					set_variable = {
-						name = eqfm_current_adjustment_var
-						value = eqfm_movement_activism_multiplier_value
-					}
-					add_modifier = {
-						name = modifier_eqfm_unrest_phase_movement
-						multiplier = {
-							value = 0
-							if = {
-								limit = {
-									scope:eqfm_balkan_movement_scope ?= {
-										has_variable = eqfm_current_adjustment_var
+					every_political_movement = {
+						limit = {
+							eqfm_eligible_minority_movement_trigger = yes
+						}
+						save_scope_as = eqfm_balkan_movement_scope
+						set_variable = {
+							name = eqfm_current_adjustment_var
+							value = eqfm_movement_activism_multiplier_value
+						}
+						add_modifier = {
+							name = modifier_eqfm_unrest_phase_movement
+							multiplier = {
+								value = 0
+								if = {
+									limit = {
+										scope:eqfm_balkan_movement_scope ?= {
+											has_variable = eqfm_current_adjustment_var
+										}
 									}
+									add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 								}
-								add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 							}
 						}
-					}
-					set_variable = {
-						name = eqfm_previous_adjustment_var
-						value = {
-							value = 0
-							if = {
-								limit = {
-									scope:eqfm_balkan_movement_scope ?= {
-										has_variable = eqfm_current_adjustment_var
+						set_variable = {
+							name = eqfm_previous_adjustment_var
+							value = {
+								value = 0
+								if = {
+									limit = {
+										scope:eqfm_balkan_movement_scope ?= {
+											has_variable = eqfm_current_adjustment_var
+										}
 									}
+									add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 								}
-								add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 							}
 						}
 					}
 				}
-			}
-			else_if = {
-				limit = {
-					eqfm_hostility_phase_trigger = yes
-				}
-				add_modifier = modifier_eqfm_hostility_phase
-				every_political_movement = {
+				else_if = {
 					limit = {
-						eqfm_eligible_minority_movement_trigger = yes
+						eqfm_hostility_phase_trigger = yes
 					}
-					save_scope_as = eqfm_balkan_movement_scope
-					set_variable = {
-						name = eqfm_current_adjustment_var
-						value = eqfm_movement_activism_multiplier_value
-					}
-					add_modifier = {
-						name = modifier_eqfm_hostility_phase_movement
-						multiplier = {
-							value = 0
-							if = {
-								limit = {
-									scope:eqfm_balkan_movement_scope ?= {
-										has_variable = eqfm_current_adjustment_var
+					every_political_movement = {
+						limit = {
+							eqfm_eligible_minority_movement_trigger = yes
+						}
+						save_scope_as = eqfm_balkan_movement_scope
+						set_variable = {
+							name = eqfm_current_adjustment_var
+							value = eqfm_movement_activism_multiplier_value
+						}
+						add_modifier = {
+							name = modifier_eqfm_hostility_phase_movement
+							multiplier = {
+								value = 0
+								if = {
+									limit = {
+										scope:eqfm_balkan_movement_scope ?= {
+											has_variable = eqfm_current_adjustment_var
+										}
 									}
+									add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 								}
-								add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 							}
 						}
-					}
-					set_variable = {
-						name = eqfm_previous_adjustment_var
-						value = {
-							value = 0
-							if = {
-								limit = {
-									scope:eqfm_balkan_movement_scope ?= {
-										has_variable = eqfm_current_adjustment_var
+						set_variable = {
+							name = eqfm_previous_adjustment_var
+							value = {
+								value = 0
+								if = {
+									limit = {
+										scope:eqfm_balkan_movement_scope ?= {
+											has_variable = eqfm_current_adjustment_var
+										}
 									}
+									add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 								}
-								add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 							}
 						}
 					}
 				}
-			}
-			else_if = {
-				limit = {
-					eqfm_crisis_phase_trigger = yes
-				}
-				add_modifier = modifier_eqfm_crisis_phase
-				every_political_movement = {
+				else_if = {
 					limit = {
-						eqfm_eligible_minority_movement_trigger = yes
+						eqfm_crisis_phase_trigger = yes
 					}
-					save_scope_as = eqfm_balkan_movement_scope
-					set_variable = {
-						name = eqfm_current_adjustment_var
-						value = eqfm_movement_activism_multiplier_value
-					}
-					add_modifier = {
-						name = modifier_eqfm_crisis_phase_movement
-						multiplier = {
-							value = 0
-							if = {
-								limit = {
-									scope:eqfm_balkan_movement_scope ?= {
-										has_variable = eqfm_current_adjustment_var
+					every_political_movement = {
+						limit = {
+							eqfm_eligible_minority_movement_trigger = yes
+						}
+						save_scope_as = eqfm_balkan_movement_scope
+						set_variable = {
+							name = eqfm_current_adjustment_var
+							value = eqfm_movement_activism_multiplier_value
+						}
+						add_modifier = {
+							name = modifier_eqfm_crisis_phase_movement
+							multiplier = {
+								value = 0
+								if = {
+									limit = {
+										scope:eqfm_balkan_movement_scope ?= {
+											has_variable = eqfm_current_adjustment_var
+										}
 									}
+									add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 								}
-								add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 							}
 						}
-					}
-					set_variable = {
-						name = eqfm_previous_adjustment_var
-						value = {
-							value = 0
-							if = {
-								limit = {
-									scope:eqfm_balkan_movement_scope ?= {
-										has_variable = eqfm_current_adjustment_var
+						set_variable = {
+							name = eqfm_previous_adjustment_var
+							value = {
+								value = 0
+								if = {
+									limit = {
+										scope:eqfm_balkan_movement_scope ?= {
+											has_variable = eqfm_current_adjustment_var
+										}
 									}
+									add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 								}
-								add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 							}
 						}
 					}
 				}
-			}
-			else_if = {
-				limit = {
-					eqfm_deconfliction_phase_trigger = yes
-				}
-				add_modifier = modifier_eqfm_deconfliction_phase
-				every_political_movement = {
+				else_if = {
 					limit = {
-						eqfm_eligible_minority_movement_trigger = yes
+						eqfm_deconfliction_phase_trigger = yes
 					}
-					save_scope_as = eqfm_balkan_movement_scope
-					set_variable = {
-						name = eqfm_current_adjustment_var
-						value = eqfm_movement_activism_multiplier_value
-					}
-					add_modifier = {
-						name = modifier_eqfm_deconfliction_phase_movement
-						multiplier = {
-							value = 0
-							if = {
-								limit = {
-									scope:eqfm_balkan_movement_scope ?= {
-										has_variable = eqfm_current_adjustment_var
+					every_political_movement = {
+						limit = {
+							eqfm_eligible_minority_movement_trigger = yes
+						}
+						save_scope_as = eqfm_balkan_movement_scope
+						set_variable = {
+							name = eqfm_current_adjustment_var
+							value = eqfm_movement_activism_multiplier_value
+						}
+						add_modifier = {
+							name = modifier_eqfm_deconfliction_phase_movement
+							multiplier = {
+								value = 0
+								if = {
+									limit = {
+										scope:eqfm_balkan_movement_scope ?= {
+											has_variable = eqfm_current_adjustment_var
+										}
 									}
+									add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 								}
-								add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 							}
 						}
-					}
-					set_variable = {
-						name = eqfm_previous_adjustment_var
-						value = {
-							value = 0
-							if = {
-								limit = {
-									scope:eqfm_balkan_movement_scope = {
-										has_variable = eqfm_current_adjustment_var
+						set_variable = {
+							name = eqfm_previous_adjustment_var
+							value = {
+								value = 0
+								if = {
+									limit = {
+										scope:eqfm_balkan_movement_scope = {
+											has_variable = eqfm_current_adjustment_var
+										}
 									}
+									add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 								}
-								add = scope:eqfm_balkan_movement_scope.var:eqfm_current_adjustment_var
 							}
 						}
 					}
@@ -961,70 +962,38 @@ eqfm_add_balkan_powder_keg_modifiers_effect = {
 }
 
 eqfm_clear_balkan_powder_keg_modifiers_effect = {
-	c:TUR ?= {
-		hidden_effect = {
+	hidden_effect = {
+		every_political_movement = {
 			if = {
 				limit = {
-					has_modifier = modifier_eqfm_stable_phase
+					has_modifier = modifier_eqfm_stable_phase_movement
 				}
-				remove_modifier = modifier_eqfm_stable_phase
+				remove_modifier = modifier_eqfm_stable_phase_movement
 			}
 			if = {
 				limit = {
-					has_modifier = modifier_eqfm_unrest_phase
+					has_modifier = modifier_eqfm_unrest_phase_movement
 				}
-				remove_modifier = modifier_eqfm_unrest_phase
+				remove_modifier = modifier_eqfm_unrest_phase_movement
+			}
+			
+			if = {
+				limit = {
+					has_modifier = modifier_eqfm_hostility_phase_movement
+				}
+				remove_modifier = modifier_eqfm_hostility_phase_movement
 			}
 			if = {
 				limit = {
-					has_modifier = modifier_eqfm_hostility_phase
+					has_modifier = modifier_eqfm_deconfliction_phase_movement
 				}
-				remove_modifier = modifier_eqfm_hostility_phase
+				remove_modifier = modifier_eqfm_deconfliction_phase_movement
 			}
 			if = {
 				limit = {
-					has_modifier = modifier_eqfm_deconfliction_phase
+					has_modifier = modifier_eqfm_crisis_phase_movement
 				}
-				remove_modifier = modifier_eqfm_deconfliction_phase
-			}
-			if = {
-				limit = {
-					has_modifier = modifier_eqfm_crisis_phase
-				}
-				remove_modifier = modifier_eqfm_crisis_phase
-			}
-			every_political_movement = {
-				if = {
-					limit = {
-						has_modifier = modifier_eqfm_stable_phase_movement
-					}
-					remove_modifier = modifier_eqfm_stable_phase_movement
-				}
-				if = {
-					limit = {
-						has_modifier = modifier_eqfm_unrest_phase_movement
-					}
-					remove_modifier = modifier_eqfm_unrest_phase_movement
-				}
-				
-				if = {
-					limit = {
-						has_modifier = modifier_eqfm_hostility_phase_movement
-					}
-					remove_modifier = modifier_eqfm_hostility_phase_movement
-				}
-				if = {
-					limit = {
-						has_modifier = modifier_eqfm_deconfliction_phase_movement
-					}
-					remove_modifier = modifier_eqfm_deconfliction_phase_movement
-				}
-				if = {
-					limit = {
-						has_modifier = modifier_eqfm_crisis_phase_movement
-					}
-					remove_modifier = modifier_eqfm_crisis_phase_movement
-				}
+				remove_modifier = modifier_eqfm_crisis_phase_movement
 			}
 		}
 	}
