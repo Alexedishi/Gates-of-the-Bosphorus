@@ -222,6 +222,9 @@ New Additions:
 - Added a "Charioteer" trait in the event your redneck ruler joins a chariot races
 - Replaced and updated several icons and gfx
 
+Balancing/Adjustments:
+- Changed Abdulmecid's ideology from Reformer to Ottomanist
+
 Fixes:
 - ##Fixed several issues that could derail Greece's "Military League" journal
 - Added missing localization for Metaxism content
