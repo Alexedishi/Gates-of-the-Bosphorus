@@ -231,7 +231,7 @@ Fixes:
 - ##Fixed broken effects in the Triumph buttons
 - Moved grefm_byzantium.020's scripting into monthly state pulse
 - Fixed Amalia of Oldenburg being a transgender icon :sadge:
-- balkfm_croatia.300 will not try to add a journal that already exists
+- balkfm_croatia.300 will no longer try to add a journal that already exists
 - Added scope assertions to the options in balkfm_romania.004/5
 - Added handling for headtaking modifiers in the event MON or TUR are dead
 - Several small localization mistakes
