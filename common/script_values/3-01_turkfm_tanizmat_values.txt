@@ -1,7 +1,9 @@
 ﻿## Imperial Identity Values
 turkfm_tanzimat_ottomanist_progress_value = {
 	value = 0
+	## Political Movements
 	add = {
+		desc = turkfm_value_from_ottomanist_movement
 		value = {
 			every_political_movement = {
 				limit = {
@@ -10,9 +12,9 @@ turkfm_tanzimat_ottomanist_progress_value = {
 				add = political_movement_support
 			}
 		}
-		desc = turkfm_value_from_ottomanist_movement
 	}
 	add = {
+		desc = turkfm_value_from_modernizer_movement
 		value = {
 			every_political_movement = {
 				limit = {
@@ -21,10 +23,10 @@ turkfm_tanzimat_ottomanist_progress_value = {
 				add = political_movement_support
 			}
 		}
-		desc = turkfm_value_from_modernizer_movement
 	}
 	add = {
 		value = {
+			desc = turkfm_value_from_liberal_movement
 			every_political_movement = {
 				limit = {
 					is_political_movement_type = movement_liberal
@@ -32,9 +34,9 @@ turkfm_tanzimat_ottomanist_progress_value = {
 				add = political_movement_support
 			}
 		}
-		desc = turkfm_value_from_liberal_movement
 	}
 	add = {
+		desc = turkfm_value_from_land_reform_movement
 		value = {
 			every_political_movement = {
 				limit = {
@@ -43,9 +45,9 @@ turkfm_tanzimat_ottomanist_progress_value = {
 				add = political_movement_support
 			}
 		}
-		desc = turkfm_value_from_land_reform_movement
 	}
 	add = {
+		desc = turkfm_value_from_minority_rights_movement
 		value = {
 			every_political_movement = {
 				limit = {
@@ -54,10 +56,10 @@ turkfm_tanzimat_ottomanist_progress_value = {
 				add = political_movement_support
 			}
 		}
-		desc = turkfm_value_from_minority_rights_movement
 	}
 	add = {
 		value = {
+			desc = turkfm_value_from_anti_slavery_movement
 			every_political_movement = {
 				limit = {
 					is_political_movement_type = movement_anti_slavery
@@ -65,11 +67,63 @@ turkfm_tanzimat_ottomanist_progress_value = {
 				add = political_movement_support
 			}
 		}
-		desc = turkfm_value_from_anti_slavery_movement
+	}
+	## Characters
+	add = {
+		desc = turkfm_value_from_pro_reform_character_impact
+		value = {
+			every_scope_character = {
+				limit = {
+					OR = {
+						has_ideology = ideology:ideology_gbbf_ottomanist_leader
+						has_ideology = ideology:ideology_modernizer_leader
+						has_ideology = ideology:ideology_liberal_leader
+						has_ideology = ideology:ideology_abolitionist
+						has_ideology = ideology:ideology_reformer
+					}
+				}
+				add = {
+					add = prominence
+					max = 100
+					min = 0
+					divide = 100
+				}
+				multiply = {
+					add = popularity
+					max = 100
+					min = -100
+					divide = 100
+				}
+			}
+			round_to = 0.01
+		}
+	}
+	## Intelligentsia Clout
+	add = {
+		value = {
+			desc = turkfm_value_from_intelligentsia_clout
+			add = ig:ig_intelligentsia.ig_clout
+		}
+	}
+	## Law Progressiveness
+	if = {
+		limit = {
+			var:gbbf_average_progressiveness_var > 0
+		}
+		add = {
+			value = {
+				desc = turkfm_value_from_law_progressiveness
+				add = var:gbbf_average_progressiveness_var
+				divide = 1000
+				round_to = 0.01
+			}
+		}
 	}
 }
 
 turkfm_tanzimat_islamist_progress_value = {
+	value = 0
+	## Political Movements
 	add = {
 		value = {
 			every_political_movement = {
@@ -102,6 +156,58 @@ turkfm_tanzimat_islamist_progress_value = {
 			}
 		}
 		desc = turkfm_value_from_reactionary_movement
+	}
+	## Characters
+	add = {
+		desc = turkfm_value_from_anti_reform_character_impact
+		value = {
+			every_scope_character = {
+				limit = {
+					OR = {
+						has_ideology = ideology:ideology_gbbf_islamist_leader
+						has_ideology = ideology:ideology_royalist
+						has_ideology = ideology:ideology_authoritarian
+						has_ideology = ideology:ideology_traditionalist
+						has_ideology = ideology:ideology_theocrat
+					}
+				}
+				add = {
+					add = prominence
+					max = 100
+					min = 0
+					divide = 100
+				}
+				multiply = {
+					add = popularity
+					max = 100
+					min = -100
+					divide = 100
+				}
+			}
+			round_to = 0.01
+		}
+	}
+	## Devout Clout
+	add = {
+		value = {
+			desc = turkfm_value_from_devout_clout
+			add = ig:ig_devout.ig_clout
+		}
+	}
+	## Law Progressiveness
+	if = {
+		limit = {
+			var:gbbf_average_progressiveness_var < 0
+		}
+		add = {
+			value = {
+				desc = turkfm_value_from_law_regressiveness
+				add = var:gbbf_average_progressiveness_var
+				multiply = -1
+				divide = 1000
+				round_to = 0.01
+			}
+		}
 	}
 }
 
