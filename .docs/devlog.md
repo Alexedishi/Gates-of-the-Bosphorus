@@ -190,21 +190,17 @@ bulfm_: Once contained content for Bulgaria; expanded into balkfm_
 
 
 ####---------- Planned Updates ----------####
---Update 4.4.0--
-New Additions:
-- ##New journal "The Nature of Yugoslavia" Promote a Centralized or Federalist approach to the Yugoslav state
-- ##Added "Yugoslav Integralist" ideologies and movement representing the Integralist movement in Yugoslavia
-
-
---Update 4.3.0--
-New Additions:
-- ##Rebuilt "The Teachings of al-Sanusi" into a global journal with new mechanics, events, and modifiers
-
 
 --Update 4.2.0--
 New Additions:
+- ##New journal "The Nature of Yugoslavia" Promote a Centralized or Federalist approach to the Yugoslav state
+- ##Added "Yugoslav Integralist" ideologies and movement representing the Integralist movement in Yugoslavia
 - ##Fully implemented the Young Turks content with varying outcomes for the Republican movements in the Ottoman Empire
 - ##New journal "The Foundation of the State" representing the multiple outcomes of Turkish identity after the failure of the Tanzimat
+- ##Rebuilt "The Teachings of al-Sanusi" into a global journal with new mechanics, events, and modifiers
+
+Fixes:
+- - ##Fixed several issues that could derail Greece's "Military League" journal
 
 
 ####---------- Published Updates ----------####
@@ -215,7 +211,7 @@ New Additions:
   -- New custom journal widget showcasing the two dynastic leaders
   -- ##Fixed several issues where the Dynastic changeover events would not fire
   -- New character role "Pretender" for the non-ruling dynasts
-- ##Completely rebuilt the "Powderkeg of Europe" journal & associated content:
+- Completely rebuilt the "Powderkeg of Europe" journal & associated content:
   -- Scripting refactored to use variable maps & effects/triggers reviewed and improved in many cases
   -- Improved event scripting to better integrate with features from 1.10 and 1.13
   -- Integration with the new CMF Situations UI widget to better present the journal content
@@ -226,14 +222,13 @@ Balancing/Adjustments:
 - Changed Abdulmecid's ideology from Reformer to Ottomanist
 
 Fixes:
-- ##Fixed several issues that could derail Greece's "Military League" journal
 - Added missing localization for Metaxism content
-- ##Fixed broken effects in the Triumph buttons
+- Fixed broken effects in the Triumph buttons
 - Moved grefm_byzantium.020's scripting into monthly state pulse
 - Fixed Amalia of Oldenburg being a transgender icon :sadge:
 - balkfm_croatia.300 will no longer try to add a journal that already exists
 - Added scope assertions to the options in balkfm_romania.004/5
-- Added handling for headtaking modifiers in the event MON or TUR are dead
+- Added handling for head-taking modifiers in the event MON or TUR are dead
 - Several small localization mistakes
 
 
