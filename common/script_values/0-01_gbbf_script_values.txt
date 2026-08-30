@@ -413,13 +413,59 @@ gbbf_citizenship_restrictiveness_value = {
 gbbf_average_progressiveness_value = {
 	value = 0
 	every_active_law = {
-		add = progressiveness
+		add = law_type.progressiveness
 	}
 	divide = {
 		every_active_law = {
 			add = 1
 		}
 		min = 1
+	}
+	round_to = 0.01
+}
+
+gbbf_movement_impact_value = {
+	value = 0
+	add = political_movement_support
+	multiply = political_movement_radicalism
+	multiply = 100
+	round_to = 0.01
+}
+
+gbbf_character_impact_value = {
+	value = 0
+	add = {
+		add = prominence
+		max = 100
+		min = 0
+		divide = 100
+	}
+	multiply = {
+		add = popularity
+		max = 100
+		min = -100
+		divide = 100
+	}
+	round_to = 0.01
+}
+
+gbbf_character_prominence_decimal_value = {
+	value = 0
+	add = prominence
+	divide = 100
+	round_to = 0.01
+}
+
+gbbf_commander_impact_value = {
+	value = 0
+	add = prominence
+	divide = 100
+	multiply = {
+		add = commander_military_formation.num_units
+		divide = {
+			add = owner.army_size
+			min = 1
+		}
 	}
 	round_to = 0.01
 }
