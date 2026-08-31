@@ -217,6 +217,7 @@ New Additions:
   -- Integration with the new CMF Situations UI widget to better present the journal content
 - Added a "Charioteer" trait in the event your redneck ruler joins a chariot races
 - Replaced and updated several icons and gfx
+- Added state trait and georegion for the Dinaric Alps
 
 Balancing/Adjustments:
 - Changed Abdulmecid's ideology from Reformer to Ottomanist
@@ -233,6 +234,7 @@ Fixes:
 - Several small localization mistakes
 - Fixed several issues with the Black Mountain buttons should MON get obliterated early
 - Political movements will no longer contribute negative progress to Ottoman identities
+- Fixed on_action issue that could cause modifier_balkfm_yugoslavist_separatism to be applied multiple times
 
 
 --Update 4.0.8--
