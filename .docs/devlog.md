@@ -236,6 +236,7 @@ Fixes:
 - Political movements will no longer contribute negative progress to Ottoman identities
 - Fixed on_action issue that could cause modifier_balkfm_yugoslavist_separatism to be applied multiple times
 - Added handling for head-taking modifiers in the event MON or TUR are dead
+- Added effect to replace Turkish homelands with Ottoman homelands in the "Ottoman Motherland" event
 
 
 --Update 4.0.8--
