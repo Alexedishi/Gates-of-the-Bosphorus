@@ -221,6 +221,7 @@ New Additions:
 Balancing/Adjustments:
 - Changed Abdulmecid's ideology from Reformer to Ottomanist
 - Adjusted Yugoslav project so only Yugoslav countries are involved
+- Political movements will no longer contribute negative progress to Ottoman identities
 
 Fixes:
 - Added missing localization for Metaxism content
@@ -229,10 +230,9 @@ Fixes:
 - Fixed Amalia of Oldenburg being a transgender icon :sadge:
 - balkfm_croatia.300 will no longer try to add a journal that already exists
 - Added scope assertions to the options in balkfm_romania.004/5
-- Added handling for head-taking modifiers in the event MON or TUR are dead
 - Several small localization mistakes
 - Fixed several issues with the Black Mountain buttons should MON get obliterated early
-- Political movements will no longer contribute negative progress to Ottoman identities
+- Added handling for head-taking modifiers in the event MON or TUR are dead
 
 
 --Update 4.0.8--
