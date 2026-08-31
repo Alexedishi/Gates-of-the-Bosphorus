@@ -209,7 +209,7 @@ New Additions:
 - Reworked the "Throne of Thorns" journal:
   -- Scripting refactored to use variable maps & effects/triggers reviewed
   -- New custom journal widget showcasing the two dynastic leaders
-  -- ##Fixed several issues where the Dynastic changeover events would not fire
+  -- Fixed several cases where the Dynastic changeover events would not fire
   -- New character role "Pretender" for the non-ruling dynasts
 - Completely rebuilt the "Powderkeg of Europe" journal & associated content:
   -- Scripting refactored to use variable maps & effects/triggers reviewed and improved in many cases
