@@ -55,20 +55,16 @@
 	complete = {
 		custom_tooltip = {
 			text = je_turkfm_tanzimat_main_complete
-			OR = {
-				has_variable = turkfm_ottomanist_identity_enforced
-				has_variable = turkfm_islamist_identity_enforced
-			}
+			has_global_variable = turkfm_tanzimat_identity_complete
 		}
 	}
 
 	on_complete = {
-		set_global_variable = turkfm_tanzimat_complete
 		custom_tooltip = {
 			text = je_turkfm_tanzimat_main_on_complete_ottomanist
 			if = {
 				limit = {
-					has_variable = turkfm_ottomanist_identity_enforced
+					global_var:turkfm_tanzimat_identity_complete ?= cu:ottoman
 				}
 				trigger_event = turkfm_tanzimat.009
 			}
@@ -77,12 +73,12 @@
 			text = je_turkfm_tanzimat_main_on_complete_islamist
 			if = {
 				limit = {
-					has_variable = turkfm_islamist_identity_enforced
+					global_var:turkfm_tanzimat_identity_complete ?= rel:sunni
 				}
 				trigger_event = turkfm_tanzimat.008
 			}
 		}
-		turkfm_cleanup_tanzimat_effect = yes
+		turkfm_cleanup_tanzimat_identity_effect = yes
 	}
 
 	fail = {
@@ -115,7 +111,7 @@
 			trigger_event = turkfm_tanzimat.006
 		}
 		custom_tooltip = turkfm_grand_collapse_possible
-		turkfm_cleanup_tanzimat_effect = yes
+		turkfm_cleanup_tanzimat_identity_effect = yes
 	}
 
 	on_weekly_pulse = {
@@ -182,10 +178,7 @@ je_turkfm_tanzimat_reforms = {
 	complete = {
 		custom_tooltip = {
 			text = turkfm_tanzimat_identity_complete
-			OR = {
-				has_variable = turkfm_ottomanist_identity_enforced
-				has_variable = turkfm_islamist_identity_enforced
-			}
+			has_global_variable = turkfm_tanzimat_identity_complete
 		}
 		trigger_if = {
 			limit = {
@@ -348,6 +341,7 @@ je_turkfm_tanzimat_reforms = {
 	}
 	
 	on_complete = {
+		set_global_variable = turkfm_tanzimat_reforms_complete
 		if = {
 			limit = {
 				has_modifier = modifier_turkfm_feudal_argiculture
@@ -387,8 +381,43 @@ je_turkfm_tanzimat_reforms = {
 		}
 	}
 	
+	on_fail = {
+		hidden_effect = {
+			if = {
+				limit = {
+					has_modifier = modifier_turkfm_feudal_argiculture
+				}
+				remove_modifier = modifier_turkfm_feudal_argiculture
+			}
+			if = {
+				limit = {
+					has_modifier = modifier_turkfm_outmoded_bureaucracy
+				}
+				remove_modifier = modifier_turkfm_outmoded_bureaucracy
+			}
+			if = {
+				limit = {
+					has_modifier = modifier_turkfm_stagnant_economy
+				}
+				remove_modifier = modifier_turkfm_stagnant_economy
+			}
+			if = {
+				limit = {
+					has_modifier = modifier_turkfm_illiterate_populace
+				}
+				remove_modifier = modifier_turkfm_illiterate_populace
+			}
+			if = {
+				limit = {
+					has_modifier = modifier_turkfm_insecure_countryside
+				}
+				remove_modifier = modifier_turkfm_insecure_countryside
+			}
+		}
+	}
+	
 	invalid = {
-		has_global_variable = turkfm_tanzimat_complete
+		has_global_variable = turkfm_tanzimat_reforms_complete
 	}
 	
 	on_invalid = {
@@ -570,9 +599,8 @@ je_turkfm_tanzimat_young_ottomans = {
 			}
 			custom_tooltip = {
 				text = turkfm_tanzimat_completed_or_failed
-				OR = {
-					has_global_variable = turkfm_tanzimat_complete
-					has_global_variable = turkfm_tanzimat_failed
+				NOT = {
+					has_journal_entry = je_turkfm_tanzimat_main
 				}
 			}
 		}
