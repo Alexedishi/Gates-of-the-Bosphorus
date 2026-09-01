@@ -10,7 +10,7 @@
 
 ####---------- Version Compatibility ----------####
 #		GotB Patch	....	Victoria 3 Patch
-#		4.0.6		....	1.13.8
+#		4.1.0		....	1.13.11
 #		3.4.12		.... 	1.12.3
 #		3.3.7		.... 	1.10.6 / 1.11.1
 #		3.2.8		.... 	1.9.8
@@ -21,6 +21,52 @@
 #		1.0.0		....	1.5.6
 
 ####################################
+
+--Update 4.1.0--
+New Additions:
+- Reworked the "Throne of Thorns" journal:
+  -- Scripting refactored to use variable maps & effects/triggers reviewed
+  -- New custom journal widget showcasing the two dynastic leaders
+  -- Fixed several cases where the Dynastic changeover events would not fire
+  -- New character role "Pretender" for the non-ruling dynasts
+- Completely rebuilt the "Powder Keg of Europe" journal & associated content:
+  -- Scripting refactored to use variable maps & effects/triggers reviewed and improved in many cases
+  -- Improved event scripting to better integrate with features from 1.10 and 1.13
+  -- Integration with the new CMF Situations UI widget to better present the journal content
+- Added a "Charioteer" trait in the event your redneck ruler joins a chariot races
+- Replaced and updated several icons and gfx
+- Added state trait and georegion for the Dinaric Alps
+
+Balancing/Adjustments:
+- Changed Abdulmecid's ideology from Reformer to Ottomanist
+- Adjusted Yugoslav project so only Yugoslav countries are involved
+- Political movements will no longer contribute negative progress to Ottoman identities
+- Reduced grefm_megali_idea_complete_pan_greek_value to 14 from 15
+- Reduced required Silk Planation levels in je_grefm_constantinople to 12 from 20
+- Ludwig von Armansperg is now marked as married
+
+Fixes:
+- Added missing localization for Metaxism content
+- Fixed broken effects in the Triumph buttons
+- Moved grefm_byzantium.020's scripting into monthly state pulse
+- Fixed Amalia of Oldenburg being a transgender icon :sadge:
+- balkfm_croatia.300 will no longer try to add a journal that already exists
+- Added scope assertions to the options in balkfm_romania.004/5
+- Fixed several issues with the Black Mountain buttons should MON get obliterated early
+- Political movements will no longer contribute negative progress to Ottoman identities
+- Fixed on_action issue that could cause modifier_balkfm_yugoslavist_separatism to be applied multiple times
+- Added handling for head-taking modifiers in the event MON or TUR are dead
+- Added effect to replace Turkish homelands with Ottoman homelands in the "Ottoman Motherland" event
+- Added Kosovo to Greek Heartlands and Byzantine Empire georegions
+- Fixed incorrect variable scope for je_grefm_the_dedilomeni_principle progress bar
+- Several small localization mistakes
+
+
+--Update 4.0.8--
+Fixes:
+- Fixed incorrectly gated effects in eqfm_balkans.008/9
+
+
 --Update 4.0.7--
 Fixes:
 - Fixed an issue with the Tanzimat "Organize the Bureaucracy" agenda not correctly displaying its requirements
