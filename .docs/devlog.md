@@ -211,7 +211,7 @@ New Additions:
   -- New custom journal widget showcasing the two dynastic leaders
   -- Fixed several cases where the Dynastic changeover events would not fire
   -- New character role "Pretender" for the non-ruling dynasts
-- Completely rebuilt the "Powderkeg of Europe" journal & associated content:
+- Completely rebuilt the "Powder Keg of Europe" journal & associated content:
   -- Scripting refactored to use variable maps & effects/triggers reviewed and improved in many cases
   -- Improved event scripting to better integrate with features from 1.10 and 1.13
   -- Integration with the new CMF Situations UI widget to better present the journal content
@@ -223,6 +223,9 @@ Balancing/Adjustments:
 - Changed Abdulmecid's ideology from Reformer to Ottomanist
 - Adjusted Yugoslav project so only Yugoslav countries are involved
 - Political movements will no longer contribute negative progress to Ottoman identities
+- Reduced grefm_megali_idea_complete_pan_greek_value to 14 from 15
+- Reduced required Silk Planation levels in je_grefm_constantinople to 12 from 20
+- Ludwig von Armansperg is now marked as married
 
 Fixes:
 - Added missing localization for Metaxism content
@@ -231,12 +234,14 @@ Fixes:
 - Fixed Amalia of Oldenburg being a transgender icon :sadge:
 - balkfm_croatia.300 will no longer try to add a journal that already exists
 - Added scope assertions to the options in balkfm_romania.004/5
-- Several small localization mistakes
 - Fixed several issues with the Black Mountain buttons should MON get obliterated early
 - Political movements will no longer contribute negative progress to Ottoman identities
 - Fixed on_action issue that could cause modifier_balkfm_yugoslavist_separatism to be applied multiple times
 - Added handling for head-taking modifiers in the event MON or TUR are dead
 - Added effect to replace Turkish homelands with Ottoman homelands in the "Ottoman Motherland" event
+- Added Kosovo to Greek Heartlands and Byzantine Empire georegions
+- Fixed incorrect variable scope for je_grefm_the_dedilomeni_principle progress bar
+- Several small localization mistakes
 
 
 --Update 4.0.8--
