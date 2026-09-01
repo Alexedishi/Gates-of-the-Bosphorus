@@ -226,6 +226,8 @@ Balancing/Adjustments:
 - Reduced grefm_megali_idea_complete_pan_greek_value to 14 from 15
 - Reduced required Silk Planation levels in je_grefm_constantinople to 12 from 20
 - Ludwig von Armansperg is now marked as married
+- Completed Tanzimat agendas now counts towards Reformist progress
+- modifier_turkfm_reorganizing_spirit now decays
 
 Fixes:
 - Added missing localization for Metaxism content
