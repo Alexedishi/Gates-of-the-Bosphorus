@@ -291,6 +291,29 @@ turkfm_tanzimat_identity_tilt_value = {
 
 turkfm_tanzimat_reformist_progress_value = {
 	value = 0
+	## Number of Completed Agendas
+	if = {
+		limit = {
+			has_global_variable = turkfm_tanzimat_reforms_complete
+		}
+		add = {
+			desc = turkfm_value_from_completed_reforms_journal
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			has_journal_entry = je_turkfm_tanzimat_reforms
+		}
+		add = {
+			desc = turkfm_value_from_completed_reform_agendas
+			value = {
+				add = var:turkfm_completed_tanzimat_agendas_var
+				divide = 10
+				max = 1
+			}
+		}
+	}
 	## Ruler Ideology, if pro-Reform
 	if = {
 		limit = {
@@ -786,10 +809,7 @@ turkfm_completed_tanzimat_agendas_value = {
 	value = 0
 	if = {
 		limit = {
-			OR = {
-				has_variable = turkfm_ottomanist_identity_enforced
-				has_variable = turkfm_islamist_identity_enforced
-			}
+			has_global_variable = turkfm_tanzimat_identity_complete
 		}
 		add = 1
 	}
