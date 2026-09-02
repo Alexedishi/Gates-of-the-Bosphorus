@@ -204,6 +204,11 @@ Fixes:
 
 
 ####---------- Published Updates ----------####
+
+--Update 4.1.1--
+Fixes:
+- Fixed STATE_IONIAN_ISLANDS missing from several georegions
+
 --Update 4.1.0--
 New Additions:
 - Reworked the "Throne of Thorns" journal:
