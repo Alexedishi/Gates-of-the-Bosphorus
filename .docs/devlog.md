@@ -1,7 +1,7 @@
 ﻿##########################
 # GATES OF THE BOSPHORUS #
 ##########################
-Mod Version: 4.1.0
+Mod Version: 4.1.1
 Game Version: 1.13.11 / 1.14-beta
 
 Mod Author: Alexedishi
@@ -13,7 +13,7 @@ Special Thanks: RationaLess, Bahmut|Chris
 
 ####---------- Version Compatibility ----------####
 #		GotB Patch	....	Victoria 3 Patch
-#		4.1.0		....	1.13.11
+#		4.1.1		....	1.13.11
 #		3.4.12		.... 	1.12.3
 #		3.3.7		.... 	1.10.6 / 1.11.1
 #		3.2.8		.... 	1.9.8
@@ -208,6 +208,7 @@ Fixes:
 --Update 4.1.1--
 Fixes:
 - Fixed STATE_IONIAN_ISLANDS missing from several georegions
+
 
 --Update 4.1.0--
 New Additions:
