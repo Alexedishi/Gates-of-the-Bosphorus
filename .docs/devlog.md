@@ -200,7 +200,7 @@ New Additions:
 - ##Rebuilt "The Teachings of al-Sanusi" into a global journal with new mechanics, events, and modifiers
 
 Fixes:
-- - ##Fixed several issues that could derail Greece's "Military League" journal
+- ##Fixed several issues that could derail Greece's "Military League" journal
 
 
 ####---------- Published Updates ----------####
