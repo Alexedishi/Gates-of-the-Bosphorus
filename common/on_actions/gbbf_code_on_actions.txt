@@ -280,14 +280,14 @@ balkfm_country_release_2 = {
 ####---------- on_diplomatic_action ----------####
 on_diplomatic_action_overlord_decrease_autonomy = {
 	on_actions = {
-		eqfm_tension_decrease_autonomy
+		eqfm_balkans_decrease_autonomy
 	}
 }
 
 on_diplomatic_action_overlord_increase_autonomy = {
 	on_actions = {
 		balkfm_trs_protectorate_autonomy
-		eqfm_tension_increase_autonomy
+		eqfm_balkans_increase_autonomy
 	}
 }
 
@@ -299,10 +299,10 @@ on_diplomatic_action_subject_increase_own_autonomy = {
 
 balkfm_trs_protectorate_autonomy = {
 	trigger = {
-		scope:first_country = {
+		scope:actor = {
 			c:AUS ?= this
 		}
-		scope:second_country = {
+		scope:recipient = {
 			c:TRS ?= this
 		}
 	}
@@ -334,60 +334,48 @@ balkfm_trs_protectorate_autonomy = {
 	}
 }
 
-eqfm_tension_decrease_autonomy = {
+eqfm_balkans_decrease_autonomy = {
 	trigger = {
-		eqfm_can_escalate_tension_trigger = yes
-		scope:first_country = {
+		eqfm_balkan_powder_keg_can_escalate_trigger = yes
+		scope:actor = {
 			c:TUR ?= this
 		}
-		scope:second_country = {
+		scope:recipient = {
 			balkfm_balkans_native_trigger = yes
 		}
 	}
 	effect = {
-		global_var:eqfm_balkan_situation = {
-			change_variable = {
-				name = eqfm_escalation_var
-				add = 50
-			}
+		eqfm_add_balkan_powder_keg_escalation_effect = {
+			value = 50
 		}
 		every_country = {
 			limit = {
-				is_involved_in_journal_entry = je_eqfm_balkan_situation
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
 			post_notification = eqfm_autonomy_decreased
-		}
-		c:TUR ?= {
-			eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
 		}
 	}
 }
 
-eqfm_tension_increase_autonomy = {
+eqfm_balkans_increase_autonomy = {
 	trigger = {
-		eqfm_can_deescalate_tension_trigger = yes
-		scope:first_country = {
+		eqfm_balkan_powder_keg_can_deescalate_trigger = yes
+		scope:actor = {
 			c:TUR ?= this
 		}
-		scope:second_country = {
+		scope:recipient = {
 			balkfm_balkans_native_trigger = yes
 		}
 	}
 	effect = {
-		global_var:eqfm_balkan_situation = {
-			change_variable = {
-				name = eqfm_deescalation_var
-				add = 25
-			}
+		eqfm_add_balkan_powder_keg_deescalation_effect = {
+			value = 25
 		}
 		every_country = {
 			limit = {
-				is_involved_in_journal_entry = je_eqfm_balkan_situation
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
 			post_notification = eqfm_autonomy_increased
-		}
-		c:TUR ?= {
-			eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
 		}
 	}
 }
@@ -399,13 +387,13 @@ eqfm_tension_increase_autonomy = {
 # scope:initiator = the country doing the expelling
 on_diplomats_expelled = {
 	on_actions = {
-		eqfm_tension_diplomats_expelled
+		eqfm_balkans_diplomats_expelled
 	}
 }
 
-eqfm_tension_diplomats_expelled = {
+eqfm_balkans_diplomats_expelled = {
 	trigger = {
-		eqfm_can_escalate_tension_trigger = yes
+		eqfm_balkan_powder_keg_can_escalate_trigger = yes
 		scope:target = {
 			c:TUR ?= this
 		}
@@ -417,18 +405,12 @@ eqfm_tension_diplomats_expelled = {
 					country_rank < rank_value:great_power
 				}
 			}
-			global_var:eqfm_balkan_situation = {
-				change_variable = {
-					name = eqfm_escalation_var
-					add = 5
-				}
-			}
-			c:TUR ?= {
-				eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
+			eqfm_add_balkan_powder_keg_escalation_effect = {
+				value = 5
 			}
 			every_country = {
 				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_situation
+					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 				}
 				post_notification = eqfm_diplomats_expelled_1
 			}
@@ -439,20 +421,14 @@ eqfm_tension_diplomats_expelled = {
 					country_rank >= rank_value:great_power
 				}
 			}
-			global_var:eqfm_balkan_situation = {
-				change_variable = {
-					name = eqfm_escalation_var
-					add = 10
-				}
+			eqfm_add_balkan_powder_keg_escalation_effect = {
+				value = 10
 			}
 			every_country = {
 				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_situation
+					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 				}
 				post_notification = eqfm_diplomats_expelled_2
-			}
-			c:TUR ?= {
-				eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
 			}
 		}
 	}
@@ -949,39 +925,38 @@ on_state_created = {
 ####---------- on_secession_start ----------####
 on_secession_start = {
 	on_actions = {
-		eqfm_secession_start
+		eqfm_balkan_secession_start
 	}
 }
 
-eqfm_secession_start = {
-	effect = {
-		if = {
-			limit = {
-				c:TUR ?= this
-				is_involved_in_journal_entry = je_eqfm_balkan_situation
-				scope:target = {
-					balkfm_balkans_native_trigger = yes
-				}
-			}
-			scope:target = {
-				set_variable = eqfm_rebellion_tag_tracker
-				every_scope_state = {
-					remove_modifier = modifier_eqfm_race_riots
-				}
-				add_modifier = {
-					name = modifier_eqfm_nationalist_uprising
-					months = gbbf_normal_modifier_time
-				}
-			}
-			eqfm_add_large_deescalation_effect = yes
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_situation
-				}
-				post_notification = eqfm_secession_start
-			}
-			trigger_event = eqfm_balkans.006
+eqfm_balkan_secession_start = {
+	trigger = {
+		is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+		scope:target = {
+			is_in_geographic_region = geographic_region_rumelia
+			gbbf_country_has_rumelian_culture_trigger = yes
 		}
+	}
+	effect = {
+		save_scope_as = eqfm_post_origin_scope
+		scope:target = {
+			save_scope_as = eqfm_rebellion_scope
+			every_scope_state = {
+				remove_modifier = modifier_eqfm_race_riots
+			}
+			add_modifier = {
+				name = modifier_eqfm_nationalist_uprising
+				months = gbbf_normal_modifier_time
+			}
+		}
+		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_balkan_secession_start
+		}
+		trigger_event = eqfm_balkans.008
 	}
 }
 
@@ -993,14 +968,14 @@ eqfm_secession_start = {
 # scope:wargoal_impact = the impact of the wargoal enforced
 on_wargoal_enforced = {
 	on_actions = {
-		eqfm_tension_wargoal_enforced_1 # Wargoal against TUR
-		eqfm_tension_wargoal_enforced_2 # Wargoal from TUR
+		eqfm_balkans_wargoal_enforced_1 # Wargoal against TUR
+		eqfm_balkans_wargoal_enforced_2 # Wargoal from TUR
 	}
 }
 
-eqfm_tension_wargoal_enforced_1 = {
+eqfm_balkans_wargoal_enforced_1 = {
 	trigger = {
-		eqfm_can_escalate_tension_trigger = yes
+		eqfm_balkan_powder_keg_can_escalate_trigger = yes
 		scope:target = {
 			c:TUR ?= this
 		}
@@ -1010,18 +985,12 @@ eqfm_tension_wargoal_enforced_1 = {
 			limit = {
 				country_rank < rank_value:great_power
 			}
-			global_var:eqfm_balkan_situation = {
-				change_variable = {
-					name = eqfm_escalation_var
-					add = 3
-				}
-			}
-			c:TUR ?= {
-				eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
+			eqfm_add_balkan_powder_keg_escalation_effect = {
+				value = eqfm_balkan_powder_keg_tiny_escalation_value
 			}
 			every_country = {
 				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_situation
+					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 				}
 				post_notification = eqfm_wargoal_enforced_by_non_gp
 			}
@@ -1030,18 +999,12 @@ eqfm_tension_wargoal_enforced_1 = {
 			limit = {
 				country_rank >= rank_value:great_power
 			}
-			global_var:eqfm_balkan_situation = {
-				change_variable = {
-					name = eqfm_escalation_var
-					add = 5
-				}
-			}
-			c:TUR ?= {
-				eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
+			eqfm_add_balkan_powder_keg_escalation_effect = {
+				value = eqfm_balkan_powder_keg_very_small_escalation_value
 			}
 			every_country = {
 				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_situation
+					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 				}
 				post_notification = eqfm_wargoal_enforced_by_great_power
 			}
@@ -1049,9 +1012,9 @@ eqfm_tension_wargoal_enforced_1 = {
 	}
 }
 
-eqfm_tension_wargoal_enforced_2 = {
+eqfm_balkans_wargoal_enforced_2 = {
 	trigger = {
-		eqfm_can_deescalate_tension_trigger = yes
+		eqfm_balkan_powder_keg_can_deescalate_trigger = yes
 		c:TUR ?= this
 		scope:target = {
 			is_in_geographic_region = geographic_region_rumelia
@@ -1064,18 +1027,12 @@ eqfm_tension_wargoal_enforced_2 = {
 					country_rank >= rank_value:great_power
 				}
 			}
-			global_var:eqfm_balkan_situation = {
-				change_variable = {
-					name = eqfm_deescalation_var
-					add = 10
-				}
-			}
-			c:TUR ?= {
-				eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
+			eqfm_add_balkan_powder_keg_deescalation_effect = {
+				value = eqfm_balkan_powder_keg_medium_deescalation_value
 			}
 			every_country = {
 				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_situation
+					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 				}
 				post_notification = eqfm_wargoal_enforced_against_great_power
 			}
@@ -1086,35 +1043,23 @@ eqfm_tension_wargoal_enforced_2 = {
 					is_subject_of = c:TUR
 				}
 			}
-			global_var:eqfm_balkan_situation = {
-				change_variable = {
-					name = eqfm_deescalation_var
-					add = 5
-				}
-			}
-			c:TUR ?= {
-				eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
+			eqfm_add_balkan_powder_keg_deescalation_effect = {
+				value = eqfm_balkan_powder_keg_small_deescalation_value
 			}
 			every_country = {
 				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_situation
+					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 				}
 				post_notification = eqfm_wargoal_enforced_against_subject
 			}
 		}
 		else = { # Yes, this INCREASES escalation
-			global_var:eqfm_balkan_situation = {
-				change_variable = {
-					name = eqfm_escalation_var
-					add = 5
-				}
-			}
-			c:TUR ?= {
-				eqfm_check_balkan_situation_phase_effect = yes # This MUST fire from TUR scope
+			eqfm_add_balkan_powder_keg_escalation_effect = {
+				value = eqfm_balkan_powder_keg_small_escalation_value
 			}
 			every_country = {
 				limit = {
-					is_involved_in_journal_entry = je_eqfm_balkan_situation
+					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 				}
 				post_notification = eqfm_wargoal_enforced_against_non_gp
 			}

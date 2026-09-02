@@ -38,7 +38,7 @@ je_turkfm_tanzimat_agriculture_reform_goal_3_desc: "\n • Does #bold not#! have
  je_turkfm_tanzimat_military_reform_goal_1: "#indent_newline:9 [GetPlayer.GetCustom('turkfm_tanzimat_military_reform_goal_1_type')] [concept_army] size is #v 100 or greater#!#!"
  je_turkfm_tanzimat_military_reform_goal_2: "#indent_newline:9 [GetPlayer.GetCustom('turkfm_tanzimat_military_reform_goal_2_type')] Active [GetLawGroup('lawgroup_army_model').GetName] [concept_law] in [ROOT.GetCountry.GetNameNoFlag] does #bold not#! have the [GetAmendmentType('amendment_gbbf_cizye_tax').GetName] [concept_amendment]#!"
  je_turkfm_tanzimat_military_reform_goal_3: "#indent_newline:9 [GetPlayer.GetCustom('turkfm_tanzimat_military_reform_goal_3_type')] All [GetBuildingType('building_barrack').GetName] in [ROOT.GetCountry.GetNameNoFlag] do not have the $pm_no_organization$ [concept_production_method] active and do not have a $gbbf_goods$ [concept_shortage]#!"
-je_turkfm_tanzimat_military_reform_goal_4: "#indent_newline:9 [GetPlayer.GetCustom('turkfm_tanzimat_military_reform_goal_5_type')] All [concept_army] $gbbf_units$ in [ROOT.GetCountry.GetName] are of #tooltippable #tooltip:[GetRawTextTooltipTag('je_turkfm_tanzimat_military_reform_goal_4_desc')] eligible#!#! $gbbf_combat_unit_types$#!"
+je_turkfm_tanzimat_military_reform_goal_4: "#indent_newline:9 [GetPlayer.GetCustom('turkfm_tanzimat_military_reform_goal_4_type')] All [concept_army] $gbbf_units$ in [ROOT.GetCountry.GetName] are of #tooltippable #tooltip:[GetRawTextTooltipTag('je_turkfm_tanzimat_military_reform_goal_4_desc')] eligible#!#! $gbbf_combat_unit_types$#!"
  je_turkfm_tanzimat_military_reform_goal_4_desc: "[concept_combat_unit_type] is #v none#! of:\n • [GetCombatUnitType('combat_unit_type_irregular_infantry').GetName]\n • [GetCombatUnitType('combat_unit_type_cannon_artillery').GetName]\n • [GetCombatUnitType('combat_unit_type_hussars').GetName]"
 
  je_turkfm_tanzimat_civics_reform_status: "\n\n$turkfm_tanzimat_civics_agenda$ Progress:\n • $je_turkfm_tanzimat_civics_reform_goal_1$\n • $je_turkfm_tanzimat_civics_reform_goal_2$\n • $je_turkfm_tanzimat_civics_reform_goal_3$\n • $je_turkfm_tanzimat_civics_reform_goal_4$\n • $je_turkfm_tanzimat_civics_reform_goal_5$"
@@ -102,6 +102,7 @@ je_turkfm_tanzimat_military_reform_goal_4: "#indent_newline:9 [GetPlayer.GetCust
 
  # Journal Entry Lobby Text
  je_turkfm_tanzimat_main_lobby: "$gbbf_journal_lobby$\nFor decades, the Ottoman Empire has been in steady decline, with the powers of Europe gnawing at its borders and unrest spreading across its minorities. In the face of these threats, Sultan #bold Mahmud II#! has championed an era of reform, with the aim of creating a truly centralized bureaucracy to govern and unite the Empire."
+ je_turkfm_tanzimat_young_turks_lobby: ""
 
  # Custom Loc
  turkfm_tanzimat_islamism_progress: "progress by #greece #tooltippable;tooltip:[GetPlayer.GetTooltipTag],turkfm_tanzimat_identity_progress_breakdown [GetPlayer.MakeScope.ScriptValue('turkfm_tanzimat_identity_progress_value')]#!#! in favor of the $turkfm_islamist$ $turkfm_identity$"
@@ -117,12 +118,15 @@ je_turkfm_tanzimat_military_reform_goal_4: "#indent_newline:9 [GetPlayer.GetCust
  modifier_turkfm_decentralized_administration: "Decentralized Administration"
  modifier_turkfm_eternal_caliphate: "Eternal Caliphate"
  modifier_turkfm_ottoman_motherland: "Ottoman Motherland"
+ modifier_turkfm_exiled_character_to_libya: "Exiled Dissident to Libya"
+ modifier_turkfm_exiled_to_libya: "Exiled to Libya"
+ modifier_turkfm_returned_from_libya: "Returned from Libya"
  
  modifier_turkfm_feudal_argiculture: "Feudal Agriculture"
  modifier_turkfm_modernized_agriculture: "Modernized Agriculture"
  modifier_turkfm_modernized_agriculture_movement: "Modernized Agriculture"
  
- modifier_turkfm_janissary_legacy: "Legacy of the Janissaries"
+ modifier_turkfm_janissary_legacy: "Dismantled the Janissaries"
  modifier_turkfm_cizye_tax: "`Cizye Tax`"
  modifier_turkfm_modernized_army: "Modernized Army"
  
@@ -179,18 +183,22 @@ je_turkfm_tanzimat_military_reform_goal_4: "#indent_newline:9 [GetPlayer.GetCust
  # Notifications
  notification_turkfm_tanzimat_started_name: "#yellow Ottoman Empire#! Declares the #bold $turkfm_tanzimat$#!"
  notification_turkfm_tanzimat_started_desc: "Riding the wave of reform initiated by #yellow Selim III#!, the Sultan of the #yellow Ottoman Empire#! has declared ambitious plans to "Reorder" and modernize the Ottoman state."
+ 
+ notification_turkfm_exiled_to_libya_name: "[SCOPE.sCharacter('exile_scope').GetFullName] exiled to #bold Libya#!."
+ notification_turkfm_exiled_to_libya_desc: "[SCOPE.sCharacter('exile_scope').GetFullName] has been exiled to #bold Libya#! by [SCOPE.sCountry('ottoman_scope').GetName]."
+ notification_turkfm_exiled_to_libya_tooltip: "#header $notification_turkfm_exiled_to_libya_name$#!\n$TOOLTIP_DELIMITER$\n$notification_turkfm_exiled_to_libya_desc$"
 
  # Scripted Buttons
  turkfm_start_tanzimat_name: "Declare the $turkfm_tanzimat$"
  turkfm_start_tanzimat_desc: "The Empire is both stagnant and rotting to its core. With some reforms completed and several more underway, all that remains is to give the Reorganization legal sanction by royal decree."
  turkfm_abolish_cizye_name: "Abolish the [GetAmendmentType('amendment_gbbf_cizye_tax').GetName]"
- turkfm_abolish_cizye_desc: ""
+ turkfm_abolish_cizye_desc: "The [GetAmendmentType('amendment_gbbf_cizye_tax').GetName] has its roots in the Quran. In exchange for an exemption from military service, non-Muslims pay a head tax. While useful in diffusing conflicts with our subjects, this often hampers military recruitment."
  turkfm_abolish_chiftlik_name: "Abolish [GetAmendmentType('amendment_gbbf_chiftlik').GetName] Rights"
- turkfm_abolish_chiftlik_desc: ""
+ turkfm_abolish_chiftlik_desc: "The [GetAmendmentType('amendment_gbbf_chiftlik').GetName] system is hardly a structured system at all. Rather, it represents the failure of the Sultan to assert central control over the Empire."
  turkfm_abolish_elifba_name: "Abolish the [GetAmendmentType('amendment_gbbf_elifba').GetName] Script"
- turkfm_abolish_elifba_desc: ""
+ turkfm_abolish_elifba_desc: "Since the foundation of the Empire, all official documents have been written in the [GetAmendmentType('amendment_gbbf_elifba').GetName] script. While integral in linking the Empire to its Muslim subjects, reformers argue that it lays a significant role in impeding contact with the West."
  turkfm_abolish_esir_pazari_name: "Abolish [GetAmendmentType('amendment_gbbf_esir_pazari').GetName]"
- turkfm_abolish_esir_pazari_desc: ""
+ turkfm_abolish_esir_pazari_desc: "Over the last century, the Empire's specialized slave trade has drawn the ire of the Western powers. As abolitionists see increased in dismantling the slave trade abroad, the Sultan finds himself under increased pressure to suppress [GetAmendmentType('amendment_gbbf_esir_pazari').GetName]."
  
  turkfm_enforce_identity_name: "Embrace $turkfm_imperial_identity$"
  turkfm_enforce_identity_desc: "The tide of Western thought has threatened to tear the Empire apart. The $turkfm_porte$ must act decisively to secure a future foundation for the Empire, be it through $turkfm_ottomanism$ or $turkfm_islamism$."
@@ -216,54 +224,59 @@ je_turkfm_tanzimat_military_reform_goal_4: "#indent_newline:9 [GetPlayer.GetCust
  turkfm_young_ottomans_progressbar_desc: "Young Ottoman Support"
  
  turkfm_young_turks_progressbar: ""
- turkfm_young_turks_progressbar_desc: ""
+ turkfm_young_turks_progressbar_desc: "$turkfm_young_turks$ Support"
 
  # Script Value Breakdowns
- turkfm_value_from_literacy: "[concept_literacy] in [ROOT.GetCountry.GetNameNoFlag]"
- turkfm_value_from_declared_reforms: "declaring the $turkfm_tanzimat_reforms$"
+ turkfm_value_from_ottomanist_movement: "the $gbbf_support$ behind the #bold $movement_gbbf_ottomanist$#!"
+ turkfm_value_from_modernizer_movement: "the $gbbf_support$ behind the #bold $movement_modernizer$#!"
+ turkfm_value_from_liberal_movement: "the $gbbf_support$ behind the #bold $movement_liberal$#!"
+ turkfm_value_from_land_reform_movement: "the $gbbf_support$ behind the #bold $movement_land_reform$#!"
+ turkfm_value_from_minority_rights_movement: "the $gbbf_support$ behind the #bold $movement_minority_rights$#!"
+ turkfm_value_from_anti_slavery_movement: "the $gbbf_support$ behind the #bold $movement_anti_slavery$#!"
  
- turkfm_value_from_policing: "[ROOT.GetCountry.GetAdjectiveNoFlag] $gbbf_investment_levels$ into the [GetInstitutionType('institution_police').GetName] [concept_institution]"
- turkfm_value_from_colonial_affairs: "[ROOT.GetCountry.GetAdjectiveNoFlag] $gbbf_investment_levels$ into the [GetInstitutionType('institution_colonial_affairs').GetName] [concept_institution]"
- turkfm_value_from_health_system: "[ROOT.GetCountry.GetAdjectiveNoFlag] $gbbf_investment_levels$ into the [GetInstitutionType('institution_health_system').GetName] [concept_institution]"
- turkfm_value_from_home_affairs: "[ROOT.GetCountry.GetAdjectiveNoFlag] $gbbf_investment_levels$ into the [GetInstitutionType('institution_home_affairs').GetName] [concept_institution]"
- turkfm_value_from_schools: "[ROOT.GetCountry.GetAdjectiveNoFlag] $gbbf_investment_levels$ into the [GetInstitutionType('institution_schools').GetName] [concept_institution]"
- turkfm_value_from_social_security: "[ROOT.GetCountry.GetAdjectiveNoFlag] $gbbf_investment_levels$ into the [GetInstitutionType('institution_social_security').GetName] [concept_institution]"
- turkfm_value_from_workplace_safety: "[ROOT.GetCountry.GetAdjectiveNoFlag] $gbbf_investment_levels$ into the [GetInstitutionType('institution_workplace_safety').GetName] [concept_institution]"
+ turkfm_value_from_cultural_majority_movement: "the $gbbf_support$ behind the #bold $movement_cultural_majority$#!"
+ turkfm_value_from_religious_majority_movement: "the $gbbf_support$ behind the #bold $movement_religious_majority$#!"
+ turkfm_value_from_royalist_absolutist_movement: "the $gbbf_support$ behind the #bold $movement_royalist_absolutist$#!"
+ turkfm_value_from_reactionary_movement: "the $gbbf_support$ behind the #bold $movement_reactionary$#!"
+ 
+ turkfm_value_from_pro_reform_character_impact: "the $gbbf_character_impact$ of $turkfm_reformist$ $gbbf_characters$ in [ROOT.GetCountry.GetNameNoFlag]"
+ turkfm_value_from_anti_reform_character_impact: "the $gbbf_character_impact$ of $turkfm_conservatist$ $gbbf_characters$ in [ROOT.GetCountry.GetNameNoFlag]"
+ 
+ turkfm_value_from_completed_reforms_journal: "completing all #bold $je_turkfm_tanzimat_reforms$#! $turkfm_tanzimat_reform_agendas$"
+ turkfm_value_from_completed_reform_agendas: "the number of completed #bold $je_turkfm_tanzimat_reforms$#! $turkfm_tanzimat_agendas$"
+ turkfm_value_from_pro_reform_clout: "the [concept_clout] of $gbbf_interest_groups$ aligning with the $turkfm_reformists$"
+ turkfm_value_from_ruler_popularity: "the [concept_popularity] of [ROOT.GetCountry.GetRuler.GetFullNameWithTitle]"
+ turkfm_value_from_legitimacy: "[concept_government] [concept_legitimacy]"
+ turkfm_value_from_literacy: "[concept_literacy] in [ROOT.GetCountry.GetNameNoFlag]"
+ turkfm_value_from_secular_bureaucrats: "[GetBuildingType('building_government_administration').GetName] $gbbf_buildings$ with the #yellow Secular Administration#! [concept_production_method] active"
+ turkfm_value_from_secular_academia: "[GetBuildingType('building_university').GetName] $gbbf_buildings$ with the #yellow Secular Academia#! [concept_production_method] active"
+ turkfm_value_from_bureaucracy: "excess [concept_bureaucracy]"
+ turkfm_value_from_incorporated_states: "the number of owned [concept_incorporated_state] and non-[concept_split_state] $gbbf_state_regions$ in $gbbf_georegion_rumelia$ and $gbbf_georegion_anatolia$"
+ turkfm_value_from_bolstering_ottomanist_movement: "$gbbf_bolstering$ the #bold $movement_gbbf_ottomanist$#!"
+ turkfm_value_from_suppressing_ottomanist_movement: "$gbbf_suppressing$ the #bold $movement_gbbf_ottomanist$#!"
+ turkfm_from_abolishing_slavery: "having any variant of [GetLawType('law_slavery_banned').GetName] enacted"
+ turkfm_value_from_reformist_generals: "the $gbbf_commander_impact$ of $turkfm_reformist$ [concept_army] $gbbf_commanders$ in [ROOT.GetCountry.GetNameNoFlag]"
+ turkfm_value_from_reformist_leaders: "the [concept_prominence] of $turkfm_reformist$ [concept_interest_group] $gbbf_leaders$ in [ROOT.GetCountry.GetNameNoFlag]"
+ 
+ turkfm_value_from_pro_conservatism_clout: "the [concept_clout] of $gbbf_interest_groups$ aligning with the $turkfm_conservatists$"
+ turkfm_value_from_religious_bureaucrats: "[GetBuildingType('building_government_administration').GetName] $gbbf_buildings$ with the #yellow Administrative Clergy#! [concept_production_method] active"
+ turkfm_value_from_religious_academia: "[GetBuildingType('building_university').GetName] $gbbf_buildings$ with the #yellow Clerical Educators#! [concept_production_method] active"
+ turkfm_value_from_religious_law: "active [GetLawGroup('lawgroup_church_and_state').GetName] [concept_law]"
+ turkfm_value_from_authority: "excess [concept_authority]"
+ turkfm_value_from_unincorporated_states: "the number of owned [concept_unincorporated_state] or [concept_split_state] $gbbf_state_regions$ in $gbbf_georegion_rumelia$ and $gbbf_georegion_anatolia$"
+ turkfm_value_from_bolstering_islamist_movement: "$gbbf_bolstering$ the #bold $movement_religious_majority$#!"
+ turkfm_value_from_suppressing_islamist_movement: "$gbbf_suppressing$ the #bold $movement_religious_majority$#!"
+ turkfm_value_from_conservatist_generals: "the $gbbf_commander_impact_short$ of $turkfm_conservatist$ [concept_army] $gbbf_commanders$ in [ROOT.GetCountry.GetNameNoFlag]"
+ turkfm_value_from_conservatist_leaders: "the [concept_prominence] of $turkfm_conservatist$ [concept_interest_group] $gbbf_leaders$ in [ROOT.GetCountry.GetNameNoFlag]"
  
  turkfm_value_from_ottomanist_progress: "support for an $turkfm_ottomanist$ Imperial Identity"
  turkfm_value_from_islamist_progress: "support for an $turkfm_islamist$ Imperial Identity"
  turkfm_value_from_reformist_progress: "the overall momentum behind the $turkfm_reformist$ camp"
  turkfm_value_from_conservatist_progress: "the overall momentum behind the $turkfm_conservatist$ camp"
-
- turkfm_value_from_ottomanist_movement: "[concept_political_movement_support] behind the #bold $movement_gbbf_ottomanist$#!"
- turkfm_value_from_modernizer_movement: "[concept_political_movement_support] behind the #bold $movement_modernizer$#!"
- turkfm_value_from_liberal_movement: "[concept_political_movement_support] behind the #bold $movement_liberal$#!"
- turkfm_value_from_land_reform_movement: "[concept_political_movement_support] behind the #bold $movement_land_reform$#!"
- turkfm_value_from_minority_rights_movement: "[concept_political_movement_support] behind the #bold $movement_minority_rights$#!"
- turkfm_value_from_anti_slavery_movement: "[concept_political_movement_support] behind the #bold $movement_anti_slavery$#!"
  
- turkfm_value_from_cultural_majority_movement: "[concept_political_movement_support] behind the #bold $movement_cultural_majority$#!"
- turkfm_value_from_religious_majority_movement: "[concept_political_movement_support] behind the #bold $movement_religious_majority$#!"
- turkfm_value_from_royalist_absolutist_movement: "[concept_political_movement_support] behind the #bold $movement_royalist_absolutist$#!"
- turkfm_value_from_reactionary_movement: "[concept_political_movement_support] behind the #bold $movement_reactionary$#!"
-
- turkfm_value_from_pro_voting: "the [concept_clout] of Pro-#tooltippable #tooltip:[GetRawTextTooltipTag('turkfm_voting_rights')] Voting Rights#!#! $gbbf_interest_groups$"
- turkfm_value_from_armed_forces: "the [concept_clout] of the $gbbf_armed_forces$"
- turkfm_value_from_secular_bureaucrats: "[GetBuildingType('building_government_administration').GetName] $gbbf_buildings$ with the #yellow Secular Administration#! [concept_production_method] active"
- turkfm_value_from_secular_academia: "[GetBuildingType('building_university').GetName] $gbbf_buildings$ with the #yellow Secular Academia#! [concept_production_method] active"
- turkfm_value_from_legitimacy: "[concept_government] [concept_legitimacy]"
- turkfm_value_from_institution_levels: "total amount of [concept_institution] $gbbf_investment_levels$"
- turkfm_value_from_islamism: "the [concept_clout] of Pro-[GetLawType('law_state_religion').GetName] $gbbf_interest_groups$"
- turkfm_value_from_religious_bureaucrats: "[GetBuildingType('building_government_administration').GetName] $gbbf_buildings$ with the #yellow Administrative Clergy#! [concept_production_method] active"
- turkfm_value_from_religious_academia: "[GetBuildingType('building_university').GetName] $gbbf_buildings$ with the #yellow Clerical Educators#! [concept_production_method] active"
- turkfm_value_from_religious_law: "active [GetLawGroup('lawgroup_church_and_state').GetName] [concept_law]"
-
  turkfm_value_from_pro_young_ottomans: "the [concept_clout] of $gbbf_interest_groups$ that support the $turkfm_young_ottomans$"
  turkfm_value_from_powerful_ig_baseline: "the baseline [concept_interest_group] [concept_clout] needed to maintain [concept_powerful] status"
-
- turkfm_value_from_low_legitimacy: "[concept_legitimacy] below #bold 70#!"
- turkfm_value_from_high_legitimacy: "[concept_legitimacy] above #bold 70#!"
-
+ 
  turkfm_value_from_balkan_loyalists: "[concept_loyalist] $gbbf_pops$ in the [GetStrategicRegion('region_balkans').GetName]"
  turkfm_value_from_hellene_loyalists: "[GetCulture('greek').GetName] [concept_loyalist] $gbbf_pops$"
  turkfm_value_from_rhomaios_loyalists: "[GetCulture('rhomaios').GetName] [concept_loyalist] $gbbf_pops$"
@@ -274,7 +287,7 @@ je_turkfm_tanzimat_military_reform_goal_4: "#indent_newline:9 [GetPlayer.GetCust
  turkfm_value_from_albanian_loyalists: "[GetCulture('albanian').GetName] [concept_loyalist] $gbbf_pops$"
  turkfm_value_from_croat_loyalists: "[GetCulture('croat').GetName] [concept_loyalist] $gbbf_pops$"
  turkfm_value_from_slovene_loyalists: "[GetCulture('slovene').GetName] [concept_loyalist] $gbbf_pops$"
-
+ 
  turkfm_value_from_balkan_radicals: "[concept_radical] $gbbf_pops$ in the [GetStrategicRegion('region_balkans').GetName]"
  turkfm_value_from_hellene_radicals: "[GetCulture('greek').GetName] [concept_radical] $gbbf_pops$"
  turkfm_value_from_rhomaios_radicals: "[GetCulture('greek').GetName] [concept_radical] $gbbf_pops$"
@@ -285,9 +298,6 @@ je_turkfm_tanzimat_military_reform_goal_4: "#indent_newline:9 [GetPlayer.GetCust
  turkfm_value_from_albanian_radicals: "[GetCulture('albanian').GetName] [concept_radical] $gbbf_pops$"
  turkfm_value_from_croat_radicals: "[GetCulture('croat').GetName] [concept_radical] $gbbf_pops$"
  turkfm_value_from_slovene_radicals: "[GetCulture('slovene').GetName] [concept_radical] $gbbf_pops$"
- 
- turkfm_value_from_pro_reform_clout: "the [concept_clout] of $gbbf_interest_groups$ aligning with the $turkfm_reformists$"
- turkfm_value_from_pro_conservatism_clout: "the [concept_clout] of $gbbf_interest_groups$ aligning with the $turkfm_conservatists$"
  
  # Triggers
  turkfm_tanzimat_identity_complete: "[ROOT.GetCountry.GetNameNoFlag] has completed the $turkfm_tanzimat_identity$ $turkfm_agenda_no_icon$"
@@ -345,26 +355,24 @@ je_turkfm_tanzimat_military_reform_goal_4: "#indent_newline:9 [GetPlayer.GetCust
  turkfm_reformist: "#greece #bold #tooltip:[GetPlayer.GetTooltipTag],turkfm_reformist_desc Reformist#!#!#!"
  turkfm_reformists: "#greece #bold #tooltip:[GetPlayer.GetTooltipTag],turkfm_reformist_desc Reformists#!#!#!"
  turkfm_reformist_desc: "The #bold Reformist#! movement consists of an intellectual current that ascribes the stagnation of the Ottoman Empire to the outdatedness and inefficiency of its institutions. Emerging from the scribal class, the reformists seek to introduce European administrative methods and centralize power as a means to preserve the integrity of the Empire"
- turkfm_reformist_sources: "#bold The following are potential sources of $turkfm_reformist$ progress:#!$gbbf_linebreak_normal$ • [GetBuildingType('building_government_administration').GetName] $gbbf_buildings$ with the #yellow Secular Administration#! [concept_production_method] active\n • [GetBuildingType('building_university').GetName] $gbbf_buildings$ with the #yellow Secular Academia#! [concept_production_method] active\n • Total amount of [concept_institution] $gbbf_investment_levels$"
+ turkfm_reformist_sources: "#bold The following are potential sources of $turkfm_reformist$ progress:#!$com_ttdl$$com_nlbp$Completing #bold $je_turkfm_tanzimat_reforms$#! $turkfm_tanzimat_agendas$$com_nlbp$[concept_popularity] of a pro-$turkfm_reformist$ [concept_ruler]$com_nlbp$[concept_government] [concept_legitimacy]$com_nlbp$[concept_literacy] in [GetPlayer.GetCountry.GetNameNoFlag]$com_nlbp$[GetBuildingType('building_government_administration').GetName] $gbbf_buildings$ with the #yellow Secular Administration#! [concept_production_method] active$com_nlbp$[GetBuildingType('building_university').GetName] $gbbf_buildings$ with the #yellow Secular Academia#! [concept_production_method] active$com_nlbp$Total amount of [concept_institution] $gbbf_investment_levels$ in [GetPlayer.GetCountry.GetNameNoFlag]$com_nlbp$Running a [concept_bureaucracy] surplus$com_nlbp$Number of owned [concept_incorporated_state] and non-[concept_split_state] $gbbf_state_regions$ in $gbbf_georegion_rumelia$ and $gbbf_georegion_anatolia$$com_nlbp$$gbbf_bolstering$ the #bold $movement_gbbf_ottomanist$#!$com_nlbp$$gbbf_suppressing$ the #bold $movement_gbbf_ottomanist$#!$com_nlbp$Enacting [GetLawType('law_slavery_banned').GetName]$com_nlbp$$gbbf_commander_impact$ of $turkfm_reformist$ [concept_army] $gbbf_commanders$ in [GetPlayer.GetCountry.GetNameNoFlag]$com_nlbp$[concept_prominence] of $turkfm_reformist$ [concept_interest_group] $gbbf_leaders$ in [GetPlayer.GetCountry.GetNameNoFlag]"
 
  turkfm_conservatist: "#purple #bold #tooltip:[GetPlayer.GetTooltipTag],turkfm_conservatist_desc Conservatist#!#!#!"
  turkfm_conservatists: "#purple #bold #tooltip:[GetPlayer.GetTooltipTag],turkfm_conservatist_desc Conservatists#!#!#!"
  turkfm_conservatist_desc: "The #bold Conservatist#! movement consists of entrenched aristocrats, clergy, and scribes that see any attempts at reform as a threat to their wealth and prestige. With their generations of established wealth and influence, they present a threat to the continued rule of the Sultan."
- turkfm_conservatist_sources: "#bold The following are potential sources of $turkfm_conservatist$ progress:#!$gbbf_linebreak_normal$ • The [concept_clout] of Pro-[GetLawType('law_state_religion').GetName] $gbbf_interest_groups$\n • Total amount of [GetInstitutionType('institution_schools').GetName] $gbbf_investment_levels$ while [GetLawType('law_religious_schools').GetName] is active\n • Total amount of [GetInstitutionType('institution_health_system').GetName] $gbbf_investment_levels$ while [GetLawType('law_charitable_health_system').GetName] is active\n • [GetBuildingType('building_government_administration').GetName] $gbbf_buildings$ with the #yellow Administrative Clergy#! [concept_production_method] active\n • [GetBuildingType('building_university').GetName] $gbbf_buildings$ with the #yellow Clerical Educators#! [concept_production_method] active"
+ turkfm_conservatist_sources: "#bold The following are potential sources of $turkfm_conservatist$ progress:#!$com_ttdl$$com_nlbp$[GetBuildingType('building_government_administration').GetName] $gbbf_buildings$ with the #yellow Administrative Clergy#! [concept_production_method] active$com_nlbp$[GetBuildingType('building_university').GetName] $gbbf_buildings$ with the #yellow Clerical Educators#! [concept_production_method] active$com_nlbp$Total amount of [GetInstitutionType('institution_schools').GetName] $gbbf_investment_levels$ while [GetLawType('law_religious_schools').GetName] is active$com_nlbp$Total amount of [GetInstitutionType('institution_health_system').GetName] $gbbf_investment_levels$ while [GetLawType('law_charitable_health_system').GetName] is active$com_nlbp$Active [GetLawGroup('lawgroup_church_and_state').GetName] [concept_law]$com_nlbp$Having an [concept_authority] surplus$com_nlbp$Number of owned [concept_unincorporated_state] or [concept_split_state] $gbbf_state_regions$ in $gbbf_georegion_rumelia$ and $gbbf_georegion_anatolia$$com_nlbp$$gbbf_bolstering$ the #bold $movement_religious_majority$#!$com_nlbp$$gbbf_suppressing$ the #bold $movement_religious_majority$#!$com_nlbp$$gbbf_commander_impact_short$ of $turkfm_conservatist$ [concept_army] $gbbf_commanders$ in [GetPlayer.GetCountry.GetNameNoFlag]$com_nlbp$[concept_prominence] of $turkfm_conservatist$ [concept_interest_group] $gbbf_leaders$ in [GetPlayer.GetCountry.GetNameNoFlag]"
 
  turkfm_ottomanist: "#yellow #bold #tooltip:[GetPlayer.GetTooltipTag],turkfm_ottomanist_desc Ottomanist#!#!#!"
- turkfm_ottomanist_desc: "The [GetIdeology('ideology_gbbf_ottomanist').GetName] movement is comprised of an array of intellectuals that advocate for more ambitious reforms beyond those of the $turkfm_reformist$ movement. They aim to syncretize Islamic jurisprudence with that of Western [GetTechnology('nationalism').GetName] to produce an overarching "Ottoman" identity to unite the Empire."
- turkfm_ottomanist_sources: "#bold The following are potential sources of $turkfm_ottomanist$ progress:#!$gbbf_linebreak_normal$ • The [concept_political_movement_support] behind the #bold [GetIdeology('ideology_gbbf_ottomanist_leader').GetName] Movement#!\n • The [concept_political_movement_support] behind the #bold [GetIdeology('ideology_modernizer').GetName] Movement#!"
  turkfm_ottomanists: "#yellow #bold #tooltip:[GetPlayer.GetTooltipTag],turkfm_ottomanist_desc Ottomanists#!#!#!"
  turkfm_ottomanism: "#yellow #bold #tooltip:[GetPlayer.GetTooltipTag],turkfm_ottomanist_desc Ottomanism#!#!#!"
-
+ turkfm_ottomanist_desc: "The [GetIdeology('ideology_gbbf_ottomanist').GetName] movement is comprised of an array of intellectuals that advocate for more ambitious reforms beyond those of the $turkfm_reformist$ movement. They aim to syncretize Islamic jurisprudence with that of Western [GetTechnology('nationalism').GetName] to produce an overarching "Ottoman" identity to unite the Empire."
+ turkfm_ottomanist_sources: "#bold The following are potential sources of $turkfm_ottomanist$ progress:#!$gbbf_linebreak_normal$ • The \n • The [concept_political_movement_support] behind the #bold [GetIdeology('ideology_modernizer').GetName] Movement#!$com_nlbp$[concept_political_movement_support] behind the [GetIdeology('ideology_gbbf_ottomanist').GetName], [GetIdeology('ideology_modernizer_movement_1').GetName], [GetIdeology('ideology_liberal_movement').GetName], [GetIdeology('ideology_land_reformer_movement').GetName], [GetIdeology('ideology_pluralist_movement_3').GetName], and [GetIdeology('ideology_anti_slavery_movement').GetName] $gbbf_movements$$com_nlbp$$gbbf_character_impact$ of $turkfm_reformist$ $gbbf_characters$ in [GetPlayer.GetCountry.GetNameNoFlag]$com_nlbp$[concept_clout] of $gbbf_interest_groups$ aligning with the $turkfm_reformists$$com_nlbp$Average progressiveness of $gbbf_laws$ in [GetPlayer.GetCountry.GetNameNoFlag]"
+ 
  turkfm_islamist: "#green #bold #tooltip:[GetPlayer.GetTooltipTag],turkfm_islamist_desc Islamist#!#!#!"
- turkfm_islamist_desc: "The [GetIdeology('ideology_gbbf_islamist_leader').GetName] identity is backed by a mixture of clergy and conservative elements who hold Islam and its systems of jurisprudence as the only means to hold the Empire together. They aim to enshrine the system of Sharia and Qanun and as the only future for the Empire to the detriment of members of its millets."
- turkfm_islamist_sources: "#bold The following are potential sources of $turkfm_islamist$ progress:#!$gbbf_linebreak_normal$ • The [concept_political_movement_support] behind the #bold Cultural Majority Movement#!\n • The [concept_political_movement_support] behind the #bold Religious Majority Movement#!"
  turkfm_islamists: "#green #bold #tooltip:[GetPlayer.GetTooltipTag],turkfm_islamist_desc Islamists#!#!#!"
  turkfm_islamism: "#green #bold #tooltip:[GetPlayer.GetTooltipTag],turkfm_islamist_desc Islamism#!#!#!"
-
- turkfm_voting_rights: "[GetLawType('law_landed_voting').GetName], [GetLawType('law_wealth_voting').GetName], [GetLawType('law_census_voting').GetName], or [GetLawType('law_universal_suffrage').GetName]"
+ turkfm_islamist_desc: "The [GetIdeology('ideology_gbbf_islamist_leader').GetName] identity is backed by a mixture of clergy and conservative elements who hold Islam and its systems of jurisprudence as the only means to hold the Empire together. They aim to enshrine the system of Sharia and Qanun and as the only future for the Empire to the detriment of members of its millets."
+ turkfm_islamist_sources: "#bold The following are potential sources of $turkfm_islamist$ progress:#!$com_ttdl$$com_nlbp$The [concept_political_movement_support] behind the [GetIdeology('ideology_traditionalist_movement').GetName], [GetIdeology('ideology_absolutist_movement').GetName], and [GetIdeology('ideology_reactionary_movement').GetName] $gbbf_movements$$com_nlbp$$gbbf_character_impact$ of $turkfm_conservatist$ $gbbf_characters$ in [GetPlayer.GetCountry.GetNameNoFlag]$com_nlbp$[concept_clout] of $gbbf_interest_groups$ aligning with the $turkfm_conservatists$$com_nlbp$average regressiveness of $gbbf_laws$ in [GetPlayer.GetCountry.GetNameNoFlag]"
 
  turkfm_advance_tanzimat1: "The #bold $turkfm_tanzimat$#! [concept_journal_entry] advances towards the $turkfm_reformist$ movement by #bold 50#!."
  turkfm_advance_tanzimat2: "The #bold $turkfm_tanzimat$#! [concept_journal_entry] advances towards the $turkfm_reformist$ movement by #bold 100#!."
@@ -434,6 +442,7 @@ je_turkfm_tanzimat_military_reform_goal_4: "#indent_newline:9 [GetPlayer.GetCust
  
  turkfm_turkish_assimilation: "#v 90%#! of [GetCulture('turkish').GetName] $gbbf_pops$ will become [GetCulture('ottoman').GetName]"
  turkfm_balkan_assimilation: "#v 25%#! of [GetStrategicRegion('region_balkans').GetName] native $gbbf_pops$ will become [GetCulture('ottoman').GetName]"
+ turkfm_ottoman_homeland_replacement: "All [GetCulture('turkish').GetName] $gbbf_homelands$ will be replaced with [GetCulture('ottoman').GetName] $gbbf_homelands$"
 
  turkfm_young_ottoman: "#bold #yellow #tooltip:[GetRawTextTooltipTag('turkfm_young_ottoman_desc')] Young Ottoman#!#!#!"
  turkfm_young_ottomans: "#bold #yellow #tooltip:[GetRawTextTooltipTag('turkfm_young_ottoman_desc')] Young Ottomans#!#!#!"

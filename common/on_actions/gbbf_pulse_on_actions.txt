@@ -29,10 +29,16 @@ on_monthly_pulse_country = {
 		# haykfm_arm_monthly_pulse
 		# haykfm_ass_monthly_pulse
 		
-		eqfm_balkans_pulse
+		eqfm_balkan_powder_keg_monthly_pulse
 		eqfm_senusiyya_pulse
 		eqfm_pirates_pulse
 		eqfm_karadag_pulse
+	}
+}
+
+on_monthly_pulse_state = {
+	on_actions = {
+		grefm_quadrennial_chariot_pulse
 	}
 }
 
@@ -67,7 +73,6 @@ grefm_monthly_pulse_hellene = {
 		grefm_megali_idea.001
 		grefm_megali_idea.009
 		grefm_megali_idea.200
-		grefm_byzantium.020
 		grefm_byzantium.021
 		grefm_byzantium.028
 	}
@@ -85,7 +90,7 @@ grefm_monthly_pulse_hellene = {
 		25 = grefm_megali_idea.202
 	}
 	effect = {
-		turkfm_hellenic_separatism_effect = yes
+		eqfm_balkan_powder_keg_hellenic_separatism_effect = yes
 		grefm_annexation_variables_effect = yes
 	}
 }
@@ -98,7 +103,6 @@ grefm_monthly_pulse_rhomaios = {
 		grefm_greece.114
 		grefm_megali_idea.010
 		grefm_megali_idea.200
-		grefm_byzantium.020
 		grefm_byzantium.021
 		grefm_byzantium.028
 	}
@@ -118,7 +122,6 @@ grefm_monthly_pulse_urum = {
 		country_has_primary_culture = cu:urum
 	}
 	events = {
-		grefm_byzantium.020
 		grefm_byzantium.021
 		grefm_byzantium.028
 	}
@@ -126,6 +129,35 @@ grefm_monthly_pulse_urum = {
 	}
 	effect = {
 		grefm_annexation_variables_effect = yes
+	}
+}
+
+grefm_quadrennial_chariot_pulse = {
+	trigger = {
+		state_region = s:STATE_EASTERN_THRACE
+		NOT = {
+			has_global_variable = grefm_chariot_race_cooldown_var
+		}
+		OR = {
+			is_production_method_active = {
+				building_type = gbbf_building_hippodrome
+				production_method = pm_gbbf_original_roster
+			}
+			is_production_method_active = {
+				building_type = gbbf_building_hippodrome
+				production_method = pm_gbbf_expanded_roster
+			}
+		}
+		month = 7 # August, it's zero-indexed
+	}
+	effect = {
+		gbbf_host_chariot_race_effect = yes
+	}
+}
+
+grefm_rehost_chariot_race = {
+	effect = {
+		gbbf_host_chariot_race_effect = yes
 	}
 }
 
@@ -138,12 +170,6 @@ balkfm_monthly_pulse = {
 	effect = {
 		if = {
 			limit = {
-				has_modifier = modifier_balkfm_yugoslavist_separatism
-			}
-			remove_modifier = modifier_balkfm_yugoslavist_separatism
-		}
-		if = {
-			limit = {
 				OR = {
 					has_global_variable = balkfm_yugoslavia_journal_var
 					exists = c:YUG
@@ -152,7 +178,15 @@ balkfm_monthly_pulse = {
 			every_country = {
 				limit = {
 					balkfm_country_has_yugoslav_culture_trigger = yes
-					AND = {
+				}
+				if = {
+					limit = {
+						has_modifier = modifier_balkfm_yugoslavist_separatism
+					}
+					remove_modifier = modifier_balkfm_yugoslavist_separatism
+				}
+				if = {
+					limit = {
 						is_subject = yes
 						overlord ?= {
 							NOT = {
@@ -160,13 +194,13 @@ balkfm_monthly_pulse = {
 							}
 						}
 					}
-				}
-				add_modifier = {
-					name = modifier_balkfm_yugoslavist_separatism
-					multiplier = {
-						value = balkfm_yugoslav_fervor_value
-						divide = 100
-						round_to = 0.01
+					add_modifier = {
+						name = modifier_balkfm_yugoslavist_separatism
+						multiplier = {
+							value = balkfm_yugoslav_fervor_value
+							divide = 100
+							round_to = 0.01
+						}
 					}
 				}
 			}
@@ -236,7 +270,8 @@ balkfm_bul_monthly_pulse = {
 		balkfm_bulgaria.030
 	}
 	random_events = {
-		100 = 0
+		chance_of_no_event = 90
+		5 = balkfm_bulgaria.163
 	}
 	effect = {
 	}
@@ -420,34 +455,32 @@ haykfm_ass_monthly_pulse = {
 }
 
 
-####---------- Eastern Question Monthly Pulses ----------####
-eqfm_balkans_pulse = {
+####---------- Balkan Powder Keg Monthly Pulses ----------####
+eqfm_balkan_powder_keg_monthly_pulse = {
 	trigger = {
-		is_involved_in_journal_entry = je_eqfm_balkan_situation
+		is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 	}
 	on_actions = {
-		eqfm_balkans_ottoman_pulse
-		eqfm_balkans_involved_pulse
+		eqfm_balkan_powder_keg_outsider_pulse
+		eqfm_balkan_powder_keg_rumelian_pulse
+		eqfm_balkan_powder_keg_involved_pulse
 	}
-
 }
 
-eqfm_balkans_ottoman_pulse = {
+eqfm_balkan_powder_keg_outsider_pulse = {
 	trigger = {
-		c:TUR ?= this
+		eqfm_balkan_powder_keg_outsider_trigger = yes
 	}
 	on_actions = {
-		eqfm_balkans_riot_pulse
+		eqfm_balkan_powder_keg_race_riot_pulse
+		eqfm_balkan_powder_keg_crisis_pulse
 	}
 	events = {
-		eqfm_balkans.002
-		eqfm_balkans.003
-		eqfm_balkans.005
 	}
 	random_events = {
 		chance_of_no_event = 75
 
-		# Stable Phase
+		# Balkan Situation Neutral Events
 		5 = eqfm_balkans.100
 		5 = eqfm_balkans.101
 		5 = eqfm_balkans.102
@@ -458,8 +491,6 @@ eqfm_balkans_ottoman_pulse = {
 		5 = eqfm_balkans.107
 		5 = eqfm_balkans.108
 		5 = eqfm_balkans.109
-
-		# Unrest Phase
 		5 = eqfm_balkans.110
 		5 = eqfm_balkans.111
 		5 = eqfm_balkans.112
@@ -468,63 +499,75 @@ eqfm_balkans_ottoman_pulse = {
 		5 = eqfm_balkans.115
 		5 = eqfm_balkans.116
 		5 = eqfm_balkans.117
-		5 = eqfm_balkans.118
-		5 = eqfm_balkans.119
 
-		# Hostility Phase
-		5 = eqfm_balkans.120
-		5 = eqfm_balkans.121
-		5 = eqfm_balkans.122
-		5 = eqfm_balkans.123
-		5 = eqfm_balkans.124
-		5 = eqfm_balkans.125
-		5 = eqfm_balkans.126
-		5 = eqfm_balkans.127
-		5 = eqfm_balkans.128
-		5 = eqfm_balkans.129
+		# Balkan Situation Unrest Events
+		5 = eqfm_balkans.200
+		5 = eqfm_balkans.201
+		5 = eqfm_balkans.202
+		5 = eqfm_balkans.203
+		5 = eqfm_balkans.204
+		5 = eqfm_balkans.205
+		5 = eqfm_balkans.206
+		5 = eqfm_balkans.207
+		5 = eqfm_balkans.208
+		5 = eqfm_balkans.209
 
-		# Deconfliction Phase
-		5 = eqfm_balkans.130
-		5 = eqfm_balkans.131
-		5 = eqfm_balkans.133
-
-		# Crisis Phase
-
+		# Balkan Situation Hostility Events
+		5 = eqfm_balkans.300
+		5 = eqfm_balkans.301
+		5 = eqfm_balkans.302
+		5 = eqfm_balkans.303
+		5 = eqfm_balkans.304
+		5 = eqfm_balkans.305
+		5 = eqfm_balkans.306
+		5 = eqfm_balkans.307
+		5 = eqfm_balkans.308
+		5 = eqfm_balkans.309
+		5 = eqfm_balkans.310
 	}
 }
 
-eqfm_balkans_riot_pulse = {
-	# These are drawn from the former je_eqfm_riots je
+eqfm_balkan_powder_keg_race_riot_pulse = {
 	trigger = {
 		eqfm_hostility_phase_trigger = yes
 	}
 	events = {
-		eqfm_balkans.005
+		eqfm_balkans.006
 		eqfm_balkans.007
 	}
 	random_events = {
-		5 = eqfm_balkans.140
-		5 = eqfm_balkans.141
-		5 = eqfm_balkans.142
-		5 = eqfm_balkans.143
-		5 = eqfm_balkans.144
-		5 = eqfm_balkans.147
+		# Balkan Situation Race Riot Events
+		5 = eqfm_balkans.400
+		5 = eqfm_balkans.401
+		5 = eqfm_balkans.402
+		5 = eqfm_balkans.403
+		5 = eqfm_balkans.404
+		5 = eqfm_balkans.407
 	}
 }
 
-eqfm_balkans_involved_pulse = {
+eqfm_balkan_powder_keg_rumelian_pulse = {
 	trigger = {
-		c:TUR != this
-		is_involved_in_journal_entry = je_eqfm_balkan_situation
+		gbbf_country_has_rumelian_culture_trigger = yes
 	}
-	events = {
-		eqfm_balkans.190
-		eqfm_balkans.191
-		eqfm_balkans.192
+}
+
+eqfm_balkan_powder_keg_involved_pulse = {
+	# "Involved" here means countries that have NO states in the Balkans, but are involved for any other reason
+	trigger = {
+		NOT = {
+			is_in_geographic_region = geographic_region_rumelia
+		}
 	}
 	random_events = {
 		500 = 0
-		5 = eqfm_balkans.182 # Diplomat Offers Mediation
+		5 = eqfm_balkans.700 # Diplomat Offers Mediation
+	}
+}
+
+eqfm_balkan_powder_keg_crisis_pulse = {
+	trigger = {
+		eqfm_crisis_phase_trigger = yes
 	}
 }
 

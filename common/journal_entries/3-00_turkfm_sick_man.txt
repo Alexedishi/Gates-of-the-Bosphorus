@@ -14,7 +14,6 @@
 	scripted_progress_bar = turkfm_sick_main_progress_bar
 	
 	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
 	}
 	
 	modifiers_while_active = {
@@ -35,17 +34,24 @@
 		}
 		custom_tooltip = {
 			text = turkfm_tanzimat_completed_or_failed
-			has_global_variable = turkfm_tanzimat_complete
+			NOT = {
+				has_journal_entry = je_turkfm_tanzimat_main
+			}
 		}
 		custom_tooltip = {
 			text = eqfm_separatism_completed_or_failed
-			has_global_variable = eqfm_balkan_situation_resolved
+			NOT = {
+				has_global_variable = je_eqfm_balkan_powder_keg
+			}
 		}
 	}
 	
 	on_complete = {
 		trigger_event = turkfm_sick_man.009
-		set_global_variable = turkfm_sick_man_complete
+		set_global_variable = {
+			name = turkfm_sick_man_complete
+			value = flag:turkfm_sick_man_completed
+		}
 	}
 	
 	fail = {
@@ -76,18 +82,16 @@
 			}
 			custom_tooltip = sick_man_of_europe_lose_power_bloc
 		}
-		set_global_variable = turkfm_sick_man_complete
-		set_global_variable = turkfm_sick_man_failed
+		set_global_variable = {
+			name = turkfm_sick_man_complete
+			value = flag:turkfm_sick_man_failed
+		}
 	}
 	
 	invalid = {
 		hidden_trigger = {
 			has_global_variable = turkfm_sick_man_complete
 		}
-	}
-	
-	on_invalid = {
-		set_global_variable = turkfm_sick_man_complete
 	}
 	
 	on_weekly_pulse = {
@@ -117,7 +121,6 @@ je_turkfm_sick_man_syria = {
 	transferable = no
 	
 	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
 		add_journal_entry = {
 			type = je_sick_man_syria
 		}
@@ -158,12 +161,6 @@ je_turkfm_sick_man_syria = {
 			}
 		}
 	}
-	
-	on_weekly_pulse = {
-		events = {
-			egyptian_crisis_events.1
-		}
-	}
 }
 
 je_turkfm_sick_man_egypt = {
@@ -176,7 +173,6 @@ je_turkfm_sick_man_egypt = {
 	transferable = no
 	
 	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
 		add_journal_entry = {
 			type = je_sick_man_egypt
 		}
@@ -223,7 +219,6 @@ je_turkfm_sick_man_crete = {
 	transferable = no
 	
 	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
 	}
 	
 	complete = {
@@ -255,7 +250,6 @@ je_turkfm_sick_man_caucasus = {
 	transferable = no
 	
 	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
 	}
 	
 	complete = {
@@ -296,7 +290,6 @@ je_turkfm_sick_man_kurdistan = {
 	scripted_button = haykfm_organize_kurdistan_button
 	
 	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
 	}
 	
 	modifiers_while_active = {
@@ -437,7 +430,7 @@ je_turkfm_sick_man_grand_collapse = {
 	
 	is_shown_when_inactive = {
 		NOT = {
-			has_global_variable = turkfm_tanzimat_complete
+			has_global_variable = turkfm_tanzimat_started
 		}
 		c:TUR ?= this
 	}
@@ -465,7 +458,6 @@ je_turkfm_sick_man_grand_collapse = {
 	}
 	
 	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
 		trigger_event = the_grand_collapse.1
 		hidden_effect = {
 			add_journal_entry = {

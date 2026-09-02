@@ -54,14 +54,14 @@ balkfm_ser_flip_consul_button = {
 				balkfm_has_karadordevic_ruler_trigger = yes
 				exists = c:RUS
 				NOT = {
-					has_variable = balkfm_russia_consul_var
+					"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:RUS
 				}
 			}
 			AND = {
 				balkfm_has_obrenovic_ruler_trigger = yes
 				exists = c:AUS
 				NOT = {
-					has_variable = balkfm_austria_consul_var
+					"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:AUS
 				}
 			}
 		}
@@ -78,7 +78,7 @@ balkfm_ser_flip_consul_button = {
 			}
 			custom_tooltip = {
 				text = balkfm_has_austrian_consul
-				has_variable = balkfm_austria_consul_var
+				"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:AUS
 			}
 			c:RUS ?= {
 				relations:root >= relations_threshold:cordial
@@ -87,7 +87,7 @@ balkfm_ser_flip_consul_button = {
 		trigger_else = {
 			custom_tooltip = {
 				text = balkfm_has_russian_consul
-				has_variable = balkfm_russia_consul_var
+				"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:RUS
 			}
 			c:AUS ?= {
 				relations:root >= relations_threshold:cordial
@@ -115,44 +115,26 @@ balkfm_ser_slander_button = {
 	
 	visible = {
 		has_dlc_feature = ip3_content # National Awakening
+		is_key_in_variable_map = {
+			name = balkfm_dynastic_rivalry_varmap
+			target = flag:balkfm_opposition_leader_var
+		}
+		exists = "variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_opposition_leader_var)"
 	}
 	possible = {
 		any_scope_state = {
 			has_building = building_paper_mill
 		}
 		has_technology_researched = mass_communication
-		scope:journal_entry = {
-			not = {
-				custom_tooltip = {
-					text = je_tot_slander_button_cooldown_tt
-					has_variable = je_tot_slander_button_cooldown
-				}
+		NOR = {
+			has_modifier = serbia_pamphlet_money_mod
+			hidden_trigger = {
+				has_variable = balkfm_ser_slander_button_var
 			}
 		}
 	}
 	effect = {
-		scope:journal_entry = {
-			set_variable = { name = je_tot_slander_button_cooldown months = 48 }
-		}
 		trigger_event = balkfm_serbia.021
-		if = {
-			limit = {
-				scope:journal_entry = {
-					has_variable = balkfm_opposition_leader_var
-					exists = var:balkfm_opposition_leader_var
-				}
-			}
-			show_as_tooltip = {
-				scope:journal_entry = {
-					var:balkfm_opposition_leader_var = {
-						add_modifier = {
-							name = modifier_balkfm_reputation_slandered
-							months = gbbf_short_modifier_time
-						}
-					}
-				}
-			}
-		}
 		custom_tooltip = je_tot_slander_button_custom_tt
 		show_as_tooltip = {
 			add_modifier = {
@@ -164,6 +146,16 @@ balkfm_ser_slander_button = {
 				name = serbia_pamphlet_auth_mod
 				months = gbbf_short_modifier_time
 			}
+			"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_opposition_leader_var)" = {
+				add_modifier = {
+					name = modifier_balkfm_reputation_slandered
+					months = gbbf_short_modifier_time
+				}
+			}
+		}
+		set_variable = {
+			name = balkfm_ser_slander_button_var
+			months = 3
 		}
 	}
 	ai_chance = {

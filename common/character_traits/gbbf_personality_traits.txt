@@ -68,6 +68,35 @@ gbbf_trait_bavarocrat = {
 	}
 }
 
+gbbf_trait_charioteer = {
+	type = personality
+	texture = "gfx/interface/icons/character_trait_icons/erudite.dds"
+	value = 1
+	
+	character_modifier = {
+		character_popularity_add = 50
+		character_prominence_add = 10
+		character_health_add = -0.10
+	}
+	command_modifier = {
+		unit_recovery_rate_add = -0.1
+		character_coup_strength_mult = -0.1
+		ship_vulnerability_mult = 0.2
+		ship_critical_hit_chance_mult = 0.1
+	}
+	country_modifier = {
+		country_diplomatic_play_maneuvers_add = 20
+		country_infamy_generation_mult = 0.2
+	}
+	
+	possible = {
+		always = no # Gained via event
+	}
+	weight = {
+		value = 0
+	}
+}
+
 gbbf_trait_ethnarch = {
 	type = personality
 	texture = "gfx/interface/icons/character_trait_icons/erudite.dds"
@@ -175,5 +204,64 @@ gbbf_trait_phanariot = {
 	}
 	weight = {
 		value = 0
+	}
+}
+
+gbbf_trait_young_turk = {
+	type = personality
+	texture = gfx/interface/icons/character_trait_icons/gbbf_young_turk.dds
+	value = 1
+	
+	character_modifier = {
+		character_prominence_add = 10
+		character_loyalty_add = -5
+		character_popularity_add = 15
+	}
+	command_modifier = {
+		unit_morale_recovery_mult = 0.05
+		unit_kill_rate_add = 0.05
+	}
+	interest_group_modifier = {
+		interest_group_pop_attraction_mult = 0.05
+	}
+	agitator_modifier = {
+		political_movement_pop_attraction_mult = 0.05
+		political_movement_activism_growth_mult = 0.10
+	}
+	
+	possible = {
+		owner = {
+			c:TUR ?= this
+			any_political_movement = {
+				is_political_movement_type = movement_gbbf_young_turks
+			}
+		}
+	}
+	weight = {
+		value = 25
+		if = {
+			limit = {
+				has_liberal_ideology = yes
+			}
+			add = 50
+		}
+		if = {
+			limit = {
+				OR = {
+					has_ideology = ideology:ideology_ethno_nationalist
+					has_ideology = ideology:ideology_positivist
+				}
+			}
+			add = 100
+		}
+		if = {
+			limit = {
+				OR = {
+					has_conservative_ideology = yes
+					has_monarchist_ideology = yes
+				}
+			}
+			add = -1000
+		}
 	}
 }

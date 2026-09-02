@@ -46,6 +46,7 @@
 		add_modifier = {
 			name = modifier_turkfm_reorganizing_spirit
 			months  = 360
+			is_decaying = yes
 		}
 		ig:ig_intelligentsia = {
 			add_ideology = ideology_anti_slavery
@@ -95,7 +96,7 @@
 		}
 		every_country = {
 			limit = {
-				is_involved_in_journal_entry = je_eqfm_balkan_situation
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
 			}
 			post_notification = turkfm_tanzimat_started
 		}
@@ -249,25 +250,20 @@ turkfm_enforce_identity_button = {
 	desc = "turkfm_enforce_identity_desc"
 
 	visible = {
-		NOR = {
-			has_variable = turkfm_ottomanist_identity_enforced
-			has_variable = turkfm_islamist_identity_enforced
+		NOT = {
+			has_global_variable = turkfm_tanzimat_identity_complete
 		}
 	}
 	possible = {
 		custom_tooltip = {
 			text = turkfm_enforce_identity_possible_1
-			hidden_trigger = {
-				var:turkfm_tanzimat_reform_var >= 1000
-			}
+			var:turkfm_tanzimat_reform_var >= 1000
 		}
 		custom_tooltip = {
 			text = turkfm_enforce_identity_possible_2
-			hidden_trigger = {
-				OR = {
-					var:turkfm_tanzimat_identity_var < 100
-					var:turkfm_tanzimat_identity_var > 900
-				}
+			OR = {
+				var:turkfm_tanzimat_identity_var < 100
+				var:turkfm_tanzimat_identity_var > 900
 			}
 		}
 		NOT = {
@@ -281,7 +277,10 @@ turkfm_enforce_identity_button = {
 			}
 			custom_tooltip = {
 				text = turkfm_enforce_identity_ottomanist
-				set_variable = turkfm_ottomanist_identity_enforced
+				set_global_variable = {
+					name = turkfm_tanzimat_identity_complete
+					value = cu:ottoman
+				}
 			}
 		}
 		else_if = {
@@ -290,7 +289,10 @@ turkfm_enforce_identity_button = {
 			}
 			custom_tooltip = {
 				text = turkfm_enforce_identity_button_islamist
-				set_variable = turkfm_islamist_identity_enforced
+				set_global_variable = {
+					name = turkfm_tanzimat_identity_complete
+					value = rel:sunni
+				}
 			}
 		}
 		else = {

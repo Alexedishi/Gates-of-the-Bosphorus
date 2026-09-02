@@ -16,7 +16,6 @@ je_mgrbfm_egypt_muhammad_ali = {
 	scripted_button = mgrbfm_broker_colonization_button
 
 	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
 		scope:journal_entry = {
 			set_variable = {
 				name = mgrbfm_egy_army_projection
@@ -210,7 +209,6 @@ je_mgrbfm_egypt_modernization = {
 	#	scripted_button =
 
 	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
 		scope:journal_entry = {
 			set_variable = {
 				name = mgrbfm_egypt_modernization_var
@@ -340,7 +338,6 @@ je_mgrbfm_egypt_nationalism = {
 	}
 
 	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
 		mgrbfm_egy_identity_variables_effect = yes
 		scope:journal_entry = {
 			save_scope_as = je_mgrbfm_egypt_nationalism
@@ -413,6 +410,13 @@ je_mgrbfm_egypt_nile_river = {
 	should_be_involved = {
 		any_scope_state = {
 			is_in_geographic_region = geographic_region_nile_river
+		}
+	}
+	
+	should_show_when_not_involved = {
+		has_strategic_region_interest_tier = {
+			strategic_region = sr:region_nile_basin
+			value >= 3
 		}
 	}
 
@@ -509,30 +513,33 @@ je_mgrbfm_egypt_nile_river = {
 
 	on_monthly_pulse = {
 		effect = {
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
-					NOT = {
+			scope:journal_entry = {
+				every_scope_je_involved = {
+					limit = {
+						NOT = {
+							any_scope_state = {
+								is_in_geographic_region = geographic_region_lower_nile
+							}
+						}
+					}
+					scope:journal_entry = {
+						remove_involved_country = prev
+					}
+				}
+			}
+			sr:region_nile_basin = {
+				every_scope_country = {
+					limit = {
+						NOT = {
+							is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
+						}
 						any_scope_state = {
 							is_in_geographic_region = geographic_region_lower_nile
 						}
 					}
-				}
-				scope:journal_entry = {
-					remove_involved_country = prev
-				}
-			}
-			every_country = {
-				limit = {
-					any_scope_state = {
-						is_in_geographic_region = geographic_region_lower_nile
+					scope:journal_entry = {
+						add_involved_country = prev
 					}
-					NOT = {
-						is_involved_in_journal_entry = je_mgrbfm_egypt_nile_river
-					}
-				}
-				scope:journal_entry = {
-					add_involved_country = prev
 				}
 			}
 			if = {
@@ -1017,7 +1024,6 @@ je_mgrbfm_egypt_red_sea = {
 	scripted_button = mgrbfm_red_sea_claims_button
 	
 	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
 	}
 	
 	complete = {
