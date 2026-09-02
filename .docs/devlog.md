@@ -2,7 +2,7 @@
 # GATES OF THE BOSPHORUS #
 ##########################
 Mod Version: 4.1.0
-Game Version: 1.13.9
+Game Version: 1.13.11 / 1.14-beta
 
 Mod Author: Alexedishi
 Contributors: LordR, Caelreader, CipherParadox
@@ -228,6 +228,8 @@ Balancing/Adjustments:
 - Ludwig von Armansperg is now marked as married
 - Completed Tanzimat agendas now counts towards Reformist progress
 - modifier_turkfm_reorganizing_spirit now decays
+- Mehmed Emin Rauf Pasha now has a reformer ideology
+- Koca Husrev Mehmed Pasha now has the Ottomanist ideology
 
 Fixes:
 - Added missing localization for Metaxism content
@@ -243,6 +245,7 @@ Fixes:
 - Added effect to replace Turkish homelands with Ottoman homelands in the "Ottoman Motherland" event
 - Added Kosovo to Greek Heartlands and Byzantine Empire georegions
 - Fixed incorrect variable scope for je_grefm_the_dedilomeni_principle progress bar
+- Fixed a collision in history files resulted in incorrect ideologies
 - Several small localization mistakes
 
 
