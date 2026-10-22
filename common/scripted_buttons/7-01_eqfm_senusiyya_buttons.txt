@@ -1,0 +1,696 @@
+﻿####---------- Senusiyya Interloper Buttons ----------####
+eqfm_broker_power_deal_button = {
+	name = eqfm_broker_power_deal_name
+	desc = eqfm_broker_power_deal_desc
+
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_senusiyya
+		NOT = {
+			country_has_state_religion = rel:sunni
+		}
+	}
+	possible = {
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_senusiyya
+			eqfm_senusiyya_entrenchment_trigger = yes
+		}
+	}
+	effect = {
+		# nothing yet
+	}
+}
+
+
+####---------- Senusiyya Stance Buttons ----------####
+eqfm_adopt_welcoming_stance_button = {
+	name = "eqfm_adopt_welcoming_stance_name"
+	desc = "eqfm_adopt_welcoming_stance_desc"
+	
+	visible = {
+		gbbf_is_muslim_trigger = yes
+	}
+	possible = {
+		is_involved_in_journal_entry = je_eqfm_senusiyya
+	}
+	effect = {
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_senusiyya_stance_negative
+			}
+			remove_modifier = modifier_eqfm_senusiyya_stance_negative
+		}
+		add_modifier = modifier_eqfm_senusiyya_stance_positive
+		custom_tooltip = {
+			text = eqfm_adopt_welcoming_stance_effect_1
+			set_variable = {
+				name = eqfm_senusiyya_stance_var
+				value = flag:eqfm_senusiyya_stance_welcoming
+			}
+		}
+		custom_tooltip = eqfm_adopt_welcoming_stance_effect_2
+		custom_tooltip = {
+			text = eqfm_adopt_stance_effect
+			set_variable = eqfm_senusiyya_stance_cooldown
+		}
+
+
+	}
+}
+
+eqfm_adopt_aloof_stance_button = {
+	name = "eqfm_adopt_aloof_stance_name"
+	desc = "eqfm_adopt_aloof_stance_desc"
+	
+	visible = {
+		OR = {
+			var:eqfm_senusiyya_stance_var ?= flag:eqfm_senusiyya_stance_welcoming
+			var:eqfm_senusiyya_stance_var ?= flag:eqfm_senusiyya_stance_hostile
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			text = eqfm_adopt_stance_possible
+			NOT = {
+				has_variable = eqfm_senusiyya_stance_cooldown
+			}
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_senusiyya_stance_positive
+			}
+			remove_modifier = modifier_eqfm_senusiyya_stance_positive
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_senusiyya_stance_negative
+			}
+			remove_modifier = modifier_eqfm_senusiyya_stance_negative
+		}
+		add_modifier = modifier_eqfm_senusiyya_stance_neutral
+		custom_tooltip = {
+			text = eqfm_adopt_aloof_stance_effect_1
+			set_variable = {
+				name = eqfm_senusiyya_stance_var
+				value = flag:eqfm_senusiyya_stance_aloof
+			}
+		}
+		custom_tooltip = {
+			text = eqfm_adopt_stance_effect
+			set_variable = eqfm_senusiyya_stance_cooldown
+		}
+	}
+}
+
+eqfm_adopt_hostile_stance_button = {
+	name = "eqfm_adopt_hostile_stance_name"
+	desc = "eqfm_adopt_hostile_stance_desc"
+	
+	visible = {
+		gbbf_is_muslim_trigger = yes
+	}
+	possible = {
+		is_involved_in_journal_entry = je_eqfm_senusiyya
+	}
+	effect = {
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_senusiyya_stance_positive
+			}
+			remove_modifier = modifier_eqfm_senusiyya_stance_positive
+		}
+		add_modifier = modifier_eqfm_senusiyya_stance_negative
+		custom_tooltip = {
+			text = eqfm_adopt_hostile_stance_effect_1
+			set_variable = {
+				name = eqfm_senusiyya_stance_var
+				value = flag:eqfm_senusiyya_stance_hostile
+			}
+		}
+		custom_tooltip = eqfm_adopt_hostile_stance_effect_2
+		custom_tooltip = {
+			text = eqfm_adopt_stance_effect
+			set_variable = eqfm_senusiyya_stance_cooldown
+		}
+	}
+}
+
+####---------- Senusiyya Narrative Buttons ----------####
+eqfm_embrace_senusiyya_button = {
+	name = "eqfm_embrace_senusiyya_name"
+	desc = "eqfm_embrace_senusiyya_desc"
+	visible = {
+		has_variable = eqfm_senusiyya_influence_var
+		NOR = {
+			has_variable = eqfm_embraced_senusiyya
+			has_variable = eqfm_expelled_senusiyya
+		}
+		has_law = law_type:law_people_of_the_book
+	}
+	possible = {
+		has_law = law_type:law_people_of_the_book
+		OR = {
+			has_law_or_variant = law_type:law_monarchy
+			has_law_or_variant = law_type:law_theocracy
+		}
+		trigger_if = {
+			limit = {
+				c:TRI ?= this
+			}
+			NOT = {
+				has_journal_entry = je_mgrbfm_libya_centralization
+			}
+		}
+		trigger_if = {
+			limit = {
+				c:TUN ?= this
+			}
+			NOT = {
+				has_journal_entry = je_mgrbfm_tunis_modernization
+			}
+		}
+		trigger_if = {
+			limit = {
+				c:FZN ?= this
+			}
+			NOT = {
+				has_journal_entry = je_mgrbfm_securing_fezzan
+			}
+		}
+		custom_tooltip = {
+			text = eqfm_embrace_senusiyya_possible
+			var:eqfm_senusiyya_influence_var >= 100
+		}
+	}
+	effect = {
+		trigger_event = eqfm_senusiyya.209
+		set_variable = eqfm_embraced_senusiyya
+	}
+}
+
+eqfm_expell_senusiyya_button = {
+	name = "eqfm_expell_senusiyya_name"
+	desc = "eqfm_expell_senusiyya_desc"
+	visible = {
+		has_variable = eqfm_senusiyya_influence_var
+		NOR = {
+			has_variable = eqfm_embraced_senusiyya
+			has_variable = eqfm_expelled_senusiyya
+		}
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				c:TRI ?= this
+			}
+			NOT = {
+				has_journal_entry = je_mgrbfm_libya_centralization
+			}
+		}
+		trigger_if = {
+			limit = {
+				c:TUN ?= this
+			}
+			NOT = {
+				has_journal_entry = je_mgrbfm_tunis_modernization
+			}
+		}
+		trigger_if = {
+			limit = {
+				c:FZN ?= this
+			}
+			NOT = {
+				has_journal_entry = je_mgrbfm_securing_fezzan
+			}
+		}
+		custom_tooltip = {
+			text = eqfm_sweep_senusiyya_possible
+			var:eqfm_senusiyya_influence_var <= 0
+		}
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_LIBYA
+			}
+			custom_tooltip = {
+				text = eqfm_libya_centralized
+				s:STATE_LIBYA = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_LIBYAN_DESERT
+			}
+			custom_tooltip = {
+				text = eqfm_libyan_desert_centralized
+				s:STATE_LIBYAN_DESERT = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_TRIPOLI
+			}
+			custom_tooltip = {
+				text = eqfm_tripoli_centralized
+				s:STATE_TRIPOLI = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_MATRUH
+			}
+			custom_tooltip = {
+				text = eqfm_matruh_centralized
+				s:STATE_MATRUH = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_EGYPTIAN_DESERT
+			}
+			custom_tooltip = {
+				text = eqfm_egyptian_desert_centralized
+				s:STATE_EGYPTIAN_DESERT = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+					
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_state_in_state_region = STATE_CHAD
+			}
+			custom_tooltip = {
+				text = eqfm_chad_centralized
+				s:STATE_CHAD = {
+					any_scope_state = {
+						owner = {
+							NOT = {
+								is_country_type = decentralized
+							}
+						}
+					}
+
+				}
+			}
+		}
+	}
+	effect = {
+		trigger_event = eqfm_senusiyya.208
+		set_variable = eqfm_expelled_senusiyya
+	}
+}
+
+eqfm_send_armed_delegation_button = {
+	name = "eqfm_send_armed_delegation_name"
+	desc = "eqfm_send_armed_delegation_desc"
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_senusiyya
+		NOT = {
+			has_global_variable = eqfm_intimidated_sensussi
+		}
+	}
+	possible = {
+		has_technology_researched = centralization
+		army_size > 25 # Just in case you downsize :p
+		custom_tooltip = {
+			text = eqfm_send_armed_delegation_possible
+			any_scope_state = {
+				state_region = {
+					has_variable = eqfm_senusiyya_entrenchment_var
+				}
+			}
+		}
+	}
+	effect = {
+		trigger_event = eqfm_senusiyya.004
+		set_global_variable = eqfm_intimidated_sensussi
+	}
+	ai_chance = {
+		value = 10
+	}
+}
+
+####---------- Senusiyya Expulsion Buttons ----------####
+eqfm_recall_senusiyya_expedition_button = {
+	name = "eqfm_recall_expedition_name"
+	desc = "eqfm_recall_expedition_desc"
+	
+	visible = {
+		eqfm_has_senusiyya_expedition_trigger = yes
+	}
+	possible = {
+		eqfm_has_senusiyya_expedition_trigger = yes
+		hidden_trigger = {
+			NOT = {
+				has_variable = eqfm_senusiyya_expedition_transit_var
+			}
+		}
+	}
+	effect = {
+		eqfm_cancel_senusiyya_expedition_effect = yes
+	}
+}
+
+eqfm_resupply_senusiyya_expedition_button = {
+	name = "eqfm_resupply_expedition_name"
+	desc = "eqfm_resupply_expedition_desc"
+
+	visible = {
+		eqfm_has_senusiyya_expedition_trigger = yes
+	}
+	possible = {
+		NOT = {
+			has_modifier = modifier_eqfm_resupplied_senusiyya_expedition
+		}
+		eqfm_expedition_peril_greater_than_or_equals_trigger = {
+			type = senusiyya
+			value = 3
+		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = eqfm_senusiyya_expedition_transit_var
+			}
+		}
+	}
+	effect = {
+		add_modifier = {
+			name = modifier_eqfm_resupplied_senusiyya_expedition
+			months = gbbf_short_modifier_time
+			multiplier = money_amount_multiplier_small
+		}
+		eqfm_add_expedition_peril_effect = {
+			type = senusiyya
+			value = -3
+		}
+	}
+}
+
+eqfm_expel_senusiyya_libya_button = {
+	name = "eqfm_expel_senusiyya_libya_name"
+	desc = "eqfm_expel_senusiyya_libya_desc"
+	
+	visible = {
+		s:STATE_LIBYA = {
+			has_variable = eqfm_senusiyya_entrenchment_var
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			text = eqfm_expel_senusiyya_possible
+			s:STATE_LIBYA = {
+				var:eqfm_senusiyya_entrenchment_var <= 0
+			}
+		}
+		is_in_geographic_region = geographic_region_senusiyya
+		custom_tooltip = {
+			text = eqfm_has_hostile_stance
+			var:eqfm_senusiyya_stance_var ?= flag:eqfm_senusiyya_stance_hostile
+		}
+		eqfm_has_senusiyya_expedition_trigger = no
+		any_scope_general = {
+			NOT = {
+				has_role_of_type = ruler
+			}
+			is_busy = no
+		}
+		NOR = {
+			has_modifier = modifier_eqfm_failed_senusiyya_expedition_country
+			has_modifier = modifier_eqfm_cancelled_senusiyya_expedition
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = eqfm_senusiyya.300
+			popup = yes
+		}
+		set_variable = {
+			name = eqfm_senusiyya_expedition_var
+			value = s:STATE_LIBYA
+		}
+	}
+}
+
+eqfm_expel_senusiyya_libyan_desert_button = {
+	name = "eqfm_expel_senusiyya_libyan_desert_name"
+	desc = "eqfm_expel_senusiyya_libyan_desert_desc"
+	
+	visible = {
+		s:STATE_LIBYAN_DESERT = {
+			has_variable = eqfm_senusiyya_entrenchment_var
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			text = eqfm_expel_senusiyya_possible
+			s:STATE_LIBYAN_DESERT = {
+				var:eqfm_senusiyya_entrenchment_var <= 0
+			}
+		}
+		is_in_geographic_region = geographic_region_senusiyya
+		custom_tooltip = {
+			text = eqfm_has_hostile_stance
+			var:eqfm_senusiyya_stance_var ?= flag:eqfm_senusiyya_stance_hostile
+		}
+		eqfm_has_senusiyya_expedition_trigger = no
+		any_scope_general = {
+			NOT = {
+				has_role_of_type = ruler
+			}
+			is_busy = no
+		}
+		NOR = {
+			has_modifier = modifier_eqfm_failed_senusiyya_expedition_country
+			has_modifier = modifier_eqfm_cancelled_senusiyya_expedition
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = eqfm_senusiyya.300
+			popup = yes
+		}
+		set_variable = {
+			name = eqfm_senusiyya_expedition_var
+			value = s:STATE_LIBYAN_DESERT
+		}
+	}
+}
+
+eqfm_expel_senusiyya_tripoli_button = {
+	name = "eqfm_expel_senusiyya_tripoli_name"
+	desc = "eqfm_expel_senusiyya_tripoli_desc"
+	
+	visible = {
+		s:STATE_TRIPOLI = {
+			has_variable = eqfm_senusiyya_entrenchment_var
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			text = eqfm_expel_senusiyya_possible
+			s:STATE_TRIPOLI = {
+				var:eqfm_senusiyya_entrenchment_var <= 0
+			}
+		}
+		is_in_geographic_region = geographic_region_senusiyya
+		custom_tooltip = {
+			text = eqfm_has_hostile_stance
+			var:eqfm_senusiyya_stance_var ?= flag:eqfm_senusiyya_stance_hostile
+		}
+		eqfm_has_senusiyya_expedition_trigger = no
+		any_scope_general = {
+			NOT = {
+				has_role_of_type = ruler
+			}
+			is_busy = no
+		}
+		NOR = {
+			has_modifier = modifier_eqfm_failed_senusiyya_expedition_country
+			has_modifier = modifier_eqfm_cancelled_senusiyya_expedition
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = eqfm_senusiyya.300
+			popup = yes
+		}
+		set_variable = {
+			name = eqfm_senusiyya_expedition_var
+			value = s:STATE_TRIPOLI
+		}
+	}
+}
+
+eqfm_expel_senusiyya_egyptian_desert_button = {
+	name = "eqfm_expel_senusiyya_egyptian_desert_name"
+	desc = "eqfm_expel_senusiyya_egyptian_desert_desc"
+	
+	visible = {
+		s:STATE_EGYPTIAN_DESERT = {
+			has_variable = eqfm_senusiyya_entrenchment_var
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			text = eqfm_expel_senusiyya_possible
+			s:STATE_EGYPTIAN_DESERT = {
+				var:eqfm_senusiyya_entrenchment_var <= 0
+			}
+		}
+		is_in_geographic_region = geographic_region_senusiyya
+		custom_tooltip = {
+			text = eqfm_has_hostile_stance
+			var:eqfm_senusiyya_stance_var ?= flag:eqfm_senusiyya_stance_hostile
+		}
+		eqfm_has_senusiyya_expedition_trigger = no
+		any_scope_general = {
+			NOT = {
+				has_role_of_type = ruler
+			}
+			is_busy = no
+		}
+		NOR = {
+			has_modifier = modifier_eqfm_failed_senusiyya_expedition_country
+			has_modifier = modifier_eqfm_cancelled_senusiyya_expedition
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = eqfm_senusiyya.300
+			popup = yes
+		}
+		set_variable = {
+			name = eqfm_senusiyya_expedition_var
+			value = s:STATE_EGYPTIAN_DESERT
+		}
+	}
+}
+
+eqfm_expel_senusiyya_matruh_button = {
+	name = "eqfm_expel_senusiyya_matruh_name"
+	desc = "eqfm_expel_senusiyya_matruh_desc"
+	
+	visible = {
+		s:STATE_MATRUH = {
+			has_variable = eqfm_senusiyya_entrenchment_var
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			text = eqfm_expel_senusiyya_possible
+			s:STATE_MATRUH = {
+				var:eqfm_senusiyya_entrenchment_var <= 0
+			}
+		}
+		is_in_geographic_region = geographic_region_senusiyya
+		custom_tooltip = {
+			text = eqfm_has_hostile_stance
+			var:eqfm_senusiyya_stance_var ?= flag:eqfm_senusiyya_stance_hostile
+		}
+		eqfm_has_senusiyya_expedition_trigger = no
+		any_scope_general = {
+			NOT = {
+				has_role_of_type = ruler
+			}
+			is_busy = no
+		}
+		NOR = {
+			has_modifier = modifier_eqfm_failed_senusiyya_expedition_country
+			has_modifier = modifier_eqfm_cancelled_senusiyya_expedition
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = eqfm_senusiyya.300
+			popup = yes
+		}
+		set_variable = {
+			name = eqfm_senusiyya_expedition_var
+			value = s:STATE_MATRUH
+		}
+	}
+}
+
+eqfm_expel_senusiyya_chad_button = {
+	name = "eqfm_expel_senusiyya_chad_name"
+	desc = "eqfm_expel_senusiyya_chad_desc"
+	
+	visible = {
+		s:STATE_CHAD = {
+			has_variable = eqfm_senusiyya_entrenchment_var
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			text = eqfm_expel_senusiyya_possible
+			s:STATE_CHAD = {
+				var:eqfm_senusiyya_entrenchment_var <= 0
+			}
+		}
+		is_in_geographic_region = geographic_region_senusiyya
+		custom_tooltip = {
+			text = eqfm_has_hostile_stance
+			var:eqfm_senusiyya_stance_var ?= flag:eqfm_senusiyya_stance_hostile
+		}
+		eqfm_has_senusiyya_expedition_trigger = no
+		any_scope_general = {
+			NOT = {
+				has_role_of_type = ruler
+			}
+			is_busy = no
+		}
+		NOR = {
+			has_modifier = modifier_eqfm_failed_senusiyya_expedition_country
+			has_modifier = modifier_eqfm_cancelled_senusiyya_expedition
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = eqfm_senusiyya.300
+			popup = yes
+		}
+		set_variable = {
+			name = eqfm_senusiyya_expedition_var
+			value = s:STATE_CHAD
+		}
+	}
+}

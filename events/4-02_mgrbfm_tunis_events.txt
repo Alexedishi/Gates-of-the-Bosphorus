@@ -1,0 +1,274 @@
+﻿###############################################
+## MAGHREB FLAVOR MODULE: THE TUNISIAN STATE ##
+###############################################
+
+# For Greek & Byzantium content, see the "grefm" module
+# For Balkan Nations content, see the "balkfm" module
+# For Ottoman & Turkish content, see the "turkfm" module
+# For Northern African content, see the "mgrbfm" module
+# For Armenian, Kurdish, & Assyrian content, see the "haykfm" module
+# For Levantine content, see the "levafm" module
+# For Eastern Question & Expeditions content, see the "eqfm" module
+
+####################
+
+namespace = mgrbfm_tunis
+
+####################
+
+####	TABLE OF CONTENTS	####	#TOC
+
+# The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
+
+#000-009 - The Modernization of Tunis
+#	001 - Between Seas and Sands
+#	002 - An Ambitious Bey
+#	003 - A Stately Reception
+#	008 - A Stagnant State
+#	009 - The Tunisian Fundamental Pact
+
+####################
+
+## The Modernization of Tunis ##
+mgrbfm_tunis.001 = { # Between Seas and Sands
+	type = country_event
+	placement = root
+
+	title = mgrbfm_tunis.001.t
+	desc = mgrbfm_tunis.001.d
+	flavor = mgrbfm_tunis.001.f
+
+	event_image = {
+		video = "africa_city_center"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_tunis.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered from GLOBAL
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = mgrbfm_tunis.001.a
+		default_option = yes
+		show_as_tooltip = {
+			add_modifier = {
+				name = modifier_mgrbfm_tribal_administration
+			}
+		}
+	}
+
+}
+
+mgrbfm_tunis.002 = { # An Ambitious Bey
+	type = country_event
+	placement = root
+
+	title = mgrbfm_tunis.002.t
+	desc = mgrbfm_tunis.002.d
+	flavor = mgrbfm_tunis.002.f
+
+	event_image = {
+		video = "votp_monarch_holding_court"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		ruler = {
+			has_template = mgrbfm_husaini_mustafa
+		}
+		year >= 1837
+		exists = heir
+	}
+
+	cancellation_trigger = {
+		NAND = {
+			ruler = {
+				has_template = mgrbfm_husaini_mustafa
+			}
+			exists = heir
+		}
+	}
+
+	immediate = {
+		heir = {
+			save_scope_as = turkfm_ahmad_scope
+		}
+	}
+
+	option = {
+		name = mgrbfm_tunis.002.a
+		default_option = yes
+		show_as_tooltip = {
+			ruler = {
+				kill_character = yes
+			}
+		}
+		heir = {
+			set_character_as_ruler = yes
+		}
+	}
+}
+
+mgrbfm_tunis.003 = { # A Stately Reception
+	type = country_event
+	placement = scope:france_scope
+
+	title = mgrbfm_tunis.003.t
+	desc = mgrbfm_tunis.003.d
+	flavor = mgrbfm_tunis.003.f
+
+	event_image = {
+		video = "europenorthamerica_london_center"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by mgrbfm_visit_france_button
+	}
+
+	immediate = {
+		c:FRA = {
+			save_scope_as = france_scope
+		}
+	}
+
+	option = {
+		name = mgrbfm_tunis.003.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_mgrbfm_western_inspirations
+			months = gbbf_long_modifier_time
+		}
+		create_incident = {
+			country = c:TUR
+			value = 10
+		}
+		hidden_effect = {
+			c:TUR = {
+				set_secret_goal = {
+					country = c:TUN
+					secret_goal = antagonize
+				}
+			}
+		}
+	}
+
+}
+
+mgrbfm_tunis.008 = { # A Stagnant State
+	type = country_event
+	placement = root
+
+	title = mgrbfm_tunis.008.t
+	desc = mgrbfm_tunis.008.d
+	flavor = mgrbfm_tunis.008.f
+
+	event_image = {
+		video = "unspecific_factory_closed"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_mgrbfm_tunis_modernization
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = mgrbfm_tunis.008.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_mgrbfm_failed_reforms
+			months = gbbf_long_modifier_time
+			is_decaying = yes
+		}
+		add_radicals = {
+			value = medium_radicals
+		}
+	}
+
+}
+
+mgrbfm_tunis.009 = { # The Tunisian Fundamental Pact
+	type = country_event
+	placement = root
+
+	title = mgrbfm_tunis.009.t
+	desc = mgrbfm_tunis.009.d
+	flavor = mgrbfm_tunis.009.f
+
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+
+	duration = 3
+
+	dlc = dlc_grefm
+
+	trigger = {
+		# triggered by je_mgrbfm_tunis_modernization
+	}
+
+	immediate = {
+	}
+
+	option = {
+		name = mgrbfm_tunis.009.a
+		default_option = yes
+		add_modifier = {
+			name = modifier_mgrbfm_modernized_state
+			months = gbbf_long_modifier_time
+		}
+		if = {
+			limit = {
+				has_journal_entry = je_earn_recognition
+			}
+			custom_tooltip = {
+				text = mgrbfm_recognition_gain_50
+				je:je_earn_recognition = {
+					add_progress = {
+						name = earn_recognition_progress_bar
+						value = 50
+					}
+				}
+			}
+		}
+	}
+
+}

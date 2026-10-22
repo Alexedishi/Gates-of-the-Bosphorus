@@ -1,76 +1,183 @@
-﻿## Imperial Identity Values
+﻿## Static Values
+turkfm_tanzimat_identity_min_value = 0
+turkfm_tanzimat_identity_max_value = 1000
+turkfm_tanzimat_reformism_min_value = 0
+turkfm_tanzimat_reformism_max_value = 1000
+
+## Imperial Identity Values
 turkfm_tanzimat_ottomanist_progress_value = {
 	value = 0
-	add = {
-		value = {
-			every_political_movement = {
-				limit = {
-					is_political_movement_type = movement_gbbf_ottomanist
-				}
-				add = political_movement_support
+	## Political Movements
+	if = {
+		limit = {
+			any_political_movement = {
+				is_political_movement_type = movement_gbbf_ottomanist
 			}
 		}
-		desc = turkfm_value_from_ottomanist_movement
+		add = {
+			desc = turkfm_value_from_ottomanist_movement
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_gbbf_ottomanist
+					}
+					add = political_movement_support
+				}
+				min = 0
+			}
+		}
 	}
-	add = {
-		value = {
-			every_political_movement = {
-				limit = {
-					is_political_movement_type = movement_modernizer
-				}
-				add = political_movement_support
+	if = {
+		limit = {
+			any_political_movement = {
+				is_political_movement_type = movement_modernizer
 			}
 		}
-		desc = turkfm_value_from_modernizer_movement
+		add = {
+			desc = turkfm_value_from_modernizer_movement
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_modernizer
+					}
+					add = political_movement_support
+				}
+				min = 0
+			}
+		}
 	}
-	add = {
-		value = {
-			every_political_movement = {
-				limit = {
-					is_political_movement_type = movement_liberal
-				}
-				add = political_movement_support
+	if = {
+		limit = {
+			any_political_movement = {
+				is_political_movement_type = movement_liberal
 			}
 		}
-		desc = turkfm_value_from_liberal_movement
+		add = {
+			desc = turkfm_value_from_liberal_movement
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_liberal
+					}
+					add = political_movement_support
+				}
+				min = 0
+			}
+		}
 	}
-	add = {
-		value = {
-			every_political_movement = {
-				limit = {
-					is_political_movement_type = movement_land_reform
-				}
-				add = political_movement_support
+	if = {
+		limit = {
+			any_political_movement = {
+				is_political_movement_type = movement_land_reform
 			}
 		}
-		desc = turkfm_value_from_land_reform_movement
+		add = {
+			desc = turkfm_value_from_land_reform_movement
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_land_reform
+					}
+					add = political_movement_support
+				}
+				min = 0
+			}
+		}
 	}
-	add = {
-		value = {
-			every_political_movement = {
-				limit = {
-					is_political_movement_type = movement_minority_rights
-				}
-				add = political_movement_support
+	if = {
+		limit = {
+			any_political_movement = {
+				is_political_movement_type = movement_minority_rights
 			}
 		}
-		desc = turkfm_value_from_minority_rights_movement
+		add = {
+			desc = turkfm_value_from_minority_rights_movement
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_minority_rights
+					}
+					add = political_movement_support
+				}
+				min = 0
+			}
+		}
 	}
-	add = {
-		value = {
-			every_political_movement = {
-				limit = {
-					is_political_movement_type = movement_anti_slavery
-				}
-				add = political_movement_support
+	if = {
+		limit = {
+			any_political_movement = {
+				is_political_movement_type = movement_anti_slavery
 			}
 		}
-		desc = turkfm_value_from_anti_slavery_movement
+		add = {
+			desc = turkfm_value_from_anti_slavery_movement
+			value = {
+				every_political_movement = {
+					limit = {
+						is_political_movement_type = movement_anti_slavery
+					}
+					add = political_movement_support
+				}
+				min = 0
+			}
+		}
+	}
+	## Characters
+	add = {
+		desc = turkfm_value_from_pro_reform_character_impact
+		value = {
+			every_scope_character = {
+				limit = {
+					OR = {
+						has_ideology = ideology:ideology_gbbf_ottomanist_leader
+						has_ideology = ideology:ideology_modernizer_leader
+						has_ideology = ideology:ideology_liberal_leader
+						has_ideology = ideology:ideology_abolitionist
+						has_ideology = ideology:ideology_reformer
+					}
+				}
+				add = gbbf_character_impact_value
+				max = 1
+			}
+			round_to = 0.01
+		}
+	}
+	## Pro-Reform IG Clout
+	add = {
+		desc = turkfm_value_from_pro_reform_clout
+		value = {
+			every_interest_group = {
+				limit = {
+					leader = {
+						turkfm_has_pro_reform_ideology = yes
+					}
+				}
+				add = ig_clout
+			}
+			round_to = 0.01
+		}
+	}
+	## Law Progressiveness
+	if = {
+		limit = {
+			var:gbbf_average_progressiveness_var > 0
+		}
+		add = {
+			desc = gbbf_value_from_average_progressiveness
+			value = {
+				add = var:gbbf_average_progressiveness_var
+				divide = 1000
+				round_to = 0.01
+			}
+		}
 	}
 }
 
 turkfm_tanzimat_islamist_progress_value = {
+	value = 0
+	## Political Movements
 	add = {
+		desc = turkfm_value_from_religious_majority_movement
 		value = {
 			every_political_movement = {
 				limit = {
@@ -78,10 +185,11 @@ turkfm_tanzimat_islamist_progress_value = {
 				}
 				add = political_movement_support
 			}
+			min = 0
 		}
-		desc = turkfm_value_from_religious_majority_movement
 	}
 	add = {
+		desc = turkfm_value_from_royalist_absolutist_movement
 		value = {
 			every_political_movement = {
 				limit = {
@@ -90,9 +198,10 @@ turkfm_tanzimat_islamist_progress_value = {
 				add = political_movement_support
 			}
 		}
-		desc = turkfm_value_from_royalist_absolutist_movement
+		min = 0
 	}
 	add = {
+		desc = turkfm_value_from_reactionary_movement
 		value = {
 			every_political_movement = {
 				limit = {
@@ -100,8 +209,57 @@ turkfm_tanzimat_islamist_progress_value = {
 				}
 				add = political_movement_support
 			}
+			min = 0
 		}
-		desc = turkfm_value_from_reactionary_movement
+	}
+	## Characters
+	add = {
+		desc = turkfm_value_from_anti_reform_character_impact
+		value = {
+			every_scope_character = {
+				limit = {
+					OR = {
+						has_ideology = ideology:ideology_gbbf_islamist_leader
+						has_ideology = ideology:ideology_royalist
+						has_ideology = ideology:ideology_authoritarian
+						has_ideology = ideology:ideology_traditionalist
+						has_ideology = ideology:ideology_theocrat
+					}
+				}
+				add = gbbf_character_impact_value
+			}
+			round_to = 0.01
+		}
+	}
+	## Anti-reform IGs
+	add = {
+		desc = turkfm_value_from_pro_conservatism_clout
+		value = {
+			every_interest_group = {
+				limit = {
+					leader = {
+						turkfm_has_pro_conversatism_ideology = yes
+					}
+				}
+				add = ig_clout
+			}
+			round_to = 0.01
+		}
+	}
+	## Law Progressiveness
+	if = {
+		limit = {
+			var:gbbf_average_progressiveness_var < 0
+		}
+		add = {
+			desc = turkfm_value_from_law_regressiveness
+			value = {
+				add = var:gbbf_average_progressiveness_var
+				multiply = -1
+				divide = 1000
+				round_to = 0.01
+			}
+		}
 	}
 }
 
@@ -139,30 +297,62 @@ turkfm_tanzimat_identity_tilt_value = {
 
 turkfm_tanzimat_reformist_progress_value = {
 	value = 0
+	## Number of Completed Agendas
+	if = {
+		limit = {
+			has_global_variable = turkfm_tanzimat_reforms_complete
+		}
+		add = {
+			desc = turkfm_value_from_completed_reforms_journal
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			has_journal_entry = je_turkfm_tanzimat_reforms
+		}
+		add = {
+			desc = turkfm_value_from_completed_reform_agendas
+			value = {
+				add = var:turkfm_completed_tanzimat_agendas_var
+				divide = 10
+				max = 1
+			}
+		}
+	}
+	## Ruler Ideology, if pro-Reform
+	if = {
+		limit = {
+			ruler = {
+				turkfm_has_pro_reform_ideology = yes
+			}
+		}
+		add = {
+			desc = turkfm_value_from_ruler_popularity
+			value = {
+				add = ruler.popularity
+				divide = 100
+				round_to = 0.01
+			}
+		}
+	}
+	## Legitimacy
 	add = {
+		desc = turkfm_value_from_legitimacy
 		value = {
 			add = government_legitimacy
 			subtract = 75
-			multiply = 0.01
+			divide = 100
 		}
-		desc = turkfm_value_from_legitimacy
 	}
+	## Literacy Rate
 	add = {
-		value = literacy_rate
 		desc = turkfm_value_from_literacy
+		value = literacy_rate
 	}
+	## Secular Admins
 	add = {
-		value = {
-			every_interest_group = {
-				limit = {
-					turkfm_has_pro_reform_ideology = yes
-				}
-				add = ig_clout
-			}
-		}
-		desc = turkfm_value_from_pro_reform_clout
-	}
-	add = {
+		desc = turkfm_value_from_secular_bureaucrats
 		value = {
 			every_scope_building = {
 				limit = {
@@ -172,9 +362,10 @@ turkfm_tanzimat_reformist_progress_value = {
 				add = 0.1
 			}
 		}
-		desc = turkfm_value_from_secular_bureaucrats
 	}
+	## Secular Universities
 	add = {
+		desc = turkfm_value_from_secular_academia
 		value = {
 			every_scope_building = {
 				limit = {
@@ -184,85 +375,99 @@ turkfm_tanzimat_reformist_progress_value = {
 				add = 0.1
 			}
 		}
-		desc = turkfm_value_from_secular_academia
 	}
+	## Institution Levels (except Religious Schools/Charity)
 	add = {
+		desc = gbbf_value_from_institution_levels
 		value = {
-			if = {
-				limit = {
-					has_institution = institution_colonial_affairs
-				}
-				institution:institution_colonial_affairs = {
-					add = investment
-				}
-			}
-			if = {
-				limit = {
-					has_institution = institution_social_security
-				}
-				institution:institution_social_security = {
-					add = investment
-				}
-			}
-			if = {
-				limit = {
-					has_institution = institution_workplace_safety
-				}
-				institution:institution_workplace_safety = {
-					add = investment
-				}
-			}
-			if = {
-				limit = {
-					has_institution = institution_schools
-					OR = {
-						has_law_or_variant = law_type:law_public_schools
-						has_law_or_variant = law_type:law_private_schools
-					}
-				}
-				institution:institution_schools = {
-					add = investment
-				}
-			}
-			if = {
-				limit = {
-					has_institution = institution_police
-				}
-				institution:institution_police = {
-					add = investment
-				}
-			}
-			if = {
-				limit = {
-					has_institution = institution_health_system
-					OR = {
-						has_law_or_variant = law_type:law_public_health_insurance
-						has_law_or_variant = law_type:law_private_health_insurance
-					}
-				}
-				institution:institution_health_system = {
-					add = investment
-				}
-			}
-			if = {
-				limit = {
-					has_institution = institution_home_affairs
-				}
-				institution:institution_home_affairs = {
-					add = investment
-				}
-			}
-			multiply = 0.1
+			add = var:gbbf_institution_investment_levels_var
+			divide = 10
 		}
-		desc = turkfm_value_from_institution_levels
 	}
+	## Excess Bureaucracy
+	add = {
+		desc = turkfm_value_from_bureaucracy
+		value = {
+			add = bureaucracy
+			divide = 1000
+			round_to = 0.01
+		}
+	}
+	## Incorporated States in Rumelia/Anatolia
+	add = {
+		desc = turkfm_value_from_incorporated_states
+		every_scope_state = {
+			limit = {
+				OR = {
+					is_in_geographic_region = geographic_region_rumelia
+					is_in_geographic_region = geographic_region_anatolia
+				}
+				is_split_state = no
+				is_incorporated = yes
+			}
+			add = 0.1
+		}
+	}
+	## Ottomanist Movement is being bolstered/suppressed
 	if = {
 		limit = {
-			has_modifier = modifier_turkfm_reorganizing_spirit
+			any_political_movement = {
+				is_political_movement_type = movement_gbbf_ottomanist
+				is_being_bolstered = yes
+			}
 		}
 		add = {
+			desc = turkfm_value_from_bolstering_ottomanist_movement
 			value = 0.5
-			desc = turkfm_value_from_declared_reforms
+		}
+	}
+	else_if = {
+		limit = {
+			any_political_movement = {
+				is_political_movement_type = movement_gbbf_ottomanist
+				is_being_suppressed = yes
+			}
+		}
+		subtract = {
+			desc = turkfm_value_from_suppressing_ottomanist_movement
+			value = 0.5
+		}
+	}
+	## Slavery Banned
+	if = {
+		limit = {
+			has_law_or_variant = law_type:law_slavery_banned
+		}
+		add = {
+			desc = turkfm_from_abolishing_slavery
+			value = 0.5
+		}
+	}
+	## Prominence of Pro-Reform Generals
+	add = {
+		desc = turkfm_value_from_reformist_generals
+		value = {
+			every_scope_general = {
+				limit = {
+					turkfm_has_pro_reform_ideology = yes
+				}
+				add = gbbf_commander_impact_value
+			}
+			round_to = 0.01
+		}
+	}
+	## Prominence of Pro-Reform Characters in Government
+	add = {
+		desc = turkfm_value_from_reformist_leaders
+		value = {
+			every_scope_character = {
+				limit = {
+					is_interest_group_leader = yes
+					turkfm_has_pro_reform_ideology = yes
+				}
+				add = gbbf_character_prominence_decimal_value
+			}
+			round_to = 0.01
 		}
 	}
 	round_to = 0.01
@@ -270,18 +475,35 @@ turkfm_tanzimat_reformist_progress_value = {
 
 turkfm_tanzimat_conservatist_progress_value = {
 	value = 0
+	## Religious Admins
 	add = {
+		desc = turkfm_value_from_religious_bureaucrats
 		value = {
-			every_interest_group = {
+			every_scope_building = {
 				limit = {
-					turkfm_has_pro_reform_ideology = yes
+					is_building_type = building_government_administration
+					has_active_production_method = pm_religious_bureaucrats
 				}
-				add = ig_clout
+				add = 0.1
 			}
 		}
-		desc = turkfm_value_from_pro_conservatism_clout
 	}
+	## Religious Universities
 	add = {
+		desc = turkfm_value_from_religious_academia
+		value = {
+			every_scope_building = {
+				limit = {
+					is_building_type = building_university
+					has_active_production_method = pm_religious_academia
+				}
+				add = 0.1
+			}
+		}
+	}
+	## Institution Levels (only Religious Schools/Charity)
+	add = {
+		desc = gbbf_value_from_institution_levels
 		value = {
 			if = {
 				limit = {
@@ -301,35 +523,12 @@ turkfm_tanzimat_conservatist_progress_value = {
 					add = investment
 				}
 			}
-			multiply = 0.1
+			divide = 10
 		}
-		desc = turkfm_value_from_institution_levels
 	}
+	## Church and State Law
 	add = {
-		value = {
-			every_scope_building = {
-				limit = {
-					is_building_type = building_government_administration
-					has_active_production_method = pm_religious_bureaucrats
-				}
-				add = 0.1
-			}
-		}
-		desc = turkfm_value_from_religious_bureaucrats
-	}
-	add = {
-		value = {
-			every_scope_building = {
-				limit = {
-					is_building_type = building_university
-					has_active_production_method = pm_religious_academia
-				}
-				add = 0.1
-			}
-		}
-		desc = turkfm_value_from_religious_academia
-	}
-	add = {
+		desc = turkfm_value_from_religious_law
 		value = {
 			if = {
 				limit = {
@@ -356,7 +555,84 @@ turkfm_tanzimat_conservatist_progress_value = {
 				subtract = 5
 			}
 		}
-		desc = turkfm_value_from_religious_law
+	}
+	## Excess Authority
+	add = {
+		desc = turkfm_value_from_authority
+		value = {
+			add = authority
+			divide = 1000
+			round_to = 0.01
+		}
+	}
+	## Unincorporated States in Rumelia/Anatolia
+	add = {
+		desc = turkfm_value_from_unincorporated_states
+		every_scope_state = {
+			limit = {
+				OR = {
+					is_in_geographic_region = geographic_region_rumelia
+					is_in_geographic_region = geographic_region_anatolia
+				}
+				OR = {
+					is_incorporated = no
+					is_split_state = yes
+				}
+			}
+			add = 0.1
+		}
+	}
+	## Islamist Movement is being bolstered/suppressed
+	if = {
+		limit = {
+			any_political_movement = {
+				is_political_movement_type = movement_religious_majority
+				is_being_bolstered = yes
+			}
+		}
+		add = {
+			desc = turkfm_value_from_bolstering_islamist_movement
+			value = 0.5
+		}
+	}
+	else_if = {
+		limit = {
+			any_political_movement = {
+				is_political_movement_type = movement_religious_majority
+				is_being_suppressed = yes
+			}
+		}
+		subtract = {
+			desc = turkfm_value_from_suppressing_islamist_movement
+			value = 0.5
+		}
+	}
+	## Prominence of Pro-Reform Generals
+	add = {
+		desc = turkfm_value_from_conservatist_generals
+		value = {
+			every_scope_general = {
+				limit = {
+					turkfm_has_pro_conversatism_ideology = yes
+				}
+				add = gbbf_commander_impact_value
+			}
+			round_to = 0.01
+		}
+	}
+	## Prominence of Pro-Reform Characters in Government
+	add = {
+		desc = turkfm_value_from_conservatist_leaders
+		value = {
+			every_scope_character = {
+				limit = {
+					is_interest_group_leader = yes
+					turkfm_has_pro_conversatism_ideology = yes
+				}
+				add = gbbf_character_prominence_decimal_value
+			}
+			round_to = 0.01
+		}
 	}
 	round_to = 0.01
 }
@@ -427,7 +703,7 @@ turkfm_young_ottomans_progress_value = {
 		}
 		add = {
 			value = ig:ig_armed_forces.ig_clout
-			desc = turkfm_value_from_armed_forces
+			desc = gbbf_value_from_armed_forces_clout
 		}
 	}
 	subtract = {
@@ -439,61 +715,158 @@ turkfm_young_ottomans_progress_value = {
 
 turkfm_young_turks_progress_value = {
 	value = 0
+	add = {
+		desc = turkfm_value_from_legitimacy
+		value = {
+			add = government_legitimacy
+			subtract = 75
+			divide = 100
+			round_to = 0.01
+		}
+	}
 }
 
-## General Tanzimat Values
-turkfm_total_institution_investment_value = {
+turkfm_total_tanzimat_agendas_value = {
+	value = 0
+	add = 1 # Identity Agenda
+	if = {
+		limit = {
+			NOT = {
+				has_global_variable = turkfm_tanzimat_started
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = turkfm_tanzimat_agriculture_agenda
+				has_variable = turkfm_tanzimat_agriculture_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = turkfm_tanzimat_military_agenda
+				has_variable = turkfm_tanzimat_military_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = turkfm_tanzimat_civics_agenda
+				has_variable = turkfm_tanzimat_civics_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = turkfm_tanzimat_economy_agenda
+				has_variable = turkfm_tanzimat_economy_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = turkfm_tanzimat_education_agenda
+				has_variable = turkfm_tanzimat_education_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = turkfm_tanzimat_millet_agenda
+				has_variable = turkfm_tanzimat_millet_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = turkfm_tanzimat_security_agenda
+				has_variable = turkfm_tanzimat_security_complete
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_variable = turkfm_tanzimat_slavery_agenda
+				has_variable = turkfm_tanzimat_slavery_complete
+			}
+		}
+		add = 1
+	}
+}
+
+turkfm_completed_tanzimat_agendas_value = {
 	value = 0
 	if = {
 		limit = {
-			has_institution = institution_police
+			has_global_variable = turkfm_tanzimat_identity_complete
 		}
-		add = institution:institution_police.investment
-		desc = turkfm_value_from_policing
+		add = 1
 	}
 	if = {
 		limit = {
-			has_institution = institution_colonial_affairs
+			has_variable = turkfm_tanzimat_agriculture_complete
 		}
-		add = institution:institution_colonial_affairs.investment
-		desc = turkfm_value_from_colonial_affairs
+		add = 1
 	}
 	if = {
 		limit = {
-			has_institution = institution_health_system
+			has_variable = turkfm_tanzimat_military_complete
 		}
-		add = institution:institution_health_system.investment
-		desc = turkfm_value_from_health_system
+		add = 1
 	}
 	if = {
 		limit = {
-			has_institution = institution_home_affairs
+			has_variable = turkfm_tanzimat_civics_complete
 		}
-		add = institution:institution_home_affairs.investment
-		desc = turkfm_value_from_home_affairs
+		add = 1
 	}
 	if = {
 		limit = {
-			has_institution = institution_schools
+			has_variable = turkfm_tanzimat_economy_complete
 		}
-		add = institution:institution_schools.investment
-		desc = turkfm_value_from_schools
+		add = 1
 	}
 	if = {
 		limit = {
-			has_institution = institution_social_security
+			has_variable = turkfm_tanzimat_education_complete
 		}
-		add = institution:institution_social_security.investment
-		desc = turkfm_value_from_social_security
+		add = 1
 	}
 	if = {
 		limit = {
-			has_institution = institution_workplace_safety
+			has_variable = turkfm_tanzimat_millet_complete
 		}
-		add = institution:institution_workplace_safety.investment
-		desc = turkfm_value_from_workplace_safety
+		add = 1
 	}
-	min = 0
+	if = {
+		limit = {
+			has_variable = turkfm_tanzimat_security_complete
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_variable = turkfm_tanzimat_slavery_complete
+		}
+		add = 1
+	}
 }
 
 ## Overall Balkan Radical Values
@@ -588,7 +961,7 @@ turkfm_hellene_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = greek
@@ -604,7 +977,7 @@ turkfm_hellene_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = greek
@@ -626,7 +999,7 @@ turkfm_rhomaios_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = rhomaios
@@ -642,7 +1015,7 @@ turkfm_rhomaios_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = rhomaios
@@ -664,7 +1037,7 @@ turkfm_serb_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = serb
@@ -680,7 +1053,7 @@ turkfm_serb_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = serb
@@ -702,7 +1075,7 @@ turkfm_bulgarian_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = bulgarian
@@ -718,7 +1091,7 @@ turkfm_bulgarian_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = bulgarian
@@ -740,7 +1113,7 @@ turkfm_romanian_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = romanian
@@ -756,7 +1129,7 @@ turkfm_romanian_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = romanian
@@ -778,7 +1151,7 @@ turkfm_bosniak_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = bosniak
@@ -794,7 +1167,7 @@ turkfm_bosniak_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = bosniak
@@ -816,7 +1189,7 @@ turkfm_albanian_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = albanian
@@ -832,7 +1205,7 @@ turkfm_albanian_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = albanian
@@ -854,7 +1227,7 @@ turkfm_croat_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = croat
@@ -870,7 +1243,7 @@ turkfm_croat_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = croat
@@ -892,7 +1265,7 @@ turkfm_slovene_loyalists_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			is_incorporated = yes
 			any_scope_pop = {
 				has_pop_culture = slovene
@@ -908,7 +1281,7 @@ turkfm_slovene_loyalists_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				is_incorporated = yes
 				any_scope_pop = {
 					has_pop_culture = slovene
@@ -931,7 +1304,7 @@ turkfm_hellene_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = greek
 			}
@@ -946,7 +1319,7 @@ turkfm_hellene_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = greek
 				}
@@ -967,7 +1340,7 @@ turkfm_rhomaios_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = rhomaios
 			}
@@ -982,7 +1355,7 @@ turkfm_rhomaios_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = rhomaios
 				}
@@ -1003,7 +1376,7 @@ turkfm_serb_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = serb
 			}
@@ -1018,7 +1391,7 @@ turkfm_serb_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = serb
 				}
@@ -1039,7 +1412,7 @@ turkfm_bulgarian_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = bulgarian
 			}
@@ -1054,7 +1427,7 @@ turkfm_bulgarian_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = bulgarian
 				}
@@ -1075,7 +1448,7 @@ turkfm_romanian_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = romanian
 			}
@@ -1090,7 +1463,7 @@ turkfm_romanian_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = romanian
 				}
@@ -1111,7 +1484,7 @@ turkfm_bosniak_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = bosniak
 			}
@@ -1126,7 +1499,7 @@ turkfm_bosniak_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = bosniak
 				}
@@ -1147,7 +1520,7 @@ turkfm_albanian_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = albanian
 			}
@@ -1162,7 +1535,7 @@ turkfm_albanian_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = albanian
 				}
@@ -1183,7 +1556,7 @@ turkfm_croat_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = croat
 			}
@@ -1198,7 +1571,7 @@ turkfm_croat_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = croat
 				}
@@ -1219,7 +1592,7 @@ turkfm_slovene_radicals_value = {
 	value = 0
 	every_scope_state = {
 		limit = {
-			region = sr:region_balkans
+			is_in_geographic_region = geographic_region_rumelia
 			any_scope_pop = {
 				has_pop_culture = slovene
 			}
@@ -1234,7 +1607,7 @@ turkfm_slovene_radicals_value = {
 	divide = {
 		every_scope_state = {
 			limit = {
-				region = sr:region_balkans
+				is_in_geographic_region = geographic_region_rumelia
 				any_scope_pop = {
 					has_pop_culture = slovene
 				}

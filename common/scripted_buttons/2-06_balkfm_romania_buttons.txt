@@ -20,12 +20,12 @@
 	
 	effect = {
 		trigger_event = {
-			id = balkfm_romania.106 # Russian Troops Enter Moldavia
+			id = balkfm_romania.106
 			days = 30
 		}
 		add_modifier = {
 			name = modifier_balkfm_requested_interference
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 	}
 	
@@ -62,12 +62,12 @@ balkfm_wal_intervention_button = {
 	
 	effect = {
 		trigger_event = {
-			id = balkfm_romania.206 # Russian Troops Enter Wallachia
+			id = balkfm_romania.206
 			days = 30
 		}
 		add_modifier = {
 			name = modifier_balkfm_requested_interference
-			months = gbbf_duration_5_years
+			months = gbbf_normal_modifier_time
 		}
 	}
 	
@@ -95,13 +95,17 @@ balkfm_unite_principalities_button = {
 	possible = {
 		custom_tooltip = {
 			text = balkfm_friend_with_all_great_powers_tt
-			NOT = {
-				any_country = {
+			any_country = {
+				filter = {
 					country_rank >= rank_value:great_power
-					NOT = { has_war_with = ROOT }
-					has_interest_marker_in_region = ROOT.capital.region
-					relations:root < 0
+					has_strategic_region_interest_tier = {
+						strategic_region = ROOT.capital.region
+						value >= 1
+					}
 				}
+				count = all
+				relations:root > 0
+				NOT = { has_war_with = ROOT }
 			}
 		}
 		custom_tooltip = {
@@ -145,14 +149,10 @@ balkfm_unite_principalities_button = {
 				exists = top_overlord
 			}
 			top_overlord = {
-				trigger_event = {
-					id = balkfm_romania.790 # The Romanian Declaration of Union (should be from TUR scope)
-				}
+				trigger_event = balkfm_romania.790
 			}
 		}
-		trigger_event = {
-			id = balkfm_romania.700 # Our Declaration of Union
-		}
+		trigger_event = balkfm_romania.700
 		set_variable = {
 			name = romanian_union_var
 			value = 0
@@ -180,11 +180,9 @@ balkfm_all_for_one_button = { # this is je_all_for_one reduced into a button
 	}
 	
 	effect = {
-		trigger_event = {
-			id = balkfm_romania.701 # Awaken Thee, Romanian!
-		}
+		trigger_event = balkfm_romania.701
 		show_as_tooltip = {
-			change_tag = ROM # this should serve as a warning that you'll lose access to the other two buttons if you unite too early
+			change_tag = ROM
 		}
 		set_variable = balkfm_formed_ROM
 	}
@@ -216,17 +214,19 @@ balkfm_bessarabian_retrocession_button = { # vanilla button, integrated into bal
 	possible = {
 		custom_tooltip = {
 			text = je_south_bessarabian_retrocession_button_tt1
-			
 			any_country = {
 				country_rank >= rank_value:great_power
-				NOT = {
-					has_war_with = ROOT
+				has_strategic_region_interest_tier = {
+					strategic_region = ROOT.capital.region
+					value >= 1
+				}
+				relations:root >= relations_threshold:amicable
+				NOR = {
 					any_scope_state = {
 						state_region = s:STATE_BESSARABIA
 					}
+					has_war_with = ROOT
 				}
-				has_interest_marker_in_region = ROOT.capital.region
-				relations:root > 25
 			}
 		}
 		custom_tooltip = {
@@ -275,9 +275,7 @@ balkfm_bessarabian_retrocession_button = { # vanilla button, integrated into bal
 					state_region = s:STATE_BESSARABIA
 				}
 			}
-			trigger_event = {
-				id = balkfm_romania.791 # The South Bessarabian Retrocession
-			}
+			trigger_event = balkfm_romania.791
 		}
 	}
 }
@@ -308,9 +306,7 @@ balkfm_marea_unire_button = { # vanilla button, integrated into balkfm
 	}
 	
 	effect = {
-		trigger_event = {
-			id = balkfm_romania.704 # Union with Transylvania
-		}
+		trigger_event = balkfm_romania.704
 	}
 }
 
@@ -335,9 +331,7 @@ balkfm_annex_transylvania_button = {
 	}
 	
 	effect = {
-		trigger_event = {
-			id = balkfm_romania.705 # TRS Annexation
-		}
+		trigger_event = balkfm_romania.705
 	}
 	
 	ai_chance = {
@@ -346,8 +340,8 @@ balkfm_annex_transylvania_button = {
 }
 
 balkfm_trs_agitate_button = {
-	name = "balkfm_trs_agitate_button"
-	desc = "balkfm_trs_agitate_button_desc"
+	name = "balkfm_trs_agitate_name"
+	desc = "balkfm_trs_agitate_desc"
 	
 	visible = {
 		NOT = {
@@ -374,16 +368,12 @@ balkfm_trs_agitate_button = {
 	effect = {
 		add_modifier = {
 			name = modifier_balkfm_nationalist_agitation
-			months = gbbf_duration_3_years
+			months = 36
 		}
 		c:AUS ?= {
-			trigger_event = {
-				id = balkfm_romania.707 # Romanian Agitation in State (AUS)
-			}
+			trigger_event = balkfm_romania.707
 		}
-		trigger_event = {
-			id = balkfm_romania.706 # Romanian Agitation in State (ROM)
-		}
+		trigger_event = balkfm_romania.706
 	}
 	
 	ai_chance = {
@@ -401,8 +391,8 @@ balkfm_trs_agitate_button = {
 }
 
 balkfm_trs_provoke_button = {
-	name = "balkfm_trs_provoke_button"
-	desc = "balkfm_trs_provoke_button_desc"
+	name = "balkfm_trs_provoke_name"
+	desc = "balkfm_trs_provoke_desc"
 	
 	visible = {
 		NOT = {
@@ -459,7 +449,7 @@ balkfm_trs_provoke_button = {
 	effect = {
 		add_modifier = {
 			name = modifier_balkfm_nationalist_agitation
-			months = gbbf_duration_3_years
+			months = 36
 		}
 		hidden_effect = {
 			c:AUS ?= {
@@ -495,16 +485,14 @@ balkfm_trs_provoke_button = {
 						state = s:STATE_SOUTHERN_TRANSYLVANIA.region_state:AUS
 					}
 				}
-				trigger_event = {
-					id = balkfm_romania.711 # Romanian Provocation in Transylvania (AUS)
-				}
+				trigger_event = balkfm_romania.711
 			}
 			c:TRS ?= {
 				every_scope_state = {
 					remove_modifier = modifier_balkfm_separatist_tensions
 					add_modifier = {
 						name = modifier_balkfm_realized_rebellion
-						months = gbbf_duration_2_plus_half_years
+						months = gbbf_short_modifier_time
 					}
 					add_loyalists_in_state = {
 						culture = cu:romanian
@@ -513,9 +501,7 @@ balkfm_trs_provoke_button = {
 				}
 			}
 		}
-		trigger_event = {
-			id = balkfm_romania.710 # Romanian Provocation in Transylvania (ROM)
-		}
+		trigger_event = balkfm_romania.710
 	}
 	
 	ai_chance = {

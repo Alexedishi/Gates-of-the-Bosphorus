@@ -1,0 +1,146 @@
+﻿## Albanian Piracy Scripted Buttons ##
+eqfm_hire_retired_pirates_button = {
+	name = "eqfm_hire_retired_pirates_name"
+	desc = "eqfm_hire_retired_pirates_desc"
+
+	visible = {
+		c:TUR ?= this
+	}
+	possible = {
+		NOR = {
+			has_modifier = modifier_eqfm_hired_pirates
+			hidden_trigger = {
+				has_variable = eqfm_selecting_recruits
+			}
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = eqfm_pirates.080
+			popup = yes
+		}
+		set_variable = {
+			name = eqfm_selecting_recruits
+			months = 3
+		}
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+## Adriatic Expedition Scripted Buttons ##
+eqfm_deploy_adriatic_expedition_button = {
+	name = "eqfm_deploy_adriatic_expedition_name"
+	desc = "eqfm_deploy_adriatic_expedition_desc"
+
+	visible = {
+		eqfm_has_adriatic_expedition_trigger = no
+	}
+	possible = {
+		eqfm_has_adriatic_expedition_trigger = no
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_adriatic_sea
+			is_coastal = yes
+		}
+		any_scope_admiral = {
+			NOT = {
+				has_role_of_type = ruler
+			}
+			is_busy = no
+		}
+		NOR = {
+			has_modifier = modifier_eqfm_failed_adriatic_expedition_country
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = eqfm_pirates.002
+			popup = yes
+		}
+		set_variable = eqfm_adriatic_expedition_var
+	}
+	ai_chance = {
+		value = 5
+	}
+}
+
+eqfm_recall_adriatic_expedition_button = {
+	name = "eqfm_cancel_adriatic_expedition_name"
+	desc = "eqfm_cancel_adriatic_expedition_desc"
+
+	visible = {
+		eqfm_has_adriatic_expedition_trigger = yes
+		NOT = {
+			hidden_trigger = {
+				has_variable = eqfm_adriatic_expedition_transit_var
+			}
+		}
+	}
+	possible = {
+		eqfm_has_adriatic_expedition_trigger = yes
+	}
+	effect = {
+		eqfm_cancel_adriatic_expedition_effect = yes
+		eqfm_clear_adriatic_expedition_variables_effect = yes
+	}
+	ai_chance = {
+		value = 0
+		if = {
+			limit = {
+				gbbf_is_broke_trigger = yes
+			}
+			add = 1000
+		}
+	}
+}
+
+eqfm_resupply_adriatic_expedition_button = {
+	name = "eqfm_resupply_adriatic_expedition_name"
+	desc = "eqfm_resupply_adriatic_expedition_desc"
+	
+	visible = {
+		eqfm_has_adriatic_expedition_trigger = yes
+	}
+	possible = {
+		NOR = {
+			has_modifier = modifier_eqfm_resupplied_adriatic_expedition
+			custom_tooltip = {
+				text = eqfm_resupply_adriatic_expedition_possible_1
+				has_variable = eqfm_piracy_chase_var
+			}
+			hidden_trigger = {
+				has_variable = eqfm_adriatic_expedition_transit_var
+			}
+		}
+		custom_tooltip = {
+			text = eqfm_resupply_adriatic_expedition_possible_2
+			var:eqfm_adriatic_expedition_peril_var >= 3
+		}
+		
+	}
+	effect = {
+		add_modifier = {
+			name = modifier_eqfm_resupplied_adriatic_expedition
+			months = gbbf_short_modifier_time
+			multiplier = money_amount_multiplier_small
+		}
+		custom_tooltip = {
+			text = eqfm_resupply_adriatic_expedition_effect
+			change_variable = {
+				name = eqfm_adriatic_expedition_peril_var
+				subtract = 3
+			}
+		}
+	}
+	ai_chance = {
+		value = 5
+		if = {
+			limit = {
+				var:eqfm_adriatic_expedition_peril_var >= 4
+				gbbf_is_broke_trigger = no
+			}
+			add = 25
+		}
+	}
+}

@@ -3,33 +3,37 @@
 	icon = "gfx/interface/icons/invention_icons/wargaming.dds"
 	weight = 1000
 
-	should_be_pinned_by_default = yes
+	should_be_pinned_by_default_involved = yes
 	can_revolution_inherit = yes
 	transferable = no
 
 	is_shown_in_lobby = {
 		any_scope_state = {
-			is_in_geographic_region = geographic_region_middle_east_highlands
+			is_in_geographic_region = geographic_region_armenian_highlands
 		}
 	}
 
 	scripted_progress_bar = haykfm_higlands_progress_bar
+	
+	widget = {
+		gui = "gui/com_journal_injects/injects.gui"
+		name = "com_journal_entry_progress_bars"
+		container = "com_custom_widget_container_scripted_progress_bars"
+	}
 
 	should_be_involved = {
 		any_scope_state = {
-			is_in_geographic_region = geographic_region_middle_east_highlands
+			is_in_geographic_region = geographic_region_armenian_highlands
 		}
 	}
 
 	should_show_when_not_involved = {
-		has_interest_marker_in_region = region_anatolia
-		has_interest_marker_in_region = region_caucasus
-		has_interest_marker_in_region = region_arabic
-		has_interest_marker_in_region = region_persia
+		has_interest_marker_in_region = region_near_east
+		has_interest_marker_in_region = region_arabia
+		has_interest_marker_in_region = region_greater_persia
 	}
 
 	immediate = {
-		gbbf_assign_dlc_icon_effect = yes
 		c:RUS = {
 			save_scope_as = russia_scope
 		}
@@ -45,9 +49,18 @@
 				name = haykfm_higlands_progress_bar
 				value = var:haykfm_highlands_var
 			}
-			set_variable = com_moon_moon_on_deck
 		}
 		set_global_variable = haykfm_highlands_started
+		create_com_progress_bar = {
+			progress_bar = haykfm_higlands_progress_bar
+			index = 0
+			color = blue
+		}
+		set_com_progress_bar_color = {
+			progress_bar = haykfm_higlands_progress_bar
+			color = gold
+			side = right
+		}
 	}
 
 	complete = {
@@ -69,7 +82,7 @@
 				scope:journal_entry = {
 					any_state = {
 						filter = {
-							is_in_geographic_region = geographic_region_middle_east_highlands
+							is_in_geographic_region = geographic_region_armenian_highlands
 						}
 						count = all
 						is_incorporated = yes
@@ -131,10 +144,10 @@
 				c:TUR ?= {
 					NOR = {
 						any_scope_state = {
-							is_in_geographic_region = geographic_region_middle_east_highlands
+							is_in_geographic_region = geographic_region_armenian_highlands
 						}
 						any_subject_or_below = {
-							is_in_geographic_region = geographic_region_middle_east_highlands
+							is_in_geographic_region = geographic_region_armenian_highlands
 						}
 					}
 				}
@@ -150,10 +163,10 @@
 				c:RUS ?= {
 					NOR = {
 						any_scope_state = {
-							is_in_geographic_region = geographic_region_middle_east_highlands
+							is_in_geographic_region = geographic_region_armenian_highlands
 						}
 						any_subject_or_below = {
-							is_in_geographic_region = geographic_region_middle_east_highlands
+							is_in_geographic_region = geographic_region_armenian_highlands
 						}
 					}
 				}
@@ -172,7 +185,7 @@
 						is_involved_in_journal_entry = je_haykfm_highlands
 						NOT = {
 							any_scope_state = {
-								is_in_geographic_region = geographic_region_middle_east_highlands
+								is_in_geographic_region = geographic_region_armenian_highlands
 							}
 						}
 					}
@@ -183,7 +196,7 @@
 				if = {
 					limit = {
 						any_scope_state = {
-							is_in_geographic_region = geographic_region_middle_east_highlands
+							is_in_geographic_region = geographic_region_armenian_highlands
 						}
 						NOT = {
 							is_involved_in_journal_entry = je_haykfm_highlands

@@ -1,0 +1,625 @@
+﻿####---------- Balkan Powder Keg Static Values ----------####
+eqfm_balkan_powder_keg_escalation_start_value = 0
+eqfm_balkan_powder_keg_escalation_max_value = 500
+eqfm_balkan_powder_keg_escalation_min_value = 0
+eqfm_balkan_powder_keg_deescalation_start_value = 0
+eqfm_balkan_powder_keg_deescalation_max_value = 500
+eqfm_balkan_powder_keg_deescalation_min_value = 0
+eqfm_balkan_powder_keg_crisis_max_value = 250
+eqfm_balkan_powder_keg_crisis_min_value = 0
+eqfm_balkan_powder_keg_crisis_start_value = 125
+eqfm_balkan_powder_keg_concurrent_riots_max_value = 3
+eqfm_balkan_powder_keg_liberty_desire_threshold = 50
+eqfm_balkan_powder_keg_overlord_legitimacy_threshold = 50
+eqfm_balkan_powder_keg_overlord_crisis_legitimacy_threshold = 75
+
+eqfm_balkan_powder_keg_tiny_escalation_value = 3
+eqfm_balkan_powder_keg_very_small_escalation_value = 5
+eqfm_balkan_powder_keg_small_escalation_value = 10
+eqfm_balkan_powder_keg_medium_escalation_value = 25
+eqfm_balkan_powder_keg_large_escalation_value = 50
+eqfm_balkan_powder_keg_very_large_escalation_value = 100
+eqfm_balkan_powder_keg_extremely_large_escalation_value = 250
+
+eqfm_balkan_powder_keg_tiny_deescalation_value = 3
+eqfm_balkan_powder_keg_very_small_deescalation_value = 5
+eqfm_balkan_powder_keg_small_deescalation_value = 10
+eqfm_balkan_powder_keg_medium_deescalation_value = 25
+eqfm_balkan_powder_keg_large_deescalation_value = 50
+eqfm_balkan_powder_keg_very_large_deescalation_value = 100
+eqfm_balkan_powder_keg_extremely_large_deescalation_value = 250
+
+####---------- Balkan Powder Keg Primary Mechanic Values ----------####
+# All values called in this block are cached either on the relevant country or in the varmap for perf reasons
+eqfm_balkan_powder_keg_escalation_progress_value = {
+	value = 0
+	if = {
+		limit = {
+			eqfm_balkan_powder_keg_can_escalate_trigger = yes
+		}
+		add = {
+			value = 1
+			desc = gbbf_value_from_base_monthly
+		}
+		add = {
+			value = {
+				desc = eqfm_value_from_rumelian_state_region_radicals
+				every_state_region_in_rumelia = {
+					limit = {
+						any_scope_state = {
+							owner = {
+								top_overlord = {
+									gbbf_country_has_rumelian_culture_trigger = no
+								}
+							}
+						}
+					}
+					add = var:eqfm_state_region_rumelian_radical_fraction_var
+				}
+				round_to = 0.01
+			}
+		}
+		add = {
+			value = {
+				desc = eqfm_value_from_outsider_rumelian_movements
+				every_country = {
+					limit = {
+						has_variable = eqfm_rumelian_movements_var
+					}
+					add = var:eqfm_rumelian_movements_var
+				}
+				round_to = 0.01
+			}
+		}
+		add = {
+			value = {
+				desc = eqfm_value_from_outsiders_supporting_independence
+				every_country = {
+					limit = {
+						country_rank >= rank_value:great_power
+						any_scope_treaty = {
+							any_scope_article = {
+								has_type = guarantee_independence
+							}
+							second_country = {
+								gbbf_country_has_rumelian_culture_trigger = yes
+							}
+						}
+					}
+					add = 2
+				}
+			}
+		}
+		add = {
+			value = {
+				desc = eqfm_value_from_ongoing_rumelian_riots
+				every_state_region_in_rumelia = {
+					limit = {
+						any_scope_state = {
+							has_modifier = modifier_eqfm_race_riots
+						}
+					}
+					add = var:eqfm_state_region_rumelian_radical_fraction_var # Yes, Race Riot states will double-dip
+				}
+				round_to = 0.01
+			}
+		}
+		add = {
+			value = {
+				desc = eqfm_value_from_rumelian_seccessionist_movements
+				every_country = {
+					limit = {
+						country_rank >= rank_value:great_power
+						is_in_geographic_region = geographic_region_rumelia
+						any_political_movement = {
+							is_secessionist = yes
+							gbbf_has_rumelian_culture_trigger = yes
+						}
+					}
+					every_political_movement = {
+						limit = {
+							is_secessionist = yes
+							gbbf_has_rumelian_culture_trigger = yes
+						}
+						add = 5
+					}
+				}
+			}
+		}
+		add = {
+			value = {
+				desc = eqfm_value_from_rumelian_subjects_high_liberty_desire
+				every_country_in_rumelia = {
+					limit = {
+						is_subject = yes
+						liberty_desire > eqfm_balkan_powder_keg_liberty_desire_threshold
+						overlord ?= {
+							gbbf_has_rumelian_culture_trigger = no
+						}
+					}
+					add = liberty_desire
+					subtract = eqfm_balkan_powder_keg_liberty_desire_threshold
+					multiply = 0.01
+				}
+				round_to = 0.01
+			}
+		}
+	}
+	min = 0
+}
+
+eqfm_balkan_powder_keg_deescalation_progress_value = {
+	value = 0
+	if = {
+		limit = {
+			eqfm_balkan_powder_keg_can_deescalate_trigger = yes
+		}
+		add = {
+			value = 1
+			desc = gbbf_value_from_base_monthly
+		}
+		add = {
+			value = {
+				desc = eqfm_value_from_rumelian_state_region_loyalists
+				every_state_region = {
+					limit = {
+						is_in_geographic_region = geographic_region_rumelia
+					}
+					add = var:eqfm_state_region_rumelian_loyalist_fraction_var
+				}
+				round_to = 0.01
+			}
+		}
+		add = {
+			value = {
+				desc = eqfm_value_from_outsiders_supporting_independence
+				every_country = {
+					limit = {
+						country_rank >= rank_value:great_power
+						any_scope_treaty = {
+							any_scope_article = {
+								has_type = guarantee_independence
+							}
+							second_country = {
+								gbbf_country_has_rumelian_culture_trigger = yes
+							}
+						}
+					}
+					subtract = 1
+				}
+				round_to = 0.01
+			}
+		}
+		add = {
+			value = {
+				desc = eqfm_value_from_rumelian_subjects_low_liberty_desire
+				every_country_in_rumelia = {
+					limit = {
+						is_subject = yes
+						liberty_desire < eqfm_balkan_powder_keg_liberty_desire_threshold
+						overlord ?= {
+							gbbf_has_rumelian_culture_trigger = no
+						}
+					}
+					add = liberty_desire
+					subtract = eqfm_balkan_powder_keg_liberty_desire_threshold
+					multiply = -0.01
+				}
+				round_to = 0.01
+			}
+		}
+		if = {
+			limit = {
+				eqfm_hostility_phase_trigger = yes
+				NOT = {
+					any_state_in_rumelia = {
+						has_modifier = modifier_eqfm_race_riots
+					}
+				}
+			}
+			add = {
+				desc = eqfm_value_from_no_rumelian_riots
+				value = 5
+			}
+		}
+	}
+	min = 0
+}
+
+eqfm_balkan_powder_keg_crisis_progress_value = {
+	value = 0
+	if = {
+		limit = {
+			any_country_in_rumelia = {
+				is_subject = yes
+				overlord ?= {
+					gbbf_country_has_rumelian_culture_trigger = no
+				}
+			}
+		}
+		add = {
+			desc = eqfm_value_from_rumelian_overlord_legitimacy
+			value = {
+				every_country_in_rumelia = {
+					limit = {
+						is_subject = yes
+						overlord ?= {
+							gbbf_country_has_rumelian_culture_trigger = no
+						}
+					}
+					overlord = {
+						add = legitimacy
+						subtract = eqfm_balkan_powder_keg_overlord_crisis_legitimacy_threshold
+						multiply = 0.01
+						multiply = eqfm_rumelian_control_multiplier_value
+					}
+				}
+				round_to = 0.01
+			}
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				any_country_in_rumelia = {
+					is_at_war = yes
+				}
+			}
+		}
+		add = {
+			desc = eqfm_value_from_no_rumelian_wars
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			any_country_in_rumelia = {
+				is_at_war = yes
+			}
+		}
+		subtract = {
+			desc = eqfm_value_from_active_rumelian_wars
+			value = {
+				every_diplomatic_play = {
+					limit = {
+						any_scope_play_involved = {
+							is_in_geographic_region = geographic_region_rumelia
+						}
+					}
+					add = 2
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			any_country_in_rumelia = {
+				gbbf_country_has_rumelian_culture_trigger = no # skip this math if the Balkans are all subjects of outsiders
+				has_any_secessionists_growing = yes # if a secession has not organized, none of them count; yes this will cause the value to snap upwards once any secession organizes. This is intentional.
+			}
+		}
+		subtract = {
+			desc = eqfm_value_from_rumelian_growing_secessions
+			value = {
+				every_country_in_rumelia = {
+					limit = {
+						gbbf_country_has_rumelian_culture_trigger = no
+						has_any_secessionists_growing = yes
+					}
+					every_political_movement = {
+						limit = {
+							gbbf_has_rumelian_culture_trigger = yes
+							political_movement_radicalism > define:NPolitics|MIN_RADICALISM_FOR_CIVIL_WAR_PROGRESSION
+						}
+						add = political_movement_radicalism # Yes, this scales VERY horribly if a lot of countries have their fingers in the pie
+					}
+				}
+				round = 0.01
+			}
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				any_country_in_rumelia = {
+					has_any_secessionists_growing = yes
+				}
+			}
+		}
+		add = {
+			desc = eqfm_value_from_no_growing_rumelian_secessions
+			value = 2
+		}
+	}
+	else = {
+		add = {
+			desc = eqfm_value_from_non_crisis_phase
+			add = 250
+			subtract = "global_variable_map(eqfm_balkan_powder_keg_varmap|flag:eqfm_balkan_powder_keg_crisis_var)"
+		}
+	}
+	round_to = 0.01
+}
+
+####---------- Balkan Powder Keg Primary Mechanic Sub-Values ----------####
+eqfm_rumelian_loyalist_fraction_value = {
+	value = 0
+	every_state_region_in_rumelia = {
+		limit = {
+			has_variable = eqfm_state_region_rumelian_loyalist_fraction_var
+		}
+		add = var:eqfm_state_region_rumelian_loyalist_fraction_var
+	}
+}
+
+eqfm_state_region_rumelian_loyalist_fraction_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			owner = {
+				eqfm_balkan_powder_keg_outsider_trigger = yes
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				gbbf_pop_has_rumelian_culture_trigger = yes
+			}
+			add = total_size
+			multiply = {
+				add = pop_loyalist_fraction
+				min = 1
+			}
+		}
+		divide = {
+			every_scope_pop = {
+				limit = {
+					gbbf_pop_has_rumelian_culture_trigger = yes
+				}
+				add = total_size
+			}
+			min = 1
+		}
+	}
+	round_to = 0.01
+}
+
+eqfm_rumelian_radical_fraction_value = {
+	value = 0
+	every_state_region_in_rumelia = {
+		limit = {
+			has_variable = eqfm_state_region_rumelian_radical_fraction_var
+		}
+		add = var:eqfm_state_region_rumelian_radical_fraction_var
+	}
+}
+
+eqfm_state_region_rumelian_radical_fraction_value = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			owner = {
+				eqfm_balkan_powder_keg_outsider_trigger = yes
+			}
+		}
+		every_scope_pop = {
+			limit = {
+				gbbf_pop_has_rumelian_culture_trigger = yes
+			}
+			add = total_size
+			multiply = {
+				add = pop_radical_fraction
+				min = 1
+			}
+		}
+		divide = {
+			every_scope_pop = {
+				limit = {
+					gbbf_pop_has_rumelian_culture_trigger = yes
+				}
+				add = total_size
+			}
+			min = 1
+		}
+	}
+	round_to = 0.01
+}
+
+eqfm_rumelian_movements_value = {
+	value = {
+		desc = eqfm_value_from_rumelian_movements
+		add = {
+			every_political_movement = {
+				limit = {
+					OR = {
+						is_political_movement_type = movement_cultural_minority
+						is_political_movement_type = movement_religious_minority
+					}
+					gbbf_has_rumelian_culture_trigger = yes
+				}
+				add = eqfm_movement_impact_value
+			}
+		}
+		multiply = eqfm_rumelian_control_multiplier_value
+		round_to = 0.01
+	}
+}
+
+eqfm_rumelian_control_multiplier_value = {
+	value = 0
+	add = gbbf_georegion_rumelia_owned_value
+	divide = gbbf_georegion_rumelia_total_value
+	round_to = 0.01
+}
+
+eqfm_movement_impact_value = {
+	value = 0
+	add = political_movement_support
+	multiply = political_movement_radicalism
+	round_to = 0.01
+}
+
+eqfm_balkan_powder_keg_riot_potential_value = {
+	value = 0
+	add = {
+		value = 1
+		desc = gbbf_value_from_base
+	}
+	if = {
+		limit = {
+			any_country_in_rumelia = {
+				top_overlord ?= {
+					has_technology_researched = nationalism
+				}
+			}
+		}
+		add = {
+			desc = eqfm_value_from_nationalism
+			value = 1
+		}
+	}
+	if = {
+		limit = {
+			any_country_in_rumelia = {
+				top_overlord ?= {
+					has_technology_researched = pan-nationalism
+				}
+			}
+		}
+		add = {
+			desc = eqfm_value_from_pan_nationalism
+			value = 1
+		}
+	}
+}
+
+eqfm_balkan_powder_keg_riot_counter_value = {
+	value = 0
+	add = {
+		desc = eqfm_value_from_ongoing_rumelian_riots
+		every_state_region_in_rumelia = {
+			limit = {
+				any_scope_state = {
+					has_modifier = modifier_eqfm_race_riots
+				}
+			}
+			add = 1
+		}
+	}
+}
+
+
+## Minority Movement Values (CMF Overrides)
+eqfm_target_fraction_of_states_value = {
+	value = 0
+	add = owner.modifier:country_minority_secession_size_add
+	divide = {
+		value = {
+			owner = {
+				every_scope_state = {
+					add = 1
+				}
+			}
+			min = 1
+		}
+	}
+}
+
+eqfm_movement_cultural_minority_secession_target_fraction_of_states_min = {
+	value = 0
+	add = owner.modifier:country_minority_secession_size_add
+	divide = {
+		value = {
+			owner = {
+				every_scope_state = {
+					add = 1
+				}
+			}
+			min = 1
+		}
+	}
+}
+
+eqfm_movement_religious_minority_secession_target_fraction_of_states_min = {
+	value = 0
+	add = owner.modifier:country_minority_secession_size_add
+	divide = {
+		value = {
+			owner = {
+				every_scope_state = {
+					add = 1
+				}
+			}
+			min = 1
+		}
+	}
+}
+
+## Minority Movement Values (Activism Adjustments)
+eqfm_movement_activism_target = {
+	value = 0
+	if = {
+		limit = {
+			eqfm_deconfliction_phase_trigger = yes
+		}
+		add = 0
+	}
+	if = {
+		limit = {
+			eqfm_stable_phase_trigger = yes
+		}
+		add = 10
+	}
+	else_if = {
+		limit = {
+			eqfm_unrest_phase_trigger = yes
+		}
+		add = 25
+	}
+	else_if = {
+		limit = {
+			eqfm_hostility_phase_trigger = yes
+		}
+		add = 50
+	}
+	else_if = {
+		limit = {
+			eqfm_crisis_phase_trigger = yes
+		}
+		add = 75
+	}
+}
+
+eqfm_movement_activism_adjustment_value = {
+	value = 0
+	if = {
+		limit = {
+			political_movement_radicalism < eqfm_movement_activism_target
+		}
+		add = eqfm_movement_activism_target
+		subtract = political_movement_radicalism
+		if = {
+			limit = {
+				has_variable = eqfm_previous_adjustment_var
+			}
+			subtract = var:eqfm_previous_adjustment_var
+		}
+	}
+	if = {
+		limit = {
+			political_movement_radicalism > eqfm_movement_activism_target
+		}
+		subtract = 1
+	}
+}
+
+eqfm_movement_activism_multiplier_value = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = eqfm_previous_adjustment_var
+		}
+		add = var:eqfm_previous_adjustment_var
+	}
+	add = eqfm_movement_activism_adjustment_value
+	min = 0
+}

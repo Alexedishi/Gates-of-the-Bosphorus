@@ -1,0 +1,275 @@
+﻿je_eqfm_balkan_powder_keg = {
+	## Important Notes:
+	# The journal itself tracks INVOLVED, INTERLOPER, and UNINVOLVED countries. These affect what scripted actions a country can take.
+	# A secondary set of triggers track OUTSIDER and RUMELIAN countries. These affect which events can fire for that country.
+	# "OUTSIDER" here refers to a country with states or a subject in the Balkans, but not a Rumelian culture.
+	# "RUMELIAN" here means countries with a Rumelian culture.
+	group = je_group_global_international_situations
+	icon = "gfx/interface/icons/war_goals/liberate_country.dds"
+	weight = 10000
+
+	should_be_pinned_by_default_involved = yes
+	can_revolution_inherit = yes
+	transferable = no
+	can_deactivate = no
+
+	is_shown_in_lobby = {
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_rumelia
+		}
+	}
+
+	scripted_button = eqfm_greek_gunrunners_button
+
+	should_be_involved = {
+		eqfm_balkans_should_be_involved_trigger = yes
+	}
+
+	should_show_when_not_involved = {
+		has_strategic_region_interest_tier = {
+			strategic_region = sr:region_balkans
+			value >= 3
+		}
+	}
+	
+	widget = {
+		gui = "gui/com_journal_injects/situation_widgets.gui"
+		name = "widget_com_international_situation_illustration"
+		container = "custom_widget_container_je_icon"
+	}
+	
+	widget = {
+		gui = "gui/com_journal_injects/situation_widgets.gui"
+		name = "widget_com_international_situation_phase_information"
+		container = "custom_widget_container_1"
+	}
+	
+	widget = {
+		gui = "gui/com_journal_injects/situation_widgets.gui"
+		name = "com_international_situation_timeout"
+		container = "custom_widget_container_1"
+	}
+	
+	widget = {
+		gui = "gui/com_journal_injects/injects.gui"
+		name = "com_journal_entry_progress_bars"
+		container = "com_custom_widget_container_scripted_progress_bars"
+	}
+	
+	widget = {
+		gui = "gui/com_journal_injects/com_shared_widgets.gui"
+		name = "com_journal_scripted_buttons"
+		container = "custom_widget_container_5"
+	}
+	
+	widget = {
+		gui = "gui/com_journal_injects/situation_widgets.gui"
+		name = "widget_com_international_situation_involved_countries"
+		container = "custom_widget_container_5"
+	}
+	
+	widget = {
+		gui = "gui/com_journal_injects/situation_widgets.gui"
+		name = "widget_com_international_situation_outcome_container"
+		container = "custom_widget_container_6"
+	}
+	
+	widget = {
+		gui = "gui/com_journal_injects/situation_widgets.gui"
+		name = "widget_com_international_situation_phase_progress"
+		container = "custom_widget_container_7"
+	}
+	
+	scripted_progress_bar = eqfm_balkans_crisis_progress_bar
+	
+	immediate = {
+		scope:journal_entry = {
+			save_scope_as = je_eqfm_balkan_powder_keg
+			set_global_variable = {
+				name = je_eqfm_balkan_powder_keg
+				value = scope:je_eqfm_balkan_powder_keg
+			}
+			c:TUR ?= {
+				save_scope_as = ottoman_scope
+			}
+			eqfm_initialize_balkan_powder_keg_variable_map_effect = yes
+			eqfm_initialize_balkan_powder_keg_journal_effect = yes
+			eqfm_initialize_balkan_powder_keg_content_effect = yes
+		}
+	}
+
+	immediate_all_involved = {
+		trigger_event = {
+			id = eqfm_balkans.001
+			days = 5
+		}
+	}
+	
+	on_become_involved_after_activation = {
+		if = {
+			limit = {
+				NOT = {
+					has_variable = eqfm_has_been_involved_in_balkan_powder_keg_var
+				}
+			}
+			trigger_event = eqfm_balkans.001
+		}
+		else = {
+			post_notification = eqfm_balkans_involved
+		}
+	}
+	
+	on_no_longer_involved = {
+		eqfm_cleanup_local_balkan_powder_keg_content_effect = yes
+		post_notification = eqfm_balkans_not_involved
+	}
+
+	complete = {
+		any_state_in_rumelia = {
+			count = all
+			custom_tooltip = {
+				text = je_eqfm_balkan_powder_keg_outcome_domination_desc_1
+				owner = {
+					OR = {
+						AND = {
+							gbbf_country_has_rumelian_culture_trigger = yes
+							country_rank >= rank_value:great_power
+						}
+						AND = {
+							is_subject = yes
+							overlord = {
+								country_rank >= rank_value:great_power
+							}
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				text = je_eqfm_balkan_powder_keg_outcome_domination_desc_2
+				owner = {
+					NOR = {
+						has_any_secessionists_broken_out = yes
+						has_any_secessionists_growing = yes
+						is_diplomatic_play_committed_participant = yes
+					}
+				}
+			}
+			is_incorporated = yes
+			radical_fraction = {
+				value < 0.15
+			}
+		}
+	}
+
+	on_complete = {
+		eqfm_cleanup_balkan_powder_keg_situation_effect = yes
+	}
+	
+	on_complete_all_involved = {
+		eqfm_cleanup_local_balkan_powder_keg_content_effect = yes
+		trigger_event = eqfm_balkans.002
+	}
+	
+	custom_completion_header = gbbf_placeholder_text
+	
+	fail = {
+		any_state_in_rumelia = {
+			count = all
+			owner = {
+				gbbf_country_has_rumelian_culture_trigger = yes
+				is_subject = no
+				is_diplomatic_play_committed_participant = no
+			}
+		}
+	}
+
+	on_fail = {
+		eqfm_cleanup_balkan_powder_keg_situation_effect = yes
+	}
+	
+	on_fail_all_involved = {
+		eqfm_cleanup_local_balkan_powder_keg_content_effect = yes
+		trigger_event = eqfm_balkans.003
+	}
+	
+	custom_failure_header = gbbf_placeholder_text
+	
+	on_weekly_pulse = {
+		effect = {
+			eqfm_calculate_balkan_powder_keg_variables_effect = yes
+			eqfm_check_balkan_powder_keg_phase_effect = yes
+			eqfm_update_balkan_powder_keg_character_effect = yes
+		}
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			eqfm_update_local_balkan_powder_keg_variables_effect = yes
+			eqfm_update_balkan_powder_keg_involvement_effect = yes
+			eqfm_advance_balkan_powder_keg_variables_effect = yes
+			if = {
+				limit = {
+					NOT = {
+						has_global_variable = eqfm_balkans_powder_keg_nationalism_var
+					}
+					any_state_in_rumelia = {
+						owner = {
+							has_technology_researched = nationalism
+						}
+					}
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+					}
+					trigger_event = eqfm_balkans.004
+				}
+				every_country = {
+					limit = {
+						eqfm_balkans_interloper_trigger = yes
+					}
+					post_notification = eqfm_balkans_nationalism_wave
+				}
+				set_global_variable = eqfm_balkans_powder_keg_nationalism_var
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_global_variable = eqfm_balkans_powder_keg_pan_nationalism_var
+					}
+					any_state_in_rumelia = {
+						owner = {
+							has_technology_researched = pan-nationalism
+						}
+					}
+				}
+				every_country = {
+					limit = {
+						is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+					}
+					trigger_event = eqfm_balkans.005
+				}
+				every_country = {
+					limit = {
+						eqfm_balkans_interloper_trigger = yes
+					}
+					post_notification = eqfm_balkans_pan_nationalism_wave
+				}
+				set_global_variable = eqfm_balkans_powder_keg_pan_nationalism_var
+			}
+		}
+	}
+
+	status_desc = {
+		triggered_desc = {
+			desc = je_eqfm_balkan_powder_keg_status
+			trigger = {}
+		}
+		triggered_desc = {
+			desc = je_eqfm_balkan_powder_keg_crisis_status
+			trigger = {
+				eqfm_crisis_phase_trigger = yes
+			}
+		}
+	}
+}

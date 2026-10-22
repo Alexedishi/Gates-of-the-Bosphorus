@@ -1,22 +1,16 @@
-﻿balkfm_form_yugoslavia_button = {
+﻿####---------- Unification of Yugoslavia Buttons ----------####
+balkfm_form_yugoslavia_button = {
 	name = "balkfm_form_yugoslavia"
 	desc = "balkfm_form_yugoslavia_desc"
 	
-	visible = { # This button has been downgraded to be a fallback for BUL
+	visible = { # Fallback for BUL
 		c:BUL ?= this
 	}
-	
 	possible = { 
 	# This are the vanilla requirements to form YUG, just retooled as a button
 	# BUL players: if this aligns poorly with previous Bulgarian conquests, remember: you're the one pulling a texas left into Yugoslavism
 		has_technology_researched = pan-nationalism
 		is_subject = no
-		custom_tooltip = {
-			text = balkfm_form_yug_tt
-			hidden_trigger = {
-				var:balkfm_yugoslav_leader_var = root
-			}
-		}
 		calc_true_if = {
 			amount >= 8
 			owns_entire_state_region = STATE_WESTERN_SERBIA
@@ -32,217 +26,596 @@
 			owns_entire_state_region = STATE_DELVIDEK
 		}
 	}
-	
 	effect = {
 		change_tag = YUG
 		set_global_variable = has_formed_yug
 	}
-	
 }
 
-balkfm_austrian_gunrunners_button = {
-	name = "balkfm_austrian_gunrunners_button"
-	desc = "balkfm_austrian_gunrunners_button_desc"
+balkfm_annex_mon_button = {
+	name = "balkfm_annex_mon_name"
+	desc = "balkfm_annex_mon_desc"
 	
 	visible = {
-		c:AUS ?= {
-			any_scope_state = {
-				balkfm_is_yugoslav_homeland_trigger = yes
-			}
-		}
+		exists = c:MON
+		c:MON != this
 	}
-	
-	selected = {
-		has_modifier = modifier_balkfm_austrian_gunrunners
-	}
-	
 	possible = {
+		has_technology_researched = pan-nationalism
+		NOR = {
+			has_law_or_variant = law_type:law_ethnostate
+			has_law_or_variant = law_type:law_multicultural
+		}
 		custom_tooltip = {
-			text = balkfm_austrian_gunrunners_possible
-			NOT = {
-				has_variable = balkfm_austrian_gunrunners_lockout
+			text = balkfm_yugoslav_leader_trigger
+			global_var:balkfm_yugoslavia_journal_var ?= {
+				var:balkfm_yugoslav_leader_var = root
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_annex_mon_possible
+			has_variable = balkfm_mon_annex_var
+			var:balkfm_mon_annex_var >= 60
+		}
+		c:MON ?= {
+			any_neighbouring_state = {
+				owner = root
+			}
+			OR = {
+				is_subject = no
+				is_subject_of = root
+			}
+			NOR = {
+				has_war_with = root
+				has_truce_with = root
 			}
 		}
 	}
-	
 	effect = {
-		if = {
-			limit = {
-				NOT = { 
-					has_modifier = modifier_balkfm_austrian_gunrunners
-				}
-			}
-			custom_tooltip = balkfm_austrian_gunrunners_effect1
-			add_modifier = {
-				name = modifier_balkfm_austrian_gunrunners
-				multiplier = money_amount_multiplier_medium
-			}
+		trigger_event = {
+			id = balkfm_yugoslavia.020
+			popup = yes
 		}
-		else_if = {
-			limit = {
-				has_modifier = modifier_balkfm_austrian_gunrunners
-			}
-			remove_modifier = modifier_balkfm_austrian_gunrunners
-		}
-		custom_tooltip = {
-			text = balkfm_austrian_gunrunners_effect2
-			set_variable = {
-				name = balkfm_austrian_gunrunners_lockout
-				years = 2
-			}
-		}
-	}
-	
-	ai_chance = {
-		value = -5
-		if = {
-			limit = {
-				NOT = { has_modifier = modifier_balkfm_austrian_gunrunners }
-				c:AUS ?= {
-					relations:root < relations_threshold:neutral
-				}
-				fixed_income > money_amount_multiplier_medium
-				gold_reserves > 0
-			}
-			add = 100
-		}
-		if = {
-			limit = {
-				NOT = { has_modifier = modifier_balkfm_austrian_gunrunners }
-				fixed_income < money_amount_multiplier_medium
-				gold_reserves < 0
-			}
-			add = -1000
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_balkfm_austrian_gunrunners
-				c:AUS ?= {
-					relations:root > relations_threshold:neutral
-				}
-			}
-			add = 100
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_balkfm_austrian_gunrunners
-				c:AUS ?= {
-					relations:root < relations_threshold:neutral
-				}
-			}
-			add = -100
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_balkfm_austrian_gunrunners
-				fixed_income < money_amount_multiplier_medium
-				gold_reserves < 0
-			}
-			add = 1000
-		}
+		custom_tooltip = balkfm_annex_mon_effect
 	}
 }
 
-balkfm_ottoman_gunrunners_button = {
-	name = "balkfm_ottoman_gunrunners_button"
-	desc = "balkfm_ottoman_gunrunners_button_desc"
-	
+balkfm_annex_ser_button = {
+	name = "balkfm_annex_ser_name"
+	desc = "balkfm_annex_ser_desc"
+
 	visible = {
-		c:TUR ?= {
-			any_scope_state = {
-				balkfm_is_yugoslav_homeland_trigger = yes
-			}
-		}
+		exists = c:SER
+		c:SER != this
 	}
-	
-	selected = {
-		has_modifier = modifier_balkfm_ottoman_gunrunners
-	}
-	
 	possible = {
+		has_technology_researched = pan-nationalism
+		NOR = {
+			has_law_or_variant = law_type:law_ethnostate
+			has_law_or_variant = law_type:law_multicultural
+		}
 		custom_tooltip = {
-			text = balkfm_ottoman_gunrunners_possible
-			NOT = {
-				has_variable = balkfm_ottoman_gunrunners_lockout
+			text = balkfm_yugoslav_leader_trigger
+			global_var:balkfm_yugoslavia_journal_var ?= {
+				var:balkfm_yugoslav_leader_var = root
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_annex_ser_possible
+			has_variable = balkfm_ser_annex_var
+			var:balkfm_ser_annex_var >= 60
+		}
+		c:SER ?= {
+			any_neighbouring_state = {
+				owner = root
+			}
+			OR = {
+				is_subject = no
+				is_subject_of = root
+			}
+			NOR = {
+				has_war_with = root
+				has_truce_with = root
 			}
 		}
 	}
-	
 	effect = {
-		if = {
-			limit = {
-				NOT = { 
-					has_modifier = modifier_balkfm_ottoman_gunrunners
-				}
-			}
-			custom_tooltip = balkfm_ottoman_gunrunners_effect1
-			add_modifier = {
-				name = modifier_balkfm_ottoman_gunrunners
-				multiplier = money_amount_multiplier_medium
-			}
+		trigger_event = {
+			id = balkfm_yugoslavia.021
+			popup = yes
 		}
-		else_if = {
-			limit = {
-				has_modifier = modifier_balkfm_ottoman_gunrunners
-			}
-			remove_modifier = modifier_balkfm_ottoman_gunrunners
+		custom_tooltip = balkfm_annex_ser_effect
+	}
+}
+
+balkfm_annex_bul_button = {
+	name = "balkfm_annex_bul_name"
+	desc = "balkfm_annex_bul_desc"
+
+	visible = {
+		exists = c:BUL
+		c:BUL != this
+	}
+	possible = {
+		has_technology_researched = pan-nationalism
+		NOR = {
+			has_law_or_variant = law_type:law_ethnostate
+			has_law_or_variant = law_type:law_multicultural
 		}
 		custom_tooltip = {
-			text = balkfm_ottoman_gunrunners_effect2
+			text = balkfm_yugoslav_leader_trigger
+			global_var:balkfm_yugoslavia_journal_var ?= {
+				var:balkfm_yugoslav_leader_var = root
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_annex_bul_possible
+			has_variable = balkfm_bul_annex_var
+			var:balkfm_bul_annex_var >= 60
+		}
+		c:BUL ?= {
+			any_neighbouring_state = {
+				owner = root
+			}
+			OR = {
+				is_subject = no
+				is_subject_of = root
+			}
+			NOR = {
+				has_war_with = root
+				has_truce_with = root
+			}
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = balkfm_yugoslavia.022
+			popup = yes
+		}
+		custom_tooltip = balkfm_annex_bul_effect
+	}
+}
+
+balkfm_annex_bos_button = {
+	name = "balkfm_annex_bos_name"
+	desc = "balkfm_annex_bos_desc"
+
+	visible = {
+		exists = c:BOS
+		c:BOS != this
+	}
+	possible = {
+		has_technology_researched = pan-nationalism
+		NOR = {
+			has_law_or_variant = law_type:law_ethnostate
+			has_law_or_variant = law_type:law_multicultural
+		}
+		custom_tooltip = {
+			text = balkfm_yugoslav_leader_trigger
+			global_var:balkfm_yugoslavia_journal_var ?= {
+				var:balkfm_yugoslav_leader_var = root
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_annex_bos_possible
+			has_variable = balkfm_bos_annex_var
+			var:balkfm_bos_annex_var >= 60
+		}
+		c:BOS ?= {
+			any_neighbouring_state = {
+				owner = root
+			}
+			OR = {
+				is_subject = no
+				is_subject_of = root
+			}
+			NOR = {
+				has_war_with = root
+				has_truce_with = root
+			}
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = balkfm_yugoslavia.023
+			popup = yes
+		}
+		custom_tooltip = balkfm_annex_bos_effect
+	}
+}
+
+balkfm_annex_cro_button = {
+	name = "balkfm_annex_cro_name"
+	desc = "balkfm_annex_cro_desc"
+
+	visible = {
+		exists = c:CRO
+		c:CRO != this
+	}
+	possible = {
+		has_technology_researched = pan-nationalism
+		NOR = {
+			has_law_or_variant = law_type:law_ethnostate
+			has_law_or_variant = law_type:law_multicultural
+		}
+		custom_tooltip = {
+			text = balkfm_yugoslav_leader_trigger
+			global_var:balkfm_yugoslavia_journal_var ?= {
+				var:balkfm_yugoslav_leader_var = root
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_annex_cro_possible
+			has_variable = balkfm_cro_annex_var
+			var:balkfm_cro_annex_var >= 60
+		}
+		c:CRO ?= {
+			any_neighbouring_state = {
+				owner = root
+			}
+			OR = {
+				is_subject = no
+				is_subject_of = root
+			}
+			NOR = {
+				has_war_with = root
+				has_truce_with = root
+			}
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = balkfm_yugoslavia.024
+			popup = yes
+		}
+		custom_tooltip = balkfm_annex_cro_effect
+	}
+}
+
+balkfm_annex_slo_button = {
+	name = "balkfm_annex_slo_name"
+	desc = "balkfm_annex_slo_desc"
+
+	visible = {
+		exists = c:SLO
+		c:SLO != this
+	}
+	possible = {
+		has_technology_researched = pan-nationalism
+		NOR = {
+			has_law_or_variant = law_type:law_ethnostate
+			has_law_or_variant = law_type:law_multicultural
+		}
+		custom_tooltip = {
+			text = balkfm_yugoslav_leader_trigger
+			global_var:balkfm_yugoslavia_journal_var ?= {
+				var:balkfm_yugoslav_leader_var = root
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_annex_slo_possible
+			has_variable = balkfm_slo_annex_var
+			var:balkfm_slo_annex_var >= 60
+		}
+		c:SLO ?= {
+			any_neighbouring_state = {
+				owner = root
+			}
+			OR = {
+				is_subject = no
+				is_subject_of = root
+			}
+			NOR = {
+				has_war_with = root
+				has_truce_with = root
+			}
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = balkfm_yugoslavia.025
+			popup = yes
+		}
+		custom_tooltip = balkfm_annex_slo_effect
+	}
+}
+
+balkfm_annex_ser_rsk_button = {
+	name = "balkfm_annex_ser_rsk_name"
+	desc = "balkfm_annex_ser_rsk_desc"
+
+	visible = {
+		exists = c:SER_RSK
+		c:SER_RSK != this
+	}
+	possible = {
+		has_technology_researched = pan-nationalism
+		NOR = {
+			has_law_or_variant = law_type:law_ethnostate
+			has_law_or_variant = law_type:law_multicultural
+		}
+		custom_tooltip = {
+			text = balkfm_yugoslav_leader_trigger
+			global_var:balkfm_yugoslavia_journal_var ?= {
+				var:balkfm_yugoslav_leader_var = root
+			}
+		}
+		custom_tooltip = {
+			text = balkfm_annex_ser_rsk_possible
+			has_variable = balkfm_ser_rsk_annex_var
+			var:balkfm_ser_rsk_annex_var >= 60
+		}
+		c:SER_RSK ?= {
+			any_neighbouring_state = {
+				owner = root
+			}
+			OR = {
+				is_subject = no
+				is_subject_of = root
+			}
+			NOR = {
+				has_war_with = root
+				has_truce_with = root
+			}
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = balkfm_yugoslavia.026
+			popup = yes
+		}
+		custom_tooltip = balkfm_annex_ser_rsk_effect
+	}
+}
+
+####---------- Nature of Yugoslavia Buttons ----------####
+balkfm_promote_montegrin_button = {
+	name = "balkfm_promote_montegrin_name"
+	desc =  "balkfm_promote_montegrin_desc"
+
+	visible = {
+		has_global_variable = balkfm_montegrin_culture_var
+		NOT = {
+			country_has_primary_culture = cu:montenegrin
+		}
+		any_scope_pop = {
+			has_pop_culture = montenegrin
+		}
+	}
+	possible = {
+		government_legitimacy >= 70
+		radical_fraction = {
+			culture = cu:montenegrin
+			value < 0.25
+		}
+		custom_tooltip = {
+			text = balkfm_promoting_culture_NOT
+			NOT = {
+				has_variable = balkfm_yugoslav_promotion_var
+			}
+		}
+	}
+	effect = {
+		custom_tooltip = {
+			text = balkfm_promote_montenegrin
 			set_variable = {
-				name = balkfm_ottoman_gunrunners_lockout
-				years = 2
+				name = balkfm_yugoslav_promotion_var
+				value = 0
+			}
+			set_variable = {
+				name = balkfm_yugoslav_promotion_progress_var
+				value = balkfm_yugoslav_promotion_progress_value
+			}
+			set_variable = {
+				name = balkfm_yugoslav_promotion_target_var
+				value = cu:montenegrin
 			}
 		}
 	}
-	
-	ai_chance = {
-		value = -5
-		if = {
-			limit = {
-				NOT = { has_modifier = modifier_balkfm_ottoman_gunrunners }
-				c:TUR ?= {
-					relations:root < relations_threshold:neutral
-				}
-				fixed_income > money_amount_multiplier_medium
-				gold_reserves > 0
-			}
-			add = 100
+}
+
+balkfm_promote_serb_button = {
+	name = "balkfm_promote_serb_name"
+	desc =  "balkfm_promote_serb_desc"
+
+	visible = {
+		NOT = {
+			country_has_primary_culture = cu:serb
 		}
-		if = {
-			limit = {
-				NOT = { has_modifier = modifier_balkfm_ottoman_gunrunners }
-				fixed_income < money_amount_multiplier_medium
-				gold_reserves < 0
-			}
-			add = -1000
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_balkfm_ottoman_gunrunners
-				c:TUR ?= {
-					relations:root > relations_threshold:neutral
-				}
-			}
-			add = 100
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_balkfm_ottoman_gunrunners
-				c:TUR ?= {
-					relations:root < relations_threshold:neutral
-				}
-			}
-			add = -100
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_balkfm_ottoman_gunrunners
-				fixed_income < money_amount_multiplier_medium
-				gold_reserves < 0
-			}
-			add = 1000
+		any_scope_pop = {
+			has_pop_culture = serb
 		}
 	}
-	
+	possible = {
+		government_legitimacy >= 70
+		radical_fraction = {
+			culture = cu:serb
+			value < 0.25
+		}
+		NOT = {
+			has_variable = balkfm_yugoslav_promotion_var
+		}
+	}
+	effect = {
+		custom_tooltip = {
+			text = balkfm_promote_serb
+			set_variable = {
+				name = balkfm_yugoslav_promotion_var
+				value = 0
+			}
+			set_variable = {
+				name = balkfm_yugoslav_promotion_progress_var
+				value = balkfm_yugoslav_promotion_progress_value
+			}
+			set_variable = {
+				name = balkfm_yugoslav_promotion_target_var
+				value = cu:serb
+			}
+		}
+	}
+}
+
+balkfm_promote_bulgarian_button = {
+	name = "balkfm_promote_bulgarian_name"
+	desc =  "balkfm_promote_bulgarian_desc"
+
+	visible = {
+		has_variable = bul_pursued_greater_yugoslavism
+		NOT = {
+			country_has_primary_culture = cu:bulgarian
+		}
+		any_scope_pop = {
+			has_pop_culture = bulgarian
+		}
+	}
+	possible = {
+		government_legitimacy >= 70
+		radical_fraction = {
+			culture = cu:bulgarian
+			value < 0.25
+		}
+		NOT = {
+			has_variable = balkfm_yugoslav_promotion_var
+		}
+	}
+	effect = {
+		custom_tooltip = {
+			text = balkfm_promote_bulgarian
+			set_variable = {
+				name = balkfm_yugoslav_promotion_var
+				value = 0
+			}
+			set_variable = {
+				name = balkfm_yugoslav_promotion_progress_var
+				value = balkfm_yugoslav_promotion_progress_value
+			}
+			set_variable = {
+				name = balkfm_yugoslav_promotion_target_var
+				value = cu:bulgarian
+			}
+		}
+	}
+}
+
+balkfm_promote_bosniak_button = {
+	name = "balkfm_promote_bosniak_name"
+	desc =  "balkfm_promote_bosniak_desc"
+
+	visible = {
+		NOT = {
+			country_has_primary_culture = cu:bosniak
+		}
+		any_scope_pop = {
+			has_pop_culture = bosniak
+		}
+	}
+	possible = {
+		government_legitimacy >= 70
+		radical_fraction = {
+			culture = cu:bosniak
+			value < 0.25
+		}
+		NOT = {
+			has_variable = balkfm_yugoslav_promotion_var
+		}
+	}
+	effect = {
+		custom_tooltip = {
+			text = balkfm_promote_bosniak
+			set_variable = {
+				name = balkfm_yugoslav_promotion_var
+				value = 0
+			}
+			set_variable = {
+				name = balkfm_yugoslav_promotion_progress_var
+				value = balkfm_yugoslav_promotion_progress_value
+			}
+			set_variable = {
+				name = balkfm_yugoslav_promotion_target_var
+				value = cu:bosniak
+			}
+		}
+	}
+}
+
+balkfm_promote_croat_button = {
+	name = "balkfm_promote_croat_name"
+	desc =  "balkfm_promote_croat_desc"
+
+	visible = {
+		NOT = {
+			country_has_primary_culture = cu:croat
+		}
+		any_scope_pop = {
+			has_pop_culture = croat
+		}
+	}
+	possible = {
+		government_legitimacy >= 70
+		radical_fraction = {
+			culture = cu:croat
+			value < 0.25
+		}
+		NOT = {
+			has_variable = balkfm_yugoslav_promotion_var
+		}
+	}
+	effect = {
+		custom_tooltip = {
+			text = balkfm_promote_croat
+			set_variable = {
+				name = balkfm_yugoslav_promotion_var
+				value = 0
+			}
+			set_variable = {
+				name = balkfm_yugoslav_promotion_progress_var
+				value = balkfm_yugoslav_promotion_progress_value
+			}
+			set_variable = {
+				name = balkfm_yugoslav_promotion_target_var
+				value = cu:croat
+			}
+		}
+	}
+}
+
+balkfm_promote_slovene_button = {
+	name = "balkfm_promote_slovene_name"
+	desc =  "balkfm_promote_slovene_desc"
+
+	visible = {
+		NOT = {
+			country_has_primary_culture = cu:slovene
+		}
+		any_scope_pop = {
+			has_pop_culture = slovene
+		}
+	}
+	possible = {
+		government_legitimacy >= 70
+		radical_fraction = {
+			culture = cu:slovene
+			value < 0.25
+		}
+		NOT = {
+			has_variable = balkfm_yugoslav_promotion_var
+		}
+	}
+	effect = {
+		custom_tooltip = {
+			text = balkfm_promote_slovene
+			set_variable = {
+				name = balkfm_yugoslav_promotion_var
+				value = 0
+			}
+			set_variable = {
+				name = balkfm_yugoslav_promotion_progress_var
+				value = balkfm_yugoslav_promotion_progress_value
+			}
+			set_variable = {
+				name = balkfm_yugoslav_promotion_target_var
+				value = cu:slovene
+			}
+		}
+	}
 }

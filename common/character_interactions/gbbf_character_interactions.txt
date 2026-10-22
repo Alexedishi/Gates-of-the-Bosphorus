@@ -1,0 +1,181 @@
+﻿gbbf_exile_to_libya = {
+	icon = gfx/interface/icons/state_trait_icons/dry_climate.dds
+	clicksound = "event:/SFX/DLC/1.3_ip1/UI/exile_character"
+	show_requirements = yes
+	show_confirmation_box = yes
+	
+	potential = {
+		owner ?= {
+			c:TUR ?= this
+			has_journal_entry = je_turkfm_tanzimat_main
+		}
+		is_in_exile_pool = no
+		is_in_void = no
+		is_ruler_of_own_country = no
+		is_heir_of_own_country = no
+		OR = {
+			has_role_of_type = politician
+			has_role_of_type = agitator
+		}
+	}
+	
+	possible = {
+		owner ?= {
+			authority > 50
+			NOR = {
+				has_law_or_variant = law_type:law_protected_speech
+				has_law_or_variant = law_type:law_guaranteed_liberties
+				has_journal_entry = je_ip4_coup
+			}
+			OR = {
+				c:TRI ?= {
+					is_subject_of = c:TUR
+					OR = {
+						has_state_in_state_region = STATE_LIBYA
+						has_state_in_state_region = STATE_LIBYAN_DESERT
+						has_state_in_state_region = STATE_TRIPOLI
+					}
+				}
+				c:LBY ?= {
+					is_subject_of = c:TUR
+					OR = {
+						has_state_in_state_region = STATE_LIBYA
+						has_state_in_state_region = STATE_LIBYAN_DESERT
+						has_state_in_state_region = STATE_TRIPOLI
+					}
+				}
+			}
+		}
+		OR = {
+			popularity < 25
+			loyalty < 0
+		}
+		is_busy = no
+		trigger_if = {
+			limit = {
+				has_role_of_type = agitator
+			}
+			political_movement ?= { is_insurrectionary = no }
+		}
+		trigger_else = {
+			interest_group ?= {
+				is_insurrectionary = no
+			}
+		}
+	}
+	
+	effect = {
+		save_scope_as = exile_scope
+		interest_group ?= {
+			save_scope_as = exile_ig_scope
+		}
+		owner ?= {
+			save_scope_as = ottoman_scope
+			random_subject_or_below = {
+				limit = {
+					OR = {
+						has_state_in_state_region = STATE_LIBYA
+						has_state_in_state_region = STATE_LIBYAN_DESERT
+						has_state_in_state_region = STATE_TRIPOLI
+					}
+				}
+				save_scope_as = libya_scope
+			}
+			add_modifier = {
+				name = modifier_turkfm_exiled_character_to_libya
+				months = gbbf_normal_modifier_time
+				is_decaying = yes
+			}
+		}
+		if = {
+			limit = {
+				has_role_of_type = politician
+			}
+			owner ?= {
+				scope:exile_ig_scope = {
+					add_modifier = {
+						name = modifier_exiled_leader
+						days = normal_modifier_time
+						is_decaying = yes
+					}
+				}
+			}
+		}
+		owner ?= {
+			custom_tooltip = exiling_dissident_radicals_factors
+		}
+		add_modifier = {
+			name = modifier_turkfm_exiled_to_libya
+		}
+		if = {
+			limit = {
+				popularity > 15
+			}
+			every_country = {
+				limit = {
+					has_diplomatic_relevance = scope:ottoman_scope
+				}
+				post_notification = turkfm_exiled_to_libya
+			}
+		}
+		# Extra radical from exiling a popular character
+		if = {
+			limit = {
+				popularity >= 50
+			}
+			owner ?= {
+				add_radicals = {
+					value = small_radicals
+					interest_group = scope:exile_ig_scope
+				}
+			}
+		}
+		# Standard radicals from having Right of Assembly
+		if = {
+			limit = {
+				owner ?= { has_law_or_variant = law_type:law_right_of_assembly }
+			}
+			owner ?= {
+				add_radicals = {
+					value = medium_radicals
+					interest_group = scope:exile_ig_scope
+				}
+			}
+		}
+		# Fewer radicals from Censorship
+		else_if = {
+			limit = {
+				owner ?= { has_law_or_variant = law_type:law_censorship }
+			}
+			owner ?= {
+				add_radicals = {
+					value = small_radicals
+					interest_group = scope:exile_ig_scope
+				}
+			}
+		}
+		# Boring characters should be made interesting when being exiled
+		if = {
+			limit = {
+				OR = {
+					has_ideology = ideology:ideology_moderate
+					has_ideology = ideology:ideology_pacifist
+				}
+			}
+			adopt_random_antigovernment_ideology = yes
+		}
+		transfer_character = scope:libya_scope
+	}
+	
+	cooldown = {
+		months = gbbf_normal_modifier_time
+	}
+	
+	should_ai_evaluate = {
+		always = no # The AI cannot be trusted
+	}
+	
+	ai_chance = {
+		value = -1
+	}
+}
