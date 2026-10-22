@@ -1,8 +1,8 @@
 ﻿##########################
 # GATES OF THE BOSPHORUS #
 ##########################
-Mod Version: 4.1.1
-Game Version: 1.13.11 / 1.14-beta
+Mod Version: 4.2.0
+Game Version: 1.15.0
 
 Mod Author: Alexedishi
 Contributors: LordR, Caelreader, CipherParadox
@@ -13,7 +13,8 @@ Special Thanks: RationaLess, Bahmut|Chris
 
 ####---------- Version Compatibility ----------####
 #		GotB Patch	....	Victoria 3 Patch
-#		4.1.1		....	1.13.11
+#		4.2.0		....	1.15.0
+#		4.1.1		....	1.13.11 / 1.14.0
 #		3.4.12		.... 	1.12.3
 #		3.3.7		.... 	1.10.6 / 1.11.1
 #		3.2.8		.... 	1.9.8
@@ -53,7 +54,7 @@ eqfm_: Contains content for the Eastern Question and Expeditions; was formerly m
 
 These are other prefixing conventions used in this mod:
 *Generic and shared files are prefixed with "gbbf_"
-*Script imported from Community Mod Framework is prefixed with "com_"
+*Script imported from Community Mod Framework is prefixed with "com_" (this collides with Community Outfit Mod, but will not change)
 *Script imported from Morgenrote: Dawn of Flavor is prefixed with "mgr_" regardless of Morgenrote content pack origin
 *Script imported from This Land is Mine is prefixed with "tlim_" regardless of TLIM content pack origin
 *Script imported from "Awaken Thee Romanian" is prefixed with "atr_"
@@ -109,12 +110,14 @@ bulfm_: Once contained content for Bulgaria; expanded into balkfm_
  -- If the variable is used to store a value, suffix it with "_var"
  -- If the variable is used in a boolean trigger (has_variable), suffix it using any of the following:
     "_started", "_completed", "_failed", "_happened", "_cooldown", "_tracker", "_target"
- -- If a variable(s) is used only for a specific journal entry and its direct content, store the variable(s) in that journal
- -- Scripted effects are provided to aid in variable management
+ -- If the variable is used to store a scope, suffix it with "_scope"
+ -- Variable lists should be suffixed with "_list"
+ -- Variable maps should be suffixed with "_map"
+ -- Script containers should be suffixed with "_struct"
 
 - Other conventions:
- -- Variable lists shoud be suffixed with "_list"
- -- Variable maps should be suffixed with "_varmap"
+ -- If a variable(s) is used only for a specific journal entry and its direct content, store the variable(s) in that journal
+ -- If content is specific to a state region, avoid global variables and save variables to that state region
 
 *Deviation from these systems is encouraged if it makes the object more readable or intuitive*
 
@@ -191,19 +194,58 @@ bulfm_: Once contained content for Bulgaria; expanded into balkfm_
 
 ####---------- Planned Updates ----------####
 
---Update 4.2.0--
-New Additions:
+# //
+
+
+####---------- Published Updates ----------####
+
+--Update 4.2.0-- **Major Update**
+New Additions (grefm):
+- Added a new outcome to the Bavarocracy in the event Otto dies without an heir along with several more events
+- FINALLY reworked and enabled the Philorthodox Conspiracy event for GRE
+- Added DNA for Eynard the Philhellene courtesy of LordR with some associated events
+- Added several events for the era between the Bavarocracy and Venizelism
+
+New Additions (balkfm):
 - ##New journal "The Nature of Yugoslavia" Promote a Centralized or Federalist approach to the Yugoslav state
-- ##Added "Yugoslav Integralist" ideologies and movement representing the Integralist movement in Yugoslavia
+- Added "Yugoslav Integralist" and "Yugoslav Particularist" ideologies for Yugoslav movements
+- Annexing Yugoslav countries via the "The Yugoslav Project" journal will transfer all of their characters to the annexing country
+
+New Additions (turkfm):
 - ##Fully implemented the Young Turks content with varying outcomes for the Republican movements in the Ottoman Empire
 - ##New journal "The Foundation of the State" representing the multiple outcomes of Turkish identity after the failure of the Tanzimat
-- ##Rebuilt "The Teachings of al-Sanusi" into a global journal with new mechanics, events, and modifiers
+- Two new Secret Police law variants "Palace Service" and "Teşkilat" to represent Ottoman internal security
+- ##New decision representing the suppression of the Circassian slave trade
+
+New Additions:
+- ##Implemented outcomes for the "The Ethiopian Frontier" journal
+- ##New journal "The Lands of Kurdistan" for Kurdish revanchism
+- ##Rebuilt "The Teachings of al-Sanusi" into a struggle-style journal with new mechanics, events, and modifiers
+
+Balance:
+- Adjusted Otto's traits and starting popularity
+- GRE now starts with land-based taxation and one more level of gov admin
+- YUG formation will now strip all but the founding country's primary cultures regardless of law setup
+- YUG formation will now set the state religion to that of the founding country's definition
+- Yugoslav countries cannot be released by YUG while the "The Nature of Yugoslavia" journal is active
+- Esir Pazari amendment will follow newly enacted Slave Trade laws (except for Slave Trade or Slavery Banned)
+
+Adjustments:
+- Hayreddin Pasha now has the Abkhazian culture
+- je_grefm_bavarocracy_main and je_grefm_bavarocracy_ip3 have been merged; DLC content is gated in a manner similar to je_balkfm_ser_monarchism
+- Added a progress bar to je_grefm_the_dedilomeni_principle
+- je_grefm_land_reclamation now uses a variable set on STATE_ATTICA
+- grefm_greece.113 now triggers via on_pulse and hits all Greek tags
 
 Fixes:
 - ##Fixed several issues that could derail Greece's "Military League" journal
 
+Notes:
+- Large QA pass on *all* journals, events, and localization
+- Majority of event IDs refactored and a lot of unused/inaccurate localization pruned
+- All journal entries refactored for new outcomes scripting
+- Replaced ideology_social_democrat with ideology_state_socialist
 
-####---------- Published Updates ----------####
 
 --Update 4.1.2--
 Fixes:
