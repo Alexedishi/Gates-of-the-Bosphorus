@@ -1,7 +1,12 @@
 ﻿je_mgrbfm_libya_centralization = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	dlc = dlc_grefm
 	weight = 2000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -40,29 +45,36 @@
 	modifiers_while_active = {
 		modifier_mgrbfm_informal_administration
 	}
-
-	complete = {
-		owns_entire_state_region = STATE_TRIPOLI
-		NOR = {
-			has_law_or_variant = law_type:law_hereditary_bureaucrats
-			has_law_or_variant = law_type:law_peasant_levies
-			has_law_or_variant = law_type:law_no_police
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			owns_entire_state_region = STATE_TRIPOLI
+			NOR = {
+				has_law_or_variant = law_type:law_hereditary_bureaucrats
+				has_law_or_variant = law_type:law_peasant_levies
+				has_law_or_variant = law_type:law_no_police
+			}
+			government_legitimacy >= 75
+			custom_tooltip = {
+				text = je_mgrbfm_libya_centralization_complete
+				scope:journal_entry.var:mgrbfm_institution_investment_var >= 10
+			}
+			bureaucracy >= 0
+			approaching_bureaucracy_shortage = no
+			ig:ig_intelligentsia = {
+				is_marginal = no
+			}
+			gbbf_no_revolutionary_ig_trigger = yes
 		}
-		government_legitimacy >= 75
-		custom_tooltip = {
-			text = je_mgrbfm_libya_centralization_complete
-			scope:journal_entry.var:mgrbfm_institution_investment_var >= 10
+		effect = {
+			trigger_event = mgrbfm_libya.009
 		}
-		bureaucracy >= 0
-		approaching_bureaucracy_shortage = no
-		ig:ig_intelligentsia = {
-			is_marginal = no
-		}
-		gbbf_no_revolutionary_ig_trigger = yes
-	}
-
-	on_complete = {
-		trigger_event = mgrbfm_libya.009
 	}
 	
 	on_weekly_pulse = {

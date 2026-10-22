@@ -53,6 +53,12 @@
  eqfm_senusiyya_chad_active: "#v [GetStateRegion('STATE_CHAD').MakeScope.Var('eqfm_senusiyya_entrenchment_var').GetValue]%#! $eqfm_senusiyya_entrenchment_short$ in [GetStateRegion('STATE_CHAD').GetName]"
  eqfm_senusiyya_chad_inactive: "#bold No Presence#! in [GetStateRegion('STATE_CHAD').GetName]"
  eqfm_senusiyya_chad_expelled: "#bold Expelled#! from [GetStateRegion('STATE_CHAD').GetName]"
+ 
+ # Effect Loc
+ eqfm_add_senusiyya_pressure_effect: "$eqfm_senusiyya_movement$ $eqfm_senusiyya_pressure$ will change by $VALUE|0+=$"
+ eqfm_add_senusiyya_entrenchment_effect: "$eqfm_senusiyya_movement$ $eqfm_senusiyya_entrenchment$ in [STATE_REGION.GetName] will change by $VALUE|0+=$"
+ eqfm_add_senusiyya_influence_effect: "$eqfm_senusiyya_movement$ $eqfm_senusiyya_influence$ in [COUNTRY.GetNameNoFlag] will change by $VALUE|0+=$"
+ eqfm_add_senusiyya_phase_progress_effect: "$eqfm_senusiyya_situation$ Phase Progress will change by $VALUE|0+=$"
 
  # Modifiers
  modifier_eqfm_senusiyya_movement: "$eqfm_senusiyya_movement$"
@@ -66,6 +72,10 @@
  modifier_eqfm_senusiyya_stance_negative: "Hostile Stance Towards $eqfm_senusiyya$"
  modifier_eqfm_senusiyya_unwelcome: "$eqfm_senusiyya$ Itinerants Unwelcome"
  modifier_eqfm_senusiyya_welcomed: "$eqfm_senusiyya$ Itinerants Welcomed"
+ 
+ modifier_eqfm_senusiyya_tranquility_phase: "$eqfm_senusiyya_tranquility$ Phase"
+ modifier_eqfm_senusiyya_unease_phase: "$eqfm_senusiyya_unease$ Phase"
+ modifier_eqfm_senusiyya_belligerency_phase: "$eqfm_senusiyya_belligerency$ Phase"
  
  modifier_eqfm_discouraged_awliya_worship_state: "Discouraged Awliya Worship"
  modifier_eqfm_discouraged_awliya_worship_country: "Discouraging Awliya Worship"
@@ -125,6 +135,16 @@
  notification_eqfm_senusiyya_yearly_progress_name: "$eqfm_senusiyya_expedition$ Makes Progress"
  notification_eqfm_senusiyya_yearly_progress_desc: "Despite the harsh conditions in the desert, the $eqfm_senusiyya_expedition$ has gained #bold #green 1#!#! $eqfm_expedition_progress$."
  
+ notification_eqfm_senusiyya_phase_tranquility_name: "$eqfm_senusiyya_situation$ Transitions to $eqfm_senusiyya_tranquility$"
+ notification_eqfm_senusiyya_phase_tranquility_desc: ""
+ notification_eqfm_senusiyya_phase_tranquility_tooltip: "#header notification_eqfm_senusiyya_phase_tranquility_name$com_ttdl$notification_eqfm_senusiyya_phase_tranquility_desc#!"
+ notification_eqfm_senusiyya_phase_unease_name: "$eqfm_senusiyya_situation$ Transitions to $eqfm_senusiyya_unease$"
+ notification_eqfm_senusiyya_phase_unease_desc: ""
+ notification_eqfm_senusiyya_phase_unease_tooltip: "#header notification_eqfm_senusiyya_phase_unease_name$com_ttdl$notification_eqfm_senusiyya_phase_unease_desc#!"
+ notification_eqfm_senusiyya_phase_belligerency_name: "$eqfm_senusiyya_situation$ Transitions to $eqfm_senusiyya_belligerency$"
+ notification_eqfm_senusiyya_phase_belligerency_desc: ""
+ notification_eqfm_senusiyya_phase_belligerency_tooltip: "#header notification_eqfm_senusiyya_phase_belligerency_name$com_ttdl$notification_eqfm_senusiyya_phase_belligerency_desc#!"
+ 
  # Scripted Buttons
  eqfm_broker_power_deal_name: "Broker Deal with Tribes"
  eqfm_broker_power_deal_desc: "The western deserts are home to the [GetCulture('bedouin').GetName] nomads. Without their cooperation, attempts at colonization or centralization are doomed to failure. However, their compliance usually comes with a price."
@@ -170,8 +190,11 @@
  eqfm_expel_senusiyya_possible: "$eqfm_senusiyya_entrenchment$ in this [concept_state_region] is #bold 0 or less#!"
  
  # Scripted Progress Bars
- eqfm_senusiyya_pressure_progressbar: "$eqfm_senusiyya$ Influence:#!$gbbf_linebreak_normal$#bold #italic Factors in Support of Al-Senussi:#!#!\n[GetPlayer.MakeScope.GetScriptValueDesc('eqfm_senusiyya_pressure_progress_value')]$gbbf_linebreak_normal$#italic #white #bold [GetGlobalVariable('je_eqfm_senusiyya').Var('eqfm_senusiyya_pressure_progress_var').GetValue] expected monthly progress#!#!#!"
- eqfm_senusiyya_pressure_progressbar_desc: "$eqfm_senusiyya$ Influence"
+ eqfm_senusiyya_pressure_progress_bar: "$eqfm_senusiyya$ Influence:#!$gbbf_linebreak_normal$#bold #italic Factors in Support of Al-Senussi:#!#!\n[GetPlayer.MakeScope.GetScriptValueDesc('eqfm_senusiyya_pressure_progress_value')]$gbbf_linebreak_normal$#italic #white #bold [GetGlobalVariable('je_eqfm_senusiyya').Var('eqfm_senusiyya_pressure_progress_var').GetValue] expected monthly progress#!#!#!"
+ eqfm_senusiyya_pressure_progress_bar_desc: "$eqfm_senusiyya$ Influence"
+ 
+ eqfm_senusiyya_phase_progress_bar: ""
+ eqfm_senusiyya_phase_progress_bar_desc: "Progress Towards Next Phase"
  
  eqfm_senusiyya_expedition_progress_bar: "$eqfm_expedition_progress_desc$"
  eqfm_senusiyya_expedition_progress_bar_desc: "Expedition Progress"
@@ -225,6 +248,18 @@
  eqfm_embraced_senusiyya_situation: "[concept_country] has #bold Embraced#! the $eqfm_senusiyya_movement$"
  eqfm_expelled_senusiyya_situation: "[concept_country] has #bold Expelled#! the $eqfm_senusiyya_movement$ from all owned $gbbf_states$"
  
+ eqfm_senusiyya_tranquility_phase_trigger: "The $eqfm_senusiyya_situation$ is in the $eqfm_senusiyya_tranquility$ Phase"
+ eqfm_senusiyya_tranquility_phase_trigger_NOT: "The $eqfm_senusiyya_situation$ is #bold not#! in the $eqfm_senusiyya_tranquility$ Phase"
+ eqfm_senusiyya_unease_phase_trigger: "The $eqfm_senusiyya_situation$ is in the $eqfm_senusiyya_unease$ Phase"
+ eqfm_senusiyya_unease_phase_trigger_NOT: "The $eqfm_senusiyya_situation$ is #bold not#! in the $eqfm_senusiyya_unease$ Phase"
+ eqfm_senusiyya_belligerency_phase_trigger: "The $eqfm_senusiyya_situation$ is in the $eqfm_senusiyya_belligerency$ Phase"
+ eqfm_senusiyya_belligerency_phase_trigger_NOT: "The $eqfm_senusiyya_situation$ is #bold not#! in the $eqfm_senusiyya_belligerency$ Phase"
+ 
+ eqfm_senusiyya_can_escalate_trigger: "The Current $eqfm_senusiyya_situation$ Phase is able to #bold Escalate#!"
+ eqfm_senusiyya_can_escalate_trigger_NOT: "The Current $eqfm_senusiyya_situation$ Phase is #bold not#! able to #bold Escalate#!"
+ eqfm_senusiyya_can_deescalate_trigger: "The Current $eqfm_senusiyya_situation$ Phase is able to #bold Deescalate#!"
+ eqfm_senusiyya_can_deescalate_trigger_NOT: "The Current $eqfm_senusiyya_situation$ Phase is #bold not#! able to #bold Deescalate#!"
+ 
  eqfm_libya_centralized: "There are no $gbbf_states$ owned by $gbbf_decentralized_nations$ in the [GetStateRegion('STATE_LIBYA').GetName]"
  eqfm_libyan_desert_centralized: "There are no $gbbf_states$ owned by $gbbf_decentralized_nations$ in the [GetStateRegion('STATE_LIBYAN_DESERT').GetName]"
  eqfm_tripoli_centralized: "There are no $gbbf_states$ owned by $gbbf_decentralized_nations$ in the [GetStateRegion('STATE_TRIPOLI').GetName]"
@@ -244,8 +279,29 @@
  eqfm_senusiyya_entrenchment_trigger: "This [concept_state_region] has active $eqfm_senusiyya_entrenchment$"
  
  # Tooltips
- eqfm_muslim: "#o #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_desc')] Muslim#!#!"
+ eqfm_senusiyya_situation: "#tooltippable #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_situation_desc')] $je_eqfm_senusiyya$#!#! $com_situation$"
+ eqfm_senusiyya_situation_desc: ""
+ 
+ eqfm_muslim: "#o #tooltip:[GetRawTextTooltipTag('eqfm_muslim_desc')] Muslim#!#!"
  eqfm_muslim_desc: "The following $gbbf_religions$ are part of the #bold Muslim#! community:\n • [GetReligion('sunni').GetName]\n • [GetReligion('shiite').GetName]\n • [GetReligion('ibadi').GetName]"
+ 
+ eqfm_senusiyya_tranquility: "@gbbf_tranquility! #bold #green #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_tranquility_desc')] Tranquility#!#!#!"
+ eqfm_senusiyya_tranquility_desc: "@gbbf_tranquility! #bold #green Tranquility#!#!$gbbf_linebreak_normal$One of the phases in the $eqfm_senusiyya_situation$.\n\n--$gbbf_linebreak_normal$$eqfm_senusiyya_tranquility_effects$"
+ eqfm_senusiyya_tranquility_effects: "This phase provides the following effects:\n[GetStaticModifier('modifier_eqfm_tranquility_phase').GetDesc]"
+ eqfm_senusiyya_tranquility_no_icon: "#bold #green #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_tranquility_desc')] Tranquility#!#!#!"
+ eqfm_senusiyya_tranquility_icon_only: "#tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_tranquility_desc')] @gbbf_tranquility!#!"
+ 
+ eqfm_senusiyya_unease: "@gbbf_unease! #bold #green #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_unease_desc')] Unease#!#!#!"
+ eqfm_senusiyya_unease_desc: "@gbbf_unease! #bold #green Unease#!#!$gbbf_linebreak_normal$One of the phases in the $eqfm_senusiyya_situation$.\n\n--$gbbf_linebreak_normal$$eqfm_senusiyya_unease_effects$"
+ eqfm_senusiyya_unease_effects: "This phase provides the following effects:\n[GetStaticModifier('modifier_eqfm_unease_phase').GetDesc]"
+ eqfm_senusiyya_unease_no_icon: "#bold #green #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_unease_desc')] Unease#!#!#!"
+ eqfm_senusiyya_unease_icon_only: "#tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_unease_desc')] @gbbf_unease!#!"
+ 
+ eqfm_senusiyya_belligerency: "@gbbf_belligerency! #bold #green #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_belligerency_desc')] belligerency#!#!#!"
+ eqfm_senusiyya_belligerency_desc: "@gbbf_belligerency! #bold #green Belligerency#!#!$gbbf_linebreak_normal$One of the phases in the $eqfm_senusiyya_situation$.\n\n--$gbbf_linebreak_normal$$eqfm_senusiyya_belligerency_effects$"
+ eqfm_senusiyya_belligerency_effects: "This phase provides the following effects:\n[GetStaticModifier('modifier_eqfm_belligerency_phase').GetDesc]"
+ eqfm_senusiyya_belligerency_no_icon: "#bold #green #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_belligerency_desc')] Belligerency#!#!#!"
+ eqfm_senusiyya_belligerency_icon_only: "#tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_belligerency_desc')] @gbbf_belligerency!#!"
  
  eqfm_senusiyya: "#o #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_desc')] @gbbf_senusiyya! Senusiyya#!#!"
  eqfm_senusiyya_movement: "#o #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_desc')] @gbbf_senusiyya! Senusiyya Movement#!#!"
@@ -255,23 +311,17 @@
  eqfm_senusiyya_pressure: "#o #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_pressure_desc')] @gbbf_senusiyya! Pressure#!#!"
  eqfm_senusiyya_pressure_desc: "#header $eqfm_senusiyya_pressure$#!\n$gbbf_linebreak_normal$"
  eqfm_senusiyya_pressure_short: "#o #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_pressure_desc')] Pressure#!#!"
- eqfm_add_senusiyya_pressure: "$eqfm_senusiyya_movement$ $eqfm_senusiyya_pressure$ will change by #v [TopScope.GetLocalVariable('eqfm_senusiyya_pressure_loc_var').GetValue]#!"
  
  eqfm_senusiyya_entrenchment: "#o #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_entrenchment_desc')] @gbbf_senusiyya! Entrenchment#!#!"
  eqfm_senusiyya_entrenchment_desc: "#header $eqfm_senusiyya_entrenchment$#!\n$gbbf_linebreak_normal$"
  eqfm_senusiyya_entrenchment_short: "#o #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_entrenchment_desc')] Entrenchment#!#!"
  eqfm_senusiyya_entrenched: "#o #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_entrenchment_desc')] Entrenched#!#!"
- eqfm_add_senusiyya_entrenchment: "$eqfm_senusiyya_movement$ $eqfm_senusiyya_entrenchment$ will change by #v [TopScope.GetLocalVariable('eqfm_senusiyya_entrenchment_loc_var').GetValue]#!"
  eqfm_starting_senusiyya_entrenchment: "The $eqfm_senusiyya_movement$ establishes itself with #v 25#! $eqfm_senusiyya_entrenchment_short$ in [SCOPE.sStateRegion('eqfm_senusiyya_state_region_scope').GetName]"
  eqfm_withdraw_senusiyya_entrenchment: "The $eqfm_senusiyya_movement$ withdraws from [SCOPE.sStateRegion('eqfm_senusiyya_withdrawal_state_region_scope').GetName] losing any $eqfm_senusiyya_entrenchment_short$ in that [concept_state_region]"
  
  eqfm_senusiyya_influence: "#o #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_influence_desc')] @gbbf_senusiyya! Influence#!#!"
  eqfm_senusiyya_influence_desc: "#header $eqfm_senusiyya_influence$#!\n$gbbf_linebreak_normal$"
  eqfm_senusiyya_influence_short: "#o #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_influence_desc')] Influence#!#!"
- eqfm_add_senusiyya_influence: "$eqfm_senusiyya_movement$ $eqfm_senusiyya_influence$ will change by #v [TopScope.GetLocalVariable('eqfm_senusiyya_influence_loc_var').GetValue]#!"
- eqfm_normal_starting_senusiyya_influence: "The $eqfm_senusiyya_movement$ will gain #v 25#! #bold Influence#! over the [ROOT.GetCountry.GetAdjectiveNoFlag] court"
- eqfm_reduced_starting_senusiyya_influence: "The $eqfm_senusiyya_movement$ will gain #v 15#! #bold Influence#! over the [ROOT.GetCountry.GetAdjectiveNoFlag] court"
- eqfm_increased_starting_senusiyya_influence: "The $eqfm_senusiyya_movement$ will gain #v 35#! #bold Influence#! over the [ROOT.GetCountry.GetAdjectiveNoFlag] court"
  
  eqfm_senusiyya_expedition: "@gbbf_expedition_senusiyya! #yellow #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_expedition_desc')] Anti-Senusiyya Expedition#!#!"
  eqfm_senusiyya_expedition_no_icon: "#yellow #tooltip:[GetRawTextTooltipTag('eqfm_senusiyya_expedition_desc')] Anti-Senusiyya Expedition#!#!"
@@ -282,7 +332,6 @@
  eqfm_senusiyya_stance_welcoming: "#green #bold Welcoming#!#!"
  eqfm_senusiyya_stance_hostile: "#red #bold Hostile#!#!"
  
- eqfm_senussi_location_status: "[GetPlayer.MakeScope.Var('eqfm_senussi_location_var').GetFlagName]"
  eqfm_senussi_ghosted: "Al-Senussi's location is unknown"
  eqfm_senussi_desert: "Al-Senussi is Hiding in the Desert"
  eqfm_senussi_villages: "Al-Senussi is Operating in Desert Villages"

@@ -1,7 +1,12 @@
 ﻿je_balkfm_bul_battenburg_monarchy = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = no
@@ -10,9 +15,9 @@
 	scripted_progress_bar = balkfm_battenburg_legitimacy_progressbar
 	scripted_progress_bar = balkfm_battenburg_support_progressbar
 
-	is_shown_in_lobby = {
-		c:BUL ?= this
-	}
+	# is_shown_in_lobby = {
+	# 	c:BUL ?= this
+	# }
 
 	is_shown_when_inactive = {
 		c:BUL ?= this
@@ -37,52 +42,72 @@
 			days = 30
 		}
 	}
-
-	complete = {
-		has_law_or_variant = law_type:law_monarchy
-		custom_tooltip = {
-			text = battenburg_monarchy_success_tt1
-			hidden_trigger = {
-				var:balkfm_battenburg_support_var > 5
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			has_law_or_variant = law_type:law_monarchy
+			custom_tooltip = {
+				text = battenburg_monarchy_success_tt1
+				hidden_trigger = {
+					var:balkfm_battenburg_support_var > 5
+				}
+			}
+			custom_tooltip = {
+				text = battenburg_monarchy_success_tt2
+				hidden_trigger = {
+					has_variable = balkfm_alex_yeeted
+				}
 			}
 		}
-		custom_tooltip = {
-			text = battenburg_monarchy_success_tt2
-			hidden_trigger = {
-				has_variable = balkfm_alex_yeeted
-			}
+		effect = {
+			trigger_event = balkfm_bulgaria.008
 		}
 	}
-
-	on_complete = {
-		trigger_event = balkfm_bulgaria.008
-	}
-
-	fail = { # Battenburgs get the boot
-		custom_tooltip = {
-			text = battenburg_monarchy_fail_tt1
-			hidden_trigger = {
-				balkfm_battenburg_support_value <= 5
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		flags = { historical }
+		
+		trigger = {  # Battenburgs get the boot
+			custom_tooltip = {
+				text = battenburg_monarchy_fail_tt1
+				hidden_trigger = {
+					balkfm_battenburg_support_value <= 5
+				}
+			}
+			custom_tooltip = {
+				text = battenburg_monarchy_fail_tt2
+				hidden_trigger = {
+					has_variable = balkfm_alex_yeeted
+				}
 			}
 		}
-		custom_tooltip = {
-			text = battenburg_monarchy_fail_tt2
-			hidden_trigger = {
-				has_variable = balkfm_alex_yeeted
-			}
+		effect = {
+			trigger_event = balkfm_bulgaria.020
 		}
 	}
-
-	on_fail = {
-		trigger_event = balkfm_bulgaria.020
-	}
-
-	invalid = { # 404 monarch not found
-		NOT = { has_law_or_variant = law_type:law_monarchy }
-	}
-
-	on_invalid = {
-		set_variable = balkfm_alex_yeeted
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = { # 404 monarch not found
+			NOT = {
+				has_law_or_variant = law_type:law_monarchy
+			}
+		}
+		effect = {
+			set_variable = balkfm_alex_yeeted
+		}
 	}
 
 	on_weekly_pulse = {
@@ -160,75 +185,110 @@
 je_balkfm_bul_russian_influence = {
 	group = je_group_foreign_affairs
 	icon = "gfx/interface/icons/invention_icons/international_diplomacy.dds"
+	dlc = dlc_grefm
 	weight = 500
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
-
-	immediate = {
-	}
-
-	complete = {
-		custom_tooltip = {
-			text = je_balkfm_bul_royal_influence_status
-			hidden_trigger = {
-				has_variable = balkfm_royal_tour_complete
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			custom_tooltip = {
+				text = je_balkfm_bul_royal_influence_status
+				hidden_trigger = {
+					has_variable = balkfm_royal_tour_complete
+				}
 			}
 		}
-	}
-
-	on_complete = {
-		trigger_event = balkfm_bulgaria.007
-	}
-
-	invalid = {
-		hidden_trigger = {
-			has_variable = balkfm_alex_yeeted
+		effect = {
+			trigger_event = balkfm_bulgaria.007
 		}
+	}
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			hidden_trigger = {
+				has_variable = balkfm_alex_yeeted
+			}
+		}
+		effect = { }
 	}
 }
 
 je_balkfm_bul_railways = {
 	group = je_group_technology
 	icon = "gfx/interface/icons/invention_icons/railways.dds"
+	dlc = dlc_grefm
 	weight = 500
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
 
 	scripted_button = balkfm_purchase_rail_button
-
-	immediate = {
-	}
-
-	complete = {
-		any_scope_building = {
-			is_building_type = building_railway
-			building_has_goods_shortage = no
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			any_scope_building = {
+				is_building_type = building_railway
+				building_has_goods_shortage = no
+			}
+			any_scope_building = {
+				has_active_production_method = pm_public_trams
+				building_has_goods_shortage = no
+			}
 		}
-		any_scope_building = {
-			has_active_production_method = pm_public_trams
-			building_has_goods_shortage = no
+		effect = {
+			trigger_event = balkfm_bulgaria.014
+			custom_tooltip = balkfm_countercoup_add_1
+			set_variable = balkfm_railways_built
 		}
 	}
-
-	on_complete = {
-		trigger_event = balkfm_bulgaria.014
-		custom_tooltip = balkfm_countercoup_add_1
-		set_variable = balkfm_railways_built
-	}
-
-	invalid = {
-		NOT = { owns_entire_state_region = STATE_BULGARIA }
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			NOT = { owns_entire_state_region = STATE_BULGARIA }
+		}
+		effect = { }
 	}
 }
 
 je_balkfm_bul_stambolovism = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+	dlc = dlc_grefm
 	weight = 100
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -252,48 +312,68 @@ je_balkfm_bul_stambolovism = {
 	modifiers_while_active = {
 		modifier_balkfm_unrecognized_monarch
 	}
-
-	complete = {
-		scope:journal_entry = {
-			is_goal_complete = yes
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			scope:journal_entry = {
+				is_goal_complete = yes
+			}
+		}
+		effect = {
+			trigger_event = balkfm_bulgaria.031
+			balkfm_remove_stambolovism_variables_effect = yes
 		}
 	}
-
-	on_complete = {
-		trigger_event = balkfm_bulgaria.031
-		balkfm_remove_stambolovism_variables_effect = yes
-	}
-
-	fail = {
-		custom_tooltip = {
-			text = je_balkfm_bul_stambolovism_fail
-			hidden_trigger = {
-				ruler = {
-					NOR = {
-						has_template = balkfm_sakskoburggotski_ferdinand
-						has_template = balkfm_dadiani_nikoloz
-						has_template = balkfm_bogoridi_alexander
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		flags = { }
+		
+		trigger = {
+			custom_tooltip = {
+				text = je_balkfm_bul_stambolovism_fail
+				hidden_trigger = {
+					ruler = {
+						NOR = {
+							has_template = balkfm_sakskoburggotski_ferdinand
+							has_template = balkfm_dadiani_nikoloz
+							has_template = balkfm_bogoridi_alexander
+						}
 					}
 				}
 			}
 		}
-	}
-
-	on_fail = {
-		balkfm_remove_stambolovism_variables_effect = yes
-	}
-
-	invalid = {
-		NOR = {
-			has_law_or_variant = law_type:law_monarchy
-			is_subject = yes
+		effect = {
+			balkfm_remove_stambolovism_variables_effect = yes
 		}
 	}
-
-	on_invalid = {
-		balkfm_remove_stambolovism_variables_effect = yes
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			NOR = {
+				has_law_or_variant = law_type:law_monarchy
+				is_subject = yes
+			}
+		}
+		effect = {
+			balkfm_remove_stambolovism_variables_effect = yes
+		}
 	}
-
+	
 	on_weekly_pulse = {
 		effect = {
 			set_variable = {
@@ -318,7 +398,12 @@ je_balkfm_bul_stambolovism = {
 je_balkfm_bul_military_modernization = {
 	group = je_group_technology
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -349,23 +434,36 @@ je_balkfm_bul_military_modernization = {
 	modifiers_while_active = {
 		modifier_balgaria_arming
 	}
-
-	complete = {
-		custom_tooltip = {
-			text = bularia_military_progress_tt
-			ROOT.army_power_projection >= var:army_projection_target
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			custom_tooltip = {
+				text = bularia_military_progress_tt
+				ROOT.army_power_projection >= var:army_projection_target
+			}
+		}
+		effect = {
+			trigger_event = balkfm_bulgaria.025
 		}
 	}
-
-	on_complete = {
-		trigger_event = balkfm_bulgaria.025
-	}
-
-	fail = {
-		is_subject = yes
-	}
-
-	on_fail = {
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			is_subject = yes
+		}
+		effect = { }
 	}
 
 	on_weekly_pulse = {
@@ -384,7 +482,12 @@ je_balkfm_bul_military_modernization = {
 je_balkfm_bul_liberation_of_bulgaria = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -411,21 +514,33 @@ je_balkfm_bul_liberation_of_bulgaria = {
 	immediate = {
 		trigger_event = balkfm_bulgaria.210
 	}
-
-	complete = {
-		is_subject = no
-		owns_entire_state_region = STATE_BULGARIA
-		owns_entire_state_region = STATE_NORTHERN_THRACE
-	}
-
-	on_complete = {
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			is_subject = no
+			owns_entire_state_region = STATE_BULGARIA
+			owns_entire_state_region = STATE_NORTHERN_THRACE
+		}
+		effect = { }
 	}
 }
 
 je_balkfm_bul_greater_bulgaria = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -446,85 +561,135 @@ je_balkfm_bul_greater_bulgaria = {
 	immediate = {
 		trigger_event = balkfm_bulgaria.213
 	}
-
-	complete = {
-		is_subject = no
-		owns_entire_state_region = STATE_BULGARIA
-		owns_entire_state_region = STATE_NORTHERN_THRACE
-		owns_entire_state_region = STATE_WESTERN_THRACE
-		owns_entire_state_region = STATE_SKOPIA
-		owns_entire_state_region = STATE_MACEDONIA
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			is_subject = no
+			owns_entire_state_region = STATE_BULGARIA
+			owns_entire_state_region = STATE_NORTHERN_THRACE
+			owns_entire_state_region = STATE_WESTERN_THRACE
+			owns_entire_state_region = STATE_SKOPIA
+			owns_entire_state_region = STATE_MACEDONIA
+		}
+		effect = {
+			trigger_event = balkfm_bulgaria.214
+		}
 	}
-
-	on_complete = {
-		trigger_event = balkfm_bulgaria.214
-	}
-
-	fail = {
-		is_subject = yes
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			is_subject = yes
+		}
+		effect = { }
 	}
 }
 
 je_balkfm_bul_tsardom = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+	dlc = dlc_grefm
 	weight = 2000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
-
-	immediate = {
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			owns_entire_state_region = STATE_BULGARIA
+			owns_entire_state_region = STATE_NORTHERN_THRACE
+			owns_entire_state_region = STATE_WESTERN_THRACE
+			owns_entire_state_region = STATE_SKOPIA
+			owns_entire_state_region = STATE_MACEDONIA
+			owns_entire_state_region = STATE_DOBRUDJA
+			owns_entire_state_region = STATE_WESTERN_SERBIA
+			owns_entire_state_region = STATE_EASTERN_SERBIA
+			owns_entire_state_region = STATE_ALBANIA
+		}
+		effect = {
+			trigger_event = balkfm_bulgaria.215
+		}
 	}
-
-	complete = {
-		owns_entire_state_region = STATE_BULGARIA
-		owns_entire_state_region = STATE_NORTHERN_THRACE
-		owns_entire_state_region = STATE_WESTERN_THRACE
-		owns_entire_state_region = STATE_SKOPIA
-		owns_entire_state_region = STATE_MACEDONIA
-		owns_entire_state_region = STATE_DOBRUDJA
-		owns_entire_state_region = STATE_WESTERN_SERBIA
-		owns_entire_state_region = STATE_EASTERN_SERBIA
-		owns_entire_state_region = STATE_ALBANIA
-	}
-
-	on_complete = {
-		trigger_event = balkfm_bulgaria.215
-	}
-
-	fail = {
-		is_subject = yes
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			is_subject = yes
+		}
+		effect = { }
 	}
 }
 
 je_balkfm_bul_empire = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
-
-	immediate = {
-	}
-
-	complete = {
-		custom_tooltip = {
-			text = je_balkfm_bul_empire_tt
-			hidden_trigger = {
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			custom_tooltip = {
+				text = je_balkfm_bul_empire_tt
 				c:BUL_TSR ?= this
 			}
 		}
+		effect = {
+			trigger_event = balkfm_bulgaria.216
+		}
 	}
-
-	on_complete = {
-		trigger_event = balkfm_bulgaria.216
-	}
-
-	fail = {
-		is_subject = yes
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		flags = { historical }
+		
+		trigger = {
+			is_subject = yes
+		}
+		effect = { }
 	}
 }
 
@@ -532,7 +697,12 @@ je_balkfm_bul_empire = {
 je_balkfm_bul_old_bulgaria = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_bulgaria.dds"
+	dlc = dlc_grefm
 	weight = 100
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -549,21 +719,31 @@ je_balkfm_bul_old_bulgaria = {
 	immediate = {
 		trigger_event = balkfm_bulgaria.220
 	}
-
-	complete = {
-		owns_entire_state_region = STATE_CRIMEA
-		owns_entire_state_region = STATE_CHERSON
-		owns_entire_state_region = STATE_TAURIDA
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			owns_entire_state_region = STATE_CRIMEA
+			owns_entire_state_region = STATE_CHERSON
+			owns_entire_state_region = STATE_TAURIDA
+		}
+		effect = {
+			trigger_event = balkfm_bulgaria.221
+		}
 	}
-
-	on_complete = {
-		trigger_event = balkfm_bulgaria.221
-	}
-
-	invalid = {
-		hidden_trigger = {
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
 			has_variable = balkfm_weaksauce
 		}
+		effect = { }
 	}
 }
 
@@ -571,7 +751,12 @@ je_balkfm_bul_old_bulgaria = {
 je_balkfm_bul_two_bulgarias = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -599,29 +784,42 @@ je_balkfm_bul_two_bulgarias = {
 		}
 		trigger_event = balkfm_bulgaria.300
 	}
-
-	complete = {
-		owns_entire_state_region = STATE_NORTHERN_THRACE
-		custom_tooltip = {
-			text = je_balkfm_bul_two_bulgarias
-			hidden_trigger = {
-				exists = c:BUL
-				is_subject_of = c:BUL
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			owns_entire_state_region = STATE_NORTHERN_THRACE
+			custom_tooltip = {
+				text = je_balkfm_bul_two_bulgarias
+				hidden_trigger = {
+					exists = c:BUL
+					is_subject_of = c:BUL
+				}
 			}
 		}
-	}
-
-	on_complete = {
-		trigger_event = balkfm_bulgaria.309
-	}
-
-	fail = {
-		NOT = {
-			exists = c:BUL
+		effect = {
+			trigger_event = balkfm_bulgaria.309
 		}
 	}
-
-	on_fail = {
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			NOT = {
+				exists = c:BUL
+			}
+		}
+		effect = { }
 	}
 
 	on_monthly_pulse = {

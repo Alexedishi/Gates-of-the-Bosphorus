@@ -82,108 +82,111 @@ grefm_byz_culture_validation = {
 ####---------- on_country_formed ----------####
 on_country_formed = {
 	on_actions = {
-		gbbf_on_country_formed
+		gbbf_on_byz_formed
+		gbbf_on_yug_formed
 	}
 }
 
-gbbf_on_country_formed = {
+gbbf_on_byz_formed = {
+	trigger = {
+		c:BYZ ?= root
+	}
 	effect = {
 		if = {
 			limit = {
-				c:BYZ ?= root
+				var:grefm_culture_var ?= 1 # Hellene Outcome
 			}
-			if = {
-				limit = {
-					var:grefm_culture_var ?= 1 # Hellene Outcome
-				}
-				remove_primary_culture = cu:rhomaios
-				add_primary_culture = cu:greek
-			}
-			else_if = {
-				limit = {
-					var:grefm_culture_var ?= 2 # Rhomaios Outcome
-				}
-				remove_primary_culture = cu:greek
-				add_primary_culture = cu:rhomaios
-			}
-			else_if = {
-				limit = {
-					var:grefm_culture_var ?= 3 # Hybrid Outcome
-				}
-				add_primary_culture = cu:greek
-				add_primary_culture = cu:rhomaios
-			}
+			remove_primary_culture = cu:rhomaios
+			add_primary_culture = cu:greek
 		}
+		else_if = {
+			limit = {
+				var:grefm_culture_var ?= 2 # Rhomaios Outcome
+			}
+			remove_primary_culture = cu:greek
+			add_primary_culture = cu:rhomaios
+		}
+		else_if = {
+			limit = {
+				var:grefm_culture_var ?= 3 # Hybrid Outcome
+			}
+			add_primary_culture = cu:greek
+			add_primary_culture = cu:rhomaios
+		}
+	}
+}
+
+gbbf_on_yug_formed = {
+	trigger = {
+		c:YUG ?= root
+	}
+	events = {
+		balkfm_yugoslavia.014
+	}
+	effect = {
 		if = {
 			limit = {
-				c:YUG ?= root
+				was_formed_from = MON
 			}
+			balkfm_remove_yugoslav_cultures_effect = yes
 			if = {
 				limit = {
-					NOT = {
-						has_law_or_variant = law_type:law_multicultural
-					}
+					has_global_variable = balkfm_montegrin_culture_var
 				}
-				if = {
-					limit = {
-						was_formed_from = MON
-					}
-					balkfm_remove_yugoslav_cultures_effect = yes
-					if = {
-						limit = {
-							has_global_variable = balkfm_montegrin_culture_var
-						}
-						add_primary_culture = cu:montenegrin
-					}
-					else = {
-						add_primary_culture = cu:serb
-					}
-				}
-				else_if = {
-					limit = {
-						OR = {
-							was_formed_from = SER
-							was_formed_from = SER_RSK
-						}
-					}
-					balkfm_remove_yugoslav_cultures_effect = yes
-					add_primary_culture = cu:serb
-				}
-				else_if = {
-					limit = {
-						was_formed_from = BUL
-					}
-					balkfm_remove_yugoslav_cultures_effect = yes
-					add_primary_culture = cu:bulgarian
-				}
-				else_if = {
-					limit = {
-						was_formed_from = BOS
-					}
-					balkfm_remove_yugoslav_cultures_effect = yes
-					add_primary_culture = cu:bosniak
-				}
-				else_if = {
-					limit = {
-						was_formed_from = CRO
-					}
-					balkfm_remove_yugoslav_cultures_effect = yes
-					add_primary_culture = cu:croat
-				}
-				else_if = {
-					limit = {
-						was_formed_from = SLO
-					}
-					balkfm_remove_yugoslav_cultures_effect = yes
-					add_primary_culture = cu:slovene
-				}
-				else = {
-					error_log = "The gbbf_on_country_formed was evaluated for YUG and did not have law_multicultural, but none of the was_formed_from triggers were true."
-				}
+				add_primary_culture = cu:montenegrin
 			}
 			else = {
-				set_variable = je_balkfm_yugoslav_nationalism_complete
+				add_primary_culture = cu:serb
 			}
+			set_state_religion = rel:orthodox
+		}
+		else_if = {
+			limit = {
+				OR = {
+					was_formed_from = SER
+					was_formed_from = SER_RSK
+				}
+			}
+			balkfm_remove_yugoslav_cultures_effect = yes
+			add_primary_culture = cu:serb
+			set_state_religion = rel:orthodox
+		}
+		else_if = {
+			limit = {
+				was_formed_from = BUL
+			}
+			balkfm_remove_yugoslav_cultures_effect = yes
+			add_primary_culture = cu:bulgarian
+		}
+		else_if = {
+			limit = {
+				was_formed_from = BOS
+			}
+			balkfm_remove_yugoslav_cultures_effect = yes
+			add_primary_culture = cu:bosniak
+			set_state_religion = rel:sunni # HAVE FUN BRO
+		}
+		else_if = {
+			limit = {
+				was_formed_from = CRO
+			}
+			balkfm_remove_yugoslav_cultures_effect = yes
+			add_primary_culture = cu:croat
+			set_state_religion = rel:catholic
+		}
+		else_if = {
+			limit = {
+				was_formed_from = SLO
+			}
+			balkfm_remove_yugoslav_cultures_effect = yes
+			add_primary_culture = cu:slovene
+			set_state_religion = rel:catholic
+		}
+		else = {
+			error_log = "The gbbf_on_country_formed was evaluated for YUG and did not have law_multicultural, but none of the was_formed_from triggers were true."
+		}
+		every_state_region_in_yugoslavia = {
+			remove_variable = balkfm_tax_law_var
 		}
 	}
 }
@@ -434,6 +437,7 @@ eqfm_balkans_diplomats_expelled = {
 	}
 }
 
+
 ####---------- on_harvest_condition_started_in_country ----------####
 # Root = country
 # scope:area = harvest condition area
@@ -467,6 +471,7 @@ on_harvest_condition_started_in_lower_nile = {
 	}
 }
 
+
 ####---------- on_heir_born ----------####
 on_heir_born = {
 	on_actions = {
@@ -482,6 +487,9 @@ grefm_validate_heir_dynasty = {
 				c:BYZ ?= this
 			}
 			has_law = law_type:law_monarchy
+			NOT = {
+				has_variable = no_heirs
+			}
 		}
 	}
 	effect = {
@@ -490,22 +498,50 @@ grefm_validate_heir_dynasty = {
 				owner.ruler ?= {
 					OR = {
 						has_template = grefm_wittelsbach_otto
+						has_template = grefm_wittelsbach_adalbert
+						has_template = grefm_wittelsbach_ludwig_ferdinand
 						has_template = grefm_wittelsbach_noble
 					}
 				}
-				NOT = {
+				NOR = {
+					has_template = grefm_wittelsbach_adalbert
+					has_template = grefm_wittelsbach_ludwig_ferdinand
 					has_template = grefm_wittelsbach_noble
 				}
 			}
 			owner = {
-				create_character = {
-					template = grefm_wittelsbach_noble
-					heir = yes
-					age = 1
+				if = {
+					limit = {
+						ruler = {
+							has_template = grefm_wittelsbach_adalbert
+						}
+					}
+					if = {
+						limit = {
+							year >= 1860
+						}
+						create_character = {
+							template = grefm_wittelsbach_ludwig_ferdinand
+							birth_date = 1859.10.22
+						}
+					}
+					else = {
+						create_character = {
+							template = grefm_wittelsbach_ludwig_ferdinand
+							age = 1
+						}
+					}
+				}
+				else = {
+					create_character = {
+						template = grefm_wittelsbach_noble
+						heir = yes
+						age = 1
+					}
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
 		}
 		else_if = {
@@ -524,8 +560,8 @@ grefm_validate_heir_dynasty = {
 					age = 1
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
 		}
 		else_if = {
@@ -544,8 +580,8 @@ grefm_validate_heir_dynasty = {
 					age = 1
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
 		}
 		else_if = {
@@ -564,17 +600,21 @@ grefm_validate_heir_dynasty = {
 					age = 1
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
 		}
 		else_if = {
 			limit = {
 				owner.ruler ?= {
-					has_template = grefm_eynard_noble
+					OR = {
+						has_template = grefm_eynard_noble
+						has_template = grefm_eynard_jean_gabriel
+					}
 				}
-				NOT = {
+				NOR = {
 					has_template = grefm_eynard_noble
+					has_template = grefm_eynard_jean_gabriel
 				}
 			}
 			owner = {
@@ -584,8 +624,8 @@ grefm_validate_heir_dynasty = {
 					age = 1
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
 		}
 		else_if = {
@@ -604,8 +644,8 @@ grefm_validate_heir_dynasty = {
 					age = 1
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
 		}
 		else_if = {
@@ -624,8 +664,8 @@ grefm_validate_heir_dynasty = {
 					age = 1
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
 		}
 		else_if = {
@@ -644,8 +684,8 @@ grefm_validate_heir_dynasty = {
 					age = 1
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
 		}
 		else_if = {
@@ -664,8 +704,8 @@ grefm_validate_heir_dynasty = {
 					age = 1
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
 		}
 		else_if = {
@@ -684,8 +724,8 @@ grefm_validate_heir_dynasty = {
 					age = 1
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
 		}
 		else_if = {
@@ -704,8 +744,8 @@ grefm_validate_heir_dynasty = {
 					age = 1
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
 		}
 		else_if = {
@@ -724,8 +764,8 @@ grefm_validate_heir_dynasty = {
 					age = 1
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
 		}
 		else_if = {
@@ -744,8 +784,8 @@ grefm_validate_heir_dynasty = {
 					age = 1
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
 		}
 		else_if = {
@@ -764,8 +804,8 @@ grefm_validate_heir_dynasty = {
 					age = 1
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
 		}
 		else_if = {
@@ -784,8 +824,8 @@ grefm_validate_heir_dynasty = {
 					age = 1
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
 		}
 		else_if = {
@@ -804,8 +844,8 @@ grefm_validate_heir_dynasty = {
 					age = 1
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
 		}
 		else_if = {
@@ -824,8 +864,8 @@ grefm_validate_heir_dynasty = {
 					age = 1
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
 		}
 		else_if = {
@@ -844,9 +884,74 @@ grefm_validate_heir_dynasty = {
 					age = 1
 				}
 			}
-			hidden_effect = {
-				kill_character = yes
+			kill_character = {
+				hidden = yes
 			}
+		}
+	}
+}
+
+
+####---------- on_law_enactment_started ----------####
+on_law_enactment_started = {
+	on_actions = {
+		gbbf_on_law_enactment_started
+	}
+}
+
+gbbf_on_law_enactment_started = {
+	trigger = {
+		c:GRE ?= this
+	}
+	effect = {
+		if = {
+			limit = {
+				NOT = {
+					has_variable = grefm_mani_will_not_be_tamed
+				}
+				has_journal_entry = je_grefm_bavarocracy_main
+				OR = {
+					has_law_or_variant = law_type:law_consumption_based_taxation
+					has_law_or_variant = law_type:law_land_based_taxation
+				}
+				OR = {
+					is_enacting_law = law_type:law_per_capita_based_taxation
+					is_enacting_law = law_type:law_proportional_taxation
+					is_enacting_law = law_type:law_graduated_taxation
+				}
+			}
+			trigger_event = {
+				id = grefm_greece.015
+				days = 15 # It takes time to walk
+			}
+			set_variable = { # Yes, you can fire this multiple times
+				name = grefm_mani_will_not_be_tamed
+				years = 5
+			}
+		}
+	}
+}
+
+
+####---------- on_new_ruler ----------####
+on_new_ruler = {
+	on_actions = {
+		grefm_on_new_ruler
+	}
+}
+
+grefm_on_new_ruler = {
+	trigger = {
+		owner = {
+			c:GRE ?= this
+			has_law_or_variant = law_type:law_monarchy
+			has_variable = grefm_1862_election_held
+		}
+	}
+	effect = {
+		set_variable = {
+			name = grefm_1862_election_held
+			value = 0
 		}
 	}
 }
@@ -878,7 +983,25 @@ gbbf_law_enactment_pass = {
 			currently_enacting_law = {
 				add_amendment = {
 					type = amendment_gbbf_elifba
-					sponsor = prev.ig:ig_devout
+					sponsor = prev.ig:ig_landowners
+				}
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					root.currently_enacting_law.type ?= law_type:law_legacy_slavery
+					root.currently_enacting_law.type ?= law_type:law_colonial_slavery
+					root.currently_enacting_law.type ?= law_type:law_debt_slavery
+				}
+				active_law:lawgroup_slavery ?= {
+					has_amendment = amendment_type:amendment_gbbf_esir_pazari
+				}
+			}
+			currently_enacting_law = {
+				add_amendment = {
+					type = amendment_gbbf_elifba
+					sponsor = prev.ig:ig_landowners
 				}
 			}
 		}

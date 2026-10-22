@@ -1,6 +1,7 @@
 ﻿####---------- Yugoslav Nationalism Values ----------####
-balkfm_yugoslavism_integralist_progress_value = {
+balkfm_yugoslavism_progress_value = {
 	value = 0
+	## Integralist Progress Sources
 	add = {
 		desc = balkfm_value_from_yugoslav_loyalists
 		value = balkfm_yugoslav_loyalists_value
@@ -63,12 +64,44 @@ balkfm_yugoslavism_integralist_progress_value = {
 			every_scope_state = {
 				limit = {
 					is_in_geographic_region = geographic_region_yugoslavia
+					is_incorporated = yes
 					is_split_state = no
 				}
 				add = 0.1
 			}
 		}
 	}
+	if = {
+		limit = {
+			active_law:lawgroup_bureaucracy = {
+				has_amendment = amendment_type:amendment_gbbf_disbanded_assemblies
+			}
+		}
+		add = {
+			desc = balkfm_value_from_disbanded_assemblies
+			value = 0.25
+		}
+	}
+	
+	## Swing Sources
+	subtract = {
+		desc = balkfm_value_from_insurrectionary_yugoslav_movements
+		value = {
+			every_political_movement = {
+				limit = {
+					is_political_movement_type = movement_cultural_minority
+					culture ?= {
+						balkfm_is_yugoslav_culture_trigger = yes
+					}
+					is_insurrectionary = yes
+				}
+				add = political_movement_support
+			}
+			round_to = 0.01
+		}
+	}
+	
+	## Federalist Sources
 	subtract = {
 		desc = balkfm_value_from_yugoslav_cultures_beyond_first
 		value = {
@@ -77,111 +110,100 @@ balkfm_yugoslavism_integralist_progress_value = {
 			divide = 10
 		}
 	}
-}
-
-balkfm_yugoslavism_federalist_progress_value = {
-	value = 0
-	add = {
+	subtract = {
 		desc = balkfm_value_from_yugoslav_non_primary_radicals
 		value = balkfm_yugoslav_non_primary_radicals_value
 	}
-	add = {
-		desc = balkfm_value_from_montenegrin_movement
-		value = {
-			every_political_movement = {
-				limit = {
-					is_political_movement_type = movement_cultural_minority
-					culture ?= cu:montenegrin
-				}
-				add = political_movement_support
+	if = {
+		limit = {
+			has_global_variable = balkfm_montegrin_culture_var
+			NOT = {
+				country_has_primary_culture = cu:montenegrin
 			}
 		}
-	}
-	add = {
-		desc = balkfm_value_from_serb_movement
-		value = {
-			every_political_movement = {
-				limit = {
-					is_political_movement_type = movement_cultural_minority
-					culture ?= cu:serb
-				}
-				add = political_movement_support
-			}
+		subtract = {
+			desc = balkfm_value_from_montenegrin_fervor_impact
+			value = balkfm_montenegrin_fervor_impact_value
 		}
 	}
-	add = {
-		desc = balkfm_value_from_bulgarian_movement
-		value = {
-			every_political_movement = {
-				limit = {
-					is_political_movement_type = movement_cultural_minority
-					culture ?= cu:bulgarian
-				}
-				add = political_movement_support
+	if = {
+		limit = {
+			NOT = {
+				country_has_primary_culture = cu:serb
 			}
 		}
-	}
-	add = {
-		desc = balkfm_value_from_bosniak_movement
-		value = {
-			every_political_movement = {
-				limit = {
-					is_political_movement_type = movement_cultural_minority
-					culture ?= cu:bosniak
-				}
-				add = political_movement_support
-			}
+		subtract = {
+			desc = balkfm_value_from_serb_fervor_impact
+			value = balkfm_serb_fervor_impact_value
 		}
 	}
-	add = {
-		desc = balkfm_value_from_croat_movement
-		value = {
-			every_political_movement = {
-				limit = {
-					is_political_movement_type = movement_cultural_minority
-					culture ?= cu:croat
-				}
-				add = political_movement_support
+	if = {
+		limit = {
+			has_variable = bul_pursued_greater_yugoslavism # Inherited from IP3
+			NOT = {
+				country_has_primary_culture = cu:bulgarian
 			}
 		}
-	}
-	add = {
-		desc = balkfm_value_from_slovene_movement
-		value = {
-			every_political_movement = {
-				limit = {
-					is_political_movement_type = movement_cultural_minority
-					culture ?= cu:slovene
-				}
-				add = political_movement_support
-			}
+		subtract = {
+			desc = balkfm_value_from_bulgarian_fervor_impact
+			value = balkfm_bulgarian_fervor_impact_value
 		}
 	}
-}
-
-balkfm_yugoslavism_pluralist_progress_value = {
-	value = {
-		desc = balkfm_value_from_yugoslav_cultures
-		value = balkfm_yugoslav_primary_cultures_value
+	if = {
+		limit = {
+			NOT = {
+				country_has_primary_culture = cu:bosniak
+			}
+		}
+		subtract = {
+			desc = balkfm_value_from_bosniak_fervor_impact
+			value = balkfm_bosniak_fervor_impact_value
+		}
 	}
-}
-
-balkfm_yugoslavism_progress_value = {
-	value = 0
-	add = {
-		value = var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslavism_integralist_progress_var
-		desc = balkfm_value_from_integralist_progress
+	if = {
+		limit = {
+			NOT = {
+				country_has_primary_culture = cu:croat
+			}
+		}
+		subtract = {
+			desc = balkfm_value_from_croat_fervor_impact
+			value = balkfm_croat_fervor_impact_value
+		}
 	}
-	subtract = {
-		value = var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslavism_federalist_progress_var
-		desc = balkfm_value_from_federalist_progress
+	if = {
+		limit = {
+			NOT = {
+				country_has_primary_culture = cu:slovene
+			}
+		}
+		subtract = {
+			desc = balkfm_value_from_slovene_fervor_impact
+			value = balkfm_slovene_fervor_impact_value
+		}
 	}
-}
-
-balkfm_yugoslavism_tilt_value = {
-	value = 0
-	add = var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslavism_var
-	subtract = 100
+	if = {
+		limit = {
+			active_law:lawgroup_bureaucracy = {
+				has_amendment = amendment_type:amendment_gbbf_advisory_assemblies
+			}
+		}
+		subtract = {
+			desc = balkfm_value_from_advisory_assemblies
+			value = 0.10
+		}
+	}
+	if = {
+		limit = {
+			active_law:lawgroup_bureaucracy = {
+				has_amendment = amendment_type:amendment_gbbf_autonomous_assemblies
+			}
+		}
+		subtract = {
+			desc = balkfm_value_from_autonomous_assemblies
+			value = 0.50
+		}
+	}
 }
 
 balkfm_yugoslav_loyalists_value = {
@@ -455,7 +477,7 @@ balkfm_yugoslav_promotion_progress_value = {
 		every_political_movement = {
 			limit = {
 				is_political_movement_type = movement_cultural_minority
-				culture = var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var
+				culture = global_var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var
 			}
 			add = political_movement_support
 		}
@@ -476,37 +498,37 @@ balkfm_yugoslav_promotion_progress_value = {
 		value = {
 			if = {
 				limit = {
-					var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:montenegrin
+					global_var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:montenegrin
 				}
 				add = balkfm_montenegrin_radicals_value
 			}
 			if = {
 				limit = {
-					var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:serb
+					global_var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:serb
 				}
 				add = balkfm_serb_radicals_value
 			}
 			if = {
 				limit = {
-					var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:bulgarian
+					global_var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:bulgarian
 				}
 				add = balkfm_bulgarian_radicals_value
 			}
 			if = {
 				limit = {
-					var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:bosniak
+					global_var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:bosniak
 				}
 				add = balkfm_bosniak_radicals_value
 			}
 			if = {
 				limit = {
-					var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:croat
+					global_var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:croat
 				}
 				add = balkfm_croat_radicals_value
 			}
 			if = {
 				limit = {
-					var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:slovene
+					global_var:je_balkfm_yugoslav_nationalism.var:balkfm_yugoslav_promotion_target_var ?= cu:slovene
 				}
 				add = balkfm_slovene_radicals_value
 			}
@@ -976,5 +998,176 @@ balkfm_slovene_radicals_value = {
 		}
 		min = 1
 	}
+	round_to = 0.01
+}
+
+####---------- Yugoslav Population Fraction Values ----------####
+balkfm_montenegrin_pop_fraction_value = {
+	value = 0
+	every_scope_pop = { 
+		limit = {
+			has_pop_culture = montenegrin
+		}
+		add = total_size
+	}
+	divide = {
+		every_scope_pop = { 
+			limit = { 
+				has_pop_culture = montenegrin
+			}
+			add = 1
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+balkfm_serb_pop_fraction_value = {
+	value = 0
+	every_scope_pop = {
+		limit = {
+			has_pop_culture = serb
+		}
+		add = total_size
+	}
+	divide = {
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = serb
+			}
+			add = 1
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+balkfm_bulgarian_pop_fraction_value = {
+	value = 0
+	every_scope_pop = {
+		limit = {
+			has_pop_culture = bulgarian
+		}
+		add = total_size
+	}
+	divide = {
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = bulgarian
+			}
+			add = 1
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+balkfm_bosniak_pop_fraction_value = {
+	value = 0
+	every_scope_pop = {
+		limit = {
+			has_pop_culture = bosniak
+		}
+		add = total_size
+	}
+	divide = {
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = bosniak
+			}
+			add = 1
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+balkfm_croat_pop_fraction_value = {
+	value = 0
+	every_scope_pop = {
+		limit = {
+			has_pop_culture = croat
+		}
+		add = total_size
+	}
+	divide = {
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = croat
+			}
+			add = 1
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+balkfm_slovene_pop_fraction_value = {
+	value = 0
+	every_scope_pop = {
+		limit = {
+			has_pop_culture = slovene
+		}
+		add = total_size
+	}
+	divide = {
+		every_scope_pop = {
+			limit = {
+				has_pop_culture = slovene
+			}
+			add = 1
+		}
+		min = 1
+	}
+	round_to = 0.01
+}
+
+####---------- Yugoslav Fervor Values ----------####
+# These values multiply by 0.01 to reduce the fervor to a decimal value
+balkfm_montenegrin_fervor_impact_value = {
+	value = 0
+	add = cu:montenegrin.culture_current_fervor
+	multiply = 0.01
+	multiply = balkfm_montenegrin_pop_fraction_value
+	round_to = 0.01
+}
+
+balkfm_serb_fervor_impact_value = {
+	value = 0
+	add = cu:serb.culture_current_fervor
+	multiply = 0.01
+	multiply = balkfm_serb_pop_fraction_value
+	round_to = 0.01
+}
+
+balkfm_bulgarian_fervor_impact_value = {
+	value = 0
+	add = cu:bulgarian.culture_current_fervor
+	multiply = 0.01
+	multiply = balkfm_bulgarian_pop_fraction_value
+	round_to = 0.01
+}
+
+balkfm_bosniak_fervor_impact_value = {
+	value = 0
+	add = cu:bosniak.culture_current_fervor
+	multiply = 0.01
+	multiply = balkfm_bosniak_pop_fraction_value
+	round_to = 0.01
+}
+
+balkfm_croat_fervor_impact_value = {
+	value = 0
+	add = cu:croat.culture_current_fervor
+	multiply = 0.01
+	multiply = balkfm_croat_pop_fraction_value
+	round_to = 0.01
+}
+
+balkfm_slovene_fervor_impact_value = {
+	value = 0
+	add = cu:slovene.culture_current_fervor
+	multiply = 0.01
+	multiply = balkfm_slovene_pop_fraction_value
 	round_to = 0.01
 }

@@ -1,7 +1,12 @@
 ﻿je_balkfm_ser_monarchism = {
 	icon = "gfx/interface/icons/event_icons/event_disputed_crown.dds"
 	group = je_group_historical_content
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = no
@@ -33,59 +38,74 @@
 	modifiers_while_active = {
 		modifier_balkfm_dynastic_feud
 	}
-
-	complete = {
-		has_law_or_variant = law_type:law_monarchy
-		custom_tooltip = {
-			text = je_balkfm_ser_monarchism_complete
-			OR = {
-				has_modifier = modifier_balkfm_obrenovic_succession
-				has_modifier = modifier_balkfm_karadordevic_succession
-			}
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			has_law_or_variant = law_type:law_monarchy
+			has_modifier = modifier_balkfm_obrenovic_succession
 		}
-	}
-
-	on_complete = {
-		if = {
-			limit = {
-				has_dlc_feature = ip3_content # National Awakening
-			}
-			custom_tooltip = {
-				text = je_balkfm_ser_monarchism_obrenovic_outcome
-				if = {
-					limit = {
-						balkfm_has_obrenovic_ruler_trigger = yes
-					}
+		effect = {
+			if = {
+				limit = {
+					has_dlc_feature = ip3_content # National Awakening
 				}
 				trigger_event = balkfm_serbia.029
 			}
-			custom_tooltip = {
-				text = je_balkfm_ser_monarchism_karadordevic_outcome
-				if = {
-					limit = {
-						balkfm_has_karadordevic_ruler_trigger = yes
-					}
+			else = {
+				trigger_event = balkfm_serbia.019
+			}
+			hidden_effect = {
+				balkfm_cleanup_dynastic_rivalry_effect = yes
+			}
+		}
+	}
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			has_law_or_variant = law_type:law_monarchy
+			has_modifier = modifier_balkfm_karadordevic_succession
+		}
+		effect = {
+			if = {
+				limit = {
+					has_dlc_feature = ip3_content # National Awakening
 				}
 				trigger_event = balkfm_serbia.028
 			}
-		}
-		else = {
-			trigger_event = balkfm_serbia.019
-		}
-		hidden_effect = {
-			balkfm_cleanup_dynastic_rivalry_effect = yes
-		}
-	}
-
-	fail = {
-		NOT = {
-			has_law_or_variant = law_type:law_monarchy
+			else = {
+				trigger_event = balkfm_serbia.019
+			}
+			hidden_effect = {
+				balkfm_cleanup_dynastic_rivalry_effect = yes
+			}
 		}
 	}
-
-	on_fail = {
-		hidden_effect = {
-			balkfm_cleanup_dynastic_rivalry_effect = yes
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			NOT = {
+				has_law_or_variant = law_type:law_monarchy
+			}
+		}
+		effect = {
+			hidden_effect = {
+				balkfm_cleanup_dynastic_rivalry_effect = yes
+			}
 		}
 	}
 
@@ -128,93 +148,112 @@
 je_balkfm_ser_defenders = {
 	group = je_group_internal_affairs
 	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
+	dlc = dlc_grefm
 	weight = 500
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = no
 	transferable = no
 
-	immediate = {
-	}
-
 	modifiers_while_active = {
 		modifier_balkfm_defenders
 	}
-
-	complete = {
-		NOT = { has_modifier = modifier_balkfm_royal_turmoil }
-		custom_tooltip = {
-			text = je_balkfm_ser_defenders_tt1
-			hidden_trigger = {
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			NOT = { has_modifier = modifier_balkfm_royal_turmoil }
+			custom_tooltip = {
+				text = je_balkfm_ser_defenders_tt1
 				has_variable = balkfm_state_reform_complete
 			}
-		}
-		custom_tooltip = {
-			text = je_balkfm_ser_defenders_tt2
-			hidden_trigger = {
+			custom_tooltip = {
+				text = je_balkfm_ser_defenders_tt2
 				has_variable = balkfm_civic_reform_complete
 			}
-		}
-		custom_tooltip = {
-			text = je_balkfm_ser_defenders_tt3
-			hidden_trigger = {
+			custom_tooltip = {
+				text = je_balkfm_ser_defenders_tt3
 				has_variable = balkfm_land_reform_complete
 			}
 		}
+		effect = {
+			trigger_event = balkfm_serbia.009
+			set_variable = balkfm_defenders_completed
+		}
 	}
-
-	on_complete = {
-		trigger_event = balkfm_serbia.009
-		set_variable = balkfm_defenders_completed
-	}
-
-	fail = {
-		OR = {
-			balkfm_has_obrenovic_ruler_trigger = yes
-			NOT = {
-				any_scope_character = {
-					has_role_of_type = agitator
-					law_stance = {
-						law = law_type:law_autocracy
-						value < neutral
-					}
-					law_stance = {
-						law = law_type:law_oligarchy
-						value < neutral
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		flags = { historical }
+		
+		trigger = {
+			OR = {
+				balkfm_has_obrenovic_ruler_trigger = yes
+				NOT = {
+					any_scope_character = {
+						has_role_of_type = agitator
+						law_stance = {
+							law = law_type:law_autocracy
+							value < neutral
+						}
+						law_stance = {
+							law = law_type:law_oligarchy
+							value < neutral
+						}
 					}
 				}
 			}
 		}
-	}
-
-	on_fail = {
-		trigger_event = balkfm_serbia.008
-		set_variable = balkfm_defenders_completed
-	}
-
-	invalid = {
-		OR = {
-			NOT = {
-				has_journal_entry = je_balkfm_ser_monarchism
-			}
-			NOT = {
-				has_law_or_variant = law_type:law_monarchy
-			}
-			hidden_trigger = {
-				has_variable = balkfm_defenders_completed
-			}
+		effect = {
+			trigger_event = balkfm_serbia.008
+			set_variable = balkfm_defenders_completed
 		}
 	}
-
-	on_invalid = {
-		set_variable = balkfm_defenders_completed
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			OR = {
+				NOT = {
+					has_journal_entry = je_balkfm_ser_monarchism
+				}
+				NOT = {
+					has_law_or_variant = law_type:law_monarchy
+				}
+				hidden_trigger = {
+					has_variable = balkfm_defenders_completed
+				}
+			}
+		}
+		effect = {
+			set_variable = balkfm_defenders_completed
+		}
 	}
 }
 
 je_balkfm_ser_serbian_heartlands = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -237,70 +276,102 @@ je_balkfm_ser_serbian_heartlands = {
 	immediate = {
 		trigger_event = balkfm_serbia.200
 	}
-
-	complete = {
-		owns_entire_state_region = STATE_WESTERN_SERBIA
-		owns_entire_state_region = STATE_EASTERN_SERBIA
-		owns_entire_state_region = STATE_SKOPIA
-		owns_entire_state_region = STATE_KOSOVO
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			owns_entire_state_region = STATE_WESTERN_SERBIA
+			owns_entire_state_region = STATE_EASTERN_SERBIA
+			owns_entire_state_region = STATE_SKOPIA
+			owns_entire_state_region = STATE_KOSOVO
+		}
+		effect = {
+			trigger_event = balkfm_serbia.201
+		}
 	}
-
-	on_complete = {
-		trigger_event = balkfm_serbia.201
-	}
-
-	fail = {
-		OR = {
-			custom_tooltip = {
-				text = je_balkfm_unification_of_yugoslavia_complete
-				hidden_trigger = {
-					c:YUG ?= this
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			OR = {
+				custom_tooltip = {
+					text = je_balkfm_yugoslav_project_complete
+					hidden_trigger = {
+						c:YUG ?= this
+					}
 				}
-			}
-			custom_tooltip = {
-				text = balkfm_weaksauce_trigger
-				hidden_trigger = {
-					has_variable = balkfm_weaksauce
+				custom_tooltip = {
+					text = balkfm_weaksauce_trigger
+					hidden_trigger = {
+						has_variable = balkfm_weaksauce
+					}
 				}
 			}
 		}
+		effect = { }
 	}
 }
 
 je_balkfm_ser_greater_serbia = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
-
-	immediate = {
-	}
-
-	complete = {
-		custom_tooltip = {
-			text = je_balkfm_ser_greater_serbia_complete
-			c:SER_SRP ?= this
-		}
-	}
-
-	on_complete = {
-		trigger_event = balkfm_serbia.202
-	}
-
-	fail = {
-		OR = {
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
 			custom_tooltip = {
-				text = je_balkfm_unification_of_yugoslavia_complete
-				c:YUG ?= this
-			}
-			custom_tooltip = {
-				text = balkfm_weaksauce_trigger
-				has_variable = balkfm_weaksauce
+				text = je_balkfm_ser_greater_serbia_complete
+				c:SER_SRP ?= this
 			}
 		}
+		effect = {
+			trigger_event = balkfm_serbia.202
+		}
+	}
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			OR = {
+				custom_tooltip = {
+					text = je_balkfm_yugoslav_project_complete
+					c:YUG ?= this
+				}
+				custom_tooltip = {
+					text = balkfm_weaksauce_trigger
+					has_variable = balkfm_weaksauce
+				}
+			}
+		}
+		effect = { }
 	}
 }
 
@@ -309,20 +380,26 @@ je_balkfm_ser_greater_serbia = {
 je_balkfm_ser_monarchism_dummy_1 = {
 	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
 	group = je_group_com_hidden
+	weight = 0
+	activation_description = {
+		always = yes
+	}
 	is_shown_in_lobby = {
 		c:SER ?= this
 		NOT = {
 			has_dlc_feature = ip3_content # National Awakening
 		}
 	}
-	weight = 0
 }
 je_balkfm_ser_monarchism_dummy_2 = {
 	icon = "gfx/interface/icons/event_icons/event_serbia.dds"
 	group = je_group_com_hidden
+	weight = 0
+	activation_description = {
+		always = yes
+	}
 	is_shown_in_lobby = {
 		c:SER ?= this
 		has_dlc_feature = ip3_content # National Awakening
 	}
-	weight = 0
 }

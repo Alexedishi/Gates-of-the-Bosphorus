@@ -1,7 +1,17 @@
 ﻿je_eqfm_senusiyya = {
+	# Hi everyone, Dum-dum McGee here with some documentation:
+	# There are three distinct values to keep track of:
+	# Pressure which is the global strength of the Senusiyya movement
+	# Entrenchment which is the strength of the Senusiyya movement in a specific state_region
+	# Influence which is the strength of the Senusiyya movement in a specific country
 	group = je_group_global_international_situations
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	dlc = dlc_grefm
 	weight = 100
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_involved = yes
 	
@@ -11,7 +21,8 @@
 		}
 	}
 	
-	scripted_progress_bar = eqfm_senusiyya_pressure_progressbar
+	scripted_progress_bar = eqfm_senusiyya_pressure_progress_bar
+	scripted_progress_bar = eqfm_senusiyya_phase_progress_bar
 
 	scripted_button = eqfm_broker_power_deal_button
 	scripted_button = eqfm_embrace_senusiyya_button
@@ -28,21 +39,20 @@
 	scripted_button = eqfm_expel_senusiyya_chad_button
 	
 	widget = {
-		gui = "gui/com_journal_injects/injects.gui"
-		name = "com_journal_entry_characters"
+		gui = "gui/com_journal_injects/situation_widgets.gui"
+		name = "widget_com_international_situation_illustration"
 		container = "custom_widget_container_1"
+	}
+
+	widget = {
+		gui = "gui/com_journal_injects/situation_widgets.gui"
+		name = "widget_com_international_situation_phase_information"
+		container = "custom_widget_container_2"
 	}
 	
 	is_shown_when_inactive = {
-		always = no # TODO enable when ready
-		OR = {
-			exists = c:TRI
-			exists = c:FZN
-		}
-		any_country_in_senusiyya = {
-			NOT = {
-				country_has_primary_culture = cu:bedouin
-			}
+		NOT = {
+			has_global_variable = eqfm_senusiyya_completed
 		}
 	}
 	
@@ -60,35 +70,61 @@
 		}
 	}
 	
-	possible = {
-		any_country_in_senusiyya = {
-			capital = {
+	should_show_when_not_involved = {
+		OR = {
+			any_scope_state = {
 				is_in_geographic_region = geographic_region_senusiyya
 			}
-			gbbf_is_muslim_trigger = yes
-			has_technology_researched = mass_communication
+			any_subject_or_below = {
+				any_scope_state = {
+					is_in_geographic_region = geographic_region_senusiyya
+				}
+				gbbf_is_muslim_trigger = yes
+			}
+			has_strategic_region_interest_tier = {
+				strategic_region = sr:region_north_africa
+				value >= 2
+			}
+			has_strategic_region_interest_tier = {
+				strategic_region = sr:region_nile_basin
+				value >= 2
+			}
+		}
+	}
+
+	possible = {
+		any_state_in_senusiyya = {
+			owner = {
+				gbbf_is_muslim_trigger = yes
+				has_technology_researched = mass_communication
+			}
 		}
 	}
 	
 	immediate = {
 		eqfm_initialize_global_senusiyya_variables = yes
+		com_save_journal_to_global_variable = {
+			name = je_eqfm_senusiyya
+		}
+		scope:journal_entry = {
+			com_situation_start_date_today_effect = yes
+			com_set_situation_phase_effect = {
+				phase_icon = eqfm_senusiyya_tranquility_icon_only
+				phase_name = eqfm_senusiyya_tranquility_no_icon
+			}
+		}
+		hidden_effect = {
+			every_state_region_in_senusiyya = {
+				add_state_trait = gbbf_state_trait_tranquility_phase
+			}
+			scope:journal_entry = {
+				add_modifier = modifier_eqfm_senusiyya_tranquility_phase
+			}
+		}
 	}
 	
 	immediate_all_involved = {
 		eqfm_initialize_local_senusiyya_variables_effect = yes
-	}
-	
-	should_show_when_not_involved = {
-		OR = {
-			has_strategic_region_interest_tier = {
-				strategic_region = sr:region_north_africa
-				value >= 1
-			}
-			has_strategic_region_interest_tier = {
-				strategic_region = sr:region_nile_basin
-				value >= 1
-			}
-		}
 	}
 	
 	on_become_involved_after_activation = {
@@ -99,14 +135,58 @@
 		eqfm_cleanup_senusiyya_effect = yes
 	}
 	
-	complete = {
-		any_country_in_senusiyya = {
-			count = all
-			OR = {
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			any_country_in_senusiyya = {
+				count = all
 				custom_tooltip = {
 					text = eqfm_embraced_senusiyya_situation
 					has_variable = eqfm_embraced_senusiyya
 				}
+			}
+		}
+		effect = {
+			custom_tooltip = {
+				text = je_eqfm_senusiyya_on_complete_senusiyya_survives
+				if = {
+					limit = {
+						any_country_in_senusiyya = {
+							has_variable = eqfm_embraced_senusiyya
+						}
+					}
+					every_country = {
+						limit = {
+							is_involved_in_journal_entry = je_eqfm_senusiyya
+						}
+						trigger_event = eqfm_senusiyya.008
+					}
+				}
+			}
+			eqfm_cleanup_global_senusiyya_variables_effect = yes
+		}
+		effect_all_involved = {
+			hidden_effect = {
+				eqfm_cleanup_senusiyya_effect = yes
+			}
+		}
+	}
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			any_country_in_senusiyya = {
+				count = all
 				custom_tooltip = {
 					text = eqfm_expelled_senusiyya_situation
 					any_state_in_senusiyya = {
@@ -115,55 +195,36 @@
 							has_variable = eqfm_expelled_senusiyya
 						}
 					}
-
+					
 				}
 			}
 		}
-	}
-	
-	on_complete = {
-		eqfm_cleanup_global_senusiyya_variables_effect = yes
-		custom_tooltip = {
-			text = je_eqfm_senusiyya_on_complete_senusiyya_survives
-			if = {
-				limit = {
-					any_country_in_senusiyya = {
-						has_variable = eqfm_embraced_senusiyya
-					}
-				}
-				every_country = {
+		effect = {
+			custom_tooltip = {
+				text = je_eqfm_senusiyya_on_complete_senusiyya_extinguished
+				if = {
 					limit = {
-						is_involved_in_journal_entry = je_eqfm_senusiyya
-					}
-					trigger_event = eqfm_senusiyya.008
-				}
-			}
-		}
-		custom_tooltip = {
-			text = je_eqfm_senusiyya_on_complete_senusiyya_extinguished
-			if = {
-				limit = {
-					NOT = {
-						any_country_in_senusiyya = {
-							has_variable = eqfm_embraced_senusiyya
+						NOT = {
+							any_country_in_senusiyya = {
+								has_variable = eqfm_embraced_senusiyya
+							}
 						}
 					}
-				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_senusiyya
+					every_country = {
+						limit = {
+							is_involved_in_journal_entry = je_eqfm_senusiyya
+						}
+						trigger_event = eqfm_senusiyya.009
 					}
-					trigger_event = eqfm_senusiyya.009
 				}
 			}
+			eqfm_cleanup_global_senusiyya_variables_effect = yes
 		}
-	}
-	
-	on_complete_all_involved = {
-		hidden_effect = {
-			eqfm_cleanup_senusiyya_effect = yes
+		effect_all_involved = {
+			hidden_effect = {
+				eqfm_cleanup_senusiyya_effect = yes
+			}
 		}
-
 	}
 	
 	on_weekly_pulse = {
@@ -194,7 +255,7 @@
 					min = 0
 				}
 				set_bar_progress = {
-					name = eqfm_senusiyya_pressure_progressbar
+					name = eqfm_senusiyya_pressure_progress_bar
 					value = var:eqfm_senusiyya_pressure_var
 				}
 			}
@@ -271,7 +332,12 @@
 je_eqfm_senusiyya_expedition = {
 	group = je_group_expeditions
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	dlc = dlc_grefm
 	weight = 100
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -286,89 +352,100 @@ je_eqfm_senusiyya_expedition = {
 	
 	immediate = {
 		trigger_event = {
-			id = eqfm_senusiyya.301
+			id = eqfm_senusiyya.401
 			days = { 20 30 }
 		}
 	}
 	
-	modifiers_while_active = {
-	}
-	
-	complete = {
-		custom_tooltip = {
-			text = je_eqfm_senusiyya_expedition_complete
-			has_variable = eqfm_senusiyya_expedition_progress_var
-			var:eqfm_senusiyya_expedition_progress_var >= 8
-		}
-	}
-	
-	on_complete = {
-		trigger_event = eqfm_senusiyya.304
-		set_variable = {
-			name = eqfm_senusiyya_expedition_transit_var
-			months = 3
-		}
-	}
-	
-	fail = {
-		OR = {
-			eqfm_expedition_peril_greater_than_or_equals_trigger = {
-				type = senusiyya
-				value = 5
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			custom_tooltip = {
+				text = je_eqfm_senusiyya_expedition_complete
+				has_variable = eqfm_senusiyya_expedition_progress_var
+				var:eqfm_senusiyya_expedition_progress_var >= 8
 			}
-			NOT = {
-				eqfm_expedition_has_leader_trigger = {
+		}
+		effect = {
+			trigger_event = eqfm_senusiyya.404
+			set_variable = {
+				name = eqfm_senusiyya_expedition_transit_var
+				months = 3
+			}
+		}
+	}
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			OR = {
+				eqfm_expedition_peril_greater_than_or_equals_trigger = {
 					type = senusiyya
+					value = 5
+				}
+				NOT = {
+					eqfm_expedition_has_leader_trigger = {
+						type = senusiyya
+					}
+				}
+			}
+		}
+		effect = {
+			hidden_effect = {
+				if = {
+					limit = {
+						has_variable = eqfm_senusiyya_expedition_peril_var
+						var:eqfm_senusiyya_expedition_peril_var >= 5
+					}
+					trigger_event = eqfm_senusiyya.403
+				}
+				else = {
+					trigger_event = eqfm_senusiyya.402
 				}
 			}
 		}
 	}
 	
-	on_fail = {
-		hidden_effect = {
-			if = {
-				limit = {
-					has_variable = eqfm_senusiyya_expedition_peril_var
-					var:eqfm_senusiyya_expedition_peril_var >= 5
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			OR = {
+				eqfm_has_senusiyya_expedition_trigger = no
+				NOT = {
+					is_involved_in_journal_entry = je_eqfm_senusiyya
 				}
-				trigger_event = eqfm_senusiyya.303
-			}
-			else = {
-				trigger_event = eqfm_senusiyya.302
 			}
 		}
-	}
-	
-	invalid = {
-		OR = {
-			eqfm_has_senusiyya_expedition_trigger = no
-			NOT = {
-				is_involved_in_journal_entry = je_eqfm_senusiyya
-			}
+		effect = {
+			eqfm_clear_senusiyya_expedition_effect = yes
 		}
-	}
-	
-	on_invalid = {
-		eqfm_clear_senusiyya_expedition_effect = yes
 	}
 	
 	on_weekly_pulse = {
-		events = {
-		}
 		random_events = {
 			chance_of_no_event = 50
-			5 = eqfm_senusiyya.310
-			5 = eqfm_senusiyya.311
-			5 = eqfm_senusiyya.312
-			5 = eqfm_senusiyya.313
-			5 = eqfm_senusiyya.314
-			5 = eqfm_senusiyya.315
-			5 = eqfm_senusiyya.316
-			5 = eqfm_senusiyya.317
-			5 = eqfm_senusiyya.318
-			5 = eqfm_senusiyya.319
-			5 = eqfm_senusiyya.320
-			5 = eqfm_senusiyya.321
+			5 = eqfm_senusiyya.405
+			5 = eqfm_senusiyya.406
+			5 = eqfm_senusiyya.407
+			5 = eqfm_senusiyya.408
+			5 = eqfm_senusiyya.409
+			5 = eqfm_senusiyya.410
+			5 = eqfm_senusiyya.411
+			5 = eqfm_senusiyya.412
+			5 = eqfm_senusiyya.413
+			5 = eqfm_senusiyya.414
+			5 = eqfm_senusiyya.415
+			5 = eqfm_senusiyya.416
 		}
 		effect = {
 			eqfm_update_senusiyya_expedition_variables_effect = yes
@@ -376,10 +453,6 @@ je_eqfm_senusiyya_expedition = {
 	}
 	
 	on_monthly_pulse = {
-		events = {
-		}
-		random_events = {
-		}
 		effect = {
 			eqfm_annual_senusiyya_expedition_progress_effect = yes
 		}

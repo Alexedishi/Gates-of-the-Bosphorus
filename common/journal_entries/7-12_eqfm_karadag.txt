@@ -4,6 +4,10 @@
 	icon = "gfx/interface/icons/alert_icons/secession.dds"
 	weight = 10000
 	
+	activation_description = {
+		always = yes
+	}
+	
 	should_be_pinned_by_default_involved = yes
 
 	is_shown_in_lobby = {
@@ -87,10 +91,17 @@
 	on_no_longer_involved = {
 		eqfm_cleanup_karadag_effect = yes
 	}
-
-	complete = {
-		OR = {
-			# Montenegrin Objectives
+	
+	# Montenegrin Victory
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = white_outcome
+		
+		flags = { historical }
+		
+		trigger = {
 			trigger_if = {
 				limit = {
 					c:MON ?= {
@@ -126,8 +137,24 @@
 					}
 				}
 			}
-			
-			# Bosnian Objectives
+			trigger_else = {
+				always = no
+			}
+		}
+		effect_all_involved = {
+			trigger_event = eqfm_karadag.001
+			eqfm_cleanup_karadag_effect = yes
+		}
+	}
+	
+	# Bosnian Objectives
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = green_outcome
+		
+		trigger = {
 			trigger_if = {
 				limit = {
 					c:BOS ?= {
@@ -150,8 +177,24 @@
 					}
 				}
 			}
-			
-			# Turkish Objectives
+			trigger_else = {
+				always = no
+			}
+		}
+		effect_all_involved = {
+			trigger_event = eqfm_karadag.003
+			eqfm_cleanup_karadag_effect = yes
+		}
+	}
+	
+	# Turkish Objectives
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
 			trigger_if = {
 				limit = {
 					c:TUR ?= {
@@ -190,169 +233,75 @@
 					}
 				}
 			}
+			trigger_else = {
+				always = no
+			}
+		}
+		effect_all_involved = {
+			trigger_event = eqfm_karadag.002
+			eqfm_cleanup_karadag_effect = yes
 		}
 	}
 	
-	on_complete = {
-		if = {
-			limit = {
-				c:MON ?= {
-					is_involved_in_journal_entry = je_eqfm_karadag
-				}
-				custom_tooltip = je_eqfm_karadag_on_complete_montenegro
-			}
-		}
-		if = {
-			limit = {
-				c:BOS ?= {
-					is_involved_in_journal_entry = je_eqfm_karadag
-				}
-				custom_tooltip = je_eqfm_karadag_on_complete_bosnia
-			}
-		}
-		if = {
-			limit = {
-				c:TUR ?= {
-					is_involved_in_journal_entry = je_eqfm_karadag
-				}
-				custom_tooltip = je_eqfm_karadag_on_complete_ottomans
-			}
-		}
-	}
-	
-	on_complete_all_involved = {
-		hidden_effect = {
-			# Montenegrin Objectives
-			if = {
-				limit = {
-					c:MON ?= {
-						is_involved_in_journal_entry = je_eqfm_karadag
-						owns_entire_state_region = STATE_MONTENEGRO
-					}
-					trigger_if = {
-						limit = {
-							exists = c:BOS
-						}
-						c:BOS = {
-							OR = {
-								NOT = {
-									has_claim = s:STATE_MONTENEGRO
-								}
-								is_subject_of = c:MON
-							}
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		flags = { historical }
+		
+		trigger = {
+			NOR = {
+				trigger_if = {
+					limit = {
+						c:MON ?= {
+							is_involved_in_journal_entry = je_eqfm_karadag
 						}
 					}
-					trigger_if = {
-						limit = {
-							exists = c:TUR
-						}
-						c:MON = {
-							NOT = {
-								is_subject_of = c:TUR
-							}
-						}
+					c:MON = {
+						has_state_in_state_region = STATE_MONTENEGRO
 					}
 				}
-				trigger_event = eqfm_karadag.001
-			}
-			
-			# Bosnian Objectives
-			if = {
-				limit = {
-					c:BOS ?= {
-						is_involved_in_journal_entry = je_eqfm_karadag
-						owns_entire_state_region = STATE_MONTENEGRO
-					}
-					trigger_if = {
-						limit = {
-							exists = c:TUR
-						}
-						c:BOS = {
-							NOT = {
-								is_subject_of = c:TUR
-							}
+				trigger_if = {
+					limit = {
+						c:BOS ?= {
+							is_involved_in_journal_entry = je_eqfm_karadag
 						}
 					}
+					c:BOS = {
+						has_claim = s:STATE_MONTENEGRO
+					}
 				}
-				trigger_event = eqfm_karadag.003
-			}
-			
-			# Turkish Objectives
-			if = {
-				limit = {
-					c:TUR ?= {
-						is_involved_in_journal_entry = je_eqfm_karadag
-						s:STATE_MONTENEGRO = {
-							any_scope_state = {
-								count = all
-								owner = {
-									top_overlord = c:TUR
-								}
-							}
-						}
-						trigger_if = {
-							limit = {
-								exists = c:BOS
-							}
-							c:BOS = {
-								NOT = {
-									has_claim = s:STATE_MONTENEGRO
-								}
-							}
+				trigger_if = {
+					limit = {
+						c:TUR ?= {
+							is_involved_in_journal_entry = je_eqfm_karadag
 						}
 					}
-				}
-				trigger_event = eqfm_karadag.002
-			}
-		}
-		eqfm_cleanup_karadag_effect = yes
-	}
-	
-	fail = {
-		NOR = {
-			trigger_if = {
-				limit = {
-					c:MON ?= {
-						is_involved_in_journal_entry = je_eqfm_karadag
+					c:TUR = {
+						has_state_in_state_region = STATE_MONTENEGRO
 					}
-				}
-				c:MON = {
-					has_state_in_state_region = STATE_MONTENEGRO
-				}
-			}
-			trigger_if = {
-				limit = {
-					c:BOS ?= {
-						is_involved_in_journal_entry = je_eqfm_karadag
-					}
-				}
-				c:BOS = {
-					has_claim = s:STATE_MONTENEGRO
-				}
-			}
-			trigger_if = {
-				limit = {
-					c:TUR ?= {
-						is_involved_in_journal_entry = je_eqfm_karadag
-					}
-				}
-				c:TUR = {
-					has_state_in_state_region = STATE_MONTENEGRO
 				}
 			}
 		}
-	}
-	
-	on_fail_all_involved = {
-		eqfm_cleanup_karadag_effect = yes
-		hidden_effect = {
+		effect_all_involved = {
 			trigger_event = eqfm_karadag.004
+			eqfm_cleanup_karadag_effect = yes
 		}
 	}
 	
-	invalid = {
-		NOT = {
-			has_dlc_feature = ip3_content
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = { # Please don't be the guy that trips this
+			NOT = {
+				has_dlc_feature = ip3_content
+			}
+		}
+		effect_all_involved = {
+			eqfm_cleanup_karadag_effect = yes
 		}
 	}
 	

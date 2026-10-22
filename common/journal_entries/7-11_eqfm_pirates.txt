@@ -1,7 +1,12 @@
 ﻿je_eqfm_pirates_of_the_adriatic = {
 	group = je_group_global_international_situations
 	icon = "gfx/interface/icons/commander_order_icons/piracy_privateering.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_involved = yes
 	can_revolution_inherit = yes
@@ -61,20 +66,27 @@
 			trigger_event = eqfm_pirates.001
 		}
 	}
-
-	complete = {
-		custom_tooltip = {
-			text = je_eqfm_pirates_of_the_adriatic_complete
-			has_global_variable = eqfm_jack_sparrow_whacked
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			custom_tooltip = {
+				text = je_eqfm_pirates_of_the_adriatic_complete
+				has_global_variable = eqfm_jack_sparrow_whacked
+			}
 		}
-	}
-	
-	on_complete = {
-		remove_global_variable = je_eqfm_pirates_of_the_adriatic
-	}
-	
-	on_complete_all_involved = {
-		eqfm_clear_adriatic_expedition_effect = yes
+		effect = {
+			remove_global_variable = je_eqfm_pirates_of_the_adriatic
+		}
+		effect_all_involved = {
+			eqfm_clear_adriatic_expedition_effect = yes
+		}
 	}
 	
 	on_no_longer_involved = {
@@ -126,7 +138,12 @@
 je_eqfm_expedition_to_the_adriatic = {
 	group = je_group_expeditions
 	icon = "gfx/interface/icons/commander_order_icons/piracy_privateering.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -139,75 +156,88 @@ je_eqfm_expedition_to_the_adriatic = {
 	scripted_button = eqfm_recall_adriatic_expedition_button
 	scripted_button = eqfm_resupply_adriatic_expedition_button
 	
-	immediate = {
-	}
-	
-	complete = {
-		eqfm_expedition_progress_greater_than_or_equals_trigger = {
-			type = adriatic
-			value = 8
-		}
-	}
-	
-	on_complete = {
-		if = {
-			limit = {
-				has_variable = eqfm_piracy_chase_var
-			}
-			trigger_event = eqfm_pirates.007
-		}
-		else = {
-			trigger_event = eqfm_pirates.006
-		}
-	}
-	
-	fail = {
-		OR = {
-			NOT = {
-				eqfm_has_expedition_trigger = {
-					type = adriatic
-				}
-			}
-			eqfm_expedition_peril_greater_than_or_equals_trigger = {
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			eqfm_expedition_progress_greater_than_or_equals_trigger = {
 				type = adriatic
-				value = 5
+				value = 8
 			}
-			NOT = {
-				eqfm_expedition_has_leader_trigger = {
+		}
+		effect = {
+			if = {
+				limit = {
+					has_variable = eqfm_piracy_chase_var
+				}
+				trigger_event = eqfm_pirates.007
+			}
+			else = {
+				trigger_event = eqfm_pirates.006
+			}
+		}
+	}
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			OR = {
+				NOT = {
+					eqfm_has_expedition_trigger = {
+						type = adriatic
+					}
+				}
+				eqfm_expedition_peril_greater_than_or_equals_trigger = {
 					type = adriatic
+					value = 5
+				}
+				NOT = {
+					eqfm_expedition_has_leader_trigger = {
+						type = adriatic
+					}
 				}
 			}
 		}
+		effect = {
+			if = {
+				limit = {
+					eqfm_expedition_has_leader_trigger = {
+						type = adriatic
+					}
+				}
+				trigger_event = eqfm_pirates.004
+			}
+			else = {
+				trigger_event = eqfm_pirates.005
+			}
+		}
 	}
 	
-	on_fail = {
-		if = {
-			limit = {
-				eqfm_expedition_has_leader_trigger = {
-					type = adriatic
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			OR = {
+				NOT = {
+					is_involved_in_journal_entry = je_eqfm_pirates_of_the_adriatic
+				}
+				custom_tooltip = {
+					text = je_eqfm_pirates_of_the_adriatic_complete
+					has_global_variable = eqfm_jack_sparrow_whacked
 				}
 			}
-			trigger_event = eqfm_pirates.004
 		}
-		else = {
-			trigger_event = eqfm_pirates.005
+		effect = {
+			eqfm_clear_adriatic_expedition_effect = yes
 		}
-	}
-	
-	invalid = {
-		OR = {
-			NOT = {
-				is_involved_in_journal_entry = je_eqfm_pirates_of_the_adriatic
-			}
-			custom_tooltip = {
-				text = je_eqfm_pirates_of_the_adriatic_complete
-				has_global_variable = eqfm_jack_sparrow_whacked
-			}
-		}
-	}
-	
-	on_invalid = {
-		eqfm_clear_adriatic_expedition_effect = yes
 	}
 	
 	on_weekly_pulse = {

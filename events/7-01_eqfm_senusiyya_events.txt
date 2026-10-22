@@ -20,7 +20,7 @@ namespace = eqfm_senusiyya
 
 # The ## before an event indicates content not yet implemented; the >> indicates an event being moved in from another event module
 
-#001-009 - Senusiyya Narrative Events
+####---------- 001-099 - Senusiyya Narrative Events ----------####
 #	001 - The Senussi Order
 #	002 - The Grand Senussi
 #	003 - Senussi Withdraws to the Desert
@@ -31,54 +31,45 @@ namespace = eqfm_senusiyya
 #	008 - Senusiyya Extinguished
 #	009 - ##The Future of the Senusiyya
 
-#010-019 - Senusiyya Pressure Mechanical Events
-#	010 - ##
+####---------- 100-199 - Senusiyya Phase / Pressure Events ----------####
+##	100 - ##
 
-#020-029 - Senusiyya Pressure Random Events
-#	020 - ##
+####---------- 200-299 - Senusiyya Entrenchment Events ----------####
+#	200 - Senusiyya Entrenchment Sprinkler Apparatus
+#	201 - Senusiyya Spreads to State Region
+#	210 - ##The Awliya of State Region
+#	211 - ##Sufism Spreads in State Region
+#	212 - ##
 
-#100-109 - Senusiyya Entrenchment Mechanical Events
-#	100 - Senusiyya Entrenchment Sprinkler Apparatus
-#	101 - Senusiyya Spreads to State Region
+####---------- 300-399 - Senusiyya Influence Events ----------####
+#	300 - Senusiyya Spreads to Country
+#	301 - Senusiyya Spreads to Country (Neighbors)
+#	302 - Senusiyya Spreads to Country (Overlord)
+#	308 - Senusiyya Expelled from Country
+#	309 - House Senussi of Country
+#	310 - ##Imams Defect from the Ulema
+#	311 - ##Dissidents Preach in State
+#	312 - ##Sufist Thought in State
 
-#110-119 - Senusiyya Entrenchment Random Events
-#	110 - ##The Awliya of State Region
-#	111 - ##Sufism Spreads in State Region
-#	112 - ##
-
-#200-209 - Senusiyya Influence Narrative Events
-#	200 - Senusiyya Spreads to Country
-#	201 - Senusiyya Spreads to Country (Neighbors)
-#	202 - Senusiyya Spreads to Country (Overlord)
-#	208 - Senusiyya Expelled from Country
-#	209 - House Senussi of Country
-
-#210-219 - Senusiyya Influence Random Events
-#	210 - ##Imams Defect from the Ulema
-#	211 - ##Dissidents Preach in State
-#	212 - ##Sufist Thought in State
-
-#300-309 - Senusiyya Expedition Mechanical Events
-#	300 - ##Expelling Senusiyya from State Region
-#	301 - ##Expulsion Expedition Arrives in State Region
-#	302 - ##Expulsion Expedition Leader has Died!
-#	303 - ##Expulsion Expedition Withdraws from State Region
-#	304 - ##Senusiyya Expelled from State Region
-
-#310-329 - Senusiyya Expedition Random Events
-#	310 - ##Senusiyya Lodge Uncovered
-#	311 - ##Bedouin Villagers Withhold Information
-#	312 - ##Neighboring Tribe Attacks Expedition
-#	313 - ##Senusiyya Expedition Beset By Sandstorms!
-#	314 - ##Tribal Leaders Request Meeting
-#	315 - ##Senusiyya Expedition Misdirected
-#	316 - ##Caravan Found Trafficking Senusiyya Leaders
-#	317 - ##Senusiyya Expedition Ambushed by Raiders!
-#	318 - ##Desert Settlement Refuses Entry
-#	319 - ##Senusiyya Preacher Seeks Asylum
-#	320 - ##Secret Caches Found
-#	321 - ##Desert Hospitality
-#	322 - ##
+####---------- 400-499 - Senusiyya Expedition Events ----------####
+#	400 - ##Expelling Senusiyya from State Region
+#	401 - ##Expulsion Expedition Arrives in State Region
+#	402 - ##Expulsion Expedition Leader has Died!
+#	403 - ##Expulsion Expedition Withdraws from State Region
+#	404 - ##Senusiyya Expelled from State Region
+#	410 - ##Senusiyya Lodge Uncovered
+#	411 - ##Bedouin Villagers Withhold Information
+#	412 - ##Neighboring Tribe Attacks Expedition
+#	413 - ##Senusiyya Expedition Beset By Sandstorms!
+#	414 - ##Tribal Leaders Request Meeting
+#	415 - ##Senusiyya Expedition Misdirected
+#	416 - ##Caravan Found Trafficking Senusiyya Leaders
+#	417 - ##Senusiyya Expedition Ambushed by Raiders!
+#	418 - ##Desert Settlement Refuses Entry
+#	419 - ##Senusiyya Preacher Seeks Asylum
+#	420 - ##Secret Caches Found
+#	421 - ##Desert Hospitality
+#	422 - ##
 
 ########################################
 
@@ -537,8 +528,12 @@ eqfm_senusiyya.009 = { # The Senusiyya Extinguished
 }
 
 
-####---------- Senusiyya Entrenchment Mechanical Events ----------####
-eqfm_senusiyya.100 = {
+####---------- 100-199 - Senusiyya Phase / Pressure Events ----------####
+#//
+
+
+####---------- 200-299 - Senusiyya Entrenchment Events ----------####
+eqfm_senusiyya.200 = {
 	# Senusiyya Spreads to State Region (Headless)
 	type = country_event
 	hidden = yes
@@ -547,6 +542,10 @@ eqfm_senusiyya.100 = {
 		has_global_variable = eqfm_intimidated_sensussi
 		NOT = {
 			has_global_variable = eqfm_senusiyya_contagion_cooldown
+		}
+		OR = {
+			global_var:je_eqfm_senusiyya.var:eqfm_senusiyya_phase_var ?= flag:eqfm_senusiyya_unease
+			global_var:je_eqfm_senusiyya.var:eqfm_senusiyya_phase_var ?= flag:eqfm_senusiyya_belligerency
 		}
 		OR = {
 			# Evaluate STATE_LIBYA
@@ -760,7 +759,7 @@ eqfm_senusiyya.100 = {
 				}
 			}
 			else = {
-				error_log = "Event eqfm_senusiyya.100 was triggered and attempted to select a state region using STATE_LIBYA, but no valid state_region was available."
+				error_log = "Event eqfm_senusiyya.200 was triggered and attempted to select a state region using STATE_LIBYA, but no valid state_region was available."
 				set_global_variable = {
 					name = eqfm_seusiyya_spread_null
 					months = 1
@@ -817,7 +816,7 @@ eqfm_senusiyya.100 = {
 				}
 			}
 			else = {
-				error_log = "Event eqfm_senusiyya.100 was triggered and attempted to select a state region using STATE_LIBYAN_DESERT, but no valid state_region was available."
+				error_log = "Event eqfm_senusiyya.200 was triggered and attempted to select a state region using STATE_LIBYAN_DESERT, but no valid state_region was available."
 				set_global_variable = {
 					name = eqfm_seusiyya_spread_null
 					months = 1
@@ -874,7 +873,7 @@ eqfm_senusiyya.100 = {
 				}
 			}
 			else = {
-				error_log = "Event eqfm_senusiyya.100 was triggered and attempted to select a state region using STATE_TRIPOLI, but no valid state_region was available."
+				error_log = "Event eqfm_senusiyya.200 was triggered and attempted to select a state region using STATE_TRIPOLI, but no valid state_region was available."
 				set_global_variable = {
 					name = eqfm_seusiyya_spread_null
 					months = 1
@@ -931,7 +930,7 @@ eqfm_senusiyya.100 = {
 				}
 			}
 			else = {
-				error_log = "Event eqfm_senusiyya.100 was triggered and attempted to select a state region using STATE_EGYPTIAN_DESERT, but no valid state_region was available."
+				error_log = "Event eqfm_senusiyya.200 was triggered and attempted to select a state region using STATE_EGYPTIAN_DESERT, but no valid state_region was available."
 				set_global_variable = {
 					name = eqfm_seusiyya_spread_null
 					months = 1
@@ -988,7 +987,7 @@ eqfm_senusiyya.100 = {
 				}
 			}
 			else = {
-				error_log = "Event eqfm_senusiyya.100 was triggered and attempted to select a state region using STATE_MATRUH, but no valid state_region was available."
+				error_log = "Event eqfm_senusiyya.200 was triggered and attempted to select a state region using STATE_MATRUH, but no valid state_region was available."
 				set_global_variable = {
 					name = eqfm_seusiyya_spread_null
 					months = 1
@@ -1024,7 +1023,7 @@ eqfm_senusiyya.100 = {
 				}
 			}
 			else = {
-				error_log = "Event eqfm_senusiyya.100 was triggered and attempted to select a state region using STATE_CHAD, but no valid state_region was available."
+				error_log = "Event eqfm_senusiyya.200 was triggered and attempted to select a state region using STATE_CHAD, but no valid state_region was available."
 				set_global_variable = {
 					name = eqfm_seusiyya_spread_null
 					months = 1
@@ -1034,7 +1033,7 @@ eqfm_senusiyya.100 = {
 
 		# Cancel event if all prior effects fail
 		else = {
-			error_log = "Event eqfm_senusiyya.100 was triggered, but no valid state_region was available. Event has been cancelled."
+			error_log = "Event eqfm_senusiyya.200 was triggered, but no valid state_region was available. Event has been cancelled."
 			set_global_variable = {
 				name = eqfm_seusiyya_spread_null
 				months = 1
@@ -1068,7 +1067,7 @@ eqfm_senusiyya.100 = {
 						}
 					}
 					trigger_event = {
-						id = eqfm_senusiyya.101 # Senusiyya Spreads to State Region
+						id = eqfm_senusiyya.201 # Senusiyya Spreads to State Region
 					}
 				}
 				else = {
@@ -1077,21 +1076,21 @@ eqfm_senusiyya.100 = {
 			}
 		}
 		else = {
-			error_log = "Event eqfm_senusiyya.100 made it past target selection, but the saved scope was not found."
+			error_log = "Event eqfm_senusiyya.200 made it past target selection, but the saved scope was not found."
 		}
 	}
 }
 
-eqfm_senusiyya.101 = {
+eqfm_senusiyya.201 = {
 	type = country_event
 	placement = scope:eqfm_senusiyya_state_region_scope
 	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
 	duration = 3
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.101.t
-	desc = eqfm_senusiyya.101.d
-	flavor = eqfm_senusiyya.101.f
+	title = eqfm_senusiyya.201.t
+	desc = eqfm_senusiyya.201.d
+	flavor = eqfm_senusiyya.201.f
 
 	event_image = {
 		video = "middleeast_islam"
@@ -1099,7 +1098,7 @@ eqfm_senusiyya.101 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 
 	trigger = {
-		# triggered by eqfm_senusiyya.100
+		# triggered by eqfm_senusiyya.200
 	}
 
 	immediate = {
@@ -1113,24 +1112,22 @@ eqfm_senusiyya.101 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.101.a
+		name = eqfm_senusiyya.201.a
 		default_option = yes
 		custom_tooltip = eqfm_starting_senusiyya_entrenchment
 	}
 }
 
-
-####---------- Senusiyya Entrenchment Random Events ----------####
-eqfm_senusiyya.110 = {
+eqfm_senusiyya.202 = {
 	type = country_event
 	placement = scope:eqfm_senusiyya_state_scope
 	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
 	duration = 3
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.110.t
-	desc = eqfm_senusiyya.110.d
-	flavor = eqfm_senusiyya.110.f
+	title = eqfm_senusiyya.202.t
+	desc = eqfm_senusiyya.202.d
+	flavor = eqfm_senusiyya.202.f
 
 	event_image = {
 		video = "gbbf_saharan_oasis"
@@ -1182,7 +1179,7 @@ eqfm_senusiyya.110 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.110.a
+		name = eqfm_senusiyya.202.a
 		default_option = yes
 		scope:eqfm_senusiyya_state_region_scope = {
 			eqfm_add_senusiyya_entrenchment_effect = {
@@ -1211,7 +1208,7 @@ eqfm_senusiyya.110 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.110.b
+		name = eqfm_senusiyya.202.b
 		scope:eqfm_senusiyya_state_region_scope = {
 			eqfm_add_senusiyya_entrenchment_effect = {
 				value = 10
@@ -1239,7 +1236,7 @@ eqfm_senusiyya.110 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.110.c
+		name = eqfm_senusiyya.202.c
 		trigger = {
 			custom_tooltip = {
 				text = eqfm_has_censorship_or_outlawed_dissent
@@ -1283,16 +1280,16 @@ eqfm_senusiyya.110 = {
 	}
 }
 
-eqfm_senusiyya.111 = {
+eqfm_senusiyya.203 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
 	duration = 3
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.111.t
-	desc = eqfm_senusiyya.111.d
-	flavor = eqfm_senusiyya.111.f
+	title = eqfm_senusiyya.203.t
+	desc = eqfm_senusiyya.203.d
+	flavor = eqfm_senusiyya.203.f
 
 	event_image = {
 		video = "middleeast_islam"
@@ -1326,7 +1323,7 @@ eqfm_senusiyya.111 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.111.a
+		name = eqfm_senusiyya.203.a
 		default_option = yes
 		scope:eqfm_senusiyya_state_scope = {
 			eqfm_add_senusiyya_entrenchment_effect = {
@@ -1340,7 +1337,7 @@ eqfm_senusiyya.111 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.111.b
+		name = eqfm_senusiyya.203.b
 		scope:eqfm_senusiyya_state_scope = {
 			eqfm_add_senusiyya_entrenchment_effect = {
 				value = 5
@@ -1349,7 +1346,7 @@ eqfm_senusiyya.111 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.111.c
+		name = eqfm_senusiyya.203.c
 		trigger = {
 			custom_tooltip = {
 				text = eqfm_has_censorship_or_outlawed_dissent
@@ -1374,8 +1371,8 @@ eqfm_senusiyya.111 = {
 }
 
 
-####---------- Senusiyya Influence Narrative Events ----------####
-eqfm_senusiyya.200 = {
+####---------- 300-399 - Senusiyya Influence Events ----------####
+eqfm_senusiyya.300 = {
 	# Senusiyya Spreads to Country
 	type = country_event
 	placement = root
@@ -1383,9 +1380,9 @@ eqfm_senusiyya.200 = {
 	duration = 3
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.200.t
-	desc = eqfm_senusiyya.200.d
-	flavor = eqfm_senusiyya.200.f
+	title = eqfm_senusiyya.300.t
+	desc = eqfm_senusiyya.300.d
+	flavor = eqfm_senusiyya.300.f
 
 	event_image = {
 		video = "middleeast_islam"
@@ -1489,10 +1486,10 @@ eqfm_senusiyya.200 = {
 				limit = {
 					gbbf_is_muslim_trigger = yes
 				}
-				trigger_event = eqfm_senusiyya.201
+				trigger_event = eqfm_senusiyya.301
 			}
 			else = {
-				trigger_event = eqfm_senusiyya.202
+				trigger_event = eqfm_senusiyya.302
 			}
 		}
 		every_country = {
@@ -1511,25 +1508,17 @@ eqfm_senusiyya.200 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.200.a
+		name = eqfm_senusiyya.300.a
 		default_option = yes
-		custom_tooltip = {
-			text = eqfm_normal_starting_senusiyya_influence
-			set_variable = {
-				name = eqfm_senusiyya_influence_var
-				value = 25
-			}
+		eqfm_add_senusiyya_pressure_effect = {
+			value = 25
 		}
 	}
 
 	option = {
-		name = eqfm_senusiyya.200.b
-		custom_tooltip = {
-			text = eqfm_reduced_starting_senusiyya_influence
-			set_variable = {
-				name = eqfm_senusiyya_influence_var
-				value = 15
-			}
+		name = eqfm_senusiyya.300.b
+		eqfm_add_senusiyya_pressure_effect = {
+			value = 15
 		}
 		add_modifier = {
 			name = modifier_eqfm_senusiyya_unwelcome
@@ -1542,13 +1531,9 @@ eqfm_senusiyya.200 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.200.c
-		custom_tooltip = {
-			text = eqfm_increased_starting_senusiyya_influence
-			set_variable = {
-				name = eqfm_senusiyya_influence_var
-				value = 35
-			}
+		name = eqfm_senusiyya.300.c
+		eqfm_add_senusiyya_pressure_effect = {
+			value = 35
 		}
 		scope:eqfm_senusiyya_state_scope = {
 			eqfm_add_senusiyya_entrenchment_effect = {
@@ -1568,16 +1553,16 @@ eqfm_senusiyya.200 = {
 	}
 }
 
-eqfm_senusiyya.201 = {
+eqfm_senusiyya.301 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
 	duration = 3
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.201.t
-	desc = eqfm_senusiyya.201.d
-	flavor = eqfm_senusiyya.201.f
+	title = eqfm_senusiyya.301.t
+	desc = eqfm_senusiyya.301.d
+	flavor = eqfm_senusiyya.301.f
 
 	event_image = {
 		video = "middleeast_islam"
@@ -1587,26 +1572,23 @@ eqfm_senusiyya.201 = {
 	trigger = {
 	}
 
-	immediate = {
-	}
-
 	option = {
-		name = eqfm_senusiyya.201.a
+		name = eqfm_senusiyya.301.a
 		default_option = yes
-		custom_tooltip = eqfm_senusiyya.201.a.tt
+		custom_tooltip = eqfm_senusiyya.301.a.tt
 	}
 }
 
-eqfm_senusiyya.202 = {
+eqfm_senusiyya.302 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
 	duration = 3
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.202.t
-	desc = eqfm_senusiyya.202.d
-	flavor = eqfm_senusiyya.202.f
+	title = eqfm_senusiyya.302.t
+	desc = eqfm_senusiyya.302.d
+	flavor = eqfm_senusiyya.302.f
 
 	event_image = {
 		video = "middleeast_islam"
@@ -1616,26 +1598,23 @@ eqfm_senusiyya.202 = {
 	trigger = {
 	}
 
-	immediate = {
-	}
-
 	option = {
-		name = eqfm_senusiyya.202.a
+		name = eqfm_senusiyya.302.a
 		default_option = yes
-		custom_tooltip = eqfm_senusiyya.202.a.tt
+		custom_tooltip = eqfm_senusiyya.302.a.tt
 	}
 }
 
-eqfm_senusiyya.208 = {
+eqfm_senusiyya.303 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
 	duration = 3
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.208.t
-	desc = eqfm_senusiyya.208.d
-	flavor = eqfm_senusiyya.208.f
+	title = eqfm_senusiyya.303.t
+	desc = eqfm_senusiyya.303.d
+	flavor = eqfm_senusiyya.303.f
 
 	event_image = {
 		video = "votp_hostile_court"
@@ -1646,25 +1625,22 @@ eqfm_senusiyya.208 = {
 		# triggered by eqfm_expell_senusiyya_button
 	}
 
-	immediate = {
-	}
-
 	option = {
-		name = eqfm_senusiyya.208.a
+		name = eqfm_senusiyya.303.a
 		default_option = yes
 	}
 }
 
-eqfm_senusiyya.209 = { # House Senussi of Country
+eqfm_senusiyya.304 = { # House Senussi of Country
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
 	duration = 3
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.209.t
-	desc = eqfm_senusiyya.209.d
-	flavor = eqfm_senusiyya.209.f
+	title = eqfm_senusiyya.304.t
+	desc = eqfm_senusiyya.304.d
+	flavor = eqfm_senusiyya.304.f
 
 	event_image = {
 		video = "middleeast_islam"
@@ -1680,7 +1656,7 @@ eqfm_senusiyya.209 = { # House Senussi of Country
 	}
 
 	option = {
-		name = eqfm_senusiyya.209.a
+		name = eqfm_senusiyya.304.a
 		default_option = yes
 		add_modifier = {
 			name = modifier_eqfm_senusiyya_embraced
@@ -1693,17 +1669,16 @@ eqfm_senusiyya.209 = { # House Senussi of Country
 	}
 }
 
-####---------- Senusiyya Influence Random Events ----------####
-eqfm_senusiyya.210 = {
+eqfm_senusiyya.305 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
 	duration = 3
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.210.t
-	desc = eqfm_senusiyya.210.d
-	flavor = eqfm_senusiyya.210.f
+	title = eqfm_senusiyya.305.t
+	desc = eqfm_senusiyya.305.d
+	flavor = eqfm_senusiyya.305.f
 
 	event_image = {
 		video = "middleeast_courtroom_upheaval"
@@ -1733,7 +1708,7 @@ eqfm_senusiyya.210 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.210.a
+		name = eqfm_senusiyya.305.a
 		default_option = yes
 		add_modifier = {
 			name = modifier_eqfm_deposed_imams
@@ -1757,7 +1732,7 @@ eqfm_senusiyya.210 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.210.b
+		name = eqfm_senusiyya.305.b
 		eqfm_add_senusiyya_influence_effect = {
 			value = 10
 		}
@@ -1778,16 +1753,16 @@ eqfm_senusiyya.210 = {
 	}
 }
 
-eqfm_senusiyya.211 = {
+eqfm_senusiyya.306 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
 	duration = 3
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.211.t
-	desc = eqfm_senusiyya.211.d
-	flavor = eqfm_senusiyya.211.f
+	title = eqfm_senusiyya.306.t
+	desc = eqfm_senusiyya.306.d
+	flavor = eqfm_senusiyya.306.f
 
 	event_image = {
 		video = "ip3_agitator_reading_manifesto"
@@ -1817,7 +1792,7 @@ eqfm_senusiyya.211 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.211.a
+		name = eqfm_senusiyya.306.a
 		default_option = yes
 		eqfm_add_senusiyya_influence_effect = {
 			value = 5
@@ -1834,7 +1809,7 @@ eqfm_senusiyya.211 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.211.b
+		name = eqfm_senusiyya.306.b
 		eqfm_add_senusiyya_influence_effect = {
 			value = -5
 		}
@@ -1856,16 +1831,16 @@ eqfm_senusiyya.211 = {
 	}
 }
 
-eqfm_senusiyya.212 = {
+eqfm_senusiyya.307 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
 	duration = 3
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.212.t
-	desc = eqfm_senusiyya.212.d
-	flavor = eqfm_senusiyya.212.f
+	title = eqfm_senusiyya.307.t
+	desc = eqfm_senusiyya.307.d
+	flavor = eqfm_senusiyya.307.f
 
 	event_image = {
 		video = "middleeast_islam"
@@ -1875,39 +1850,24 @@ eqfm_senusiyya.212 = {
 	trigger = {
 	}
 
-	immediate = {
-	}
-
 	option = {
-		name = eqfm_senusiyya.212.a
+		name = eqfm_senusiyya.307.a
 		default_option = yes
 	}
 }
 
 
-####---------- Senusiyya Pressure Narrative Events ----------####
-# //
-
-
-####---------- Senusiyya Pressure Mechanical Events ----------####
-# //
-
-
-####---------- Senusiyya Pressure Random Events ----------####
-# //
-
-
-####---------- Senusiyya Expedition Mechanical Events ----------####
-eqfm_senusiyya.300 = {
+####---------- 400-499 - Senusiyya Expedition Events ----------####
+eqfm_senusiyya.400 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
 	
-	title = eqfm_senusiyya.300.t
-	desc = eqfm_senusiyya.300.d
-	flavor = eqfm_senusiyya.300.f
+	title = eqfm_senusiyya.400.t
+	desc = eqfm_senusiyya.400.d
+	flavor = eqfm_senusiyya.400.f
 	
 	event_image = {
 		video = "africa_construction_colony"
@@ -2014,7 +1974,7 @@ eqfm_senusiyya.300 = {
 	}
 	
 	option = {
-		name = eqfm_senusiyya.300.a
+		name = eqfm_senusiyya.400.a
 		default_option = yes
 		trigger = {
 			exists = scope:eqfm_senusiyya_leader_1
@@ -2032,7 +1992,7 @@ eqfm_senusiyya.300 = {
 	}
 	
 	option = {
-		name = eqfm_senusiyya.300.b
+		name = eqfm_senusiyya.400.b
 		trigger = {
 			exists = scope:eqfm_senusiyya_leader_2
 		}
@@ -2049,7 +2009,7 @@ eqfm_senusiyya.300 = {
 	}
 	
 	option = {
-		name = eqfm_senusiyya.300.c
+		name = eqfm_senusiyya.400.c
 		trigger = {
 			exists = scope:eqfm_senusiyya_leader_3
 		}
@@ -2066,7 +2026,7 @@ eqfm_senusiyya.300 = {
 	}
 	
 	option = {
-		name = eqfm_senusiyya.300.e
+		name = eqfm_senusiyya.400.e
 		custom_tooltip = {
 			text = gbbf_nothing_happens
 			eqfm_clear_senusiyya_expedition_variables_effect = yes
@@ -2074,16 +2034,16 @@ eqfm_senusiyya.300 = {
 	}
 }
 
-eqfm_senusiyya.301 = {
+eqfm_senusiyya.401 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
 	
-	title = eqfm_senusiyya.301.t
-	desc = eqfm_senusiyya.301.d
-	flavor = eqfm_senusiyya.301.f
+	title = eqfm_senusiyya.401.t
+	desc = eqfm_senusiyya.401.d
+	flavor = eqfm_senusiyya.401.f
 	
 	gui_window = event_window_1char_adventure
 	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
@@ -2110,7 +2070,7 @@ eqfm_senusiyya.301 = {
 	}
 	
 	option = {
-		name = eqfm_senusiyya.301.a
+		name = eqfm_senusiyya.401.a
 		default_option = yes
 		custom_tooltip = {
 			text = gbbf_no_immediate_effects
@@ -2119,16 +2079,16 @@ eqfm_senusiyya.301 = {
 	}
 }
 
-eqfm_senusiyya.302 = {
+eqfm_senusiyya.402 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
 	
-	title = eqfm_senusiyya.302.t
-	desc = eqfm_senusiyya.302.d
-	flavor = eqfm_senusiyya.302.f
+	title = eqfm_senusiyya.402.t
+	desc = eqfm_senusiyya.402.d
+	flavor = eqfm_senusiyya.402.f
 	
 	event_image = {
 		video = "africa_desert_expedition"
@@ -2144,22 +2104,22 @@ eqfm_senusiyya.302 = {
 	}
 	
 	option = {
-		name = eqfm_senusiyya.302.a
+		name = eqfm_senusiyya.402.a
 		default_option = yes
 		eqfm_fail_senusiyya_expedition_effect = yes
 	}
 }
 
-eqfm_senusiyya.303 = {
+eqfm_senusiyya.403 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
 	
-	title = eqfm_senusiyya.303.t
-	desc = eqfm_senusiyya.303.d
-	flavor = eqfm_senusiyya.303.f
+	title = eqfm_senusiyya.403.t
+	desc = eqfm_senusiyya.403.d
+	flavor = eqfm_senusiyya.403.f
 	
 	gui_window = event_window_1char_adventure
 	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
@@ -2178,22 +2138,22 @@ eqfm_senusiyya.303 = {
 	}
 	
 	option = {
-		name = eqfm_senusiyya.303.a
+		name = eqfm_senusiyya.403.a
 		default_option = yes
 		eqfm_fail_senusiyya_expedition_effect = yes
 	}
 }
 
-eqfm_senusiyya.304 = {
+eqfm_senusiyya.404 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/institution_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
 	
-	title = eqfm_senusiyya.304.t
-	desc = eqfm_senusiyya.304.d
-	flavor = eqfm_senusiyya.304.f
+	title = eqfm_senusiyya.404.t
+	desc = eqfm_senusiyya.404.d
+	flavor = eqfm_senusiyya.404.f
 	
 	gui_window = event_window_1char_adventure
 	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
@@ -2212,24 +2172,22 @@ eqfm_senusiyya.304 = {
 	}
 	
 	option = {
-		name = eqfm_senusiyya.304.a
+		name = eqfm_senusiyya.404.a
 		default_option = yes
 		eqfm_complete_senusiyya_expedition_effect = yes
 	}
 }
 
-
-####---------- Senusiyya Expedition Random Events ----------####
-eqfm_senusiyya.310 = {
+eqfm_senusiyya.405 = {
 	type = country_event
 	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.310.t
-	desc = eqfm_senusiyya.310.d
-	flavor = eqfm_senusiyya.310.f
+	title = eqfm_senusiyya.405.t
+	desc = eqfm_senusiyya.405.d
+	flavor = eqfm_senusiyya.405.f
 
 	gui_window = event_window_1char_adventure
 	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
@@ -2263,7 +2221,7 @@ eqfm_senusiyya.310 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.310.a
+		name = eqfm_senusiyya.405.a
 		default_option = yes
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
@@ -2278,7 +2236,7 @@ eqfm_senusiyya.310 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.310.b
+		name = eqfm_senusiyya.405.b
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
 			value = 2
@@ -2296,16 +2254,16 @@ eqfm_senusiyya.310 = {
 	}
 }
 
-eqfm_senusiyya.311 = {
+eqfm_senusiyya.406 = {
 	type = country_event
 	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.311.t
-	desc = eqfm_senusiyya.311.d
-	flavor = eqfm_senusiyya.311.f
+	title = eqfm_senusiyya.406.t
+	desc = eqfm_senusiyya.406.d
+	flavor = eqfm_senusiyya.406.f
 
 	gui_window = event_window_1char_adventure
 	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
@@ -2339,7 +2297,7 @@ eqfm_senusiyya.311 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.311.a
+		name = eqfm_senusiyya.406.a
 		default_option = yes
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
@@ -2352,7 +2310,7 @@ eqfm_senusiyya.311 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.311.b
+		name = eqfm_senusiyya.406.b
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
 			value = 1
@@ -2370,16 +2328,16 @@ eqfm_senusiyya.311 = {
 	}
 }
 
-eqfm_senusiyya.312 = {
+eqfm_senusiyya.407 = {
 	type = country_event
 	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.312.t
-	desc = eqfm_senusiyya.312.d
-	flavor = eqfm_senusiyya.312.f
+	title = eqfm_senusiyya.407.t
+	desc = eqfm_senusiyya.407.d
+	flavor = eqfm_senusiyya.407.f
 
 	gui_window = event_window_1char_adventure
 	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
@@ -2436,7 +2394,7 @@ eqfm_senusiyya.312 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.312.a
+		name = eqfm_senusiyya.407.a
 		default_option = yes
 		change_tension = {
 			country = scope:eqfm_senusiyya_expedition_neighbor_scope
@@ -2453,7 +2411,7 @@ eqfm_senusiyya.312 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.312.b
+		name = eqfm_senusiyya.407.b
 		change_tension = {
 			country = scope:eqfm_senusiyya_expedition_neighbor_scope
 			value = 40
@@ -2469,16 +2427,16 @@ eqfm_senusiyya.312 = {
 	}
 }
 
-eqfm_senusiyya.313 = {
+eqfm_senusiyya.408 = {
 	type = country_event
 	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.313.t
-	desc = eqfm_senusiyya.313.d
-	flavor = eqfm_senusiyya.313.f
+	title = eqfm_senusiyya.408.t
+	desc = eqfm_senusiyya.408.d
+	flavor = eqfm_senusiyya.408.f
 
 	gui_window = event_window_1char_adventure
 	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
@@ -2516,7 +2474,7 @@ eqfm_senusiyya.313 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.313.a
+		name = eqfm_senusiyya.408.a
 		default_option = yes
 		eqfm_add_expedition_peril_effect = {
 			type = senusiyya
@@ -2525,7 +2483,7 @@ eqfm_senusiyya.313 = {
 	}
 	
 	option = {
-		name = eqfm_senusiyya.313.a
+		name = eqfm_senusiyya.408.a
 		default_option = yes
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
@@ -2538,7 +2496,7 @@ eqfm_senusiyya.313 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.313.c
+		name = eqfm_senusiyya.408.c
 		trigger = {
 			scope:eqfm_senusiyya_expedition_leader_scope = {
 				OR = {
@@ -2558,16 +2516,16 @@ eqfm_senusiyya.313 = {
 	}
 }
 
-eqfm_senusiyya.314 = {
+eqfm_senusiyya.409 = {
 	type = country_event
 	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.314.t
-	desc = eqfm_senusiyya.314.d
-	flavor = eqfm_senusiyya.314.f
+	title = eqfm_senusiyya.409.t
+	desc = eqfm_senusiyya.409.d
+	flavor = eqfm_senusiyya.409.f
 
 	gui_window = event_window_1char_adventure
 	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
@@ -2618,7 +2576,7 @@ eqfm_senusiyya.314 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.314.a
+		name = eqfm_senusiyya.409.a
 		default_option = yes
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
@@ -2642,7 +2600,7 @@ eqfm_senusiyya.314 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.314.b
+		name = eqfm_senusiyya.409.b
 		scope:eqfm_senusiyya_expedition_state_scope = {
 			add_modifier = {
 				name = modifier_eqfm_refused_tribal_exemptions
@@ -2656,7 +2614,7 @@ eqfm_senusiyya.314 = {
 	}
 	
 	option = {
-		name = eqfm_senusiyya.314.c
+		name = eqfm_senusiyya.409.c
 		scope:eqfm_senusiyya_expedition_state_scope = {
 			add_modifier = {
 				name = modifier_eqfm_refused_tribal_exemptions
@@ -2678,16 +2636,16 @@ eqfm_senusiyya.314 = {
 	}
 }
 
-eqfm_senusiyya.315 = {
+eqfm_senusiyya.410 = {
 	type = country_event
 	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.315.t
-	desc = eqfm_senusiyya.315.d
-	flavor = eqfm_senusiyya.315.f
+	title = eqfm_senusiyya.410.t
+	desc = eqfm_senusiyya.410.d
+	flavor = eqfm_senusiyya.410.f
 
 	gui_window = event_window_1char_adventure
 	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
@@ -2725,7 +2683,7 @@ eqfm_senusiyya.315 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.315.a
+		name = eqfm_senusiyya.410.a
 		default_option = yes
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
@@ -2738,7 +2696,7 @@ eqfm_senusiyya.315 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.315.b
+		name = eqfm_senusiyya.410.b
 		eqfm_add_expedition_peril_effect = {
 			type = senusiyya
 			value = 2
@@ -2750,16 +2708,16 @@ eqfm_senusiyya.315 = {
 	}
 }
 
-eqfm_senusiyya.316 = {
+eqfm_senusiyya.411 = {
 	type = country_event
 	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.316.t
-	desc = eqfm_senusiyya.316.d
-	flavor = eqfm_senusiyya.316.f
+	title = eqfm_senusiyya.411.t
+	desc = eqfm_senusiyya.411.d
+	flavor = eqfm_senusiyya.411.f
 
 	gui_window = event_window_1char_adventure
 	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
@@ -2793,7 +2751,7 @@ eqfm_senusiyya.316 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.316.a
+		name = eqfm_senusiyya.411.a
 		default_option = yes
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
@@ -2805,7 +2763,7 @@ eqfm_senusiyya.316 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.316.b
+		name = eqfm_senusiyya.411.b
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
 			value = 2
@@ -2817,16 +2775,16 @@ eqfm_senusiyya.316 = {
 	}
 }
 
-eqfm_senusiyya.317 = {
+eqfm_senusiyya.412 = {
 	type = country_event
 	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.317.t
-	desc = eqfm_senusiyya.317.d
-	flavor = eqfm_senusiyya.317.f
+	title = eqfm_senusiyya.412.t
+	desc = eqfm_senusiyya.412.d
+	flavor = eqfm_senusiyya.412.f
 
 	gui_window = event_window_1char_adventure
 	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
@@ -2871,7 +2829,7 @@ eqfm_senusiyya.317 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.317.a
+		name = eqfm_senusiyya.412.a
 		default_option = yes
 		eqfm_add_expedition_peril_effect = {
 			type = senusiyya
@@ -2880,7 +2838,7 @@ eqfm_senusiyya.317 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.317.b
+		name = eqfm_senusiyya.412.b
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
 			value = -2
@@ -2892,7 +2850,7 @@ eqfm_senusiyya.317 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.317.c
+		name = eqfm_senusiyya.412.c
 		trigger = {
 			eqfm_has_desert_expedition_trigger = yes
 			eqfm_expedition_progress_greater_than_or_equals_trigger = {
@@ -2922,16 +2880,16 @@ eqfm_senusiyya.317 = {
 	}
 }
 
-eqfm_senusiyya.318 = {
+eqfm_senusiyya.413 = {
 	type = country_event
 	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.318.t
-	desc = eqfm_senusiyya.318.d
-	flavor = eqfm_senusiyya.318.f
+	title = eqfm_senusiyya.413.t
+	desc = eqfm_senusiyya.413.d
+	flavor = eqfm_senusiyya.413.f
 
 	gui_window = event_window_1char_adventure
 	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
@@ -2965,7 +2923,7 @@ eqfm_senusiyya.318 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.318.a
+		name = eqfm_senusiyya.413.a
 		default_option = yes
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
@@ -2974,7 +2932,7 @@ eqfm_senusiyya.318 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.318.b
+		name = eqfm_senusiyya.413.b
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
 			value = 1
@@ -2986,16 +2944,16 @@ eqfm_senusiyya.318 = {
 	}
 }
 
-eqfm_senusiyya.319 = {
+eqfm_senusiyya.414 = {
 	type = country_event
 	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.319.t
-	desc = eqfm_senusiyya.319.d
-	flavor = eqfm_senusiyya.319.f
+	title = eqfm_senusiyya.414.t
+	desc = eqfm_senusiyya.414.d
+	flavor = eqfm_senusiyya.414.f
 
 	gui_window = event_window_1char_adventure
 	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
@@ -3029,7 +2987,7 @@ eqfm_senusiyya.319 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.319.a
+		name = eqfm_senusiyya.414.a
 		default_option = yes
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
@@ -3044,21 +3002,21 @@ eqfm_senusiyya.319 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.319.b
+		name = eqfm_senusiyya.414.b
 		custom_tooltip = gbbf_nothing_happens
 	}
 }
 
-eqfm_senusiyya.320 = {
+eqfm_senusiyya.415 = {
 	type = country_event
 	placement = scope:eqfm_senusiyya_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.320.t
-	desc = eqfm_senusiyya.320.d
-	flavor = eqfm_senusiyya.320.f
+	title = eqfm_senusiyya.415.t
+	desc = eqfm_senusiyya.415.d
+	flavor = eqfm_senusiyya.415.f
 
 	gui_window = event_window_1char_adventure
 	left_icon = scope:eqfm_senusiyya_expedition_leader_scope
@@ -3096,7 +3054,7 @@ eqfm_senusiyya.320 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.320.a
+		name = eqfm_senusiyya.415.a
 		default_option = yes
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
@@ -3109,7 +3067,7 @@ eqfm_senusiyya.320 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.320.b
+		name = eqfm_senusiyya.415.b
 		default_option = yes
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
@@ -3122,7 +3080,7 @@ eqfm_senusiyya.320 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.320.c
+		name = eqfm_senusiyya.415.c
 		eqfm_add_expedition_progress_effect = {
 			type = senusiyya
 			value = 2
@@ -3130,16 +3088,16 @@ eqfm_senusiyya.320 = {
 	}
 }
 
-eqfm_senusiyya.321 = {
+eqfm_senusiyya.416 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
 	duration = 2
 	dlc = dlc_grefm
 
-	title = eqfm_senusiyya.321.t
-	desc = eqfm_senusiyya.321.d
-	flavor = eqfm_senusiyya.321.f
+	title = eqfm_senusiyya.416.t
+	desc = eqfm_senusiyya.416.d
+	flavor = eqfm_senusiyya.416.f
 
 	event_image = {
 		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_settlement.dds"
@@ -3174,7 +3132,7 @@ eqfm_senusiyya.321 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.321.a
+		name = eqfm_senusiyya.416.a
 		default_option = yes
 		eqfm_add_expedition_peril_effect = {
 			type = senusiyya
@@ -3183,7 +3141,7 @@ eqfm_senusiyya.321 = {
 	}
 
 	option = {
-		name = eqfm_senusiyya.321.b
+		name = eqfm_senusiyya.416.b
 		trigger = {
 			scope:eqfm_karadag_tur_leader = {
 				OR = {

@@ -7,7 +7,7 @@ on_monthly_pulse_country = {
 		grefm_monthly_pulse_rhomaios
 		# grefm_monthly_pulse_urum
 		
-		balkfm_monthly_pulse
+		balkfm_monthly_country_pulse
 		balkfm_yug_monthly_pulse
 		balkfm_mon_monthly_pulse
 		balkfm_ser_monthly_pulse
@@ -47,6 +47,7 @@ gbbf_monthly_pulse_country = {
 	# These events are monitored from all scopes
 	events = {
 		gbbf_hidden.1
+		grefm_greece.100
 		balkfm_serbia.204
 		balkfm_bulgaria.228
 	}
@@ -59,16 +60,16 @@ grefm_monthly_pulse_hellene = {
 		country_has_primary_culture = cu:greek
 	}
 	events = {
-		grefm_greece.005
-		grefm_greece.034
-		grefm_greece.101
-		grefm_greece.103
+		grefm_greece.028
+		grefm_greece.039
+		grefm_greece.042
+		grefm_greece.092
 		grefm_greece.110
-		grefm_greece.114
-		grefm_greece.121
+		grefm_greece.112
+		grefm_greece.113
+		grefm_greece.120
 		grefm_greece.131
 		grefm_greece.132
-		grefm_greece.182
 		grefm_greek_nationalism.003
 		grefm_megali_idea.001
 		grefm_megali_idea.009
@@ -77,21 +78,44 @@ grefm_monthly_pulse_hellene = {
 		grefm_byzantium.028
 	}
 	random_events = {
-		200 = 0
-		5 = grefm_greece.035
-		5 = grefm_greece.100
-		5 = grefm_greece.102
-		5 = grefm_greece.122
-		10 = grefm_greece.160
-		5 = grefm_greece.180
-		25 = grefm_greek_nationalism.002
-		5 = grefm_greek_nationalism.057
-		25 = grefm_megali_idea.201
-		25 = grefm_megali_idea.202
+		chance_of_no_event = 80
+		5 = grefm_greece.040
+		1 = grefm_greece.041
+		5 = grefm_greece.090
+		100 = grefm_greece.104
+		5 = grefm_greece.111
+		5 = grefm_greece.117
+		5 = grefm_greece.121
+		5 = grefm_greek_nationalism.002
+		100 = grefm_greek_nationalism.057
+		5 = grefm_megali_idea.201
+		200 = grefm_megali_idea.202
 	}
 	effect = {
 		eqfm_balkan_powder_keg_hellenic_separatism_effect = yes
 		grefm_annexation_variables_effect = yes
+		if = {
+			limit = {
+				any_scope_state = {
+					is_in_geographic_region = geographic_region_aegean_sea
+				}
+				NOT = {
+					has_modifier = modifier_grefm_greek_shipping
+				}
+			}
+			add_modifier = modifier_grefm_greek_shipping
+		}
+		else_if = {
+			limit = {
+				has_modifier = modifier_grefm_greek_shipping
+				NOT = {
+					any_scope_state = {
+						is_in_geographic_region = geographic_region_aegean_sea
+					}
+				}
+			}
+			remove_modifier = modifier_grefm_greek_shipping
+		}
 	}
 }
 
@@ -100,7 +124,7 @@ grefm_monthly_pulse_rhomaios = {
 		country_has_primary_culture = cu:rhomaios
 	}
 	events = {
-		grefm_greece.114
+		grefm_greece.113
 		grefm_megali_idea.010
 		grefm_megali_idea.200
 		grefm_byzantium.021
@@ -163,7 +187,7 @@ grefm_rehost_chariot_race = {
 
 
 ####---------- Balkan Flavor Monthly Pulses ----------####
-balkfm_monthly_pulse = {
+balkfm_monthly_country_pulse = {
 	trigger = {
 		balkfm_country_has_yugoslav_culture_trigger = yes
 	}
@@ -206,24 +230,29 @@ balkfm_monthly_pulse = {
 				}
 			}
 		}
+		if = {
+			limit = {
+				is_involved_in_journal_entry = je_balkfm_yugoslav_project
+			}
+			balkfm_update_yugoslav_unification_variables = yes
+		}
 	}
 }
 
 balkfm_yug_monthly_pulse = {
 	trigger = {
-		balkfm_country_has_yugoslav_culture_trigger = yes
+		c:YUG ?= this
 	}
 	events = {
 	}
 	random_events = {
+		chance_of_no_event = 80
+		5 = balkfm_yugoslavia.105
+		5 = balkfm_yugoslavia.106
+		5 = balkfm_yugoslavia.107
+		5 = balkfm_yugoslavia.108
 	}
 	effect = {
-		if = {
-			limit = {
-				is_involved_in_journal_entry = je_balkfm_unification_of_yugoslavia
-			}
-			balkfm_update_yugoslav_unification_variables = yes
-		}
 	}
 }
 
@@ -578,16 +607,16 @@ eqfm_senusiyya_pulse = {
 	}
 	events = {
 		eqfm_senusiyya.005
+		eqfm_senusiyya.300
 		eqfm_senusiyya.200
-		eqfm_senusiyya.100
 	}
 	random_events = {
 		chance_of_no_event = 95
-		5 = eqfm_senusiyya.110
-		5 = eqfm_senusiyya.111
-		5 = eqfm_senusiyya.210
-		5 = eqfm_senusiyya.211
-		5 = eqfm_senusiyya.212
+		5 = eqfm_senusiyya.202
+		5 = eqfm_senusiyya.203
+		5 = eqfm_senusiyya.305
+		5 = eqfm_senusiyya.306
+		5 = eqfm_senusiyya.307
 	}
 	effect = {
 		eqfm_update_local_senusiyya_variables_effect = yes

@@ -1,7 +1,12 @@
 ﻿je_grefm_constantinople = {
-	group = je_group_technology
+	group = je_group_gbbf_byzantine_restoration
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	dlc = dlc_grefm
 	weight = 2000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -29,58 +34,72 @@
 	immediate = {
 		trigger_event = grefm_byzantium.010
 	}
-
-	complete = {
-		owns_entire_state_region = STATE_EASTERN_THRACE
-		capital = {
-			state_region = s:STATE_EASTERN_THRACE
-			has_building = gbbf_building_hippodrome
-			has_building = gbbf_building_mega_palation
-			total_urbanization >= 2000
-			trigger_if = {
-				limit = {
-					morgenrote_is_active = yes
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			owns_entire_state_region = STATE_EASTERN_THRACE
+			capital = {
+				state_region = s:STATE_EASTERN_THRACE
+				has_building = gbbf_building_hippodrome
+				has_building = gbbf_building_mega_palation
+				total_urbanization >= 2000
+				trigger_if = {
+					limit = {
+						morgenrote_is_active = yes
+					}
+					has_modifier = gaudi_capital_expansion_level_4_modifier
 				}
-				has_modifier = gaudi_capital_expansion_level_4_modifier
-			}
-			any_scope_building = {
-				is_building_type = building_government_administration
-				OR = {
-					has_active_production_method = pm_vertical_filing_cabinets
-					has_active_production_method = pm_switch_boards
+				any_scope_building = {
+					is_building_type = building_government_administration
+					OR = {
+						has_active_production_method = pm_vertical_filing_cabinets
+						has_active_production_method = pm_switch_boards
+					}
+					level >= 10
 				}
-				level >= 10
-			}
-			any_scope_building = {
-				is_building_type = building_shipyard
-				OR = {
-					has_active_production_method = pm_metal_shipbuilding
-					has_active_production_method = pm_arc_welding_shipbuilding
+				any_scope_building = {
+					is_building_type = building_shipyard
+					OR = {
+						has_active_production_method = pm_metal_shipbuilding
+						has_active_production_method = pm_arc_welding_shipbuilding
+					}
+					weekly_profit > 0
+					occupancy >= 0.75
+					level >= 5
 				}
-				weekly_profit > 0
-				occupancy >= 0.75
-				level >= 5
+				any_scope_building = {
+					is_building_type = building_silk_plantation
+					weekly_profit > 0
+					occupancy >= 0.75
+					level >= 12
+				}
 			}
-			any_scope_building = {
-				is_building_type = building_silk_plantation
-				weekly_profit > 0
-				occupancy >= 0.75
-				level >= 12
-			}
+		}
+		effect = {
+			trigger_event = grefm_byzantium.014
 		}
 	}
-
-	on_complete = {
-		trigger_event = grefm_byzantium.014
-	}
-
-	fail = {
-		NOT = {
-			has_state_in_state_region = STATE_EASTERN_THRACE
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			NOT = {
+				has_state_in_state_region = STATE_EASTERN_THRACE
+			}
+			hidden_trigger = {
+				is_diplomatic_play_committed_participant = no # This covers for revolutions/secessions
+			}
 		}
-		hidden_trigger = {
-			is_diplomatic_play_committed_participant = no # This covers for revolutions/secessions
-		}
+		effect = { }
 	}
 
 	on_monthly_pulse = {
@@ -92,9 +111,14 @@
 }
 
 je_grefm_mega_palation_survey = {
-	group = je_group_technology
+	group = je_group_gbbf_byzantine_restoration
 	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	dlc = dlc_grefm
 	weight = 100
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -118,34 +142,48 @@ je_grefm_mega_palation_survey = {
 	modifiers_while_active = {
 		modifier_grefm_site_survey
 	}
-
-	complete = {
-		scope:journal_entry = { is_goal_complete = yes }
-	}
-
-	on_complete = {
-		trigger_event = grefm_byzantium.011
-		remove_variable = grefm_imperial_palace_var
-	}
-
-	fail = {
-		NOT = {
-			owns_entire_state_region = STATE_EASTERN_THRACE
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			scope:journal_entry = { is_goal_complete = yes }
+		}
+		effect = {
+			trigger_event = grefm_byzantium.011
+			remove_variable = grefm_imperial_palace_var
 		}
 	}
-
-	on_fail = {
-		remove_variable = grefm_imperial_palace_var
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			NOT = {
+				owns_entire_state_region = STATE_EASTERN_THRACE
+			}
+		}
+		effect = {
+			remove_variable = grefm_imperial_palace_var
+		}
 	}
-
-	invalid = {
-		hidden_trigger = {
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
 			has_variable = grefm_mega_palation_surveyed
 		}
-	}
-
-	on_invalid = {
-		remove_variable = grefm_imperial_palace_var
+		effect = {
+			remove_variable = grefm_imperial_palace_var
+		}
 	}
 
 	on_monthly_pulse = {
@@ -159,9 +197,14 @@ je_grefm_mega_palation_survey = {
 }
 
 je_grefm_byzantine_nationalism = {
-	group = je_group_historical_content
+	group = je_group_gbbf_byzantine_restoration
 	icon = "gfx/interface/icons/invention_icons/nationalism.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -197,26 +240,33 @@ je_grefm_byzantine_nationalism = {
 			has_law_or_variant = law_type:law_state_atheism
 		}
 	}
-
-	immediate = {
-	}
-
-	complete = {
-		has_law_or_variant = law_type:law_multicultural
-		has_law_or_variant = law_type:law_state_religion
-	}
-
-	on_complete = {
-	}
-
-	fail = {
-		OR = {
-			has_law_or_variant = law_type:law_ethnostate
-			has_law_or_variant = law_type:law_total_separation
-			has_law_or_variant = law_type:law_state_atheism
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			has_law_or_variant = law_type:law_multicultural
+			has_law_or_variant = law_type:law_state_religion
 		}
+		effect = { }
 	}
-
-	on_fail = {
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			OR = {
+				has_law_or_variant = law_type:law_ethnostate
+				has_law_or_variant = law_type:law_total_separation
+				has_law_or_variant = law_type:law_state_atheism
+			}
+		}
+		effect = { }
 	}
 }

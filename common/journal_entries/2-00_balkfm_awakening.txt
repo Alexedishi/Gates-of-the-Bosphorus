@@ -1,7 +1,12 @@
 ﻿je_balkfm_cultural_identity = { #
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -32,54 +37,47 @@
 		}
 		trigger_event = balkfm_revivalism.001
 	}
-
-	complete = {
-		has_technology_researched = nationalism
-		is_country_type = recognized
-		NOT = {
-			has_law_or_variant = law_type:law_subjecthood
-		}
-		OR = {
-			is_subject_type = subject_type_protectorate
-			is_subject_type = subject_type_personal_union
-			is_subject_type = subject_type_gbbf_eyalet
-			is_subject = no
-		}
-	}
-
-	on_complete = {
-		trigger_event = balkfm_revivalism.009
-		balkfm_cleanup_revivalism_effect = yes
-	}
-
-	fail = {
-		has_journal_entry = je_balkfm_national_awakening
-	}
-
-	on_fail = {
-		balkfm_cleanup_revivalism_effect = yes
-	}
-
-	invalid = {
-		trigger_if = {
-			limit = {
-				OR = {
-					country_has_primary_culture = cu:slovene
-					country_has_primary_culture = cu:croat
-					country_has_primary_culture = cu:serb
-					country_has_primary_culture = cu:bosniak
-					country_has_primary_culture = cu:bulgarian
-				}
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			has_technology_researched = nationalism
+			is_country_type = recognized
+			NOT = {
+				has_law_or_variant = law_type:law_subjecthood
 			}
-			custom_tooltip = {
-				text = has_formed_yugoslavia_tt
+			OR = {
+				is_subject_type = subject_type_protectorate
+				is_subject_type = subject_type_personal_union
+				is_subject_type = subject_type_gbbf_eyalet
+				is_subject = no
+			}
+		}
+		effect = {
+			trigger_event = balkfm_revivalism.009
+			balkfm_cleanup_revivalism_effect = yes
+		}
+	}
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			OR = {
+				has_journal_entry = je_balkfm_national_awakening
 				c:YUG ?= ROOT
 			}
 		}
-	}
-
-	on_invalid = {
-		balkfm_cleanup_revivalism_effect = yes
+		effect = {
+			balkfm_cleanup_revivalism_effect = yes
+		}
 	}
 
 	on_weekly_pulse = {
@@ -138,14 +136,18 @@
 			}
 		}
 	}
-
 }
 
 je_balkfm_national_awakening = {
 	# Overriding vanilla entry to integrate with GOTB systems
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -210,43 +212,50 @@ je_balkfm_national_awakening = {
 			type = je_balkan_national_awakenings
 		}
 	}
-
-	complete = {
-		is_subject = no
-		NOT = {
-			has_law_or_variant = law_type:law_subjecthood
-		}
-		scope:primary_culture_scope ?= { culture_current_fervor >= 75 }
-	}
-
-	on_complete = {
-		trigger_event = national_awakening.1
-	}
-
-	event_outcome_completed_desc = {
-		first_valid = {
-			triggered_desc = {
-				desc = event_effects_national_awakening.1_tt
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			is_subject = no
+			NOT = {
+				has_law_or_variant = law_type:law_subjecthood
 			}
+			scope:primary_culture_scope ?= { culture_current_fervor >= 75 }
+		}
+		effect = {
+			trigger_event = national_awakening.1
 		}
 	}
-
-	fail = {
-		trigger_if = {
-			limit = {
-				OR = {
-					country_has_primary_culture = cu:slovene
-					country_has_primary_culture = cu:croat
-					country_has_primary_culture = cu:serb
-					country_has_primary_culture = cu:bosniak
-					country_has_primary_culture = cu:bulgarian
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			trigger_if = {
+				limit = {
+					OR = {
+						country_has_primary_culture = cu:slovene
+						country_has_primary_culture = cu:croat
+						country_has_primary_culture = cu:serb
+						country_has_primary_culture = cu:bosniak
+						country_has_primary_culture = cu:bulgarian
+					}
+				}
+				custom_tooltip = {
+					text = balkfm_is_yugoslavia
+					c:YUG ?= ROOT
 				}
 			}
-			custom_tooltip = {
-				text = has_formed_yugoslavia_tt
-				c:YUG ?= ROOT
-			}
 		}
+		effect = { }
 	}
 
 	on_weekly_pulse = {

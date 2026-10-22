@@ -1,7 +1,12 @@
 ﻿je_haykfm_kur_tribes = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_kurdish.dds"
+	dlc = dlc_grefm
 	weight = 2000
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -12,49 +17,57 @@
 	}
 	
 	scripted_button = haykfm_claim_miri_miran_button
-
-	immediate = {
-	}
 	
 	modifiers_while_active = {
 		modifier_haykfm_informal_administration
 	}
-
-	complete = {
-		army_size >= 20
-		NOR = {
-			has_law_or_variant = law_type:law_hereditary_bureaucrats
-			has_law_or_variant = law_type:law_peasant_levies
-			has_law_or_variant = law_type:law_no_police
-		}
-		any_scope_building = {
-			is_building_type = building_university
-			occupancy > 0.9
-		}
-		any_scope_building = {
-			is_building_type = building_government_administration
-			NOT = {
-				has_active_production_method = pm_simple_organization
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			army_size >= 20
+			NOR = {
+				has_law_or_variant = law_type:law_hereditary_bureaucrats
+				has_law_or_variant = law_type:law_peasant_levies
+				has_law_or_variant = law_type:law_no_police
 			}
-			occupancy >= 0.9
+			any_scope_building = {
+				is_building_type = building_university
+				occupancy > 0.9
+			}
+			any_scope_building = {
+				is_building_type = building_government_administration
+				NOT = {
+					has_active_production_method = pm_simple_organization
+				}
+				occupancy >= 0.9
+			}
+			bureaucracy >= 0
+			approaching_bureaucracy_shortage = no
+			ig:ig_intelligentsia = {
+				is_marginal = no
+			}
 		}
-		bureaucracy >= 0
-		approaching_bureaucracy_shortage = no
-		ig:ig_intelligentsia = {
-			is_marginal = no
+		effect = {
+			trigger_event = haykfm_kurdistan.002
+			remove_modifier = modifier_haykfm_tribal_tradition
 		}
-	}
-
-	on_complete = {
-		trigger_event = haykfm_kurdistan.002
-		remove_modifier = modifier_haykfm_tribal_tradition
 	}
 }
 
 je_haykfm_kur_unification = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_kurdish.dds"
+	dlc = dlc_grefm
 	weight = 2000
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -75,40 +88,58 @@ je_haykfm_kur_unification = {
 	immediate = {
 		trigger_event = haykfm_kurdistan.200
 	}
-
-	complete = {
-		custom_tooltip = {
-			text = je_haykfm_kur_unification_complete
-			c:KUR ?= this
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			custom_tooltip = {
+				text = je_haykfm_kur_unification_complete
+				c:KUR ?= this
+			}
+		}
+		effect = {
+			trigger_event = haykfm_kurdistan.201
 		}
 	}
-
-	on_complete = {
-		trigger_event = haykfm_kurdistan.201
-	}
-
-	fail = {
-		NOT = {
-			any_scope_state = {
-				state_region = {
-					is_homeland = cu:kurdish
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			NOT = {
+				any_scope_state = {
+					state_region = {
+						is_homeland = cu:kurdish
+					}
 				}
 			}
 		}
+		effect = { }
 	}
 }
 
 je_haykfm_kur_heartlands = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_kurdish.dds"
+	dlc = dlc_grefm
 	weight = 2000
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
 
 	is_shown_when_inactive = {
-		always = no # TODO enable journal when ready
 		country_has_primary_culture = cu:kurdish
 	}
 
@@ -123,29 +154,39 @@ je_haykfm_kur_heartlands = {
 	immediate = {
 		trigger_event = haykfm_kurdistan.202
 	}
-
-	complete = {
-		owns_entire_state_region = STATE_MOSUL
-		owns_entire_state_region = STATE_DEIR_EZ_ZOR
-		owns_entire_state_region = STATE_DIYARBAKIR
-		owns_entire_state_region = STATE_ERZURUM
-		owns_entire_state_region = STATE_URMIA
-		owns_entire_state_region = STATE_PERSIAN_KURDISTAN
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			owns_entire_state_region = STATE_MOSUL
+			owns_entire_state_region = STATE_DEIR_EZ_ZOR
+			owns_entire_state_region = STATE_DIYARBAKIR
+			owns_entire_state_region = STATE_ERZURUM
+			owns_entire_state_region = STATE_URMIA
+			owns_entire_state_region = STATE_PERSIAN_KURDISTAN
+		}
+		effect = { }
 	}
-
-	on_complete = {
-	}
-
-	fail = {
-		NOT = {
-			any_scope_state = {
-				state_region = {
-					is_homeland = cu:kurdish
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			NOT = {
+				any_scope_state = {
+					state_region = {
+						is_homeland = cu:kurdish
+					}
 				}
 			}
 		}
-	}
-
-	on_fail = {
+		effect = { }
 	}
 }

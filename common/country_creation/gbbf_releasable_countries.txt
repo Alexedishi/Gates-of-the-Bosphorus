@@ -2,15 +2,46 @@
 	provinces = {
 		xD021A0 x23D67C x51A0A0 xAC2DD3 x5F13FD x1121E0 x9021E0
 	}
-	ai_will_do = { always = no }
+	
+	possible = { 
+		NOR = {
+			trigger_if = {
+				limit = {
+					balkfm_country_has_yugoslav_culture_trigger = yes
+				}
+				is_involved_in_journal_entry = je_balkfm_yugoslav_project
+			}
+			is_involved_in_journal_entry = je_balkfm_yugoslav_nationalism
+		}
+	}
+	
+	ai_will_do = {
+		always = no
+	}
 }
 
 REPLACE:BUL = {
 	states = {
 		STATE_BULGARIA
 		STATE_NORTHERN_THRACE
+		STATE_DOBRUDJA
 	}
-	ai_will_do = { always = no }
+	
+	possible = {
+		NOR = {
+			trigger_if = {
+				limit = {
+					balkfm_country_has_yugoslav_culture_trigger = yes
+				}
+				is_involved_in_journal_entry = je_balkfm_yugoslav_project
+			}
+			is_involved_in_journal_entry = je_balkfm_yugoslav_nationalism
+		}
+	}
+	
+	ai_will_do = {
+		always = no
+	}
 }
 
 BYZ_CAP = {
@@ -19,28 +50,66 @@ BYZ_CAP = {
 		x4DA0F1 xA4523A x39CBF7 x63E9DB x909463 x7DD48B xF657D8 # Adana Provinces
 		xC9CF24 xFB66D7 x5E4B3A # Diyarbakir Provinces
 	}
-	ai_will_do = { always = no }
+	
+	ai_will_do = {
+		always = no
+	}
 }
 
 BYZ_TRB = {
 	states = {
 		STATE_TRABZON
 	}
-	ai_will_do = { always = no }
+	
+	ai_will_do = {
+		always = no
+	}
+}
+
+REPLACE:CRO = {
+	states = {
+		STATE_CROATIA
+		STATE_SLAVONIA
+		STATE_DALMATIA
+	}
+	
+	required_num_states = 2
+	
+	possible = {
+		NOR = {
+			trigger_if = {
+				limit = {
+					balkfm_country_has_yugoslav_culture_trigger = yes
+				}
+				is_involved_in_journal_entry = je_balkfm_yugoslav_project
+			}
+			is_involved_in_journal_entry = je_balkfm_yugoslav_nationalism
+		}
+	}
+	
+	ai_will_do = {
+		always = no
+	}
 }
 
 GRA_THE = {
 	provinces = {
 		xB0DFDF xF56D13 x706060
 	}
-	ai_will_do = { always = no }
+	
+	ai_will_do = {
+		always = no
+	}
 }
 
 GRE_EPI = {
 	provinces = {
 		xC42EC6 x7BE071
 	}
-	ai_will_do = { always = no }
+	
+	ai_will_do = {
+		always = no
+	}
 }
 
 REPLACE:KUR = {
@@ -52,16 +121,137 @@ REPLACE:KUR = {
 		STATE_URMIA
 		STATE_PERSIAN_KURDISTAN
 	}
+	
 	required_num_states = 4
+	
 	possible = {
 		has_technology_researched = nationalism
 	}
-	ai_will_do = { always = no }
+	
+	ai_will_do = {
+		always = no
+	}
+}
+
+REPLACE:MON = {
+	states = {
+		STATE_MONTENEGRO
+	}
+	
+	possible = {
+		NOT = {
+			is_involved_in_journal_entry = je_balkfm_yugoslav_nationalism
+		}
+	}
+	
+	ai_will_do = {
+		always = no
+	}
+}
+
+REPLACE:SER = {
+	states = {
+		STATE_WESTERN_SERBIA
+		STATE_EASTERN_SERBIA
+		STATE_KOSOVO
+		STATE_MONTENEGRO
+	}
+	
+	possible = {
+		NOR = {
+			trigger_if = {
+				limit = {
+					balkfm_country_has_yugoslav_culture_trigger = yes
+				}
+				is_involved_in_journal_entry = je_balkfm_yugoslav_project
+			}
+			is_involved_in_journal_entry = je_balkfm_yugoslav_nationalism
+		}
+	}
+	
+	ai_will_do = {
+		always = no
+	}
 }
 
 SER_RSK = {
 	provinces = {
 		x19AF6A x1E7362 x3B7D2B x3F67BA x50209F x7C904A xA40356 xD0A0A0 xDA817B xF06101
 	}
-	ai_will_do = { always = no }
+	
+	possible = {
+		NOR = {
+			trigger_if = {
+				limit = {
+					balkfm_country_has_yugoslav_culture_trigger = yes
+				}
+				is_involved_in_journal_entry = je_balkfm_yugoslav_project
+			}
+			is_involved_in_journal_entry = je_balkfm_yugoslav_nationalism
+		}
+	}
+	
+	ai_will_do = {
+		always = no
+	}
+}
+
+REPLACE:SLO = {
+	use_culture_states = yes
+	
+	possible = {
+		NOR = {
+			trigger_if = {
+				limit = {
+					balkfm_country_has_yugoslav_culture_trigger = yes
+				}
+				is_involved_in_journal_entry = je_balkfm_yugoslav_project
+			}
+			is_involved_in_journal_entry = je_balkfm_yugoslav_nationalism
+		}
+	}
+	
+	ai_will_do = {
+		always = no
+	}
+}
+
+REPLACE:YUG = {
+	states = {
+		STATE_WESTERN_SERBIA
+		STATE_EASTERN_SERBIA
+		STATE_KOSOVO
+		STATE_SKOPIA
+		STATE_DELVIDEK
+		STATE_MONTENEGRO
+		STATE_BOSNIA
+		STATE_SLAVONIA
+		STATE_DALMATIA
+		STATE_CROATIA
+		STATE_SLOVENIA
+		STATE_ISTRIA
+	}
+	
+	required_num_states = 3
+	
+	possible = {
+		custom_tooltip = {
+			text = balkfm_has_formed_yug
+			has_global_variable = has_formed_yug
+		}
+		# Checks if the technology is researched by the war goal holder (if any) or by the releasing country
+		OR = {
+			scope:war_goal_holder ?= {
+				has_technology_researched = pan-nationalism
+			}
+			AND = {
+				NOT = { exists = scope:war_goal_holder }
+				has_technology_researched = pan-nationalism
+			}
+		}
+	}
+	
+	ai_will_do = {
+		always = no
+	}
 }

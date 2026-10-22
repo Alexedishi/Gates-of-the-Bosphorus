@@ -1,0 +1,59 @@
+﻿on_yearly_pulse_country = {
+	on_actions = {
+		grefm_yearly_pulse
+	}
+}
+
+grefm_yearly_pulse = {
+	trigger = {
+		c:GRE ?= this
+		has_law_or_variant = law_type:law_monarchy
+	}
+	effect = {
+		if = {
+			limit = {
+				has_variable = grefm_1862_election_held
+			}
+			com_change_variable = {
+				name = grefm_1862_election_held
+				value = 1
+			}
+		}
+	}
+}
+
+####---------- Contextless Yearly Pulses ----------####
+on_yearly_pulse = {
+	on_actions = {
+		balkfm_state_region_law_pulse
+	}
+}
+
+balkfm_state_region_law_pulse = {
+	trigger = {
+		NOT = {
+			has_global_variable = has_formed_yug
+		}
+	}
+	effect = {
+		every_state_region_in_yugoslavia = {
+			limit = {
+				has_variable = balkfm_tax_law_var
+			}
+			ordered_scope_state = {
+				order_by = num_provinces
+				position = 0
+				check_range_bounds = no
+				owner = {
+					active_law:lawgroup_taxation.type = {
+						save_scope_as = balkfm_country_tax_law_scope
+					}
+				}
+				set_variable = {
+					name = balkfm_tax_law_var
+					value = scope:balkfm_country_tax_law_scope
+				}
+			}
+		}
+	}
+}

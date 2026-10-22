@@ -1,7 +1,12 @@
 ﻿je_mgrbfm_securing_fezzan = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	dlc = dlc_grefm
 	weight = 100
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -39,34 +44,41 @@
 	modifiers_while_active = {
 		modifier_mgrbfm_tribal_administration
 	}
-
-	complete = {
-		owns_entire_state_region = STATE_LIBYAN_DESERT
-		OR = {
-			country_rank >= rank_value:unrecognized_regional_power
-			is_country_type = recognized
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			owns_entire_state_region = STATE_LIBYAN_DESERT
+			OR = {
+				country_rank >= rank_value:unrecognized_regional_power
+				is_country_type = recognized
+			}
+			government_legitimacy >= 75
+			army_size >= 20
+			country_has_building_type_levels = {
+				target = bt:building_government_administration
+				value >= 2
+			}
+			gbbf_no_revolutionary_ig_trigger = yes
 		}
-		government_legitimacy >= 75
-		army_size >= 20
-		country_has_building_type_levels = {
-			target = bt:building_government_administration
-			value >= 2
+		effect = {
+			trigger_event = mgrbfm_fezzan.009
 		}
-		gbbf_no_revolutionary_ig_trigger = yes
 	}
-
-	on_complete = {
-		trigger_event = mgrbfm_fezzan.009
-	}
-
-	fail = {
-		hidden_trigger = {
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
 			NOT = {
 				c:FZN = this
 			}
 		}
-	}
-
-	on_fail = {
+		effect = { }
 	}
 }

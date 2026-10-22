@@ -251,118 +251,71 @@ gbbf_free_from_void_ruler_leader = {
 	set_as_interest_group_leader = yes
 }
 
-
-####---------- Variable Management Effects ----------####
-# NOTE: These effects are meant to execute within the *journal_entry* scope
-# It is policy for GotB to set all journal-related variables to be within the journal scope
-
-gbbf_calc_variable_effect = {
-	set_variable = {
-		name = $name$_var
-		value = owner.$name$_value
-	}
-}
-
-gbbf_push_variable_effect = {
-# For use when the calc_ and push_ effects are split between different pulses
-	set_variable = {
-		name = $name$_var
-		value = {
+gbbf_transfer_all_characters_effect = {
+	custom_description = {
+		text = gbbf_transfer_all_characters_effect
+		subject = $target$
+		object = $country$
+		
+		$country$ = {
 			if = {
 				limit = {
-					has_variable = $name$_var
+					OR = {
+						has_law_or_variant = law_type:law_monarchy
+						has_law_or_variant = law_type:law_social_monarchy
+						has_law_or_variant = law_type:law_theocracy
+					}
 				}
-				add = var:$name$_var
+				ruler = {
+					add_character_role = character_role_politician
+					remove_character_role = character_role_ruler
+					add_modifier = modifier_gbbf_deposed_noble
+				}
+				heir ?= {
+					add_character_role = character_role_politician
+					remove_character_role = character_role_heir
+					add_modifier = modifier_gbbf_deposed_noble
+				}
 			}
-			add = var:$name$_progress_var
-			max = $max$
-			min = $min$
+			every_scope_character = {
+				transfer_character = $target$
+			}
 		}
 	}
 }
 
-gbbf_calc_and_push_variable_effect = {
-# This effect will restore variables if lost
-	set_variable = {
-		name = $name$_progress_var
-		value = owner.$name$_progress_value
-	}
-	set_variable = {
-		name = $name$_var
-		value = {
+gbbf_transfer_all_characters_and_annex_effect = {
+	custom_description = {
+		text = gbbf_transfer_all_characters_and_annex_effect
+		subject = $target$
+		object = $country$
+		
+		$country$ = {
 			if = {
 				limit = {
-					has_variable = $name$_var
-				}
-				add = var:$name$_var
-			}
-			add = var:$name$_progress_var
-			max = $max$
-			min = $min$
-		}
-	}
-}
-
-gbbf_checked_calc_and_push_variable_effect = {
-# This is more nuanced, and will set the base _var to 0 if lost
-	if = {
-		limit = {
-			has_variable = $name$_var
-		}
-		set_variable = {
-			name = $name$_progress_var
-			value = owner.$name$_progress_value
-		}
-		set_variable = {
-			name = $name$_var
-			value = {
-				if = {
-					limit = {
-						has_variable = $name$_var
+					OR = {
+						has_law_or_variant = law_type:law_monarchy
+						has_law_or_variant = law_type:law_social_monarchy
+						has_law_or_variant = law_type:law_theocracy
 					}
-					add = var:$name$_var
 				}
-				add = var:$name$_progress_var
-				max = $max$
-				min = $min$
+				ruler = {
+					add_character_role = character_role_politician
+					remove_character_role = character_role_ruler
+					add_modifier = modifier_gbbf_deposed_noble
+				}
+				heir ?= {
+					add_character_role = character_role_politician
+					remove_character_role = character_role_heir
+					add_modifier = modifier_gbbf_deposed_noble
+				}
+			}
+			every_scope_character = {
+				transfer_character = $target$
 			}
 		}
-	}
-	else = {
-		set_variable = {
-			name = $name$_var
-			value = 0
-		}
-		set_variable = {
-			name = $name$_progress_var
-			value = owner.$name$_progress_value
-		}
-	}
-}
-
-gbbf_gated_calc_and_push_variable_effect = {
-# This will only fire if the base _var is set; it will not restore it if it is lost somehow
-	if = {
-		limit = {
-			has_variable = $name$_var
-		}
-		set_variable = {
-			name = $name$_progress_var
-			value = owner.$name$_progress_value
-		}
-		set_variable = {
-			name = $name$_var
-			value = {
-				if = {
-					limit = {
-						has_variable = $name$_var
-					}
-					add = var:$name$_var
-				}
-				add = var:$name$_progress_var
-				max = $max$
-				min = $min$
-			}
+		$target$ = {
+			annex = $country$
 		}
 	}
 }
@@ -734,12 +687,4 @@ gbbf_setup_erzurum_effect = {
 	}
 	set_country_type = unrecognized
 	activate_law = law_type:law_people_of_the_book
-}
-
-
-####---------- Placeholder Effects ----------####
-# TODO REMOVE THIS FOR 1.15; THIS IS HERE FOR THE DURATION OF THE 1.14 OPEN BETA ONLY
-com_has_indexed_situation_progress_bar_trigger = {
-	# This runs in a JOURNAL ENTRY scope
-	has_variable = com_situation_group_$index$_next_phase_progress_var
 }

@@ -1,104 +1,122 @@
 ﻿je_balkfm_rom_regulamentul_organic = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/invention_icons/bureaucracy.dds"
+	dlc = dlc_grefm
 	weight = 1000
-
+	
+	activation_description = {
+		always = yes
+	}
+	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
-
+	
 	scripted_progress_bar = balkfm_hospodar_progressbar
 	scripted_progress_bar = balkfm_regulamentul_progressbar
-
+	
 	is_shown_in_lobby = {
 		country_has_primary_culture = cu:romanian
 	}
-
-	immediate = {
-	}
-
-	complete = {
-		custom_tooltip = {
-			text = je_rom_regulamentul_organic_tt
-			hidden_trigger = {
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			custom_tooltip = {
+				text = je_rom_regulamentul_organic_tt
 				var:balkfm_ottoman_legacy_var >= 4
 			}
 		}
-	}
-
-	on_complete = {
-		trigger_event = balkfm_romania.006
-		if = {
-			limit = {
-				ruler = {
-					NOR = {
-						has_ideology = ideology:ideology_radical
-						has_ideology = ideology:ideology_social_democrat
-						has_ideology = ideology:ideology_gbbf_kogalnitchanism
+		effect = {
+			trigger_event = balkfm_romania.006
+			if = {
+				limit = {
+					ruler = {
+						NOR = {
+							has_ideology = ideology:ideology_radical
+							has_ideology = ideology:ideology_state_socialist
+							has_ideology = ideology:ideology_gbbf_kogalnitchanism
+						}
 					}
+					NOT = { has_variable = balkfm_1848_succeeded }
 				}
-				NOT = { has_variable = balkfm_1848_succeeded }
-			}
-			hidden_effect = {
-				trigger_event = {
-					id = balkfm_romania.007
-					days = 120
+				hidden_effect = {
+					trigger_event = {
+						id = balkfm_romania.007
+						days = 120
+					}
 				}
 			}
 		}
 	}
-
-	fail = {
-		OR = {
-			custom_tooltip = {
-				text = balkfm_has_formed_rom_tt
-				c:ROM ?= this
-			}
-			trigger_if = {
-				limit = {
-					exists = c:TUR
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			OR = {
+				custom_tooltip = {
+					text = balkfm_is_romania
+					c:ROM ?= this
+				}
+				trigger_if = {
+					limit = {
+						exists = c:TUR
+					}
+					NOT = {
+						is_subject_of = c:TUR
+					}
 				}
 				NOT = {
-					is_subject_of = c:TUR
+					has_law = law_type:law_organic_regulation
 				}
 			}
-			NOT = {
-				has_law = law_type:law_organic_regulation
-			}
 		}
-	}
-
-	on_fail = {
-		if = {
-			limit = {
-				ruler = {
-					NOR = {
-						has_ideology = ideology:ideology_radical
-						has_ideology = ideology:ideology_social_democrat
-						has_ideology = ideology:ideology_gbbf_kogalnitchanism
+		effect = {
+			if = {
+				limit = {
+					ruler = {
+						NOR = {
+							has_ideology = ideology:ideology_radical
+							has_ideology = ideology:ideology_state_socialist
+							has_ideology = ideology:ideology_gbbf_kogalnitchanism
+						}
+					}
+					NOT = { has_variable = balkfm_1848_succeeded }
+				}
+				show_as_tooltip = {
+					trigger_event = balkfm_romania.007
+				}
+				hidden_effect = {
+					trigger_event = {
+						id = balkfm_romania.007
+						days = 120
 					}
 				}
-				NOT = { has_variable = balkfm_1848_succeeded }
 			}
-			show_as_tooltip = {
-				trigger_event = balkfm_romania.007
-			}
-			hidden_effect = {
-				trigger_event = {
-					id = balkfm_romania.007
-					days = 120
-				}
-			}
-		}
-		set_variable = balkfm_regulamentul_completed
-	}
-
-	invalid = {
-		hidden_trigger = {
-			has_variable =  balkfm_regulamentul_completed
+			set_variable = balkfm_regulamentul_completed
 		}
 	}
-
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			has_variable = balkfm_regulamentul_completed
+		}
+		effect = { }
+	}
+	
 	on_weekly_pulse = {
 		effect = {
 			set_variable = {
@@ -117,7 +135,7 @@
 			}
 		}
 	}
-
+	
 	on_monthly_pulse = {
 		events = {
 			balkfm_romania.101 # The Petition-Proclamation
@@ -126,7 +144,7 @@
 			balkfm_romania.005 # Electing a Hospodar (WAL)
 		}
 	}
-
+	
 	on_yearly_pulse = {
 		effect = {
 			if = {
@@ -147,7 +165,7 @@
 			}
 		}
 	}
-
+	
 	status_desc = {
 		first_valid = {
 			triggered_desc = {
@@ -181,17 +199,22 @@
 je_balkfm_rom_1848 = {
 	group = je_group_internal_affairs
 	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	dlc = dlc_grefm
 	weight = 500
-
+	
+	activation_description = {
+		always = yes
+	}
+	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = no
 	transferable = no
-
+	
 	scripted_button = balkfm_mol_intervention_button
 	scripted_button = balkfm_wal_intervention_button
-
+	
 	scripted_progress_bar = balkfm_romanian_liberalism_progressbar
-
+	
 	immediate = {
 		set_variable = {
 			name = balkfm_1848_rom_var
@@ -202,82 +225,106 @@ je_balkfm_rom_1848 = {
 			value = 0
 		}
 	}
-	complete = {
-		custom_tooltip = {
-			text = balkfm_1848_rom_success_tt
-			hidden_trigger = {
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			custom_tooltip = {
+				text = balkfm_1848_rom_success_tt
 				var:balkfm_1848_rom_var >= 200
 			}
 		}
-	}
-
-	on_complete = {
-		if = {
-			limit = {
-				c:MOL ?= this
+		effect = {
+			if = {
+				limit = {
+					c:MOL ?= this
+				}
+				trigger_event = balkfm_romania.104
 			}
-			trigger_event = balkfm_romania.104
-		}
-		if = {
-			limit = {
-				c:WAL ?= this
+			if = {
+				limit = {
+					c:WAL ?= this
+				}
+				trigger_event = balkfm_romania.204
 			}
-			trigger_event = balkfm_romania.204
+			balkfm_cleanup_1848_variables_effect = yes
 		}
-		balkfm_cleanup_1848_variables_effect = yes
 	}
-
-	fail = {
-		custom_tooltip = {
-			text = balkfm_1848_rom_fail_tt
-			hidden_trigger = {
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		flags = { }
+		
+		trigger = {
+			custom_tooltip = {
+				text = balkfm_1848_rom_fail_tt
 				var:balkfm_1848_rom_var <= 0
 			}
 		}
-	}
-
-	on_fail = {
-		if = {
-			limit = {
-				c:MOL ?= this
+		effect = {
+			if = {
+				limit = {
+					c:MOL ?= this
+				}
+				trigger_event = balkfm_romania.103
 			}
-			trigger_event = balkfm_romania.103
-		}
-		if = {
-			limit = {
-				c:WAL ?= this
+			if = {
+				limit = {
+					c:WAL ?= this
+				}
+				trigger_event = balkfm_romania.203
 			}
-			trigger_event = balkfm_romania.203
+			balkfm_cleanup_1848_variables_effect = yes
 		}
-		balkfm_cleanup_1848_variables_effect = yes
 	}
-
+	
+	outcome = {
+		header = JOURNAL_ENTRY_TIMEOUT
+		effect_header = JOURNAL_ENTRY_ON_TIMEOUT
+		conclusion_desc = JOURNAL_ENTRY_TIMEOUT_CONCLUSION_DESC
+		
+		flags = { timeout }
+		
+		effect = {
+			if = {
+				limit = {
+					c:MOL ?= this
+				}
+				trigger_event = balkfm_romania.105
+			}
+			if = {
+				limit = {
+					c:WAL ?= this
+				}
+				trigger_event = balkfm_romania.205
+			}
+			balkfm_cleanup_1848_variables_effect = yes
+		}
+	}
 	timeout = 730
-
-	on_timeout = {
-		if = {
-			limit = {
-				c:MOL ?= this
-			}
-			trigger_event = balkfm_romania.105
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			has_variable = balkfm_regulamentul_completed
 		}
-		if = {
-			limit = {
-				c:WAL ?= this
-			}
-			trigger_event = balkfm_romania.205
+		effect = {
+			balkfm_cleanup_1848_variables_effect = yes
 		}
-		balkfm_cleanup_1848_variables_effect = yes
 	}
-
-	invalid = {
-		has_variable = balkfm_regulamentul_completed
-	}
-
-	on_invalid = {
-		balkfm_cleanup_1848_variables_effect = yes
-	}
-
+	
 	on_weekly_pulse = {
 		effect = {
 			set_variable = {
@@ -292,7 +339,7 @@ je_balkfm_rom_1848 = {
 			}
 		}
 	}
-
+	
 	on_monthly_pulse = {
 		effect = {
 			change_variable = {
@@ -306,7 +353,7 @@ je_balkfm_rom_1848 = {
 			}
 		}
 	}
-
+	
 	status_desc = {
 		triggered_desc = {
 			desc = je_balkfm_rom_1848_status
@@ -320,12 +367,17 @@ je_balkfm_rom_1848 = {
 je_balkfm_rom_statutul_dezvoltator = {
 	group = je_group_internal_affairs
 	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
+	dlc = dlc_grefm
 	weight = 1000
-
+	
+	activation_description = {
+		always = yes
+	}
+	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
-
+	
 	progressbar = yes
 	goal_add_value = {
 		value = 200
@@ -333,57 +385,73 @@ je_balkfm_rom_statutul_dezvoltator = {
 	current_value = {
 		value = root.var:balkfm_dezvoltator_var
 	}
-
+	
 	immediate = {
 		set_variable = {
 			name = balkfm_dezvoltator_progress_var
 			value = balkfm_dezvoltator_progress_value
 		}
 	}
-
-	complete = {
-		# Technically, Cuza's goal was to establish authoritarian rule, but with broad voting rights for the peasantry. This is cannot be represented by Victoria 3's current systems, hence the strange completion requirements
-		# TODO I've actually done more research here... this is really more complicated than I made it sound. Unfortunately, research in non-English language sources is slower than I would like; this has been tagged for a rework in the docket once I have more sources
-		# NOTE Revisiting this in Feb 2026- idk when I put that last comment in, but the rework is still on the list, but no improved sources yet
-		# NOTE Checked in here during my final pass before 1.13 (Apr 2026)... I have more sources and some ideas, but this will take time
-		has_law_or_variant = law_type:law_monarchy
-		OR = {
-			has_law_or_variant = law_type:law_autocracy
-			has_law_or_variant = law_type:law_oligarchy
+	
+	# Technically, Cuza's goal was to establish authoritarian rule, but with broad voting rights for the peasantry. This is cannot be represented by Victoria 3's current systems, hence the strange completion requirements
+	# TODO I've actually done more research here... this is really more complicated than I made it sound. Unfortunately, research in non-English language sources is slower than I would like; this has been tagged for a rework in the docket once I have more sources
+	# NOTE Revisiting this in Feb 2026- idk when I put that last comment in, but the rework is still on the list, but no improved sources yet
+	# NOTE Checked in here during my final pass before 1.13 (Apr 2026)... I have more sources and some ideas, but this will take time
+	# NOTE Checked in yet again during refactors for 1.15 (Sept 2026)... This on the docket for the next major patch.
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			has_law_or_variant = law_type:law_monarchy
+			OR = {
+				has_law_or_variant = law_type:law_autocracy
+				has_law_or_variant = law_type:law_oligarchy
+			}
+			OR = {
+				has_law_or_variant = law_type:law_traditionalism
+				has_law_or_variant = law_type:law_agrarianism
+			}
+			NOR = {
+				has_law_or_variant = law_type:law_serfdom
+				has_law_or_variant = law_type:law_tenant_farmers
+			}
+			scope:journal_entry = { is_goal_complete = yes }
 		}
-		OR = {
-			has_law_or_variant = law_type:law_traditionalism
-			has_law_or_variant = law_type:law_agrarianism
+		effect = {
+			trigger_event = balkfm_romania.008
+			balkfm_cleanup_dezvoltator_variables_effect = yes
 		}
-		NOR = {
-			has_law_or_variant = law_type:law_serfdom
-			has_law_or_variant = law_type:law_tenant_farmers
-		}
-		scope:journal_entry = { is_goal_complete = yes }
 	}
-
-	on_complete = {
-		trigger_event = balkfm_romania.008
-		balkfm_cleanup_dezvoltator_variables_effect = yes
+	
+	outcome = {
+		header = JOURNAL_ENTRY_TIMEOUT
+		effect_header = JOURNAL_ENTRY_ON_TIMEOUT
+		conclusion_desc = JOURNAL_ENTRY_TIMEOUT_CONCLUSION_DESC
+		
+		flags = { historical timeout }
+		
+		effect = {
+			trigger_event = balkfm_romania.009
+			balkfm_cleanup_dezvoltator_variables_effect = yes
+		}
 	}
-
 	timeout = 1825 # You have five years. Cuza had less.
-
-	on_timeout = {
-		trigger_event = balkfm_romania.009
-		balkfm_cleanup_dezvoltator_variables_effect = yes
-	}
-
-	invalid = {
-		hidden_trigger = {
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
 			has_variable = balkfm_dezvoltator_completed
 		}
+		effect = {
+			balkfm_cleanup_dezvoltator_variables_effect = yes
+		}
 	}
-
-	on_invalid = {
-		balkfm_cleanup_dezvoltator_variables_effect = yes
-	}
-
+	
 	on_weekly_pulse = {
 		effect = {
 			set_variable = {
@@ -392,7 +460,7 @@ je_balkfm_rom_statutul_dezvoltator = {
 			}
 		}
 	}
-
+	
 	on_monthly_pulse = {
 		effect = {
 			change_variable = {
@@ -409,67 +477,97 @@ je_balkfm_rom_statutul_dezvoltator = {
 }
 
 je_balkfm_rom_1866_1 = {
-	icon = "gfx/interface/icons/event_icons/event_scales.dds"
 	group = je_group_internal_affairs
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	dlc = dlc_grefm
 	weight = 500
-
+	
+	activation_description = {
+		always = yes
+	}
+	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = no
 	transferable = no
-
-	immediate = {
-	}
-
+	
 	modifiers_while_active = {
 		modifier_balkfm_democratic_intent
 	}
-
-	complete = {
-		country_has_voting_franchise = yes
-		OR = {
-			has_law_or_variant = law_type:law_freedom_of_conscience
-			has_law_or_variant = law_type:law_total_separation
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			country_has_voting_franchise = yes
+			OR = {
+				has_law_or_variant = law_type:law_freedom_of_conscience
+				has_law_or_variant = law_type:law_total_separation
+			}
+			OR = {
+				has_law_or_variant = law_type:law_right_of_assembly
+				has_law_or_variant = law_type:law_protected_speech
+			}
+			OR = {
+				has_law_or_variant = law_type:law_commercialized_agriculture
+				has_law_or_variant = law_type:law_peasant_proprietorship
+			}
 		}
-		OR = {
-			has_law_or_variant = law_type:law_right_of_assembly
-			has_law_or_variant = law_type:law_protected_speech
-		}
-		OR = {
-			has_law_or_variant = law_type:law_commercialized_agriculture
-			has_law_or_variant = law_type:law_peasant_proprietorship
+		effect = {
+			add_modifier = {
+				name = modifier_balkfm_democratic_constitution
+				months = gbbf_long_modifier_time
+			}
 		}
 	}
-
-	on_complete = {
-		add_modifier = {
-			name = modifier_balkfm_democratic_constitution
-			months = gbbf_long_modifier_time
+	
+	outcome = {
+		header = JOURNAL_ENTRY_TIMEOUT
+		effect_header = JOURNAL_ENTRY_ON_TIMEOUT
+		conclusion_desc = JOURNAL_ENTRY_TIMEOUT_CONCLUSION_DESC
+		
+		flags = { timeout }
+		
+		effect = {
+			add_modifier = {
+				name = modifier_balkfm_absent_reforms
+				months = gbbf_long_modifier_time
+			}
 		}
 	}
-
 	timeout = 3560 # you have 10 years
-
-	on_timeout = {
-		add_modifier = {
-			name = modifier_balkfm_absent_reforms
-			months = gbbf_long_modifier_time
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			NOT = {
+				has_law_or_variant = law_type:law_monarchy
+			}
 		}
-	}
-
-	invalid = {
-		NOT = { has_law_or_variant = law_type:law_monarchy }
+		effect = { }
 	}
 }
 
 je_balkfm_rom_1866_2 = {
-	icon = "gfx/interface/icons/event_icons/event_scales.dds"
 	group = je_group_internal_affairs
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	dlc = dlc_grefm
 	weight = 500
-
+	
+	activation_description = {
+		always = yes
+	}
+	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = no
 	transferable = no
-
+	
 	progressbar = yes
 	goal_add_value = {
 		value = 100
@@ -477,59 +575,74 @@ je_balkfm_rom_1866_2 = {
 	current_value = {
 		value = var:balkfm_1866_var
 	}
-
-	immediate = {
-	}
-
 	modifiers_while_active = {
 		modifier_balkfm_absolutist_intent
 	}
-
-	fail = {
-		custom_tooltip = {
-			text = je_balkfm_rom_1866_fail
-			hidden_trigger = {
-				var:balkfm_1866_var <= 0
-			}
-		}
-		hidden_trigger = {
-			NOT = { has_variable = balkfm_1866_technical }
+	
+	outcome = {
+		header = JOURNAL_ENTRY_TIMEOUT
+		effect_header = JOURNAL_ENTRY_ON_TIMEOUT
+		conclusion_desc = JOURNAL_ENTRY_TIMEOUT_CONCLUSION_DESC
+		
+		flags = { historical timeout }
+		
+		effect = {
+			trigger_event = balkfm_romania.406
+			balkfm_cleanup_1866_variables_effect = yes
 		}
 	}
-
-	on_fail = {
-		if = {
-			limit = {
-				any_scope_character = {
-					has_template = balkfm_candiano_alexandru
+	timeout = 1780 # You just gotta make it five years
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		flags = { }
+		
+		trigger = {
+			custom_tooltip = {
+				text = je_balkfm_rom_1866_fail
+				hidden_trigger = {
+					var:balkfm_1866_var <= 0
 				}
 			}
-			trigger_event = balkfm_romania.407
+			hidden_trigger = {
+				NOT = { has_variable = balkfm_1866_technical }
+			}
 		}
-		else = {
-			trigger_event = balkfm_romania.405
-		}
-		balkfm_cleanup_1866_variables_effect = yes
-	}
-
-	timeout = 1780 # You just gotta make it five years
-
-	on_timeout = {
-		trigger_event = balkfm_romania.406
-		balkfm_cleanup_1866_variables_effect = yes
-	}
-
-	invalid = {
-		OR = {
-			NOT = { has_law_or_variant = law_type:law_monarchy }
-			has_modifier = modifier_balkfm_ploiesti_succeeded
+		effect = {
+			if = {
+				limit = {
+					any_scope_character = {
+						has_template = balkfm_candiano_alexandru
+					}
+				}
+				trigger_event = balkfm_romania.407
+			}
+			else = {
+				trigger_event = balkfm_romania.405
+			}
+			balkfm_cleanup_1866_variables_effect = yes
 		}
 	}
-
-	on_invalid = {
-		balkfm_cleanup_1866_variables_effect = yes
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			OR = {
+				NOT = { has_law_or_variant = law_type:law_monarchy }
+				has_modifier = modifier_balkfm_ploiesti_succeeded
+			}
+		}
+		effect = {
+			balkfm_cleanup_1866_variables_effect = yes
+		}
 	}
-
+	
 	on_weekly_pulse = {
 		effect = {
 			set_variable = {
@@ -538,7 +651,7 @@ je_balkfm_rom_1866_2 = {
 			}
 		}
 	}
-
+	
 	on_monthly_pulse = {
 		events = {
 			balkfm_romania.402 # A Conspiracy in Ploiești
@@ -555,7 +668,7 @@ je_balkfm_rom_1866_2 = {
 			}
 		}
 	}
-
+	
 	status_desc = {
 		first_valid = {
 			triggered_desc = {
@@ -583,64 +696,87 @@ je_balkfm_rom_1866_2 = {
 je_balkfm_rom_nationalism = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	dlc = dlc_grefm
 	weight = 500
-
+	
+	activation_description = {
+		always = yes
+	}
+	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
-
+	
+	scripted_button = balkfm_support_junimism_button
+	scripted_button = balkfm_support_dacianism_button
+	
 	is_shown_in_lobby = {
 		country_has_primary_culture = cu:romanian
 	}
-
+	
 	is_shown_when_inactive = {
 		NOT = { has_variable = balkfm_romanian_nationalism_started }
 		country_has_primary_culture = cu:romanian
 	}
-
+	
 	possible = {
 		has_technology_researched = nationalism
 		custom_tooltip = {
-			text = balkfm_has_formed_rom_tt
+			text = balkfm_is_romania
 			c:ROM ?= this
 		}
 	}
-
+	
 	immediate = {
 		trigger_event = balkfm_romania.600
 		balkfm_initialize_protochronism_effect = yes
 	}
-
-	scripted_button = balkfm_support_junimism_button
-	scripted_button = balkfm_support_dacianism_button
-
-	complete = {
-		OR = {
-			has_law_or_variant = law_type:law_public_schools
-			has_law_or_variant = law_type:law_private_schools
-		}
-		institution_investment_level = {
-			institution = institution_schools
-			value >= 3
-		}
-		literacy_rate >= 0.50
-		custom_tooltip = {
-			text = je_balkfm_rom_nationalism_complete_tt
-			hidden_trigger = {
-				has_journal_entry = je_balkfm_rom_nationalism
-				var:balkfm_junimism_var != var:balkfm_dacianism_var
-				OR = {
-					var:balkfm_junimism_var >= 50
-					var:balkfm_dacianism_var >= 50
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			OR = {
+				has_law_or_variant = law_type:law_public_schools
+				has_law_or_variant = law_type:law_private_schools
+			}
+			institution_investment_level = {
+				institution = institution_schools
+				value >= 3
+			}
+			literacy_rate >= 0.50
+			custom_tooltip = {
+				text = je_balkfm_rom_nationalism_complete_tt
+				hidden_trigger = {
+					has_journal_entry = je_balkfm_rom_nationalism
+					var:balkfm_junimism_var != var:balkfm_dacianism_var
+					OR = {
+						var:balkfm_junimism_var >= 50
+						var:balkfm_dacianism_var >= 50
+					}
 				}
 			}
 		}
+		effect = {
+			trigger_event = balkfm_romania.602
+		}
 	}
-
-	on_complete = {
-		trigger_event = balkfm_romania.602
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			has_variable = balkfm_rom_nationalism_complete
+		}
+		effect = {
+			balkfm_cleanup_protochronism_effect = yes
+		}
 	}
-
+	
 	on_weekly_pulse = {
 		effect = {
 			set_variable = {
@@ -657,7 +793,7 @@ je_balkfm_rom_nationalism = {
 			}
 		}
 	}
-
+	
 	on_monthly_pulse = {
 		effect = {
 			change_variable = {
@@ -680,17 +816,7 @@ je_balkfm_rom_nationalism = {
 			}
 		}
 	}
-
-	invalid = {
-		hidden_trigger = {
-			has_variable = balkfm_rom_nationalism_complete
-		}
-	}
-
-	on_invalid = {
-		balkfm_cleanup_protochronism_effect = yes
-	}
-
+	
 	status_desc = {
 		first_valid = {
 			triggered_desc = {
@@ -718,87 +844,107 @@ je_balkfm_rom_nationalism = {
 	}
 }
 
-je_balkfm_rom_united_principalities = { # this journal integrates all vanilla unification content into one journal entry
+je_balkfm_rom_united_principalities = {
+	# this journal integrates all vanilla unification content into one journal entry
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
-
+	
 	is_shown_in_lobby = {
 		country_has_primary_culture = cu:romanian
 	}
-
+	
 	scripted_button = balkfm_unite_principalities_button
 	scripted_button = balkfm_all_for_one_button
 	scripted_button = balkfm_bessarabian_retrocession_button
 	scripted_button = balkfm_marea_unire_button
-
+	
 	is_shown_when_inactive = {
 		country_has_primary_culture = cu:romanian
 	}
-
+	
 	possible = {
 		has_technology_researched = nationalism
 		NOT = {
-			any_overlord_or_above ?= { # Can't unite the principalities if you're already the lesser in a pact with another Romanian state
+			any_overlord_or_above ?= {
+				# Can't unite the principalities if you're already the lesser in a pact with another Romanian state
 				country_has_primary_culture = cu:romanian
 			}
 		}
 	}
-
-	immediate = {
-	}
-
-	complete = {
-		custom_tooltip = {
-			text = balkfm_has_formed_rom_tt
-			c:ROM ?= this
-		}
-	}
-
-	fail = {
-		OR = {
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
 			custom_tooltip = {
-				text = balkfm_no_other_romanians_tt
-				hidden_trigger = {
-					NOT = {
-						any_country = {
-							NOT = { this = ROOT }
-							country_has_primary_culture = cu:romanian
+				text = balkfm_is_romania
+				c:ROM ?= this
+			}
+		}
+		effect = { }
+	}
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			OR = {
+				custom_tooltip = {
+					text = balkfm_no_other_romanians_tt
+					hidden_trigger = {
+						NOT = {
+							any_country = {
+								NOT = { this = ROOT }
+								country_has_primary_culture = cu:romanian
+							}
 						}
 					}
 				}
-			}
-			custom_tooltip = {
-				text = balkfm_rom_formed_tt
-				hidden_trigger = {
-					AND = {
-						exists = c:ROM
-						NOT = { c:ROM ?= this }
-					}
-				}
-			}
-			custom_tooltip = {
-				text = balkfm_rom_lost_union_tt
-				hidden_trigger = {
-					any_country = {
+				custom_tooltip = {
+					text = balkfm_rom_formed_tt
+					hidden_trigger = {
 						AND = {
-							has_variable = romania_union_partner
-							NOT = { is_subject_of = ROOT }
+							exists = c:ROM
+							NOT = { c:ROM ?= this }
+						}
+					}
+				}
+				custom_tooltip = {
+					text = balkfm_rom_lost_union_tt
+					hidden_trigger = {
+						any_country = {
+							AND = {
+								has_variable = romania_union_partner
+								NOT = { is_subject_of = ROOT }
+							}
 						}
 					}
 				}
 			}
 		}
+		effect = {
+			remove_variable = ROM_united_principality
+		}
 	}
-
-	on_fail = {
-		remove_variable = ROM_united_principality
-	}
-
+	
 	on_monthly_pulse = {
 		effect = {
 			if = {
@@ -817,29 +963,31 @@ je_balkfm_rom_united_principalities = { # this journal integrates all vanilla un
 			}
 		}
 	}
-
-	# timeout = 0 # no timeout. Romania is eternal. -- this comment stays. Toți în unu.
-
 }
 
 je_balkfm_rom_greater_romania = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
-
+	
 	is_shown_when_inactive = {
 		c:ROM ?= this
 	}
-
+	
 	scripted_button = balkfm_trs_agitate_button
 	scripted_button = balkfm_trs_provoke_button
 	scripted_button = balkfm_bessarabian_retrocession_button
 	scripted_button = balkfm_marea_unire_button
-
+	
 	possible = {
 		has_technology_researched = nationalism
 		custom_tooltip = {
@@ -852,39 +1000,52 @@ je_balkfm_rom_greater_romania = {
 			}
 		}
 	}
-
+	
 	immediate = {
 		trigger_event = balkfm_romania.708
 	}
-
-	complete = {
-		is_subject = no
-		calc_true_if = {
-			amount >= 6
-			owns_entire_state_region = STATE_BANAT
-			owns_entire_state_region = STATE_BESSARABIA
-			owns_entire_state_region = STATE_BEKES
-			owns_entire_state_region = STATE_MOLDAVIA
-			owns_entire_state_region = STATE_NORTHERN_TRANSYLVANIA
-			owns_entire_state_region = STATE_SOUTHERN_TRANSYLVANIA
-			owns_entire_state_region = STATE_WALLACHIA
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			is_subject = no
+			calc_true_if = {
+				amount >= 6
+				owns_entire_state_region = STATE_BANAT
+				owns_entire_state_region = STATE_BESSARABIA
+				owns_entire_state_region = STATE_BEKES
+				owns_entire_state_region = STATE_MOLDAVIA
+				owns_entire_state_region = STATE_NORTHERN_TRANSYLVANIA
+				owns_entire_state_region = STATE_SOUTHERN_TRANSYLVANIA
+				owns_entire_state_region = STATE_WALLACHIA
+			}
 		}
-	}
-
-	on_complete = {
-		trigger_event = balkfm_romania.709
+		effect = {
+			trigger_event = balkfm_romania.709
+		}
 	}
 }
 
 je_balkfm_peles_castle = {
 	group = je_group_technology
 	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+	dlc = dlc_grefm
 	weight = 500
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
-
+	
 	is_shown_when_inactive = {
 		c:ROM ?= this
 		owns_entire_state_region = STATE_WALLACHIA
@@ -894,29 +1055,42 @@ je_balkfm_peles_castle = {
 			}
 		}
 	}
-
+	
 	possible = {
 		has_technology_researched = reinforced_concrete
 		has_technology_researched = pan-nationalism
 	}
-
-	immediate = {
-	}
-
-	complete = {
-		any_scope_building = {
-			is_building_type = gbbf_building_castelul_peles
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			any_scope_building = {
+				is_building_type = gbbf_building_castelul_peles
+			}
+		}
+		effect = {
+			trigger_event = balkfm_romania.501
 		}
 	}
-
-	on_complete = {
-		trigger_event = balkfm_romania.501
-	}
-
-	fail = {
-		NOR = {
-			owns_entire_state_region = STATE_WALLACHIA
-			has_law_or_variant = law_type:law_monarchy
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			NOR = {
+				owns_entire_state_region = STATE_WALLACHIA
+				has_law_or_variant = law_type:law_monarchy
+			}
 		}
+		effect = { }
 	}
 }

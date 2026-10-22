@@ -1,261 +1,4 @@
-﻿grefm_dismiss_auxilliaries_button = {
-	name = grefm_dismiss_auxilliaries_name
-	desc = grefm_dismiss_auxilliaries_desc
-	
-	visible = {
-		has_modifier = modifier_grefm_bavarian_auxiliaries
-		NOT = {
-			has_variable = grefm_dismissed_bavarian_auxiliaries
-		}
-	}
-	possible = {
-		custom_tooltip = {
-			text = grefm_regency_discharged
-			NOT = {
-				has_modifier = modifier_grefm_armansperg_regency
-			}
-		}
-		has_modifier = modifier_grefm_bavarian_auxiliaries
-	}
-	effect = {
-		set_variable = grefm_dismissed_bavarian_auxiliaries
-		trigger_event = {
-			id = grefm_greece.018
-			popup = yes
-		}
-		show_as_tooltip = {
-			if = {
-				limit = {
-					has_modifier = modifier_grefm_bavarian_auxiliaries
-				}
-				remove_modifier = modifier_grefm_bavarian_auxiliaries
-			}
-			if = {
-				limit = {
-					has_modifier = modifier_grefm_funding_bavarian_auxiliaries
-				}
-				remove_modifier = modifier_grefm_funding_bavarian_auxiliaries
-			}
-			add_modifier = {
-				name = modifier_grefm_dismissed_bavarians
-				months = gbbf_normal_modifier_time
-				is_decaying = yes
-			}
-			if = {
-				limit = {
-					exists = c:BAV
-				}
-				create_incident = {
-					country = c:BAV
-					value = 5
-				}
-
-			}
-		}
-		custom_tooltip = grefm_dismiss_auxilliaries_effect
-		if = {
-			limit = {
-				has_journal_entry = je_grefm_bavarocracy_main
-			}
-			custom_tooltip = {
-				text = grefm_instability_minus_25
-				change_variable = {
-					name = grefm_bavarocracy_instability_var
-					subtract = 25
-				}
-			}
-		}
-		else_if = {
-			limit = {
-				has_journal_entry = je_grefm_bavarocracy_ip3
-			}
-			grefm_bavarocracy_medium_support_effect = yes
-		}
-		grefm_calculate_bavarocracy_variables_effect = yes
-	}
-	ai_chance = {
-		value = 10
-	}
-}
-
-grefm_release_nikitaras_button = {
-	name = grefm_release_nikitaras_name
-	desc = grefm_release_nikitaras_desc
-	
-	visible = {
-		NOT = { has_variable = grefm_turkeater_released }
-		year <= 1849
-	}
-	possible = {
-		custom_tooltip = {
-			text = grefm_regency_discharged
-			NOT = {
-				has_modifier = modifier_grefm_armansperg_regency
-			}
-		}
-		year <= 1849
-	}
-	effect = {
-		trigger_event = grefm_greece.019
-		if = {
-			limit = {
-				has_journal_entry = je_grefm_bavarocracy_main
-			}
-			custom_tooltip = {
-				text = grefm_instability_minus_25
-				change_variable = {
-					name = grefm_bavarocracy_instability_var
-					subtract = 25
-				}
-			}
-		}
-		show_as_tooltip = {
-			add_modifier = {
-				name = modifier_grefm_nikitas_released
-				months = gbbf_normal_modifier_time
-				is_decaying = yes
-			}
-			grefm_bavarocracy_medium_support_effect = yes
-		}
-		grefm_calculate_bavarocracy_variables_effect = yes
-		set_variable = grefm_turkeater_released
-	}
-	ai_chance = {
-		value = 0
-	}
-}
-
-grefm_authorize_palace_button = {
-	name = grefm_authorize_palace_name
-	desc = grefm_authorize_palace_desc
-	
-	visible = {
-		NOT = { has_variable = grefm_palace_authorized }
-	}
-	possible = {
-		custom_tooltip = {
-			text = grefm_regency_discharged
-			NOT = {
-				has_modifier = modifier_grefm_armansperg_regency
-			}
-		}
-		has_law_or_variant = law_type:law_monarchy
-	}
-	effect = {
-		custom_tooltip = {
-			text = palaia_anaktora_enable_tt
-			hidden_effect = {
-				set_variable = grefm_palace_authorized
-			}
-		}
-		add_modifier = {
-			name = modifier_grefm_palace_authorized
-			months = gbbf_long_modifier_time
-		}
-	}
-}
-
-grefm_philhellenic_loan_button = {
-	name = grefm_philhellenic_loan_name
-	desc = grefm_philhellenic_loan_desc
-	
-	visible = {
-		always = yes
-	}
-	possible = {
-		OR = {
-			c:GBR ?= {
-				relations:root >= relations_threshold:amicable
-			}
-			c:FRA ?= {
-				relations:root >= relations_threshold:amicable
-			}
-		}
-		custom_tooltip = {
-			text = grefm_regency_discharged
-			NOT = {
-				has_modifier = modifier_grefm_armansperg_regency
-			}
-		}
-		NOT = { has_modifier = modifier_grefm_philhellenic_loans }
-	}
-	effect = {
-		add_treasury = 100000
-		add_modifier = {
-			name = modifier_grefm_philhellenic_loans
-			months = gbbf_long_modifier_time
-		}
-	}
-}
-
-grefm_bavarocracy_convert_button = {
-	name = grefm_bavarocracy_convert_name
-	desc = grefm_bavarocracy_convert_desc
-
-	visible = {
-		NOT = {
-			has_variable = grefm_ruler_conversion_var
-		}
-		ruler = {
-			religion = rel:catholic
-		}
-	}
-	possible = {
-		custom_tooltip = {
-			text = grefm_regency_discharged
-			NOT = {
-				has_modifier = modifier_grefm_armansperg_regency
-			}
-		}
-		custom_tooltip = {
-			text = grefm_bavarocracy_convert_possible
-			ruler.religion = rel:catholic
-		}
-	}
-	effect = {
-		trigger_event = {
-			id = grefm_greece.093
-			popup = yes
-		}
-		show_as_tooltip = {
-			custom_tooltip = grefm_bavarocracy_convert_effect
-			c:BAV ?= {
-				change_relations = {
-					country = root
-					value = -30
-				}
-				create_diplomatic_catalyst = {
-					type = catalyst_event_negative
-					target = root
-				}
-			}
-			c:PAP ?= {
-				change_relations = {
-					country = root
-					value = -30
-				}
-				create_diplomatic_catalyst = {
-					type = catalyst_event_negative
-					target = root
-				}
-			}
-			c:RUS ?= {
-				change_relations = {
-					country = root
-					value = 30
-				}
-				create_diplomatic_catalyst = {
-					type = catalyst_event_positive
-					target = root
-				}
-			}
-			grefm_bavarocracy_medium_support_effect = yes
-		}
-		set_variable = grefm_ruler_conversion_var
-	}
-}
-
-grefm_seek_royal_wedding_button = {
+﻿grefm_seek_royal_wedding_button = {
 	name = grefm_seek_royal_wedding_name
 	desc = grefm_seek_royal_wedding_desc
 	
@@ -304,6 +47,344 @@ grefm_seek_royal_wedding_button = {
 		set_variable = {
 			name = grefm_royal_wedding_var
 			months = 6
+		}
+	}
+}
+
+grefm_dismiss_auxilliaries_button = {
+	name = grefm_dismiss_auxilliaries_name
+	desc = grefm_dismiss_auxilliaries_desc
+	
+	visible = {
+		has_modifier = modifier_grefm_bavarian_auxiliaries
+		NOT = {
+			has_variable = grefm_dismissed_bavarian_auxiliaries
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			text = grefm_regency_discharged
+			NOT = {
+				has_modifier = modifier_grefm_armansperg_regency
+			}
+		}
+		has_modifier = modifier_grefm_bavarian_auxiliaries
+	}
+	effect = {
+		set_variable = grefm_dismissed_bavarian_auxiliaries
+		trigger_event = {
+			id = grefm_greece.013
+			popup = yes
+		}
+		show_as_tooltip = {
+			if = {
+				limit = {
+					has_modifier = modifier_grefm_bavarian_auxiliaries
+				}
+				remove_modifier = modifier_grefm_bavarian_auxiliaries
+			}
+			if = {
+				limit = {
+					has_modifier = modifier_grefm_funding_bavarian_auxiliaries
+				}
+				remove_modifier = modifier_grefm_funding_bavarian_auxiliaries
+			}
+			add_modifier = {
+				name = modifier_grefm_dismissed_bavarians
+				months = gbbf_normal_modifier_time
+				is_decaying = yes
+			}
+			if = {
+				limit = {
+					exists = c:BAV
+				}
+				create_incident = {
+					country = c:BAV
+					value = 5
+				}
+
+			}
+		}
+		custom_tooltip = grefm_dismiss_auxilliaries_effect
+		if = {
+			limit = {
+				has_dlc_feature = ip3_content
+			}
+			grefm_bavarocracy_medium_support_effect = yes
+		}
+		else = {
+			custom_tooltip = {
+				text = grefm_instability_minus_25
+				change_variable = {
+					name = grefm_bavarocracy_instability_var
+					subtract = 25
+				}
+			}
+		}
+		grefm_calculate_bavarocracy_variables_effect = yes
+	}
+	ai_chance = {
+		value = 10
+	}
+}
+
+grefm_release_nikitaras_button = {
+	name = grefm_release_nikitaras_name
+	desc = grefm_release_nikitaras_desc
+	
+	visible = {
+		NOT = { has_variable = grefm_turkeater_released }
+		year <= 1849
+	}
+	possible = {
+		custom_tooltip = {
+			text = grefm_regency_discharged
+			NOT = {
+				has_modifier = modifier_grefm_armansperg_regency
+			}
+		}
+		year <= 1849
+	}
+	effect = {
+		trigger_event = grefm_greece.014
+		if = {
+			limit = {
+				NOT = {
+					has_dlc_feature = ip3_content
+				}
+			}
+			custom_tooltip = {
+				text = grefm_instability_minus_25
+				change_variable = {
+					name = grefm_bavarocracy_instability_var
+					subtract = 25
+				}
+			}
+		}
+		show_as_tooltip = {
+			add_modifier = {
+				name = modifier_grefm_nikitas_released
+				months = gbbf_normal_modifier_time
+				is_decaying = yes
+			}
+			grefm_bavarocracy_medium_support_effect = yes
+		}
+		grefm_calculate_bavarocracy_variables_effect = yes
+		set_variable = grefm_turkeater_released
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+grefm_bavarocracy_convert_button = {
+	name = grefm_bavarocracy_convert_name
+	desc = grefm_bavarocracy_convert_desc
+	
+	visible = {
+		has_dlc_feature = ip3_content
+		NOR = {
+			has_variable = grefm_ruler_conversion_considered
+		}
+		ruler = {
+			religion = rel:catholic
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			text = grefm_regency_discharged
+			NOT = {
+				has_modifier = modifier_grefm_armansperg_regency
+			}
+		}
+		custom_tooltip = {
+			text = grefm_bavarocracy_convert_possible
+			ruler.religion = rel:catholic
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = grefm_greece.023
+			popup = yes
+		}
+		show_as_tooltip = {
+			custom_tooltip = grefm_bavarocracy_convert_effect
+			c:BAV ?= {
+				change_relations = {
+					country = root
+					value = -30
+				}
+				create_diplomatic_catalyst = {
+					type = catalyst_event_negative
+					target = root
+				}
+			}
+			c:PAP ?= {
+				change_relations = {
+					country = root
+					value = -30
+				}
+				create_diplomatic_catalyst = {
+					type = catalyst_event_negative
+					target = root
+				}
+			}
+			c:RUS ?= {
+				change_relations = {
+					country = root
+					value = 30
+				}
+				create_diplomatic_catalyst = {
+					type = catalyst_event_positive
+					target = root
+				}
+			}
+			grefm_bavarocracy_medium_support_effect = yes
+		}
+		set_variable = grefm_ruler_conversion_considered
+	}
+}
+
+grefm_authorize_palace_button = {
+	name = grefm_authorize_palace_name
+	desc = grefm_authorize_palace_desc
+	
+	visible = {
+		NOT = { has_variable = grefm_palace_authorized }
+	}
+	possible = {
+		custom_tooltip = {
+			text = grefm_regency_discharged
+			NOT = {
+				has_modifier = modifier_grefm_armansperg_regency
+			}
+		}
+		has_law_or_variant = law_type:law_monarchy
+	}
+	effect = {
+		custom_tooltip = {
+			text = palaia_anaktora_enable_tt
+			hidden_effect = {
+				set_variable = grefm_palace_authorized
+			}
+		}
+		add_modifier = {
+			name = modifier_grefm_palace_authorized
+			months = gbbf_long_modifier_time
+		}
+	}
+}
+
+grefm_found_national_bank_button = {
+	name = grefm_found_national_bank_name
+	desc = grefm_found_national_bank_desc
+	
+	visible = {
+		any_scope_character = {
+			has_template = grefm_eynard_jean_gabriel
+		}
+		NOT = {
+			has_variable = grefm_national_bank_var
+		}
+	}
+	possible = {
+		has_technology_researched = central_banking
+		custom_tooltip = {
+			text = grefm_found_national_bank_trigger
+			any_scope_character = {
+				has_template = grefm_eynard_jean_gabriel
+			}
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = grefm_greece.017
+			popup = yes
+		}
+		show_as_tooltip = {
+			add_modifier = modifier_grefm_national_bank
+		}
+		set_variable = grefm_national_bank_var
+	}
+}
+
+grefm_philhellenic_loan_button = {
+	name = grefm_philhellenic_loan_name
+	desc = grefm_philhellenic_loan_desc
+	
+	visible = {
+		always = yes
+	}
+	possible = {
+		NOT = {
+			any_scope_treaty = {
+				binds = root
+				any_scope_article = {
+					has_type = gbbf_philhellene_loan
+				}
+			}
+		}
+		OR = {
+			c:GBR ?= {
+				relations:root >= relations_threshold:amicable
+			}
+			c:FRA ?= {
+				relations:root >= relations_threshold:amicable
+			}
+			c:RUS ?= {
+				relations:root >= relations_threshold:amicable
+			}
+		}
+		custom_tooltip = {
+			text = grefm_regency_discharged
+			NOT = {
+				has_modifier = modifier_grefm_armansperg_regency
+			}
+		}
+		custom_tooltip = {
+			text = grefm_philhellenic_loan_trigger
+			has_variable = grefm_national_bank_var
+		}
+	}
+	effect = {
+		add_treasury = 100000
+		ordered_country = {
+			limit = {
+				OR = {
+					c:GBR ?= this
+					c:FRA ?= this
+					c:RUS ?= this
+				}
+			}
+			order_by = relations:root
+			position = 0
+			check_range_bounds = no
+			save_scope_as = grefm_philhellenic_loaner_scope
+		}
+		create_treaty = {
+			first_country = root
+			second_country = scope:grefm_philhellenic_loaner_scope
+			
+			is_draft = no
+			binding_period = { years = 5 }
+			
+			articles_to_create = {
+				{
+					article = gbbf_philhellene_loan
+					source_country = scope:grefm_philhellenic_loaner_scope
+					target_country = root
+				}
+				{
+					article = money_transfer
+					source_country = root
+					target_country = scope:grefm_philhellenic_loaner_scope
+					inputs = {
+						{ quantity = 400 }
+						# Raw math is 384.62, so we round to 400 to simulate interest
+						# At 0.04% interest, assuming it compounds monthly, this is wildly better than any rate Greece ever got
+					}
+				}
+			}
 		}
 	}
 }
@@ -387,7 +468,7 @@ grefm_elect_hellene_king_button = {
 	}
 	effect = {
 		trigger_event = {
-			id = grefm_greece.022
+			id = grefm_greece.031
 			popup = yes
 		}
 		custom_tooltip = {
@@ -416,7 +497,7 @@ grefm_elect_roman_king_button = {
 	}
 	effect = {
 		trigger_event = {
-			id = grefm_greece.023
+			id = grefm_greece.032
 			popup = yes
 		}
 		custom_tooltip = {

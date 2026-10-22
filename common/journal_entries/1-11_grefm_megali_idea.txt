@@ -1,7 +1,12 @@
 ﻿je_grefm_megali_idea = {
-	group = je_group_historical_content
+	group = je_group_gbbf_greek_nationalism
 	icon = "gfx/interface/icons/event_icons/event_hellenic.dds"
+	dlc = dlc_grefm
 	weight = 10000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -106,127 +111,147 @@
 			}
 		}
 	}
-
-	complete = {
-		is_at_war = no
-		is_subject = no
-		owns_entire_state_region = STATE_EASTERN_THRACE
-		custom_tooltip = {
-			text = je_grefm_megali_idea_complete
-			var:grefm_megali_idea_counter_var >= grefm_megali_idea_complete_value
-		}
-		trigger_if = {
-			limit = {
-				NOT = {
-					c:AST ?= this
-				}
-			}
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { }
+		
+		trigger = {
+			is_at_war = no
+			is_subject = no
+			owns_entire_state_region = STATE_EASTERN_THRACE
 			custom_tooltip = {
-				text = grefm_greek_empire_formed
-				c:BYZ ?= this
+				text = je_grefm_megali_idea_complete
+				var:grefm_megali_idea_counter_var >= grefm_megali_idea_complete_value
 			}
-		}
-		trigger_if = {
-			limit = {
-				NOR = {
-					has_variable = grefm_embraced_megali_idea
-					has_variable = grefm_embraced_imperial_restoration
-				}
-			}
-			country_rank >= rank_value:minor_power
-		}
-		trigger_else = {
-			country_rank >= rank_value:major_power
-		}
-		custom_tooltip = {
-			text = no_insurrectionary_movement_tt
-			NOT = {
-				any_political_movement = {
-					is_insurrectionary = yes
-				}
-			}
-		}
-		gbbf_is_broke_trigger = no
-		hidden_trigger = {
-			OR = {
-				has_variable = grefm_embraced_megali_idea
-				has_variable = grefm_weaksauce
-			}
-			trigger_if = {
-				limit = {
-					has_variable = grefm_embraced_megali_idea
-				}
-				has_variable = grefm_megali_idea_expansion_considered
-			}
-		}
-	}
-
-	on_complete = {
-		set_global_variable = grefm_megali_idea_complete
-		if = {
-			limit = {
-				country_has_primary_culture = cu:rhomaios
-			}
-			trigger_event = grefm_megali_idea.012
-		}
-		else_if = {
-			limit = {
-				c:AST ?= this
-			}
-			change_tag = BYZ
-			add_primary_culture = cu:greek
-		}
-		else_if = {
-			limit = {
-				c:BUL ?= this
-			}
-			trigger_event = balkfm_bulgaria.218
-			show_as_tooltip = {
-				change_tag = BYZ
-			}
-		}
-		else_if = {
-			limit = {
-				c:ROM ?= this
-			}
-			trigger_event = balkfm_romania.721
-			show_as_tooltip = {
-				change_tag = BYZ
-			}
-		}
-		else = {
-			trigger_event = grefm_megali_idea.003
-		}
-		grefm_empire_name_tooltip_effect = yes
-	}
-
-	fail = {
-		OR = {
 			trigger_if = {
 				limit = {
 					NOT = {
-						c:BYZ ?= this
+						c:AST ?= this
 					}
 				}
-				grefm_greek_empire_exists_trigger = yes
+				custom_tooltip = {
+					text = grefm_greek_empire_formed
+					c:BYZ ?= this
+				}
 			}
-			is_subject = yes
-			AND = {
-				country_rank < rank_value:minor_power
-				gbbf_is_broke_trigger = yes
+			trigger_if = {
+				limit = {
+					NOR = {
+						has_variable = grefm_embraced_megali_idea
+						has_variable = grefm_embraced_imperial_restoration
+					}
+				}
+				country_rank >= rank_value:minor_power
+			}
+			trigger_else = {
+				country_rank >= rank_value:major_power
+			}
+			custom_tooltip = {
+				text = no_insurrectionary_movement_tt
+				NOT = {
+					any_political_movement = {
+						is_insurrectionary = yes
+					}
+				}
+			}
+			gbbf_is_broke_trigger = no
+			hidden_trigger = {
+				OR = {
+					has_variable = grefm_embraced_megali_idea
+					has_variable = grefm_weaksauce
+				}
+				trigger_if = {
+					limit = {
+						has_variable = grefm_embraced_megali_idea
+					}
+					has_variable = grefm_megali_idea_expansion_considered
+				}
 			}
 		}
-	}
-
-	on_fail = {
-		trigger_event = grefm_megali_idea.005
-	}
-
-	invalid = {
-		custom_tooltip = {
-			text = grefm_megali_idea_rejected_trigger
-			has_variable = grefm_megali_idea_rejected
+		effect = {
+			set_global_variable = grefm_megali_idea_complete
+			if = {
+				limit = {
+					country_has_primary_culture = cu:rhomaios
+				}
+				trigger_event = grefm_megali_idea.012
+			}
+			else_if = {
+				limit = {
+					c:AST ?= this
+				}
+				change_tag = BYZ
+				add_primary_culture = cu:greek
+			}
+			else_if = {
+				limit = {
+					c:BUL ?= this
+				}
+				trigger_event = balkfm_bulgaria.218
+				show_as_tooltip = {
+					change_tag = BYZ
+				}
+			}
+			else_if = {
+				limit = {
+					c:ROM ?= this
+				}
+				trigger_event = balkfm_romania.721
+				show_as_tooltip = {
+					change_tag = BYZ
+				}
+			}
+			else = {
+				trigger_event = grefm_megali_idea.003
+			}
+			grefm_empire_name_tooltip_effect = yes
 		}
+	}
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			OR = {
+				trigger_if = {
+					limit = {
+						NOT = {
+							c:BYZ ?= this
+						}
+					}
+					grefm_greek_empire_exists_trigger = yes
+				}
+				is_subject = yes
+				AND = {
+					country_rank < rank_value:minor_power
+					gbbf_is_broke_trigger = yes
+				}
+			}
+		}
+		effect = {
+			trigger_event = grefm_megali_idea.005
+		}
+	}
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			custom_tooltip = {
+				text = grefm_megali_idea_rejected_trigger
+				has_variable = grefm_megali_idea_rejected
+			}
+		}
+		effect = { }
 	}
 	
 	on_weekly_pulse = {
@@ -241,7 +266,7 @@
 	on_monthly_pulse = {
 		events = {
 			grefm_megali_idea.004 # The Empire of the Greeks
-			grefm_greece.045 # A Cretan Champion
+			grefm_greece.052 # A Cretan Champion
 		}
 	}
 
@@ -268,9 +293,18 @@
 }
 
 je_grefm_the_greek_plan = {
+	group = je_group_gbbf_greek_nationalism
 	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
-	group = je_group_historical_content
+	dlc = dlc_grefm
+	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
+	
 	should_be_pinned_by_default_uninvolved_or_context = yes
+	can_revolution_inherit = yes
+	transferable = no
 
 	is_shown_in_lobby = {
 		country_has_primary_culture = cu:urum
@@ -287,21 +321,31 @@ je_grefm_the_greek_plan = {
 	immediate = {
 		trigger_event = grefm_megali_idea.020
 	}
-
-	complete = {
-		owns_entire_state_region = STATE_CRIMEA
-		owns_entire_state_region = STATE_TAURIDA
-		owns_entire_state_region = STATE_KUBAN
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			owns_entire_state_region = STATE_CRIMEA
+			owns_entire_state_region = STATE_TAURIDA
+			owns_entire_state_region = STATE_KUBAN
+		}
+		effect = { }
 	}
-
-	weight = 1000
-
 }
 
 je_grefm_byzantine_restoration = {
-	group = je_group_historical_content
+	group = je_group_gbbf_greek_nationalism
 	icon = "gfx/interface/icons/event_icons/event_aquila.dds"
+	dlc = dlc_grefm
 	weight = 10000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -387,85 +431,102 @@ je_grefm_byzantine_restoration = {
 			trigger_event = grefm_hybrid_empire.001
 		}
 	}
-
-	complete = {
-		owns_entire_state_region = STATE_EASTERN_THRACE
-		trigger_if = {
-			limit = {
-				has_variable = grefm_embraced_roman_reconquest
-			}
-			owns_entire_state_region = STATE_LAZIO
-			country_rank >= rank_value:great_power
-			has_modifier = modifier_grefm_reclaimed_balkans
-			has_modifier = modifier_grefm_reclaimed_aegean
-			has_modifier = modifier_grefm_reclaimed_anatolia
-			has_modifier = modifier_grefm_reclaimed_levant
-			has_modifier = modifier_grefm_reclaimed_egypt
-			has_modifier = modifier_grefm_reclaimed_italy
-		}
-		trigger_else = {
-			country_rank >= rank_value:major_power
-			has_modifier = modifier_grefm_reclaimed_balkans
-			has_modifier = modifier_grefm_reclaimed_aegean
-			has_modifier = modifier_grefm_reclaimed_anatolia
-			has_modifier = modifier_grefm_reclaimed_levant
-			has_modifier = modifier_grefm_reclaimed_egypt
-		}
-		is_at_war = no
-		is_subject = no
-		gbbf_is_broke_trigger = no
-	}
-
-	on_complete = {
-		if = {
-			limit = {
-				country_has_primary_culture = cu:australian
-			}
-			trigger_event = grefm_emu_empire.009
-		}
-		else_if = {
-			limit = {
-				country_has_primary_culture = cu:greek
-				NOT = {
-					country_has_primary_culture = cu:rhomaios
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			owns_entire_state_region = STATE_EASTERN_THRACE
+			trigger_if = {
+				limit = {
+					has_variable = grefm_embraced_roman_reconquest
 				}
+				owns_entire_state_region = STATE_LAZIO
+				country_rank >= rank_value:great_power
+				has_modifier = modifier_grefm_reclaimed_balkans
+				has_modifier = modifier_grefm_reclaimed_aegean
+				has_modifier = modifier_grefm_reclaimed_anatolia
+				has_modifier = modifier_grefm_reclaimed_levant
+				has_modifier = modifier_grefm_reclaimed_egypt
+				has_modifier = modifier_grefm_reclaimed_italy
 			}
-			trigger_event = grefm_hellenic_empire.009
+			trigger_else = {
+				country_rank >= rank_value:major_power
+				has_modifier = modifier_grefm_reclaimed_balkans
+				has_modifier = modifier_grefm_reclaimed_aegean
+				has_modifier = modifier_grefm_reclaimed_anatolia
+				has_modifier = modifier_grefm_reclaimed_levant
+				has_modifier = modifier_grefm_reclaimed_egypt
+			}
+			is_at_war = no
+			is_subject = no
+			gbbf_is_broke_trigger = no
 		}
-		else_if = {
-			limit = {
-				country_has_primary_culture = cu:rhomaios
-				NOT = {
+		effect = {
+			if = {
+				limit = {
+					country_has_primary_culture = cu:australian
+				}
+				trigger_event = grefm_emu_empire.009
+			}
+			else_if = {
+				limit = {
+					country_has_primary_culture = cu:greek
+					NOT = {
+						country_has_primary_culture = cu:rhomaios
+					}
+				}
+				trigger_event = grefm_hellenic_empire.009
+			}
+			else_if = {
+				limit = {
+					country_has_primary_culture = cu:rhomaios
+					NOT = {
+						country_has_primary_culture = cu:greek
+					}
+				}
+				trigger_event = grefm_roman_empire.009
+			}
+			else_if = {
+				limit = {
+					country_has_primary_culture = cu:rhomaios
 					country_has_primary_culture = cu:greek
 				}
+				trigger_event = grefm_hybrid_empire.009
 			}
-			trigger_event = grefm_roman_empire.009
+			set_global_variable = grefm_byzantium_restored
 		}
-		else_if = {
-			limit = {
-				country_has_primary_culture = cu:rhomaios
-				country_has_primary_culture = cu:greek
+	}
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			OR = {
+				is_subject = yes
+				gbbf_is_broke_trigger = yes
 			}
-			trigger_event = grefm_hybrid_empire.009
 		}
-		set_global_variable = grefm_byzantium_restored
+		effect = { }
 	}
-
-	fail = {
-		OR = {
-			is_subject = yes
-			gbbf_is_broke_trigger = yes
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			custom_tooltip = {
+				text = je_grefm_byzantine_restoration_rejected_trigger
+				has_variable = grefm_byzantine_restoration_rejected
+			}
 		}
-	}
-
-	on_fail = {
-	}
-
-	invalid = {
-		custom_tooltip = {
-			text = je_grefm_byzantine_restoration_rejected_trigger
-			has_variable = grefm_byzantine_restoration_rejected
-		}
+		effect = { }
 	}
 
 	on_monthly_pulse = {
@@ -490,5 +551,4 @@ je_grefm_byzantine_restoration = {
 			}
 		}
 	}
-
 }

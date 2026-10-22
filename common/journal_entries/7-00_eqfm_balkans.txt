@@ -6,7 +6,12 @@
 	# "RUMELIAN" here means countries with a Rumelian culture.
 	group = je_group_global_international_situations
 	icon = "gfx/interface/icons/war_goals/liberate_country.dds"
+	dlc = dlc_grefm
 	weight = 10000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_involved = yes
 	can_revolution_inherit = yes
@@ -48,12 +53,6 @@
 		gui = "gui/com_journal_injects/situation_widgets.gui"
 		name = "com_international_situation_timeout"
 		container = "custom_widget_container_1"
-	}
-	
-	widget = {
-		gui = "gui/com_journal_injects/injects.gui"
-		name = "com_journal_entry_progress_bars"
-		container = "com_custom_widget_container_scripted_progress_bars"
 	}
 	
 	widget = {
@@ -123,76 +122,85 @@
 		eqfm_cleanup_local_balkan_powder_keg_content_effect = yes
 		post_notification = eqfm_balkans_not_involved
 	}
-
-	complete = {
-		any_state_in_rumelia = {
-			count = all
-			custom_tooltip = {
-				text = je_eqfm_balkan_powder_keg_outcome_domination_desc_1
-				owner = {
-					OR = {
-						AND = {
-							gbbf_country_has_rumelian_culture_trigger = yes
-							country_rank >= rank_value:great_power
-						}
-						AND = {
-							is_subject = yes
-							overlord = {
+	
+	# TODO implement custom headers
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			any_state_in_rumelia = {
+				count = all
+				custom_tooltip = {
+					text = je_eqfm_balkan_powder_keg_outcome_domination_desc_1
+					owner = {
+						OR = {
+							AND = {
+								gbbf_country_has_rumelian_culture_trigger = yes
 								country_rank >= rank_value:great_power
+							}
+							AND = {
+								is_subject = yes
+								overlord = {
+									country_rank >= rank_value:great_power
+								}
 							}
 						}
 					}
 				}
-			}
-			custom_tooltip = {
-				text = je_eqfm_balkan_powder_keg_outcome_domination_desc_2
-				owner = {
-					NOR = {
-						has_any_secessionists_broken_out = yes
-						has_any_secessionists_growing = yes
-						is_diplomatic_play_committed_participant = yes
+				custom_tooltip = {
+					text = je_eqfm_balkan_powder_keg_outcome_domination_desc_2
+					owner = {
+						NOR = {
+							has_any_secessionists_broken_out = yes
+							has_any_secessionists_growing = yes
+							is_diplomatic_play_committed_participant = yes
+						}
 					}
 				}
-			}
-			is_incorporated = yes
-			radical_fraction = {
-				value < 0.15
-			}
-		}
-	}
-
-	on_complete = {
-		eqfm_cleanup_balkan_powder_keg_situation_effect = yes
-	}
-	
-	on_complete_all_involved = {
-		eqfm_cleanup_local_balkan_powder_keg_content_effect = yes
-		trigger_event = eqfm_balkans.002
-	}
-	
-	custom_completion_header = gbbf_placeholder_text
-	
-	fail = {
-		any_state_in_rumelia = {
-			count = all
-			owner = {
-				gbbf_country_has_rumelian_culture_trigger = yes
-				is_subject = no
-				is_diplomatic_play_committed_participant = no
+				is_incorporated = yes
+				radical_fraction = {
+					value < 0.15
+				}
 			}
 		}
-	}
-
-	on_fail = {
-		eqfm_cleanup_balkan_powder_keg_situation_effect = yes
-	}
-	
-	on_fail_all_involved = {
-		eqfm_cleanup_local_balkan_powder_keg_content_effect = yes
-		trigger_event = eqfm_balkans.003
+		effect = {
+			eqfm_cleanup_balkan_powder_keg_situation_effect = yes
+		}
+		effect_all_involved = {
+			eqfm_cleanup_local_balkan_powder_keg_content_effect = yes
+			trigger_event = eqfm_balkans.002
+		}
 	}
 	
-	custom_failure_header = gbbf_placeholder_text
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		flags = { historical }
+		
+		trigger = {
+			any_state_in_rumelia = {
+				count = all
+				owner = {
+					gbbf_country_has_rumelian_culture_trigger = yes
+					is_subject = no
+					is_diplomatic_play_committed_participant = no
+				}
+			}
+		}
+		effect = {
+			eqfm_cleanup_balkan_powder_keg_situation_effect = yes
+		}
+		effect_all_involved = {
+			eqfm_cleanup_local_balkan_powder_keg_content_effect = yes
+			trigger_event = eqfm_balkans.003
+		}
+	}
 	
 	on_weekly_pulse = {
 		effect = {
