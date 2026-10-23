@@ -18,10 +18,278 @@ flowcontainer = {
 	
 	flowcontainer = {
 		direction = vertical
-		spacing = 5
+		spacing = 10
 		
-		
+		gbbf_senusiyya_georegion_overview = {}
+		gbbf_senusiyya_involved_overview = {}
 	}
 }
 
 ####---------- INJECTABLE JOURNAL ENTRY TYPES ----------####
+
+types gbbf_journal_widget_types {
+	
+	type gbbf_senusiyya_georegion_overview = flowcontainer {
+		parentanchor = top|hcenter
+		direction = vertical
+		spacing = 5
+		
+		section_header_button = {
+			blockoverride "layout" {
+				size = { 520 38 }
+			}
+			blockoverride "left_text" {
+				text = "eqfm_gui_senusiyya_georegion_list"
+			}
+			blockoverride "onclick" {
+				onclick = "[GetVariableSystem.Toggle('eqfm_hide_senusiyya_georegions')]"
+			}
+			blockoverride "onclick_showmore" {
+				visible = "[GetVariableSystem.Exists('eqfm_hide_senusiyya_georegions')]"
+			}
+			blockoverride "onclick_showless" {
+				visible = "[Not(GetVariableSystem.Exists('eqfm_hide_senusiyya_georegions'))]"
+			}
+		}
+		
+		flowcontainer = {
+			parentanchor = top|hcenter
+			direction = vertical
+			spacing = 10
+			visible = "[Not(GetVariableSystem.Exists('eqfm_hide_senusiyya_georegions'))]"
+			datamodel = "[JournalEntry.MakeScope.GetList('eqfm_senusiyya_georegion_list')]"
+			
+			item = {
+				widget = {
+					direction = vertical
+					parentanchor = top|hcenter
+					size = { @panel_width_minus_10 140 }
+					
+					datacontext = [Scope.GetStateRegion]
+					
+					icon = {
+						using = dark_area
+						using = frame_small_mask
+						parentanchor = right
+						size = { 240 140 }
+						alpha = 0.2
+						position = { 0 0 }
+						
+						modify_texture = {
+							texture = "gfx/interface/masks/fade_horizontal_left.dds"
+							spriteType = Corneredstretched
+							spriteborder = { 0 0 }
+							blend_mode = alphamultiply
+						}
+					}
+					
+					background = {
+						texture = "/gfx/interface/illustrations/situation_backgrounds/gbbf_situation_background_desert.dds"
+						using = frame_small_mask
+						alpha = 0.7
+					}
+					
+					background = {
+						texture = "gfx/interface/backgrounds/subject_liberty_desire_frame.dds"
+					}
+					
+					widget = {
+						parentanchor = bottom
+						size = { 307 52 }
+						
+						# Active Entrenchment Progress Bar
+						gold_progressbar_horizontal = {
+							parentanchor = center
+							size = { 220 10 }
+							position = { 0 4 }
+							allow_outside = yes
+							
+							visible = "[Or(
+								StateRegion.MakeScope.Var('eqfm_senusiyya_entrenchment_var').IsSet,
+								Not(EqualTo_CFixedPoint( StateRegion.MakeScope.Var('eqfm_senusiyya_entrenchment_var').GetValue, '(CFixedPoint)0' ))
+							)]"
+							
+							blockoverride "background" {}
+							blockoverride "frame" {}
+							blockoverride "glow_visible" {
+								visible = "[EqualTo_CFixedPoint( StateRegion.MakeScope.Var('eqfm_senusiyya_entrenchment_var').GetValue, '(CFixedPoint)100' )]"
+							}
+							
+							blockoverride "values" {
+								value = "[StateRegion.MakeScope.Var('eqfm_senusiyya_entrenchment_var').GetValue]"
+								min = 0
+								max = 100
+							}
+							
+							textbox = {
+								parentanchor = center
+								visible = "[StateRegion.MakeScope.Var('eqfm_senusiyya_entrenchment_var').IsSet]"
+								
+								text = "eqfm_gui_entrenchment_value"
+								autoresize = yes
+								max_width = 220
+								align = center|nobaseline
+								elide = right
+								using = fontsize_medium
+							}
+						}
+						
+						# No Entrenchment Progress Bar
+						gold_progressbar_horizontal = {
+							parentanchor = center
+							size = { 220 10 }
+							position = { 0 4 }
+							allow_outside = yes
+							
+							visible = "[Or(
+								Not(StateRegion.MakeScope.Var('eqfm_senusiyya_entrenchment_var').IsSet),
+								EqualTo_CFixedPoint( StateRegion.MakeScope.Var('eqfm_senusiyya_entrenchment_var').GetValue, '(CFixedPoint)0' )
+							)]"
+							blockoverride "background" {}
+							blockoverride "frame" {}
+							blockoverride "glow_visible" {
+								visible = "no"
+							}
+							
+							blockoverride "values" {
+								value = "0"
+								min = 0
+								max = 100
+							}
+							
+							textbox = {
+								parentanchor = center
+								text = "eqfm_gui_no_entrenchment"
+								autoresize = yes
+								max_width = 220
+								align = center|nobaseline
+								elide = right
+								using = fontsize_medium
+							}
+						}
+						
+						icon = {
+							size = { 100% 100% }
+							
+							block "liberty_desire_frame_texture" {
+								texture = "gfx/interface/backgrounds/subject_liberty_desire_bar.dds"
+							}
+						}
+					}
+					
+					flowcontainer = {
+						position = { 100 10 }
+						spacing = 15
+						
+						flowcontainer = {
+							parentanchor = vcenter
+							direction = vertical
+							
+							textbox = {
+								minimumsize = { 225 -1 }
+								maximumsize = { 225 -1 }
+								autoresize = yes
+								align = nobaseline
+								elide = right
+								fontsize_min = 12
+								using = fontsize_large
+								text = "eqfm_gui_state_region_name"
+							}
+							
+							textbox = {
+								autoresize = yes
+								align = nobaseline
+								raw_text = "#todo CountryTier"
+							}
+							
+							textbox = {
+								autoresize = yes
+								align = nobaseline
+								raw_text = "#todo CountryType"
+							}
+						}
+					}
+					
+				}
+			}
+		}
+	}
+	
+	type gbbf_senusiyya_involved_overview = flowcontainer {
+		parentanchor = top|hcenter
+		direction = vertical
+		spacing = 5
+		
+		section_header_button = {
+			blockoverride "layout" {
+				size = { 520 38 }
+			}
+			blockoverride "left_text" {
+				text = "eqfm_gui_senusiyya_involved_list"
+			}
+			blockoverride "onclick" {
+				onclick = "[GetVariableSystem.Toggle('eqfm_hide_senusiyya_involved')]"
+			}
+			blockoverride "onclick_showmore" {
+				visible = "[GetVariableSystem.Exists('eqfm_hide_senusiyya_involved')]"
+			}
+			blockoverride "onclick_showless" {
+				visible = "[Not(GetVariableSystem.Exists('eqfm_hide_senusiyya_involved'))]"
+			}
+		}
+		
+		flowcontainer = {
+			parentanchor = top|hcenter
+			direction = vertical
+			spacing = 5
+			visible = "[Not(GetVariableSystem.Exists('eqfm_hide_senusiyya_involved'))]"
+			datamodel = "[JournalEntry.GetInvolvedCountries]"
+			
+			item = {
+				icon = {
+					texture = "gfx/interface/error_deer.dds"
+					size = { 50 50 }
+				}
+			}
+		}
+	}
+	
+	type gbbf_senusiyya_outsider_overview = flowcontainer {
+		parentanchor = top|hcenter
+		direction = vertical
+		spacing = 5
+		
+		section_header_button = {
+			blockoverride "layout" {
+				size = { 520 38 }
+			}
+			blockoverride "left_text" {
+				text = "eqfm_gui_senusiyya_interloper_list"
+			}
+			blockoverride "onclick" {
+				onclick = "[GetVariableSystem.Toggle('eqfm_hide_senusiyya_interlopers')]"
+			}
+			blockoverride "onclick_showmore" {
+				visible = "[GetVariableSystem.Exists('eqfm_hide_senusiyya_interlopers')]"
+			}
+			blockoverride "onclick_showless" {
+				visible = "[Not(GetVariableSystem.Exists('eqfm_hide_senusiyya_interlopers'))]"
+			}
+		}
+		
+		flowcontainer = {
+			parentanchor = top|hcenter
+			direction = vertical
+			spacing = 5
+			visible = "[Not(GetVariableSystem.Exists('eqfm_hide_senusiyya_interlopers'))]"
+			datamodel = "[JournalEntry.MakeScope.GetList('eqfm_senusiyya_interloper_list')]"
+			
+			item = {
+				icon = {
+					texture = "gfx/interface/error_deer.dds"
+					size = { 50 50 }
+				}
+			}
+		}
+	}
+}
