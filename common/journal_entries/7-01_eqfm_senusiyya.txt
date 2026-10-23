@@ -1,9 +1,9 @@
 ﻿je_eqfm_senusiyya = {
-	# Hi everyone, Dum-dum McGee here with some documentation:
+	# Hi everyone, Alexedishi here with some documentation:
 	# There are three distinct values to keep track of:
-	# Pressure which is the global strength of the Senusiyya movement
-	# Entrenchment which is the strength of the Senusiyya movement in a specific state_region
-	# Influence which is the strength of the Senusiyya movement in a specific country
+	# "Pressure" which is the global strength of the Senusiyya movement
+	# "Entrenchment" which is the strength of the Senusiyya movement in a specific state_region
+	# "Influence" which is the strength of the Senusiyya movement in a specific country
 	group = je_group_global_international_situations
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
 	dlc = dlc_grefm
@@ -41,7 +41,7 @@
 	widget = {
 		gui = "gui/com_journal_injects/situation_widgets.gui"
 		name = "widget_com_international_situation_illustration"
-		container = "custom_widget_container_1"
+		container = "custom_widget_container_je_icon"
 	}
 
 	widget = {
@@ -50,11 +50,23 @@
 		container = "custom_widget_container_2"
 	}
 	
-	is_shown_when_inactive = {
-		NOT = {
-			has_global_variable = eqfm_senusiyya_completed
-		}
+	widget = {
+		gui = gui/com_journal_injects/situation_widgets.gui
+		name = "com_international_situation_involved_countries"
+		container = "custom_widget_container_5"
 	}
+	
+	widget = {
+		gui = gui/journal_entry_widgets/gbbf_journal_widgets.txt
+		name = "widget_gbbf_senusiyya_situation"
+		container = "custom_widget_container_6"
+	}
+	
+	# is_shown_when_inactive = {
+	# 	NOT = {
+	# 		has_global_variable = eqfm_senusiyya_completed
+	# 	}
+	# }
 	
 	should_be_involved = {
 		OR = {
@@ -65,7 +77,6 @@
 				any_scope_state = {
 					is_in_geographic_region = geographic_region_senusiyya
 				}
-				gbbf_is_muslim_trigger = yes
 			}
 		}
 	}
@@ -92,35 +103,42 @@
 		}
 	}
 
-	possible = {
-		any_state_in_senusiyya = {
-			owner = {
-				gbbf_is_muslim_trigger = yes
-				has_technology_researched = mass_communication
-			}
-		}
-	}
+	# possible = {
+	# 	any_state_in_senusiyya = {
+	# 		owner = {
+	# 			gbbf_is_muslim_trigger = yes
+	# 			has_technology_researched = mass_communication
+	# 		}
+	# 	}
+	# }
 	
 	immediate = {
-		eqfm_initialize_global_senusiyya_variables = yes
 		com_save_journal_to_global_variable = {
 			name = je_eqfm_senusiyya
 		}
-		scope:journal_entry = {
-			com_situation_start_date_today_effect = yes
-			com_set_situation_phase_effect = {
-				phase_icon = eqfm_senusiyya_tranquility_icon_only
-				phase_name = eqfm_senusiyya_tranquility_no_icon
+		eqfm_initialize_senusiyya_variables_effect = yes
+		s:STATE_TRIPOLI = {
+			set_variable = {
+				name = eqfm_senusiyya_entrenchment_var
+				value = 25
 			}
 		}
 		hidden_effect = {
-			every_state_region_in_senusiyya = {
-				add_state_trait = gbbf_state_trait_tranquility_phase
-			}
 			scope:journal_entry = {
 				add_modifier = modifier_eqfm_senusiyya_tranquility_phase
 			}
+			every_state_region_in_senusiyya = {
+				add_state_trait = gbbf_state_trait_tranquility_phase
+				save_scope_as = eqfm_senusiyya_state_region_scope
+				global_var:je_eqfm_senusiyya = {
+					add_to_variable_list = {
+						name = eqfm_senusiyya_state_regions_list
+						target = scope:eqfm_senusiyya_state_region_scope
+					}
+				}
+			}
 		}
+		eqfm_update_senussi_character_effect = yes
 	}
 	
 	immediate_all_involved = {
