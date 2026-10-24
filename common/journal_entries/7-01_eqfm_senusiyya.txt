@@ -5,8 +5,8 @@
 	# "Entrenchment" which is the strength of the Senusiyya movement in a specific state_region
 	# "Influence" which is the strength of the Senusiyya movement in a specific country
 	group = je_group_global_international_situations
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
-	dlc = dlc_grefm
+	icon = "gfx/interface/icons/event_icons/event_islamism.dds"
+#	dlc = dlc_grefm
 	weight = 100
 	
 	activation_description = {
@@ -51,34 +51,13 @@
 	}
 	
 	widget = {
-		gui = gui/com_journal_injects/situation_widgets.gui
-		name = "com_international_situation_involved_countries"
-		container = "custom_widget_container_5"
-	}
-	
-	widget = {
-		gui = gui/journal_entry_widgets/gbbf_journal_widgets.txt
+		gui = gui/journal_entry_widgets/gbbf_journal_widgets.gui
 		name = "widget_gbbf_senusiyya_situation"
 		container = "custom_widget_container_6"
 	}
 	
-	# is_shown_when_inactive = {
-	# 	NOT = {
-	# 		has_global_variable = eqfm_senusiyya_completed
-	# 	}
-	# }
-	
 	should_be_involved = {
-		OR = {
-			any_scope_state = {
-				is_in_geographic_region = geographic_region_senusiyya
-			}
-			any_subject_or_below = {
-				any_scope_state = {
-					is_in_geographic_region = geographic_region_senusiyya
-				}
-			}
-		}
+		has_state_in_state_region = STATE_HEDJAZ # as-Sanussi started here, it will expand automatically in the 1840s
 	}
 	
 	should_show_when_not_involved = {
@@ -102,25 +81,29 @@
 			}
 		}
 	}
-
-	# possible = {
-	# 	any_state_in_senusiyya = {
-	# 		owner = {
-	# 			gbbf_is_muslim_trigger = yes
-	# 			has_technology_researched = mass_communication
-	# 		}
-	# 	}
-	# }
 	
 	immediate = {
+		scope:journal_entry = {
+			com_set_situation_illustration_background_effect = {
+				texture = gbbf_situation_background_senusiyya
+			}
+			com_situation_start_date_today_effect = yes
+			com_set_situation_phase_effect = {
+				phase_icon = eqfm_senusiyya_tranquility_icon_only
+				phase_name = eqfm_senusiyya_tranquility_no_icon
+			}
+			set_variable = com_hide_journal_reason
+			set_variable = com_hide_involved_countries
+			set_variable = com_hide_scripted_buttons
+		}
 		com_save_journal_to_global_variable = {
 			name = je_eqfm_senusiyya
 		}
 		eqfm_initialize_senusiyya_variables_effect = yes
-		s:STATE_TRIPOLI = {
+		s:STATE_HEDJAZ = {
 			set_variable = {
 				name = eqfm_senusiyya_entrenchment_var
-				value = 25
+				value = 10
 			}
 		}
 		hidden_effect = {

@@ -20,8 +20,16 @@ flowcontainer = {
 		direction = vertical
 		spacing = 10
 		
-		gbbf_senusiyya_georegion_overview = {}
-		gbbf_senusiyya_involved_overview = {}
+		gbbf_sanusiyya_buttons = {}
+		com_journal_reason_text = {
+			visible = "[Or(
+				GetVariableSystem.HasValue('eqfm_sanusiyya_tab', 'overview'),
+				Not(GetVariableSystem.Exists('eqfm_sanusiyya_tab'))
+			)]"
+			maximumsize = { 520 -1 }
+		}
+		gbbf_senusiyya_georegion_status = {}
+		gbbf_senusiyya_involvement_details = {}
 	}
 }
 
@@ -29,34 +37,82 @@ flowcontainer = {
 
 types gbbf_journal_widget_types {
 	
-	type gbbf_senusiyya_georegion_overview = flowcontainer {
+	type gbbf_sanusiyya_buttons = widget {
+		parentanchor = top|hcenter
+		size = { 540 40 }
+		
+		tab_buttons = {
+			parentanchor = center
+			# OVERVIEW TAB
+			blockoverride "first_button" {
+				text = "eqfm_gui_sanusiyya_overview_header"
+			}
+			blockoverride "first_button_selected" {
+				text = "eqfm_gui_sanusiyya_overview_header"
+			}
+			blockoverride "first_button_visibility_checked" {
+				visible = "[And(
+					Not(GetVariableSystem.HasValue('eqfm_sanusiyya_tab', 'overview')),
+					GetVariableSystem.Exists('eqfm_sanusiyya_tab')
+				)]"
+			}
+			blockoverride "first_button_visibility" {
+				visible = "[Or(
+					GetVariableSystem.HasValue('eqfm_sanusiyya_tab', 'overview'),
+					Not(GetVariableSystem.Exists('eqfm_sanusiyya_tab'))
+				)]"
+			}
+			blockoverride "first_button_click" {
+				onclick = "[GetVariableSystem.Set('eqfm_sanusiyya_tab', 'overview')]"
+			}
+			
+			# STATE REGIONS TAB
+			blockoverride "second_button" {
+				text = "eqfm_gui_state_regions_header"
+			}
+			blockoverride "second_button_selected" {
+				text = "eqfm_gui_state_regions_header"
+			}
+			blockoverride "second_button_visibility_checked" {
+				visible = "[Not(GetVariableSystem.HasValue('eqfm_sanusiyya_tab', 'regions'))]"
+			}
+			blockoverride "second_button_visibility" {
+				visible = "[GetVariableSystem.HasValue('eqfm_sanusiyya_tab', 'regions')]"
+			}
+			blockoverride "second_button_click" {
+				onclick = "[GetVariableSystem.Set('eqfm_sanusiyya_tab', 'regions')]"
+			}
+			
+			# INVOLVEMENT TAB
+			blockoverride "third_button" {
+				text = "eqfm_gui_involvement_header"
+			}
+			blockoverride "third_button_selected" {
+				text = "eqfm_gui_involvement_header"
+			}
+			blockoverride "third_button_visibility_checked" {
+				visible = "[Not(GetVariableSystem.HasValue('eqfm_sanusiyya_tab', 'involvement'))]"
+			}
+			blockoverride "third_button_visibility" {
+				visible = "[GetVariableSystem.HasValue('eqfm_sanusiyya_tab', 'involvement')]"
+			}
+			blockoverride "third_button_click" {
+				onclick = "[GetVariableSystem.Set('eqfm_sanusiyya_tab', 'involvement')]"
+			}
+		}
+	}
+	
+	type gbbf_senusiyya_georegion_status = flowcontainer {
 		parentanchor = top|hcenter
 		direction = vertical
 		spacing = 5
 		
-		section_header_button = {
-			blockoverride "layout" {
-				size = { 520 38 }
-			}
-			blockoverride "left_text" {
-				text = "eqfm_gui_senusiyya_georegion_list"
-			}
-			blockoverride "onclick" {
-				onclick = "[GetVariableSystem.Toggle('eqfm_hide_senusiyya_georegions')]"
-			}
-			blockoverride "onclick_showmore" {
-				visible = "[GetVariableSystem.Exists('eqfm_hide_senusiyya_georegions')]"
-			}
-			blockoverride "onclick_showless" {
-				visible = "[Not(GetVariableSystem.Exists('eqfm_hide_senusiyya_georegions'))]"
-			}
-		}
+		visible = "[GetVariableSystem.HasValue('eqfm_sanusiyya_tab', 'regions')]"
 		
 		flowcontainer = {
 			parentanchor = top|hcenter
 			direction = vertical
 			spacing = 10
-			visible = "[Not(GetVariableSystem.Exists('eqfm_hide_senusiyya_georegions'))]"
 			datamodel = "[JournalEntry.MakeScope.GetList('eqfm_senusiyya_georegion_list')]"
 			
 			item = {
@@ -215,148 +271,104 @@ types gbbf_journal_widget_types {
 		}
 	}
 	
-	type gbbf_senusiyya_involved_overview = flowcontainer {
+	type gbbf_senusiyya_involvement_details = flowcontainer {
 		parentanchor = top|hcenter
 		direction = vertical
 		spacing = 5
 		
-		section_header_button = {
-			blockoverride "layout" {
-				size = { 520 38 }
+		visible = "[GetVariableSystem.HasValue('eqfm_sanusiyya_tab', 'involvement')]"
+		
+		# Stances
+		flowcontainer = {
+			parentanchor = top|hcenter
+			direction = horizontal
+			minimumsize = { 520 -1 }
+			button = {
+				parentanchor = top|hcenter
+				size = { 100 30 }
+				using = sort_button_bg
+				enabled = no
+				text = eqfm_gui_senusiyya_influence_column_name
+				align = hcenter|nobaseline
+				margin_left = 10
+				margin_right = 10
+				elide = right
 			}
-			blockoverride "left_text" {
-				text = "eqfm_gui_senusiyya_involved_list"
+			button = {
+				parentanchor = top|hcenter
+				size = { 100 30 }
+				using = sort_button_bg
+				enabled = no
+				text = eqfm_gui_senusiyya_influence_column_stance
+				align = hcenter|nobaseline
+				margin_left = 10
+				margin_right = 10
+				elide = right
 			}
-			blockoverride "onclick" {
-				onclick = "[GetVariableSystem.Toggle('eqfm_hide_senusiyya_involved')]"
-			}
-			blockoverride "onclick_showmore" {
-				visible = "[GetVariableSystem.Exists('eqfm_hide_senusiyya_involved')]"
-			}
-			blockoverride "onclick_showless" {
-				visible = "[Not(GetVariableSystem.Exists('eqfm_hide_senusiyya_involved'))]"
+			button = {
+				parentanchor = top|hcenter
+				size = { 100 30 }
+				using = sort_button_bg
+				enabled = no
+				text = eqfm_gui_senusiyya_influence_column_value
+				align = hcenter|nobaseline
+				margin_left = 10
+				margin_right = 10
+				elide = right
 			}
 		}
 		
+		# Involved Countries
 		flowcontainer = {
 			parentanchor = top|hcenter
 			direction = vertical
 			spacing = 5
-			visible = "[Not(GetVariableSystem.Exists('eqfm_hide_senusiyya_involved'))]"
+			datamodel = "[JournalEntry.GetInvolvedCountries]"
 			
-			flowcontainer = {
-				parentanchor = top|hcenter
-				direction = horizontal
-				minimumsize = { 520 -1 }
-				button = {
+			item = {
+				flowcontainer = {
 					parentanchor = top|hcenter
-					size = { 100 30 }
-					using = sort_button_bg
-					enabled = no
-					text = eqfm_gui_senusiyya_influence_column_name
-					align = hcenter|nobaseline
-					margin_left = 10
-					margin_right = 10
-					elide = right
-				}
-				button = {
-					parentanchor = top|hcenter
-					size = { 100 30 }
-					using = sort_button_bg
-					enabled = no
-					text = eqfm_gui_senusiyya_influence_column_stance
-					align = hcenter|nobaseline
-					margin_left = 10
-					margin_right = 10
-					elide = right
-				}
-				button = {
-					parentanchor = top|hcenter
-					size = { 100 30 }
-					using = sort_button_bg
-					enabled = no
-					text = eqfm_gui_senusiyya_influence_column_value
-					align = hcenter|nobaseline
-					margin_left = 10
-					margin_right = 10
-					elide = right
-				}
-			}
-			
-			flowcontainer = {
-				parentanchor = top|hcenter
-				direction = vertical
-				spacing = 5
-				datamodel = "[JournalEntry.GetInvolvedCountries]"
-				
-				item = {
-					flowcontainer = {
+					size = { 520 40 }
+					visible = "[Scope.GetCountry.IsValid]"
+					datacontext = "[Scope.GetCountry]"
+					
+					textbox = {
 						parentanchor = top|hcenter
-						size = { 520 40 }
-						visible = "[Scope.GetCountry.IsValid]"
-						datacontext = "[Scope.GetCountry]"
-						
-						textbox = {
-							parentanchor = top|hcenter
-							size = { 100 40 }
-							autoresize = yes
-							align = nobaseline
-							elide = right
-							fontsize_min = 12
-							using = fontsize_large
-							text = "eqfm_gui_senusiyya_influence_country_name"
-						}
-						
-						textbox = {
-							parentanchor = top|hcenter
-							size = { 100 40 }
-							autoresize = yes
-							align = nobaseline
-							elide = right
-							fontsize_min = 12
-							using = fontsize_large
-							text = "eqfm_gui_senusiyya_influence_country_stance"
-						}
-						
-						textbox = {
-							parentanchor = top|hcenter
-							size = { 100 40 }
-							autoresize = yes
-							align = nobaseline
-							elide = right
-							fontsize_min = 12
-							using = fontsize_large
-							text = "eqfm_gui_senusiyya_influence_country_value"
-						}
+						size = { 100 40 }
+						autoresize = yes
+						align = nobaseline
+						elide = right
+						fontsize_min = 12
+						using = fontsize_large
+						text = "eqfm_gui_senusiyya_influence_country_name"
+					}
+					
+					textbox = {
+						parentanchor = top|hcenter
+						size = { 100 40 }
+						autoresize = yes
+						align = nobaseline
+						elide = right
+						fontsize_min = 12
+						using = fontsize_large
+						text = "eqfm_gui_senusiyya_influence_country_stance"
+					}
+					
+					textbox = {
+						parentanchor = top|hcenter
+						size = { 100 40 }
+						autoresize = yes
+						align = nobaseline
+						elide = right
+						fontsize_min = 12
+						using = fontsize_large
+						text = "eqfm_gui_senusiyya_influence_country_value"
 					}
 				}
 			}
 		}
-	}
-	
-	type gbbf_senusiyya_outsider_overview = flowcontainer {
-		parentanchor = top|hcenter
-		direction = vertical
-		spacing = 5
 		
-		section_header_button = {
-			blockoverride "layout" {
-				size = { 520 38 }
-			}
-			blockoverride "left_text" {
-				text = "eqfm_gui_senusiyya_interloper_list"
-			}
-			blockoverride "onclick" {
-				onclick = "[GetVariableSystem.Toggle('eqfm_hide_senusiyya_interlopers')]"
-			}
-			blockoverride "onclick_showmore" {
-				visible = "[GetVariableSystem.Exists('eqfm_hide_senusiyya_interlopers')]"
-			}
-			blockoverride "onclick_showless" {
-				visible = "[Not(GetVariableSystem.Exists('eqfm_hide_senusiyya_interlopers'))]"
-			}
-		}
-		
+		# Interlopers Container
 		flowcontainer = {
 			parentanchor = top|hcenter
 			direction = vertical
@@ -383,4 +395,5 @@ types gbbf_journal_widget_types {
 			}
 		}
 	}
+	
 }
