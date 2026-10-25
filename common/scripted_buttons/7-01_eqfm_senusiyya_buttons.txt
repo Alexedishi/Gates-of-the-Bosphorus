@@ -507,7 +507,7 @@ eqfm_expel_sanusiyyah_hedjaz_button = {
 			}
 			has_state_in_state_region = STATE_HEDJAZ
 			custom_tooltip = {
-				text = eqfm_expel_sanusiyyah_possible
+				text = eqfm_expel_sanusiyyah_trigger
 				s:STATE_HEDJAZ = {
 					var:eqfm_sanusiyyah_entrenchment_var <= 0
 				}
@@ -804,290 +804,2168 @@ eqfm_destroy_lodge_hedjaz_button = {
 
 
 ####---------- Libya State Region Buttons ----------####
+eqfm_spread_sanusiyyah_libya_button = {
+	# This button employs different logic than the others; if HDJ/EGY expels Sanusiyyah from Hedjaz, it will not automatically spread back
+	name = "eqfm_spread_sanusiyyah_libya_name"
+	desc = "eqfm_spread_sanusiyyah_libya_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_found_lodge.dds"
+	
+	tags = { state_libya spread_action }
+	
+	visible = {
+		always = yes
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				s:STATE_LIBYA = {
+					has_variable = eqfm_sanusiyyah_entrenchment_var
+				}
+			}
+			custom_tooltip = {
+				text = eqfm_sanusiyya_already_present_trigger
+				always = no
+			}
+		}
+		trigger_else = {
+			eqfm_has_embraced_sanusiyyah_trigger = yes
+			has_state_in_state_region = STATE_LIBYA
+		}
+	}
+	effect = {
+		custom_description = {
+			text = eqfm_add_sanusiyyah_entrenchment_effect
+			subject = s:STATE_LIBYA
+			value = 10
+			s:STATE_LIBYA = {
+				set_variable = {
+					name = eqfm_sanusiyyah_entrenchment_var
+					value = 10
+				}
+			}
+		}
+	}
+	ai_chance = {
+		value = 0
+	}
+}
 
-
-####---------- Tripoli State Region Buttons ----------####
-
-
-####---------- Libyan Desert State Region Buttons ----------####
-
-
-####---------- Egyptian Desert State Region Buttons ----------####
-
-
-####---------- Matruh State Region Buttons ----------####
-
-
-####---------- Chad State Region Buttons ----------####
-
-
-#### OLD
 eqfm_expel_sanusiyyah_libya_button = {
 	name = "eqfm_expel_sanusiyyah_libya_name"
 	desc = "eqfm_expel_sanusiyyah_libya_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_destroy_lodge.dds"
+	
+	tags = { state_libya expel_action }
 	
 	visible = {
-		s:STATE_LIBYA = {
-			has_variable = eqfm_sanusiyyah_entrenchment_var
+		always = yes
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				s:STATE_LIBYA = {
+					has_variable = eqfm_sanusiyyah_entrenchment_var
+				}
+			}
+			has_state_in_state_region = STATE_LIBYA
+			custom_tooltip = {
+				text = eqfm_expel_sanusiyyah_trigger
+				s:STATE_LIBYA = {
+					var:eqfm_sanusiyyah_entrenchment_var <= 0
+				}
+			}
+		}
+		trigger_else = {
+			custom_tooltip = {
+				text = eqfm_no_sanusiyyah_activity
+				always = no
+			}
+		}
+	}
+	effect = {  }
+}
+
+eqfm_start_improve_relations_libya_button = {
+	name = "eqfm_start_improve_relations_libya_name"
+	desc = "eqfm_start_improve_relations_libya_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_improve_relations.dds"
+	
+	tags = { state_libya diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_libya_improve_relations
 		}
 	}
 	possible = {
-		custom_tooltip = {
-			text = eqfm_expel_sanusiyyah_possible
-			s:STATE_LIBYA = {
-				var:eqfm_sanusiyyah_entrenchment_var <= 0
-			}
+		has_state_in_state_region = STATE_LIBYA
+	}
+	effect = {
+		add_modifier = modifier_eqfm_libya_improve_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_improve_relations_libya_button = {
+	name = "eqfm_stop_improve_relations_libya_name"
+	desc = "eqfm_stop_improve_relations_libya_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_improve_relations.dds"
+	
+	tags = { state_libya diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_libya_improve_relations
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
 		}
-		is_in_geographic_region = geographic_region_sanusiyyah
-		custom_tooltip = {
-			text = eqfm_has_hostile_stance
-			var:eqfm_sanusiyyah_stance_var ?= flag:eqfm_sanusiyyah_stance_hostile
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_libya_improve_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_start_harm_relations_libya_button = {
+	name = "eqfm_start_harm_relations_libya_name"
+	desc = "eqfm_start_harm_relations_libya_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_damage_relations.dds"
+	
+	tags = { state_libya diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_libya_harm_relations
 		}
-		eqfm_has_sanusiyyah_expedition_trigger = no
-		any_scope_general = {
+	}
+	possible = {
+		has_state_in_state_region = STATE_LIBYA
+	}
+	effect = {
+		add_modifier = modifier_eqfm_libya_harm_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_harm_relations_libya_button = {
+	name = "eqfm_stop_harm_relations_libya_name"
+	desc = "eqfm_stop_harm_relations_libya_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_damage_relations.dds"
+	
+	tags = { state_libya diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_libya_harm_relations
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_libya_harm_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_start_arm_tribes_libya_button = {
+	name = "eqfm_start_arm_tribes_libya_name"
+	desc = "eqfm_start_arm_tribes_libya_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_arm_tribes.dds"
+	
+	tags = { state_libya diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_libya_arm_tribes
+		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_LIBYA
+	}
+	effect = {
+		add_modifier = modifier_eqfm_libya_arm_tribes
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_arm_tribes_libya_button = {
+	name = "eqfm_stop_arm_tribes_libya_name"
+	desc = "eqfm_stop_arm_tribes_libya_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_arming_tribes.dds"
+	
+	tags = { state_libya diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_libya_arm_tribes
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_libya_arm_tribes
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_seek_elders_libya_button = {
+	name = "eqfm_seek_elders_libya_name"
+	desc = "eqfm_seek_elders_libya_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_seek_elders.dds"
+	
+	tags = { state_libya repeatable_action }
+	
+	visible = {
+		s:STATE_LIBYA = {
 			NOT = {
-				has_role_of_type = ruler
+				has_variable = eqfm_elders_contacted
 			}
-			is_busy = no
 		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_LIBYA
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_bribe_tribes_libya_button = {
+	name = "eqfm_bribe_tribes_libya_name"
+	desc = "eqfm_bribe_tribes_libya_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_bribe_tribes.dds"
+	
+	tags = { state_libya repeatable_action }
+	
+	visible = {
+		s:STATE_LIBYA = {
+			has_variable = eqfm_elders_contacted
+		}
+	}
+	selected = {
+		
+	}
+	possible = {
+		has_state_in_state_region = STATE_LIBYA
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_locate_lodge_libya_button = {
+	name = "eqfm_locate_lodge_libya_name"
+	desc = "eqfm_locate_lodge_libya_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_locate_lodge.dds"
+	
+	tags = { state_libya repeatable_action }
+	
+	visible = {
+		s:STATE_LIBYA ={
+			NOT = {
+				has_variable = eqfm_sanusiyyah_exposed_lodge_var
+			}
+		}
+	}
+	selected = {
+		s:STATE_LIBYA = {
+			has_variable = eqfm_sanusiyyah_expedition_progress_var
+		}
+	}
+	possible = {
+		eqfm_state_region_has_sanusiyyah_entrenchment_trigger = {
+			state_region = s:STATE_LIBYA
+		}
+		eqfm_has_embraced_sanusiyyah_trigger = no
 		NOR = {
 			has_modifier = modifier_eqfm_failed_sanusiyyah_expedition_country
 			has_modifier = modifier_eqfm_cancelled_sanusiyyah_expedition
 		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = eqfm_preparing_sanusiyya_expedition_var
+			}
+		}
 	}
 	effect = {
-		trigger_event = {
-			id = eqfm_sanusiyyah.400
-			popup = yes
-		}
 		set_variable = {
 			name = eqfm_sanusiyyah_expedition_var
 			value = s:STATE_LIBYA
 		}
-	}
-}
-
-eqfm_expel_sanusiyyah_libyan_desert_button = {
-	name = "eqfm_expel_sanusiyyah_libyan_desert_name"
-	desc = "eqfm_expel_sanusiyyah_libyan_desert_desc"
-	
-	visible = {
-		s:STATE_LIBYAN_DESERT = {
-			has_variable = eqfm_sanusiyyah_entrenchment_var
+		set_variable = {
+			name = eqfm_preparing_sanusiyya_expedition_var
+			months = 6
 		}
-	}
-	possible = {
-		custom_tooltip = {
-			text = eqfm_expel_sanusiyyah_possible
-			s:STATE_LIBYAN_DESERT = {
-				var:eqfm_sanusiyyah_entrenchment_var <= 0
-			}
-		}
-		is_in_geographic_region = geographic_region_sanusiyyah
-		custom_tooltip = {
-			text = eqfm_has_hostile_stance
-			var:eqfm_sanusiyyah_stance_var ?= flag:eqfm_sanusiyyah_stance_hostile
-		}
-		eqfm_has_sanusiyyah_expedition_trigger = no
-		any_scope_general = {
-			NOT = {
-				has_role_of_type = ruler
-			}
-			is_busy = no
-		}
-		NOR = {
-			has_modifier = modifier_eqfm_failed_sanusiyyah_expedition_country
-			has_modifier = modifier_eqfm_cancelled_sanusiyyah_expedition
-		}
-	}
-	effect = {
 		trigger_event = {
 			id = eqfm_sanusiyyah.400
 			popup = yes
 		}
-		set_variable = {
-			name = eqfm_sanusiyyah_expedition_var
-			value = s:STATE_LIBYAN_DESERT
+		if = {
+			limit = {
+				eqfm_has_sanusiyyah_expedition_trigger = yes
+			}
+			custom_description = {
+				text = eqfm_add_state_region_to_sanussiyah_expedition_effect
+				subject = s:STATE_LIBYA
+				global_var:je_eqfm_sanusiyyah = {
+					add_to_variable_list = {
+						name = eqfm_sanusiyyah_expeditions_list
+						target = s:STATE_LIBYA
+					}
+				}
+			}
 		}
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_destroy_lodge_libya_button = {
+	name = "eqfm_destroy_lodge_libya_name"
+	desc = "eqfm_destroy_lodge_libya_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_destroy_lodge.dds"
+	
+	tags = { state_libya repeatable_action }
+	
+	visible = {
+		s:STATE_LIBYA = {
+			has_variable = eqfm_sanusiyyah_exposed_lodge_var
+		}
+	}
+	possible = {
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+
+####---------- Tripoli State Region Buttons ----------####
+eqfm_spread_sanusiyyah_tripoli_button = {
+	# This button employs different logic than the others; if HDJ/EGY expels Sanusiyyah from Hedjaz, it will not automatically spread back
+	name = "eqfm_spread_sanusiyyah_tripoli_name"
+	desc = "eqfm_spread_sanusiyyah_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_found_lodge.dds"
+	
+	tags = { state_tripoli spread_action }
+	
+	visible = {
+		always = yes
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				s:STATE_TRIPOLI = {
+					has_variable = eqfm_sanusiyyah_entrenchment_var
+				}
+			}
+			custom_tooltip = {
+				text = eqfm_sanusiyya_already_present_trigger
+				always = no
+			}
+		}
+		trigger_else = {
+			eqfm_has_embraced_sanusiyyah_trigger = yes
+			has_state_in_state_region = STATE_TRIPOLI
+		}
+	}
+	effect = {
+		custom_description = {
+			text = eqfm_add_sanusiyyah_entrenchment_effect
+			subject = s:STATE_TRIPOLI
+			value = 10
+			s:STATE_TRIPOLI = {
+				set_variable = {
+					name = eqfm_sanusiyyah_entrenchment_var
+					value = 10
+				}
+			}
+		}
+	}
+	ai_chance = {
+		value = 0
 	}
 }
 
 eqfm_expel_sanusiyyah_tripoli_button = {
 	name = "eqfm_expel_sanusiyyah_tripoli_name"
 	desc = "eqfm_expel_sanusiyyah_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_destroy_lodge.dds"
+	
+	tags = { state_tripoli expel_action }
 	
 	visible = {
-		s:STATE_TRIPOLI = {
-			has_variable = eqfm_sanusiyyah_entrenchment_var
+		always = yes
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				s:STATE_TRIPOLI = {
+					has_variable = eqfm_sanusiyyah_entrenchment_var
+				}
+			}
+			has_state_in_state_region = STATE_TRIPOLI
+			custom_tooltip = {
+				text = eqfm_expel_sanusiyyah_trigger
+				s:STATE_TRIPOLI = {
+					var:eqfm_sanusiyyah_entrenchment_var <= 0
+				}
+			}
+		}
+		trigger_else = {
+			custom_tooltip = {
+				text = eqfm_no_sanusiyyah_activity
+				always = no
+			}
+		}
+	}
+	effect = {  }
+}
+
+eqfm_start_improve_relations_tripoli_button = {
+	name = "eqfm_start_improve_relations_tripoli_name"
+	desc = "eqfm_start_improve_relations_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_improve_relations.dds"
+	
+	tags = { state_tripoli diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_tripoli_improve_relations
 		}
 	}
 	possible = {
-		custom_tooltip = {
-			text = eqfm_expel_sanusiyyah_possible
-			s:STATE_TRIPOLI = {
-				var:eqfm_sanusiyyah_entrenchment_var <= 0
-			}
+		has_state_in_state_region = STATE_TRIPOLI
+	}
+	effect = {
+		add_modifier = modifier_eqfm_tripoli_improve_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_improve_relations_tripoli_button = {
+	name = "eqfm_stop_improve_relations_tripoli_name"
+	desc = "eqfm_stop_improve_relations_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_improve_relations.dds"
+	
+	tags = { state_tripoli diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_tripoli_improve_relations
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
 		}
-		is_in_geographic_region = geographic_region_sanusiyyah
-		custom_tooltip = {
-			text = eqfm_has_hostile_stance
-			var:eqfm_sanusiyyah_stance_var ?= flag:eqfm_sanusiyyah_stance_hostile
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_tripoli_improve_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_start_harm_relations_tripoli_button = {
+	name = "eqfm_start_harm_relations_tripoli_name"
+	desc = "eqfm_start_harm_relations_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_damage_relations.dds"
+	
+	tags = { state_tripoli diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_tripoli_harm_relations
 		}
-		eqfm_has_sanusiyyah_expedition_trigger = no
-		any_scope_general = {
+	}
+	possible = {
+		has_state_in_state_region = STATE_TRIPOLI
+	}
+	effect = {
+		add_modifier = modifier_eqfm_tripoli_harm_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_harm_relations_tripoli_button = {
+	name = "eqfm_stop_harm_relations_tripoli_name"
+	desc = "eqfm_stop_harm_relations_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_damage_relations.dds"
+	
+	tags = { state_tripoli diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_tripoli_harm_relations
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_tripoli_harm_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_start_arm_tribes_tripoli_button = {
+	name = "eqfm_start_arm_tribes_tripoli_name"
+	desc = "eqfm_start_arm_tribes_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_arm_tribes.dds"
+	
+	tags = { state_tripoli diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_tripoli_arm_tribes
+		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_TRIPOLI
+	}
+	effect = {
+		add_modifier = modifier_eqfm_tripoli_arm_tribes
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_arm_tribes_tripoli_button = {
+	name = "eqfm_stop_arm_tribes_tripoli_name"
+	desc = "eqfm_stop_arm_tribes_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_arming_tribes.dds"
+	
+	tags = { state_tripoli diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_tripoli_arm_tribes
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_tripoli_arm_tribes
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_seek_elders_tripoli_button = {
+	name = "eqfm_seek_elders_tripoli_name"
+	desc = "eqfm_seek_elders_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_seek_elders.dds"
+	
+	tags = { state_tripoli repeatable_action }
+	
+	visible = {
+		s:STATE_TRIPOLI = {
 			NOT = {
-				has_role_of_type = ruler
+				has_variable = eqfm_elders_contacted
 			}
-			is_busy = no
 		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_TRIPOLI
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_bribe_tribes_tripoli_button = {
+	name = "eqfm_bribe_tribes_tripoli_name"
+	desc = "eqfm_bribe_tribes_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_bribe_tribes.dds"
+	
+	tags = { state_tripoli repeatable_action }
+	
+	visible = {
+		s:STATE_TRIPOLI = {
+			has_variable = eqfm_elders_contacted
+		}
+	}
+	selected = {
+		
+	}
+	possible = {
+		has_state_in_state_region = STATE_TRIPOLI
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_locate_lodge_tripoli_button = {
+	name = "eqfm_locate_lodge_tripoli_name"
+	desc = "eqfm_locate_lodge_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_locate_lodge.dds"
+	
+	tags = { state_tripoli repeatable_action }
+	
+	visible = {
+		s:STATE_TRIPOLI ={
+			NOT = {
+				has_variable = eqfm_sanusiyyah_exposed_lodge_var
+			}
+		}
+	}
+	selected = {
+		s:STATE_TRIPOLI = {
+			has_variable = eqfm_sanusiyyah_expedition_progress_var
+		}
+	}
+	possible = {
+		eqfm_state_region_has_sanusiyyah_entrenchment_trigger = {
+			state_region = s:STATE_TRIPOLI
+		}
+		eqfm_has_embraced_sanusiyyah_trigger = no
 		NOR = {
 			has_modifier = modifier_eqfm_failed_sanusiyyah_expedition_country
 			has_modifier = modifier_eqfm_cancelled_sanusiyyah_expedition
 		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = eqfm_preparing_sanusiyya_expedition_var
+			}
+		}
 	}
 	effect = {
-		trigger_event = {
-			id = eqfm_sanusiyyah.400
-			popup = yes
-		}
 		set_variable = {
 			name = eqfm_sanusiyyah_expedition_var
 			value = s:STATE_TRIPOLI
 		}
+		set_variable = {
+			name = eqfm_preparing_sanusiyya_expedition_var
+			months = 6
+		}
+		trigger_event = {
+			id = eqfm_sanusiyyah.400
+			popup = yes
+		}
+		if = {
+			limit = {
+				eqfm_has_sanusiyyah_expedition_trigger = yes
+			}
+			custom_description = {
+				text = eqfm_add_state_region_to_sanussiyah_expedition_effect
+				subject = s:STATE_TRIPOLI
+				global_var:je_eqfm_sanusiyyah = {
+					add_to_variable_list = {
+						name = eqfm_sanusiyyah_expeditions_list
+						target = s:STATE_TRIPOLI
+					}
+				}
+			}
+		}
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_destroy_lodge_tripoli_button = {
+	name = "eqfm_destroy_lodge_tripoli_name"
+	desc = "eqfm_destroy_lodge_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_destroy_lodge.dds"
+	
+	tags = { state_tripoli repeatable_action }
+	
+	visible = {
+		s:STATE_TRIPOLI = {
+			has_variable = eqfm_sanusiyyah_exposed_lodge_var
+		}
+	}
+	possible = {
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+####---------- Libyan Desert State Region Buttons ----------####
+eqfm_spread_sanusiyyah_libyan_desert_button = {
+	# This button employs different logic than the others; if HDJ/EGY expels Sanusiyyah from Hedjaz, it will not automatically spread back
+	name = "eqfm_spread_sanusiyyah_libyan_desert_name"
+	desc = "eqfm_spread_sanusiyyah_libyan_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_found_lodge.dds"
+	
+	tags = { state_libyan_desert spread_action }
+	
+	visible = {
+		always = yes
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				s:STATE_LIBYAN_DESERT = {
+					has_variable = eqfm_sanusiyyah_entrenchment_var
+				}
+			}
+			custom_tooltip = {
+				text = eqfm_sanusiyya_already_present_trigger
+				always = no
+			}
+		}
+		trigger_else = {
+			eqfm_has_embraced_sanusiyyah_trigger = yes
+			has_state_in_state_region = STATE_LIBYAN_DESERT
+		}
+	}
+	effect = {
+		custom_description = {
+			text = eqfm_add_sanusiyyah_entrenchment_effect
+			subject = s:STATE_LIBYAN_DESERT
+			value = 10
+			s:STATE_LIBYAN_DESERT = {
+				set_variable = {
+					name = eqfm_sanusiyyah_entrenchment_var
+					value = 10
+				}
+			}
+		}
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_expel_sanusiyyah_libyan_desert_button = {
+	name = "eqfm_expel_sanusiyyah_libyan_desert_name"
+	desc = "eqfm_expel_sanusiyyah_libyan_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_destroy_lodge.dds"
+	
+	tags = { state_libyan_desert expel_action }
+	
+	visible = {
+		always = yes
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				s:STATE_LIBYAN_DESERT = {
+					has_variable = eqfm_sanusiyyah_entrenchment_var
+				}
+			}
+			has_state_in_state_region = STATE_LIBYAN_DESERT
+			custom_tooltip = {
+				text = eqfm_expel_sanusiyyah_trigger
+				s:STATE_LIBYAN_DESERT = {
+					var:eqfm_sanusiyyah_entrenchment_var <= 0
+				}
+			}
+		}
+		trigger_else = {
+			custom_tooltip = {
+				text = eqfm_no_sanusiyyah_activity
+				always = no
+			}
+		}
+	}
+	effect = {  }
+}
+
+eqfm_start_improve_relations_libyan_desert_button = {
+	name = "eqfm_start_improve_relations_libyan_desert_name"
+	desc = "eqfm_start_improve_relations_libyan_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_improve_relations.dds"
+	
+	tags = { state_libyan_desert diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_libyan_desert_improve_relations
+		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_LIBYAN_DESERT
+	}
+	effect = {
+		add_modifier = modifier_eqfm_libyan_desert_improve_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_improve_relations_libyan_desert_button = {
+	name = "eqfm_stop_improve_relations_libyan_desert_name"
+	desc = "eqfm_stop_improve_relations_libyan_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_improve_relations.dds"
+	
+	tags = { state_libyan_desert diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_libyan_desert_improve_relations
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_libyan_desert_improve_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_start_harm_relations_libyan_desert_button = {
+	name = "eqfm_start_harm_relations_libyan_desert_name"
+	desc = "eqfm_start_harm_relations_libyan_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_damage_relations.dds"
+	
+	tags = { state_libyan_desert diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_libyan_desert_harm_relations
+		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_LIBYAN_DESERT
+	}
+	effect = {
+		add_modifier = modifier_eqfm_libyan_desert_harm_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_harm_relations_libyan_desert_button = {
+	name = "eqfm_stop_harm_relations_libyan_desert_name"
+	desc = "eqfm_stop_harm_relations_libyan_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_damage_relations.dds"
+	
+	tags = { state_libyan_desert diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_libyan_desert_harm_relations
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_libyan_desert_harm_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_start_arm_tribes_libyan_desert_button = {
+	name = "eqfm_start_arm_tribes_libyan_desert_name"
+	desc = "eqfm_start_arm_tribes_libyan_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_arm_tribes.dds"
+	
+	tags = { state_libyan_desert diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_libyan_desert_arm_tribes
+		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_LIBYAN_DESERT
+	}
+	effect = {
+		add_modifier = modifier_eqfm_libyan_desert_arm_tribes
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_arm_tribes_libyan_desert_button = {
+	name = "eqfm_stop_arm_tribes_libyan_desert_name"
+	desc = "eqfm_stop_arm_tribes_libyan_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_arming_tribes.dds"
+	
+	tags = { state_libyan_desert diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_libyan_desert_arm_tribes
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_libyan_desert_arm_tribes
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_seek_elders_libyan_desert_button = {
+	name = "eqfm_seek_elders_libyan_desert_name"
+	desc = "eqfm_seek_elders_libyan_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_seek_elders.dds"
+	
+	tags = { state_libyan_desert repeatable_action }
+	
+	visible = {
+		s:STATE_LIBYAN_DESERT = {
+			NOT = {
+				has_variable = eqfm_elders_contacted
+			}
+		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_LIBYAN_DESERT
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_bribe_tribes_libyan_desert_button = {
+	name = "eqfm_bribe_tribes_libyan_desert_name"
+	desc = "eqfm_bribe_tribes_libyan_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_bribe_tribes.dds"
+	
+	tags = { state_libyan_desert repeatable_action }
+	
+	visible = {
+		s:STATE_LIBYAN_DESERT = {
+			has_variable = eqfm_elders_contacted
+		}
+	}
+	selected = {
+		
+	}
+	possible = {
+		has_state_in_state_region = STATE_LIBYAN_DESERT
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_locate_lodge_libyan_desert_button = {
+	name = "eqfm_locate_lodge_libyan_desert_name"
+	desc = "eqfm_locate_lodge_libyan_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_locate_lodge.dds"
+	
+	tags = { state_libyan_desert repeatable_action }
+	
+	visible = {
+		s:STATE_LIBYAN_DESERT ={
+			NOT = {
+				has_variable = eqfm_sanusiyyah_exposed_lodge_var
+			}
+		}
+	}
+	selected = {
+		s:STATE_LIBYAN_DESERT = {
+			has_variable = eqfm_sanusiyyah_expedition_progress_var
+		}
+	}
+	possible = {
+		eqfm_state_region_has_sanusiyyah_entrenchment_trigger = {
+			state_region = s:STATE_LIBYAN_DESERT
+		}
+		eqfm_has_embraced_sanusiyyah_trigger = no
+		NOR = {
+			has_modifier = modifier_eqfm_failed_sanusiyyah_expedition_country
+			has_modifier = modifier_eqfm_cancelled_sanusiyyah_expedition
+		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = eqfm_preparing_sanusiyya_expedition_var
+			}
+		}
+	}
+	effect = {
+		set_variable = {
+			name = eqfm_sanusiyyah_expedition_var
+			value = s:STATE_LIBYAN_DESERT
+		}
+		set_variable = {
+			name = eqfm_preparing_sanusiyya_expedition_var
+			months = 6
+		}
+		trigger_event = {
+			id = eqfm_sanusiyyah.400
+			popup = yes
+		}
+		if = {
+			limit = {
+				eqfm_has_sanusiyyah_expedition_trigger = yes
+			}
+			custom_description = {
+				text = eqfm_add_state_region_to_sanussiyah_expedition_effect
+				subject = s:STATE_LIBYAN_DESERT
+				global_var:je_eqfm_sanusiyyah = {
+					add_to_variable_list = {
+						name = eqfm_sanusiyyah_expeditions_list
+						target = s:STATE_LIBYAN_DESERT
+					}
+				}
+			}
+		}
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_destroy_lodge_libyan_desert_button = {
+	name = "eqfm_destroy_lodge_libyan_desert_name"
+	desc = "eqfm_destroy_lodge_libyan_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_destroy_lodge.dds"
+	
+	tags = { state_libyan_desert repeatable_action }
+	
+	visible = {
+		s:STATE_LIBYAN_DESERT = {
+			has_variable = eqfm_sanusiyyah_exposed_lodge_var
+		}
+	}
+	possible = {
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+####---------- Egyptian Desert State Region Buttons ----------####
+eqfm_spread_sanusiyyah_egyptian_desert_button = {
+	# This button employs different logic than the others; if HDJ/EGY expels Sanusiyyah from Hedjaz, it will not automatically spread back
+	name = "eqfm_spread_sanusiyyah_egyptian_desert_name"
+	desc = "eqfm_spread_sanusiyyah_egyptian_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_found_lodge.dds"
+	
+	tags = { state_egyptian_desert spread_action }
+	
+	visible = {
+		always = yes
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				s:STATE_EGYPTIAN_DESERT = {
+					has_variable = eqfm_sanusiyyah_entrenchment_var
+				}
+			}
+			custom_tooltip = {
+				text = eqfm_sanusiyya_already_present_trigger
+				always = no
+			}
+		}
+		trigger_else = {
+			eqfm_has_embraced_sanusiyyah_trigger = yes
+			has_state_in_state_region = STATE_EGYPTIAN_DESERT
+		}
+	}
+	effect = {
+		custom_description = {
+			text = eqfm_add_sanusiyyah_entrenchment_effect
+			subject = s:STATE_EGYPTIAN_DESERT
+			value = 10
+			s:STATE_EGYPTIAN_DESERT = {
+				set_variable = {
+					name = eqfm_sanusiyyah_entrenchment_var
+					value = 10
+				}
+			}
+		}
+	}
+	ai_chance = {
+		value = 0
 	}
 }
 
 eqfm_expel_sanusiyyah_egyptian_desert_button = {
 	name = "eqfm_expel_sanusiyyah_egyptian_desert_name"
 	desc = "eqfm_expel_sanusiyyah_egyptian_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_destroy_lodge.dds"
+	
+	tags = { state_egyptian_desert expel_action }
 	
 	visible = {
-		s:STATE_EGYPTIAN_DESERT = {
-			has_variable = eqfm_sanusiyyah_entrenchment_var
+		always = yes
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				s:STATE_EGYPTIAN_DESERT = {
+					has_variable = eqfm_sanusiyyah_entrenchment_var
+				}
+			}
+			has_state_in_state_region = STATE_EGYPTIAN_DESERT
+			custom_tooltip = {
+				text = eqfm_expel_sanusiyyah_trigger
+				s:STATE_EGYPTIAN_DESERT = {
+					var:eqfm_sanusiyyah_entrenchment_var <= 0
+				}
+			}
+		}
+		trigger_else = {
+			custom_tooltip = {
+				text = eqfm_no_sanusiyyah_activity
+				always = no
+			}
+		}
+	}
+	effect = {  }
+}
+
+eqfm_start_improve_relations_egyptian_desert_button = {
+	name = "eqfm_start_improve_relations_egyptian_desert_name"
+	desc = "eqfm_start_improve_relations_egyptian_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_improve_relations.dds"
+	
+	tags = { state_egyptian_desert diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_egyptian_desert_improve_relations
 		}
 	}
 	possible = {
-		custom_tooltip = {
-			text = eqfm_expel_sanusiyyah_possible
-			s:STATE_EGYPTIAN_DESERT = {
-				var:eqfm_sanusiyyah_entrenchment_var <= 0
-			}
+		has_state_in_state_region = STATE_EGYPTIAN_DESERT
+	}
+	effect = {
+		add_modifier = modifier_eqfm_egyptian_desert_improve_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_improve_relations_egyptian_desert_button = {
+	name = "eqfm_stop_improve_relations_egyptian_desert_name"
+	desc = "eqfm_stop_improve_relations_egyptian_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_improve_relations.dds"
+	
+	tags = { state_egyptian_desert diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_egyptian_desert_improve_relations
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
 		}
-		is_in_geographic_region = geographic_region_sanusiyyah
-		custom_tooltip = {
-			text = eqfm_has_hostile_stance
-			var:eqfm_sanusiyyah_stance_var ?= flag:eqfm_sanusiyyah_stance_hostile
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_egyptian_desert_improve_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_start_harm_relations_egyptian_desert_button = {
+	name = "eqfm_start_harm_relations_egyptian_desert_name"
+	desc = "eqfm_start_harm_relations_egyptian_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_damage_relations.dds"
+	
+	tags = { state_egyptian_desert diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_egyptian_desert_harm_relations
 		}
-		eqfm_has_sanusiyyah_expedition_trigger = no
-		any_scope_general = {
+	}
+	possible = {
+		has_state_in_state_region = STATE_EGYPTIAN_DESERT
+	}
+	effect = {
+		add_modifier = modifier_eqfm_egyptian_desert_harm_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_harm_relations_egyptian_desert_button = {
+	name = "eqfm_stop_harm_relations_egyptian_desert_name"
+	desc = "eqfm_stop_harm_relations_egyptian_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_damage_relations.dds"
+	
+	tags = { state_egyptian_desert diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_egyptian_desert_harm_relations
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_egyptian_desert_harm_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_start_arm_tribes_egyptian_desert_button = {
+	name = "eqfm_start_arm_tribes_egyptian_desert_name"
+	desc = "eqfm_start_arm_tribes_egyptian_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_arm_tribes.dds"
+	
+	tags = { state_egyptian_desert diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_egyptian_desert_arm_tribes
+		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_EGYPTIAN_DESERT
+	}
+	effect = {
+		add_modifier = modifier_eqfm_egyptian_desert_arm_tribes
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_arm_tribes_egyptian_desert_button = {
+	name = "eqfm_stop_arm_tribes_egyptian_desert_name"
+	desc = "eqfm_stop_arm_tribes_egyptian_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_arming_tribes.dds"
+	
+	tags = { state_egyptian_desert diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_egyptian_desert_arm_tribes
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_egyptian_desert_arm_tribes
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_seek_elders_egyptian_desert_button = {
+	name = "eqfm_seek_elders_egyptian_desert_name"
+	desc = "eqfm_seek_elders_egyptian_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_seek_elders.dds"
+	
+	tags = { state_egyptian_desert repeatable_action }
+	
+	visible = {
+		s:STATE_EGYPTIAN_DESERT = {
 			NOT = {
-				has_role_of_type = ruler
+				has_variable = eqfm_elders_contacted
 			}
-			is_busy = no
 		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_EGYPTIAN_DESERT
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_bribe_tribes_egyptian_desert_button = {
+	name = "eqfm_bribe_tribes_egyptian_desert_name"
+	desc = "eqfm_bribe_tribes_egyptian_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_bribe_tribes.dds"
+	
+	tags = { state_egyptian_desert repeatable_action }
+	
+	visible = {
+		s:STATE_EGYPTIAN_DESERT = {
+			has_variable = eqfm_elders_contacted
+		}
+	}
+	selected = {
+		
+	}
+	possible = {
+		has_state_in_state_region = STATE_EGYPTIAN_DESERT
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_locate_lodge_egyptian_desert_button = {
+	name = "eqfm_locate_lodge_egyptian_desert_name"
+	desc = "eqfm_locate_lodge_egyptian_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_locate_lodge.dds"
+	
+	tags = { state_egyptian_desert repeatable_action }
+	
+	visible = {
+		s:STATE_EGYPTIAN_DESERT ={
+			NOT = {
+				has_variable = eqfm_sanusiyyah_exposed_lodge_var
+			}
+		}
+	}
+	selected = {
+		s:STATE_EGYPTIAN_DESERT = {
+			has_variable = eqfm_sanusiyyah_expedition_progress_var
+		}
+	}
+	possible = {
+		eqfm_state_region_has_sanusiyyah_entrenchment_trigger = {
+			state_region = s:STATE_EGYPTIAN_DESERT
+		}
+		eqfm_has_embraced_sanusiyyah_trigger = no
 		NOR = {
 			has_modifier = modifier_eqfm_failed_sanusiyyah_expedition_country
 			has_modifier = modifier_eqfm_cancelled_sanusiyyah_expedition
 		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = eqfm_preparing_sanusiyya_expedition_var
+			}
+		}
 	}
 	effect = {
-		trigger_event = {
-			id = eqfm_sanusiyyah.400
-			popup = yes
-		}
 		set_variable = {
 			name = eqfm_sanusiyyah_expedition_var
 			value = s:STATE_EGYPTIAN_DESERT
 		}
+		set_variable = {
+			name = eqfm_preparing_sanusiyya_expedition_var
+			months = 6
+		}
+		trigger_event = {
+			id = eqfm_sanusiyyah.400
+			popup = yes
+		}
+		if = {
+			limit = {
+				eqfm_has_sanusiyyah_expedition_trigger = yes
+			}
+			custom_description = {
+				text = eqfm_add_state_region_to_sanussiyah_expedition_effect
+				subject = s:STATE_EGYPTIAN_DESERT
+				global_var:je_eqfm_sanusiyyah = {
+					add_to_variable_list = {
+						name = eqfm_sanusiyyah_expeditions_list
+						target = s:STATE_EGYPTIAN_DESERT
+					}
+				}
+			}
+		}
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_destroy_lodge_egyptian_desert_button = {
+	name = "eqfm_destroy_lodge_egyptian_desert_name"
+	desc = "eqfm_destroy_lodge_egyptian_desert_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_destroy_lodge.dds"
+	
+	tags = { state_egyptian_desert repeatable_action }
+	
+	visible = {
+		s:STATE_EGYPTIAN_DESERT = {
+			has_variable = eqfm_sanusiyyah_exposed_lodge_var
+		}
+	}
+	possible = {
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+####---------- Matruh State Region Buttons ----------####
+eqfm_spread_sanusiyyah_matruh_button = {
+	# This button employs different logic than the others; if HDJ/EGY expels Sanusiyyah from Hedjaz, it will not automatically spread back
+	name = "eqfm_spread_sanusiyyah_matruh_name"
+	desc = "eqfm_spread_sanusiyyah_matruh_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_found_lodge.dds"
+	
+	tags = { state_matruh spread_action }
+	
+	visible = {
+		always = yes
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				s:STATE_MATRUH = {
+					has_variable = eqfm_sanusiyyah_entrenchment_var
+				}
+			}
+			custom_tooltip = {
+				text = eqfm_sanusiyya_already_present_trigger
+				always = no
+			}
+		}
+		trigger_else = {
+			eqfm_has_embraced_sanusiyyah_trigger = yes
+			has_state_in_state_region = STATE_MATRUH
+		}
+	}
+	effect = {
+		custom_description = {
+			text = eqfm_add_sanusiyyah_entrenchment_effect
+			subject = s:STATE_MATRUH
+			value = 10
+			s:STATE_MATRUH = {
+				set_variable = {
+					name = eqfm_sanusiyyah_entrenchment_var
+					value = 10
+				}
+			}
+		}
+	}
+	ai_chance = {
+		value = 0
 	}
 }
 
 eqfm_expel_sanusiyyah_matruh_button = {
 	name = "eqfm_expel_sanusiyyah_matruh_name"
 	desc = "eqfm_expel_sanusiyyah_matruh_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_destroy_lodge.dds"
+	
+	tags = { state_matruh expel_action }
 	
 	visible = {
-		s:STATE_MATRUH = {
-			has_variable = eqfm_sanusiyyah_entrenchment_var
+		always = yes
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				s:STATE_MATRUH = {
+					has_variable = eqfm_sanusiyyah_entrenchment_var
+				}
+			}
+			has_state_in_state_region = STATE_MATRUH
+			custom_tooltip = {
+				text = eqfm_expel_sanusiyyah_trigger
+				s:STATE_MATRUH = {
+					var:eqfm_sanusiyyah_entrenchment_var <= 0
+				}
+			}
+		}
+		trigger_else = {
+			custom_tooltip = {
+				text = eqfm_no_sanusiyyah_activity
+				always = no
+			}
+		}
+	}
+	effect = {  }
+}
+
+eqfm_start_improve_relations_matruh_button = {
+	name = "eqfm_start_improve_relations_matruh_name"
+	desc = "eqfm_start_improve_relations_matruh_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_improve_relations.dds"
+	
+	tags = { state_matruh diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_matruh_improve_relations
 		}
 	}
 	possible = {
-		custom_tooltip = {
-			text = eqfm_expel_sanusiyyah_possible
-			s:STATE_MATRUH = {
-				var:eqfm_sanusiyyah_entrenchment_var <= 0
-			}
+		has_state_in_state_region = STATE_MATRUH
+	}
+	effect = {
+		add_modifier = modifier_eqfm_matruh_improve_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_improve_relations_matruh_button = {
+	name = "eqfm_stop_improve_relations_matruh_name"
+	desc = "eqfm_stop_improve_relations_matruh_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_improve_relations.dds"
+	
+	tags = { state_matruh diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_matruh_improve_relations
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
 		}
-		is_in_geographic_region = geographic_region_sanusiyyah
-		custom_tooltip = {
-			text = eqfm_has_hostile_stance
-			var:eqfm_sanusiyyah_stance_var ?= flag:eqfm_sanusiyyah_stance_hostile
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_matruh_improve_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_start_harm_relations_matruh_button = {
+	name = "eqfm_start_harm_relations_matruh_name"
+	desc = "eqfm_start_harm_relations_matruh_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_damage_relations.dds"
+	
+	tags = { state_matruh diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_matruh_harm_relations
 		}
-		eqfm_has_sanusiyyah_expedition_trigger = no
-		any_scope_general = {
+	}
+	possible = {
+		has_state_in_state_region = STATE_MATRUH
+	}
+	effect = {
+		add_modifier = modifier_eqfm_matruh_harm_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_harm_relations_matruh_button = {
+	name = "eqfm_stop_harm_relations_matruh_name"
+	desc = "eqfm_stop_harm_relations_matruh_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_damage_relations.dds"
+	
+	tags = { state_matruh diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_matruh_harm_relations
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_matruh_harm_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_start_arm_tribes_matruh_button = {
+	name = "eqfm_start_arm_tribes_matruh_name"
+	desc = "eqfm_start_arm_tribes_matruh_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_arm_tribes.dds"
+	
+	tags = { state_matruh diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_matruh_arm_tribes
+		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_MATRUH
+	}
+	effect = {
+		add_modifier = modifier_eqfm_matruh_arm_tribes
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_arm_tribes_matruh_button = {
+	name = "eqfm_stop_arm_tribes_matruh_name"
+	desc = "eqfm_stop_arm_tribes_matruh_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_arming_tribes.dds"
+	
+	tags = { state_matruh diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_matruh_arm_tribes
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_matruh_arm_tribes
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_seek_elders_matruh_button = {
+	name = "eqfm_seek_elders_matruh_name"
+	desc = "eqfm_seek_elders_matruh_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_seek_elders.dds"
+	
+	tags = { state_matruh repeatable_action }
+	
+	visible = {
+		s:STATE_MATRUH = {
 			NOT = {
-				has_role_of_type = ruler
+				has_variable = eqfm_elders_contacted
 			}
-			is_busy = no
 		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_MATRUH
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_bribe_tribes_matruh_button = {
+	name = "eqfm_bribe_tribes_matruh_name"
+	desc = "eqfm_bribe_tribes_matruh_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_bribe_tribes.dds"
+	
+	tags = { state_matruh repeatable_action }
+	
+	visible = {
+		s:STATE_MATRUH = {
+			has_variable = eqfm_elders_contacted
+		}
+	}
+	selected = {
+		
+	}
+	possible = {
+		has_state_in_state_region = STATE_MATRUH
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_locate_lodge_matruh_button = {
+	name = "eqfm_locate_lodge_matruh_name"
+	desc = "eqfm_locate_lodge_matruh_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_locate_lodge.dds"
+	
+	tags = { state_matruh repeatable_action }
+	
+	visible = {
+		s:STATE_MATRUH ={
+			NOT = {
+				has_variable = eqfm_sanusiyyah_exposed_lodge_var
+			}
+		}
+	}
+	selected = {
+		s:STATE_MATRUH = {
+			has_variable = eqfm_sanusiyyah_expedition_progress_var
+		}
+	}
+	possible = {
+		eqfm_state_region_has_sanusiyyah_entrenchment_trigger = {
+			state_region = s:STATE_MATRUH
+		}
+		eqfm_has_embraced_sanusiyyah_trigger = no
 		NOR = {
 			has_modifier = modifier_eqfm_failed_sanusiyyah_expedition_country
 			has_modifier = modifier_eqfm_cancelled_sanusiyyah_expedition
 		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = eqfm_preparing_sanusiyya_expedition_var
+			}
+		}
 	}
 	effect = {
-		trigger_event = {
-			id = eqfm_sanusiyyah.400
-			popup = yes
-		}
 		set_variable = {
 			name = eqfm_sanusiyyah_expedition_var
 			value = s:STATE_MATRUH
 		}
+		set_variable = {
+			name = eqfm_preparing_sanusiyya_expedition_var
+			months = 6
+		}
+		trigger_event = {
+			id = eqfm_sanusiyyah.400
+			popup = yes
+		}
+		if = {
+			limit = {
+				eqfm_has_sanusiyyah_expedition_trigger = yes
+			}
+			custom_description = {
+				text = eqfm_add_state_region_to_sanussiyah_expedition_effect
+				subject = s:STATE_MATRUH
+				global_var:je_eqfm_sanusiyyah = {
+					add_to_variable_list = {
+						name = eqfm_sanusiyyah_expeditions_list
+						target = s:STATE_MATRUH
+					}
+				}
+			}
+		}
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_destroy_lodge_matruh_button = {
+	name = "eqfm_destroy_lodge_matruh_name"
+	desc = "eqfm_destroy_lodge_matruh_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_destroy_lodge.dds"
+	
+	tags = { state_matruh repeatable_action }
+	
+	visible = {
+		s:STATE_MATRUH = {
+			has_variable = eqfm_sanusiyyah_exposed_lodge_var
+		}
+	}
+	possible = {
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+####---------- Chad State Region Buttons ----------####
+eqfm_spread_sanusiyyah_chad_button = {
+	# This button employs different logic than the others; if HDJ/EGY expels Sanusiyyah from Hedjaz, it will not automatically spread back
+	name = "eqfm_spread_sanusiyyah_chad_name"
+	desc = "eqfm_spread_sanusiyyah_chad_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_found_lodge.dds"
+	
+	tags = { state_chad spread_action }
+	
+	visible = {
+		always = yes
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				s:STATE_CHAD = {
+					has_variable = eqfm_sanusiyyah_entrenchment_var
+				}
+			}
+			custom_tooltip = {
+				text = eqfm_sanusiyya_already_present_trigger
+				always = no
+			}
+		}
+		trigger_else = {
+			eqfm_has_embraced_sanusiyyah_trigger = yes
+			has_state_in_state_region = STATE_CHAD
+		}
+	}
+	effect = {
+		custom_description = {
+			text = eqfm_add_sanusiyyah_entrenchment_effect
+			subject = s:STATE_CHAD
+			value = 10
+			s:STATE_CHAD = {
+				set_variable = {
+					name = eqfm_sanusiyyah_entrenchment_var
+					value = 10
+				}
+			}
+		}
+	}
+	ai_chance = {
+		value = 0
 	}
 }
 
 eqfm_expel_sanusiyyah_chad_button = {
 	name = "eqfm_expel_sanusiyyah_chad_name"
 	desc = "eqfm_expel_sanusiyyah_chad_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_destroy_lodge.dds"
+	
+	tags = { state_chad expel_action }
 	
 	visible = {
-		s:STATE_CHAD = {
-			has_variable = eqfm_sanusiyyah_entrenchment_var
+		always = yes
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				s:STATE_CHAD = {
+					has_variable = eqfm_sanusiyyah_entrenchment_var
+				}
+			}
+			has_state_in_state_region = STATE_CHAD
+			custom_tooltip = {
+				text = eqfm_expel_sanusiyyah_trigger
+				s:STATE_CHAD = {
+					var:eqfm_sanusiyyah_entrenchment_var <= 0
+				}
+			}
+		}
+		trigger_else = {
+			custom_tooltip = {
+				text = eqfm_no_sanusiyyah_activity
+				always = no
+			}
+		}
+	}
+	effect = {  }
+}
+
+eqfm_start_improve_relations_chad_button = {
+	name = "eqfm_start_improve_relations_chad_name"
+	desc = "eqfm_start_improve_relations_chad_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_improve_relations.dds"
+	
+	tags = { state_chad diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_chad_improve_relations
 		}
 	}
 	possible = {
-		custom_tooltip = {
-			text = eqfm_expel_sanusiyyah_possible
-			s:STATE_CHAD = {
-				var:eqfm_sanusiyyah_entrenchment_var <= 0
-			}
+		has_state_in_state_region = STATE_CHAD
+	}
+	effect = {
+		add_modifier = modifier_eqfm_chad_improve_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_improve_relations_chad_button = {
+	name = "eqfm_stop_improve_relations_chad_name"
+	desc = "eqfm_stop_improve_relations_chad_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_improve_relations.dds"
+	
+	tags = { state_chad diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_chad_improve_relations
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
 		}
-		is_in_geographic_region = geographic_region_sanusiyyah
-		custom_tooltip = {
-			text = eqfm_has_hostile_stance
-			var:eqfm_sanusiyyah_stance_var ?= flag:eqfm_sanusiyyah_stance_hostile
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_chad_improve_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_start_harm_relations_chad_button = {
+	name = "eqfm_start_harm_relations_chad_name"
+	desc = "eqfm_start_harm_relations_chad_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_damage_relations.dds"
+	
+	tags = { state_chad diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_chad_harm_relations
 		}
-		eqfm_has_sanusiyyah_expedition_trigger = no
-		any_scope_general = {
+	}
+	possible = {
+		has_state_in_state_region = STATE_CHAD
+	}
+	effect = {
+		add_modifier = modifier_eqfm_chad_harm_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_harm_relations_chad_button = {
+	name = "eqfm_stop_harm_relations_chad_name"
+	desc = "eqfm_stop_harm_relations_chad_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_damage_relations.dds"
+	
+	tags = { state_chad diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_chad_harm_relations
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_chad_harm_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_start_arm_tribes_chad_button = {
+	name = "eqfm_start_arm_tribes_chad_name"
+	desc = "eqfm_start_arm_tribes_chad_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_arm_tribes.dds"
+	
+	tags = { state_chad diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_chad_arm_tribes
+		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_CHAD
+	}
+	effect = {
+		add_modifier = modifier_eqfm_chad_arm_tribes
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_arm_tribes_chad_button = {
+	name = "eqfm_stop_arm_tribes_chad_name"
+	desc = "eqfm_stop_arm_tribes_chad_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_arming_tribes.dds"
+	
+	tags = { state_chad diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_chad_arm_tribes
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_chad_arm_tribes
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_seek_elders_chad_button = {
+	name = "eqfm_seek_elders_chad_name"
+	desc = "eqfm_seek_elders_chad_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_seek_elders.dds"
+	
+	tags = { state_chad repeatable_action }
+	
+	visible = {
+		s:STATE_CHAD = {
 			NOT = {
-				has_role_of_type = ruler
+				has_variable = eqfm_elders_contacted
 			}
-			is_busy = no
 		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_CHAD
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_bribe_tribes_chad_button = {
+	name = "eqfm_bribe_tribes_chad_name"
+	desc = "eqfm_bribe_tribes_chad_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_bribe_tribes.dds"
+	
+	tags = { state_chad repeatable_action }
+	
+	visible = {
+		s:STATE_CHAD = {
+			has_variable = eqfm_elders_contacted
+		}
+	}
+	selected = {
+		
+	}
+	possible = {
+		has_state_in_state_region = STATE_CHAD
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_locate_lodge_chad_button = {
+	name = "eqfm_locate_lodge_chad_name"
+	desc = "eqfm_locate_lodge_chad_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_locate_lodge.dds"
+	
+	tags = { state_chad repeatable_action }
+	
+	visible = {
+		s:STATE_CHAD ={
+			NOT = {
+				has_variable = eqfm_sanusiyyah_exposed_lodge_var
+			}
+		}
+	}
+	selected = {
+		s:STATE_CHAD = {
+			has_variable = eqfm_sanusiyyah_expedition_progress_var
+		}
+	}
+	possible = {
+		eqfm_state_region_has_sanusiyyah_entrenchment_trigger = {
+			state_region = s:STATE_CHAD
+		}
+		eqfm_has_embraced_sanusiyyah_trigger = no
 		NOR = {
 			has_modifier = modifier_eqfm_failed_sanusiyyah_expedition_country
 			has_modifier = modifier_eqfm_cancelled_sanusiyyah_expedition
 		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = eqfm_preparing_sanusiyya_expedition_var
+			}
+		}
 	}
 	effect = {
-		trigger_event = {
-			id = eqfm_sanusiyyah.400
-			popup = yes
-		}
 		set_variable = {
 			name = eqfm_sanusiyyah_expedition_var
 			value = s:STATE_CHAD
 		}
+		set_variable = {
+			name = eqfm_preparing_sanusiyya_expedition_var
+			months = 6
+		}
+		trigger_event = {
+			id = eqfm_sanusiyyah.400
+			popup = yes
+		}
+		if = {
+			limit = {
+				eqfm_has_sanusiyyah_expedition_trigger = yes
+			}
+			custom_description = {
+				text = eqfm_add_state_region_to_sanussiyah_expedition_effect
+				subject = s:STATE_CHAD
+				global_var:je_eqfm_sanusiyyah = {
+					add_to_variable_list = {
+						name = eqfm_sanusiyyah_expeditions_list
+						target = s:STATE_CHAD
+					}
+				}
+			}
+		}
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_destroy_lodge_chad_button = {
+	name = "eqfm_destroy_lodge_chad_name"
+	desc = "eqfm_destroy_lodge_chad_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_destroy_lodge.dds"
+	
+	tags = { state_chad repeatable_action }
+	
+	visible = {
+		s:STATE_CHAD = {
+			has_variable = eqfm_sanusiyyah_exposed_lodge_var
+		}
+	}
+	possible = {
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
 	}
 }
