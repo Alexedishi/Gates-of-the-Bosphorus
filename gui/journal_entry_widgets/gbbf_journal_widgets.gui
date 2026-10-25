@@ -99,6 +99,9 @@ types gbbf_journal_widget_types {
 			blockoverride "third_button_click" {
 				onclick = "[GetVariableSystem.Set('eqfm_sanusiyya_tab', 'involvement')]"
 			}
+			
+			# EXPEDITION TAB
+			
 		}
 	}
 	
@@ -458,13 +461,19 @@ types gbbf_journal_widget_types {
 					}
 					icon = {
 						size = { 35 35 }
-						visible = "[StateRegion.MakeScope.Var('eqfm_sanusiyyah_hidden_lodge_var').IsSet]"
+						visible = "[And(
+							StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').IsSet,
+							Not(StateRegion.MakeScope.Var('eqfm_sanusiyyah_exposed_lodge_var').IsSet)
+						)]"
 						texture = "gfx/interface/icons/battle_conditions/battle_condition_camouflaged.dds"
 						tooltip = eqfm_gui_sanusiyya_hidden_loddge_tooltip
 					}
 					icon = {
 						size = { 35 35 }
-						visible = "[StateRegion.MakeScope.Var('eqfm_sanusiyyah_exposed_lodge_var').IsSet]"
+						visible = "[And(
+							StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').IsSet,
+							StateRegion.MakeScope.Var('eqfm_sanusiyyah_exposed_lodge_var').IsSet
+						)]"
 						texture = "gfx/interface/icons/battle_conditions/battle_condition_good_visibility.dds"
 						tooltip = eqfm_gui_sanusiyya_exposed_loddge_tooltip
 					}
