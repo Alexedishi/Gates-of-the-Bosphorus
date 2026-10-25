@@ -1,150 +1,17 @@
-﻿####---------- Senusiyya Interloper Buttons ----------####
-eqfm_broker_power_deal_button = {
-	name = eqfm_broker_power_deal_name
-	desc = eqfm_broker_power_deal_desc
-
-	visible = {
-		is_involved_in_journal_entry = je_eqfm_sanusiyyah
-		NOT = {
-			country_has_state_religion = rel:sunni
-		}
-	}
-	possible = {
-		any_scope_state = {
-			is_in_geographic_region = geographic_region_sanusiyyah
-			eqfm_sanusiyyah_entrenchment_trigger = yes
-		}
-	}
-	effect = {
-		# nothing yet
-	}
-}
-
-
-####---------- Senusiyya Stance Buttons ----------####
-eqfm_adopt_welcoming_stance_button = {
-	name = "eqfm_adopt_welcoming_stance_name"
-	desc = "eqfm_adopt_welcoming_stance_desc"
-	
-	visible = {
-		gbbf_is_muslim_trigger = yes
-	}
-	possible = {
-		is_involved_in_journal_entry = je_eqfm_sanusiyyah
-	}
-	effect = {
-		if = {
-			limit = {
-				has_modifier = modifier_eqfm_sanusiyyah_stance_negative
-			}
-			remove_modifier = modifier_eqfm_sanusiyyah_stance_negative
-		}
-		add_modifier = modifier_eqfm_sanusiyyah_stance_positive
-		custom_tooltip = {
-			text = eqfm_adopt_welcoming_stance_effect_1
-			set_variable = {
-				name = eqfm_sanusiyyah_stance_var
-				value = flag:eqfm_sanusiyyah_stance_welcoming
-			}
-		}
-		custom_tooltip = eqfm_adopt_welcoming_stance_effect_2
-		custom_tooltip = {
-			text = eqfm_adopt_stance_effect
-			set_variable = eqfm_sanusiyyah_stance_cooldown
-		}
-	}
-}
-
-eqfm_adopt_aloof_stance_button = {
-	name = "eqfm_adopt_aloof_stance_name"
-	desc = "eqfm_adopt_aloof_stance_desc"
-	
-	visible = {
-		OR = {
-			var:eqfm_sanusiyyah_stance_var ?= flag:eqfm_sanusiyyah_stance_welcoming
-			var:eqfm_sanusiyyah_stance_var ?= flag:eqfm_sanusiyyah_stance_hostile
-		}
-	}
-	possible = {
-		custom_tooltip = {
-			text = eqfm_adopt_stance_possible
-			NOT = {
-				has_variable = eqfm_sanusiyyah_stance_cooldown
-			}
-		}
-	}
-	effect = {
-		if = {
-			limit = {
-				has_modifier = modifier_eqfm_sanusiyyah_stance_positive
-			}
-			remove_modifier = modifier_eqfm_sanusiyyah_stance_positive
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_eqfm_sanusiyyah_stance_negative
-			}
-			remove_modifier = modifier_eqfm_sanusiyyah_stance_negative
-		}
-		add_modifier = modifier_eqfm_sanusiyyah_stance_neutral
-		custom_tooltip = {
-			text = eqfm_adopt_aloof_stance_effect_1
-			set_variable = {
-				name = eqfm_sanusiyyah_stance_var
-				value = flag:eqfm_sanusiyyah_stance_aloof
-			}
-		}
-		custom_tooltip = {
-			text = eqfm_adopt_stance_effect
-			set_variable = eqfm_sanusiyyah_stance_cooldown
-		}
-	}
-}
-
-eqfm_adopt_hostile_stance_button = {
-	name = "eqfm_adopt_hostile_stance_name"
-	desc = "eqfm_adopt_hostile_stance_desc"
-	
-	visible = {
-		gbbf_is_muslim_trigger = yes
-	}
-	possible = {
-		is_involved_in_journal_entry = je_eqfm_sanusiyyah
-	}
-	effect = {
-		if = {
-			limit = {
-				has_modifier = modifier_eqfm_sanusiyyah_stance_positive
-			}
-			remove_modifier = modifier_eqfm_sanusiyyah_stance_positive
-		}
-		add_modifier = modifier_eqfm_sanusiyyah_stance_negative
-		custom_tooltip = {
-			text = eqfm_adopt_hostile_stance_effect_1
-			set_variable = {
-				name = eqfm_sanusiyyah_stance_var
-				value = flag:eqfm_sanusiyyah_stance_hostile
-			}
-		}
-		custom_tooltip = eqfm_adopt_hostile_stance_effect_2
-		custom_tooltip = {
-			text = eqfm_adopt_stance_effect
-			set_variable = eqfm_sanusiyyah_stance_cooldown
-		}
-	}
-}
-
-####---------- Senusiyya Narrative Buttons ----------####
+﻿####---------- Sanusiyyah Major Decision Buttons ----------####
 eqfm_embrace_sanusiyyah_button = {
 	name = "eqfm_embrace_sanusiyyah_name"
 	desc = "eqfm_embrace_sanusiyyah_desc"
+	
+	tags = { major_decision }
+	
 	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
 		has_variable = eqfm_sanusiyyah_influence_var
 		NOR = {
 			has_variable = eqfm_embraced_sanusiyyah
 			has_variable = eqfm_expelled_sanusiyyah
 		}
-		has_law = law_type:law_people_of_the_book
 	}
 	possible = {
 		has_law = law_type:law_people_of_the_book
@@ -182,15 +49,29 @@ eqfm_embrace_sanusiyyah_button = {
 		}
 	}
 	effect = {
-		trigger_event = eqfm_sanusiyyah.304
+		trigger_event =  eqfm_sanusiyyah.304
+		active_law:lawgroup_church_and_state = {
+			add_amendment = {
+				type = amendment_gbbf_state_sanusiyyah
+				sponsor = prev.ig:ig_devout
+			}
+		}
 		set_variable = eqfm_embraced_sanusiyyah
+	}
+	
+	ai_chance = {
+		value = 0
 	}
 }
 
 eqfm_expell_sanusiyyah_button = {
 	name = "eqfm_expell_sanusiyyah_name"
 	desc = "eqfm_expell_sanusiyyah_desc"
+	
+	tags = { major_decision }
+	
 	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
 		has_variable = eqfm_sanusiyyah_influence_var
 		NOR = {
 			has_variable = eqfm_embraced_sanusiyyah
@@ -326,7 +207,7 @@ eqfm_expell_sanusiyyah_button = {
 							}
 						}
 					}
-
+					
 				}
 			}
 		}
@@ -368,7 +249,143 @@ eqfm_send_armed_delegation_button = {
 	}
 }
 
-####---------- Senusiyya Expulsion Buttons ----------####
+eqfm_broker_power_deal_button = {
+	name = eqfm_broker_power_deal_name
+	desc = eqfm_broker_power_deal_desc
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			country_has_state_religion = rel:sunni
+		}
+	}
+	possible = {
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_sanusiyyah
+			eqfm_sanusiyyah_entrenchment_trigger = yes
+		}
+	}
+	effect = {
+		# nothing yet
+	}
+}
+
+
+####---------- Sanusiyyah Stance Buttons ----------####
+eqfm_adopt_welcoming_stance_button = {
+	name = "eqfm_adopt_welcoming_stance_name"
+	desc = "eqfm_adopt_welcoming_stance_desc"
+	
+	visible = {
+		gbbf_country_is_muslim_trigger = yes
+	}
+	possible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+	}
+	effect = {
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_sanusiyyah_stance_negative
+			}
+			remove_modifier = modifier_eqfm_sanusiyyah_stance_negative
+		}
+		add_modifier = modifier_eqfm_sanusiyyah_stance_positive
+		custom_tooltip = {
+			text = eqfm_adopt_welcoming_stance_effect_1
+			set_variable = {
+				name = eqfm_sanusiyyah_stance_var
+				value = flag:eqfm_sanusiyyah_stance_welcoming
+			}
+		}
+		custom_tooltip = eqfm_adopt_welcoming_stance_effect_2
+		custom_tooltip = {
+			text = eqfm_adopt_stance_effect
+			set_variable = eqfm_sanusiyyah_stance_cooldown
+		}
+	}
+}
+
+eqfm_adopt_aloof_stance_button = {
+	name = "eqfm_adopt_aloof_stance_name"
+	desc = "eqfm_adopt_aloof_stance_desc"
+	
+	visible = {
+		OR = {
+			var:eqfm_sanusiyyah_stance_var ?= flag:eqfm_sanusiyyah_stance_welcoming
+			var:eqfm_sanusiyyah_stance_var ?= flag:eqfm_sanusiyyah_stance_hostile
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			text = eqfm_adopt_stance_possible
+			NOT = {
+				has_variable = eqfm_sanusiyyah_stance_cooldown
+			}
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_sanusiyyah_stance_positive
+			}
+			remove_modifier = modifier_eqfm_sanusiyyah_stance_positive
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_sanusiyyah_stance_negative
+			}
+			remove_modifier = modifier_eqfm_sanusiyyah_stance_negative
+		}
+		add_modifier = modifier_eqfm_sanusiyyah_stance_neutral
+		custom_tooltip = {
+			text = eqfm_adopt_aloof_stance_effect_1
+			set_variable = {
+				name = eqfm_sanusiyyah_stance_var
+				value = flag:eqfm_sanusiyyah_stance_aloof
+			}
+		}
+		custom_tooltip = {
+			text = eqfm_adopt_stance_effect
+			set_variable = eqfm_sanusiyyah_stance_cooldown
+		}
+	}
+}
+
+eqfm_adopt_hostile_stance_button = {
+	name = "eqfm_adopt_hostile_stance_name"
+	desc = "eqfm_adopt_hostile_stance_desc"
+	
+	visible = {
+		gbbf_country_is_muslim_trigger = yes
+	}
+	possible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+	}
+	effect = {
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_sanusiyyah_stance_positive
+			}
+			remove_modifier = modifier_eqfm_sanusiyyah_stance_positive
+		}
+		add_modifier = modifier_eqfm_sanusiyyah_stance_negative
+		custom_tooltip = {
+			text = eqfm_adopt_hostile_stance_effect_1
+			set_variable = {
+				name = eqfm_sanusiyyah_stance_var
+				value = flag:eqfm_sanusiyyah_stance_hostile
+			}
+		}
+		custom_tooltip = eqfm_adopt_hostile_stance_effect_2
+		custom_tooltip = {
+			text = eqfm_adopt_stance_effect
+			set_variable = eqfm_sanusiyyah_stance_cooldown
+		}
+	}
+}
+
+
+####---------- Sanusiyyah Expulsion Buttons ----------####
 eqfm_recall_sanusiyyah_expedition_button = {
 	name = "eqfm_recall_expedition_name"
 	desc = "eqfm_recall_expedition_desc"
@@ -392,7 +409,7 @@ eqfm_recall_sanusiyyah_expedition_button = {
 eqfm_resupply_sanusiyyah_expedition_button = {
 	name = "eqfm_resupply_expedition_name"
 	desc = "eqfm_resupply_expedition_desc"
-
+	
 	visible = {
 		eqfm_has_sanusiyyah_expedition_trigger = yes
 	}
@@ -422,6 +439,255 @@ eqfm_resupply_sanusiyyah_expedition_button = {
 		}
 	}
 }
+
+
+####---------- Hedjaz State Region Buttons ----------####
+eqfm_spread_senusiyyah_hedjaz_button = {
+	# This button employs different logic than the others; if HDJ/EGY expels Sanusiyyah from Hedjaz, it will not automatically spread back
+	name = "eqfm_spread_senusiyyah_hedjaz_name"
+	desc = "eqfm_spread_senusiyyah_hedjaz_desc"
+	icon = "gfx/interface/icons/scripted_actions/eqfm_sanusiyyah_found_lodge.dds"
+	
+	tags = { state_hedjaz spread_action }
+	
+	visible = {
+		s:STATE_HEDJAZ = {
+			NOT = {
+				has_variable = eqfm_sanusiyyah_entrenchment_var
+			}
+		}
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				s:STATE_HEDJAZ = {
+					NOT = {
+						has_variable = eqfm_sanusiyyah_entrenchment_var
+					}
+				}
+			}
+			custom_tooltip = {
+				text = eqfm_sanusiyya_already_present_trigger
+				always = no
+			}
+		}
+		trigger_else = {
+			eqfm_has_embraced_sanusiyyah_trigger = yes
+			has_state_in_state_region = STATE_HEDJAZ
+		}
+	}
+	effect = {
+		custom_description = {
+			text = eqfm_add_sanusiyyah_entrenchment_effect
+			subject = s:STATE_HEDJAZ
+			value = 10
+			s:STATE_HEDJAZ = {
+				set_variable = {
+					name = eqfm_sanusiyyah_entrenchment_var
+					value = 10
+				}
+			}
+		}
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_expel_sanusiyyah_hedjaz_button = {
+	name = "eqfm_expel_sanusiyyah_hedjaz_name"
+	desc = "eqfm_expel_sanusiyyah_hedjaz_desc"
+	icon = "gfx/interface/icons/scripted_actions/eqfm_sanusiyyah_destroy_lodge.dds"
+	
+	tags = { state_hedjaz expel_action }
+	
+	visible = {
+		s:STATE_HEDJAZ = {
+			has_variable = eqfm_sanusiyyah_entrenchment_var
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			text = eqfm_expel_sanusiyyah_possible
+			s:STATE_HEDJAZ = {
+				var:eqfm_sanusiyyah_entrenchment_var <= 0
+			}
+		}
+		is_in_geographic_region = geographic_region_sanusiyyah
+		custom_tooltip = {
+			text = eqfm_has_hostile_stance
+			var:eqfm_sanusiyyah_stance_var ?= flag:eqfm_sanusiyyah_stance_hostile
+		}
+		eqfm_has_sanusiyyah_expedition_trigger = no
+		any_scope_general = {
+			NOT = {
+				has_role_of_type = ruler
+			}
+			is_busy = no
+		}
+		NOR = {
+			has_modifier = modifier_eqfm_failed_sanusiyyah_expedition_country
+			has_modifier = modifier_eqfm_cancelled_sanusiyyah_expedition
+		}
+	}
+	effect = {
+		trigger_event = {
+			id = eqfm_sanusiyyah.400
+			popup = yes
+		}
+		set_variable = {
+			name = eqfm_sanusiyyah_expedition_var
+			value = s:STATE_HEDJAZ
+		}
+	}
+}
+
+eqfm_start_improve_relations_hedjaz_button = {
+	name = "eqfm_start_improve_relations_hedjaz_name"
+	desc = "eqfm_start_improve_relations_hedjaz_desc"
+	icon = "gfx/interface/icons/scripted_actions/eqfm_sanusiyyah_improve_relations.dds"
+	
+	tags = { state_hedjaz diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_hedjaz_improve_relations
+		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_HEDJAZ
+	}
+	effect = {
+		add_modifier = modifier_eqfm_hedjaz_improve_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_improve_relations_hedjaz_button = {
+	name = "eqfm_stop_improve_relations_hedjaz_name"
+	desc = "eqfm_stop_improve_relations_hedjaz_desc"
+	icon = "gfx/interface/icons/scripted_actions/eqfm_sanusiyyah_stop_improve_relations.dds"
+	
+	tags = { state_hedjaz diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_hedjaz_improve_relations
+	}
+	possible = {
+		hidden_trigger = { 
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_hedjaz_improve_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_start_harm_relations_hedjaz_button = {
+	name = "eqfm_start_harm_relations_hedjaz_name"
+	desc = "eqfm_start_harm_relations_hedjaz_desc"
+	icon = "gfx/interface/icons/scripted_actions/eqfm_sanusiyyah_damage_relations.dds"
+	
+	tags = { state_hedjaz diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_hedjaz_harm_relations
+		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_HEDJAZ
+	}
+	effect = {
+		add_modifier = modifier_eqfm_hedjaz_harm_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_harm_relations_hedjaz_button = {
+	name = "eqfm_stop_harm_relations_hedjaz_name"
+	desc = "eqfm_stop_harm_relations_hedjaz_desc"
+	icon = "gfx/interface/icons/scripted_actions/eqfm_sanusiyyah_stop_damage_relations.dds"
+	
+	tags = { state_hedjaz diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_hedjaz_harm_relations
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_hedjaz_harm_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_start_arm_tribes_hedjaz_button = {
+	name = "eqfm_start_arm_tribes_hedjaz_name"
+	desc = "eqfm_start_arm_tribes_hedjaz_desc"
+	icon = "gfx/interface/icons/scripted_actions/eqfm_sanusiyyah_arm_tribes.dds"
+	
+	tags = { state_hedjaz diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_hedjaz_arm_tribes
+		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_HEDJAZ
+	}
+	effect = {
+		add_modifier = modifier_eqfm_hedjaz_arm_tribes
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_arm_tribes_hedjaz_button = {
+	name = "eqfm_stop_arm_tribes_hedjaz_name"
+	desc = "eqfm_stop_arm_tribes_hedjaz_desc"
+	icon = "gfx/interface/icons/scripted_actions/eqfm_sanusiyyah_stop_arming_tribes.dds"
+	
+	tags = { state_hedjaz diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_hedjaz_arm_tribes
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_hedjaz_arm_tribes
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+
+
+
+
+
 
 eqfm_expel_sanusiyyah_libya_button = {
 	name = "eqfm_expel_sanusiyyah_libya_name"
