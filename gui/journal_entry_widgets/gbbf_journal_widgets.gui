@@ -30,6 +30,7 @@ flowcontainer = {
 		}
 		gbbf_sanusiyyah_georegion_status = {}
 		gbbf_sanusiyyah_involvement_details = {}
+		gbbf_sanusiyyah_expedition_details = {}
 	}
 }
 
@@ -101,7 +102,21 @@ types gbbf_journal_widget_types {
 			}
 			
 			# EXPEDITION TAB
-			
+			blockoverride "third_button" {
+				text = "eqfm_gui_expedition_header"
+			}
+			blockoverride "third_button_selected" {
+				text = "eqfm_gui_expedition_header"
+			}
+			blockoverride "third_button_visibility_checked" {
+				visible = "[Not(GetVariableSystem.HasValue('eqfm_sanusiyya_tab', 'expedition'))]"
+			}
+			blockoverride "third_button_visibility" {
+				visible = "[GetVariableSystem.HasValue('eqfm_sanusiyya_tab', 'expedition')]"
+			}
+			blockoverride "third_button_click" {
+				onclick = "[GetVariableSystem.Set('eqfm_sanusiyya_tab', 'expedition')]"
+			}
 		}
 	}
 	
@@ -705,5 +720,133 @@ types gbbf_journal_widget_types {
 				}
 			}
 		}
+	}
+	
+	type gbbf_sanusiyyah_expedition_details = flowcontainer {
+		parentanchor = top|hcenter
+		direction = vertical
+		minimumsize = { 520 -1 }
+		spacing = 5
+		using = entry_bg_fancy
+		
+		visible = "[GetVariableSystem.HasValue('eqfm_sanusiyya_tab', 'expedition')]"
+		
+		## EXPEDITION COMPOSITION
+		flowcontainer = {
+			parentanchor = top|hcenter
+			direction = vertical
+			minimumsize = { 500 100 }
+			spacing = 5
+			
+			using = entry_bg_fancy
+			
+			default_header_clean_faded = {
+				size = { 500 50 }
+				parentanchor = top|hcenter
+				blockoverride "text" { }
+				textbox = {
+					raw_text = "Expedition Members"
+					parentanchor = center
+					position = { 0 0 }
+					autoresize = yes
+					max_width = 300
+					elide = right
+					using = fontsize_mega
+				}
+			}
+			
+			textbox = {
+				parentanchor = center
+				size = { 500 50 }
+				raw_text = "[GetPlayer.GetNameNoFlag] does not have expedition"
+				align = center|nobaseline
+				elide = right
+				using = fontsize_large
+				
+				background = {
+					using = dark_area
+					alpha = 0.4
+					margin = { -5 -5 }
+					
+					modify_texture = {
+						texture = "gfx/interface/masks/fade_horizontal_center.dds"
+						spriteType = Corneredstretched
+						spriteborder = { 0 0 }
+						blend_mode = alphamultiply
+					}
+					modify_texture = {
+						texture = "gfx/interface/masks/fade_vertical_center.dds"
+						spriteType = Corneredstretched
+						spriteborder = { 0 0 }
+						blend_mode = alphamultiply
+						alpha = 0.5
+					}
+				}
+			}
+		}
+		
+		## ONGOING EXPEDITIONS
+		flowcontainer = {
+			parentanchor = top|hcenter
+			direction = vertical
+			minimumsize = { 500 100 }
+			spacing = 5
+			
+			using = entry_bg_fancy
+			
+			default_header_clean_faded = {
+				size = { 500 50 }
+				parentanchor = top|hcenter
+				blockoverride "text" { }
+				textbox = {
+					raw_text = "Active Expeditions"
+					parentanchor = center
+					position = { 0 0 }
+					autoresize = yes
+					max_width = 300
+					elide = right
+					using = fontsize_mega
+				}
+			}
+			
+			textbox = {
+				parentanchor = center
+				visible = "[IsDataModelEmpty(JournalEntry.MakeScope.GetList('eqfm_sanusiyyah_expeditions_list'))]"
+				size = { 500 50 }
+				raw_text = "[GetPlayer.GetNameNoFlag] does not have expedition"
+				align = center|nobaseline
+				elide = right
+				using = fontsize_large
+				
+				background = {
+					using = dark_area
+					alpha = 0.4
+					margin = { -5 -5 }
+					
+					modify_texture = {
+						texture = "gfx/interface/masks/fade_horizontal_center.dds"
+						spriteType = Corneredstretched
+						spriteborder = { 0 0 }
+						blend_mode = alphamultiply
+					}
+					modify_texture = {
+						texture = "gfx/interface/masks/fade_vertical_center.dds"
+						spriteType = Corneredstretched
+						spriteborder = { 0 0 }
+						blend_mode = alphamultiply
+						alpha = 0.5
+					}
+				}
+			}
+		}
+	}
+	
+	type gbbf_sanusiyya_expedition_item = widget {
+		parentanchor = top|hcenter
+		minimumsize = { 500 160 }
+		
+		using = entry_bg_fancy
+		
+		
 	}
 }
