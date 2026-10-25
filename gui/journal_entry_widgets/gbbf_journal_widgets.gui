@@ -116,7 +116,7 @@ types gbbf_journal_widget_types {
 		flowcontainer = {
 			parentanchor = top|hcenter
 			direction = vertical
-			spacing = 10
+			spacing = 15
 			
 			gbbf_sanusiyyah_state_region_item = {
 				blockoverride "state_region_datacontext" {
@@ -124,6 +124,18 @@ types gbbf_journal_widget_types {
 				}
 				blockoverride "state_region_background" {
 					texture = "/gfx/interface/illustrations/situation_backgrounds/gbbf_situation_background_arab_urban.dds"
+				}
+				blockoverride "spread_button_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_hedjaz'),
+						ScriptedButton.HasTag('spread_action')
+					)]"
+				}
+				blockoverride "expel_button_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_hedjaz'),
+						ScriptedButton.HasTag('expel_action')
+					)]"
 				}
 				blockoverride "button_column_1_visibility" {
 					visible = "[And(
@@ -134,7 +146,7 @@ types gbbf_journal_widget_types {
 				blockoverride "button_column_2_visibility" {
 					visible = "[And(
 						ScriptedButton.HasTag('state_hedjaz'),
-						ScriptedButton.HasTag('major_action')
+						ScriptedButton.HasTag('repeatable_action')
 					)]"
 				}
 			}
@@ -154,7 +166,7 @@ types gbbf_journal_widget_types {
 				blockoverride "button_column_2_visibility" {
 					visible = "[And(
 						ScriptedButton.HasTag('state_tripoli'),
-						ScriptedButton.HasTag('major_action')
+						ScriptedButton.HasTag('repeatable_action')
 					)]"
 				}
 			}
@@ -174,7 +186,7 @@ types gbbf_journal_widget_types {
 				blockoverride "button_column_2_visibility" {
 					visible = "[And(
 						ScriptedButton.HasTag('state_libya'),
-						ScriptedButton.HasTag('major_action')
+						ScriptedButton.HasTag('repeatable_action')
 					)]"
 				}
 			}
@@ -194,7 +206,7 @@ types gbbf_journal_widget_types {
 				blockoverride "button_column_2_visibility" {
 					visible = "[And(
 						ScriptedButton.HasTag('state_libyan_desert'),
-						ScriptedButton.HasTag('major_action')
+						ScriptedButton.HasTag('repeatable_action')
 					)]"
 				}
 			}
@@ -211,7 +223,7 @@ types gbbf_journal_widget_types {
 				blockoverride "button_column_2_visibility" {
 					visible = "[And(
 						ScriptedButton.HasTag('state_matruh'),
-						ScriptedButton.HasTag('major_action')
+						ScriptedButton.HasTag('repeatable_action')
 					)]"
 				}
 			}
@@ -228,7 +240,7 @@ types gbbf_journal_widget_types {
 				blockoverride "button_column_2_visibility" {
 					visible = "[And(
 						ScriptedButton.HasTag('state_egyptian_desert'),
-						ScriptedButton.HasTag('major_action')
+						ScriptedButton.HasTag('repeatable_action')
 					)]"
 				}
 			}
@@ -248,7 +260,7 @@ types gbbf_journal_widget_types {
 				blockoverride "button_column_2_visibility" {
 					visible = "[And(
 						ScriptedButton.HasTag('state_chad'),
-						ScriptedButton.HasTag('major_action')
+						ScriptedButton.HasTag('repeatable_action')
 					)]"
 				}
 			}
@@ -291,6 +303,7 @@ types gbbf_journal_widget_types {
 		
 		widget = {
 			parentanchor = bottom
+			position = { 0 10 }
 			size = { 307 52 }
 			
 			# Active Entrenchment Progress Bar
@@ -363,6 +376,42 @@ types gbbf_journal_widget_types {
 				background = {
 					using = dark_area
 					margin = { 24 0 }
+				}
+			}
+		}
+		
+		flowcontainer = {
+			parentanchor = bottom|left
+			position = { 6 6 }
+			direction = vertical
+			ignoreinvisible = yes
+			datamodel = "[JournalEntry.GetScriptedButtons]"
+			
+			item = {
+				gbbf_sanusiyyah_scripted_button_round = {
+					blockoverride "major_button_visibility" {
+						block "expel_button_visibility" {
+							visible = "[ScriptedButton.HasTag('nope')]"
+						}
+					}
+				}
+			}
+		}
+		
+		flowcontainer = {
+			parentanchor = bottom|hcenter
+			position = { 22 6 }
+			direction = vertical
+			ignoreinvisible = yes
+			datamodel = "[JournalEntry.GetScriptedButtons]"
+			
+			item = {
+				gbbf_sanusiyyah_scripted_button_round = {
+					blockoverride "major_button_visibility" {
+						block "spread_button_visibility" {
+							visible = "[ScriptedButton.HasTag('nope')]"
+						}
+					}
 				}
 			}
 		}
@@ -495,6 +544,14 @@ types gbbf_journal_widget_types {
 		onclick = "[Execute( ScriptedButton.ExecuteEffect )]"
 		tooltip = "SCRIPTED_ACTION_TOOLTIP"
 		
+		widget = {
+			visible = "[ScriptedButton.IsSelected]"
+			size = { 100% 100% }
+			
+			background = {
+				using = paper_bg
+			}
+		}
 		icon = {
 			parentanchor = center
 			size = { 85% 85% }
@@ -502,10 +559,31 @@ types gbbf_journal_widget_types {
 		}
 		icon = {
 			visible = "[ScriptedButton.IsSelected]"
+			using = highlighted_square_selection
+		}
+	}
+	
+	type gbbf_sanusiyyah_scripted_button_round = button_icon_round {
+		size = { 40 40 }
+		using = tooltip_above
+		enabled = "[IsValid( ScriptedButton.ExecuteEffect )]"
+		onclick = "[Execute( ScriptedButton.ExecuteEffect )]"
+		tooltip = "SCRIPTED_ACTION_TOOLTIP"
+		
+		block "major_button_visibility" {
+			visible = "[ScriptedButton.HasTag('nope')]"
+		}
+		
+		icon = {
+			parentanchor = center
+			size = { 75% 75% }
+			texture = "[ScriptedButton.GetIcon]"
+		}
+		icon = {
+			visible = "[ScriptedButton.IsSelected]"
 			size = { 100% 100% }
 			using = circle_bg_simple_dark
 		}
-		
 		icon = {
 			visible = "[ScriptedButton.IsSelected]"
 			using = highlighted_circle_selection_small
