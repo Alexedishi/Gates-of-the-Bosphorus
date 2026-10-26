@@ -68,202 +68,200 @@ eqfm_initialize_sanusiyyah_variables_effect = {
 }
 
 eqfm_update_global_sanusiyyah_variables_effect = {
-	scope:journal_entry = {
-		## First, do all the variable math
-		set_variable = {
-			name = eqfm_sanusiyyah_pressure_progress_var
-			value = eqfm_sanusiyyah_pressure_progress_value
+	## First, do all the variable math
+	set_variable = {
+		name = eqfm_sanusiyyah_pressure_progress_var
+		value = eqfm_sanusiyyah_pressure_progress_value
+	}
+	set_variable = {
+		name = eqfm_georegion_bedouin_loyalist_fraction_var
+		value = eqfm_georegion_bedouin_loyalist_fraction_value
+	}
+	set_variable = {
+		name = eqfm_georegion_bedouin_radical_fraction_var
+		value = eqfm_georegion_bedouin_radical_fraction_value
+	}
+	set_variable = {
+		name = eqfm_state_libya_centralization_var
+		value = eqfm_state_libya_centralization_value
+	}
+	set_variable = {
+		name = eqfm_state_libyan_desert_centralization_var
+		value = eqfm_state_libyan_desert_centralization_value
+	}
+	set_variable = {
+		name = eqfm_state_matruh_centralization_var
+		value = eqfm_state_matruh_centralization_value
+	}
+	set_variable = {
+		name = eqfm_state_egyptian_desert_centralization_var
+		value = eqfm_state_egyptian_desert_centralization_value
+	}
+	set_variable = {
+		name = eqfm_state_chad_centralization_var
+		value = eqfm_state_chad_centralization_value
+	}
+	
+	## Figure out where Senussi should be located & update flags
+	if = {
+		limit = {
+			var:eqfm_sanusiyyah_pressure_var >= 99
 		}
-		set_variable = {
-			name = eqfm_georegion_bedouin_loyalist_fraction_var
-			value = eqfm_georegion_bedouin_loyalist_fraction_value
-		}
-		set_variable = {
-			name = eqfm_georegion_bedouin_radical_fraction_var
-			value = eqfm_georegion_bedouin_radical_fraction_value
-		}
-		set_variable = {
-			name = eqfm_state_libya_centralization_var
-			value = eqfm_state_libya_centralization_value
-		}
-		set_variable = {
-			name = eqfm_state_libyan_desert_centralization_var
-			value = eqfm_state_libyan_desert_centralization_value
-		}
-		set_variable = {
-			name = eqfm_state_matruh_centralization_var
-			value = eqfm_state_matruh_centralization_value
-		}
-		set_variable = {
-			name = eqfm_state_egyptian_desert_centralization_var
-			value = eqfm_state_egyptian_desert_centralization_value
-		}
-		set_variable = {
-			name = eqfm_state_chad_centralization_var
-			value = eqfm_state_chad_centralization_value
-		}
-		
-		## Figure out where Senussi should be located & update flags
 		if = {
 			limit = {
-				var:eqfm_sanusiyyah_pressure_var >= 99
+				var:eqfm_senussi_location_var != flag:eqfm_senussi_court
 			}
-			if = {
+			every_country = {
 				limit = {
-					var:eqfm_senussi_location_var != flag:eqfm_senussi_court
+					is_involved_in_journal_entry = je_eqfm_sanusiyyah
 				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_sanusiyyah
-					}
-					post_notification = eqfm_senussi_entrenched
-				}
-			}
-			set_variable = {
-				name = eqfm_senussi_location_var
-				value = flag:eqfm_senussi_court
+				post_notification = eqfm_senussi_entrenched
 			}
 		}
-		else_if = {
-			limit = {
-				var:eqfm_sanusiyyah_pressure_var >= 75
-			}
-			if = {
-				limit = {
-					OR = {
-						var:eqfm_senussi_location_var = flag:eqfm_senussi_ghosted
-						var:eqfm_senussi_location_var = flag:eqfm_senussi_desert
-						var:eqfm_senussi_location_var = flag:eqfm_senussi_villages
-					}
-				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_sanusiyyah
-					}
-					post_notification = eqfm_senussi_urbanized_up
-				}
-			}
-			else_if = {
-				limit = {
-					var:eqfm_senussi_location_var = flag:eqfm_senussi_court
-				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_sanusiyyah
-					}
-					post_notification = eqfm_senussi_urbanized_down
-				}
-			}
-			set_variable = {
-				name = eqfm_senussi_location_var
-				value = flag:eqfm_senussi_urban
-			}
-		}
-		else_if = {
-			limit = {
-				var:eqfm_sanusiyyah_pressure_var < 75
-				var:eqfm_sanusiyyah_pressure_var >= 50
-			}
-			if = {
-				limit = {
-					OR = {
-						var:eqfm_senussi_location_var = flag:eqfm_senussi_court
-						var:eqfm_senussi_location_var = flag:eqfm_senussi_urban
-					}
-				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_sanusiyyah
-					}
-					post_notification = eqfm_senussi_villages_down
-				}
-			}
-			if = {
-				limit = {
-					OR = {
-						var:eqfm_senussi_location_var = flag:eqfm_senussi_ghosted
-						var:eqfm_senussi_location_var = flag:eqfm_senussi_desert
-					}
-				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_sanusiyyah
-					}
-					post_notification = eqfm_senussi_villages_up
-				}
-			}
-			set_variable = {
-				name = eqfm_senussi_location_var
-				value = flag:eqfm_senussi_villages
-			}
-		}
-		else_if = {
-			limit = {
-				var:eqfm_sanusiyyah_pressure_var < 50
-			}
-			if = {
-				limit = {
-					var:eqfm_senussi_location_var = flag:eqfm_senussi_ghosted
-				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_sanusiyyah
-					}
-					post_notification = eqfm_senussi_desert_up
-				}
-			}
-			else_if = {
-				limit = {
-					OR = {
-						var:eqfm_senussi_location_var = flag:eqfm_senussi_court
-						var:eqfm_senussi_location_var = flag:eqfm_senussi_urban
-						var:eqfm_senussi_location_var = flag:eqfm_senussi_villages
-					}
-				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_sanusiyyah
-					}
-					post_notification = eqfm_senussi_desert_down
-				}
-			}
-			set_variable = {
-				name = eqfm_senussi_location_var
-				value = flag:eqfm_senussi_desert
-			}
-		}
-		else = {
-			if = {
-				limit = {
-					var:eqfm_senussi_location_var != flag:eqfm_senussi_ghosted
-				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_sanusiyyah
-					}
-					post_notification = eqfm_senussi_ghosted
-				}
-			}
-			set_variable = {
-				name = eqfm_senussi_location_var
-				value = flag:eqfm_senussi_ghosted
-			}
-		}
-		
-		## Lastly, do the phase progress math and check phase
 		set_variable = {
-			name = eqfm_sanusiyyah_situation_progress_var
-			value = eqfm_sanusiyyah_situation_progress_value
+			name = eqfm_senussi_location_var
+			value = flag:eqfm_senussi_court
 		}
-		com_change_and_clamp_variable = {
-			name = eqfm_sanusiyyah_situation_var
-			value = var:eqfm_sanusiyyah_situation_progress_var
-			max = 100
-			min = 0
-		}
-		eqfm_check_sanusiyyah_phase_effect = yes
-		eqfm_update_senussi_progress_bars_effect = yes
 	}
+	else_if = {
+		limit = {
+			var:eqfm_sanusiyyah_pressure_var >= 75
+		}
+		if = {
+			limit = {
+				OR = {
+					var:eqfm_senussi_location_var = flag:eqfm_senussi_ghosted
+					var:eqfm_senussi_location_var = flag:eqfm_senussi_desert
+					var:eqfm_senussi_location_var = flag:eqfm_senussi_villages
+				}
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_sanusiyyah
+				}
+				post_notification = eqfm_senussi_urbanized_up
+			}
+		}
+		else_if = {
+			limit = {
+				var:eqfm_senussi_location_var = flag:eqfm_senussi_court
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_sanusiyyah
+				}
+				post_notification = eqfm_senussi_urbanized_down
+			}
+		}
+		set_variable = {
+			name = eqfm_senussi_location_var
+			value = flag:eqfm_senussi_urban
+		}
+	}
+	else_if = {
+		limit = {
+			var:eqfm_sanusiyyah_pressure_var < 75
+			var:eqfm_sanusiyyah_pressure_var >= 50
+		}
+		if = {
+			limit = {
+				OR = {
+					var:eqfm_senussi_location_var = flag:eqfm_senussi_court
+					var:eqfm_senussi_location_var = flag:eqfm_senussi_urban
+				}
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_sanusiyyah
+				}
+				post_notification = eqfm_senussi_villages_down
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					var:eqfm_senussi_location_var = flag:eqfm_senussi_ghosted
+					var:eqfm_senussi_location_var = flag:eqfm_senussi_desert
+				}
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_sanusiyyah
+				}
+				post_notification = eqfm_senussi_villages_up
+			}
+		}
+		set_variable = {
+			name = eqfm_senussi_location_var
+			value = flag:eqfm_senussi_villages
+		}
+	}
+	else_if = {
+		limit = {
+			var:eqfm_sanusiyyah_pressure_var < 50
+		}
+		if = {
+			limit = {
+				var:eqfm_senussi_location_var = flag:eqfm_senussi_ghosted
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_sanusiyyah
+				}
+				post_notification = eqfm_senussi_desert_up
+			}
+		}
+		else_if = {
+			limit = {
+				OR = {
+					var:eqfm_senussi_location_var = flag:eqfm_senussi_court
+					var:eqfm_senussi_location_var = flag:eqfm_senussi_urban
+					var:eqfm_senussi_location_var = flag:eqfm_senussi_villages
+				}
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_sanusiyyah
+				}
+				post_notification = eqfm_senussi_desert_down
+			}
+		}
+		set_variable = {
+			name = eqfm_senussi_location_var
+			value = flag:eqfm_senussi_desert
+		}
+	}
+	else = {
+		if = {
+			limit = {
+				var:eqfm_senussi_location_var != flag:eqfm_senussi_ghosted
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_sanusiyyah
+				}
+				post_notification = eqfm_senussi_ghosted
+			}
+		}
+		set_variable = {
+			name = eqfm_senussi_location_var
+			value = flag:eqfm_senussi_ghosted
+		}
+	}
+	
+	## Lastly, do the phase progress math and check phase
+	set_variable = {
+		name = eqfm_sanusiyyah_situation_progress_var
+		value = eqfm_sanusiyyah_situation_progress_value
+	}
+	com_change_and_clamp_variable = {
+		name = eqfm_sanusiyyah_situation_var
+		value = var:eqfm_sanusiyyah_situation_progress_var
+		max = 100
+		min = 0
+	}
+	eqfm_check_sanusiyyah_phase_effect = yes
+	eqfm_update_senussi_progress_bars_effect = yes
 }
 
 eqfm_update_senussi_progress_bars_effect = {

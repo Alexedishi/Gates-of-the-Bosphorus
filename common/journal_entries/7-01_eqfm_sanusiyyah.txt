@@ -6,7 +6,7 @@
 	# "Influence" which is the strength of the Sanusiyyah movement in a specific country
 	group = je_group_global_international_situations
 	icon = "gfx/interface/icons/event_icons/event_islamism.dds"
-#	dlc = dlc_grefm
+	#	dlc = dlc_grefm
 	weight = 100
 	
 	activation_description = {
@@ -22,7 +22,7 @@
 	}
 	
 	scripted_progress_bar = eqfm_sanusiyyah_phase_progress_bar
-
+	
 	## Major Decisions
 	scripted_button = eqfm_embrace_sanusiyyah_button
 	scripted_button = eqfm_expell_sanusiyyah_button
@@ -133,15 +133,26 @@
 	scripted_button = eqfm_destroy_lodge_chad_button
 	
 	# Expedition Buttons
+	scripted_button = eqfm_resupply_desert_expedition_button
+	scripted_button = eqfm_deploy_desert_expedition_button
+	scripted_button = eqfm_cancel_desert_expedition_button
+	
+	
+	
+	
 	scripted_button = eqfm_resupply_sanusiyyah_expedition_button
 	scripted_button = eqfm_recall_sanusiyyah_expedition_button
+	
+	
+	
+	
 	
 	widget = {
 		gui = "gui/com_journal_injects/situation_widgets.gui"
 		name = "widget_com_international_situation_illustration"
 		container = "custom_widget_container_je_icon"
 	}
-
+	
 	widget = {
 		gui = "gui/com_journal_injects/situation_widgets.gui"
 		name = "widget_com_international_situation_phase_information"
@@ -320,18 +331,31 @@
 	on_weekly_pulse = {
 		effect = {
 			eqfm_update_senussi_character_effect = yes
-			eqfm_update_global_sanusiyyah_variables_effect = yes
-			every_country = {
-				limit = {
-					is_involved_in_journal_entry = je_eqfm_sanusiyyah
+			scope:journal_entry = {
+				eqfm_update_global_sanusiyyah_variables_effect = yes
+				every_scope_je_involved = {
+					trigger_event = {
+						on_action =
+					}
+					eqfm_update_sanusiyyah_modifier_effect = yes
 				}
-				eqfm_update_sanusiyyah_modifier_effect = yes
 			}
 		}
 	}
 	
 	on_monthly_pulse = {
 		effect = {
+			scope:journal_entry = {
+				every_scope_je_involved = {
+					trigger_event = {
+						on_action = eqfm_desert_expedition_monthly_pulse
+					}
+					trigger_event = {
+						on_action = eqfm_sanusiyyah_monthly_pulse
+					}
+				}
+				
+			}
 			eqfm_monthly_entrenchment_effect = yes
 			eqfm_validate_sanusiyyah_involvement_effect = yes
 			scope:journal_entry = {
@@ -349,6 +373,10 @@
 					value = var:eqfm_sanusiyyah_pressure_var
 				}
 			}
+			
+			
+			
+			
 			if = {
 				limit = {
 					NOT = {
@@ -414,153 +442,6 @@
 			desc = je_eqfm_sanusiyyah_status
 			trigger = {
 				has_global_variable = je_eqfm_sanusiyyah
-			}
-		}
-	}
-}
-
-je_eqfm_sanusiyyah_expedition = {
-	group = je_group_expeditions
-	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	dlc = dlc_grefm
-	weight = 100
-	
-	activation_description = {
-		always = yes
-	}
-	
-	should_be_pinned_by_default_uninvolved_or_context = yes
-	can_revolution_inherit = yes
-	transferable = no
-	can_deactivate = no
-	
-	scripted_progress_bar = eqfm_sanusiyyah_expedition_progress_bar
-	scripted_progress_bar = eqfm_sanusiyyah_expedition_peril_bar
-
-	scripted_button = eqfm_resupply_sanusiyyah_expedition_button
-	scripted_button = eqfm_recall_sanusiyyah_expedition_button
-	
-	immediate = {
-		trigger_event = {
-			id = eqfm_sanusiyyah.401
-			days = { 20 30 }
-		}
-	}
-	
-	outcome = {
-		header = je_standard_completion_header
-		effect_header = je_standard_on_completion_header
-		conclusion_desc = je_standard_completion_conclusion_desc
-		color = gold_positive
-		
-		trigger = {
-			custom_tooltip = {
-				text = je_eqfm_sanusiyyah_expedition_complete
-				has_variable = eqfm_sanusiyyah_expedition_progress_var
-				var:eqfm_sanusiyyah_expedition_progress_var >= 8
-			}
-		}
-		effect = {
-			trigger_event = eqfm_sanusiyyah.404
-			set_variable = {
-				name = eqfm_sanusiyyah_expedition_transit_var
-				months = 3
-			}
-		}
-	}
-	
-	outcome = {
-		header = je_standard_failure_header
-		effect_header = je_standard_on_failure_header
-		conclusion_desc = je_standard_failure_conclusion_desc
-		color = blue_negative
-		
-		trigger = {
-			OR = {
-				eqfm_expedition_peril_greater_than_or_equals_trigger = {
-					type = sanusiyyah
-					value = 5
-				}
-				NOT = {
-					eqfm_expedition_has_leader_trigger = {
-						type = sanusiyyah
-					}
-				}
-			}
-		}
-		effect = {
-			hidden_effect = {
-				if = {
-					limit = {
-						has_variable = eqfm_sanusiyyah_expedition_peril_var
-						var:eqfm_sanusiyyah_expedition_peril_var >= 5
-					}
-					trigger_event = eqfm_sanusiyyah.403
-				}
-				else = {
-					trigger_event = eqfm_sanusiyyah.402
-				}
-			}
-		}
-	}
-	
-	outcome = {
-		conclusion_desc = je_standard_failure_conclusion_desc
-		flags = { invalid_outcome hidden }
-		
-		trigger = {
-			OR = {
-				eqfm_has_sanusiyyah_expedition_trigger = no
-				NOT = {
-					is_involved_in_journal_entry = je_eqfm_sanusiyyah
-				}
-			}
-		}
-		effect = {
-			eqfm_clear_sanusiyyah_expedition_effect = yes
-		}
-	}
-	
-	on_weekly_pulse = {
-		random_events = {
-			chance_of_no_event = 50
-			5 = eqfm_sanusiyyah.405
-			5 = eqfm_sanusiyyah.406
-			5 = eqfm_sanusiyyah.407
-			5 = eqfm_sanusiyyah.408
-			5 = eqfm_sanusiyyah.409
-			5 = eqfm_sanusiyyah.410
-			5 = eqfm_sanusiyyah.411
-			5 = eqfm_sanusiyyah.412
-			5 = eqfm_sanusiyyah.413
-			5 = eqfm_sanusiyyah.414
-			5 = eqfm_sanusiyyah.415
-			5 = eqfm_sanusiyyah.416
-		}
-		effect = {
-			eqfm_update_sanusiyyah_expedition_variables_effect = yes
-		}
-	}
-	
-	on_monthly_pulse = {
-		effect = {
-			eqfm_annual_sanusiyyah_expedition_progress_effect = yes
-		}
-	}
-	
-	status_desc = {
-		first_valid = {
-			triggered_desc = {
-				desc = je_eqfm_sanusiyyah_expedition_status_transit
-				trigger = {
-					has_variable = eqfm_sanusiyyah_expedition_transit_var
-				}
-			}
-			triggered_desc = {
-				desc = je_eqfm_sanusiyyah_expedition_status_default
-				trigger = {
-					has_variable = eqfm_sanusiyyah_expedition_var
-				}
 			}
 		}
 	}

@@ -1,0 +1,216 @@
+﻿####---------- Balkan Flavor Monthly Pulses ----------####
+balkfm_monthly_country_pulse = {
+	trigger = {
+		balkfm_country_has_yugoslav_culture_trigger = yes
+	}
+	effect = {
+		if = {
+			limit = {
+				OR = {
+					has_global_variable = balkfm_yugoslavia_journal_var
+					exists = c:YUG
+				}
+			}
+			every_country = {
+				limit = {
+					balkfm_country_has_yugoslav_culture_trigger = yes
+				}
+				if = {
+					limit = {
+						has_modifier = modifier_balkfm_yugoslavist_separatism
+					}
+					remove_modifier = modifier_balkfm_yugoslavist_separatism
+				}
+				if = {
+					limit = {
+						is_subject = yes
+						overlord ?= {
+							NOR = {
+								balkfm_country_has_yugoslav_culture_trigger = yes
+								c:YUG ?= this
+							}
+						}
+					}
+					add_modifier = {
+						name = modifier_balkfm_yugoslavist_separatism
+						multiplier = {
+							value = balkfm_yugoslav_fervor_value
+							divide = 100
+							round_to = 0.01
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				is_involved_in_journal_entry = je_balkfm_yugoslav_project
+			}
+			balkfm_update_yugoslav_unification_variables = yes
+		}
+	}
+}
+
+balkfm_yug_monthly_pulse = {
+	trigger = {
+		c:YUG ?= this
+	}
+	events = {
+	}
+	random_events = {
+		chance_of_no_event = 80
+		5 = balkfm_yugoslavia.105
+		5 = balkfm_yugoslavia.106
+		5 = balkfm_yugoslavia.107
+		5 = balkfm_yugoslavia.108
+	}
+	effect = {
+	}
+}
+
+balkfm_mon_monthly_pulse = {
+	trigger = {
+		c:MON ?= this
+	}
+	events = {
+		balkfm_montenegro.006
+		balkfm_montenegro.012
+		balkfm_montenegro.016
+		balkfm_montenegro.900
+	}
+	random_events = {
+		100 = 0
+		20 = balkfm_montenegro.007
+		20 = balkfm_montenegro.008
+	}
+	effect = {
+	}
+}
+
+balkfm_ser_monthly_pulse = {
+	trigger = {
+		OR = {
+			c:SER ?= this
+			c:SER_SRP ?= this
+		}
+	}
+	events = {
+		balkfm_serbia.203
+	}
+	random_events = {
+		100 = 0
+	}
+	effect = {
+	}
+}
+
+balkfm_bul_monthly_pulse = {
+	trigger = {
+		country_has_primary_culture = cu:bulgarian
+	}
+	events = {
+		balkfm_bulgaria.030
+	}
+	random_events = {
+		chance_of_no_event = 90
+		5 = balkfm_bulgaria.163
+	}
+	effect = {
+	}
+}
+
+balkfm_rom_monthly_pulse = {
+	trigger = {
+		country_has_primary_culture = cu:romanian
+	}
+	events = {
+		balkfm_romania.500
+	}
+	random_events = {
+		100 = 0
+	}
+	effect = {
+	}
+}
+
+balkfm_bos_monthly_pulse = {
+	trigger = {
+		country_has_primary_culture = cu:bosniak
+	}
+	events = {
+	}
+	random_events = {
+		100 = 0
+	}
+	effect = {
+	}
+}
+
+balkfm_alb_monthly_pulse = {
+	trigger = {
+		country_has_primary_culture = cu:albanian
+	}
+	events = {
+	}
+	random_events = {
+		100 = 0
+	}
+	effect = {
+	}
+}
+
+balkfm_cro_monthly_pulse = {
+	trigger = {
+		country_has_primary_culture = cu:croat
+	}
+	events = {
+	}
+	random_events = {
+		100 = 0
+	}
+	effect = {
+	}
+}
+
+balkfm_slo_monthly_pulse = {
+	trigger = {
+		country_has_primary_culture = cu:slovene
+	}
+	events = {
+	}
+	random_events = {
+		100 = 0
+	}
+	effect = {
+	}
+}
+
+####---------- Contextless Yearly Pulses ----------####
+balkfm_state_region_law_pulse = {
+	trigger = {
+		NOT = {
+			has_global_variable = has_formed_yug
+		}
+	}
+	effect = {
+		every_state_region_in_yugoslavia = {
+			limit = {
+				has_variable = balkfm_tax_law_var
+			}
+			ordered_scope_state = {
+				order_by = num_provinces
+				position = 0
+				check_range_bounds = no
+				owner = {
+					active_law:lawgroup_taxation.type = {
+						save_scope_as = balkfm_country_tax_law_scope
+					}
+				}
+				set_variable = {
+					name = balkfm_tax_law_var
+					value = scope:balkfm_country_tax_law_scope
+				}
+			}
+		}
+	}
+}

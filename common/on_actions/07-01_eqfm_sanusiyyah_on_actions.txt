@@ -1,0 +1,158 @@
+﻿####---------- Sanisuyyah On Actions ----------####
+eqfm_sanusiyyah_monthly_pulse = {
+	trigger = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+	}
+	events = {
+		eqfm_sanusiyyah.005
+		eqfm_sanusiyyah.300
+		eqfm_sanusiyyah.200
+	}
+	random_events = {
+		chance_of_no_event = 95
+		5 = eqfm_sanusiyyah.202
+		5 = eqfm_sanusiyyah.203
+		5 = eqfm_sanusiyyah.305
+		5 = eqfm_sanusiyyah.306
+		5 = eqfm_sanusiyyah.307
+	}
+	effect = {
+		eqfm_update_local_sanusiyyah_variables_effect = yes
+		eqfm_update_sanusiyyah_modifier_effect = yes
+		if = {
+			limit = {
+				eqfm_has_sanusiyyah_expedition_trigger = yes
+			}
+			eqfm_annual_sanusiyyah_expedition_progress_effect = yes
+		}
+	}
+}
+
+eqfm_sanusiyyah_expedition_pulse = {
+	trigger = {
+		eqfm_has_sanusiyyah_expedition_trigger = yes
+	}
+	random_events = {
+		chance_of_no_event = 50
+		5 = eqfm_sanusiyyah.405
+		5 = eqfm_sanusiyyah.406
+		5 = eqfm_sanusiyyah.407
+		5 = eqfm_sanusiyyah.408
+		5 = eqfm_sanusiyyah.409
+		5 = eqfm_sanusiyyah.410
+		5 = eqfm_sanusiyyah.411
+		5 = eqfm_sanusiyyah.412
+		5 = eqfm_sanusiyyah.413
+		5 = eqfm_sanusiyyah.414
+		5 = eqfm_sanusiyyah.415
+		5 = eqfm_sanusiyyah.416
+	}
+	effect = {
+		eqfm_update_sanusiyyah_expedition_variables_effect = yes
+	}
+}
+
+eqfm_desert_expedition_monthly_pulse = {
+	random_events = {
+		# Expedition events should outweigh general desert events
+		chance_of_no_event = 90
+		25 = eqfm_libyan_desert.010
+		10 = eqfm_libyan_desert.011
+		25 = eqfm_libyan_desert.012
+		
+		1 = eqfm_libyan_desert.020
+		5 = eqfm_libyan_desert.021
+		75 = eqfm_libyan_desert.022
+		55 = eqfm_libyan_desert.023
+		55 = eqfm_libyan_desert.024
+		35 = eqfm_libyan_desert.025
+		35 = eqfm_libyan_desert.026
+		15 = eqfm_libyan_desert.027
+		25 = eqfm_libyan_desert.028
+		10 = eqfm_libyan_desert.029
+	}
+}
+
+eqfm_desert_expedition_weekly_pulse = {
+	events = {
+		eqfm_libyan_desert.007 # Expedition Withdraws from the Desert
+		eqfm_libyan_desert.008 # Expedition Leader Has Died!
+	}
+	effect = {
+		eqfm_update_desert_variables_effect = yes
+		eqfm_update_desert_modifier_effect = yes
+		if = {
+			limit = {
+				eqfm_has_desert_expedition_trigger = yes
+				NOR = {
+					has_variable = eqfm_expedition_desert_transit_var
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_variable = eqfm_desert_expedition_progress_var
+					}
+				}
+				set_variable = {
+					name = eqfm_desert_expedition_progress_var
+					value = 0
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_variable = eqfm_desert_expedition_peril_var
+					}
+				}
+				set_variable = {
+					name = eqfm_desert_expedition_peril_var
+					value = 0
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_desert_raids
+				eqfm_has_desert_expedition_trigger = no
+				NOT = {
+					owns_entire_state_region = STATE_LIBYAN_DESERT
+				}
+			}
+			remove_modifier = modifier_eqfm_desert_raids
+			post_notification = eqfm_desert_raids_halted
+		}
+		if = {
+			limit = {
+				eqfm_has_desert_expedition_trigger = yes
+				var:eqfm_desert_expedition_progress_var < 8
+			}
+			if = {
+				limit = {
+					var:eqfm_expedition_ticker_var < 32
+				}
+				change_variable = {
+					name = eqfm_expedition_ticker_var
+					add = 1
+				}
+			}
+			else = {
+				set_variable = {
+					name = eqfm_expedition_ticker_var
+					value = 0
+				}
+				change_variable = {
+					name = eqfm_desert_expedition_progress_var
+					add = 1
+				}
+				post_notification = eqfm_yearly_progress
+			}
+		}
+		else = {
+			set_variable = {
+				name = eqfm_expedition_ticker_var
+				value = 0
+			}
+		}
+	}
+}

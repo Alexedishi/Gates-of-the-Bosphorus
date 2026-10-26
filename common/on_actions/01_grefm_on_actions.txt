@@ -1,0 +1,150 @@
+﻿####---------- Greek Flavor Monthly Pulses ----------####
+grefm_monthly_pulse_hellene = {
+	trigger = {
+		country_has_primary_culture = cu:greek
+	}
+	events = {
+		grefm_greece.028
+		grefm_greece.039
+		grefm_greece.042
+		grefm_greece.092
+		grefm_greece.110
+		grefm_greece.112
+		grefm_greece.113
+		grefm_greece.120
+		grefm_greece.131
+		grefm_greece.132
+		grefm_greek_nationalism.003
+		grefm_megali_idea.001
+		grefm_megali_idea.009
+		grefm_megali_idea.200
+		grefm_byzantium.021
+		grefm_byzantium.028
+	}
+	random_events = {
+		chance_of_no_event = 80
+		5 = grefm_greece.040
+		1 = grefm_greece.041
+		5 = grefm_greece.090
+		100 = grefm_greece.104
+		5 = grefm_greece.111
+		5 = grefm_greece.117
+		5 = grefm_greece.121
+		5 = grefm_greek_nationalism.002
+		100 = grefm_greek_nationalism.057
+		5 = grefm_megali_idea.201
+		200 = grefm_megali_idea.202
+	}
+	effect = {
+		eqfm_balkan_powder_keg_hellenic_separatism_effect = yes
+		grefm_annexation_variables_effect = yes
+		if = {
+			limit = {
+				any_scope_state = {
+					is_in_geographic_region = geographic_region_aegean_sea
+				}
+				NOT = {
+					has_modifier = modifier_grefm_greek_shipping
+				}
+			}
+			add_modifier = modifier_grefm_greek_shipping
+		}
+		else_if = {
+			limit = {
+				has_modifier = modifier_grefm_greek_shipping
+				NOT = {
+					any_scope_state = {
+						is_in_geographic_region = geographic_region_aegean_sea
+					}
+				}
+			}
+			remove_modifier = modifier_grefm_greek_shipping
+		}
+	}
+}
+
+grefm_monthly_pulse_rhomaios = {
+	trigger = {
+		country_has_primary_culture = cu:rhomaios
+	}
+	events = {
+		grefm_greece.113
+		grefm_megali_idea.010
+		grefm_megali_idea.200
+		grefm_byzantium.021
+		grefm_byzantium.028
+	}
+	random_events = {
+		250 = 0
+		5 = grefm_greek_nationalism.057
+		25 = grefm_megali_idea.201
+		25 = grefm_megali_idea.202
+	}
+	effect = {
+		grefm_annexation_variables_effect = yes
+	}
+}
+
+grefm_monthly_pulse_urum = {
+	trigger = {
+		country_has_primary_culture = cu:urum
+	}
+	events = {
+		grefm_byzantium.021
+		grefm_byzantium.028
+	}
+	random_events = {
+	}
+	effect = {
+		grefm_annexation_variables_effect = yes
+	}
+}
+
+grefm_quadrennial_chariot_pulse = {
+	trigger = {
+		state_region = s:STATE_EASTERN_THRACE
+		NOT = {
+			has_global_variable = grefm_chariot_race_cooldown_var
+		}
+		OR = {
+			is_production_method_active = {
+				building_type = gbbf_building_hippodrome
+				production_method = pm_gbbf_original_roster
+			}
+			is_production_method_active = {
+				building_type = gbbf_building_hippodrome
+				production_method = pm_gbbf_expanded_roster
+			}
+		}
+		month = 7 # August, it's zero-indexed
+	}
+	effect = {
+		gbbf_host_chariot_race_effect = yes
+	}
+}
+
+grefm_rehost_chariot_race = {
+	effect = {
+		gbbf_host_chariot_race_effect = yes
+	}
+}
+
+
+####---------- Contextless Yearly Pulses ----------####
+grefm_yearly_global_pulse = {
+	trigger = {
+		c:GRE ?= this
+		has_law_or_variant = law_type:law_monarchy
+	}
+	effect = {
+		if = {
+			limit = {
+				has_variable = grefm_1862_election_held
+			}
+			com_change_variable = {
+				name = grefm_1862_election_held
+				value = 1
+			}
+		}
+	}
+}
