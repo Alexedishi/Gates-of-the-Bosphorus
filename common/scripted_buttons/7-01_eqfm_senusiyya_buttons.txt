@@ -803,6 +803,368 @@ eqfm_destroy_lodge_hedjaz_button = {
 }
 
 
+####---------- Tripoli State Region Buttons ----------####
+eqfm_spread_sanusiyyah_tripoli_button = {
+	# This button employs different logic than the others; if HDJ/EGY expels Sanusiyyah from Hedjaz, it will not automatically spread back
+	name = "eqfm_spread_sanusiyyah_tripoli_name"
+	desc = "eqfm_spread_sanusiyyah_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_found_lodge.dds"
+	
+	tags = { state_tripoli spread_action }
+	
+	visible = {
+		always = yes
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				s:STATE_TRIPOLI = {
+					has_variable = eqfm_sanusiyyah_entrenchment_var
+				}
+			}
+			custom_tooltip = {
+				text = eqfm_sanusiyya_already_present_trigger
+				always = no
+			}
+		}
+		trigger_else = {
+			eqfm_has_embraced_sanusiyyah_trigger = yes
+			has_state_in_state_region = STATE_TRIPOLI
+		}
+	}
+	effect = {
+		custom_description = {
+			text = eqfm_add_sanusiyyah_entrenchment_effect
+			subject = s:STATE_TRIPOLI
+			value = 10
+			s:STATE_TRIPOLI = {
+				set_variable = {
+					name = eqfm_sanusiyyah_entrenchment_var
+					value = 10
+				}
+			}
+		}
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_expel_sanusiyyah_tripoli_button = {
+	name = "eqfm_expel_sanusiyyah_tripoli_name"
+	desc = "eqfm_expel_sanusiyyah_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_destroy_lodge.dds"
+	
+	tags = { state_tripoli expel_action }
+	
+	visible = {
+		always = yes
+	}
+	possible = {
+		trigger_if = {
+			limit = {
+				s:STATE_TRIPOLI = {
+					has_variable = eqfm_sanusiyyah_entrenchment_var
+				}
+			}
+			has_state_in_state_region = STATE_TRIPOLI
+			custom_tooltip = {
+				text = eqfm_expel_sanusiyyah_trigger
+				s:STATE_TRIPOLI = {
+					var:eqfm_sanusiyyah_entrenchment_var <= 0
+				}
+			}
+		}
+		trigger_else = {
+			custom_tooltip = {
+				text = eqfm_no_sanusiyyah_activity
+				always = no
+			}
+		}
+	}
+	effect = {  }
+}
+
+eqfm_start_improve_relations_tripoli_button = {
+	name = "eqfm_start_improve_relations_tripoli_name"
+	desc = "eqfm_start_improve_relations_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_improve_relations.dds"
+	
+	tags = { state_tripoli diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_tripoli_improve_relations
+		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_TRIPOLI
+	}
+	effect = {
+		add_modifier = modifier_eqfm_tripoli_improve_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_improve_relations_tripoli_button = {
+	name = "eqfm_stop_improve_relations_tripoli_name"
+	desc = "eqfm_stop_improve_relations_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_improve_relations.dds"
+	
+	tags = { state_tripoli diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_tripoli_improve_relations
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_tripoli_improve_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_start_harm_relations_tripoli_button = {
+	name = "eqfm_start_harm_relations_tripoli_name"
+	desc = "eqfm_start_harm_relations_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_damage_relations.dds"
+	
+	tags = { state_tripoli diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_tripoli_harm_relations
+		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_TRIPOLI
+	}
+	effect = {
+		add_modifier = modifier_eqfm_tripoli_harm_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_harm_relations_tripoli_button = {
+	name = "eqfm_stop_harm_relations_tripoli_name"
+	desc = "eqfm_stop_harm_relations_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_damage_relations.dds"
+	
+	tags = { state_tripoli diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_tripoli_harm_relations
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_tripoli_harm_relations
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_start_arm_tribes_tripoli_button = {
+	name = "eqfm_start_arm_tribes_tripoli_name"
+	desc = "eqfm_start_arm_tribes_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_arm_tribes.dds"
+	
+	tags = { state_tripoli diplo_action }
+	
+	visible = {
+		is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		NOT = {
+			has_modifier = modifier_eqfm_tripoli_arm_tribes
+		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_TRIPOLI
+	}
+	effect = {
+		add_modifier = modifier_eqfm_tripoli_arm_tribes
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_stop_arm_tribes_tripoli_button = {
+	name = "eqfm_stop_arm_tribes_tripoli_name"
+	desc = "eqfm_stop_arm_tribes_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_arming_tribes.dds"
+	
+	tags = { state_tripoli diplo_action }
+	
+	visible = {
+		has_modifier = modifier_eqfm_tripoli_arm_tribes
+	}
+	possible = {
+		hidden_trigger = {
+			always = yes
+		}
+	}
+	effect = {
+		remove_modifier = modifier_eqfm_tripoli_arm_tribes
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_seek_elders_tripoli_button = {
+	name = "eqfm_seek_elders_tripoli_name"
+	desc = "eqfm_seek_elders_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_seek_elders.dds"
+	
+	tags = { state_tripoli repeatable_action }
+	
+	visible = {
+		s:STATE_TRIPOLI = {
+			NOT = {
+				has_variable = eqfm_elders_contacted
+			}
+		}
+	}
+	possible = {
+		has_state_in_state_region = STATE_TRIPOLI
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_bribe_tribes_tripoli_button = {
+	name = "eqfm_bribe_tribes_tripoli_name"
+	desc = "eqfm_bribe_tribes_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_bribe_tribes.dds"
+	
+	tags = { state_tripoli repeatable_action }
+	
+	visible = {
+		s:STATE_TRIPOLI = {
+			has_variable = eqfm_elders_contacted
+		}
+	}
+	selected = {
+	
+	}
+	possible = {
+		has_state_in_state_region = STATE_TRIPOLI
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_locate_lodge_tripoli_button = {
+	name = "eqfm_locate_lodge_tripoli_name"
+	desc = "eqfm_locate_lodge_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_locate_lodge.dds"
+	
+	tags = { state_tripoli repeatable_action }
+	
+	visible = {
+		s:STATE_TRIPOLI ={
+			NOT = {
+				has_variable = eqfm_sanusiyyah_exposed_lodge_var
+			}
+		}
+	}
+	selected = {
+		s:STATE_TRIPOLI = {
+			has_variable = eqfm_sanusiyyah_expedition_progress_var
+		}
+	}
+	possible = {
+		eqfm_state_region_has_sanusiyyah_entrenchment_trigger = {
+			state_region = s:STATE_TRIPOLI
+		}
+		eqfm_has_embraced_sanusiyyah_trigger = no
+		NOR = {
+			has_modifier = modifier_eqfm_failed_sanusiyyah_expedition_country
+			has_modifier = modifier_eqfm_cancelled_sanusiyyah_expedition
+		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = eqfm_preparing_sanusiyya_expedition_var
+			}
+		}
+	}
+	effect = {
+		set_variable = {
+			name = eqfm_sanusiyyah_expedition_var
+			value = s:STATE_TRIPOLI
+		}
+		set_variable = {
+			name = eqfm_preparing_sanusiyya_expedition_var
+			months = 6
+		}
+		trigger_event = {
+			id = eqfm_sanusiyyah.400
+			popup = yes
+		}
+		if = {
+			limit = {
+				eqfm_has_sanusiyyah_expedition_trigger = yes
+			}
+			custom_description = {
+				text = eqfm_add_state_region_to_sanussiyah_expedition_effect
+				subject = s:STATE_TRIPOLI
+				global_var:je_eqfm_sanusiyyah = {
+					add_to_variable_list = {
+						name = eqfm_sanusiyyah_expeditions_list
+						target = s:STATE_TRIPOLI
+					}
+				}
+			}
+		}
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_destroy_lodge_tripoli_button = {
+	name = "eqfm_destroy_lodge_tripoli_name"
+	desc = "eqfm_destroy_lodge_tripoli_desc"
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_destroy_lodge.dds"
+	
+	tags = { state_tripoli repeatable_action }
+	
+	visible = {
+		s:STATE_TRIPOLI = {
+			has_variable = eqfm_sanusiyyah_exposed_lodge_var
+		}
+	}
+	possible = {
+	}
+	effect = {
+	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+
 ####---------- Libya State Region Buttons ----------####
 eqfm_spread_sanusiyyah_libya_button = {
 	# This button employs different logic than the others; if HDJ/EGY expels Sanusiyyah from Hedjaz, it will not automatically spread back
@@ -1152,368 +1514,6 @@ eqfm_destroy_lodge_libya_button = {
 	
 	visible = {
 		s:STATE_LIBYA = {
-			has_variable = eqfm_sanusiyyah_exposed_lodge_var
-		}
-	}
-	possible = {
-	}
-	effect = {
-	}
-	ai_chance = {
-		value = 0
-	}
-}
-
-
-####---------- Tripoli State Region Buttons ----------####
-eqfm_spread_sanusiyyah_tripoli_button = {
-	# This button employs different logic than the others; if HDJ/EGY expels Sanusiyyah from Hedjaz, it will not automatically spread back
-	name = "eqfm_spread_sanusiyyah_tripoli_name"
-	desc = "eqfm_spread_sanusiyyah_tripoli_desc"
-	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_found_lodge.dds"
-	
-	tags = { state_tripoli spread_action }
-	
-	visible = {
-		always = yes
-	}
-	possible = {
-		trigger_if = {
-			limit = {
-				s:STATE_TRIPOLI = {
-					has_variable = eqfm_sanusiyyah_entrenchment_var
-				}
-			}
-			custom_tooltip = {
-				text = eqfm_sanusiyya_already_present_trigger
-				always = no
-			}
-		}
-		trigger_else = {
-			eqfm_has_embraced_sanusiyyah_trigger = yes
-			has_state_in_state_region = STATE_TRIPOLI
-		}
-	}
-	effect = {
-		custom_description = {
-			text = eqfm_add_sanusiyyah_entrenchment_effect
-			subject = s:STATE_TRIPOLI
-			value = 10
-			s:STATE_TRIPOLI = {
-				set_variable = {
-					name = eqfm_sanusiyyah_entrenchment_var
-					value = 10
-				}
-			}
-		}
-	}
-	ai_chance = {
-		value = 0
-	}
-}
-
-eqfm_expel_sanusiyyah_tripoli_button = {
-	name = "eqfm_expel_sanusiyyah_tripoli_name"
-	desc = "eqfm_expel_sanusiyyah_tripoli_desc"
-	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_destroy_lodge.dds"
-	
-	tags = { state_tripoli expel_action }
-	
-	visible = {
-		always = yes
-	}
-	possible = {
-		trigger_if = {
-			limit = {
-				s:STATE_TRIPOLI = {
-					has_variable = eqfm_sanusiyyah_entrenchment_var
-				}
-			}
-			has_state_in_state_region = STATE_TRIPOLI
-			custom_tooltip = {
-				text = eqfm_expel_sanusiyyah_trigger
-				s:STATE_TRIPOLI = {
-					var:eqfm_sanusiyyah_entrenchment_var <= 0
-				}
-			}
-		}
-		trigger_else = {
-			custom_tooltip = {
-				text = eqfm_no_sanusiyyah_activity
-				always = no
-			}
-		}
-	}
-	effect = {  }
-}
-
-eqfm_start_improve_relations_tripoli_button = {
-	name = "eqfm_start_improve_relations_tripoli_name"
-	desc = "eqfm_start_improve_relations_tripoli_desc"
-	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_improve_relations.dds"
-	
-	tags = { state_tripoli diplo_action }
-	
-	visible = {
-		is_involved_in_journal_entry = je_eqfm_sanusiyyah
-		NOT = {
-			has_modifier = modifier_eqfm_tripoli_improve_relations
-		}
-	}
-	possible = {
-		has_state_in_state_region = STATE_TRIPOLI
-	}
-	effect = {
-		add_modifier = modifier_eqfm_tripoli_improve_relations
-	}
-	ai_chance = {
-		value = 0
-	}
-}
-
-eqfm_stop_improve_relations_tripoli_button = {
-	name = "eqfm_stop_improve_relations_tripoli_name"
-	desc = "eqfm_stop_improve_relations_tripoli_desc"
-	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_improve_relations.dds"
-	
-	tags = { state_tripoli diplo_action }
-	
-	visible = {
-		has_modifier = modifier_eqfm_tripoli_improve_relations
-	}
-	possible = {
-		hidden_trigger = {
-			always = yes
-		}
-	}
-	effect = {
-		remove_modifier = modifier_eqfm_tripoli_improve_relations
-	}
-	ai_chance = {
-		value = 0
-	}
-}
-
-eqfm_start_harm_relations_tripoli_button = {
-	name = "eqfm_start_harm_relations_tripoli_name"
-	desc = "eqfm_start_harm_relations_tripoli_desc"
-	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_damage_relations.dds"
-	
-	tags = { state_tripoli diplo_action }
-	
-	visible = {
-		is_involved_in_journal_entry = je_eqfm_sanusiyyah
-		NOT = {
-			has_modifier = modifier_eqfm_tripoli_harm_relations
-		}
-	}
-	possible = {
-		has_state_in_state_region = STATE_TRIPOLI
-	}
-	effect = {
-		add_modifier = modifier_eqfm_tripoli_harm_relations
-	}
-	ai_chance = {
-		value = 0
-	}
-}
-
-eqfm_stop_harm_relations_tripoli_button = {
-	name = "eqfm_stop_harm_relations_tripoli_name"
-	desc = "eqfm_stop_harm_relations_tripoli_desc"
-	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_damage_relations.dds"
-	
-	tags = { state_tripoli diplo_action }
-	
-	visible = {
-		has_modifier = modifier_eqfm_tripoli_harm_relations
-	}
-	possible = {
-		hidden_trigger = {
-			always = yes
-		}
-	}
-	effect = {
-		remove_modifier = modifier_eqfm_tripoli_harm_relations
-	}
-	ai_chance = {
-		value = 0
-	}
-}
-
-eqfm_start_arm_tribes_tripoli_button = {
-	name = "eqfm_start_arm_tribes_tripoli_name"
-	desc = "eqfm_start_arm_tribes_tripoli_desc"
-	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_arm_tribes.dds"
-	
-	tags = { state_tripoli diplo_action }
-	
-	visible = {
-		is_involved_in_journal_entry = je_eqfm_sanusiyyah
-		NOT = {
-			has_modifier = modifier_eqfm_tripoli_arm_tribes
-		}
-	}
-	possible = {
-		has_state_in_state_region = STATE_TRIPOLI
-	}
-	effect = {
-		add_modifier = modifier_eqfm_tripoli_arm_tribes
-	}
-	ai_chance = {
-		value = 0
-	}
-}
-
-eqfm_stop_arm_tribes_tripoli_button = {
-	name = "eqfm_stop_arm_tribes_tripoli_name"
-	desc = "eqfm_stop_arm_tribes_tripoli_desc"
-	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_stop_arming_tribes.dds"
-	
-	tags = { state_tripoli diplo_action }
-	
-	visible = {
-		has_modifier = modifier_eqfm_tripoli_arm_tribes
-	}
-	possible = {
-		hidden_trigger = {
-			always = yes
-		}
-	}
-	effect = {
-		remove_modifier = modifier_eqfm_tripoli_arm_tribes
-	}
-	ai_chance = {
-		value = 0
-	}
-}
-
-eqfm_seek_elders_tripoli_button = {
-	name = "eqfm_seek_elders_tripoli_name"
-	desc = "eqfm_seek_elders_tripoli_desc"
-	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_seek_elders.dds"
-	
-	tags = { state_tripoli repeatable_action }
-	
-	visible = {
-		s:STATE_TRIPOLI = {
-			NOT = {
-				has_variable = eqfm_elders_contacted
-			}
-		}
-	}
-	possible = {
-		has_state_in_state_region = STATE_TRIPOLI
-	}
-	effect = {
-	}
-	ai_chance = {
-		value = 0
-	}
-}
-
-eqfm_bribe_tribes_tripoli_button = {
-	name = "eqfm_bribe_tribes_tripoli_name"
-	desc = "eqfm_bribe_tribes_tripoli_desc"
-	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_bribe_tribes.dds"
-	
-	tags = { state_tripoli repeatable_action }
-	
-	visible = {
-		s:STATE_TRIPOLI = {
-			has_variable = eqfm_elders_contacted
-		}
-	}
-	selected = {
-		
-	}
-	possible = {
-		has_state_in_state_region = STATE_TRIPOLI
-	}
-	effect = {
-	}
-	ai_chance = {
-		value = 0
-	}
-}
-
-eqfm_locate_lodge_tripoli_button = {
-	name = "eqfm_locate_lodge_tripoli_name"
-	desc = "eqfm_locate_lodge_tripoli_desc"
-	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_locate_lodge.dds"
-	
-	tags = { state_tripoli repeatable_action }
-	
-	visible = {
-		s:STATE_TRIPOLI ={
-			NOT = {
-				has_variable = eqfm_sanusiyyah_exposed_lodge_var
-			}
-		}
-	}
-	selected = {
-		s:STATE_TRIPOLI = {
-			has_variable = eqfm_sanusiyyah_expedition_progress_var
-		}
-	}
-	possible = {
-		eqfm_state_region_has_sanusiyyah_entrenchment_trigger = {
-			state_region = s:STATE_TRIPOLI
-		}
-		eqfm_has_embraced_sanusiyyah_trigger = no
-		NOR = {
-			has_modifier = modifier_eqfm_failed_sanusiyyah_expedition_country
-			has_modifier = modifier_eqfm_cancelled_sanusiyyah_expedition
-		}
-		hidden_trigger = {
-			NOT = {
-				has_variable = eqfm_preparing_sanusiyya_expedition_var
-			}
-		}
-	}
-	effect = {
-		set_variable = {
-			name = eqfm_sanusiyyah_expedition_var
-			value = s:STATE_TRIPOLI
-		}
-		set_variable = {
-			name = eqfm_preparing_sanusiyya_expedition_var
-			months = 6
-		}
-		trigger_event = {
-			id = eqfm_sanusiyyah.400
-			popup = yes
-		}
-		if = {
-			limit = {
-				eqfm_has_sanusiyyah_expedition_trigger = yes
-			}
-			custom_description = {
-				text = eqfm_add_state_region_to_sanussiyah_expedition_effect
-				subject = s:STATE_TRIPOLI
-				global_var:je_eqfm_sanusiyyah = {
-					add_to_variable_list = {
-						name = eqfm_sanusiyyah_expeditions_list
-						target = s:STATE_TRIPOLI
-					}
-				}
-			}
-		}
-	}
-	ai_chance = {
-		value = 0
-	}
-}
-
-eqfm_destroy_lodge_tripoli_button = {
-	name = "eqfm_destroy_lodge_tripoli_name"
-	desc = "eqfm_destroy_lodge_tripoli_desc"
-	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_destroy_lodge.dds"
-	
-	tags = { state_tripoli repeatable_action }
-	
-	visible = {
-		s:STATE_TRIPOLI = {
 			has_variable = eqfm_sanusiyyah_exposed_lodge_var
 		}
 	}
