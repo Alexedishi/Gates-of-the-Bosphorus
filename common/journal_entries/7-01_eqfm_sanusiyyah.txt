@@ -143,10 +143,6 @@
 	scripted_button = eqfm_resupply_sanusiyyah_expedition_button
 	scripted_button = eqfm_recall_sanusiyyah_expedition_button
 	
-	
-	
-	
-	
 	widget = {
 		gui = "gui/com_journal_injects/situation_widgets.gui"
 		name = "widget_com_international_situation_illustration"
@@ -166,7 +162,7 @@
 	}
 	
 	should_be_involved = {
-		has_state_in_state_region = STATE_HEDJAZ # as-Sanussi started here, it will expand automatically in the 1840s
+		has_state_in_state_region = STATE_HEDJAZ # as-Sanussi started here; it will expand automatically in the 1840s
 	}
 	
 	should_show_when_not_involved = {
@@ -175,18 +171,7 @@
 				is_in_geographic_region = geographic_region_sanusiyyah
 			}
 			any_subject_or_below = {
-				any_scope_state = {
-					is_in_geographic_region = geographic_region_sanusiyyah
-				}
-				gbbf_country_is_muslim_trigger = yes
-			}
-			has_strategic_region_interest_tier = {
-				strategic_region = sr:region_north_africa
-				value >= 2
-			}
-			has_strategic_region_interest_tier = {
-				strategic_region = sr:region_nile_basin
-				value >= 2
+				is_involved_in_journal_entry = je_eqfm_sanusiyyah
 			}
 		}
 	}
@@ -335,7 +320,10 @@
 				eqfm_update_global_sanusiyyah_variables_effect = yes
 				every_scope_je_involved = {
 					trigger_event = {
-						on_action =
+						on_action = eqfm_sanusiyyah_scouting_weekly_pulse
+					}
+					trigger_event = {
+						on_action = eqfm_sanusiyyah_expedition_weekly_pulse
 					}
 					eqfm_update_sanusiyyah_modifier_effect = yes
 				}
@@ -345,19 +333,68 @@
 	
 	on_monthly_pulse = {
 		effect = {
+			# Check journal involvement
+			scope:journal_entry = {
+				every_scope_je_involved = {
+					limit = {
+						NOR = {
+							any_scope_state = {
+								is_in_geographic_region = geographic_region_sanusiyyah
+							}
+							eqfm_sanusiyyah_is_relevant_due_to_subject_trigger = yes
+						}
+					}
+				}
+				global_var:je_eqfm_sanusiyyah = {
+					remove_involved_country = prev
+				}
+			}
+			every_state = {
+				owner = {
+					if = {
+						limit = {
+							NOT = {
+								is_involved_in_journal_entry = je_eqfm_sanusiyyah
+							}
+						}
+						global_var:je_eqfm_sanusiyyah = {
+							add_involved_country = prev
+						}
+					}
+					if = {
+						limit = {
+							eqfm_sanusiyyah_is_relevant_to_overlord_trigger = yes
+						}
+						overlord = {
+							if = {
+								limit = {
+									NOT = {
+										is_involved_in_journal_entry = je_eqfm_sanusiyyah
+									}
+								}
+								global_var:je_eqfm_sanusiyyah = {
+									add_involved_country = prev
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			# Fire on_actions for all involved countries
 			scope:journal_entry = {
 				every_scope_je_involved = {
 					trigger_event = {
-						on_action = eqfm_desert_expedition_monthly_pulse
+						on_action = eqfm_sanusiyyah_scouting_monthly_pulse
 					}
 					trigger_event = {
 						on_action = eqfm_sanusiyyah_monthly_pulse
 					}
 				}
-				
 			}
+			
+			# Calculate and advance state region entrenchment
 			eqfm_monthly_entrenchment_effect = yes
-			eqfm_validate_sanusiyyah_involvement_effect = yes
 			scope:journal_entry = {
 				change_variable = {
 					name = eqfm_sanusiyyah_pressure_var
@@ -374,9 +411,7 @@
 				}
 			}
 			
-			
-			
-			
+			# Evaluate global events
 			if = {
 				limit = {
 					NOT = {
