@@ -31,33 +31,45 @@ namespace = eqfm_sanusiyyah
 #	008 - Sanusiyyah Extinguished
 #	009 - ##The Future of the Sanusiyyah
 
-####---------- 100-199 - Sanusiyyah Phase / Pressure Events ----------####
-##	100 - ##
+####---------- 100-199 - Sanusiyyah Georegion / Pressure Events ----------####
+#	100 - Marabouts Spread Dissident Teachings
+#	101 - Insecure Desert Routes
+#	102 - Issues with Taxation
+#	103 - ##Request for a Marriage
 
 ####---------- 200-299 - Sanusiyyah Entrenchment Events ----------####
 #	200 - Sanusiyyah Entrenchment Sprinkler Apparatus
 #	201 - Sanusiyyah Spreads to State Region
-#	210 - ##The Awliya of State Region
-#	211 - ##Sufism Spreads in State Region
-#	212 - ##
+#	203 - ##The Awliya of State Region
+#	204 - ##Sufism Spreads in State Region
 
 ####---------- 300-399 - Sanusiyyah Influence Events ----------####
 #	300 - Sanusiyyah Spreads to Country
 #	301 - Sanusiyyah Spreads to Country (Neighbors)
 #	302 - Sanusiyyah Spreads to Country (Overlord)
-#	308 - Sanusiyyah Expelled from Country
-#	309 - House Senussi of Country
-#	310 - ##Imams Defect from the Ulema
-#	311 - ##Dissidents Preach in State
-#	312 - ##Sufist Thought in State
+#	303 - Sanusiyyah Expelled from Country
+#	304 - House Senussi of Country
+#	305 - ##Imams Defect from the Ulema
+#	306 - ##Dissidents Preach in State
+#	307 - ##Sufist Thought in State
 
-####---------- 400-499 - Sanusiyyah Expedition Events ----------####
-#	400 - ##Expelling Sanusiyyah from State Region
-#	401 - ##Expulsion Expedition Arrives in State Region
-#	402 - ##Expulsion Expedition Leader has Died!
-#	403 - ##Expulsion Expedition Withdraws from State Region
-#	404 - ##Sanusiyyah Expelled from State Region
-#	410 - ##Sanusiyyah Lodge Uncovered
+####---------- 400-499 - Sanusiyyah Desert Scouting Events ----------####
+#	400 - ##Contacting the Tribes in [State Region]
+#	401 - ##Sanusiyyah Lodges Uncovered in [State Region]
+#	402 - ##Sanusiyyah Lodges Destroyed in [State Region]
+#	403 - ##Sanusiyyah Expelled from [State Region]
+
+#	020 - A Storm of Sand
+#	021 - Sand, Sand, and More Sand
+#	022 - A Welcome Respite
+#	023 - Desert Diplomacy
+#	024 - Charting the Desert
+#	025 - A Clash on Camel-back
+#	026 - Tribal Justice
+#	027 - ##Welcome Rains
+#	028 - ##Safe Passages Mapped
+#	029 - ##Unexpected Recruits
+
 #	411 - ##Bedouin Villagers Withhold Information
 #	412 - ##Neighboring Tribe Attacks Expedition
 #	413 - ##Sanusiyyah Expedition Beset By Sandstorms!
@@ -70,6 +82,7 @@ namespace = eqfm_sanusiyyah
 #	420 - ##Secret Caches Found
 #	421 - ##Desert Hospitality
 #	422 - ##
+
 
 ########################################
 
@@ -1860,9 +1873,9 @@ eqfm_sanusiyyah.307 = {
 ####---------- 400-499 - Sanusiyyah Expedition Events ----------####
 eqfm_sanusiyyah.400 = {
 	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	duration = 2
+	placement = scope:eqfm_event_state_region
+	icon = gfx/interface/icons/event_icons/event_bedouin.dds
+	duration = 3
 	dlc = dlc_grefm
 	
 	title = eqfm_sanusiyyah.400.t
@@ -1870,173 +1883,43 @@ eqfm_sanusiyyah.400 = {
 	flavor = eqfm_sanusiyyah.400.f
 	
 	event_image = {
-		video = "africa_construction_colony"
+		video = "asia_politician_parliament_motion"
 	}
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
-		# triggered by Sanusiyyah Expedition buttons
+		# triggered by eqfm_seek_elders buttons
 	}
 	
 	cancellation_trigger = {
-		OR = {
-			NOT = {
-				any_scope_general = {
-					is_busy = no
-					NOT = {
-						has_role_of_type = ruler
-					}
-				}
-			}
-			eqfm_has_sanusiyyah_expedition_trigger = no
+		NOT = {
+			is_involved_in_journal_entry = je_eqfm_sanusiyyah
 		}
 	}
 	
 	immediate = {
-		set_variable = {
-			name = eqfm_sanusiyyah_expedition_transit_var
-			months = 3
-		}
-		random_scope_character = {
-			limit = {
-				has_role_of_type = general
-				is_busy = no
-				NOT = {
-					has_role_of_type = ruler
-				}
-			}
-			save_scope_as = eqfm_sanusiyyah_leader_1
-		}
-		if = {
-			limit = {
-				any_scope_character = {
-					has_role_of_type = general
-					is_busy = no
-					NOT = {
-						has_role_of_type = ruler
-					}
-					OR = {
-						has_trait = surveyor
-						has_trait = plains_commander
-					}
-					NOT = {
-						scope:eqfm_sanusiyyah_leader_1 ?= this
-					}
-				}
-			}
-			random_scope_character = {
-				limit = {
-					has_role_of_type = general
-					is_busy = no
-					NOT = {
-						has_role_of_type = ruler
-					}
-					OR = {
-						has_trait = surveyor
-						has_trait = plains_commander
-					}
-					NOT = {
-						scope:eqfm_sanusiyyah_leader_1 ?= this
-					}
-				}
-				save_scope_as = eqfm_sanusiyyah_leader_2
-			}
-		}
-		else = {
-			random_scope_character = {
-				limit = {
-					has_role_of_type = general
-					is_busy = no
-					NOR = {
-						has_role_of_type = ruler
-					}
-					NOT = {
-						scope:eqfm_sanusiyyah_leader_1 ?= this
-					}
-				}
-				save_scope_as = eqfm_sanusiyyah_leader_2
-			}
-		}
-		random_scope_character = {
-			limit = {
-				has_role_of_type = general
-				is_busy = no
-				NOT = {
-					has_role_of_type = ruler
-				}
-				NOR = {
-					scope:eqfm_sanusiyyah_leader_1 ?= this
-					scope:eqfm_sanusiyyah_leader_2 ?= this
-				}
-			}
-			save_scope_as = eqfm_sanusiyyah_leader_3
+		var:eqfm_elder_negotiation_target_var = {
+			save_scope_as = eqfm_event_state_region
 		}
 	}
 	
 	option = {
 		name = eqfm_sanusiyyah.400.a
 		default_option = yes
-		trigger = {
-			exists = scope:eqfm_sanusiyyah_leader_1
-		}
-		scope:eqfm_sanusiyyah_leader_1 = {
-			add_modifier = modifier_eqfm_leading_sanusiyyah_expedition
-		}
-		add_journal_entry = {
-			type = je_eqfm_sanusiyyah_expedition
-		}
-		set_variable = {
-			name = eqfm_sanusiyyah_expedition_transit_var
-			months = 3
-		}
 	}
 	
 	option = {
 		name = eqfm_sanusiyyah.400.b
-		trigger = {
-			exists = scope:eqfm_sanusiyyah_leader_2
-		}
-		scope:eqfm_sanusiyyah_leader_2 = {
-			add_modifier = modifier_eqfm_leading_sanusiyyah_expedition
-		}
-		add_journal_entry = {
-			type = je_eqfm_sanusiyyah_expedition
-		}
-		set_variable = {
-			name = eqfm_sanusiyyah_expedition_transit_var
-			months = 3
-		}
 	}
 	
-	option = {
-		name = eqfm_sanusiyyah.400.c
-		trigger = {
-			exists = scope:eqfm_sanusiyyah_leader_3
-		}
-		scope:eqfm_sanusiyyah_leader_3 = {
-			add_modifier = modifier_eqfm_leading_sanusiyyah_expedition
-		}
-		add_journal_entry = {
-			type = je_eqfm_sanusiyyah_expedition
-		}
-		set_variable = {
-			name = eqfm_sanusiyyah_expedition_transit_var
-			months = 3
-		}
-	}
-	
-	option = {
-		name = eqfm_sanusiyyah.400.e
-		custom_tooltip = {
-			text = gbbf_nothing_happens
-			eqfm_clear_sanusiyyah_expedition_variables_effect = yes
-		}
+	after = {
+		remove_variable = eqfm_elder_negotiation_target_var
 	}
 }
 
 eqfm_sanusiyyah.401 = {
 	type = country_event
-	placement = root
+	placement = scope:eqfm_sanusiyyah_expedition_state_scope
 	icon = "gfx/interface/icons/invention_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
@@ -2049,41 +1932,57 @@ eqfm_sanusiyyah.401 = {
 	left_icon = scope:eqfm_sanusiyyah_expedition_leader_scope
 	
 	event_image = {
-		video = "africa_desert_expedition"
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_settlement.dds"
 	}
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/africa/desert_expedition"
 	
 	trigger = {
-		# triggered by je_eqfm_sanusiyyah_expedition
+		NOT = {
+			is_involved_in_journal_entry = je_eqfm_sanusiyyah
+		}
 	}
 	
 	cancellation_trigger = {
-		eqfm_has_sanusiyyah_expedition_trigger = no
+		OR = {
+			NOT = {
+				is_involved_in_journal_entry = je_eqfm_sanusiyyah
+			}
+			scope:eqfm_sanusiyyah_expedition_state_scope ?= {
+				has_variable = eqfm_sanusiyyah_destroyed_lodges_var
+			}
+		}
+	}
+	
+	cooldown = {
+		years = 1
 	}
 	
 	immediate = {
-		eqfm_save_sanusiyyah_expedition_scopes_effect = yes
-		eqfm_add_expedition_cooldown_effect = {
-			type = sanusiyyah
-			months = 2
+		var:eqfm_desert_scouting_event_var = {
+			save_scope_as = eqfm_event_state_region
 		}
 	}
 	
 	option = {
 		name = eqfm_sanusiyyah.401.a
 		default_option = yes
-		custom_tooltip = {
-			text = gbbf_no_immediate_effects
-			eqfm_start_sanusiyyah_expedition_effect = yes
-		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.401.b
+	}
+	
+	after = {
+		remove_variable = eqfm_desert_scouting_event_var
 	}
 }
 
 eqfm_sanusiyyah.402 = {
 	type = country_event
 	placement = root
-	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	duration = 2
+	icon = "gfx/interface/icons/institution_icons/colonization.dds"
+	duration = 3
 	dlc = dlc_grefm
 	
 	title = eqfm_sanusiyyah.402.t
@@ -2091,69 +1990,52 @@ eqfm_sanusiyyah.402 = {
 	flavor = eqfm_sanusiyyah.402.f
 	
 	event_image = {
-		video = "africa_desert_expedition"
+		video = "middleeast_police_breaking_door"
 	}
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	
 	trigger = {
-		# triggered by je_eqfm_sanusiyyah_expedition
+	}
+	
+	cancellation_trigger = {
+		OR = {
+			NOT = {
+				is_involved_in_journal_entry = je_eqfm_sanusiyyah
+			}
+			scope:eqfm_sanusiyyah_expedition_state_scope ?= {
+				NOT = {
+					has_variable = eqfm_sanusiyyah_entrenchment_var
+				}
+			}
+		}
 	}
 	
 	immediate = {
-		eqfm_clear_sanusiyyah_expedition_variables_effect = yes
 	}
 	
 	option = {
 		name = eqfm_sanusiyyah.402.a
 		default_option = yes
-		eqfm_fail_sanusiyyah_expedition_effect = yes
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.402.b
+	}
+	
+	after = {
 	}
 }
 
 eqfm_sanusiyyah.403 = {
 	type = country_event
 	placement = root
-	icon = "gfx/interface/icons/invention_icons/colonization.dds"
+	icon = "gfx/interface/icons/institution_icons/colonization.dds"
 	duration = 2
 	dlc = dlc_grefm
 	
 	title = eqfm_sanusiyyah.403.t
 	desc = eqfm_sanusiyyah.403.d
 	flavor = eqfm_sanusiyyah.403.f
-	
-	gui_window = event_window_1char_adventure
-	left_icon = scope:eqfm_sanusiyyah_expedition_leader_scope
-	
-	event_image = {
-		video = "africa_desert_expedition"
-	}
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	
-	trigger = {
-		# triggered by je_eqfm_sanusiyyah_expedition
-	}
-	
-	immediate = {
-		eqfm_clear_sanusiyyah_expedition_variables_effect = yes
-	}
-	
-	option = {
-		name = eqfm_sanusiyyah.403.a
-		default_option = yes
-		eqfm_fail_sanusiyyah_expedition_effect = yes
-	}
-}
-
-eqfm_sanusiyyah.404 = {
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/institution_icons/colonization.dds"
-	duration = 2
-	dlc = dlc_grefm
-	
-	title = eqfm_sanusiyyah.404.t
-	desc = eqfm_sanusiyyah.404.d
-	flavor = eqfm_sanusiyyah.404.f
 	
 	gui_window = event_window_1char_adventure
 	left_icon = scope:eqfm_sanusiyyah_expedition_leader_scope
@@ -2172,1000 +2054,8 @@ eqfm_sanusiyyah.404 = {
 	}
 	
 	option = {
-		name = eqfm_sanusiyyah.404.a
+		name = eqfm_sanusiyyah.403.a
 		default_option = yes
 		eqfm_complete_sanusiyyah_expedition_effect = yes
-	}
-}
-
-eqfm_sanusiyyah.405 = {
-	type = country_event
-	placement = scope:eqfm_sanusiyyah_expedition_state_scope
-	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	duration = 2
-	dlc = dlc_grefm
-
-	title = eqfm_sanusiyyah.405.t
-	desc = eqfm_sanusiyyah.405.d
-	flavor = eqfm_sanusiyyah.405.f
-
-	gui_window = event_window_1char_adventure
-	left_icon = scope:eqfm_sanusiyyah_expedition_leader_scope
-
-	event_image = {
-		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_settlement.dds"
-	}
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	on_opened_soundeffect = "event:/SFX/Events/africa/desert_expedition"
-
-	trigger = {
-		NOT = {
-			has_variable = eqfm_sanusiyyah_expedition_cooldown_var
-		}
-	}
-
-	cancellation_trigger = {
-		eqfm_has_sanusiyyah_expedition_trigger = no
-	}
-
-	cooldown = {
-		years = 1
-	}
-
-	immediate = {
-		eqfm_save_sanusiyyah_expedition_scopes_effect = yes
-		eqfm_add_expedition_cooldown_effect = {
-			type = sanusiyyah
-			months = 2
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.405.a
-		default_option = yes
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = 1
-		}
-		scope:eqfm_sanusiyyah_expedition_state_scope = {
-			add_radicals_in_state = {
-				pop_type = peasants
-				value = small_radicals
-			}
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.405.b
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = 2
-		}
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = 1
-		}
-		scope:eqfm_sanusiyyah_expedition_state_scope = {
-			add_radicals_in_state = {
-				pop_type = peasants
-				value = medium_radicals
-			}
-		}
-	}
-}
-
-eqfm_sanusiyyah.406 = {
-	type = country_event
-	placement = scope:eqfm_sanusiyyah_expedition_state_scope
-	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	duration = 2
-	dlc = dlc_grefm
-
-	title = eqfm_sanusiyyah.406.t
-	desc = eqfm_sanusiyyah.406.d
-	flavor = eqfm_sanusiyyah.406.f
-
-	gui_window = event_window_1char_adventure
-	left_icon = scope:eqfm_sanusiyyah_expedition_leader_scope
-
-	event_image = {
-		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_settlement.dds"
-	}
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	on_opened_soundeffect = "event:/SFX/Events/africa/public_protest"
-
-	trigger = {
-		NOT = {
-			has_variable = eqfm_sanusiyyah_expedition_cooldown_var
-		}
-	}
-
-	cancellation_trigger = {
-		eqfm_has_sanusiyyah_expedition_trigger = no
-	}
-
-	cooldown = {
-		years = 4
-	}
-
-	immediate = {
-		eqfm_save_sanusiyyah_expedition_scopes_effect = yes
-		eqfm_add_expedition_cooldown_effect = {
-			type = sanusiyyah
-			months = 2
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.406.a
-		default_option = yes
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = -1
-		}
-		add_radicals = {
-			pop_type = clergymen
-			value = medium_radicals
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.406.b
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = 1
-		}
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = 1
-		}
-		scope:eqfm_sanusiyyah_expedition_state_scope = {
-			add_radicals_in_state = {
-				pop_type = peasants
-				value = small_radicals
-			}
-		}
-	}
-}
-
-eqfm_sanusiyyah.407 = {
-	type = country_event
-	placement = scope:eqfm_sanusiyyah_expedition_state_scope
-	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	duration = 2
-	dlc = dlc_grefm
-
-	title = eqfm_sanusiyyah.407.t
-	desc = eqfm_sanusiyyah.407.d
-	flavor = eqfm_sanusiyyah.407.f
-
-	gui_window = event_window_1char_adventure
-	left_icon = scope:eqfm_sanusiyyah_expedition_leader_scope
-
-	event_image = {
-		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_nomad.dds"
-	}
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	on_opened_soundeffect = "event:/SFX/Events/europenorthamerica/before_the_battle"
-
-	trigger = {
-		NOT = {
-			has_variable = eqfm_sanusiyyah_expedition_cooldown_var
-		}
-		any_scope_state = {
-			state_region = var:eqfm_sanusiyyah_expedition_var
-			any_neighbouring_state = {
-				owner = {
-					is_country_type = decentralized
-				}
-			}
-		}
-	}
-
-	cancellation_trigger = {
-		eqfm_has_sanusiyyah_expedition_trigger = no
-	}
-
-	cooldown = {
-		years = 4
-	}
-
-	immediate = {
-		eqfm_save_sanusiyyah_expedition_scopes_effect = yes
-		eqfm_add_expedition_cooldown_effect = {
-			type = sanusiyyah
-			months = 2
-		}
-		random_scope_state = {
-			limit = {
-				state_region = var:eqfm_sanusiyyah_expedition_var
-			}
-			random_neighbouring_state = {
-				limit = {
-					owner = {
-						is_country_type = decentralized
-					}
-				}
-				owner = {
-					save_scope_as = eqfm_sanusiyyah_expedition_neighbor_scope
-				}
-			}
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.407.a
-		default_option = yes
-		change_tension = {
-			country = scope:eqfm_sanusiyyah_expedition_neighbor_scope
-			value = 10
-		}
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = -1
-		}
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = 1
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.407.b
-		change_tension = {
-			country = scope:eqfm_sanusiyyah_expedition_neighbor_scope
-			value = 40
-		}
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = 1
-		}
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = 2
-		}
-	}
-}
-
-eqfm_sanusiyyah.408 = {
-	type = country_event
-	placement = scope:eqfm_sanusiyyah_expedition_state_scope
-	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	duration = 2
-	dlc = dlc_grefm
-
-	title = eqfm_sanusiyyah.408.t
-	desc = eqfm_sanusiyyah.408.d
-	flavor = eqfm_sanusiyyah.408.f
-
-	gui_window = event_window_1char_adventure
-	left_icon = scope:eqfm_sanusiyyah_expedition_leader_scope
-	on_opened_soundeffect = "event:/SFX/Events/unspecific/devastation"
-
-	event_image = {
-		video = "gbbf_saharan_sandstorm"
-	}
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	trigger = {
-		NOT = {
-			has_variable = eqfm_sanusiyyah_expedition_cooldown_var
-		}
-		eqfm_expedition_progress_greater_than_or_equals_trigger = {
-			type = sanusiyyah
-			value = 2
-		}
-	}
-
-	cancellation_trigger = {
-		eqfm_has_sanusiyyah_expedition_trigger = no
-	}
-
-	cooldown = {
-		years = 1
-	}
-
-	immediate = {
-		eqfm_save_sanusiyyah_expedition_scopes_effect = yes
-		eqfm_add_expedition_cooldown_effect = {
-			type = sanusiyyah
-			months = 2
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.408.a
-		default_option = yes
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = 2
-		}
-	}
-	
-	option = {
-		name = eqfm_sanusiyyah.408.a
-		default_option = yes
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = -1
-		}
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = 1
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.408.c
-		trigger = {
-			scope:eqfm_sanusiyyah_expedition_leader_scope = {
-				OR = {
-					has_trait = resupply_commander
-					has_trait = innovative
-					has_trait = persistent
-					has_trait = plains_commander
-				}
-			}
-		}
-		highlighted_option = yes
-		show_as_unavailable = { always = yes }
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = 1
-		}
-	}
-}
-
-eqfm_sanusiyyah.409 = {
-	type = country_event
-	placement = scope:eqfm_sanusiyyah_expedition_state_scope
-	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	duration = 2
-	dlc = dlc_grefm
-
-	title = eqfm_sanusiyyah.409.t
-	desc = eqfm_sanusiyyah.409.d
-	flavor = eqfm_sanusiyyah.409.f
-
-	gui_window = event_window_1char_adventure
-	left_icon = scope:eqfm_sanusiyyah_expedition_leader_scope
-
-	event_image = {
-		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_nomad.dds"
-		on_opened_soundeffect = "event:/SFX/Events/africa/diplomats_negotiating"
-	}
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-
-	trigger = {
-		NOT = {
-			has_variable = eqfm_sanusiyyah_expedition_cooldown_var
-		}
-		any_scope_state = {
-			state_region = var:eqfm_sanusiyyah_expedition_var
-			is_under_colonization = yes
-			is_incorporated = no
-		}
-	}
-
-	cancellation_trigger = {
-		eqfm_has_sanusiyyah_expedition_trigger = no
-	}
-
-	cooldown = {
-		years = 4
-	}
-
-	immediate = {
-		eqfm_save_sanusiyyah_expedition_scopes_effect = yes
-		eqfm_add_expedition_cooldown_effect = {
-			type = sanusiyyah
-			months = 2
-		}
-		var:eqfm_sanusiyyah_expedition_var = {
-			random_scope_state = {
-				limit = {
-					owner = {
-						is_country_type = decentralized
-					}
-				}
-				owner = {
-					save_scope_as = eqfm_sanusiyyah_expedition_neighbor_scope
-				}
-			}
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.409.a
-		default_option = yes
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = 1
-		}
-		scope:eqfm_sanusiyyah_expedition_state_scope = {
-			add_modifier = {
-				name = modifier_eqfm_granted_tribal_exemptions
-				months = gbbf_long_modifier_time
-				is_decaying = yes
-			}
-			add_loyalists_in_state = {
-				pop_type = peasants
-				value = large_radicals
-			}
-		}
-		change_tension = {
-			country = scope:eqfm_sanusiyyah_expedition_neighbor_scope
-			value = -20
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.409.b
-		scope:eqfm_sanusiyyah_expedition_state_scope = {
-			add_modifier = {
-				name = modifier_eqfm_refused_tribal_exemptions
-				months = gbbf_normal_modifier_time
-			}
-		}
-		change_tension = {
-			country = scope:eqfm_sanusiyyah_expedition_neighbor_scope
-			value = 10
-		}
-	}
-	
-	option = {
-		name = eqfm_sanusiyyah.409.c
-		scope:eqfm_sanusiyyah_expedition_state_scope = {
-			add_modifier = {
-				name = modifier_eqfm_refused_tribal_exemptions
-				months = gbbf_long_modifier_time
-			}
-			add_radicals_in_state = {
-				pop_type = peasants
-				value = very_large_radicals
-			}
-		}
-		change_tension = {
-			country = scope:eqfm_sanusiyyah_expedition_neighbor_scope
-			value = 50
-		}
-		create_incident = { 
-			country = scope:eqfm_sanusiyyah_expedition_neighbor_scope
-			value = 5
-		}
-	}
-}
-
-eqfm_sanusiyyah.410 = {
-	type = country_event
-	placement = scope:eqfm_sanusiyyah_expedition_state_scope
-	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	duration = 2
-	dlc = dlc_grefm
-
-	title = eqfm_sanusiyyah.410.t
-	desc = eqfm_sanusiyyah.410.d
-	flavor = eqfm_sanusiyyah.410.f
-
-	gui_window = event_window_1char_adventure
-	left_icon = scope:eqfm_sanusiyyah_expedition_leader_scope
-
-	event_image = {
-		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert.dds"
-	}
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	on_opened_soundeffect = "event:/SFX/Events/africa/leader_arguing"
-
-	trigger = {
-		NOT = {
-			has_variable = eqfm_sanusiyyah_expedition_cooldown_var
-		}
-		eqfm_expedition_progress_greater_than_or_equals_trigger = {
-			type = sanusiyyah
-			value = 3
-		}
-	}
-
-	cancellation_trigger = {
-		eqfm_has_sanusiyyah_expedition_trigger = no
-	}
-
-	cooldown = {
-		years = 1
-	}
-
-	immediate = {
-		eqfm_save_sanusiyyah_expedition_scopes_effect = yes
-		eqfm_add_expedition_cooldown_effect = {
-			type = sanusiyyah
-			months = 2
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.410.a
-		default_option = yes
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = -2
-		}
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = 1
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.410.b
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = 2
-		}
-		add_radicals = {
-			pop_type = soldiers
-			value = medium_radicals
-		}
-	}
-}
-
-eqfm_sanusiyyah.411 = {
-	type = country_event
-	placement = scope:eqfm_sanusiyyah_expedition_state_scope
-	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	duration = 2
-	dlc = dlc_grefm
-
-	title = eqfm_sanusiyyah.411.t
-	desc = eqfm_sanusiyyah.411.d
-	flavor = eqfm_sanusiyyah.411.f
-
-	gui_window = event_window_1char_adventure
-	left_icon = scope:eqfm_sanusiyyah_expedition_leader_scope
-
-	event_image = {
-		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_nomad.dds"
-	}
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	on_opened_soundeffect = "event:/SFX/DLC/1.3_ip1/Events/unspecific/hostile_court"
-
-	trigger = {
-		NOT = {
-			has_variable = eqfm_sanusiyyah_expedition_cooldown_var
-		}
-	}
-
-	cancellation_trigger = {
-		eqfm_has_sanusiyyah_expedition_trigger = no
-	}
-
-	cooldown = {
-		years = 8
-	}
-
-	immediate = {
-		eqfm_save_sanusiyyah_expedition_scopes_effect = yes
-		eqfm_add_expedition_cooldown_effect = {
-			type = sanusiyyah
-			months = 2
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.411.a
-		default_option = yes
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = 1
-		}
-		eqfm_add_sanusiyyah_pressure_effect = {
-			value = -5
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.411.b
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = 2
-		}
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = 1
-		}
-	}
-}
-
-eqfm_sanusiyyah.412 = {
-	type = country_event
-	placement = scope:eqfm_sanusiyyah_expedition_state_scope
-	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	duration = 2
-	dlc = dlc_grefm
-
-	title = eqfm_sanusiyyah.412.t
-	desc = eqfm_sanusiyyah.412.d
-	flavor = eqfm_sanusiyyah.412.f
-
-	gui_window = event_window_1char_adventure
-	left_icon = scope:eqfm_sanusiyyah_expedition_leader_scope
-
-	event_image = {
-		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert.dds"
-	}
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	on_opened_soundeffect = "event:/SFX/Events/unspecific/naval_battle"
-
-	trigger = {
-		NOT = {
-			has_variable = eqfm_sanusiyyah_expedition_cooldown_var
-		}
-	}
-
-	cancellation_trigger = {
-		eqfm_has_sanusiyyah_expedition_trigger = no
-	}
-
-	cooldown = {
-		years = 1
-	}
-
-	immediate = {
-		eqfm_save_sanusiyyah_expedition_scopes_effect = yes
-		eqfm_add_expedition_cooldown_effect = {
-			type = sanusiyyah
-			months = 2
-		}
-		if = {
-			limit = {
-				eqfm_has_desert_expedition_trigger = yes
-			}
-			random_scope_character = {
-				limit = {
-					has_modifier = modifier_eqfm_leading_desert_expedition
-				}
-				save_scope_as = eqfm_desert_expedition_leader_scope
-			}
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.412.a
-		default_option = yes
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = 2
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.412.b
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = -2
-		}
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = 1
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.412.c
-		trigger = {
-			eqfm_has_desert_expedition_trigger = yes
-			eqfm_expedition_progress_greater_than_or_equals_trigger = {
-				type = desert
-				value = 2
-			}
-		}
-		highlighted_option = yes
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = -1
-		}
-		eqfm_add_expedition_progress_effect = {
-			type = desert
-			value = -1
-		}
-		scope:eqfm_desert_expedition_leader_scope = {
-			if = {
-				limit = {
-					NOT = {
-						has_modifier = modifier_eqfm_desert_fighter
-					}
-				}
-				add_modifier = modifier_eqfm_desert_fighter
-			}
-		}
-	}
-}
-
-eqfm_sanusiyyah.413 = {
-	type = country_event
-	placement = scope:eqfm_sanusiyyah_expedition_state_scope
-	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	duration = 2
-	dlc = dlc_grefm
-
-	title = eqfm_sanusiyyah.413.t
-	desc = eqfm_sanusiyyah.413.d
-	flavor = eqfm_sanusiyyah.413.f
-
-	gui_window = event_window_1char_adventure
-	left_icon = scope:eqfm_sanusiyyah_expedition_leader_scope
-
-	event_image = {
-		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_settlement.dds"
-	}
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	on_opened_soundeffect = "event:/SFX/Events/middleeast/courtroom_upheaval"
-
-	trigger = {
-		NOT = {
-			has_variable = eqfm_sanusiyyah_expedition_cooldown_var
-		}
-	}
-
-	cancellation_trigger = {
-		eqfm_has_sanusiyyah_expedition_trigger = no
-	}
-
-	cooldown = {
-		years = 4
-	}
-
-	immediate = {
-		eqfm_save_sanusiyyah_expedition_scopes_effect = yes
-		eqfm_add_expedition_cooldown_effect = {
-			type = sanusiyyah
-			months = 2
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.413.a
-		default_option = yes
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = -1
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.413.b
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = 1
-		}
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = 1
-		}
-	}
-}
-
-eqfm_sanusiyyah.414 = {
-	type = country_event
-	placement = scope:eqfm_sanusiyyah_expedition_state_scope
-	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	duration = 2
-	dlc = dlc_grefm
-
-	title = eqfm_sanusiyyah.414.t
-	desc = eqfm_sanusiyyah.414.d
-	flavor = eqfm_sanusiyyah.414.f
-
-	gui_window = event_window_1char_adventure
-	left_icon = scope:eqfm_sanusiyyah_expedition_leader_scope
-
-	event_image = {
-		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert.dds"
-	}
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	on_opened_soundeffect = "event:/SFX/Events/asia/westeners_arriving_in_east_asia"
-
-	trigger = {
-		NOT = {
-			has_variable = eqfm_sanusiyyah_expedition_cooldown_var
-		}
-	}
-
-	cancellation_trigger = {
-		eqfm_has_sanusiyyah_expedition_trigger = no
-	}
-
-	cooldown = {
-		years = 1
-	}
-
-	immediate = {
-		eqfm_save_sanusiyyah_expedition_scopes_effect = yes
-		eqfm_add_expedition_cooldown_effect = {
-			type = sanusiyyah
-			months = 2
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.414.a
-		default_option = yes
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = 2
-		}
-		scope:eqfm_sanusiyyah_expedition_state_scope = {
-			add_radicals_in_state = { 
-				pop_type = peasants
-				value = medium_radicals
-			}
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.414.b
-		custom_tooltip = gbbf_nothing_happens
-	}
-}
-
-eqfm_sanusiyyah.415 = {
-	type = country_event
-	placement = scope:eqfm_sanusiyyah_expedition_state_scope
-	icon = "gfx/interface/icons/invention_icons/colonization.dds"
-	duration = 2
-	dlc = dlc_grefm
-
-	title = eqfm_sanusiyyah.415.t
-	desc = eqfm_sanusiyyah.415.d
-	flavor = eqfm_sanusiyyah.415.f
-
-	gui_window = event_window_1char_adventure
-	left_icon = scope:eqfm_sanusiyyah_expedition_leader_scope
-
-	event_image = {
-		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_nomad.dds"
-	}
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
-
-	trigger = {
-		NOT = {
-			has_variable = eqfm_sanusiyyah_expedition_cooldown_var
-		}
-		eqfm_expedition_peril_greater_than_or_equals_trigger = {
-			type = sanusiyyah
-			value = 2
-		}
-	}
-
-	cancellation_trigger = {
-		eqfm_has_sanusiyyah_expedition_trigger = no
-	}
-
-	cooldown = {
-		years = 4
-	}
-
-	immediate = {
-		eqfm_save_sanusiyyah_expedition_scopes_effect = yes
-		eqfm_add_expedition_cooldown_effect = {
-			type = sanusiyyah
-			months = 2
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.415.a
-		default_option = yes
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = 1
-		}
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = -1
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.415.b
-		default_option = yes
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = -1
-		}
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = -3
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.415.c
-		eqfm_add_expedition_progress_effect = {
-			type = sanusiyyah
-			value = 2
-		}
-	}
-}
-
-eqfm_sanusiyyah.416 = {
-	type = country_event
-	placement = root
-	icon = "gfx/interface/icons/generic_icons/gbbf_runestone_moon.dds"
-	duration = 2
-	dlc = dlc_grefm
-
-	title = eqfm_sanusiyyah.416.t
-	desc = eqfm_sanusiyyah.416.d
-	flavor = eqfm_sanusiyyah.416.f
-
-	event_image = {
-		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_settlement.dds"
-	}
-	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
-	on_opened_soundeffect = "event:/SFX/Events/africa/desert_expedition"
-
-	trigger = {
-		NOT = {
-			has_variable = eqfm_sanusiyyah_expedition_cooldown_var
-		}
-		eqfm_expedition_peril_greater_than_or_equals_trigger = {
-			type = sanusiyyah
-			value = 2
-		}
-	}
-
-	cancellation_trigger = {
-		eqfm_has_sanusiyyah_expedition_trigger = no
-	}
-
-	cooldown = {
-		years = 4
-	}
-
-	immediate = {
-		eqfm_save_sanusiyyah_expedition_scopes_effect = yes
-		eqfm_add_expedition_cooldown_effect = {
-			type = sanusiyyah
-			months = 2
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.416.a
-		default_option = yes
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = -2
-		}
-	}
-
-	option = {
-		name = eqfm_sanusiyyah.416.b
-		trigger = {
-			scope:eqfm_karadag_tur_leader = {
-				OR = {
-					has_trait = bigoted
-					has_trait = cruel
-					has_trait = ruthless
-					has_trait = war_criminal
-					has_trait = pillager
-					has_trait = bandit
-					has_trait = social_bandit
-				}
-			}
-		}
-		show_as_unavailable = { always = yes }
-		highlighted_option = yes
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = -3
-		}
-		scope:eqfm_sanusiyyah_expedition_state_scope = {
-			add_radicals_in_state = {
-				pop_type = peasants
-				value = medium_radicals
-			}
-		}
 	}
 }
