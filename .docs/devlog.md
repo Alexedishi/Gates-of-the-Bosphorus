@@ -194,8 +194,11 @@ bulfm_: Once contained content for Bulgaria; expanded into balkfm_
 
 ####---------- Planned Updates ----------####
 
-# //
-
+--Update 4.3.0--
+New Additions:
+- ##Fully implemented the Young Turks content with varying outcomes for the Republican movements in the Ottoman Empire
+- ##New journal "The Foundation of the State" representing the multiple outcomes of Turkish identity after the failure of the Tanzimat
+- Two new Secret Police law variants "Palace Service" and "Teşkilat" to represent Ottoman internal security
 
 ####---------- Published Updates ----------####
 
@@ -211,13 +214,8 @@ New Additions (balkfm):
 - Added "Yugoslav Integralist" and "Yugoslav Particularist" ideologies for Yugoslav movements
 - Annexing Yugoslav countries via the "The Yugoslav Project" journal will transfer all of their characters to the annexing country
 
-New Additions (turkfm):
-- ##Fully implemented the Young Turks content with varying outcomes for the Republican movements in the Ottoman Empire
-- ##New journal "The Foundation of the State" representing the multiple outcomes of Turkish identity after the failure of the Tanzimat
-- Two new Secret Police law variants "Palace Service" and "Teşkilat" to represent Ottoman internal security
-- ##New decision representing the suppression of the Circassian slave trade
-
 New Additions:
+- ##New decision representing the suppression of the Circassian slave trade
 - ##Implemented outcomes for the "The Ethiopian Frontier" journal
 - ##New journal "The Lands of Kurdistan" for Kurdish revanchism
 - ##Rebuilt "The Teachings of al-Sanusi" into a struggle-style journal with new mechanics, events, and modifiers

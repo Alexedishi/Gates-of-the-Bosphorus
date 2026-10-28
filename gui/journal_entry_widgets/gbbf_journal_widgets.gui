@@ -541,29 +541,79 @@ types gbbf_journal_entry_widget_types {
 						text = "eqfm_gui_state_region_name"
 					}
 					
+					# Entrenchment Icon
+					icon = {
+						size = { 35 35 }
+						visible = "[StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').IsSet]"
+						texture = "gfx/interface/icons/sanusiyyah_icons/active_entrenchment.dds"
+						tooltip = eqfm_gui_sanusiyyah_entrenchment_tooltip
+					}
+					
+					# Expulsion Icon
+					icon = {
+						size = { 35 35 }
+						visible = "[StateRegion.MakeScope.Var('eqfm_sanusiyyah_explusion_var').IsSet]"
+						texture = "gfx/interface/icons/sanusiyyah_icons/region_secured.dds"
+						tooltip = eqfm_gui_sanusiyyah_expelled_tooltip
+					}
+					
+					# Headquarters Icon
 					icon = {
 						size = { 35 35 }
 						visible = "[StateRegion.MakeScope.Var('eqfm_sanusiyyah_hq_var').IsSet]"
-						texture = "gfx/interface/icons/battle_conditions/battle_condition_dug_in.dds"
+						texture = "gfx/interface/icons/sanusiyyah_icons/headquarters_location.dds"
 						tooltip = eqfm_gui_sanusiyyah_headquarters_tooltip
 					}
+					
+					# Hidden Lodges Icon
 					icon = {
 						size = { 35 35 }
-						visible = "[And(
+						visible = "[And3(
 							StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').IsSet,
-							Not(StateRegion.MakeScope.Var('eqfm_sanusiyyah_exposed_lodge_var').IsSet)
+							Not(StateRegion.MakeScope.Var('eqfm_sanusiyyah_exposed_lodge_var').IsSet),
+							Not(StateRegion.MakeScope.Var('eqfm_sanusiyyah_destroyed_lodges_var').IsSet)
 						)]"
-						texture = "gfx/interface/icons/battle_conditions/battle_condition_camouflaged.dds"
-						tooltip = eqfm_gui_sanusiyyah_hidden_loddge_tooltip
+						texture = "gfx/interface/icons/sanusiyyah_icons/lodges_hidden.dds"
+						tooltip = eqfm_gui_sanusiyyah_hidden_lodge_tooltip
 					}
+					
+					# Exposed Lodges Icon
+					icon = {
+						size = { 35 35 }
+						visible = "[And3(
+							StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').IsSet,
+							StateRegion.MakeScope.Var('eqfm_sanusiyyah_exposed_lodge_var').IsSet,
+							Not(StateRegion.MakeScope.Var('eqfm_sanusiyyah_destroyed_lodges_var').IsSet)
+						)]"
+						texture = "gfx/interface/icons/sanusiyyah_icons/lodges_exposed.dds"
+						tooltip = eqfm_gui_sanusiyyah_exposed_lodges_tooltip
+					}
+					
+					# Destroyed Lodges Icon
 					icon = {
 						size = { 35 35 }
 						visible = "[And(
-							StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').IsSet,
-							StateRegion.MakeScope.Var('eqfm_sanusiyyah_exposed_lodge_var').IsSet
+							StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').IsSet
+							StateRegion.MakeScope.Var('eqfm_sanusiyyah_destroyed_lodges_var').IsSet,
 						)]"
-						texture = "gfx/interface/icons/battle_conditions/battle_condition_good_visibility.dds"
-						tooltip = eqfm_gui_sanusiyyah_exposed_loddge_tooltip
+						texture = "gfx/interface/icons/sanusiyyah_icons/lodges_destroyed.dds"
+						tooltip = eqfm_gui_sanusiyyah_destroyed_lodges_tooltip
+					}
+					
+					# Elders Contacted Icon
+					icon = {
+						size = { 35 35 }
+						visible = "[StateRegion.MakeScope.Var('eqfm_sanusiyyah_hq_var').IsSet]"
+						texture = "gfx/interface/icons/sanusiyyah_icons/elders_contacted.dds"
+						tooltip = eqfm_gui_sanusiyyah_elders_contacted_tooltip
+					}
+					
+					# Active Expedition Icon
+					icon = {
+						size = { 35 35 }
+						visible = "[StateRegion.MakeScope.Var('eqfm_sanusiyyah_expedition_var').IsSet]"
+						texture = "gfx/interface/icons/sanusiyyah_icons/seeking_lodges.dds"
+						tooltip = eqfm_gui_sanusiyyah_active_expedition_tooltip
 					}
 					
 					expand = {}
@@ -663,7 +713,9 @@ types gbbf_journal_entry_widget_types {
 	}
 	
 	type eqfm_sanusiyyah_scripted_button_round = button_icon_round {
-		size = { 40 40 }
+		block "major_button_size" {
+			size = { 40 40 }
+		}
 		using = tooltip_above
 		enabled = "[IsValid( ScriptedButton.ExecuteEffect )]"
 		onclick = "[Execute( ScriptedButton.ExecuteEffect )]"
@@ -898,6 +950,9 @@ types gbbf_journal_entry_widget_types {
 					blockoverride "member_hire_button_visibility" {
 						visible = "[ScriptedButton.HasTag('hire_guide')]"
 					}
+					blockoverride "member_dismiss_button_visibility" {
+						visible = "[ScriptedButton.HasTag('dismiss_guide')]"
+					}
 				}
 				
 				## LEADER
@@ -935,6 +990,9 @@ types gbbf_journal_entry_widget_types {
 					blockoverride "member_hire_button_visibility" {
 						visible = "[ScriptedButton.HasTag('hire_leader')]"
 					}
+					blockoverride "member_dismiss_button_visibility" {
+						visible = "[ScriptedButton.HasTag('dismiss_leader')]"
+					}
 				}
 				
 				## LOGISTICIAN
@@ -967,6 +1025,9 @@ types gbbf_journal_entry_widget_types {
 					}
 					blockoverride "member_hire_button_visibility" {
 						visible = "[ScriptedButton.HasTag('hire_logistician')]"
+					}
+					blockoverride "member_dismiss_button_visibility" {
+						visible = "[ScriptedButton.HasTag('dismiss_logistician')]"
 					}
 				}
 			}
@@ -1178,6 +1239,23 @@ types gbbf_journal_entry_widget_types {
 						using = fontsize_medium
 						max_width = 160
 						
+					}
+				}
+			}
+			
+			flowcontainer = {
+				parentanchor = center
+				datamodel = "[JournalEntry.GetScriptedButtons]"
+				item = {
+					eqfm_sanusiyyah_scripted_button_round = {
+						blockoverride "major_button_size" {
+							size = { 20 20 }
+						}
+						blockoverride "major_button_visibility" {
+							block "member_dismiss_button_visibility" {
+								visible = "[ScriptedButton.HasTag('nope')]"
+							}
+						}
 					}
 				}
 			}

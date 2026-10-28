@@ -385,62 +385,6 @@ eqfm_adopt_hostile_stance_button = {
 }
 
 
-####---------- Sanusiyyah Expulsion Buttons ----------####
-eqfm_recall_sanusiyyah_expedition_button = {
-	name = "eqfm_recall_expedition_name"
-	desc = "eqfm_recall_expedition_desc"
-	
-	visible = {
-		eqfm_has_sanusiyyah_expedition_trigger = yes
-	}
-	possible = {
-		eqfm_has_sanusiyyah_expedition_trigger = yes
-		hidden_trigger = {
-			NOT = {
-				has_variable = eqfm_sanusiyyah_expedition_transit_var
-			}
-		}
-	}
-	effect = {
-		eqfm_cancel_sanusiyyah_expedition_effect = yes
-	}
-}
-
-eqfm_resupply_sanusiyyah_expedition_button = {
-	name = "eqfm_resupply_expedition_name"
-	desc = "eqfm_resupply_expedition_desc"
-	
-	visible = {
-		eqfm_has_sanusiyyah_expedition_trigger = yes
-	}
-	possible = {
-		NOT = {
-			has_modifier = modifier_eqfm_resupplied_sanusiyyah_expedition
-		}
-		eqfm_expedition_peril_greater_than_or_equals_trigger = {
-			type = sanusiyyah
-			value = 3
-		}
-		hidden_trigger = {
-			NOT = {
-				has_variable = eqfm_sanusiyyah_expedition_transit_var
-			}
-		}
-	}
-	effect = {
-		add_modifier = {
-			name = modifier_eqfm_resupplied_sanusiyyah_expedition
-			months = gbbf_short_modifier_time
-			multiplier = money_amount_multiplier_small
-		}
-		eqfm_add_expedition_peril_effect = {
-			type = sanusiyyah
-			value = -3
-		}
-	}
-}
-
-
 ####---------- Hedjaz State Region Buttons ----------####
 eqfm_spread_sanusiyyah_hedjaz_button = {
 	# This button employs different logic than the others; if HDJ/EGY expels Sanusiyyah from Hedjaz, it will not automatically spread back
@@ -485,6 +429,12 @@ eqfm_spread_sanusiyyah_hedjaz_button = {
 	}
 	ai_chance = {
 		value = 0
+		if = {
+			limit = {
+				eqfm_has_embraced_sanusiyyah_trigger = yes
+			}
+			add = 1000
+		}
 	}
 }
 
@@ -505,9 +455,9 @@ eqfm_expel_sanusiyyah_hedjaz_button = {
 					has_variable = eqfm_sanusiyyah_entrenchment_var
 				}
 			}
-			has_state_in_state_region = STATE_HEDJAZ
+			owns_entire_state_region = STATE_HEDJAZ
 			custom_tooltip = {
-				text = eqfm_expel_sanusiyyah_trigger
+				text = eqfm_expel_sanusiyyah_hedjaz_trigger
 				s:STATE_HEDJAZ = {
 					var:eqfm_sanusiyyah_entrenchment_var <= 0
 				}
@@ -520,7 +470,14 @@ eqfm_expel_sanusiyyah_hedjaz_button = {
 			}
 		}
 	}
-	effect = {  }
+	effect = {
+		custom_tooltip = {
+			text = eqfm_expel_sanusiyyah_hedjaz_effect
+			eqfm_expel_sanusiyyah_from_state_region_effect = {
+				state_region = s:STATE_HEDJAZ
+			}
+		}
+	}
 }
 
 eqfm_start_improve_relations_hedjaz_button = {
@@ -2965,6 +2922,574 @@ eqfm_destroy_lodge_chad_button = {
 	}
 	effect = {
 	}
+	ai_chance = {
+		value = 0
+	}
+}
+
+####---------- Sanusiyyah Expulsion Buttons ----------####
+eqfm_hire_desert_leader_button = {
+	name = eqfm_hire_desert_leader_name
+	desc = eqfm_hire_desert_leader_desc
+	icon = "gfx/interface/icons/generic_icons/map_list_plus.dds"
+	
+	tags = { hire_leader }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_dismiss_desert_leader_button = {
+	name = eqfm_dismiss_desert_leader_name
+	desc = eqfm_dismiss_desert_leader_desc
+	icon = "gfx/interface/icons/generic_icons/red_cross.dds"
+	
+	tags = { dismiss_leader }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_hire_desert_guide_button = {
+	name = eqfm_hire_desert_guide_name
+	desc = eqfm_hire_desert_guide_desc
+	icon ="gfx/interface/icons/generic_icons/map_list_plus.dds"
+	
+	tags = { hire_guide }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_dismiss_desert_guide_button = {
+	name = eqfm_dismiss_desert_guide_name
+	desc = eqfm_dismiss_desert_guide_desc
+	icon = "gfx/interface/icons/generic_icons/red_cross.dds"
+	
+	tags = { dismiss_guide }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_hire_desert_logistician_button = {
+	name = eqfm_hire_desert_logistician_name
+	desc = eqfm_hire_desert_logistician_desc
+	icon = "gfx/interface/icons/generic_icons/map_list_plus.dds"
+	
+	tags = { hire_logistician }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_dismiss_desert_logistician_button = {
+	name = eqfm_dismiss_desert_logistician_name
+	desc = eqfm_dismiss_desert_logistician_desc
+	icon = "gfx/interface/icons/generic_icons/red_cross.dds"
+	
+	tags = { dismiss_logistician }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_deploy_desert_expedition_hedjaz_button = {
+	name = eqfm_deploy_desert_expedition_hedjaz_button_name
+	desc = eqfm_deploy_desert_expedition_hedjaz_button_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_deploy_scouts.dds"
+	
+	tags = { deploy_expedition state_hedjaz }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_deploy_desert_expedition_libya_button = {
+	name = eqfm_deploy_desert_expedition_libya_name
+	desc = eqfm_deploy_desert_expedition_libya_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_deploy_scouts.dds"
+	
+	tags = { deploy_expedition state_libya }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_deploy_desert_expedition_tripoli_button = {
+	name = eqfm_deploy_desert_expedition_tripoli_name
+	desc = eqfm_deploy_desert_expedition_tripoli_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_deploy_scouts.dds"
+	
+	tags = { deploy_expedition state_tripoli }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_deploy_desert_expedition_libyan_desert_button = {
+	name = eqfm_deploy_desert_expedition_libyan_desert_name
+	desc = eqfm_deploy_desert_expedition_libyan_desert_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_deploy_scouts.dds"
+	
+	tags = { deploy_expedition state_libyan_desert }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_deploy_desert_expedition_matruh_button = {
+	name = eqfm_deploy_desert_expedition_matruh_name
+	desc = eqfm_deploy_desert_expedition_matruh_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_deploy_scouts.dds"
+	
+	tags = { deploy_expedition state_matruh }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_deploy_desert_expedition_egyptian_desert_button = {
+	name = eqfm_deploy_desert_expedition_egyptian_desert_name
+	desc = eqfm_deploy_desert_expedition_egyptian_desert_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_deploy_scouts.dds"
+	
+	tags = { deploy_expedition state_egyptian_desert }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_deploy_desert_expedition_chad_button = {
+	name = eqfm_deploy_desert_expedition_chad_name
+	desc = eqfm_deploy_desert_expedition_chad_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_deploy_scouts.dds"
+	
+	tags = { deploy_expedition state_chad }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_recall_desert_expedition_hedjaz_button = {
+	name = eqfm_recall_desert_expedition_hedjaz_button_name
+	desc = eqfm_recall_desert_expedition_hedjaz_button_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_recall_scouts.dds"
+	
+	tags = { recall_expedition state_hedjaz }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_recall_desert_expedition_libya_button = {
+	name = eqfm_recall_desert_expedition_libya_name
+	desc = eqfm_recall_desert_expedition_libya_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_recall_scouts.dds"
+	
+	tags = { recall_expedition state_libya }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_recall_desert_expedition_tripoli_button = {
+	name = eqfm_recall_desert_expedition_tripoli_name
+	desc = eqfm_recall_desert_expedition_tripoli_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_recall_scouts.dds"
+	
+	tags = { recall_expedition state_tripoli }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_recall_desert_expedition_libyan_desert_button = {
+	name = eqfm_recall_desert_expedition_libyan_desert_name
+	desc = eqfm_recall_desert_expedition_libyan_desert_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_recall_scouts.dds"
+	
+	tags = { recall_expedition state_libyan_desert }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_recall_desert_expedition_matruh_button = {
+	name = eqfm_recall_desert_expedition_matruh_name
+	desc = eqfm_recall_desert_expedition_matruh_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_recall_scouts.dds"
+	
+	tags = { recall_expedition state_matruh }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_recall_desert_expedition_egyptian_desert_button = {
+	name = eqfm_recall_desert_expedition_egyptian_desert_name
+	desc = eqfm_recall_desert_expedition_egyptian_desert_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_recall_scouts.dds"
+	
+	tags = { recall_expedition state_egyptian_desert }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_recall_desert_expedition_chad_button = {
+	name = eqfm_recall_desert_expedition_chad_name
+	desc = eqfm_recall_desert_expedition_chad_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_recall_scouts.dds"
+	
+	tags = { recall_expedition state_chad }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_resupply_desert_expedition_hedjaz_button = {
+	name = eqfm_resupply_desert_expedition_hedjaz_button_name
+	desc = eqfm_resupply_desert_expedition_hedjaz_button_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_resupply_scouts.dds"
+	
+	tags = { resupply_expedition state_hejaz }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_resupply_desert_expedition_libya_button = {
+	name = eqfm_resupply_desert_expedition_libya_name
+	desc = eqfm_resupply_desert_expedition_libya_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_resupply_scouts.dds"
+	
+	tags = { resupply_expedition state_libya }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_resupply_desert_expedition_tripoli_button = {
+	name = eqfm_resupply_desert_expedition_tripoli_name
+	desc = eqfm_resupply_desert_expedition_tripoli_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_resupply_scouts.dds"
+	
+	tags = { resupply_expedition state_tripoli }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_resupply_desert_expedition_libyan_desert_button = {
+	name = eqfm_resupply_desert_expedition_libyan_desert_name
+	desc = eqfm_resupply_desert_expedition_libyan_desert_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_resupply_scouts.dds"
+	
+	tags = { resupply_expedition state_libyan_desert }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_resupply_desert_expedition_matruh_button = {
+	name = eqfm_resupply_desert_expedition_matruh_name
+	desc = eqfm_resupply_desert_expedition_matruh_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_resupply_scouts.dds"
+	
+	tags = { resupply_expedition state_matruh }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_resupply_desert_expedition_egyptian_desert_button = {
+	name = eqfm_resupply_desert_expedition_egyptian_desert_name
+	desc = eqfm_resupply_desert_expedition_egyptian_desert_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_resupply_scouts.dds"
+	
+	tags = { resupply_expedition state_egyptian_desert }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
+	ai_chance = {
+		value = 0
+	}
+}
+
+eqfm_resupply_desert_expedition_chad_button = {
+	name = eqfm_resupply_desert_expedition_chad_name
+	desc = eqfm_resupply_desert_expedition_chad_desc
+	icon = "gfx/interface/icons/scripted_action_icons/eqfm_sanusiyyah_resupply_scouts.dds"
+	
+	tags = { resupply_expedition state_chad }
+	
+	visible = {
+	}
+	selected = {
+	}
+	possible = {
+	}
+	effect = {
+	}
+	
 	ai_chance = {
 		value = 0
 	}
