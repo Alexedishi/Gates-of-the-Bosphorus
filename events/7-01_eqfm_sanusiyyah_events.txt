@@ -542,7 +542,364 @@ eqfm_sanusiyyah.009 = { # The Sanusiyyah Extinguished
 
 
 ####---------- 100-199 - Sanusiyyah Phase / Pressure Events ----------####
-#//
+eqfm_sanusiyyah.100 = {
+	#
+	type = country_event
+	placement = scope:eqfm_senussi_marabout_state
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_sanusiyyah.100.t
+	desc = eqfm_sanusiyyah.100.d
+	flavor = eqfm_sanusiyyah.100.f
+	
+	event_image = {
+		video = "africa_city_center"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
+		has_variable = eqfm_sanusiyyah_influence_var
+		var:eqfm_sanusiyyah_influence_var < 75
+		s:STATE_LIBYAN_DESERT = {
+			any_scope_state = {
+				owner ?= {
+					is_country_type = decentralized
+				}
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOR = {
+			has_journal_entry = je_eqfm_libyan_desert
+			has_variable = eqfm_sanusiyyah_influence_var
+		}
+		var:eqfm_sanusiyyah_influence_var >= 90
+	}
+	
+	cooldown = {
+		years = 8
+	}
+	
+	immediate = {
+		random_scope_state = {
+			limit = {
+				NOT = {
+					has_modifier = modifier_eqfm_dissident_teachings
+				}
+			}
+			save_scope_as = eqfm_senussi_marabout_state
+		}
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 6
+		}
+		if = {
+			limit = {
+				exists = c:TUR
+				is_subject_of = c:TUR
+			}
+			c:TUR = {
+				save_scope_as = eqfm_ottoman_scope
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.100.a
+		default_option = yes
+		eqfm_add_sanusiyyah_influence_effect = {
+			value = 10
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_ottoman_scope
+			}
+			change_relations = {
+				country = c:TUR
+				value = -15
+			}
+			c:TUR = {
+				create_diplomatic_catalyst = {
+					type = catalyst_event_negative
+					target = root
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.100.b
+		default_option = yes
+		trigger = {
+			OR = {
+				has_law_or_variant = law_type:law_censorship
+				has_law_or_variant = law_type:law_outlawed_dissent
+			}
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		eqfm_add_sanusiyyah_influence_effect = {
+			value = -20
+		}
+		scope:eqfm_senussi_marabout_state = {
+			add_radicals_in_state = {
+				pop_type = clergymen
+				value = medium_radicals
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_ottoman_scope
+			}
+			change_relations = {
+				country = c:TUR
+				value = 15
+			}
+			c:TUR = {
+				create_diplomatic_catalyst = {
+					type = catalyst_event_positive
+					target = root
+				}
+			}
+		}
+	}
+	
+}
+
+eqfm_sanusiyyah.101 = {
+	# Insecure Desert Routes
+	type = country_event
+	placement = scope:eqfm_desert_event_state
+	icon = "gfx/interface/icons/event_icons/event_trade.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_sanusiyyah.101.t
+	desc = eqfm_sanusiyyah.101.d
+	flavor = eqfm_sanusiyyah.101.f
+	
+	event_image = {
+		video = "africa_desert_expedition"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
+		s:STATE_LIBYAN_DESERT = {
+			any_scope_state = {
+				owner ?= {
+					is_country_type = decentralized
+				}
+			}
+		}
+		any_scope_state = {
+			state_region = s:STATE_LIBYAN_DESERT
+			is_under_colonization = yes
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_eqfm_libyan_desert
+		}
+	}
+	
+	cooldown = {
+		years = 10
+	}
+	
+	immediate = {
+		eqfm_update_desert_variables_effect = yes
+		random_scope_state = {
+			limit = {
+				state_region = s:STATE_LIBYAN_DESERT
+				is_under_colonization = yes
+			}
+			save_scope_as = eqfm_desert_event_state
+		}
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 4
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.101.a
+		default_option = yes
+		scope:eqfm_desert_event_state = {
+			add_modifier = {
+				name = modifier_eqfm_tribal_conflicts
+				months = gbbf_normal_modifier_time
+			}
+			add_radicals_in_state = {
+				culture = cu:maghrebi
+				value = medium_radicals
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.101.b
+		trigger = {
+			army_size >= 10
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		scope:eqfm_desert_event_state = {
+			add_modifier = {
+				name = modifier_eqfm_settled_conflict
+				months = gbbf_normal_modifier_time
+			}
+			add_radicals_in_state = {
+				culture = cu:bedouin
+				value = large_radicals
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.101.c
+		trigger = {
+			eqfm_has_desert_expedition_trigger = yes
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		scope:eqfm_desert_event_state = {
+			add_modifier = {
+				name = modifier_eqfm_settled_conflict
+				months = gbbf_normal_modifier_time
+			}
+			eqfm_add_expedition_progress_effect = {
+				type = desert
+				value = 2
+			}
+			eqfm_add_expedition_peril_effect = {
+				type = desert
+				value = -1
+			}
+		}
+	}
+	
+}
+
+eqfm_sanusiyyah.102 = {
+	# Issues with Taxation
+	type = country_event
+	placement = scope:eqfm_desert_event_state
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_sanusiyyah.102.t
+	desc = eqfm_sanusiyyah.102.d
+	flavor = eqfm_sanusiyyah.102.f
+	
+	event_image = {
+		video = "middleeast_courtroom_upheaval"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
+		any_scope_state = {
+			state_region = s:STATE_LIBYAN_DESERT
+			is_under_colonization = yes
+		}
+		s:STATE_LIBYAN_DESERT = {
+			any_scope_state = {
+				owner = {
+					is_country_type = decentralized
+					tension:root >= tension_threshold:tense
+				}
+			}
+		}
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			has_journal_entry = je_eqfm_libyan_desert
+		}
+	}
+	
+	cooldown = {
+		years = 5
+	}
+	
+	immediate = {
+		s:STATE_LIBYAN_DESERT = {
+			random_scope_state = {
+				limit = {
+					is_under_colonization = yes
+				}
+				save_scope_as = eqfm_desert_event_state
+			}
+			random_scope_state = {
+				limit = {
+					owner = {
+						is_country_type = decentralized
+					}
+				}
+				save_scope_as = eqfm_desert_event_tribal_state
+				owner = {
+					save_scope_as = eqfm_desert_event_tribal_country
+				}
+			}
+		}
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 4
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.102.a
+		default_option = yes
+		scope:eqfm_desert_event_state = {
+			add_modifier = {
+				name = modifier_eqfm_enforced_tax_law
+				months = gbbf_long_modifier_time
+			}
+			add_radicals_in_state = {
+				culture = cu:bedouin
+				value = medium_radicals
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.102.b
+		scope:eqfm_desert_event_state = {
+			add_modifier = {
+				name = modifier_eqfm_brokered_tax_deal
+				months = gbbf_long_modifier_time
+			}
+			add_loyalists_in_state = {
+				culture = cu:bedouin
+				value = large_radicals
+			}
+		}
+		capital = {
+			add_radicals_in_state = {
+				pop_type = aristocrats
+				value = medium_radicals
+			}
+		}
+		change_tension = {
+			country = scope:eqfm_desert_event_tribal_country
+			value = -20
+		}
+	}
+}
 
 
 ####---------- 200-299 - Sanusiyyah Entrenchment Events ----------####
@@ -2057,5 +2414,894 @@ eqfm_sanusiyyah.403 = {
 		name = eqfm_sanusiyyah.403.a
 		default_option = yes
 		eqfm_complete_sanusiyyah_expedition_effect = yes
+	}
+}zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+
+eqfm_sanusiyyah.410 = {
+	# A Storm of Sand
+	type = country_event
+	placement = scope:eqfm_desert_event_tribal_state
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_sanusiyyah.410.t
+	desc = eqfm_sanusiyyah.410.d
+	flavor = eqfm_sanusiyyah.410.f
+	
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_desert_expedition_leader_scope
+	
+	event_image = {
+		video = "gbbf_saharan_sandstorm"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		eqfm_has_desert_expedition_trigger = yes
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
+	}
+	
+	cancellation_trigger = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+	
+	cooldown = {
+		years = 2
+	}
+	
+	immediate = {
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 6
+		}
+		eqfm_update_desert_variables_effect = yes
+		eqfm_desert_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.410.a
+		default_option = yes
+		eqfm_add_expedition_peril_effect = {
+			type = desert
+			value = 2
+		}
+		eqfm_add_expedition_progress_effect = {
+			type = desert
+			value = -1
+		}
+	}
+}
+
+eqfm_sanusiyyah.411 = {
+	# Sand, Sand, and More Sand
+	type = country_event
+	placement = scope:eqfm_desert_event_tribal_state
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_sanusiyyah.411.t
+	desc = eqfm_sanusiyyah.411.d
+	flavor = eqfm_sanusiyyah.411.f
+	
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_desert_expedition_leader_scope
+	
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		eqfm_has_desert_expedition_trigger = yes
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
+	}
+	
+	cancellation_trigger = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+	
+	cooldown = {
+		years = 1
+	}
+	
+	immediate = {
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 6
+		}
+		eqfm_update_desert_variables_effect = yes
+		eqfm_desert_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.411.a
+		default_option = yes
+		eqfm_add_expedition_peril_effect = {
+			type = desert
+			value = 2
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.411.b
+		trigger = {
+			scope:eqfm_desert_expedition_leader_scope = {
+				OR = {
+					has_trait = plains_commander
+					has_trait = surveyor
+				}
+			}
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		eqfm_add_expedition_peril_effect = {
+			type = desert
+			value = 1
+		}
+		eqfm_add_expedition_progress_effect = {
+			type = desert
+			value = 1
+		}
+	}
+}
+
+eqfm_sanusiyyah.412 = {
+	# A Welcome Respite
+	type = country_event
+	placement = scope:eqfm_desert_event_tribal_state
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_sanusiyyah.412.t
+	desc = eqfm_sanusiyyah.412.d
+	flavor = eqfm_sanusiyyah.412.f
+	
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_desert_expedition_leader_scope
+	
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/gbbf_desert_oasis.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+	
+	trigger = {
+		eqfm_has_desert_expedition_trigger = yes
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
+		var:eqfm_desert_expedition_peril_var >= 3
+		var:eqfm_desert_expedition_progress_var >= 2
+	}
+	
+	cancellation_trigger = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+	
+	cooldown = {
+		years = 3
+	}
+	
+	immediate = {
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 4
+		}
+		eqfm_update_desert_variables_effect = yes
+		eqfm_desert_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.412.a
+		default_option = yes
+		eqfm_add_expedition_peril_effect = {
+			type = desert
+			value = -2
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.412.b
+		eqfm_add_expedition_peril_effect = {
+			type = desert
+			value = -3
+		}
+		eqfm_add_expedition_peril_effect = {
+			type = desert
+			value = -1
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.412.c
+		trigger = {
+			scope:eqfm_desert_expedition_leader_scope = {
+				OR = {
+					has_trait = plains_commander
+					has_trait = resupply_commander
+				}
+			}
+			NOT = {
+				has_modifier = modifier_eqfm_resupplied_desert_expedition
+			}
+		}
+		show_as_unavailable = { always = yes }
+		highlighted_option = yes
+		eqfm_remove_all_peril_effect = {
+			type = desert
+		}
+		add_modifier = {
+			name = modifier_eqfm_resupplied_desert_expedition
+			months = gbbf_short_modifier_time
+			multiplier = money_amount_multiplier_small
+		}
+	}
+}
+
+eqfm_sanusiyyah.413 = {
+	# Desert Diplomacy
+	type = country_event
+	placement = scope:eqfm_desert_event_tribal_state
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_sanusiyyah.413.t
+	desc = eqfm_sanusiyyah.413.d
+	flavor = eqfm_sanusiyyah.413.f
+	
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_desert_expedition_leader_scope
+	
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/gbbf_fortified_desert_town.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+	
+	trigger = {
+		eqfm_has_desert_expedition_trigger = yes
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
+		trigger_if = {
+			limit = {
+				var:eqfm_desert_expedition_progress_var >= 7
+			}
+			var:eqfm_desert_expedition_peril_var > 0
+		}
+	}
+	
+	cancellation_trigger = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+	
+	cooldown = {
+		years = 5
+	}
+	
+	immediate = {
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 4
+		}
+		
+		eqfm_update_desert_variables_effect = yes
+		eqfm_desert_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.413.a
+		default_option = yes
+		eqfm_add_expedition_progress_effect = {
+			type = desert
+			value = 2
+		}
+		eqfm_add_expedition_peril_effect = {
+			type = desert
+			value = 1
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_desert_event_tribal_country
+			}
+			change_tension = {
+				country = scope:eqfm_desert_event_tribal_country
+				value = -15
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.413.b
+		eqfm_add_expedition_peril_effect = {
+			type = desert
+			value = -2
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.413.c
+		custom_tooltip = gbbf_nothing_happens
+	}
+}
+
+eqfm_sanusiyyah.414 = {
+	# Charting the Desert
+	type = country_event
+	placement = scope:eqfm_desert_event_tribal_state
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_sanusiyyah.414.t
+	desc = eqfm_sanusiyyah.414.d
+	flavor = eqfm_sanusiyyah.414.f
+	
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_desert_expedition_leader_scope
+	
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_nomad.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+	
+	trigger = {
+		eqfm_has_desert_expedition_trigger = yes
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
+		var:eqfm_desert_expedition_progress_var < 7
+	}
+	
+	cancellation_trigger = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+	
+	cooldown = {
+		years = 2
+	}
+	
+	immediate = {
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 4
+		}
+		eqfm_update_desert_variables_effect = yes
+		eqfm_desert_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.414.a
+		default_option = yes
+		eqfm_add_expedition_progress_effect = {
+			type = desert
+			value = 1
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.414.b
+		eqfm_add_expedition_progress_effect = {
+			type = desert
+			value = 2
+		}
+		eqfm_add_expedition_peril_effect = {
+			type = desert
+			value = 1
+		}
+	}
+}
+
+eqfm_sanusiyyah.415 = {
+	# A Clash on Camel-back
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_sanusiyyah.415.t
+	desc = eqfm_sanusiyyah.415.d
+	flavor = eqfm_sanusiyyah.415.f
+	
+	gui_window = event_window_2char_duel
+	left_icon = scope:eqfm_desert_expedition_leader_scope
+	right_icon = scope:eqfm_desert_event_tribal_character
+	
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+	
+	trigger = {
+		eqfm_has_desert_expedition_trigger = yes
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
+	}
+	
+	cancellation_trigger = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+	
+	cooldown = {
+		years = 8
+	}
+	
+	immediate = {
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 4
+		}
+		s:STATE_LIBYAN_DESERT = {
+			# Scoping in using random_country feels a lot worse than this, imo
+			# Plus I only care about Kafir and Tibesti here
+			random_scope_state = {
+				limit = {
+					owner = {
+						is_country_type = decentralized
+						tension:root > 0
+					}
+				}
+				save_scope_as = eqfm_desert_event_tribal_state
+				owner = {
+					save_scope_as = eqfm_desert_event_tribal_country
+				}
+			}
+			random_scope_state = {
+				limit = {
+					owner = root
+				}
+				save_scope_as = eqfm_desert_event_state
+			}
+		}
+		eqfm_update_desert_variables_effect = yes
+		eqfm_desert_scopes_effect = yes
+		eqfm_generate_nomad_effect = yes
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.415.a
+		default_option = yes
+		eqfm_add_expedition_progress_effect = {
+			type = desert
+			value = -2
+		}
+		eqfm_add_expedition_peril_effect = {
+			type = desert
+			value = 2
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.415.b
+		eqfm_add_expedition_peril_effect = {
+			type = desert
+			value = 3
+		}
+		eqfm_add_expedition_progress_effect = {
+			type = desert
+			value = 1
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_desert_event_tribal_country
+			}
+			change_tension = {
+				country = scope:eqfm_desert_event_tribal_country
+				value = -25
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.415.c
+		eqfm_add_expedition_peril_effect = {
+			type = desert
+			value = 1
+		}
+		eqfm_add_expedition_progress_effect = {
+			type = desert
+			value = -3
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_desert_event_tribal_country
+			}
+			change_tension = {
+				country = scope:eqfm_desert_event_tribal_country
+				value = 15
+			}
+		}
+		scope:eqfm_desert_event_state = {
+			add_modifier = {
+				name = modifier_eqfm_enboldened_nomads
+				months = 24
+			}
+			add_radicals_in_state = {
+				culture = cu:bedouin
+				value = medium_radicals
+			}
+		}
+	}
+}
+
+eqfm_sanusiyyah.416 = {
+	# Tribal Justice
+	type = country_event
+	placement = scope:eqfm_desert_event_tribal_state
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_sanusiyyah.416.t
+	desc = eqfm_sanusiyyah.416.d
+	flavor = eqfm_sanusiyyah.416.f
+	
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_desert_expedition_leader_scope
+	
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_settlement.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+	
+	trigger = {
+		eqfm_has_desert_expedition_trigger = yes
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
+	}
+	
+	cancellation_trigger = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+	
+	cooldown = {
+		years = 4
+	}
+	
+	immediate = {
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 4
+		}
+		eqfm_update_desert_variables_effect = yes
+		eqfm_desert_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.416.a
+		default_option = yes
+		eqfm_add_expedition_peril_effect = {
+			type = desert
+			value = 1
+		}
+		eqfm_add_expedition_progress_effect = {
+			type = desert
+			value = 2
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_desert_event_tribal_country
+			}
+			change_tension = {
+				country = scope:eqfm_desert_event_tribal_country
+				value = 15
+			}
+		}
+		scope:eqfm_desert_event_tribal_state = {
+			add_radicals_in_state = {
+				culture = cu:bedouin
+				value = medium_radicals
+			}
+		}
+		scope:eqfm_desert_expedition_leader_scope = {
+			add_modifier = {
+				name = modifier_eqfm_desert_diplomat
+				months = 300
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.416.b
+		eqfm_add_expedition_progress_effect = {
+			type = desert
+			value = -2
+		}
+		scope:eqfm_desert_event_tribal_state = {
+			add_modifier = {
+				name = modifier_eqfm_tribal_feuds
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+		}
+	}
+}
+
+eqfm_sanusiyyah.417 = {
+	# Welcome Rains
+	type = country_event
+	placement = scope:eqfm_desert_event_state
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_sanusiyyah.417.t
+	desc = eqfm_sanusiyyah.417.d
+	flavor = eqfm_sanusiyyah.417.f
+	
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_desert_expedition_leader_scope
+	
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_drylands.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+	
+	trigger = {
+		eqfm_has_desert_expedition_trigger = yes
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
+		var:eqfm_desert_expedition_peril_var > 0
+	}
+	
+	cancellation_trigger = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+	
+	cooldown = {
+		years = 4
+	}
+	
+	immediate = {
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 4
+		}
+		eqfm_update_desert_variables_effect = yes
+		eqfm_desert_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.417.a
+		default_option = yes
+		eqfm_add_expedition_peril_effect = {
+			type = desert
+			value = -2
+		}
+	}
+}
+
+eqfm_sanusiyyah.418 = {
+	# Safe Passages Mapped
+	type = country_event
+	placement = scope:eqfm_desert_event_state
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_sanusiyyah.418.t
+	desc = eqfm_sanusiyyah.418.d
+	flavor = eqfm_sanusiyyah.418.f
+	
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_desert_expedition_leader_scope
+	
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_drylands.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+	
+	trigger = {
+		eqfm_has_desert_expedition_trigger = yes
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
+		var:eqfm_desert_expedition_peril_var > 0
+	}
+	
+	cancellation_trigger = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+	
+	cooldown = {
+		years = 4
+	}
+	
+	immediate = {
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 4
+		}
+		eqfm_update_desert_variables_effect = yes
+		eqfm_desert_scopes_effect = yes
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.418.a
+		default_option = yes
+		eqfm_add_expedition_progress_effect = {
+			type = desert
+			value = 2
+		}
+		scope:eqfm_desert_event_state = {
+			add_modifier = {
+				name = modifier_eqfm_desert_routes_mapped
+				months = 24
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.418.b
+		eqfm_add_expedition_progress_effect = {
+			type = desert
+			value = 2
+		}
+		eqfm_add_expedition_peril_effect = {
+			type = desert
+			value = 2
+		}
+		scope:eqfm_desert_event_state = {
+			add_modifier = {
+				name = modifier_eqfm_desert_routes_thoroughly_mapped
+				months = 24
+			}
+		}
+	}
+}
+
+eqfm_sanusiyyah.419 = {
+	# Unexpected Recruits
+	type = country_event
+	placement = scope:eqfm_desert_event_state
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = eqfm_sanusiyyah.419.t
+	desc = eqfm_sanusiyyah.419.d
+	flavor = eqfm_sanusiyyah.419.f
+	
+	gui_window = event_window_1char_adventure
+	left_icon = scope:eqfm_desert_expedition_leader_scope
+	
+	event_image = {
+		texture = "gfx/interface/illustrations/event_backgrounds/ck3_desert_settlement.dds"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/misc/1Character_Banner"
+	
+	trigger = {
+		eqfm_has_desert_expedition_trigger = yes
+		NOT = {
+			has_variable = eqfm_desert_event_cooldown_var
+		}
+		var:eqfm_desert_expedition_progress_var > 0
+	}
+	
+	cancellation_trigger = {
+		eqfm_has_desert_expedition_trigger = no
+	}
+	
+	cooldown = {
+		years = 15
+	}
+	
+	immediate = {
+		set_variable = {
+			name = eqfm_desert_event_cooldown_var
+			months = 4
+		}
+		eqfm_update_desert_variables_effect = yes
+		eqfm_desert_scopes_effect = yes
+		eqfm_generate_nomad_effect = yes
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.419.a
+		default_option = yes
+		eqfm_add_expedition_progress_effect = {
+			type = desert
+			value = 2
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.419.b
+		eqfm_add_expedition_progress_effect = {
+			type = desert
+			value = 1
+		}
+		scope:eqfm_desert_event_state = {
+			add_modifier = {
+				name = modifier_eqfm_nomad_recruits_state
+				months = gbbf_long_modifier_time
+				is_decaying = yes
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_nomad_recruits_country
+			months = gbbf_long_modifier_time
+			is_decaying = yes
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_desert_event_tribal_country
+			}
+			change_tension = {
+				country = scope:eqfm_desert_event_tribal_country
+				value = -50
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.419.c
+		eqfm_add_expedition_progress_effect = {
+			type = desert
+			value = 1
+		}
+		scope:eqfm_desert_expedition_leader_scope = {
+			add_modifier = {
+				name = modifier_eqfm_nomad_recruits_character
+				months = gbbf_long_modifier_time
+			}
+		}
+		add_modifier = {
+			name = modifier_eqfm_nomad_recruits_country
+			months = gbbf_long_modifier_time
+			is_decaying = yes
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_desert_event_tribal_country
+			}
+			change_tension = {
+				country = scope:eqfm_desert_event_tribal_country
+				value = -25
+			}
+		}
+	}
+	
+	option = {
+		name = eqfm_sanusiyyah.419.e
+		eqfm_add_expedition_progress_effect = {
+			type = desert
+			value = 1
+		}
+		scope:eqfm_desert_event_tribal_character = {
+			gbbf_free_from_void_general = yes
+		}
+		add_modifier = {
+			name = modifier_eqfm_nomad_recruits_country
+			months = gbbf_long_modifier_time
+			is_decaying = yes
+		}
+		if = {
+			limit = {
+				exists = scope:eqfm_desert_event_tribal_country
+			}
+			change_tension = {
+				country = scope:eqfm_desert_event_tribal_country
+				value = -15
+			}
+		}
 	}
 }

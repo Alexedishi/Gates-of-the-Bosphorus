@@ -97,6 +97,135 @@ mgrbfm_libya.002 = { # Centralizing the Desert
 	}
 }
 
+mgrbfm_libya.003 = {
+	# An Untamed Frontier
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	
+	title = mgrbfm_libya.003.t
+	desc = mgrbfm_libya.003.d
+	flavor = mgrbfm_libya.003.f
+	
+	event_image = {
+		video = "africa_desert_expedition"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		has_technology_researched = colonization
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_libya
+			is_split_state = yes
+		}
+	}
+	
+	fire_only_once = yes
+	
+	immediate = {
+		set_variable = {
+			name = eqfm_desert_provinces_var
+			value = eqfm_desert_provinces_value
+		}
+	}
+	
+	option = {
+		name = mgrbfm_libya.003.a
+		default_option = yes
+		custom_tooltip = gbbf_no_immediate_effects
+	}
+	
+	option = {
+		name = mgrbfm_libya.003.b
+		default_option = yes
+		activate_law = law_type:law_frontier_colonization
+		add_modifier = {
+			name = modifier_eqfm_administrative_disarray
+			months = gbbf_normal_modifier_time
+			is_decaying = yes
+		}
+	}
+	
+}
+
+mgrbfm_libya.004 = {
+	# The Libyan Deserts
+	type = country_event
+	placement = scope:turkfm_desert_scope
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	
+	title = mgrbfm_libya.004.t
+	desc = mgrbfm_libya.004.d
+	flavor = mgrbfm_libya.004.f
+	
+	event_image = {
+		video = "africa_desert_expedition"
+	}
+	
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	duration = 3
+	
+	dlc = dlc_grefm
+	
+	trigger = {
+		trigger_if = {
+			limit = {
+				any_scope_state = {
+					is_in_geographic_region = geographic_region_libya
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_state_in_state_region = STATE_LIBYA
+				}
+				owns_entire_state_region = STATE_LIBYA
+			}
+			trigger_if = {
+				limit = {
+					has_state_in_state_region = STATE_LIBYAN_DESERT
+				}
+				owns_entire_state_region = STATE_LIBYAN_DESERT
+			}
+			trigger_if = {
+				limit = {
+					has_state_in_state_region = STATE_TRIPOLI
+				}
+				owns_entire_state_region = STATE_TRIPOLI
+			}
+		}
+		trigger_else = {
+			always = no
+		}
+	}
+	
+	fire_only_once = yes
+	
+	immediate = {
+		eqfm_update_desert_variables_effect = yes
+		s:STATE_LIBYAN_DESERT = {
+			random_scope_state = {
+				save_scope_as = turkfm_desert_scope
+			}
+		}
+	}
+	
+	option = {
+		name = mgrbfm_libya.004.a
+		default_option = yes
+		scope:turkfm_desert_scope = {
+			add_modifier = {
+				name = modifier_eqfm_tamed_wilderness
+				months = gbbf_long_modifier_time
+			}
+		}
+	}
+	
+}
+
 mgrbfm_libya.009 = { # A Centralized State
 	type = country_event
 	placement = root
