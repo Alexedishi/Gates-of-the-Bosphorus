@@ -22,40 +22,8 @@ eqfm_initialize_sanusiyyah_variables_effect = {
 			value = 0
 		}
 		set_variable = {
-			name = eqfm_georegion_bedouin_loyalist_fraction_var
-			value = 0
-		}
-		set_variable = {
-			name = eqfm_georegion_bedouin_radical_fraction_var
-			value = 0
-		}
-		set_variable = {
-			name = eqfm_state_libya_centralization_var
-			value = 0
-		}
-		set_variable = {
-			name = eqfm_state_libyan_desert_centralization_var
-			value = 0
-		}
-		set_variable = {
-			name = eqfm_state_tripoli_centralization_var
-			value = 0
-		}
-		set_variable = {
-			name = eqfm_state_matruh_centralization_var
-			value = 0
-		}
-		set_variable = {
-			name = eqfm_state_egyptian_desert_centralization_var
-			value = 0
-		}
-		set_variable = {
 			name = eqfm_senussi_chacter_counter_var
 			value = 0
-		}
-		set_variable = {
-			name = eqfm_senussi_location_var
-			value = flag:eqfm_senussi_ghosted
 		}
 	}
 	s:STATE_HEDJAZ = {
@@ -548,8 +516,10 @@ eqfm_update_sanusiyya_georegion_variables_effect = {
 						limit = {
 							has_pop_culture = bedouin
 						}
-						add = total_size
-						multiply = pop_radical_fraction
+						add = {
+							value = total_size
+							multiply = pop_radical_fraction
+						}
 					}
 				}
 				round_to = 1
@@ -560,6 +530,31 @@ eqfm_update_sanusiyya_georegion_variables_effect = {
 			value = {
 				add = var:eqfm_state_region_radical_bedouin_population_var
 				divide = var:eqfm_state_region_total_bedouin_population_var
+				round_to = 0.01
+			}
+		}
+		set_variable = {
+			name = eqfm_state_region_bedouin_loyalist_fraction_var
+			value = {
+				add = 1
+				subtract = var:eqfm_state_region_bedouin_radical_fraction_var
+				round_to = 0.01
+			}
+		}
+		set_variable = {
+			name = eqfm_state_region_bedouin_literacy_rate_var
+			value = {
+				every_scope_state = {
+					every_scope_pop = {
+						limit = {
+							has_pop_culture = bedouin
+						}
+						add = {
+							value = total_size
+							multiply = literacy_rate
+						}
+					}
+				}
 				round_to = 0.01
 			}
 		}
@@ -587,12 +582,13 @@ eqfm_update_sanusiyya_georegion_variables_effect = {
 }
 
 eqfm_monthly_entrenchment_effect = {
-	every_state_in_sanusiyyah = {
-		limit = {
-			has_modifier = modifier_eqfm_sanusiyyah_stronghold
+	every_state_region_in_sanusiyyah = {
+		every_scope_state = {
+			limit = {
+				has_modifier = modifier_eqfm_sanusiyyah_stronghold
+			}
+			remove_modifier = modifier_eqfm_sanusiyyah_stronghold
 		}
-		remove_modifier = modifier_eqfm_sanusiyyah_stronghold
-		
 		save_scope_as = eqfm_entrenchment_operation_scope # because, for some insane reason, multipliers evaluate in **ROOT** scope
 		if = {
 			limit = {

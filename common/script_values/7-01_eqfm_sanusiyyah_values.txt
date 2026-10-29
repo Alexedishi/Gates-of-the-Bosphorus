@@ -189,42 +189,7 @@ eqfm_sanusiyyah_entrenchment_progress_value = {
 	value = 0
 	add = {
 		desc = eqfm_value_from_bedouin_literacy
-		value = {
-			every_scope_state = {
-				limit = {
-					owner = {
-						NOT = {
-							country_has_primary_culture = cu:bedouin
-						}
-					}
-				}
-				every_scope_pop = {
-					limit = {
-						has_pop_culture = bedouin
-					}
-					add = literacy_rate
-				}
-			}
-			divide = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							NOT = {
-								country_has_primary_culture = cu:bedouin
-							}
-						}
-					}
-					every_scope_pop = {
-						limit = {
-							has_pop_culture = bedouin
-						}
-						add = 1
-					}
-				}
-				min = 1  # Div0 safety
-			}
-			round_to = 0.01
-		}
+		value = var:eqfm_state_region_bedouin_literacy_rate_var
 	}
 	add = {
 		desc = eqfm_from_sanusiyyah_strongholds
@@ -249,44 +214,7 @@ eqfm_sanusiyyah_entrenchment_progress_value = {
 	}
 	add = {
 		desc = eqfm_value_from_bedouin_radicals
-		value = {
-			every_scope_state = {
-				limit = {
-					owner = {
-						NOR = {
-							is_country_type = decentralized
-							country_has_primary_culture = cu:bedouin
-						}
-					}
-				}
-				every_scope_pop = {
-					limit = {
-						has_pop_culture = bedouin
-					}
-					add = pop_radical_fraction
-				}
-			}
-			divide = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							NOR = {
-								is_country_type = decentralized
-								country_has_primary_culture = cu:bedouin
-							}
-						}
-					}
-					every_scope_pop = {
-						limit = {
-							has_pop_culture = bedouin
-						}
-						add = 1
-					}
-				}
-				min = 1 # Div0 safety
-			}
-			round_to = 0.01
-		}
+		value = var:eqfm_state_region_bedouin_radical_fraction_var
 	}
 	if = {
 		limit = {
@@ -294,7 +222,7 @@ eqfm_sanusiyyah_entrenchment_progress_value = {
 		}
 		add = {
 			desc = eqfm_value_from_libya_centralization_ratio
-			value = global_var:je_eqfm_sanusiyyah.var:eqfm_state_libya_centralization_var
+			value = s:STATE_LIBYA.var:eqfm_state_region_centralization_ratio_var
 		}
 	}
 	if = {
@@ -303,7 +231,7 @@ eqfm_sanusiyyah_entrenchment_progress_value = {
 		}
 		add = {
 			desc = eqfm_value_from_libyan_desert_centralization_ratio
-			value = global_var:je_eqfm_sanusiyyah.var:eqfm_state_libyan_desert_centralization_var
+			value = s:STATE_LIBYAN_DESERT.var:eqfm_state_region_centralization_ratio_var
 		}
 	}
 	if = {
@@ -312,7 +240,7 @@ eqfm_sanusiyyah_entrenchment_progress_value = {
 		}
 		add = {
 			desc = eqfm_value_from_tripoli_centralization_ratio
-			value = global_var:je_eqfm_sanusiyyah.var:eqfm_state_tripoli_centralization_var
+			value = s:STATE_TRIPOLI.var:eqfm_state_region_centralization_ratio_var
 		}
 	}
 	if = {
@@ -321,7 +249,7 @@ eqfm_sanusiyyah_entrenchment_progress_value = {
 		}
 		add = {
 			desc = eqfm_value_from_matruh_centralization_ratio
-			value = global_var:je_eqfm_sanusiyyah.var:eqfm_state_matruh_centralization_var
+			value = s:STATE_MATRUH.var:eqfm_state_region_centralization_ratio_var
 		}
 	}
 	if = {
@@ -330,7 +258,7 @@ eqfm_sanusiyyah_entrenchment_progress_value = {
 		}
 		add = {
 			desc = eqfm_value_from_egyptian_desert_centralization_ratio
-			value = global_var:je_eqfm_sanusiyyah.var:eqfm_state_egyptian_desert_centralization_var
+			value = s:STATE_EGYPTIAN_DESERT.var:eqfm_state_region_centralization_ratio_var
 		}
 	}
 	if = {
@@ -339,7 +267,7 @@ eqfm_sanusiyyah_entrenchment_progress_value = {
 		}
 		add = {
 			desc = eqfm_value_from_chad_centralization_ratio
-			value = global_var:je_eqfm_sanusiyyah.var:eqfm_state_chad_centralization_var
+			value = s:STATE_CHAD.var:eqfm_state_region_centralization_ratio_var
 		}
 	}
 	subtract = {
@@ -356,64 +284,13 @@ eqfm_sanusiyyah_entrenchment_progress_value = {
 				}
 				add = state_urbanization_rate
 			}
-			divide = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							NOR = {
-								is_country_type = decentralized
-								country_has_primary_culture = cu:bedouin
-							}
-						}
-					}
-					add = 1
-				}
-				min = 1 # Div0 safety
-			}
 			divide = 10
 			round_to = 0.01
 		}
 	}
 	subtract = {
 		desc = eqfm_value_from_bedouin_loyalists
-		value = {
-			every_scope_state = {
-				limit = {
-					owner = {
-						NOR = {
-							is_country_type = decentralized
-							country_has_primary_culture = cu:bedouin
-						}
-					}
-				}
-				every_scope_pop = {
-					limit = {
-						has_pop_culture = bedouin
-					}
-					add = pop_radical_fraction
-				}
-			}
-			divide = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							NOR = {
-								is_country_type = decentralized
-								country_has_primary_culture = cu:bedouin
-							}
-						}
-					}
-					every_scope_pop = {
-						limit = {
-							has_pop_culture = bedouin
-						}
-						add = 1
-					}
-				}
-				min = 1 # Div0 safety
-			}
-			round_to = 0.01
-		}
+		value = var:eqfm_state_region_bedouin_loyalist_fraction_var
 	}
 	subtract = {
 		desc = eqfm_value_from_suppression_decrees
