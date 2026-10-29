@@ -100,23 +100,6 @@ types gbbf_journal_entry_widget_types {
 			blockoverride "third_button_click" {
 				onclick = "[GetVariableSystem.Set('eqfm_sanusiyyah_tab', 'involvement')]"
 			}
-			
-			# EXPEDITION TAB
-			blockoverride "fourth_button" {
-				text = "eqfm_gui_expedition_header"
-			}
-			blockoverride "fourth_button_selected" {
-				text = "eqfm_gui_expedition_header"
-			}
-			blockoverride "fourth_button_visibility_checked" {
-				visible = "[Not(GetVariableSystem.HasValue('eqfm_sanusiyyah_tab', 'expedition'))]"
-			}
-			blockoverride "fourth_button_visibility" {
-				visible = "[GetVariableSystem.HasValue('eqfm_sanusiyyah_tab', 'expedition')]"
-			}
-			blockoverride "fourth_button_click" {
-				onclick = "[GetVariableSystem.Set('eqfm_sanusiyyah_tab', 'expedition')]"
-			}
 		}
 	}
 	
@@ -130,6 +113,28 @@ types gbbf_journal_entry_widget_types {
 		visible = "[GetVariableSystem.HasValue('eqfm_sanusiyyah_tab', 'regions')]"
 		
 		using = entry_bg_fancy
+		
+		section_header_button = {
+			blockoverride "layout" {
+				size = { 500 38 }
+			}
+			blockoverride "left_text" {
+				text = "eqfm_gui_scouting_party_header"
+			}
+			blockoverride "onclick" {
+				onclick = "[GetVariableSystem.Toggle('show_scouting_party')]"
+			}
+			blockoverride "onclick_showmore" {
+				visible = "[Not(GetVariableSystem.Exists('show_scouting_party'))]"
+			}
+			blockoverride "onclick_showless" {
+				visible = "[GetVariableSystem.Exists('show_scouting_party')]"
+			}
+		}
+		
+		eqfm_sanusiyyah_expedition_composition = {
+			visible = "[GetVariableSystem.Exists('show_scouting_party')]"
+		}
 		
 		flowcontainer = {
 			parentanchor = top|hcenter
@@ -873,23 +878,6 @@ types gbbf_journal_entry_widget_types {
 		}
 	}
 	
-	type eqfm_sanusiyyah_expedition_tab = flowcontainer {
-		parentanchor = top|hcenter
-		direction = vertical
-		minimumsize = { 520 -1 }
-		spacing = 5
-		margin = { 10 10 }
-		using = entry_bg_fancy
-		
-		visible = "[GetVariableSystem.HasValue('eqfm_sanusiyyah_tab', 'expedition')]"
-		
-		## EXPEDITION COMPOSITION
-		eqfm_sanusiyyah_expedition_composition = {}
-		
-		## ONGOING EXPEDITIONS
-		eqfm_sanusiyyah_expeditions_status = {}
-	}
-	
 	type eqfm_sanusiyyah_expedition_composition = flowcontainer {
 		parentanchor = top|hcenter
 		direction = vertical
@@ -909,7 +897,7 @@ types gbbf_journal_entry_widget_types {
 			default_header_clean_faded = {
 				parentanchor = top|hcenter
 				blockoverride "text" {
-					raw_text = "Scouting Party Composition"
+					text = "eqfm_gui_scouting_party_header"
 				}
 				blockoverride "size" {
 					size = { 532 45 }
@@ -951,17 +939,28 @@ types gbbf_journal_entry_widget_types {
 				## GUIDE
 				eqfm_scouting_member_widget = {
 					blockoverride "member_available_visible" {
+						visible = "[Or(
+							Not(GetPlayer.MakeScope.Var('eqfm_desert_scouts_guide_var').IsSet),
+							And(
+								GetPlayer.MakeScope.Var('eqfm_desert_scouts_guide_var').IsSet,
+								Not(GetPlayer.MakeScope.Var('eqfm_desert_scouts_guide_var').IsValid)
+							)
+						)]"
 					}
 					blockoverride "member_employed_visible" {
+						visible = "[And(
+							GetPlayer.MakeScope.Var('eqfm_desert_scouts_guide_var').IsSet,
+							GetPlayer.MakeScope.Var('eqfm_desert_scouts_guide_var').IsValid
+						)]"
 					}
 					blockoverride "member_background" {
 						texture = "gfx/state_pictures/desert.dds"
 					}
 					blockoverride "member_title_text" {
-						raw_text = "#bold Guide"
+						text = "eqfm_sanusiyyah_guide"
 					}
 					blockoverride "member_datacontext" {
-						datacontext = "[GetPlayer.GetRuler]"
+						datacontext = "GetPlayer.MakeScope.Var('eqfm_desert_scouts_guide_var').GetCharacter"
 					}
 					blockoverride "member_pose" {
 						portrait_texture = "[Character.GetAnimatedPortrait(
@@ -982,32 +981,34 @@ types gbbf_journal_entry_widget_types {
 				## LEADER
 				eqfm_scouting_member_widget = {
 					blockoverride "member_available_visible" {
+						visible = "[Or(
+							Not(GetPlayer.MakeScope.Var('eqfm_desert_scouts_leader_var').IsSet),
+							And(
+								GetPlayer.MakeScope.Var('eqfm_desert_scouts_leader_var').IsSet,
+								Not(GetPlayer.MakeScope.Var('eqfm_desert_scouts_leader_var').IsValid)
+							)
+						)]"
 					}
 					blockoverride "member_employed_visible" {
+						visible = "[And(
+							GetPlayer.MakeScope.Var('eqfm_desert_scouts_leader_var').IsSet,
+							GetPlayer.MakeScope.Var('eqfm_desert_scouts_leader_var').IsValid
+						)]"
 					}
 					blockoverride "member_background" {
-						texture = "gfx/interface/character_panel/backgrounds/char_role_general.dds"
+						texture = "gfx/state_pictures/desert.dds"
 					}
 					blockoverride "member_title_text" {
-						raw_text = "#bold Leader"
+						text = "eqfm_sanusiyyah_leader"
 					}
 					blockoverride "member_datacontext" {
-						datacontext = "[GetPlayer.GetRuler]"
+						datacontext = "GetPlayer.MakeScope.Var('eqfm_desert_scouts_leader_var').GetCharacter"
 					}
 					blockoverride "member_pose" {
 						portrait_texture = "[Character.GetAnimatedPortrait(
 							'ruler_environment',
 							'camera_leader',
 							'commander_vs_left',
-							GetPortraitRenderSize(PdxGuiWidget.Self))
-						]"
-					}
-					
-					blockoverride "member_pose" {
-						portrait_texture = "[Character.GetAnimatedPortrait(
-							'ruler_environment',
-							'camera_leader',
-							'idle',
 							GetPortraitRenderSize(PdxGuiWidget.Self))
 						]"
 					}
@@ -1022,28 +1023,34 @@ types gbbf_journal_entry_widget_types {
 				## LOGISTICIAN
 				eqfm_scouting_member_widget = {
 					blockoverride "member_available_visible" {
+						visible = "[Or(
+							Not(GetPlayer.MakeScope.Var('eqfm_desert_scouts_logistician_var').IsSet),
+							And(
+								GetPlayer.MakeScope.Var('eqfm_desert_scouts_logistician_var').IsSet,
+								Not(GetPlayer.MakeScope.Var('eqfm_desert_scouts_logistician_var').IsValid)
+							)
+						)]"
 					}
 					blockoverride "member_employed_visible" {
+						visible = "[And(
+							GetPlayer.MakeScope.Var('eqfm_desert_scouts_logistician_var').IsSet,
+							GetPlayer.MakeScope.Var('eqfm_desert_scouts_logistician_var').IsValid
+						)]"
+					}
+					blockoverride "member_background" {
+						texture = "gfx/state_pictures/desert.dds"
 					}
 					blockoverride "member_title_text" {
-						raw_text = "#bold Logistician"
+						text = "eqfm_sanusiyyah_logistician"
 					}
 					blockoverride "member_datacontext" {
-						datacontext = "[GetPlayer.GetRuler]"
+						datacontext = "GetPlayer.MakeScope.Var('eqfm_desert_scouts_logistician_var').GetCharacter"
 					}
 					blockoverride "member_pose" {
 						portrait_texture = "[Character.GetAnimatedPortrait(
 							'ruler_environment',
 							'camera_leader',
 							'commander_vs_left',
-							GetPortraitRenderSize(PdxGuiWidget.Self))
-						]"
-					}
-					blockoverride "member_pose" {
-						portrait_texture = "[Character.GetAnimatedPortrait(
-							'ruler_environment',
-							'camera_leader',
-							'commander_vs_right',
 							GetPortraitRenderSize(PdxGuiWidget.Self))
 						]"
 					}
@@ -1283,84 +1290,6 @@ types gbbf_journal_entry_widget_types {
 					}
 				}
 			}
-		}
-	}
-	
-	type eqfm_sanusiyyah_expeditions_status = flowcontainer {
-		parentanchor = top|hcenter
-		direction = vertical
-		minimumsize = { 500 100 }
-		spacing = 5
-		margin_bottom = 10
-		
-		using = entry_bg_fancy
-		
-		default_header_clean_faded = {
-			parentanchor = top|hcenter
-			blockoverride "text" {
-				raw_text = "Ongoing Expeditions"
-			}
-			blockoverride "size" {
-				size = { 532 45 }
-			}
-		}
-		
-		eqfm_sanusiyyah_expedition_item = {
-			blockoverride "expedition_item_datacontext" {
-				datacontext = "[GetStateRegion('STATE_HEDJAZ')]"
-			}
-		}
-		eqfm_sanusiyyah_expedition_item = {
-			blockoverride "expedition_item_datacontext" {
-				datacontext = "[GetStateRegion('STATE_TRIPOLI')]"
-			}
-		}
-		eqfm_sanusiyyah_expedition_item = {
-			blockoverride "expedition_item_datacontext" {
-				datacontext = "[GetStateRegion('STATE_LIBYA')]"
-			}
-		}
-		eqfm_sanusiyyah_expedition_item = {
-			blockoverride "expedition_item_datacontext" {
-				datacontext = "[GetStateRegion('STATE_LIBYAN_DESERT')]"
-			}
-		}
-		eqfm_sanusiyyah_expedition_item = {
-			blockoverride "expedition_item_datacontext" {
-				datacontext = "[GetStateRegion('STATE_MATRUH')]"
-			}
-		}
-		eqfm_sanusiyyah_expedition_item = {
-			blockoverride "expedition_item_datacontext" {
-				datacontext = "[GetStateRegion('STATE_EGYPTIAN_DESERT')]"
-			}
-		}
-		eqfm_sanusiyyah_expedition_item = {
-			blockoverride "expedition_item_datacontext" {
-				datacontext = "[GetStateRegion('STATE_CHAD')]"
-			}
-		}
-	}
-	
-	type eqfm_sanusiyyah_expedition_item = widget {
-		parentanchor = top|hcenter
-		minimumsize = { 500 80 }
-		
-		background = {
-			using = entry_bg
-		}
-		
-		block "expedition_item_datacontext" {}
-		
-		textbox = {
-			parentanchor = top|left
-			position = { 10 5 }
-			autoresize = yes
-			align = nobaseline
-			elide = right
-			fontsize_min = 12
-			using = fontsize_large
-			text = "eqfm_gui_state_region_name"
 		}
 	}
 }
