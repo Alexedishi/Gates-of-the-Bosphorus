@@ -67,6 +67,55 @@ eqfm_initialize_sanusiyyah_variables_effect = {
 	}
 }
 
+eqfm_update_sanusiyyah_journal_involvement_effect = {
+	global_var:je_eqfm_sanusiyyah = {
+		every_scope_je_involved = {
+			limit = {
+				NOR = {
+					any_scope_state = {
+						is_in_geographic_region = geographic_region_sanusiyyah
+					}
+					eqfm_sanusiyyah_is_relevant_due_to_subject_trigger = yes
+				}
+			}
+		}
+		global_var:je_eqfm_sanusiyyah = {
+			remove_involved_country = prev
+		}
+	}
+	every_state_in_sanussiyah = {
+		owner = {
+			if = {
+				limit = {
+					NOT = {
+						is_involved_in_journal_entry = je_eqfm_sanusiyyah
+					}
+				}
+				global_var:je_eqfm_sanusiyyah = {
+					add_involved_country = prev
+				}
+			}
+			if = {
+				limit = {
+					eqfm_sanusiyyah_is_relevant_to_overlord_trigger = yes
+				}
+				overlord = {
+					if = {
+						limit = {
+							NOT = {
+								is_involved_in_journal_entry = je_eqfm_sanusiyyah
+							}
+						}
+						global_var:je_eqfm_sanusiyyah = {
+							add_involved_country = prev
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 eqfm_update_global_sanusiyyah_variables_effect = {
 	## First, do all the variable math
 	set_variable = {
@@ -661,32 +710,6 @@ eqfm_monthly_entrenchment_effect = {
 					name = modifier_eqfm_sanusiyyah_stronghold
 					multiplier = s:STATE_CHAD.var:eqfm_sanusiyyah_entrenchment_var
 				}
-			}
-		}
-	}
-}
-
-eqfm_update_sanusiyyah_modifier_effect = {
-	if = {
-		limit = {
-			has_modifier = modifier_eqfm_sanusiyyah_movement
-		}
-		remove_modifier = modifier_eqfm_sanusiyyah_movement
-	}
-	if = {
-		limit = {
-			has_variable = eqfm_sanusiyyah_influence_var
-			has_global_variable = je_eqfm_sanusiyyah
-		}
-		add_modifier = {
-			name = modifier_eqfm_sanusiyyah_movement
-			multiplier = {
-				value = 0
-				add = global_var:je_eqfm_sanusiyyah.var:eqfm_sanusiyyah_pressure_var
-				divide = 100
-				round_to = 0.01
-				min = 0
-				max = 1
 			}
 		}
 	}
