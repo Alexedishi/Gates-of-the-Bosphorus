@@ -235,15 +235,15 @@
 	}
 	
 	immediate_all_involved = {
-		eqfm_initialize_local_sanusiyyah_variables_effect = yes
+		eqfm_initialize_local_variables_effect = yes
 	}
 	
 	on_become_involved_after_activation = {
-		eqfm_initialize_local_sanusiyyah_variables_effect = yes
+		eqfm_initialize_local_variables_effect = yes
 	}
 	
 	on_no_longer_involved = {
-		eqfm_cleanup_sanusiyyah_effect = yes
+		eqfm_cleanup_local_sanusiyyah_variables_effect = yes
 	}
 	
 	outcome = {
@@ -280,11 +280,13 @@
 					}
 				}
 			}
-			eqfm_cleanup_global_sanusiyyah_variables_effect = yes
+			hidden_effect = {
+				eqfm_cleanup_global_sanusiyyah_variables_effect = yes
+			}
 		}
 		effect_all_involved = {
 			hidden_effect = {
-				eqfm_cleanup_sanusiyyah_effect = yes
+				eqfm_cleanup_local_sanusiyyah_variables_effect = yes
 			}
 		}
 	}
@@ -329,11 +331,13 @@
 					}
 				}
 			}
-			eqfm_cleanup_global_sanusiyyah_variables_effect = yes
+			hidden_effect = {
+				eqfm_cleanup_global_sanusiyyah_variables_effect = yes
+			}
 		}
 		effect_all_involved = {
 			hidden_effect = {
-				eqfm_cleanup_sanusiyyah_effect = yes
+				eqfm_cleanup_local_sanusiyyah_variables_effect = yes
 			}
 		}
 	}
@@ -342,7 +346,7 @@
 		effect = {
 			eqfm_update_senussi_character_effect = yes
 			scope:journal_entry = {
-				eqfm_update_global_sanusiyyah_variables_effect = yes
+				eqfm_weekly_sanusiyyah_situation_variables_effect = yes
 				every_scope_je_involved = {
 					trigger_event = {
 						on_action = eqfm_sanusiyyah_desert_scouting_weekly_pulse_country
@@ -366,7 +370,13 @@
 				}
 			}
 			
+			# Update Desert Scouting Progress so it can contribute to entrenchment math
+			scope:journal_entry = {
+				eqfm_monthly_reconnaissance_progress_effect = yes
+			}
+			
 			# Calculate and advance state region entrenchment
+			eqfm_update_sanusiyya_georegion_variables_effect = yes
 			eqfm_monthly_entrenchment_effect = yes
 			scope:journal_entry = {
 				com_change_and_clamp_variable = {

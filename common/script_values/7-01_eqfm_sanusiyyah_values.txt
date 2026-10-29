@@ -4,7 +4,7 @@ eqfm_sanusiyyah_situation_max_value = 100
 eqfm_sanusiyyah_situation_min_value = 0
 
 
-####---------- Sanusiyyah Script Values ----------####
+####---------- Sanusiyyah Situation Values ----------####
 eqfm_sanusiyyah_situation_progress_value = {
 	value = 0
 	add = {
@@ -18,8 +18,6 @@ eqfm_sanusiyyah_situation_progress_value = {
 			round_to = 0.01
 		}
 	}
-	
-	
 	round_to = 0.01
 }
 
@@ -143,6 +141,49 @@ eqfm_sanusiyyah_pressure_progress_value = {
 	round_to = 0.01
 }
 
+
+####---------- Sanusiyyah Influence Values ----------####
+eqfm_sanusiyyah_influence_progress_value = {
+	value = 0
+	add = {
+		desc = eqfm_value_from_sanusiyyah_pressure
+		value = {
+			add = global_var:je_eqfm_sanusiyyah.var:eqfm_sanusiyyah_pressure_var
+			divide = 100
+			round_to = 0.01
+		}
+	}
+	add = {
+		desc = eqfm_value_from_legitimacy
+		value = {
+			add = government_legitimacy
+			subtract = 70
+			divide = 100
+			round_to = 0.01
+		}
+	}
+	add = {
+		desc = eqfm_value_from_sanusiyyah_entrenchment
+		value = {
+			every_scope_state = {
+				limit = {
+					state_region = {
+						has_variable = eqfm_sanusiyyah_entrenchment_var
+					}
+				}
+				state_region = {
+					add = var:eqfm_sanusiyyah_entrenchment_var
+				}
+				divide = 100
+				subtract = 0.5
+				round_to = 0.01
+			}
+		}
+	}
+}
+
+
+####---------- Sanusiyyah State Region Values ----------####
 eqfm_sanusiyyah_entrenchment_progress_value = {
 	# This is evaluated in the !!STATE REGION!! scope
 	value = 0
@@ -387,468 +428,9 @@ eqfm_sanusiyyah_entrenchment_progress_value = {
 	}
 }
 
-eqfm_sanusiyyah_influence_progress_value = {
-	value = 0
-	add = {
-		desc = eqfm_value_from_sanusiyyah_pressure
-		value = {
-			add = global_var:je_eqfm_sanusiyyah.var:eqfm_sanusiyyah_pressure_var
-			divide = 100
-			round_to = 0.01
-		}
-	}
-	add = {
-		desc = eqfm_value_from_legitimacy
-		value = {
-			add = government_legitimacy
-			subtract = 70
-			divide = 100
-			round_to = 0.01
-		}
-	}
-	add = {
-		desc = eqfm_value_from_sanusiyyah_entrenchment
-		value = {
-			every_scope_state = {
-				limit = {
-					state_region = {
-						has_variable = eqfm_sanusiyyah_entrenchment_var
-					}
-				}
-				state_region = {
-					add = var:eqfm_sanusiyyah_entrenchment_var
-				}
-				divide = 100
-				subtract = 0.5
-				round_to = 0.01
-			}
-		}
-	}
-}
 
-eqfm_sanusiyyah_desert_centralization_value = {
+####---------- Sanusiyyah Desert Scouting Values ----------####
+eqfm_desert_scouting_reconnaissance_generation_value = {
 	value = 0
-	add = {
-		desc = eqfm_value_from_libya_centralization_ratio
-		value = eqfm_state_libya_centralization_value
-	}
-	add = {
-		desc = eqfm_value_from_libyan_desert_centralization_ratio
-		value = eqfm_state_libyan_desert_centralization_value
-	}
-	add = {
-		desc = eqfm_value_from_matruh_centralization_ratio
-		value = eqfm_state_matruh_centralization_value
-	}
-	add = {
-		desc = eqfm_value_from_egyptian_desert_centralization_ratio
-		value = eqfm_state_egyptian_desert_centralization_value
-	}
-	add = {
-		desc = eqfm_value_from_chad_centralization_ratio
-		value = eqfm_state_chad_centralization_value
-	}
-}
-
-eqfm_state_libya_centralization_value = {
-	value = 0
-	add = {
-		desc = eqfm_value_from_libya_centralized
-		value = {
-			s:STATE_LIBYA = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							NOT = {
-								is_country_type = decentralized
-							}
-						}
-					}
-					add = num_provinces
-				}
-			}
-		}
-	}
-	divide = {
-		desc = eqfm_value_from_libya_decentralized
-		value = {
-			s:STATE_LIBYA = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							is_country_type = decentralized
-							country_has_primary_culture = cu:bedouin
-						}
-					}
-					add = num_provinces
-				}
-			}
-			min = 1 # Div0 safety
-		}
-	}
-	round_to = 0.01
-}
-
-eqfm_state_libyan_desert_centralization_value = {
-	value = 0
-	add = {
-		desc = eqfm_value_from_libyan_desert_centralized
-		value = {
-			s:STATE_LIBYAN_DESERT = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							NOT = {
-								is_country_type = decentralized
-							}
-						}
-					}
-					add = num_provinces
-				}
-			}
-		}
-	}
-	divide = {
-		desc = eqfm_value_from_libyan_desert_decentralized
-		value = {
-			s:STATE_LIBYAN_DESERT = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							is_country_type = decentralized
-							country_has_primary_culture = cu:bedouin
-						}
-					}
-					add = num_provinces
-				}
-			}
-			min = 1 # Div0 safety
-		}
-	}
-	round_to = 0.01
-}
-
-eqfm_state_matruh_centralization_value = {
-	value = 0
-	add = {
-		desc = eqfm_value_from_matruh_centralized
-		value = {
-			s:STATE_MATRUH = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							NOT = {
-								is_country_type = decentralized
-							}
-						}
-					}
-					add = num_provinces
-				}
-			}
-		}
-	}
-	divide = {
-		desc = eqfm_value_from_matruh_decentralized
-		value = {
-			s:STATE_MATRUH = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							is_country_type = decentralized
-							country_has_primary_culture = cu:bedouin
-						}
-					}
-					add = num_provinces
-				}
-			}
-			min = 1 # Div0 safety
-		}
-	}
-	round_to = 0.01
-}
-
-eqfm_state_egyptian_desert_centralization_value = {
-	value = 0
-	add = {
-		desc = eqfm_value_from_egyptian_desert_centralized
-		value = {
-			s:STATE_EGYPTIAN_DESERT = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							NOT = {
-								is_country_type = decentralized
-							}
-						}
-					}
-					add = num_provinces
-				}
-			}
-		}
-	}
-	divide = {
-		desc = eqfm_value_from_egyptian_desert_decentralized
-		value = {
-			s:STATE_EGYPTIAN_DESERT = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							is_country_type = decentralized
-							country_has_primary_culture = cu:bedouin
-						}
-					}
-					add = num_provinces
-				}
-			}
-			min = 1 # Div0 safety
-		}
-	}
-	round_to = 0.01
-}
-
-eqfm_state_chad_centralization_value = {
-	value = 0
-	add = {
-		desc = eqfm_value_from_chad_centralized
-		value = {
-			s:STATE_CHAD = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							NOT = {
-								is_country_type = decentralized
-							}
-						}
-					}
-					add = num_provinces
-				}
-			}
-		}
-	}
-	divide = {
-		desc = eqfm_value_from_tripoli_decentralized
-		value = {
-			s:STATE_CHAD = {
-				every_scope_state = {
-					limit = {
-						owner = {
-							is_country_type = decentralized
-							country_has_primary_culture = cu:bedouin
-						}
-					}
-					add = num_provinces
-				}
-			}
-			min = 1 # Div0 safety
-		}
-	}
-	round_to = 0.01
-}
-
-eqfm_georegion_bedouin_loyalist_fraction_value = {
-	value = 0
-	every_state_in_sanusiyyah = {
-		limit = {
-			owner = {
-				NOT = {
-					is_country_type = decentralized
-				}
-			}
-		}
-		every_scope_pop = {
-			limit = {
-				has_pop_culture = bedouin
-			}
-			add = pop_loyalist_fraction
-		}
-	}
-	divide = {
-		value = {
-			every_state_in_sanusiyyah = {
-				limit = {
-					owner = {
-						NOT = {
-							is_country_type = decentralized
-						}
-					}
-				}
-				every_scope_pop = {
-					limit = {
-						has_pop_culture = bedouin
-					}
-					add = 1
-				}
-			}
-			min = 1 # Div0 safety
-		}
-	}
-	round_to = 0.01
-}
-
-eqfm_country_bedouin_loyalist_fraction_value = {
-	value = 0
-	every_scope_state = {
-		limit = {
-			is_in_geographic_region = geographic_region_sanusiyyah
-		}
-		every_scope_pop = {
-			limit = {
-				has_pop_culture = bedouin
-			}
-			add = pop_loyalist_fraction
-		}
-	}
-	divide = {
-		value = {
-			every_scope_state = {
-				limit = {
-					is_in_geographic_region = geographic_region_sanusiyyah
-				}
-				every_scope_pop = {
-					limit = {
-						has_pop_culture = bedouin
-					}
-					add = 1
-				}
-			}
-			min = 1 # Div0 safety
-		}
-	}
-	round_to = 0.01
-}
-
-eqfm_state_bedouin_loyalist_fraction_value = {
-	value = 0
-	every_scope_pop = {
-		limit = {
-			has_pop_culture = bedouin
-		}
-		add = pop_loyalist_fraction
-	}
-	divide = {
-		every_scope_pop = {
-			limit = {
-				has_pop_culture = bedouin
-			}
-			add = 1
-		}
-		min = 1 # Div0 safety
-	}
-	round_to = 0.01
-}
-
-eqfm_georegion_bedouin_radical_fraction_value = {
-	value = 0
-	every_state_in_sanusiyyah = {
-		limit = {
-			owner = {
-				NOT = {
-					is_country_type = decentralized
-				}
-			}
-		}
-		every_scope_pop = {
-			limit = {
-				has_pop_culture = bedouin
-			}
-			add = pop_radical_fraction
-		}
-	}
-	divide = {
-		value = {
-			every_state_in_sanusiyyah = {
-				limit = {
-					owner = {
-						NOT = {
-							is_country_type = decentralized
-						}
-					}
-				}
-				every_scope_pop = {
-					limit = {
-						has_pop_culture = bedouin
-					}
-					add = 1
-				}
-			}
-			min = 1 # Div0 safety
-		}
-	}
-	round_to = 0.01
-}
-
-eqfm_country_bedouin_radical_fraction_value = {
-	value = 0
-	every_scope_state = {
-		limit = {
-			is_in_geographic_region = geographic_region_sanusiyyah
-		}
-		every_scope_pop = {
-			limit = {
-				has_pop_culture = bedouin
-			}
-			add = pop_radical_fraction
-		}
-	}
-	divide = {
-		value = {
-			every_scope_state = {
-				limit = {
-					is_in_geographic_region = geographic_region_sanusiyyah
-				}
-				every_scope_pop = {
-					limit = {
-						has_pop_culture = bedouin
-					}
-					add = 1
-				}
-			}
-			min = 1 # Div0 safety
-		}
-	}
-	round_to = 0.01
-}
-
-eqfm_state_bedouin_radical_fraction_value = {
-	value = 0
-	every_scope_pop = {
-		limit = {
-			has_pop_culture = bedouin
-		}
-		add = pop_radical_fraction
-	}
-	divide = {
-		every_scope_pop = {
-			limit = {
-				has_pop_culture = bedouin
-			}
-			add = 1
-		}
-		min = 1 # Div0 safety
-	}
-	round_to = 0.01
-}
-
-eqfm_state_region_bedouin_radical_fraction_value = {
-	value = 0
-	every_scope_state = {
-		every_scope_pop = {
-			limit = {
-				has_pop_culture = bedouin
-			}
-			add = pop_radical_fraction
-		}
-	}
-	divide = {
-		every_scope_state = {
-			every_scope_pop = {
-				limit = {
-					has_pop_culture = bedouin
-				}
-				add = 1
-			}
-		}
-		min = 1 # Div0 safety
-	}
-	round_to = 0.01
+	# TODO
 }
