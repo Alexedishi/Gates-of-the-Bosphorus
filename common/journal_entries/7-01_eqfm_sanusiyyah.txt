@@ -345,12 +345,8 @@
 				eqfm_update_global_sanusiyyah_variables_effect = yes
 				every_scope_je_involved = {
 					trigger_event = {
-						on_action = eqfm_sanusiyyah_scouting_weekly_pulse
+						on_action = eqfm_sanusiyyah_desert_scouting_weekly_pulse_country
 					}
-					trigger_event = {
-						on_action = eqfm_sanusiyyah_expedition_weekly_pulse
-					}
-					eqfm_update_sanusiyyah_modifier_effect = yes
 				}
 			}
 		}
@@ -358,62 +354,14 @@
 	
 	on_monthly_pulse = {
 		effect = {
-			# Check journal involvement
-			scope:journal_entry = {
-				every_scope_je_involved = {
-					limit = {
-						NOR = {
-							any_scope_state = {
-								is_in_geographic_region = geographic_region_sanusiyyah
-							}
-							eqfm_sanusiyyah_is_relevant_due_to_subject_trigger = yes
-						}
-					}
-				}
-				global_var:je_eqfm_sanusiyyah = {
-					remove_involved_country = prev
-				}
-			}
-			every_state = {
-				owner = {
-					if = {
-						limit = {
-							NOT = {
-								is_involved_in_journal_entry = je_eqfm_sanusiyyah
-							}
-						}
-						global_var:je_eqfm_sanusiyyah = {
-							add_involved_country = prev
-						}
-					}
-					if = {
-						limit = {
-							eqfm_sanusiyyah_is_relevant_to_overlord_trigger = yes
-						}
-						overlord = {
-							if = {
-								limit = {
-									NOT = {
-										is_involved_in_journal_entry = je_eqfm_sanusiyyah
-									}
-								}
-								global_var:je_eqfm_sanusiyyah = {
-									add_involved_country = prev
-								}
-							}
-						}
-					}
-				}
-			}
+			# Validate journal involvement
+			eqfm_update_sanusiyyah_journal_involvement_effect = yes
 			
 			# Fire on_actions for all involved countries
 			scope:journal_entry = {
 				every_scope_je_involved = {
 					trigger_event = {
-						on_action = eqfm_sanusiyyah_scouting_monthly_pulse
-					}
-					trigger_event = {
-						on_action = eqfm_sanusiyyah_monthly_pulse
+						on_action = eqfm_sanusiyyah_involved_monthly_pulse
 					}
 				}
 			}
@@ -421,12 +369,9 @@
 			# Calculate and advance state region entrenchment
 			eqfm_monthly_entrenchment_effect = yes
 			scope:journal_entry = {
-				change_variable = {
+				com_change_and_clamp_variable = {
 					name = eqfm_sanusiyyah_pressure_var
-					add = var:eqfm_sanusiyyah_pressure_progress_var
-				}
-				clamp_variable = {
-					name = eqfm_sanusiyyah_pressure_var
+					value = var:eqfm_sanusiyyah_pressure_progress_var
 					max = 100
 					min = 0
 				}
@@ -439,12 +384,16 @@
 			# Evaluate global events
 			if = {
 				limit = {
-					NOT = {
-						has_global_variable = eqfm_intimidated_sensussi
+					scope:journal_entry = {
+						NOT = {
+							has_variable = eqfm_intimidated_sensussi
+						}
+						var:eqfm_sanusiyyah_pressure_var >= 50
 					}
-					global_var:je_eqfm_sanusiyyah.var:eqfm_sanusiyyah_pressure_var >= 50
+					s:STATE_TRIPOLI = {
+						has_variable = eqfm_sanusiyyah_entrenchment_var
+					}
 				}
-				set_global_variable = eqfm_intimidated_sensussi
 				s:STATE_TRIPOLI = {
 					remove_variable = eqfm_sanusiyyah_entrenchment_var
 				}
@@ -454,19 +403,20 @@
 						value = 25
 					}
 				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_sanusiyyah
+				scope:journal_entry = {
+					set_variable = eqfm_intimidated_sensussi
+					every_scope_je_involved = {
+						trigger_event = eqfm_sanusiyyah.003
 					}
-					trigger_event = eqfm_sanusiyyah.003
 				}
 			}
 			if = {
 				limit = {
-					NOT = {
-						has_global_variable = eqfm_senussi_brokered_peace
+					scope:journal_entry = {
+						NOT = {
+							has_variable = eqfm_senussi_brokered_peace
+						}
 					}
-					has_global_variable = eqfm_intimidated_sensussi
 					exists = c:ZWY
 					exists = c:TBI
 					s:STATE_LIBYA = {
@@ -480,18 +430,17 @@
 						}
 					}
 				}
-				set_global_variable = eqfm_senussi_brokered_peace
 				s:STATE_CHAD = {
 					set_variable = {
 						name = eqfm_sanusiyyah_entrenchment_var
 						value = 25
 					}
 				}
-				every_country = {
-					limit = {
-						is_involved_in_journal_entry = je_eqfm_sanusiyyah
+				scope:journal_entry = {
+					set_variable = eqfm_senussi_brokered_peace
+					every_scope_je_involved = {
+						trigger_event = eqfm_sanusiyyah.006
 					}
-					trigger_event = eqfm_sanusiyyah.006
 				}
 			}
 		}
