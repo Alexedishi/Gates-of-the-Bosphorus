@@ -25,8 +25,8 @@ flowcontainer = {
 		
 		using = entry_bg_fancy
 		
-	#	balkfm_yugoslav_nationalism_decisions = {}
 		balkfm_yugoslav_culture_item = {
+		#	visible = "[GetScriptedGui('balkfm_montenegrin_culture_integration_sgui').IsValid(GuiScope.SetRoot(GetPlayer.MakeScope ).End)]"
 			blockoverride "culture_name" {
 				raw_text = "[GetCulture('montenegrin').GetName]"
 			}
@@ -39,8 +39,12 @@ flowcontainer = {
 			blockoverride "culture_radicals" {
 				raw_text = "#v 0"
 			}
-			blockoverride "culture_integrated_visibility" {}
-			blockoverride "culture_not_integrated_visibility" {}
+			blockoverride "culture_integrated_visibility" {
+				visible = "[GetScriptedGui('balkfm_montenegrin_culture_integration_sgui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope ).End)]"
+			}
+			blockoverride "culture_not_integrated_visibility" {
+				visible = "[Not(GetScriptedGui('balkfm_montenegrin_culture_integration_sgui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope ).End))]"
+			}
 			blockoverride "culture_button_visibility" {
 				visible = "[ScriptedButton.HasTag('montenegrin')]"
 			}
@@ -285,7 +289,7 @@ types gbbf_journal_entry_widget_types {
 					icon = {
 						parentanchor = center
 						position = { 0 1 }
-						size = { 125% 110% }
+						size = { 110% 110% }
 						texture = "gfx/interface/backgrounds/diplo_play_frame.dds"
 					}
 				}
@@ -309,7 +313,6 @@ types gbbf_journal_entry_widget_types {
 				using = rotate_glow_animation_02
 				size = { 250 250 }
 				alwaystransparent = yes
-				parentanchor = center
 				using = default_fade_in_out
 				
 				icon = {
