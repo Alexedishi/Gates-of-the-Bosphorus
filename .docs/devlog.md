@@ -199,26 +199,23 @@ New Additions:
 - ##Fully implemented the Young Turks content with varying outcomes for the Republican movements in the Ottoman Empire
 - ##New journal "The Foundation of the State" representing the multiple outcomes of Turkish identity after the failure of the Tanzimat
 - Two new Secret Police law variants "Palace Service" and "Teşkilat" to represent Ottoman internal security
+- ##New journal "The Lands of Kurdistan" for Kurdish revanchism
+- ##Rebuilt "The Teachings of al-Sanusi" into a struggle-style journal with new mechanics, events, and modifiers
 
 ####---------- Published Updates ----------####
 
 --Update 4.2.0-- **Major Update**
-New Additions (grefm):
+New Additions:
 - Added a new outcome to the Bavarocracy in the event Otto dies without an heir along with several more events
 - FINALLY reworked and enabled the Philorthodox Conspiracy event for GRE
 - Added DNA for Eynard the Philhellene courtesy of LordR with some associated events
 - Added several events for the era between the Bavarocracy and Venizelism
-
-New Additions (balkfm):
 - ##New journal "The Nature of Yugoslavia" Promote a Centralized or Federalist approach to the Yugoslav state
 - Added "Yugoslav Integralist" and "Yugoslav Particularist" ideologies for Yugoslav movements
 - Annexing Yugoslav countries via the "The Yugoslav Project" journal will transfer all of their characters to the annexing country
-
-New Additions:
 - ##New decision representing the suppression of the Circassian slave trade
 - ##Implemented outcomes for the "The Ethiopian Frontier" journal
-- ##New journal "The Lands of Kurdistan" for Kurdish revanchism
-- ##Rebuilt "The Teachings of al-Sanusi" into a struggle-style journal with new mechanics, events, and modifiers
+- New law "Military Governate" for Tripolitania
 
 Balance:
 - Adjusted Otto's traits and starting popularity
@@ -230,6 +227,7 @@ Balance:
 
 Adjustments:
 - Hayreddin Pasha now has the Abkhazian culture
+- Mahmud Raif Pasha now belongs to the Armed Forces IG
 - je_grefm_bavarocracy_main and je_grefm_bavarocracy_ip3 have been merged; DLC content is gated in a manner similar to je_balkfm_ser_monarchism
 - Added a progress bar to je_grefm_the_dedilomeni_principle
 - je_grefm_land_reclamation now uses a variable set on STATE_ATTICA
@@ -239,7 +237,6 @@ Fixes:
 - ##Fixed several issues that could derail Greece's "Military League" journal
 
 Notes:
-- Large QA pass on *all* journals, events, and localization
 - Majority of event IDs refactored and a lot of unused/inaccurate localization pruned
 - All journal entries refactored for new outcomes scripting
 - Replaced ideology_social_democrat with ideology_state_socialist
