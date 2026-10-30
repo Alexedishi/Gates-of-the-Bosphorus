@@ -236,10 +236,28 @@
 	
 	immediate_all_involved = {
 		eqfm_initialize_local_variables_effect = yes
+		trigger_event = eqfm_sanusiyyah.001
 	}
 	
 	on_become_involved_after_activation = {
 		eqfm_initialize_local_variables_effect = yes
+		if = {
+			limit = {
+				has_variable = eqfm_sanusiyyah_started
+			}
+			if = {
+				limit = {
+					gbbf_country_is_muslim_trigger = yes
+				}
+				post_notification = eqfm_senussi_arrival
+			}
+			else = {
+				post_notification = eqfm_sanusiyyah_involved
+			}
+		}
+		else = {
+			trigger_event = eqfm_sanusiyyah.002
+		}
 	}
 	
 	on_no_longer_involved = {

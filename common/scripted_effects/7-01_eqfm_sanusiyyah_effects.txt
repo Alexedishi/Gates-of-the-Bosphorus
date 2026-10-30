@@ -389,12 +389,6 @@ eqfm_cleanup_global_sanusiyyah_variables_effect = {
 		}
 		remove_modifier = modifier_eqfm_sanusiyyah_stronghold
 	}
-	every_country = {
-		limit = {
-			has_variable = eqfm_completed_sanusiyyah_expedition
-		}
-	}
-	set_global_variable = eqfm_sanusiyyah_completed
 }
 
 eqfm_cleanup_local_sanusiyyah_variables_effect = {
@@ -417,18 +411,6 @@ eqfm_initialize_local_variables_effect = {
 			name = eqfm_sanusiyyah_influence_progress_var
 			value = 0
 		}
-		if = {
-			limit = {
-				has_variable = eqfm_sanusiyyah_started
-			}
-			post_notification = eqfm_senussi_arrival
-		}
-		else = {
-			trigger_event = eqfm_sanusiyyah.002
-		}
-	}
-	else = {
-		post_notification = eqfm_sanusiyyah_involved
 	}
 	set_variable = {
 		name = eqfm_sanusiyyah_stance_var
@@ -573,6 +555,16 @@ eqfm_update_sanusiyya_georegion_variables_effect = {
 			value = {
 				every_state_region_in_sanusiyyah = {
 					add = var:eqfm_state_region_radical_bedouin_population_var
+				}
+				divide = var:eqfm_georegion_total_bedouin_population_var
+				round_to = 0.01
+			}
+		}
+		set_variable = {
+			name = eqfm_georegion_bedouin_loyalist_fraction_var
+			value = {
+				every_state_region_in_sanusiyyah = {
+					add = var:eqfm_state_region_loyalist_bedouin_population_var
 				}
 				divide = var:eqfm_georegion_total_bedouin_population_var
 				round_to = 0.01
@@ -852,13 +844,58 @@ eqfm_monthly_reconnaissance_progress_effect = {
 		}
 		remove_variable = eqfm_sanusiyyah_expedition_var
 	}
+	
+	# Check if lodges should be expose
+	every_state_region_in_sanusiyyah = {
+		if = {
+			limit = {
+				NOR = {
+					has_variable = eqfm_sanusiyyah_exposed_lodges_var
+					has_variable = eqfm_sanusiyyah_destroyed_lodges_var
+				}
+				var:eqfm_desert_scouting_reconnaissance_var >= 50
+			}
+			set_variable = eqfm_sanusiyyah_exposed_lodges_var
+			var:eqfm_sanusiyyah_expedition_var ?= {
+				#	post_notification = eqfm_sanusiyyah_lodge_exposed # TODO
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = eqfm_sanusiyyah_exposed_lodges_var
+				NOT = {
+					has_variable = eqfm_sanusiyyah_destroyed_lodges_var
+				}
+				var:eqfm_desert_scouting_reconnaissance_var < 35
+			}
+			remove_variable = eqfm_sanusiyyah_exposed_lodges_var
+		}
+	}
+	
 	# Math and cache what everyone's contributions will be (if any)
 	every_scope_je_involved = {
 		set_variable = {
 			name = eqfm_desert_scouting_reconnaissance_generation_var
 			value = eqfm_desert_scouting_reconnaissance_generation_value
 		}
+		set_variable = {
+			name = eqfm_desert_scouting_reconnaissance_application_var
+			value = {
+				add = var:eqfm_desert_scouting_reconnaissance_generation_var
+				divide = {
+					every_state_region_in_sanusiyyah = {
+						limit = {
+							var:eqfm_sanusiyyah_expedition_var ?= prev
+						}
+						add = 1
+					}
+					min = 1
+				}
+				round_to = 0.01
+			}
+		}
 	}
+	
 	# Apply values to state regions
 	every_state_region_in_sanusiyyah = {
 		set_variable = {
