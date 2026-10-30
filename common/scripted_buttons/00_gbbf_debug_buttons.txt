@@ -218,9 +218,7 @@ gbbf_form_yugoslavia_button = {
 		}
 	}
 	possible = {
-		NOT = {
-			exists = c:YUG
-		}
+		always = yes
 	}
 	effect = {
 		random_state_in_yugoslavia = {
@@ -228,10 +226,10 @@ gbbf_form_yugoslavia_button = {
 				owner = {
 					is_player = no
 				}
-				save_scope_as = yugoslavia_seed_state
-				owner = {
-					save_scope_as = yugoslavia_seed_country
-				}
+			}
+			save_scope_as = yugoslavia_seed_state
+			owner = {
+				save_scope_as = yugoslavia_seed_country
 			}
 		}
 		create_country = {
@@ -242,14 +240,16 @@ gbbf_form_yugoslavia_button = {
 				remove_primary_culture = cu:bosniak
 				remove_primary_culture = cu:croat
 				remove_primary_culture = cu:slovene
+				every_state_in_yugoslavia = {
+					limit = {
+						owner != c:YUG
+					}
+					set_state_owner = c:YUG
+				}
 			}
 		}
-		play_as = c:YUG
-		every_state_in_yugoslavia = {
-			limit = {
-				owner != c:YUG
-			}
-			set_state_owner = c:YUG
+		hidden_effect = {
+			play_as = c:YUG
 		}
 	}
 	ai_chance = {
@@ -264,6 +264,7 @@ gbbf_activate_highlands_button = {
 	tags = { debug }
 
 	visible = {
+		
 		NOT = {
 			has_global_variable = je_haykfm_highlands
 		}

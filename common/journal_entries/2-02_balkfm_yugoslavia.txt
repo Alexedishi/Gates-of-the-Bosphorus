@@ -522,6 +522,12 @@ je_balkfm_yugoslav_nationalism = {
 		always = yes
 	}
 	
+	widget = {
+		gui = gui/journal_entry_widgets/2-02_balkfm_yugoslavia_journal_widgets.gui
+		name = "widget_gbbf_yugoslav_nationalism"
+		container = "custom_widget_container_4"
+	}
+	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
@@ -576,48 +582,13 @@ je_balkfm_yugoslav_nationalism = {
 	}
 	
 	immediate = {
-		c:YUG ?= {
-			hidden_effect = {
-				if = {
-					limit = {
-						NOT = {
-							any_political_movement = {
-								is_political_movement_type = movement_cultural_majority
-							}
-						}
-					}
-					create_political_movement = {
-						type = movement_cultural_majority
-					}
-				}
-				every_political_movement = {
-					limit = {
-						is_political_movement_type = movement_cultural_minority
-						culture ?= {
-							balkfm_is_yugoslav_culture_trigger = yes
-						}
-					}
-					set_core_ideology = ideology_gbbf_yugoslav_particularist
-				}
-			}
-		}
-		scope:journal_entry = {
-			set_variable = {
-				name = balkfm_yugoslavism_var
-				value = 100
-			}
-			set_variable = {
-				name = balkfm_yugoslavism_progress_var
-				value = balkfm_yugoslavism_progress_value
-			}
-			set_variable = {
-				name = balkfm_yugoslavia_scope # This is protect my sanity while scoping in loc
-				value = c:YUG
-			}
-			set_variable = com_hide_involved_countries
-		}
 		com_save_journal_to_global_variable = {
 			name = je_balkfm_yugoslav_nationalism
+		}
+		scope:journal_entry = {
+			balkfm_initialize_yugoslav_nationalism_variables_effect = yes
+			set_variable = com_hide_involved_countries
+			set_variable = com_hide_scripted_buttons
 		}
 	}
 
@@ -625,6 +596,27 @@ je_balkfm_yugoslav_nationalism = {
 		if = {
 			limit = {
 				c:YUG ?= this
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_political_movement = {
+							is_political_movement_type = movement_cultural_majority
+						}
+					}
+				}
+				create_political_movement = {
+					type = movement_cultural_majority
+				}
+			}
+			every_political_movement = {
+				limit = {
+					is_political_movement_type = movement_cultural_minority
+					culture ?= {
+						balkfm_is_yugoslav_culture_trigger = yes
+					}
+				}
+				set_core_ideology = ideology_gbbf_yugoslav_particularist
 			}
 			if = {
 				limit = {
@@ -925,22 +917,6 @@ je_balkfm_yugoslav_nationalism = {
 					name = balkfm_yugoslavism_progress_var
 					value = c:YUG.balkfm_yugoslavism_progress_value
 				}
-				if = {
-					limit = {
-						has_variable = balkfm_yugoslav_promotion_var
-					}
-					set_variable = {
-						name = balkfm_yugoslav_promotion_progress_var
-						value = c:YUG.balkfm_yugoslav_promotion_progress_value
-					}
-					com_change_and_clamp_variable = {
-						name = balkfm_yugoslav_promotion_var
-						value = var:balkfm_yugoslav_promotion_progress_var
-						max = 100
-						min = 0
-						
-					}
-				}
 			}
 		}
 	}
@@ -958,37 +934,8 @@ je_balkfm_yugoslav_nationalism = {
 					name = balkfm_yugoslavism_progressbar
 					value = var:balkfm_yugoslavism_var
 				}
-			}
-			if = {
-				limit = {
-					exists = c:YUG # Error suppression in case YUG dies but the monthly pulse gets out before the journal closes
-				}
-				scope:journal_entry = {
-					every_scope_je_involved = {
-						limit = {
-							NOR = {
-								c:YUG = this
-								is_subject_of = c:YUG
-							}
-						}
-						global_var:je_balkfm_yugoslav_nationalism = {
-							remove_involved_country = prev
-						}
-					}
-				}
-				c:YUG = {
-					every_subject_or_below = {
-						limit = {
-							balkfm_country_has_yugoslav_culture_trigger = yes
-							NOT = {
-								is_involved_in_journal_entry = je_balkfm_yugoslav_nationalism
-							}
-						}
-						global_var:je_balkfm_yugoslav_nationalism = {
-							add_involved_country = prev
-						}
-					}
-				}
+				balkfm_validate_yugoslav_nationalism_involvement_effect = yes
+				balkfm_calculate_yugoslav_populations_effect = yes
 			}
 		}
 	}

@@ -669,6 +669,540 @@ balkfm_remove_yugoslav_cultures_effect = {
 	remove_primary_culture = cu:slovene
 }
 
+balkfm_initialize_yugoslav_nationalism_variables_effect = {
+	balkfm_calculate_yugoslav_populations_effect = yes
+	set_variable = {
+		name = balkfm_yugoslavism_var
+		value = 100
+	}
+	set_variable = {
+		name = balkfm_yugoslavism_progress_var
+		value = balkfm_yugoslavism_progress_value
+	}
+	set_variable = {
+		name = balkfm_yugoslavia_scope # This is protect my sanity while scoping in loc
+		value = c:YUG
+	}
+	set_variable = { 
+		name = balkfm_montenegrin_integration_var
+		value = {
+			if = {
+				limit = {
+					c:YUG ?= {
+						country_has_primary_culture = cu:montenegrin
+					}
+				}
+				add = 100
+			}
+		}
+	}
+	set_variable = {
+		name = balkfm_serb_integration_var
+		value = {
+			if = {
+				limit = {
+					c:YUG ?= {
+						country_has_primary_culture = cu:serb
+					}
+				}
+				add = 100
+			}
+		}
+	}
+	set_variable = {
+		name = balkfm_bulgarian_integration_var
+		value = {
+			if = {
+				limit = {
+					c:YUG ?= {
+						country_has_primary_culture = cu:bulgarian
+					}
+				}
+				add = 100
+			}
+		}
+	}
+	set_variable = {
+		name = balkfm_bosniak_integration_var
+		value = {
+			if = {
+				limit = {
+					c:YUG ?= {
+						country_has_primary_culture = cu:bosniak
+					}
+				}
+				add = 100
+			}
+		}
+	}
+	set_variable = {
+		name = balkfm_croat_integration_var
+		value = {
+			if = {
+				limit = {
+					c:YUG ?= {
+						country_has_primary_culture = cu:croat
+					}
+				}
+				add = 100
+			}
+		}
+	}
+	set_variable = {
+		name = balkfm_slovene_integration_var
+		value = {
+			if = {
+				limit = {
+					c:YUG ?= {
+						country_has_primary_culture = cu:slovene
+					}
+				}
+				add = 100
+			}
+		}
+	}
+}
+
+balkfm_validate_yugoslav_nationalism_involvement_effect = {
+	if = {
+		limit = {
+			exists = c:YUG # Error suppression in case YUG dies but the monthly pulse gets out before the journal closes
+		}
+		scope:journal_entry = {
+			every_scope_je_involved = {
+				limit = {
+					NOR = {
+						c:YUG = this
+						is_subject_of = c:YUG
+					}
+				}
+				global_var:je_balkfm_yugoslav_nationalism = {
+					remove_involved_country = prev
+				}
+			}
+		}
+		c:YUG = {
+			every_subject_or_below = {
+				limit = {
+					balkfm_country_has_yugoslav_culture_trigger = yes
+					NOT = {
+						is_involved_in_journal_entry = je_balkfm_yugoslav_nationalism
+					}
+				}
+				global_var:je_balkfm_yugoslav_nationalism = {
+					add_involved_country = prev
+				}
+			}
+		}
+	}
+}
+
+balkfm_calculate_yugoslav_populations_effect = {
+	# This is a lot of math, so we only call it monthly; These are stacked in a way to avoid repeating math operations
+	
+	# Montenegrin
+	set_variable = {
+		name = balkfm_montenegrin_loyalist_population_var
+		value = {
+			c:YUG ?= {
+				every_scope_state = {
+					every_scope_pop = {
+						limit = {
+							has_pop_culture = montenegrin
+						}
+						add = {
+							value = total_size
+							multiply = pop_loyalist_fraction
+						}
+					}
+				}
+				round_to = 1
+			}
+		}
+	}
+	set_variable = {
+		name = balkfm_montenegrin_radical_population_var
+		value = {
+			c:YUG ?= {
+				every_scope_state = {
+					every_scope_pop = {
+						limit = {
+							has_pop_culture = montenegrin
+						}
+						add = {
+							value = total_size
+							multiply = pop_radical_fraction
+						}
+					}
+				}
+				round_to = 1
+			}
+		}
+	}
+	set_variable = { 
+		name = balkfm_montenegrin_total_population_var
+		value = {
+			add = var:balkfm_montenegrin_loyalist_population_var
+			add = var:balkfm_montenegrin_radical_population_var
+		}
+	}
+	set_variable = { 
+		name = balkfm_montenegrin_radical_fraction_var
+		value = {
+			add = var:balkfm_montenegrin_radical_population_var
+			divide = {
+				add = var:balkfm_montenegrin_total_population_var
+				min = 1
+			}
+		}
+	}
+	set_variable = {
+		name = balkfm_montenegrin_loyalist_fraction_var
+		value = {
+			add = var:balkfm_montenegrin_loyalist_population_var
+			divide = {
+				add = var:balkfm_montenegrin_total_population_var
+				min = 1
+			}
+		}
+	}
+	
+	# Serb
+	set_variable = {
+		name = balkfm_serb_loyalist_population_var
+		value = {
+			c:YUG ?= {
+				every_scope_state = {
+					every_scope_pop = {
+						limit = {
+							has_pop_culture = serb
+						}
+						add = {
+							value = total_size
+							multiply = pop_loyalist_fraction
+						}
+					}
+				}
+			}
+			round_to = 1
+		}
+	}
+	set_variable = {
+		name = balkfm_serb_radical_population_var
+		value = {
+			c:YUG ?= {
+				every_scope_state = {
+					every_scope_pop = {
+						limit = {
+							has_pop_culture = serb
+						}
+						add = {
+							value = total_size
+							multiply = pop_radical_fraction
+						}
+					}
+				}
+			}
+			round_to = 1
+		}
+	}
+	set_variable = {
+		name = balkfm_serb_total_population_var
+		value = {
+			add = var:balkfm_serb_loyalist_population_var
+			add = var:balkfm_serb_radical_population_var
+		}
+	}
+	set_variable = {
+		name = balkfm_serb_radical_fraction_var
+		value = {
+			add = var:balkfm_serb_radical_population_var
+			divide = {
+				add = var:balkfm_serb_total_population_var
+				min = 1
+			}
+		}
+	}
+	set_variable = {
+		name = balkfm_serb_loyalist_fraction_var
+		value = {
+			add = var:balkfm_serb_loyalist_population_var
+			divide = {
+				add = var:balkfm_serb_total_population_var
+				min = 1
+			}
+		}
+	}
+	
+	# Bulgarian
+	set_variable = {
+		name = balkfm_bulgarian_loyalist_population_var
+		value = {
+			c:YUG ?= {
+				every_scope_state = {
+					every_scope_pop = {
+						limit = {
+							has_pop_culture = bulgarian
+						}
+						add = {
+							value = total_size
+							multiply = pop_loyalist_fraction
+						}
+					}
+				}
+			}
+			round_to = 1
+		}
+	}
+	set_variable = {
+		name = balkfm_bulgarian_radical_population_var
+		value = {
+			c:YUG ?= {
+				every_scope_state = {
+					every_scope_pop = {
+						limit = {
+							has_pop_culture = bulgarian
+						}
+						add = {
+							value = total_size
+							multiply = pop_radical_fraction
+						}
+					}
+				}
+			}
+			round_to = 1
+		}
+	}
+	set_variable = {
+		name = balkfm_bulgarian_total_population_var
+		value = {
+			add = var:balkfm_bulgarian_loyalist_population_var
+			add = var:balkfm_bulgarian_radical_population_var
+		}
+	}
+	set_variable = {
+		name = balkfm_bulgarian_radical_fraction_var
+		value = {
+			add = var:balkfm_bulgarian_radical_population_var
+			divide = {
+				add = var:balkfm_bulgarian_total_population_var
+				min = 1
+			}
+		}
+	}
+	set_variable = {
+		name = balkfm_bulgarian_loyalist_fraction_var
+		value = {
+			add = var:balkfm_bulgarian_loyalist_population_var
+			divide = {
+				add = var:balkfm_bulgarian_total_population_var
+				min = 1
+			}
+		}
+	}
+	
+	# Bosniak
+	set_variable = {
+		name = balkfm_bosniak_loyalist_population_var
+		value = {
+			c:YUG ?= {
+				every_scope_state = {
+					every_scope_pop = {
+						limit = {
+							has_pop_culture = bosniak
+						}
+						add = {
+							value = total_size
+							multiply = pop_loyalist_fraction
+						}
+					}
+				}
+			}
+			round_to = 1
+		}
+	}
+	set_variable = {
+		name = balkfm_bosniak_radical_population_var
+		value = {
+			c:YUG ?= {
+				every_scope_state = {
+					every_scope_pop = {
+						limit = {
+							has_pop_culture = bosniak
+						}
+						add = {
+							value = total_size
+							multiply = pop_radical_fraction
+						}
+					}
+				}
+			}
+			round_to = 1
+		}
+	}
+	set_variable = {
+		name = balkfm_bosniak_total_population_var
+		value = {
+			add = var:balkfm_bosniak_loyalist_population_var
+			add = var:balkfm_bosniak_radical_population_var
+		}
+	}
+	set_variable = {
+		name = balkfm_bosniak_radical_fraction_var
+		value = {
+			add = var:balkfm_bosniak_radical_population_var
+			divide = {
+				add = var:balkfm_bosniak_total_population_var
+				min = 1
+			}
+		}
+	}
+	set_variable = {
+		name = balkfm_bosniak_loyalist_fraction_var
+		value = {
+			add = var:balkfm_bosniak_loyalist_population_var
+			divide = {
+				add = var:balkfm_bosniak_total_population_var
+				min = 1
+			}
+		}
+	}
+	
+	# Croat
+	set_variable = {
+		name = balkfm_croat_loyalist_population_var
+		value = {
+			c:YUG ?= {
+				every_scope_state = {
+					every_scope_pop = {
+						limit = {
+							has_pop_culture = croat
+						}
+						add = {
+							value = total_size
+							multiply = pop_loyalist_fraction
+						}
+					}
+				}
+			}
+			round_to = 1
+		}
+	}
+	set_variable = {
+		name = balkfm_croat_radical_population_var
+		value = {
+			c:YUG ?= {
+				every_scope_state = {
+					every_scope_pop = {
+						limit = {
+							has_pop_culture = croat
+						}
+						add = {
+							value = total_size
+							multiply = pop_radical_fraction
+						}
+					}
+				}
+			}
+			round_to = 1
+		}
+	}
+	set_variable = {
+		name = balkfm_croat_total_population_var
+		value = {
+			add = var:balkfm_croat_loyalist_population_var
+			add = var:balkfm_croat_radical_population_var
+		}
+	}
+	set_variable = {
+		name = balkfm_croat_radical_fraction_var
+		value = {
+			add = var:balkfm_croat_radical_population_var
+			divide = {
+				add = var:balkfm_croat_total_population_var
+				min = 1
+			}
+		}
+	}
+	set_variable = {
+		name = balkfm_croat_loyalist_fraction_var
+		value = {
+			add = var:balkfm_croat_loyalist_population_var
+			divide = {
+				add = var:balkfm_croat_total_population_var
+				min = 1
+			}
+		}
+	}
+	
+	# Slovene
+	set_variable = {
+		name = balkfm_slovene_loyalist_population_var
+		value = {
+			c:YUG ?= {
+				every_scope_state = {
+					every_scope_pop = {
+						limit = {
+							has_pop_culture = slovene
+						}
+						add = {
+							value = total_size
+							multiply = pop_loyalist_fraction
+						}
+					}
+				}
+			}
+			round_to = 1
+		}
+	}
+	set_variable = {
+		name = balkfm_slovene_radical_population_var
+		value = {
+			c:YUG ?= {
+				every_scope_state = {
+					every_scope_pop = {
+						limit = {
+							has_pop_culture = slovene
+						}
+						add = {
+							value = total_size
+							multiply = pop_radical_fraction
+						}
+					}
+				}
+			}
+			round_to = 1
+		}
+	}
+	set_variable = {
+		name = balkfm_slovene_total_population_var
+		value = {
+			add = var:balkfm_slovene_loyalist_population_var
+			add = var:balkfm_slovene_radical_population_var
+		}
+	}
+	set_variable = {
+		name = balkfm_slovene_radical_fraction_var
+		value = {
+			add = var:balkfm_slovene_radical_population_var
+			divide = {
+				add = var:balkfm_slovene_total_population_var
+				min = 1
+			}
+		}
+	}
+	set_variable = {
+		name = balkfm_slovene_loyalist_fraction_var
+		value = {
+			add = var:balkfm_slovene_loyalist_population_var
+			divide = {
+				add = var:balkfm_slovene_total_population_var
+				min = 1
+			}
+		}
+	}
+}
+
 balkfm_create_federal_montenegro_effect = {
 	if = {
 		limit = {

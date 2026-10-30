@@ -1,0 +1,368 @@
+# INHERITED FROM BASE GAME
+@panel_width_minus_30 = 510
+@panel_width_minus_20 = 520
+@panel_width_minus_10 = 530 # used to be 450
+@panel_width = 540 # used to be 460
+@panel_width_half = 270 # used to be 230
+@panel_width_plus_10 = 550 # used to be 470
+@panel_width_plus_14 = 554 # used to be 474
+@panel_width_plus_14_half = 277 # used to be 237
+@panel_width_plus_20 = 560 # used to be 480
+@panel_width_plus_30 = 570 # used to be 490
+@panel_width_plus_70 = 610 # used to be 530
+
+####---------- INJECTABLE JOURNAL ENTRY WIDGETS ----------####
+flowcontainer = {
+	name = "widget_gbbf_yugoslav_nationalism"
+	ignoreinvisible = yes
+	
+	flowcontainer = {
+		direction = vertical
+		minimumsize = { 520 -1 }
+		maximumsize = { 520 -1 }
+		margin = { 10 10 }
+		spacing = 10
+		
+		using = entry_bg_fancy
+		
+	#	balkfm_yugoslav_nationalism_decisions = {}
+		balkfm_yugoslav_culture_item = {
+			blockoverride "culture_name" {
+				raw_text = "[GetCulture('montenegrin').GetName]"
+			}
+			blockoverride "culture_population" {
+				raw_text = "Population: #v 1M"
+			}
+			blockoverride "culture_loyalists" {
+				raw_text = "#v 0"
+			}
+			blockoverride "culture_radicals" {
+				raw_text = "#v 0"
+			}
+			blockoverride "culture_integrated_visibility" {}
+			blockoverride "culture_not_integrated_visibility" {}
+			blockoverride "culture_button_visibility" {
+				visible = "[ScriptedButton.HasTag('montenegrin')]"
+			}
+		}
+		balkfm_yugoslav_culture_item = {
+			blockoverride "culture_name" {
+				raw_text = "[GetCulture('serb').GetName]"
+			}
+			blockoverride "culture_population" {
+				raw_text = "Population: #v 1M"
+			}
+			blockoverride "culture_loyalists" {
+				raw_text = "#v 0"
+			}
+			blockoverride "culture_radicals" {
+				raw_text = "#v 0"
+			}
+			blockoverride "culture_integrated_visibility" {}
+			blockoverride "culture_not_integrated_visibility" {}
+			blockoverride "culture_button_visibility" {
+				visible = "[ScriptedButton.HasTag('serbian')]"
+			}
+		}
+		balkfm_yugoslav_culture_item = {
+			blockoverride "culture_name" {
+				raw_text = "[GetCulture('bulgarian').GetName]"
+			}
+			blockoverride "culture_population" {
+				raw_text = "Population: #v 1M"
+			}
+			blockoverride "culture_loyalists" {
+				raw_text = "#v 0"
+			}
+			blockoverride "culture_radicals" {
+				raw_text = "#v 0"
+			}
+			blockoverride "culture_integrated_visibility" {}
+			blockoverride "culture_not_integrated_visibility" {}
+			blockoverride "culture_button_visibility" {
+				visible = "[ScriptedButton.HasTag('bulgarian')]"
+			}
+		}
+		balkfm_yugoslav_culture_item = {
+			blockoverride "culture_name" {
+				raw_text = "[GetCulture('bosniak').GetName]"
+			}
+			blockoverride "culture_population" {
+				raw_text = "Population: #v 1M"
+			}
+			blockoverride "culture_loyalists" {
+				raw_text = "#v 0"
+			}
+			blockoverride "culture_radicals" {
+				raw_text = "#v 0"
+			}
+			blockoverride "culture_button_visibility" {
+				visible = "[ScriptedButton.HasTag('bosniak')]"
+			}
+		}
+		balkfm_yugoslav_culture_item = {
+			blockoverride "culture_name" {
+				raw_text = "[GetCulture('croat').GetName]"
+			}
+			blockoverride "culture_population" {
+				raw_text = "Population: #v 1M"
+			}
+			blockoverride "culture_loyalists" {
+				raw_text = "#v 0"
+			}
+			blockoverride "culture_radicals" {
+				raw_text = "#v 0"
+			}
+			blockoverride "culture_button_visibility" {
+				visible = "[ScriptedButton.HasTag('bosniak')]"
+			}
+		}
+		balkfm_yugoslav_culture_item = {
+			blockoverride "culture_name" {
+				raw_text = "[GetCulture('slovene').GetName]"
+			}
+			blockoverride "culture_population" {
+				raw_text = "Population: #v 1M"
+			}
+			blockoverride "culture_loyalists" {
+				raw_text = "#v 0"
+			}
+			blockoverride "culture_radicals" {
+				raw_text = "#v 0"
+			}
+			blockoverride "culture_button_visibility" {
+				visible = "[ScriptedButton.HasTag('bosniak')]"
+			}
+		}
+	}
+}
+
+####---------- INJECTABLE JOURNAL ENTRY TYPES ----------####
+
+types gbbf_journal_entry_widget_types {
+	
+	type balkfm_yugoslav_nationalism_decisions = flowcontainer {
+		parentanchor = top|hcenter
+		direction = vertical
+		minimumsize = { 520 -1 }
+		datamodel = "[JournalEntry.GetScriptedButtons]"
+		
+		item = {
+			com_journal_scripted_button_item = {
+				blockoverride "button_visibility" {
+					visible = "[ScriptedButton.HasTag('decision')]"
+				}
+			}
+		}
+	}
+	
+	type balkfm_yugoslav_culture_item = widget {
+		parentanchor = top|hcenter
+		size = { 500 100 }
+		
+		background = {
+			using = entry_bg
+		}
+		
+		# Name and Population
+		widget = {
+			parentanchor = top
+			size = { 500 40 }
+			background = {
+				texture = "gfx/interface/buttons/expand_button_bg.dds"
+				spriteType = Corneredtiled
+				spriteborder = { 20 20 }
+				texture_density = 2
+				using = disabled_stripes
+				
+				modify_texture = {
+					name = "bg_gradient"
+					texture = "gfx/interface/buttons/default_button_bg_gradient.dds"
+					spriteType = Corneredstretched
+					spriteborder = { 0 0 }
+					blend_mode = overlay
+					alpha = 0.5
+				}
+				modify_texture = {
+					name = "texture"
+					texture = "gfx/interface/textures/default_noise_texture.dds"
+					spriteType = Corneredtiled
+					spriteborder = { 0 0 }
+					blend_mode = overlay
+				}
+				modify_texture = {
+					texture = "gfx/interface/masks/fade_horizontal_center.dds"
+					spriteType = Corneredstretched
+					spriteborder = { 0 0 }
+					blend_mode = alphamultiply
+					alpha = 1.0
+				}
+			}
+			
+			hbox = {
+				margin = { 15 0 }
+				textbox = {
+					block "culture_name" {
+						raw_text = "#todo culture_name"
+						using = look_at_me_animation
+					}
+					autoresize = yes
+					elide = right
+					using = fontsize_large
+					max_width = 160
+					
+				}
+				expand = {}
+				textbox = {
+					block "culture_population" {
+						raw_text = "#todo culture_population"
+						using = look_at_me_animation
+					}
+					autoresize = yes
+					elide = right
+					using = fontsize_large
+					max_width = 160
+					
+					icon = {
+						texture = "gfx/interface/icons/generic_icons/population.dds"
+						position = { -35 0 }
+						size = { 30 30 }
+						parentanchor = left|vcenter
+					}
+					
+				}
+			}
+		}
+		
+		# Progressbar
+		default_progressbar_horizontal = {
+			parentanchor = left|vcenter
+			position = { 10 20 }
+			size = { 200 14 }
+			blockoverride "values" {
+				value = 50
+				min = 0
+				max = 100
+			}
+			
+			icon = {
+				parentanchor = center
+				position = { 0 2 }
+				size = { 210 50 }
+				texture = "gfx/interface/progressbar/cohesion_bar.dds"
+			}
+		}
+		
+		# Scripted Button
+		flowcontainer = {
+			parentanchor = center
+			direction = vertical
+			minimumsize = { 50 50 }
+			position = { -20 25 }
+			
+			block "culture_not_integrated_visibility" {}
+			
+			datamodel = "[JournalEntry.GetScriptedButtons]"
+			
+			item = {
+				button_icon_round = {
+					parentanchor = top|hcenter
+					size = { 40 40 }
+					block "culture_button_visibility" {
+						visible = "[ScriptedButton.HasTag('nope')]"
+					}
+					enabled = "[IsValid( ScriptedButton.ExecuteEffect )]"
+					onclick = "[Execute( ScriptedButton.ExecuteEffect )]"
+					tooltip = "SCRIPTED_ACTION_TOOLTIP"
+					using = tooltip_above
+					
+					icon = {
+						parentanchor = center
+						size = { 75% 75% }
+						texture = "gfx/interface/icons/generic_icons/accepted_icon.dds"
+					}
+					
+					icon = {
+						parentanchor = center
+						position = { 0 1 }
+						size = { 125% 110% }
+						texture = "gfx/interface/backgrounds/diplo_play_frame.dds"
+					}
+				}
+			}
+		}
+		
+		# Integration Icon
+		icon = {
+			parentanchor = center
+			position = { -20 17 }
+			scale = 0.30
+			texture = "/gfx/interface/outliner/diplo_play_dec_outliner.dds"
+			
+			block "culture_integrated_visibility" {
+				visible = "no"
+			}
+			
+			icon = {
+				parentanchor = center
+				position = { 0 5 }
+				using = rotate_glow_animation_02
+				size = { 250 250 }
+				alwaystransparent = yes
+				parentanchor = center
+				using = default_fade_in_out
+				
+				icon = {
+					parentanchor = center
+					size = { 100 100 }
+					texture = "/gfx/interface/icons/generic_icons/national_awakening.dds"
+				}
+			}
+		}
+		
+		# Loyalists and Radicals
+		flowcontainer = {
+			parentanchor = right|vcenter
+			direction = vertical
+			position = { -15 20 }
+			spacing = 5
+			textbox = {
+				block "culture_loyalists" {
+					raw_text = "#todo culture_loyalists"
+					using = look_at_me_animation
+				}
+				autoresize = yes
+				elide = right
+				align = left|nobaseline
+				using = fontsize_medium
+				max_width = 160
+				
+				icon = {
+					texture = "gfx/interface/icons/generic_icons/population_loyalist.dds"
+					position = { -30 0 }
+					size = { 26 26 }
+					parentanchor = left|vcenter
+				}
+			}
+			textbox = {
+				block "culture_radicals" {
+					raw_text = "#todo culture_radicals"
+					using = look_at_me_animation
+				}
+				autoresize = yes
+				elide = right
+				align = left|nobaseline
+				using = fontsize_medium
+				max_width = 160
+				
+				icon = {
+					texture = "gfx/interface/icons/generic_icons/population_radical.dds"
+					position = { -30 0 }
+					size = { 26 26 }
+					parentanchor = left|vcenter
+				}
+				
+			}
+		}
+	}
+}
