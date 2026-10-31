@@ -235,6 +235,7 @@ Adjustments:
 
 Fixes:
 - ##Fixed several issues that could derail Greece's "Military League" journal
+- "Serbia and Montenegro" will now add claims for the surviving country if either tag dies before the journal completes
 
 Notes:
 - Majority of event IDs refactored and a lot of unused/inaccurate localization pruned
