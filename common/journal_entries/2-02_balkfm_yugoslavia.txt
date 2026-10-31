@@ -164,11 +164,11 @@
 		
 		trigger = {
 			OR = {
-				c:MON ?= {
-					is_country_alive = no
+				NOT = {
+					exists = c:MON
 				}
-				c:SER ?= {
-					is_country_alive = no
+				NOT = {
+					exists = c:SER
 				}
 				AND = { # Retained from IP3 just in case this somehow gets added after history execution
 					c:MON ?= {
@@ -180,7 +180,24 @@
 				}
 			}
 		}
-		effect = { }
+		effect = {
+			c:MON ?= {
+				gbbf_add_state_region_claim_to_country_effect = {
+					country = c:MON
+					state_region = STATE_EASTERN_SERBIA
+				}
+				gbbf_add_state_region_claim_to_country_effect = {
+					country = c:MON
+					state_region = STATE_WESTERN_SERBIA
+				}
+			}
+			c:SER ?= {
+				gbbf_add_state_region_claim_to_country_effect = {
+					country = c:SER
+					state_region = STATE_MONTENEGRO
+				}
+			}
+		}
 	}
 }
 
