@@ -442,6 +442,7 @@
 	## Consul Check
 	if = {
 		limit = {
+			exists = c:AUS
 			"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:AUS
 		}
 		add = {
@@ -451,6 +452,7 @@
 	}
 	else_if = {
 		limit = {
+			exists = c:RUS
 			"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:RUS
 		}
 		add = {
@@ -461,7 +463,9 @@
 	## Austria Relations Check
 	add = {
 		value = {
-			add = c:AUS.relations:root
+			c:AUS ?= {
+				add = "relations(c:SER)"
+			}
 			divide = 100
 		}
 		desc = balkfm_value_from_aus_relations
@@ -1018,6 +1022,7 @@ balkfm_karadordevic_progress_value = {
 	## Consul Check
 	if = {
 		limit = {
+			exists = c:RUS
 			"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:RUS
 		}
 		add = {
@@ -1027,6 +1032,7 @@ balkfm_karadordevic_progress_value = {
 	}
 	else_if = {
 		limit = {
+			exists = c:AUS
 			"variable_map(balkfm_dynastic_rivalry_varmap|flag:balkfm_consul_var)" ?= flag:AUS
 		}
 		add = {
@@ -1037,7 +1043,9 @@ balkfm_karadordevic_progress_value = {
 	## Russia Relations Check
 	add = {
 		value = {
-			add = c:RUS.relations:root
+			c:RUS ?= {
+				add = "relations(c:SER)"
+			}
 			divide = 100
 		}
 		desc = balkfm_value_from_rus_relations
