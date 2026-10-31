@@ -341,20 +341,17 @@ gbbf_add_state_claim_root_effect = {
 	}
 }
 
-gbbf_add_state_claim_country_effect = {
+gbbf_add_state_region_claim_to_country_effect = {
 	if = {
 		limit = {
-			NOT = {
-				has_claim = $state_region$
-			}
-			$state_region$ = {
-				any_scope_state = {
-					count = all
-					owner = $country$
+			$country$ = {
+				NOR = {
+					has_claim = s:$state_region$
+					owns_entire_state_region = $state_region$
 				}
 			}
 		}
-		$state_region$ = {
+		s:$state_region$ = {
 			add_claim = $country$
 		}
 	}
