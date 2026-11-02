@@ -282,24 +282,38 @@ types gbbf_journal_entry_widget_types {
 		size = { 500 120 }
 		
 		background = {
-			using = entry_bg
-		}
-		
-		background = {
 			block "culture_illustration" {
 				texture = "gfx/state_pictures/urban_european.dds"
 			}
-			fittype = centercrop
+			spriteType = Corneredstretched
+			using = entry_bg_mask_bottom
+			alpha = 0.4
+		}
+		
+		background = {
+			using = dark_area
+			alpha = 0.75
+			using = entry_bg_mask_top
+			using = entry_bg_mask_bottom
 			
 			modify_texture = {
-				texture = "gfx/interface/backgrounds/default_bg_shading.dds"
+				texture = "gfx/interface/masks/fade_horizontal_center_inverted.dds"
 				spriteType = Corneredstretched
 				spriteborder = { 0 0 }
-				blend_mode = overlay
+				blend_mode = alphamultiply
 			}
+			
 			modify_texture = {
-				using = texture_velvet
+				texture = "gfx/interface/masks/fade_vertical_center_inverted.dds"
+				spriteType = Corneredstretched
+				spriteborder = { 0 0 }
+				blend_mode = alphamultiply
+				alpha = 0.5
 			}
+		}
+		
+		background = {
+			using = entry_bg
 		}
 		
 		# Name and Population
@@ -331,7 +345,7 @@ types gbbf_journal_entry_widget_types {
 				modify_texture = {
 					texture = "gfx/interface/masks/fade_horizontal_center.dds"
 					spriteType = Corneredstretched
-					spriteborder = { 0 0 }
+					spriteborder = { -220 0 }
 					blend_mode = alphamultiply
 					alpha = 1.0
 				}
@@ -446,7 +460,7 @@ types gbbf_journal_entry_widget_types {
 			
 			icon = {
 				parentanchor = center
-				position = { 0 5 }
+				position = { 0 1 }
 				using = rotate_glow_animation_02
 				size = { 100 100 }
 				alwaystransparent = yes
@@ -454,12 +468,13 @@ types gbbf_journal_entry_widget_types {
 				
 				icon = {
 					parentanchor = center
-					size = { 45 45 }
+					size = { 40 40 }
 					texture = "/gfx/interface/icons/generic_icons/gbbf_accepted_culture.dds"
 				}
 			}
 			
-			tooltip = "balkfm_culture_integrated_tooltip"
+			raw_tooltip = "This [concept_culture] is one of the [concept_primary_cultures] of [JournalEntry.MakeScope.Var('balkfm_yugoslavia_scope').GetCountry.GetNameNoFlag]"
+			# TODO, uhh loc key balkfm_culture_integrated_tooltip doesn't work if passed in with a tooltip parameter?
 		}
 		
 		# Loyalists and Radicals
