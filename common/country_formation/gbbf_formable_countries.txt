@@ -167,11 +167,23 @@ TURAN = {
 	use_culture_states = yes
 	required_states_fraction = 0.95
 	potential = {
-		is_country_type = recognized
+		NOT = {
+			country_tier = hegemony
+		}
 	}
 	possible = {
+		is_country_type = recognized
 		is_subject = no
 		is_at_war = no
+		trigger_if = {
+			limit = {
+				c:TUR ?= this
+			}
+			NOR = {
+				has_journal_entry = je_turkfm_sick_man_main
+				has_journal_entry = je_turkfm_sick_man_grand_collapse
+			}
+		}
 	}
 	ai_will_do = { always = yes }
 }
@@ -199,8 +211,47 @@ REPLACE:YUG = {
 		}
 	}
 	possible = {
+		trigger_if = {
+			limit = {
+				has_global_variable = balkfm_montegrin_culture_var
+			}
+			any_scope_state = {
+				state_region = {
+					is_homeland = cu:montenegrin
+				}
+			}
+		}
+		any_scope_state = {
+			state_region = {
+				is_homeland = cu:serb
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_global_variable = balkfm_bulgarian_yugoslavism_var
+			}
+			any_scope_state = {
+				state_region = {
+					is_homeland = cu:serb
+				}
+			}
+		}
+		any_scope_state = {
+			state_region = {
+				is_homeland = cu:bosniak
+			}
+		}
+		any_scope_state = {
+			state_region = {
+				is_homeland = cu:croat
+			}
+		}
+		any_scope_state = {
+			state_region = {
+				is_homeland = cu:slovene
+			}
+		}
 		is_subject = no
-		balkfm_is_national_empire_trigger = no
 		is_at_war = no
 		custom_tooltip = {
 			text = no_insurrectionary_movement_tt
