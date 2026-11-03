@@ -863,7 +863,7 @@ balkfm_yugoslavia.014 = {
 	desc = balkfm_yugoslavia.014.d
 	flavor = balkfm_yugoslavia.014.f
 
-	gui_window = event_window_com_default
+	gui_window = event_window_com_base
 
 	event_image = {
 		video = "europenorthamerica_russian_serfs"
@@ -992,7 +992,7 @@ balkfm_yugoslavia.100 = {
 			add_modifier = modifier_balkfm_unstable_identity
 		}
 		trigger_event = {
-			id = balkfm_yugoslavia.105
+			id = balkfm_yugoslavia.106
 			days = 45
 		}
 	}
@@ -1228,10 +1228,69 @@ balkfm_yugoslavia.103 = {
 	}
 }
 
+balkfm_yugoslavia.104 = {
+	type = country_event
+	placement = root
+	icon = gfx/interface/icons/event_icons/event_flag_yug.dds
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = balkfm_yugoslavia.104.t
+	desc = balkfm_yugoslavia.104.d
+	flavor = balkfm_yugoslavia.104.f
+	
+	event_image = {
+		video = "ip3_official_reading_dictate"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+		# triggered by balkfm_integrate_culture_button variants
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			c:YUG ?= this
+		}
+	}
+	
+	immediate = {
+	}
+	
+	option = {
+		name = balkfm_yugoslavia.104.a
+		default_option = yes
+		show_as_tooltip = {
+			add_primary_culture = cu:serb
+		}
+		add_loyalists = {
+			culture = cu:serb
+			value = very_large_radicals
+		}
+		add_modifier = {
+			name = modifier_balkfm_promoted_culture_country
+			months = gbbf_short_modifier_time
+			is_decaying = yes
+		}
+		every_political_movement = {
+			limit = {
+				is_political_movement_type = movement_cultural_minority
+				culture = cu:serb
+			}
+			add_modifier = {
+				name = modifier_balkfm_promoted_culture_movement
+				days = very_long_modifier_time
+				is_decaying = yes
+			}
+		}
+		remove_variable = balkfm_yugoslav_integration_target
+	}
+}
+
 balkfm_yugoslavia.105 = {
 	type = country_event
 	placement = root
-	icon = "gfx/interface/icons/event_icons/event_election.dds"
+	icon = gfx/interface/icons/event_icons/event_portrait.dds
 	duration = 3
 	dlc = dlc_grefm
 	
@@ -1239,7 +1298,157 @@ balkfm_yugoslavia.105 = {
 	desc = balkfm_yugoslavia.105.d
 	flavor = balkfm_yugoslavia.105.f
 	
-	gui_window = event_window_com_default
+	event_image = {
+		video = "unspecific_signed_contract"
+	}
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	
+	trigger = {
+	}
+	
+	cancellation_trigger = {
+		NOT = {
+			is_involved_in_journal_entry = je_balkfm_yugoslav_nationalism
+		}
+	}
+	
+	immediate = {
+		create_character = {
+			role = character_role_politician
+			culture = var:balkfm_yugoslav_promotion_target
+			on_created = {
+				if = {
+					limit = {
+						culture = cu:bosniak
+					}
+					change_character_religion = rel:sunni
+				}
+				add_modifier = {
+					name = modifier_political_patronage
+					days = very_long_modifier_time
+					multiplier = 2
+					is_decaying = yes
+				}
+			}
+		}
+		create_character = {
+			role = character_role_politician
+			culture = var:balkfm_yugoslav_promotion_target
+			on_created = {
+				if = {
+					limit = {
+						culture = cu:bosniak
+					}
+					change_character_religion = rel:sunni
+				}
+				add_modifier = {
+					name = modifier_political_patronage
+					days = very_long_modifier_time
+					multiplier = 2
+					is_decaying = yes
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = balkfm_yugoslavia.105.a
+		default_option = yes
+		custom_tooltip = {
+			text = balkfm_yugoslavia.105.a.tt
+			create_character = {
+				role = character_role_politician
+				culture = var:balkfm_yugoslav_promotion_target
+				on_created = {
+					if = {
+						limit = {
+							culture = cu:bosniak
+						}
+						change_character_religion = rel:sunni
+					}
+					add_modifier = {
+						name = modifier_political_patronage
+						days = very_long_modifier_time
+						multiplier = 2
+						is_decaying = yes
+					}
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = balkfm_yugoslavia.105.b
+		custom_tooltip = {
+			text = balkfm_yugoslavia.105.b.tt
+			create_character = {
+				role = character_role_general
+				culture = var:balkfm_yugoslav_promotion_target
+				on_created = {
+					if = {
+						limit = {
+							culture = cu:bosniak
+						}
+						change_character_religion = rel:sunni
+					}
+					add_modifier = {
+						name = modifier_commander_political_patronage
+						days = very_long_modifier_time
+						multiplier = 2
+						is_decaying = yes
+					}
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = balkfm_yugoslavia.105.c
+		trigger = {
+			empty_agitator_slots > 0
+		}
+		highlighted_option = yes
+		show_as_unavailable = { always = yes }
+		custom_tooltip = {
+			text = balkfm_yugoslavia.105.c.tt
+			create_character = {
+				role = character_role_agitator
+				culture = var:balkfm_yugoslav_promotion_target
+				on_created = {
+					if = {
+						limit = {
+							culture = cu:bosniak
+						}
+						change_character_religion = rel:sunni
+					}
+					add_modifier = {
+						name = modifier_agitator_political_patronage
+						days = very_long_modifier_time
+						multiplier = 2
+						is_decaying = yes
+					}
+				}
+			}
+		}
+	}
+	
+	after = {
+		remove_variable = balkfm_yugoslav_promotion_target
+	}
+}
+
+balkfm_yugoslavia.106 = {
+	type = country_event
+	placement = root
+	icon = "gfx/interface/icons/event_icons/event_election.dds"
+	duration = 3
+	dlc = dlc_grefm
+	
+	title = balkfm_yugoslavia.106.t
+	desc = balkfm_yugoslavia.106.d
+	flavor = balkfm_yugoslavia.106.f
+	
+	gui_window = event_window_com_base
 	
 	event_image = {
 		video = "unspecific_politicians_arguing"
@@ -1269,7 +1478,7 @@ balkfm_yugoslavia.105 = {
 	}
 	
 	option = {
-		name = balkfm_yugoslavia.105.a
+		name = balkfm_yugoslavia.106.a
 		default_option = yes
 		active_law:lawgroup_bureaucracy = {
 			add_amendment = {
@@ -1284,7 +1493,7 @@ balkfm_yugoslavia.105 = {
 	}
 	
 	option = {
-		name = balkfm_yugoslavia.105.b
+		name = balkfm_yugoslavia.106.b
 		active_law:lawgroup_bureaucracy = {
 			add_amendment = {
 				type = amendment_gbbf_advisory_assemblies
@@ -1298,7 +1507,7 @@ balkfm_yugoslavia.105 = {
 	}
 	
 	option = {
-		name = balkfm_yugoslavia.105.c
+		name = balkfm_yugoslavia.106.c
 		active_law:lawgroup_bureaucracy = {
 			add_amendment = {
 				type = amendment_gbbf_autonomous_assemblies
@@ -1312,18 +1521,18 @@ balkfm_yugoslavia.105 = {
 	}
 }
 
-balkfm_yugoslavia.106 = {
+balkfm_yugoslavia.107 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
 	duration = 3
 	dlc = dlc_grefm
 
-	title = balkfm_yugoslavia.106.t
-	desc = balkfm_yugoslavia.106.d
-	flavor = balkfm_yugoslavia.106.f
+	title = balkfm_yugoslavia.107.t
+	desc = balkfm_yugoslavia.107.d
+	flavor = balkfm_yugoslavia.107.f
 
-	gui_window = event_window_com_default
+	gui_window = event_window_com_base
 
 	event_image = {
 		video = "ip4_university_lecture"
@@ -1357,7 +1566,7 @@ balkfm_yugoslavia.106 = {
 	}
 
 	option = {
-		name = balkfm_yugoslavia.106.a
+		name = balkfm_yugoslavia.107.a
 		default_option = yes
 		scope:balkfm_movement_scope = {
 			add_modifier = {
@@ -1373,18 +1582,18 @@ balkfm_yugoslavia.106 = {
 	}
 }
 
-balkfm_yugoslavia.107 = {
+balkfm_yugoslavia.108 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_protest.dds"
 	duration = 3
 	dlc = dlc_grefm
 	
-	title = balkfm_yugoslavia.107.t
-	desc = balkfm_yugoslavia.107.d
-	flavor = balkfm_yugoslavia.107.f
+	title = balkfm_yugoslavia.108.t
+	desc = balkfm_yugoslavia.108.d
+	flavor = balkfm_yugoslavia.108.f
 	
-	gui_window = event_window_com_default
+	gui_window = event_window_com_base
 	
 	event_image = {
 		video = "unspecific_politicians_arguing"
@@ -1434,13 +1643,13 @@ balkfm_yugoslavia.107 = {
 	}
 	
 	option = {
-		name = balkfm_yugoslavia.107.a
+		name = balkfm_yugoslavia.108.a
 		default_option = yes
 		balkfm_amputate_federal_subject_effect = yes
 	}
 	
 	option = {
-		name = balkfm_yugoslavia.107.b
+		name = balkfm_yugoslavia.108.b
 		add_radicals = {
 			culture = scope:balkfm_movement_scope.culture
 			value = very_large_radicals
@@ -1448,18 +1657,18 @@ balkfm_yugoslavia.107 = {
 	}
 }
 
-balkfm_yugoslavia.108 = {
+balkfm_yugoslavia.109 = {
 	type = country_event
 	placement = root
 	icon = "gfx/interface/icons/event_icons/event_newspaper.dds"
 	duration = 3
 	dlc = dlc_grefm
 	
-	title = balkfm_yugoslavia.108.t
-	desc = balkfm_yugoslavia.108.d
-	flavor = balkfm_yugoslavia.108.f
+	title = balkfm_yugoslavia.109.t
+	desc = balkfm_yugoslavia.109.d
+	flavor = balkfm_yugoslavia.109.f
 	
-	gui_window = event_window_com_default
+	gui_window = event_window_com_base
 	
 	event_image = {
 		video = "votp_conspiring"
@@ -1503,7 +1712,7 @@ balkfm_yugoslavia.108 = {
 	}
 	
 	option = {
-		name = balkfm_yugoslavia.108.a
+		name = balkfm_yugoslavia.109.a
 		default_option = yes
 		add_modifier = {
 			name = modifier_balkfm_membership_pamphlets_distributed
@@ -1529,7 +1738,7 @@ balkfm_yugoslavia.108 = {
 	}
 	
 	option = {
-		name = balkfm_yugoslavia.108.b
+		name = balkfm_yugoslavia.109.b
 		every_interest_group = {
 			limit = {
 				OR = {
