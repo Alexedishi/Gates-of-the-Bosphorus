@@ -236,12 +236,16 @@ Adjustments:
 Fixes:
 - ##Fixed several issues that could derail Greece's "Military League" journal
 - "Serbia and Montenegro" will now add claims for the surviving country if either tag dies before the journal completes
+- Fixed several diplo relations triggers that could be broken if you became a GP
 
 Notes:
 - Majority of event IDs refactored and a lot of unused/inaccurate localization pruned
 - All journal entries refactored for new outcomes scripting
 - Replaced ideology_social_democrat with ideology_state_socialist
 
+CHECK
+- Busted localization with Armansperg referring to himself during regency events
+- 
 
 --Update 4.1.2--
 Fixes:
