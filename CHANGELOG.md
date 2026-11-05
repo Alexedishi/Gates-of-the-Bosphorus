@@ -2,16 +2,15 @@
 # GATES OF THE BOSPHORUS CHANGELOG #
 ####################################
 
-# Mod Version: 4.0.6
-# Game Version: 1.13.8
+# Mod Version: 4.2.1
+# Game Version: 1.15.0
 # Author: Alexedishi
 
 ####################################
 
 ####---------- Version Compatibility ----------####
-#		GotB Patch	....	Victoria 3 Patch
-#		4.1.0		....	1.13.11
-#		3.4.12		.... 	1.12.3
+#		4.2.1		....	1.15.0
+#		4.1.1		....	1.13.11 / 1.14.0
 #		3.3.7		.... 	1.10.6 / 1.11.1
 #		3.2.8		.... 	1.9.8
 #		3.0.8		.... 	1.8.7
