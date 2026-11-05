@@ -1,7 +1,12 @@
 ﻿je_turkfm_tanzimat_main = {
 	group = je_group_gbbf_tanzimat
 	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	dlc = dlc_grefm
 	weight = 100
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -17,101 +22,106 @@
 	scripted_button = turkfm_start_tanzimat_button
 	scripted_button = turkfm_enforce_identity_button
 	scripted_button = turkfm_depose_murad_button
-	
-	widget = {
-		gui = "gui/com_journal_injects/injects.gui"
-		name = "com_journal_entry_progress_bars"
-		container = "com_custom_widget_container_scripted_progress_bars"
-	}
-	
-	immediate = {
-		create_com_progress_bar = {
-			progress_bar = turkfm_tanzimat_reforms_progress_bar
-			index = 0
-			color = blue
-		}
-		set_com_progress_bar_color = {
-			progress_bar = turkfm_tanzimat_reforms_progress_bar
-			color = red
-			side = right
-		}
-		create_com_progress_bar = {
-			progress_bar = turkfm_imperial_identity_progress_bar
-			index = 1
-			color = gold
-		}
-		set_com_progress_bar_color = {
-			progress_bar = turkfm_tanzimat_reforms_progress_bar
-			color = red
-			side = right
-		}
-	}
+	scripted_button = turkfm_reorganize_security_button
 
 	modifiers_while_active = {
 		modifier_turkfm_imperial_household
 		modifier_turkfm_decentralized_administration
 	}
-
-	complete = {
-		custom_tooltip = {
-			text = je_turkfm_tanzimat_main_complete
-			has_global_variable = turkfm_tanzimat_identity_complete
-		}
-	}
-
-	on_complete = {
-		custom_tooltip = {
-			text = je_turkfm_tanzimat_main_on_complete_ottomanist
-			if = {
-				limit = {
-					global_var:turkfm_tanzimat_identity_complete ?= cu:ottoman
-				}
-				trigger_event = turkfm_tanzimat.009
-			}
-		}
-		custom_tooltip = {
-			text = je_turkfm_tanzimat_main_on_complete_islamist
-			if = {
-				limit = {
-					global_var:turkfm_tanzimat_identity_complete ?= rel:sunni
-				}
-				trigger_event = turkfm_tanzimat.008
-			}
-		}
-		turkfm_cleanup_tanzimat_identity_effect = yes
-	}
-
-	fail = {
-		OR = {
+	
+	outcome = {
+		header = je_turkfm_tanzimat_main_ottomanist_completion_header
+		effect_header = je_turkfm_tanzimat_main_ottomanist_on_completion_header
+		conclusion_desc = je_turkfm_tanzimat_main_ottomanist_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
 			custom_tooltip = {
-				text = je_turkfm_tanzimat_main_fail
-				var:turkfm_tanzimat_reform_var <= 0
+				text = je_turkfm_tanzimat_main_outcome_trigger_ottomanist
+				global_var:turkfm_tanzimat_identity_complete ?= cu:ottoman
 			}
-			trigger_if = {
+		}
+		effect = {
+			trigger_event = turkfm_tanzimat.009
+			show_as_tooltip = {
+				remove_primary_culture = cu:turkish
+				add_primary_culture = cu:ottoman
+				custom_tooltip = turkfm_turkish_assimilation
+				custom_tooltip = turkfm_balkan_assimilation
+				custom_tooltip = turkfm_ottoman_homeland_replacement
+				add_modifier = {
+					name = modifier_turkfm_ottoman_motherland
+					months = gbbf_long_modifier_time
+				}
+			}
+			turkfm_cleanup_tanzimat_identity_effect = yes
+		}
+	}
+	
+	outcome = {
+		header = je_turkfm_tanzimat_main_islamist_completion_header
+		effect_header = je_turkfm_tanzimat_main_islamist_on_completion_header
+		conclusion_desc = je_turkfm_tanzimat_main_islamist_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			custom_tooltip = {
+				text = je_turkfm_tanzimat_main_outcome_trigger_islamist
+				global_var:turkfm_tanzimat_identity_complete ?= rel:sunni
+			}
+		}
+		effect = {
+			trigger_event = turkfm_tanzimat.008
+			show_as_tooltip = {
+				activate_law = law_type:law_state_religion
+				add_modifier = {
+					name = modifier_turkfm_eternal_caliphate
+					months = gbbf_long_modifier_time
+				}
+			}
+			turkfm_cleanup_tanzimat_identity_effect = yes
+		}
+	}
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		flags = { historical }
+		
+		trigger = {
+			OR = {
+				custom_tooltip = {
+					text = je_turkfm_tanzimat_main_outcome_trigger_failure
+					var:turkfm_tanzimat_reform_var <= 0
+				}
+				trigger_if = {
+					limit = {
+						has_variable = turkfm_young_turks_started
+					}
+					custom_tooltip = {
+						text = turkfm_young_turks_failed
+						has_variable = turkfm_young_turks_failed
+					}
+				}
+			}
+		}
+		effect = {
+			set_global_variable = turkfm_tanzimat_failed
+			if = {
 				limit = {
 					has_variable = turkfm_young_turks_started
 				}
-				custom_tooltip = {
-					text = turkfm_young_turks_failed
-					has_variable = turkfm_young_turks_failed
-				}
+				trigger_event = turkfm_tanzimat.007
 			}
-		}
-	}
-
-	on_fail = {
-		set_global_variable = turkfm_tanzimat_failed
-		if = {
-			limit = {
-				has_variable = turkfm_young_turks_started
+			else = {
+				trigger_event = turkfm_tanzimat.006
 			}
-			trigger_event = turkfm_tanzimat.007
+			custom_tooltip = turkfm_grand_collapse_possible
+			turkfm_cleanup_tanzimat_identity_effect = yes
 		}
-		else = {
-			trigger_event = turkfm_tanzimat.006
-		}
-		custom_tooltip = turkfm_grand_collapse_possible
-		turkfm_cleanup_tanzimat_identity_effect = yes
 	}
 
 	on_weekly_pulse = {
@@ -135,7 +145,7 @@
 	on_monthly_pulse = {
 		random_events = {
 			chance_of_no_event = 95
-			5 = turkfm_tanzimat.003 # The Men of the Tanzimat
+			5 = turkfm_tanzimat.002 # The Men of the Tanzimat
 		}
 		effect = {
 			com_change_and_clamp_variable = {
@@ -156,8 +166,13 @@
 
 je_turkfm_tanzimat_reforms = {
 	group = je_group_gbbf_tanzimat
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	icon = "gfx/interface/icons/invention_icons/bureaucracy.dds"
+	dlc = dlc_grefm
 	weight = 100
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -169,217 +184,178 @@ je_turkfm_tanzimat_reforms = {
 	scripted_button = turkfm_abolish_elifba_button
 	scripted_button = turkfm_abolish_esir_pazari_button
 	
-	immediate = {
-	}
-	
-	complete = {
-		custom_tooltip = {
-			text = turkfm_tanzimat_identity_complete
-			has_global_variable = turkfm_tanzimat_identity_complete
-		}
-		trigger_if = {
-			limit = {
-				NOT = {
-					has_global_variable = turkfm_tanzimat_started
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			custom_tooltip = {
+				text = turkfm_tanzimat_identity_complete
+				has_global_variable = turkfm_tanzimat_identity_complete
+			}
+			trigger_if = {
+				limit = {
+					NOT = {
+						has_global_variable = turkfm_tanzimat_started
+					}
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_gulhane_complete
+					always = no
 				}
 			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_gulhane_complete
-				always = no
+			trigger_if = {
+				limit = {
+					has_variable = turkfm_tanzimat_agriculture_agenda
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_agriculture_complete
+					always = no
+				}
 			}
-		}
-		trigger_if = { 
-			limit = {
-				has_variable = turkfm_tanzimat_agriculture_agenda
+			trigger_if = {
+				limit = {
+					has_variable = turkfm_tanzimat_agriculture_complete
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_agriculture_complete
+					always = yes
+				}
 			}
-			custom_tooltip = { 
-				text = turkfm_tanzimat_agriculture_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = turkfm_tanzimat_agriculture_complete
-			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_agriculture_complete
-				always = yes
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = turkfm_tanzimat_military_agenda
-			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_military_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = turkfm_tanzimat_military_complete
-			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_military_complete
-				always = yes
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = turkfm_tanzimat_civics_agenda
-			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_civics_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = turkfm_tanzimat_civics_complete
-			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_civics_complete
-				always = yes
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = turkfm_tanzimat_economy_agenda
-			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_economy_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = turkfm_tanzimat_economy_complete
-			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_economy_complete
-				always = yes
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = turkfm_tanzimat_education_agenda
-			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_education_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = turkfm_tanzimat_education_complete
-			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_education_complete
-				always = yes
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = turkfm_tanzimat_millet_agenda
-			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_military_complete
+			trigger_if = {
+				limit = {
+					has_variable = turkfm_tanzimat_military_agenda
+				}
 				custom_tooltip = {
 					text = turkfm_tanzimat_military_complete
 					always = no
 				}
 			}
+			trigger_if = {
+				limit = {
+					has_variable = turkfm_tanzimat_military_complete
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_military_complete
+					always = yes
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = turkfm_tanzimat_civics_agenda
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_civics_complete
+					always = no
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = turkfm_tanzimat_civics_complete
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_civics_complete
+					always = yes
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = turkfm_tanzimat_economy_agenda
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_economy_complete
+					always = no
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = turkfm_tanzimat_economy_complete
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_economy_complete
+					always = yes
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = turkfm_tanzimat_education_agenda
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_education_complete
+					always = no
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = turkfm_tanzimat_education_complete
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_education_complete
+					always = yes
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = turkfm_tanzimat_millet_agenda
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_military_complete
+					custom_tooltip = {
+						text = turkfm_tanzimat_military_complete
+						always = no
+					}
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = turkfm_tanzimat_military_complete
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_military_complete
+					always = yes
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = turkfm_tanzimat_security_agenda
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_security_complete
+					always = no
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = turkfm_tanzimat_security_complete
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_security_complete
+					always = yes
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = turkfm_tanzimat_slavery_agenda
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_slavery_complete
+					always = no
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = turkfm_tanzimat_slavery_complete
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_slavery_complete
+					always = yes
+				}
+			}
 		}
-		trigger_if = {
-			limit = {
-				has_variable = turkfm_tanzimat_military_complete
-			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_military_complete
-				always = yes
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = turkfm_tanzimat_security_agenda
-			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_security_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = turkfm_tanzimat_security_complete
-			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_security_complete
-				always = yes
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = turkfm_tanzimat_slavery_agenda
-			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_slavery_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = turkfm_tanzimat_slavery_complete
-			}
-			custom_tooltip = {
-				text = turkfm_tanzimat_slavery_complete
-				always = yes
-			}
-		}
-	}
-	
-	on_complete = {
-		set_global_variable = turkfm_tanzimat_reforms_complete
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_feudal_argiculture
-			}
-			remove_modifier = modifier_turkfm_feudal_argiculture
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_outmoded_bureaucracy
-			}
-			remove_modifier = modifier_turkfm_outmoded_bureaucracy
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_stagnant_economy
-			}
-			remove_modifier = modifier_turkfm_stagnant_economy
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_illiterate_populace
-			}
-			remove_modifier = modifier_turkfm_illiterate_populace
-		}
-		if = {
-			limit = {
-				has_modifier = modifier_turkfm_insecure_countryside
-			}
-			remove_modifier = modifier_turkfm_insecure_countryside
-		}
-	}
-	
-	fail = {
-		custom_tooltip = {
-			text = turkfm_tanzimat_failed
-			has_global_variable = turkfm_tanzimat_failed
-		}
-	}
-	
-	on_fail = {
-		hidden_effect = {
+		effect = {
+			set_global_variable = turkfm_tanzimat_reforms_complete
 			if = {
 				limit = {
 					has_modifier = modifier_turkfm_feudal_argiculture
@@ -413,12 +389,64 @@ je_turkfm_tanzimat_reforms = {
 		}
 	}
 	
-	invalid = {
-		has_global_variable = turkfm_tanzimat_reforms_complete
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		flags = { historical }
+		
+		trigger = {
+			custom_tooltip = {
+				text = turkfm_tanzimat_failed
+				has_global_variable = turkfm_tanzimat_failed
+			}
+		}
+		effect = {
+			hidden_effect = {
+				if = {
+					limit = {
+						has_modifier = modifier_turkfm_feudal_argiculture
+					}
+					remove_modifier = modifier_turkfm_feudal_argiculture
+				}
+				if = {
+					limit = {
+						has_modifier = modifier_turkfm_outmoded_bureaucracy
+					}
+					remove_modifier = modifier_turkfm_outmoded_bureaucracy
+				}
+				if = {
+					limit = {
+						has_modifier = modifier_turkfm_stagnant_economy
+					}
+					remove_modifier = modifier_turkfm_stagnant_economy
+				}
+				if = {
+					limit = {
+						has_modifier = modifier_turkfm_illiterate_populace
+					}
+					remove_modifier = modifier_turkfm_illiterate_populace
+				}
+				if = {
+					limit = {
+						has_modifier = modifier_turkfm_insecure_countryside
+					}
+					remove_modifier = modifier_turkfm_insecure_countryside
+				}
+			}
+		}
 	}
 	
-	on_invalid = {
-		hidden_effect = {
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			has_global_variable = turkfm_tanzimat_reforms_complete
+		}
+		effect = {
 			if = {
 				limit = {
 					has_modifier = modifier_turkfm_feudal_argiculture
@@ -481,8 +509,13 @@ je_turkfm_tanzimat_reforms = {
 
 je_turkfm_tanzimat_young_ottomans = {
 	group = je_group_gbbf_tanzimat
-	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	icon = "gfx/interface/icons/invention_icons/academia.dds"
+	dlc = dlc_grefm
 	weight = 10000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -524,75 +557,96 @@ je_turkfm_tanzimat_young_ottomans = {
 	modifiers_while_active = {
 		modifier_turkfm_ottomanist_thought
 	}
-
-	complete = {
-		OR = {
-			AND = {
-				country_has_voting_franchise = yes
-				NOR = {
-					has_law_or_variant = law_type:law_ethnostate
-					has_law_or_variant = law_type:law_national_supremacy
-					has_law_or_variant = law_type:law_multicultural
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			OR = {
+				AND = {
+					country_has_voting_franchise = yes
+					NOR = {
+						has_law_or_variant = law_type:law_ethnostate
+						has_law_or_variant = law_type:law_national_supremacy
+						has_law_or_variant = law_type:law_multicultural
+					}
+					has_law_or_variant = law_type:law_state_religion
 				}
-				has_law_or_variant = law_type:law_state_religion
-			}
-			custom_tooltip = {
-				text = je_turkfm_tanzimat_young_ottomans_complete
-				has_variable = turkfm_young_ottomans_var
-				var:turkfm_young_ottomans_var <= 0
-			}
-		}
-	}
-
-	on_complete = {
-		custom_tooltip = {
-			text = je_turkfm_tanzimat_young_ottomans_reform_outcome
-			if = {
-				limit = {
-					var:turkfm_young_ottomans_var > 0
-				}
-				trigger_event = turkfm_tanzimat.107
-			}
-		}
-		custom_tooltip = {
-			text = je_turkfm_tanzimat_young_ottomans_autocracy_outcome
-			if = {
-				limit = {
+				custom_tooltip = {
+					text = je_turkfm_tanzimat_young_ottomans_complete
+					has_variable = turkfm_young_ottomans_var
 					var:turkfm_young_ottomans_var <= 0
 				}
-				trigger_event = turkfm_tanzimat.108
 			}
 		}
-		turkfm_cleanup_young_ottomans_effect = yes
-	}
-
-	fail = {
-		custom_tooltip = {
-			text = je_turkfm_tanzimat_young_ottomans_fail
-			has_variable = turkfm_young_ottomans_var
-			var:turkfm_young_ottomans_var >= 100
-		}
-	}
-
-	on_fail = {
-		custom_tooltip = {
-			text = je_turkfm_tanzimat_young_ottomans_failure_outcome
-			trigger_event = turkfm_tanzimat.109
-		}
-		turkfm_cleanup_young_ottomans_effect = yes
-	}
-
-	invalid = {
-		OR = {
-			NOT = {
-				has_law_or_variant = law_type:law_monarchy
-			}
+		effect = {
 			custom_tooltip = {
-				text = turkfm_tanzimat_completed_or_failed
-				NOT = {
-					has_journal_entry = je_turkfm_tanzimat_main
+				text = je_turkfm_tanzimat_young_ottomans_reform_outcome
+				if = {
+					limit = {
+						var:turkfm_young_ottomans_var > 0
+					}
+					trigger_event = turkfm_tanzimat.102
 				}
 			}
+			custom_tooltip = {
+				text = je_turkfm_tanzimat_young_ottomans_autocracy_outcome
+				if = {
+					limit = {
+						var:turkfm_young_ottomans_var <= 0
+					}
+					trigger_event = turkfm_tanzimat.103
+				}
+			}
+			turkfm_cleanup_young_ottomans_effect = yes
+		}
+	}
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		flags = { }
+		
+		trigger = {
+			custom_tooltip = {
+				text = je_turkfm_tanzimat_young_ottomans_fail
+				has_variable = turkfm_young_ottomans_var
+				var:turkfm_young_ottomans_var >= 100
+			}
+		}
+		effect = {
+			custom_tooltip = {
+				text = je_turkfm_tanzimat_young_ottomans_failure_outcome
+				trigger_event = turkfm_tanzimat.104
+			}
+			turkfm_cleanup_young_ottomans_effect = yes
+		}
+	}
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			OR = {
+				NOT = {
+					has_law_or_variant = law_type:law_monarchy
+				}
+				custom_tooltip = {
+					text = turkfm_tanzimat_completed_or_failed
+					NOT = {
+						has_journal_entry = je_turkfm_tanzimat_main
+					}
+				}
+			}
+		}
+		effect = {
+			turkfm_cleanup_young_ottomans_effect = yes
 		}
 	}
 
@@ -657,8 +711,13 @@ je_turkfm_tanzimat_young_ottomans = {
 
 je_turkfm_tanzimat_young_turks = {
 	group = je_group_gbbf_tanzimat
-	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	icon = "gfx/interface/icons/invention_icons/human_rights.dds"
+	dlc = dlc_grefm
 	weight = 10000
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -702,59 +761,76 @@ je_turkfm_tanzimat_young_turks = {
 	modifiers_while_active = {
 		modifier_turkfm_political_instability
 	}
-
-	complete = {
-		custom_tooltip = {
-			text = je_turkfm_tanzimat_young_turks_complete
-			scope:journal_entry.var:turkfm_young_turks_var <= 0
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			custom_tooltip = {
+				text = je_turkfm_tanzimat_young_turks_complete
+				scope:journal_entry.var:turkfm_young_turks_var <= 0
+			}
+			country_has_voting_franchise = yes
+			government_legitimacy >= 75
+			gbbf_no_revolutionary_ig_trigger = yes
+			gbbf_is_broke_trigger = no
 		}
-		country_has_voting_franchise = yes
-		government_legitimacy >= 75
-		gbbf_no_revolutionary_ig_trigger = yes
-		gbbf_is_broke_trigger = no
-	}
-
-	on_complete = {
-#		trigger_event = turkfm_tanzimat.201 # TODO link refactored event
-		turkfm_cleanup_young_turks_effect = yes
-	}
-
-	fail = {
-		custom_tooltip = {
-			text = je_turkfm_tanzimat_young_turks_fail
-			scope:journal_entry.var:turkfm_young_turks_var >= 100
+		effect = {
+			trigger_event = turkfm_tanzimat.201
+			turkfm_cleanup_young_turks_effect = yes
 		}
-		OR = {
+	}
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		flags = { historical }
+		
+		trigger = {
+			custom_tooltip = {
+				text = je_turkfm_tanzimat_young_turks_fail
+				scope:journal_entry.var:turkfm_young_turks_var >= 100
+			}
+			OR = {
+				NOT = {
+					has_law_or_variant = law_type:law_monarchy
+				}
+				AND = {
+					ig:ig_landowners = {
+						is_in_government = no
+					}
+					ig:ig_devout = {
+						is_in_government = no
+					}
+				}
+			}
+		}
+		effect = {
+			set_variable = turkfm_young_turks_failed
+			show_as_tooltip = {
+				trigger_event = turkfm_tanzimat.007
+			}
+			turkfm_cleanup_young_turks_effect = yes
+		}
+	}
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
 			NOT = {
-				has_law_or_variant = law_type:law_monarchy
-			}
-			AND = {
-				ig:ig_landowners = {
-					is_in_government = no
-				}
-				ig:ig_devout = {
-					is_in_government = no
-				}
+				has_journal_entry = je_turkfm_tanzimat_main
 			}
 		}
-	}
-
-	on_fail = {
-		set_variable = turkfm_young_turks_failed
-		show_as_tooltip = {
-			trigger_event = turkfm_tanzimat.007
+		effect = {
+			turkfm_cleanup_young_turks_effect = yes
 		}
-		turkfm_cleanup_young_turks_effect = yes
-	}
-	
-	invalid = {
-		NOT = {
-			has_journal_entry = je_turkfm_tanzimat_main
-		}
-	}
-	
-	on_invalid = {
-		turkfm_cleanup_young_turks_effect = yes
 	}
 	
 	on_weekly_pulse = {
@@ -765,11 +841,16 @@ je_turkfm_tanzimat_young_turks = {
 	
 	on_monthly_pulse = {
 		events = {
-			# turkfm_tanzimat.201
+			turkfm_tanzimat.201
 		}
 		effect = {
-			gbbf_calc_and_push_variable_effect = {
-				name = turkfm_young_turks
+			set_variable = {
+				name = turkfm_young_turks_progress_var
+				value = turkfm_young_turks_progress_value
+			}
+			com_change_and_clamp_variable = {
+				name = turkfm_young_turks_var
+				value = var:turkfm_young_turks_progress_var
 				max = 100
 				min = 0
 			}

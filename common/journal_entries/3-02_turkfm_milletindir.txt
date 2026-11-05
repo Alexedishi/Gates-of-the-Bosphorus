@@ -1,7 +1,12 @@
 ﻿je_turkfm_milletindir = {
-	group = je_group_historical_content
+	group = je_group_gbbf_turkish_nationalism
 	icon = "gfx/interface/icons/event_icons/event_turkey.dds"
+	dlc = dlc_grefm
 	weight = 500
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -17,19 +22,22 @@
 	scripted_button = turkfm_embrace_anatolianism_button
 	
 	is_shown_when_inactive = {
-		always = no # TODO enable when ready
+		NOT = {
+			has_global_variable = turkfm_tanzimat_identity_complete
+		}
 		c:TUR ?= this
 		has_technology_researched = nationalism
 	}
 	
 	possible = {
-		NOR = {
-			has_law_or_variant = law_type:law_monarchy
-			has_law_or_variant = law_type:law_theocracy
-		}
 		custom_tooltip = {
 			text = turkfm_tanzimat_failed
 			has_global_variable = turkfm_tanzimat_failed
+		}
+		NOR = {
+			has_journal_entry = je_turkfm_sick_man_grand_collapse
+			has_law = law_type:law_monarchy
+			has_law_or_variant = law_type:law_theocracy
 		}
 	}
 	
@@ -51,45 +59,57 @@
 		trigger_event = turkfm_milletindir.001
 	}
 	
-	complete = {
-		OR = {
-			custom_tooltip = {
-				text = je_turkfm_milletindir_complete
-				has_variable = turkfm_culture_var
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			OR = {
+				custom_tooltip = {
+					text = je_turkfm_milletindir_complete
+					has_variable = turkfm_culture_var
+				}
+				has_law_or_variant = law_type:law_ethnostate
 			}
-			has_law_or_variant = law_type:law_ethnostate
 		}
-	}
-	
-	on_complete = {
-		trigger_event = turkfm_milletindir.002
+		effect = {
+			trigger_event = turkfm_milletindir.002
+		}
 	}
 	
 	on_weekly_pulse = {
 		effect = {
 			scope:journal_entry = {
-				gbbf_calc_variable_effect = {
-					name = turkfm_kemalism
+				set_variable = {
+					name = turkfm_kemalism_var
+					value = owner.turkfm_kemalism_value
 				}
-				gbbf_calc_variable_effect = {
-					name = turkfm_turanism
+				set_variable = {
+					name = turkfm_turanism_var
+					value = owner.turkfm_turanism_value
 				}
-				gbbf_calc_variable_effect = {
-					name = turkfm_anatolianism
+				set_variable = {
+					name = turkfm_anatolianism_var
+					value = owner.turkfm_anatolianism_value
 				}
 			}
 		}
 	}
-
-	on_monthly_pulse = {
-		random_events = {  }
-	}
 }
 
 je_turkfm_anatolian_reconquest = {
-	group = je_group_historical_content
+	group = je_group_gbbf_turkish_nationalism
 	icon = "gfx/interface/icons/event_icons/event_vulpes.dds"
+	dlc = dlc_grefm
 	weight = 500
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -123,48 +143,71 @@ je_turkfm_anatolian_reconquest = {
 	immediate = {
 		trigger_event = turkfm_milletindir.010
 	}
-
-	complete = {
-		any_state_in_anatolia = {
-			count = all
-			owner = root
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			any_state_in_anatolia = {
+				count = all
+				owner = root
+			}
 		}
-	}
-
-	on_complete = {
-		trigger_event = turkfm_milletindir.011
-		set_variable = turkfm_reconquered_anatolia
+		effect = {
+			trigger_event = turkfm_milletindir.011
+			set_variable = turkfm_reconquered_anatolia
+		}
 	}
 	
-	fail = {
-		OR = {
-			is_subject = yes
-			gbbf_is_broke_trigger = yes
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			OR = {
+				is_subject = yes
+				gbbf_is_broke_trigger = yes
+			}
+		}
+		effect = {
+			trigger_event = turkfm_milletindir.012
+			custom_tooltip = {
+				text = turkfm_weaksauce
+				set_variable = turkfm_weaksauce
+			}
 		}
 	}
-
-	on_fail = {
-		trigger_event = turkfm_milletindir.012
-		custom_tooltip = {
-			text = turkfm_weaksauce
-			set_variable = turkfm_weaksauce
-		}
-	}
-
-	invalid = {
-		hidden_trigger = {
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
 			OR = {
 				has_variable = turkfm_reconquered_anatolia
 				has_variable = turkfm_weaksauce
 			}
 		}
+		effect = { }
 	}
 }
 
 je_turkfm_rampaging_wolf = {
-	group = je_group_historical_content
+	group = je_group_gbbf_turkish_nationalism
 	icon = "gfx/interface/icons/event_icons/event_vulpes.dds"
+	dlc = dlc_grefm
 	weight = 500
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -200,63 +243,83 @@ je_turkfm_rampaging_wolf = {
 	modifiers_while_active = {
 		modifier_turkfm_pursuing_turan
 	}
-
-	complete = {
-		country_rank >= rank_value:great_power
-		owns_entire_state_region = STATE_EASTERN_THRACE
-		owns_entire_state_region = STATE_PALESTINE
-		gbbf_controls_georegion_trigger = {
-			georegion = anatolia
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			country_rank >= rank_value:great_power
+			owns_entire_state_region = STATE_EASTERN_THRACE
+			owns_entire_state_region = STATE_PALESTINE
+			gbbf_controls_georegion_trigger = {
+				georegion = anatolia
+			}
+			gbbf_controls_georegion_trigger = {
+				georegion = rumelia
+			}
+			gbbf_owns_entire_georegion_trigger = {
+				georegion = levant
+			}
+			gbbf_controls_georegion_trigger = {
+				georegion = armenian_highlands
+			}
 		}
-		gbbf_controls_georegion_trigger = {
-			georegion = rumelia
+		effect = {
+			trigger_event = turkfm_milletindir.014
+			set_variable = turkfm_rampaging_wolf_complete
 		}
-		gbbf_owns_entire_georegion_trigger = {
-			georegion = levant
-		}
-		gbbf_controls_georegion_trigger = {
-			georegion = armenian_highlands
-		}
-	}
-
-	on_complete = {
-		trigger_event = turkfm_milletindir.014
-		set_variable = turkfm_rampaging_wolf_complete
 	}
 	
-	fail = {
-		OR = {
-			is_subject = yes
-			AND = {
-				country_rank < rank_value:minor_power
-				gbbf_is_broke_trigger = yes
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			OR = {
+				is_subject = yes
+				AND = {
+					country_rank < rank_value:minor_power
+					gbbf_is_broke_trigger = yes
+				}
+			}
+		}
+		effect = {
+			trigger_event = turkfm_milletindir.015
+			custom_tooltip = {
+				text = turkfm_weaksauce
+				set_variable = turkfm_weaksauce
 			}
 		}
 	}
-
-	on_fail = {
-		trigger_event = turkfm_milletindir.015
-		custom_tooltip = {
-			text = turkfm_weaksauce
-			set_variable = turkfm_weaksauce
-		}
-	}
 	
-	invalid = {
-		hidden_trigger = {
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
 			OR = {
 				has_variable = turkfm_reconquered_anatolia
 				has_variable = turkfm_weaksauce
 			}
-			
 		}
+		effect = { }
 	}
 }
 
 je_turkfm_turan = {
-	group = je_group_historical_content
+	group = je_group_gbbf_turkish_nationalism
 	icon = "gfx/interface/icons/event_icons/event_vulpes.dds"
+	dlc = dlc_grefm
 	weight = 500
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -289,55 +352,76 @@ je_turkfm_turan = {
 	immediate = {
 		trigger_event = turkfm_milletindir.016
 	}
-
-	complete = {
-		custom_tooltip = {
-			text = turkfm_has_formed_turan
-			c:TURAN ?= this
-		}
-		country_rank >= rank_value:great_power
-		any_state_in_anatolia = {
-			owner = root
-		}
-		sr:region_central_asia = {
-			any_scope_state = {
-				percent >= 0.9
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			custom_tooltip = {
+				text = turkfm_has_formed_turan
+				c:TURAN ?= this
+			}
+			country_rank >= rank_value:great_power
+			any_state_in_anatolia = {
 				owner = root
 			}
+			sr:region_central_asia = {
+				any_scope_state = {
+					percent >= 0.9
+					owner = root
+				}
+			}
 		}
-	}
-
-	on_complete = {
-		trigger_event = turkfm_milletindir.017
-	}
-
-	fail = {
-		OR = {
-			gbbf_is_broke_trigger = yes
-			country_rank < rank_value:major_power
-			is_subject = yes
-		}
-	}
-
-	on_fail = {
-		trigger_event = turkfm_milletindir.018
-		custom_tooltip = {
-			text = turkfm_weaksauce
-			set_variable = turkfm_weaksauce
+		effect = {
+			trigger_event = turkfm_milletindir.017
 		}
 	}
 	
-	invalid = {
-		hidden_trigger = {
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			OR = {
+				gbbf_is_broke_trigger = yes
+				country_rank < rank_value:major_power
+				is_subject = yes
+			}
+		}
+		effect = {
+			trigger_event = turkfm_milletindir.018
+			custom_tooltip = {
+				text = turkfm_weaksauce
+				set_variable = turkfm_weaksauce
+			}
+		}
+	}
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
 			has_variable = turkfm_weaksauce
 		}
+		effect = { }
 	}
 }
 
 je_turkfm_armenian_expulsions = {
-	group = je_group_crises
+	group = je_group_gbbf_turkish_nationalism
 	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	dlc = dlc_grefm
 	weight = 100
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -372,51 +456,66 @@ je_turkfm_armenian_expulsions = {
 	immediate = {
 		trigger_event = turkfm_milletindir.100
 	}
-
-	complete = {
-		any_scope_state = {
-			filter = {
-				state_region = {
-					is_homeland = armenian
-				}
-			}
-			count = all
-			custom_tooltip = {
-				text = je_turkfm_armenian_expulsions_complete
-				culture_percent_state = {
-					target = cu:armenian
-					value <= 0.05
-				}
-			}
-		}
-	}
-
-	on_complete = {
-		trigger_event = turkfm_milletindir.101
-	}
-
-	fail = {
-		OR = {
-			NOT = {
-				any_scope_state = {
+	
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			any_scope_state = {
+				filter = {
 					state_region = {
 						is_homeland = armenian
 					}
 				}
-			}
-			custom_tooltip = {
-				text = je_turkfm_armenian_expulsions_fail
-				has_variable = turkfm_armenian_deportations_halted
+				count = all
+				custom_tooltip = {
+					text = je_turkfm_armenian_expulsions_complete
+					culture_percent_state = {
+						target = cu:armenian
+						value <= 0.05
+					}
+				}
 			}
 		}
+		effect = {
+			trigger_event = turkfm_milletindir.101
+		}
 	}
-
-	on_fail = {
-		if = {
-			limit = {
-				has_variable = turkfm_armenian_deportations_halted
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			OR = {
+				NOT = {
+					any_scope_state = {
+						state_region = {
+							is_homeland = armenian
+						}
+					}
+				}
+				custom_tooltip = {
+					text = je_turkfm_armenian_expulsions_fail
+					has_variable = turkfm_armenian_deportations_halted
+				}
 			}
-			trigger_event = turkfm_milletindir.102
+		}
+		effect = {
+			if = {
+				limit = {
+					has_variable = turkfm_armenian_deportations_halted
+				}
+				trigger_event = turkfm_milletindir.102
+			}
 		}
 	}
 

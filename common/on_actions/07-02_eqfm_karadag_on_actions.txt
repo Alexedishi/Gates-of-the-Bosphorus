@@ -1,0 +1,63 @@
+﻿####---------- Karadag On Actions ----------####
+eqfm_karadag_pulse = {
+	trigger = {
+		is_involved_in_journal_entry = je_eqfm_karadag
+	}
+	on_actions = {
+		eqfm_karadag_expedition_pulse
+	}
+}
+
+eqfm_karadag_expedition_pulse = {
+	trigger = {
+		eqfm_has_karadag_expedition_trigger = yes
+		NOT = {
+			has_variable = eqfm_expedition_karadag_transit_var
+		}
+	}
+	random_events = {
+		chance_of_no_event = 95
+		5 = eqfm_karadag.027 # Village Skirmish Escalates
+		1 = eqfm_karadag.030 # Tax Evasion
+		5 = eqfm_karadag.031 # Nobleman Held Hostage
+		10 = eqfm_karadag.033 # Landslide Across the Border
+		5 = eqfm_karadag.040 # Local Informants
+		5 = eqfm_karadag.041 # Bear Sighted
+		10 = eqfm_karadag.042 # A Circular Expedition
+		20 = eqfm_karadag.043 # Snow on the Ground
+		5 = eqfm_karadag.044 # Balkan Hospitality
+		5 = eqfm_karadag.045 # Expedition Beset by Plague!
+		10 = eqfm_karadag.046 # Tax Evasion
+	}
+	effect = {
+		if = {
+			limit = {
+				NOT = {
+					has_variable = eqfm_karadag_expedition_progress_var
+				}
+			}
+			set_variable = {
+				name = eqfm_karadag_expedition_progress_var
+				value = 0
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_variable = eqfm_karadag_expedition_peril_var
+				}
+			}
+			set_variable = {
+				name = eqfm_karadag_expedition_peril_var
+				value = 0
+			}
+		}
+	}
+}
+
+eqfm_karadag_expedition_validation = {
+	events = {
+		eqfm_karadag.023 # Expeditionary Force Withdraws from the Border
+		eqfm_karadag.024 # Expeditionary Force Leader Has Died!
+	}
+}

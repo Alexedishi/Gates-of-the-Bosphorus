@@ -1,10 +1,35 @@
-﻿grefm_bavarocracy_progress_value = {
+﻿####---------- Bavarocracy Values ----------####
+grefm_bavarocracy_start_value = {
+	if = {
+		limit = {
+			has_dlc_feature = ip3_content
+		}
+		value = 0
+	}
+	else = {
+		value = 2000
+	}
+}
+
+grefm_bavarocracy_max_value = {
+	if = {
+		limit = {
+			has_dlc_feature = ip3_content
+		}
+		value = 50
+	}
+	else = {
+		value = 2000
+	}
+}
+
+grefm_bavarocracy_progress_value = {
 	value = 0
 	add = {
 		value = var:grefm_bavarocracy_support_var
 		desc = grefm_value_from_bavarocracy_support
 	}
-	subtract = {
+	add = {
 		value = var:grefm_bavarocracy_opposition_var
 		desc = grefm_value_from_bavarocracy_opposition
 	}
@@ -21,6 +46,7 @@ grefm_bavarocracy_support_value = {
 			}
 		}
 		add = {
+			desc = grefm_value_from_royalist_absolutist_movement_support
 			value = {
 				every_political_movement = {
 					limit = {
@@ -30,12 +56,12 @@ grefm_bavarocracy_support_value = {
 				}
 				round_to = 0.01
 			}
-			desc = grefm_value_from_royalist_absolutist_movement_support
 		}
 	}
 	# Constitutional Royalists will always support the King
 	add = {
 		value = {
+			desc = grefm_value_from_royalist_constitutional_movement_support
 			every_political_movement = {
 				limit = {
 					is_political_movement_type = movement_royalist_constitutional
@@ -44,7 +70,6 @@ grefm_bavarocracy_support_value = {
 			}
 			round_to = 0.01
 		}
-		desc = grefm_value_from_royalist_constitutional_movement_support
 	}
 	# The Liberal Movement will support if the King if there is voting franchise
 	if = {
@@ -52,6 +77,7 @@ grefm_bavarocracy_support_value = {
 			country_has_voting_franchise = yes
 		}
 		add = {
+			desc = grefm_value_from_liberal_movement_support
 			value = {
 				every_political_movement = {
 					limit = {
@@ -70,7 +96,6 @@ grefm_bavarocracy_support_value = {
 				}
 				round_to = 0.01
 			}
-			desc = grefm_value_from_liberal_movement_support
 		}
 	}
 	if = {
@@ -78,8 +103,8 @@ grefm_bavarocracy_support_value = {
 			has_variable = balkfm_land_reform_complete
 		}
 		add = {
-			value = 0.5
 			desc = grefm_value_from_land_reform_completed
+			value = 0.5
 		}
 	}
 	if = {
@@ -87,8 +112,8 @@ grefm_bavarocracy_support_value = {
 			has_variable = balkfm_security_reform_complete
 		}
 		add = {
-			value = 0.5
 			desc = grefm_value_from_brigandage_completed
+			value = 0.5
 		}
 	}
 	if = {
@@ -96,8 +121,8 @@ grefm_bavarocracy_support_value = {
 			has_variable = balkfm_civic_reform_complete
 		}
 		add = {
-			value = 0.5
 			desc = grefm_value_from_civic_reform_compeleted
+			value = 0.5
 		}
 	}
 	if = {
@@ -105,8 +130,8 @@ grefm_bavarocracy_support_value = {
 			has_modifier = modifier_grefm_nikitas_released
 		}
 		add = {
-			value = 1
 			desc = grefm_value_from_turkeater_unleashed
+			value = 1
 		}
 	}
 	if = {
@@ -117,12 +142,12 @@ grefm_bavarocracy_support_value = {
 			}
 		}
 		add = {
+			desc = grefm_value_from_royal_palace
 			value = {
 				add = government_legitimacy
 				divide = 100
 				round_to = 0.01
 			}
-			desc = grefm_value_from_royal_palace
 		}
 	}
 }
@@ -135,7 +160,8 @@ grefm_bavarocracy_opposition_value = {
 		limit = {
 			country_has_voting_franchise = yes
 		}
-		add = {
+		subtract = {
+			desc = grefm_value_from_liberal_movement_support
 			value = {
 				every_political_movement = {
 					limit = {
@@ -154,7 +180,6 @@ grefm_bavarocracy_opposition_value = {
 				}
 				round_to = 0.01
 			}
-			desc = grefm_value_from_liberal_movement_support
 		}
 	}
 	# The Liberal Movement will oppose the King if there is no voting franchise
@@ -162,7 +187,8 @@ grefm_bavarocracy_opposition_value = {
 		limit = {
 			country_has_voting_franchise = no
 		}
-		add = {
+		subtract = {
+			desc = grefm_value_from_liberal_movement_support
 			value = {
 				every_political_movement = {
 					limit = {
@@ -178,7 +204,6 @@ grefm_bavarocracy_opposition_value = {
 				}
 				round_to = 0.01
 			}
-			desc = grefm_value_from_liberal_movement_support
 		}
 	}
 	if = {
@@ -190,163 +215,35 @@ grefm_bavarocracy_opposition_value = {
 				limit = {
 					has_modifier = modifier_balkfm_land_reform_agenda
 				}
-				add = {
-					value = 0.5
+				subtract = {
 					desc = grefm_value_from_land_reform_completed_NOT
+					value = 0.5
 				}
 			}
 			if = {
 				limit = {
 					has_modifier = modifier_balkfm_security_reform_agenda
 				}
-				add = {
-					value = 0.5
+				subtract = {
 					desc = grefm_value_from_brigandage_completed_NOT
+					value = 0.5
 				}
 			}
 			if = {
 				limit = {
 					has_modifier = modifier_balkfm_civic_reform_agenda
 				}
-				add = {
-					value = 0.5
+				subtract = {
 					desc = grefm_value_from_civic_reform_compeleted_NOT
+					value = 0.5
 				}
 			}
 		}
 	}
 	
-	add = {
-		value = {
-			every_scope_state = {
-				limit = {
-					has_modifier = modifier_balkfm_maurauding_bridgands
-				}
-				add = radical_fraction
-			}
-			round_to = 0.01
-		}
-		desc = grefm_value_from_raided_state_radicals
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_grefm_bavarian_auxiliaries
-		}
-		add = {
-			value = 1
-			desc = grefm_value_from_bavarian_auxiliaries
-		}
-	}
-	if = {
-		limit = {
-			OR = {
-				NOT = {
-					exists = heir
-				}
-				heir ?= {
-					has_template = grefm_armansperg_josef
-				}
-			}
-		}
-		add = {
-			value = 1
-			desc = grefm_value_from_lacking_heir
-		}
-	}
-
-	round_to = 0.01
-
-}
-
-grefm_bavarocracy_opposition_display_value = {
-	# This value is meant to show the factors as negatives when displayed
-	value = 0
-	if = {
-		limit = {
-			country_has_voting_franchise = yes
-		}
-		subtract = {
-			value = {
-				every_political_movement = {
-					limit = {
-						is_political_movement_type = movement_royalist_absolutist
-					}
-					add = political_movement_support
-				}
-				if = {
-					limit = {
-						OR = {
-							has_law_or_variant = law_type:law_census_voting
-							has_law_or_variant = law_type:law_universal_suffrage
-						}
-					}
-					multiply = 2
-				}
-				round_to = 0.01
-			}
-			desc = grefm_value_from_liberal_movement_support
-		}
-	}
-	# The Liberal Movement will oppose the King if there is no voting franchise
-	if = {
-		limit = {
-			country_has_voting_franchise = no
-		}
-		subtract = {
-			value = {
-				every_political_movement = {
-					limit = {
-						is_political_movement_type = movement_liberal
-					}
-					add = political_movement_support
-				}
-				if = {
-					limit = {
-						has_law_or_variant = law_type:law_autocracy
-					}
-					multiply = 2
-				}
-				round_to = 0.01
-			}
-			desc = grefm_value_from_liberal_movement_support
-		}
-	}
-	if = {
-		limit = {
-			has_journal_entry = je_balkfm_legacies
-		}
-		je:je_balkfm_legacies = {
-			if = {
-				limit = {
-					has_modifier = modifier_balkfm_land_reform_agenda
-				}
-				subtract = {
-					value = 0.5
-					desc = grefm_value_from_land_reform_completed_NOT
-				}
-			}
-			if = {
-				limit = {
-					has_modifier = modifier_balkfm_security_reform_agenda
-				}
-				subtract = {
-					value = 0.5
-					desc = grefm_value_from_brigandage_completed_NOT
-				}
-			}
-			if = {
-				limit = {
-					has_modifier = modifier_balkfm_civic_reform_agenda
-				}
-				subtract = {
-					value = 0.5
-					desc = grefm_value_from_civic_reform_compeleted_NOT
-				}
-			}
-		}
-	}
 	subtract = {
 		value = {
+			desc = grefm_value_from_raided_state_radicals
 			every_scope_state = {
 				limit = {
 					has_modifier = modifier_balkfm_maurauding_bridgands
@@ -355,15 +252,14 @@ grefm_bavarocracy_opposition_display_value = {
 			}
 			round_to = 0.01
 		}
-		desc = grefm_value_from_raided_state_radicals
 	}
 	if = {
 		limit = {
 			has_modifier = modifier_grefm_bavarian_auxiliaries
 		}
 		subtract = {
-			value = 1
 			desc = grefm_value_from_bavarian_auxiliaries
+			value = 1
 		}
 	}
 	if = {
@@ -378,13 +274,25 @@ grefm_bavarocracy_opposition_display_value = {
 			}
 		}
 		subtract = {
-			value = 1
 			desc = grefm_value_from_lacking_heir
+			value = 1
 		}
 	}
-
 	round_to = 0.01
+}
 
+grefm_bavarocracy_instability_start_value = 0
+
+grefm_bavarocracy_instability_max_value = {
+	if = {
+		limit = {
+			has_dlc_feature = ip3_content
+		}
+		value = 100
+	}
+	else = {
+		value = 200
+	}
 }
 
 grefm_bavarocracy_instability_progress_value = {
@@ -700,6 +608,32 @@ grefm_bavarocractic_ire_progress_value = {
 	round_to = 0.01
 }
 
+grefm_bavarocracy_main_progress_bar_value = {
+	value = 0
+	add = var:grefm_bavarocracy_var
+	divide = grefm_bavarocracy_max_value
+	round_to = 0.01
+	max = 100
+	min = 0
+}
+
+grefm_bavarocracy_instability_progress_bar_value = {
+	value = 0
+	add = var:grefm_bavarocracy_instability_var
+	divide = grefm_bavarocracy_instability_max_value
+	round_to = 0.01
+	max = 100
+	min = 0
+}
+
+####---------- Dedilomeni Principle Values ----------####
+grefm_dedilomeni_principle_min_value = 0
+
+grefm_dedilomeni_principle_max_value = 60
+
+grefm_dedilomeni_principle_progress_value = 1
+
+####---------- Venizelism / Metaxism Values ----------####
 grefm_coup_progress_value = {
 	value = 0
 	if = { # Does the general actually want to coup the government?

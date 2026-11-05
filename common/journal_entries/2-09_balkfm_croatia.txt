@@ -1,77 +1,97 @@
 ﻿je_balkfm_cro_croation_question = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	dlc = dlc_grefm
 	weight = 500
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
-
-	immediate = {
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			OR = {
+				custom_tooltip = {
+					text = je_balkfm_cro_croation_question_complete
+					hidden_trigger = {
+						c:CRO ?= {
+							is_subject_of = ROOT
+						}
+					}
+				}
+				cultural_acceptance_base = {
+					target = cu:croat
+					value >= acceptance_status_5
+				}
+			}
+		}
+		effect = {
+			trigger_event = balkfm_croatia.209
+			balkfm_cleanup_croatian_modifiers_effect = yes
+		}
 	}
-
-	complete = {
-		OR = {
-			custom_tooltip = {
-				text = je_balkfm_cro_croation_question_complete
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		flags = { }
+		
+		trigger = {
+			cu:croat = {
+				culture_secession_progress = {
+					target = ROOT
+					value > 0.5
+				}
+			}
+		}
+		effect = {
+			set_variable = balkfm_croatian_question_failed
+			trigger_event = balkfm_croatia.209
+			balkfm_cleanup_croatian_modifiers_effect = yes
+		}
+	}
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			OR = {
+				NOT = {
+					any_scope_state = {
+						state_region = {
+							is_homeland = cu:croat
+						}
+					}
+				}
+				NOT = {
+					this = c:AUS
+				}
 				hidden_trigger = {
-					c:CRO ?= {
-						is_subject_of = ROOT
-					}
+					has_variable = balkfm_croatian_question_complete
 				}
 			}
-			cultural_acceptance_base = {
-				target = cu:croat
-				value >= acceptance_status_5
-			}
 		}
-	}
-
-	on_complete = {
-		trigger_event = balkfm_croatia.209
-		balkfm_cleanup_croatian_modifiers_effect = yes
-	}
-
-	fail = {
-		cu:croat = {
-			culture_secession_progress = {
-				target = ROOT
-				value > 0.5
-			}
-		}
-	}
-
-	on_fail = {
-		set_variable = balkfm_croatian_question_failed
-		trigger_event = balkfm_croatia.209
-		balkfm_cleanup_croatian_modifiers_effect = yes
-	}
-
-	invalid = {
-		OR = {
-			NOT = {
-				any_scope_state = {
-					state_region = {
-						is_homeland = cu:croat
-					}
+		effect = {
+			hidden_effect = {
+				every_scope_state = {
+					remove_modifier = modifier_balkfm_croatian_revivalism
 				}
 			}
-			NOT = {
-				this = c:AUS
-			}
-			hidden_trigger = {
-				has_variable = balkfm_croatian_question_complete
-			}
+			balkfm_cleanup_croatian_modifiers_effect = yes
 		}
-	}
-
-	on_invalid = {
-		hidden_effect = {
-			every_scope_state = {
-				remove_modifier = modifier_balkfm_croatian_revivalism
-			}
-		}
-		balkfm_cleanup_croatian_modifiers_effect = yes
 	}
 
 	on_monthly_pulse = {
@@ -86,7 +106,12 @@
 je_balkfm_cro_triune_restoration = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/waving_flag.dds"
+	dlc = dlc_grefm
 	weight = 500
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -109,29 +134,41 @@ je_balkfm_cro_triune_restoration = {
 	immediate = {
 		trigger_event = balkfm_croatia.300
 	}
-
-	complete = {
-		custom_tooltip = {
-			text = je_balkfm_cro_triune_restoration_complete
-			hidden_trigger = {
-				c:CRO_TRI ?= this
-			}
-		}
-	}
-
-	on_complete = {
-		trigger_event = balkfm_croatia.301
-	}
-
-	invalid = {
-		hidden_trigger = {
-			OR = {
-				has_variable = balkfm_weaksauce
-				has_global_variable = has_formed_triu
-				NOT = {
-					c:CRO ?= this
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			custom_tooltip = {
+				text = je_balkfm_cro_triune_restoration_complete
+				hidden_trigger = {
+					c:CRO_TRI ?= this
 				}
 			}
 		}
+		effect = {
+			trigger_event = balkfm_croatia.301
+		}
+	}
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			hidden_trigger = {
+				OR = {
+					has_variable = balkfm_weaksauce
+					has_global_variable = has_formed_triu
+					NOT = {
+						c:CRO ?= this
+					}
+				}
+			}
+		}
+		effect = { }
 	}
 }

@@ -1,8 +1,14 @@
 ﻿####---------- Bavarocracy Journal Entries ----------####
 je_grefm_bavarocracy_main = {
+	# This is a Frakenjournal made of GotB's je_grefm_bavarocracy_main mashed with IP3's je_bavarocracy
 	group = je_group_gbbf_greek_monarchism
 	icon = "gfx/interface/icons/event_icons/event_disputed_crown.dds"
+	dlc = dlc_grefm
 	weight = 5000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -10,147 +16,408 @@ je_grefm_bavarocracy_main = {
 
 	scripted_progress_bar = grefm_bavarocracy_main_progressbar
 	scripted_progress_bar = grefm_bavarocracy_instability_progressbar
-
+	
+	scripted_button = grefm_seek_royal_wedding_button
 	scripted_button = grefm_dismiss_auxilliaries_button
 	scripted_button = grefm_release_nikitaras_button
+	scripted_button = grefm_bavarocracy_convert_button
 	scripted_button = grefm_authorize_palace_button
+	scripted_button = grefm_found_national_bank_button
 	scripted_button = grefm_philhellenic_loan_button
 
 	is_shown_in_lobby = {
 		c:GRE ?= this
 	}
-
-	immediate = {
-	}
-
-	modifiers_while_active = {
-		modifier_grefm_bavarocracy
-	}
-
-	complete = {
-		OR = {
-			AND = {
-				country_has_voting_franchise = yes
-				has_law_or_variant = law_type:law_elected_bureaucrats
+	
+	reason = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_grefm_bavarocracy_ip3_reason
+				trigger = {
+					has_dlc_feature = ip3_content
+				}
 			}
-			has_law_or_variant = law_type:law_autocracy
-		}
-		gbbf_is_broke_trigger = no
-		trigger_if = {
-			limit = {
-				has_variable = grefm_tyranny_var
-			}
-			custom_tooltip = {
-				text = je_grefm_bavarocracy_main_complete_2
-				var:grefm_tyranny_var >= 84
-			}
-		}
-		trigger_else = {
-			custom_tooltip = {
-				text = je_grefm_bavarocracy_main_complete_1
-				var:grefm_bavarocracy_var >= 2000
-			}
-		}
-		custom_tooltip = {
-			text = grefm_regency_discharged
-			hidden_trigger = {
-				NOT = {
-					has_modifier = modifier_grefm_armansperg_regency
+			triggered_desc = {
+				desc = je_grefm_bavarocracy_main_reason
+				trigger = {
+					NOT = {
+						has_dlc_feature = ip3_content
+					}
 				}
 			}
 		}
 	}
 
-	on_complete = {
-		trigger_event = grefm_greece.007
-		grefm_cleanup_bavarocracy_effect = yes
-	}
-
-	fail = {
-		# Without any interaction, this will fire in the 1860s. You have hella time... irl, Otto got to shit the bed for a while anyways
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_main_fail_1
-			hidden_trigger = {
-				var:grefm_bavarocracy_var <= 0
+	immediate = {
+		grefm_initialize_bavarocracy_variables_effect = yes
+		if = {
+			limit = {
+				has_dlc_feature = ip3_content
+			}
+			scope:journal_entry = {
+				add_modifier = modifier_grefm_bavarocracy_ip3
 			}
 		}
+		else = {
+			scope:journal_entry = {
+				add_modifier = modifier_grefm_bavarocracy
+			}
+		}
+		random_scope_character = {
+			limit = {
+				has_template = grefm_wittelsbach_otto
+			}
+			save_scope_as = grefm_otto_scope
+		}
 	}
-
-	on_fail = {
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_main_fail_2
-			hidden_effect = {
+	
+	outcome = {
+		# Liberal Completion Outcome
+		header = je_grefm_bavarocracy_liberty_completion_header
+		effect_header = je_grefm_bavarocracy_liberty_on_completion_header
+		conclusion_desc = je_grefm_bavarocracy_liberty_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			# Integrated IP3 Outcome
+			trigger_if = {
+				limit = {
+					has_dlc_feature = ip3_content
+				}
+				country_has_voting_franchise = yes
+				has_law_or_variant = law_type:law_elected_bureaucrats
+				OR = {
+					has_law_or_variant = law_type:law_right_of_assembly
+					has_law_or_variant = law_type:law_protected_speech
+				}
+				government_legitimacy >= 75
+				custom_tooltip = {
+					text = je_bavarocracy_complete_tt
+					var:grefm_bavarocracy_instability_var < 10
+				}
+			}
+			# OG GotB outcome
+			trigger_else = {
+				country_has_voting_franchise = yes
+				has_law_or_variant = law_type:law_elected_bureaucrats
+				gbbf_is_broke_trigger = no
+				custom_tooltip = {
+					text = je_grefm_bavarocracy_max_support_trigger
+					var:grefm_bavarocracy_var >= 2000
+				}
+				custom_tooltip = {
+					text = grefm_regency_discharged
+					hidden_trigger = {
+						NOT = {
+							has_modifier = modifier_grefm_armansperg_regency
+						}
+					}
+				}
+			}
+		}
+		effect = {
+			# Integrated IP3 Outcome
+			if = {
+				limit = {
+					has_dlc_feature = ip3_content
+				}
+				trigger_event = grefm_greece.034
+			}
+			# OG Non-IP3 Outcome
+			else = {
+				trigger_event = grefm_greece.025
+			}
+			show_as_tooltip = {
+				every_scope_character = {
+					limit = {
+						has_template = grefm_wittelsbach_otto
+					}
+					set_ideology = ideology:ideology_humanitarian_royalist
+				}
+			}
+			custom_tooltip = je_grefm_bavarocracy_liberty_completion_effect
+			grefm_cleanup_bavarocracy_effect = yes
+		}
+	}
+	
+	outcome = {
+		# Autocratic Completion Outcome
+		header = je_grefm_bavarocracy_autocracy_completion_header
+		effect_header = je_grefm_bavarocracy_autocracy_on_completion_header
+		conclusion_desc = je_grefm_bavarocracy_autocracy_conclusion_desc
+		color = white_outcome
+		
+		trigger = {
+			# Integrated IP3 Outcome
+			trigger_if = {
+				limit = {
+					has_dlc_feature = ip3_content
+				}
+				has_law_or_variant = law_type:law_autocracy
+				institution_investment_level = {
+					institution = institution_home_affairs
+					value >= 1
+				}
+				government_legitimacy >= 75
+				custom_tooltip = {
+					text = je_bavarocracy_complete_tt
+					var:grefm_bavarocracy_instability_var < 10
+				}
+			}
+			# OG Non-IP3 Outcome
+			trigger_else = {
+				has_law_or_variant = law_type:law_autocracy
+				gbbf_is_broke_trigger = no
+				trigger_if = {
+					limit = {
+						has_variable = grefm_tyranny_var
+					}
+					custom_tooltip = {
+						text = je_grefm_bavarocracy_max_tyranny_trigger
+						var:grefm_tyranny_var >= 84
+					}
+				}
+				trigger_else = {
+					custom_tooltip = {
+						text = je_grefm_bavarocracy_max_support_trigger
+						var:grefm_bavarocracy_var >= 2000
+					}
+				}
+				custom_tooltip = {
+					text = grefm_regency_discharged
+					hidden_trigger = {
+						NOT = {
+							has_modifier = modifier_grefm_armansperg_regency
+						}
+					}
+				}
+			}
+		}
+		effect = {
+			# Integrated IP3 Outcome
+			if = {
+				limit = {
+					has_dlc_feature = ip3_content
+				}
+				trigger_event = grefm_greece.033
+			}
+			# OG Non-IP3 Outcome
+			else = {
+				trigger_event = grefm_greece.025
+			}
+			custom_tooltip = je_grefm_bavarocracy_autocracy_completion_effect
+			grefm_cleanup_bavarocracy_effect = yes
+		}
+	}
+	
+	outcome = {
+		# Expulsion Outcome
+		header = je_grefm_bavarocracy_expulsion_completion_header
+		effect_header = je_grefm_bavarocracy_expulsion_on_completion_header
+		conclusion_desc = je_grefm_bavarocracy_expulsion_conclusion_desc
+		color = blue_negative
+		
+		flags = { historical }
+		
+		trigger = {
+			trigger_if = {
+				limit = {
+					has_dlc_feature = ip3_content
+				}
+				custom_tooltip = {
+					text = je_grefm_bavarocracy_ire_max_trigger
+					var:grefm_bavarocracy_var >= grefm_bavarocracy_max_value
+				}
+			}
+			trigger_else = {
+				# Without any interaction, this will fire in the 1860s. You have hella time... irl, Otto got to shit the bed for a while anyways
+				custom_tooltip = {
+					text = je_grefm_bavarocracy_zero_support_trigger
+					var:grefm_bavarocracy_var <= 0
+				}
+			}
+		}
+		effect = {
+			if = {
+				limit = {
+					has_dlc_feature = ip3_content
+				}
+				trigger_event = grefm_greece.027
+			}
+			else = {
 				if = {
 					limit = {
 						has_variable = grefm_tyranny_busted
 					}
-					trigger_event = grefm_greece.008
+					trigger_event = grefm_greece.027
 				}
 				else = {
-					trigger_event = grefm_greece.006
+					trigger_event = grefm_greece.026
+				}
+			}
+			show_as_tooltip = {
+				add_modifier = modifier_grefm_expelled_appointed_ruler
+			}
+			custom_tooltip = je_grefm_bavarocracy_expulsion_outcome_effect
+			custom_tooltip = je_grefm_bavarocracy_custodian_outcome_effect
+			grefm_cleanup_bavarocracy_effect = yes
+		}
+	}
+	
+	outcome = {
+		# Succession Crisis Outcome
+		header = je_grefm_bavarocracy_succession_crisis_completion_header
+		effect_header = je_grefm_bavarocracy_succession_crisis_on_completion_header
+		conclusion_desc = je_grefm_bavarocracy_succession_crisis_conclusion_desc
+		color = red_outcome
+		
+		trigger = {
+			NOT = {
+				has_modifier = modifier_grefm_armansperg_regency
+			}
+			custom_tooltip = {
+				text = je_grefm_bavarocracy_succession_crisis_trigger
+				NOR = {
+					ruler = {
+						OR = {
+							has_template = grefm_wittelsbach_otto
+							has_template = grefm_wittelsbach_adalbert
+							has_template = grefm_wittelsbach_ludwig_ferdinand
+							has_template = grefm_wittelsbach_noble
+							has_template = grefm_oldenburg_amalia
+						}
+					}
+					heir = {
+						OR = {
+							has_template = grefm_wittelsbach_otto
+							has_template = grefm_wittelsbach_adalbert
+							has_template = grefm_wittelsbach_ludwig_ferdinand
+							has_template = grefm_wittelsbach_noble
+							has_template = grefm_oldenburg_amalia
+						}
+					}
 				}
 			}
 		}
-		grefm_cleanup_bavarocracy_effect = yes
+		effect = {
+			trigger_event = grefm_greece.024
+			show_as_tooltip = {
+				add_modifier = modifier_grefm_succession_crisis
+			}
+			custom_tooltip = je_grefm_bavarocracy_succession_crisis_completion_effect
+			custom_tooltip = je_grefm_bavarocracy_custodian_outcome_effect
+			grefm_cleanup_bavarocracy_effect = yes
+		}
 	}
-
-	invalid = {
-		OR = {
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { hidden }
+		
+		trigger = {
 			NOT = {
 				has_law_or_variant = law_type:law_monarchy
 			}
-			hidden_trigger = {
-				has_variable = grefm_bavarocracy_completed
-			}
+		}
+		effect = {
+			trigger_event = grefm_greece.028
+			grefm_cleanup_bavarocracy_effect = yes
 		}
 	}
-
-	on_invalid = {
-		if = {
-			limit = {
-				NOT = {
-					has_law_or_variant = law_type:law_monarchy
-				}
-			}
-			trigger_event = grefm_greece.005
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			has_variable = grefm_bavarocracy_completed
 		}
-		grefm_cleanup_bavarocracy_effect = yes
+		effect = {
+			grefm_cleanup_bavarocracy_effect = yes
+		}
 	}
 
 	on_weekly_pulse = {
 		events = {
-			grefm_greece.002
-			grefm_greece.003
-			grefm_greece.004
 			grefm_greece.009
-			grefm_greece.020
+			grefm_greece.010
+			grefm_greece.011
+			grefm_greece.012
+			grefm_greece.021
+			grefm_greece.029
 		}
 		effect = {
 			grefm_calculate_bavarocracy_variables_effect = yes
+			heir ?= {
+				if = {
+					limit = {
+						NOR = {
+							has_template = grefm_wittelsbach_otto
+							has_template = grefm_oldenburg_amalia
+							has_template = grefm_wittelsbach_adalbert
+						}
+						religion != rel:orthodox
+					}
+					change_character_religion = rel:orthodox
+				}
+			}
 		}
 	}
 
 	on_monthly_pulse = {
 		events = {
-			grefm_greece.016
+			grefm_greece.022
+		}
+		random_events = {
+			chance_of_no_event = 75
+			5 = grefm_greece.016
+			5 = grefm_greece.021
 		}
 		effect = {
-			change_variable = {
-				name = grefm_bavarocracy_var
-				add = var:grefm_bavarocracy_progress_var
-			}
-			change_variable = {
-				name = grefm_bavarocracy_instability_var
-				add = var:grefm_bavarocracy_instability_progress_var
-			}
 			if = {
 				limit = {
-					has_variable = grefm_tyranny_var
-					has_revolution = no
+					has_dlc_feature = ip3_content
 				}
 				change_variable = {
-					name = grefm_tyranny_var
-					add = 1
+					name = grefm_bavarocracy_instability_var
+					add = var:grefm_bavarocracy_instability_progress_var
+				}
+				if = {
+					limit = {
+						var:grefm_bavarocracy_instability_var >= 80
+					}
+					com_change_variable = {
+						name = grefm_bavarocracy_var
+						value = 1
+					}
+				}
+				else = {
+					com_change_and_clamp_variable = {
+						name = grefm_bavarocracy_var
+						value = -0.1
+						max = 50
+						min = 0
+					}
+				}
+			}
+			else = {
+				change_variable = {
+					name = grefm_bavarocracy_var
+					add = var:grefm_bavarocracy_progress_var
+				}
+				change_variable = {
+					name = grefm_bavarocracy_instability_var
+					add = var:grefm_bavarocracy_instability_progress_var
+				}
+				if = {
+					limit = {
+						has_variable = grefm_tyranny_var
+						has_revolution = no
+					}
+					change_variable = {
+						name = grefm_tyranny_var
+						add = 1
+					}
 				}
 			}
 			grefm_calculate_bavarocracy_variables_effect = yes
@@ -160,6 +427,29 @@ je_grefm_bavarocracy_main = {
 
 	status_desc = {
 		first_valid = {
+			triggered_desc = {
+				desc = je_grefm_bavarocracy_ip3_status_regency
+				trigger = {
+					has_dlc_feature = ip3_content
+					has_modifier = modifier_grefm_armansperg_regency
+				}
+			}
+			triggered_desc = {
+				desc = je_grefm_bavarocracy_ip3_status_tyranny
+				trigger = {
+					has_dlc_feature = ip3_content
+					has_variable = grefm_tyranny_var
+					NOT = {
+						has_variable = grefm_tyranny_busted
+					}
+				}
+			}
+			triggered_desc = {
+				desc = je_grefm_bavarocracy_ip3_main_status
+				trigger = {
+					has_dlc_feature = ip3_content
+				}
+			}
 			triggered_desc = {
 				desc = je_grefm_bavarocracy_status_regency
 				trigger = {
@@ -193,203 +483,16 @@ je_grefm_bavarocracy_main = {
 	}
 }
 
-je_grefm_bavarocracy_ip3 = {
-	# This is a Frakenjournal made of GotB's je_grefm_bavarocracy_main mashed with IP3's je_bavarocracy
-	group = je_group_gbbf_greek_monarchism
-	icon = "gfx/interface/icons/event_icons/event_disputed_crown.dds"
-	weight = 10000
-
-	should_be_pinned_by_default_uninvolved_or_context = yes
-	can_revolution_inherit = yes
-	transferable = no
-
-	scripted_progress_bar = grefm_bavarocracy_ip3_progressbar
-	scripted_progress_bar = grefm_bavarocracy_ip3_instability_progressbar
-	
-	scripted_button = grefm_seek_royal_wedding_button
-	scripted_button = grefm_dismiss_auxilliaries_button
-	scripted_button = grefm_bavarocracy_convert_button
-	scripted_button = grefm_release_nikitaras_button
-	scripted_button = grefm_philhellenic_loan_button
-	
-	widget = {
-		gui = "gui/com_journal_injects/injects.gui"
-		name = "com_journal_entry_progress_bars"
-		container = "com_custom_widget_container_scripted_progress_bars"
-	}
-	
-	immediate = {
-		set_variable = {
-			name = grefm_bavarocracy_progress_var
-			value = grefm_bavarocracy_progress_value
-		}
-		random_scope_character = {
-			limit = {
-				has_template = grefm_wittelsbach_otto
-			}
-			save_scope_as = grefm_otto_scope
-		}
-		create_com_progress_bar = {
-			progress_bar = grefm_bavarocracy_ip3_progressbar
-			index = 0
-			color = red
-		}
-		create_com_progress_bar = {
-			progress_bar = grefm_bavarocracy_ip3_instability_progressbar
-			index = 1
-			color = white
-		}
-	}
-
-	modifiers_while_active = {
-		modifier_grefm_bavarocracy_ip3
-	}
-
-	complete = {
-		OR = {
-			AND = {
-				has_law_or_variant = law_type:law_autocracy
-				institution_investment_level = {
-					institution = institution_home_affairs
-					value >= 1
-				}
-			}
-			AND = {
-				country_has_voting_franchise = yes
-				has_law_or_variant = law_type:law_elected_bureaucrats
-				OR = {
-					has_law_or_variant = law_type:law_right_of_assembly
-					has_law_or_variant = law_type:law_protected_speech
-				}
-			}
-		}
-		government_legitimacy >= 75
-		custom_tooltip = {
-			text = je_bavarocracy_complete_tt
-			var:grefm_bavarocracy_instability_var < 10
-		}
-	}
-
-	on_complete = {
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_ip3_liberalism_complete
-			if = {
-				limit = {
-					country_has_voting_franchise = yes
-				}
-				trigger_event = grefm_greece.099
-			}
-		}
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_ip3_autocracy_complete
-			if = {
-				limit = {
-					has_law_or_variant = law_type:law_autocracy
-				}
-				trigger_event = grefm_greece.098
-			}
-		}
-		grefm_cleanup_bavarocracy_effect = yes
-	}
-
-	fail = {
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_ip3_fail
-			var:grefm_bavarocracy_var >= 50
-		}
-	}
-
-	on_fail = {
-		trigger_event = grefm_greece.097
-		grefm_cleanup_bavarocracy_effect = yes
-	}
-
-	invalid = {
-		OR = {
-			NOT = {
-				has_law_or_variant = law_type:law_monarchy
-			}
-			hidden_trigger = {
-				has_variable = grefm_bavarocracy_completed
-			}
-		}
-	}
-
-	on_invalid = {
-		grefm_cleanup_bavarocracy_effect = yes
-	}
-
-	on_weekly_pulse = {
-		events = {
-			grefm_greece.091
-			grefm_greece.092
-			grefm_greece.096
-		}
-		effect = {
-			grefm_calculate_bavarocracy_variables_effect = yes
-		}
-	}
-
-	on_monthly_pulse = {
-		effect = {
-			change_variable = {
-				name = grefm_bavarocracy_instability_var
-				add = var:grefm_bavarocracy_instability_progress_var
-			}
-			if = {
-				limit = {
-					var:grefm_bavarocracy_instability_var >= 80
-				}
-				change_variable = {
-					name = grefm_bavarocracy_var
-					add = 1
-				}
-			}
-			else = {
-				change_variable = {
-					name = grefm_bavarocracy_var
-					subtract = 0.1
-				}
-			}
-			clamp_variable = {
-				name = grefm_bavarocracy_var
-				max = 50
-				min = 0
-			}
-			grefm_calculate_bavarocracy_variables_effect = yes
-			grefm_update_bavarian_auxiliaries_effect = yes
-		}
-	}
-
-	status_desc = {
-		first_valid = {
-			triggered_desc = {
-				desc = je_grefm_bavarocracy_ip3_status_regency
-				trigger = {
-					has_modifier = modifier_grefm_armansperg_regency
-				}
-			}
-			triggered_desc = {
-				desc = je_grefm_bavarocracy_ip3_status_tyranny
-				trigger = {
-					has_variable = grefm_tyranny_var
-					NOT = {
-						has_variable = grefm_tyranny_busted
-					}
-				}
-			}
-			triggered_desc = {
-				desc = je_grefm_bavarocracy_ip3_main_status
-			}
-		}
-	}
-}
-
 ####---------- Constitutional Monarchy Journal Entries ----------####
 je_grefm_greek_king = {
-	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
 	group = je_group_gbbf_greek_monarchism
-	weight = 5000
+	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	dlc = dlc_grefm
+	weight = 4000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -407,52 +510,54 @@ je_grefm_greek_king = {
 	scripted_button = grefm_elect_hellene_king_button
 	scripted_button = grefm_elect_roman_king_button
 
-	immediate = {
-	}
-
-	complete = {
-		custom_tooltip = {
-			text = je_grefm_greek_king_complete
-			hidden_trigger = {
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			custom_tooltip = {
+				text = je_grefm_greek_king_complete
 				OR = {
 					has_variable = grefm_elected_greek_king
 					has_variable = byzfm_took_the_purple
 				}
 			}
 		}
-	}
-
-	on_complete = {
-		trigger_event = grefm_greece.031
-	}
-
-	fail = {
-		NOT = {
-			has_law_or_variant = law_type:law_monarchy
+		effect = {
+			trigger_event = grefm_greece.036
 		}
 	}
 
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		trigger = {
+			NOT = {
+				has_law_or_variant = law_type:law_monarchy
+			}
+		}
+	}
 }
 
 je_grefm_the_dedilomeni_principle = {
 	group = je_group_gbbf_greek_monarchism
 	icon = "gfx/interface/icons/event_icons/event_election.dds"
+	dlc = dlc_grefm
 	weight = 4000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
-
-	progressbar = yes
-	goal_add_value = {
-		value = 60
-	}
-	current_value = {
-		value = scope:journal_entry.var:grefm_dedilomeni_var
-	}
+	
+	scripted_progress_bar = grefm_dedilomeni_principle_progress_bar
 
 	is_shown_when_inactive = {
-		country_has_primary_culture = cu:greek
 		has_variable = grefm_bavarocracy_started
 		has_law_or_variant = law_type:law_monarchy
 		NOT = {
@@ -463,13 +568,8 @@ je_grefm_the_dedilomeni_principle = {
 	}
 
 	possible = {
-		has_technology_researched = egalitarianism
-		custom_tooltip = {
-			text = je_grefm_the_dedilomeni_principle_possible
-			NOR = {
-				has_journal_entry = je_grefm_bavarocracy_main
-				has_journal_entry = je_grefm_bavarocracy_ip3
-			}
+		NOT = {
+			has_journal_entry = je_grefm_bavarocracy_main
 		}
 		country_has_voting_franchise = yes
 	}
@@ -481,42 +581,62 @@ je_grefm_the_dedilomeni_principle = {
 				value = 0
 			}
 		}
-		trigger_event = grefm_greece.032
+		trigger_event = grefm_greece.037
 	}
 
 	modifiers_while_active = {
 		modifier_grefm_unproven_democracy
 	}
 
-	complete = {
-		country_has_voting_franchise = yes
-		government_legitimacy >= 75
-		electoral_confidence >= 0.75
-		ig:ig_landowners = {
-			is_in_government = no
-		}
-		OR = {
-			custom_tooltip = {
-				text = je_grefm_the_dedilomeni_principle_complete
-				scope:journal_entry.var:grefm_dedilomeni_var >= 60
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			country_has_voting_franchise = yes
+			government_legitimacy >= 75
+			electoral_confidence >= 0.75
+			ig:ig_landowners = {
+				is_in_government = no
 			}
-			active_law:lawgroup_distribution_of_power ?= {
-				has_amendment = amendment_type:amendment_tradition_of_free_elections
+			OR = {
+				custom_tooltip = {
+					text = je_grefm_the_dedilomeni_principle_complete
+					scope:journal_entry.var:grefm_dedilomeni_var >= 60
+				}
+				active_law:lawgroup_distribution_of_power ?= {
+					has_amendment = amendment_type:amendment_tradition_of_free_elections
+				}
 			}
+		}
+		effect = {
+			trigger_event = grefm_greece.038
 		}
 	}
 
-	on_complete = {
-		trigger_event = grefm_greece.033
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			country_has_voting_franchise = no
+		}
 	}
-
-	fail = {
-		country_has_voting_franchise = no
-	}
-
-	invalid = {
-		NOT = {
-			has_law_or_variant = law_type:law_monarchy
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			NOT = {
+				has_law_or_variant = law_type:law_monarchy
+			}
 		}
 	}
 
@@ -529,9 +649,9 @@ je_grefm_the_dedilomeni_principle = {
 					electoral_confidence >= 0.75
 				}
 				scope:journal_entry = {
-					change_variable = {
+					com_change_variable = {
 						name = grefm_dedilomeni_var
-						add = 1
+						value = grefm_dedilomeni_principle_progress_value
 					}
 				}
 			}
@@ -542,7 +662,12 @@ je_grefm_the_dedilomeni_principle = {
 je_grefm_the_military_league = {
 	group = je_group_gbbf_greek_monarchism
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	dlc = dlc_grefm
 	weight = 100
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -572,12 +697,8 @@ je_grefm_the_military_league = {
 
 	possible = {
 		has_technology_researched = pan-nationalism
-		custom_tooltip = {
-			text = je_grefm_the_military_league_possible_1
-			NOR = {
-				has_journal_entry = je_grefm_bavarocracy_main
-				has_journal_entry = je_grefm_bavarocracy_ip3
-			}
+		NOT = {
+			has_journal_entry = je_grefm_bavarocracy_main
 		}
 		OR = {
 			grefm_venizelos_has_landed_trigger = yes
@@ -616,68 +737,78 @@ je_grefm_the_military_league = {
 
 	immediate = {
 		grefm_initialize_military_league_effect = yes
-		trigger_event = grefm_greece.040
+		trigger_event = grefm_greece.050
 	}
 
 	modifiers_while_active = {
 		modifier_grefm_disloyal_military
 	}
-
-	complete = {
-		custom_tooltip = {
-			text = coup_progress_reached_100_tt
-			scope:journal_entry.var:grefm_goudi_coup_var >= 100
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			OR = {
+				scope:grefm_goudi_leader_scope ?= {
+					is_character_alive = no
+				}
+				custom_tooltip = {
+					text = coup_progress_reached_0_tt
+					scope:journal_entry.var:grefm_goudi_coup_var <= 0
+				}
+			}
 		}
-	}
-
-	on_complete = {
-		trigger_event = grefm_greece.047
-		scope:grefm_goudi_leader_scope = {
-			gbbf_free_from_void_leader = yes
-		}
-		grefm_cleanup_military_league_effect = yes
-	}
-
-	fail = {
-		OR = {
+		effect = {
+			trigger_event = grefm_greece.053
+			grefm_cleanup_military_league_effect = yes
 			scope:grefm_goudi_leader_scope ?= {
-				is_character_alive = no
+				free_character_from_void = yes
 			}
+			grefm_cleanup_military_league_effect = yes
+		}
+	}
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
 			custom_tooltip = {
-				text = coup_progress_reached_0_tt
-				scope:journal_entry.var:grefm_goudi_coup_var <= 0
+				text = coup_progress_reached_100_tt
+				scope:journal_entry.var:grefm_goudi_coup_var >= 100
 			}
 		}
-	}
-
-	on_fail = {
-		trigger_event = grefm_greece.048
-		grefm_cleanup_military_league_effect = yes
-		scope:grefm_goudi_leader_scope ?= {
-			free_character_from_void = yes
+		effect = {
+			trigger_event = grefm_greece.054
+			scope:grefm_goudi_leader_scope = {
+				gbbf_free_from_void_leader = yes
+			}
+			grefm_cleanup_military_league_effect = yes
 		}
 	}
-
-	timeout = 730
-
-	on_timeout = {
-		trigger_event = grefm_greece.047
-		grefm_cleanup_military_league_effect = yes
-	}
-
-	invalid = {
-		hidden_trigger = {
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
 			has_variable = grefm_intercontinental_ballistic_venizelos_var # Ankyra! Ankyra!
 		}
-	}
-
-	on_invalid = {
-		grefm_cleanup_military_league_effect = yes
+		effect = {
+			grefm_cleanup_military_league_effect = yes
+		}
 	}
 
 	on_weekly_pulse = {
 		events = {
-			grefm_greece.045
+			grefm_greece.052
 		}
 		effect = {
 			scope:journal_entry = {
@@ -701,16 +832,16 @@ je_grefm_the_military_league = {
 	on_monthly_pulse = {
 		random_events = {
 			150 = 0
-			10 = grefm_greece.050
-			10 = grefm_greece.051
-			10 = grefm_greece.052
-			10 = grefm_greece.053
-			10 = grefm_greece.054
-			10 = grefm_greece.055
-			10 = grefm_greece.056
-			10 = grefm_greece.057
-			10 = grefm_greece.058
-			10 = grefm_greece.059
+			10 = grefm_greece.060
+			10 = grefm_greece.061
+			10 = grefm_greece.062
+			10 = grefm_greece.063
+			10 = grefm_greece.064
+			10 = grefm_greece.065
+			10 = grefm_greece.066
+			10 = grefm_greece.067
+			10 = grefm_greece.068
+			10 = grefm_greece.069
 		}
 	}
 
@@ -728,7 +859,12 @@ je_grefm_the_military_league = {
 je_grefm_venizelism = {
 	group = je_group_internal_affairs
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	dlc = dlc_grefm
 	weight = 2000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -795,199 +931,217 @@ je_grefm_venizelism = {
 				}
 			}
 		}
-		trigger_event = grefm_greece.049
+		trigger_event = grefm_greece.055
 	}
 
 	modifiers_while_active = {
 		modifier_grefm_venizelist_tilt
 	}
-
-	complete = {
-		##
-		trigger_if = {
-			limit = {
-				scope:journal_entry.journal_entry_age <= {
-					value = 120
-					if = {
-						limit = {
-							morgenrote_is_active = yes
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			## Cosmetic for the National Assembly
+			trigger_if = {
+				limit = {
+					scope:journal_entry.journal_entry_age <= {
+						value = 120
+						if = {
+							limit = {
+								morgenrote_is_active = yes
+							}
+							add = 60
 						}
-						add = 60
 					}
 				}
-			}
-			custom_tooltip = {
-				text = grefm_venizelism_assembly_complete
-				always = no
-			}
-		}
-		## Constitution Agenda
-		trigger_if = {
-			limit = {
-				has_variable = grefm_venizelism_constitution_agenda
-			}
-			custom_tooltip = {
-				text = grefm_venizelism_constitution_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = grefm_venizelism_constitution_complete
-			}
-			custom_tooltip = {
-				text = grefm_venizelism_constitution_complete
-				always = yes
-			}
-		}
-		
-		## Greek Nationalism Agenda
-		trigger_if = {
-			limit = {
-				has_variable = grefm_venizelism_identity_agenda
-			}
-			custom_tooltip = {
-				text = grefm_venizelism_identity_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = grefm_venizelism_identity_complete
-			}
-			custom_tooltip = {
-				text = grefm_venizelism_identity_complete
-				always = yes
-			}
-		}
-		
-		## Civics Agenda
-		trigger_if = { 
-			limit = { 
-				has_variable = grefm_venizelism_civic_agenda
-			}
-			custom_tooltip = { 
-				text = grefm_venizelism_civic_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = grefm_venizelism_civic_complete
-			}
-			custom_tooltip = {
-				text = grefm_venizelism_civic_complete
-				always = yes
-			}
-		}
-		
-		## Military Agenda
-		trigger_if = {
-			limit = {
-				has_variable = grefm_venizelism_military_agenda
-			}
-			custom_tooltip = {
-				text = grefm_venizelism_military_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = grefm_venizelism_military_complete
-			}
-			custom_tooltip = {
-				text = grefm_venizelism_military_complete
-				always = yes
-			}
-		}
-		
-		## Society Agenda
-		trigger_if = {
-			limit = {
-				has_variable = grefm_venizelism_social_agenda
-			}
-			custom_tooltip = {
-				text = grefm_venizelism_social_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = grefm_venizelism_social_complete
-			}
-			custom_tooltip = {
-				text = grefm_venizelism_social_complete
-				always = yes
-			}
-		}
-		
-		## Education Agenda
-		trigger_if = {
-			limit = {
-				has_variable = grefm_venizelism_education_agenda
-			}
-			custom_tooltip = {
-				text = grefm_venizelism_education_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = grefm_venizelism_education_complete
-			}
-			custom_tooltip = {
-				text = grefm_venizelism_education_complete
-				always = yes
-			}
-		}
-		
-		## Cultural Agenda
-		trigger_if = {
-			limit = {
-				has_variable = grefm_venizelism_culture_agenda
-			}
-			custom_tooltip = {
-				text = grefm_venizelism_culture_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = grefm_venizelism_culture_complete
-			}
-			custom_tooltip = {
-				text = grefm_venizelism_culture_complete
-				always = yes
-			}
-		}
-	}
-
-	on_complete = {
-		trigger_event = grefm_greece.069
-		remove_variable = grefm_completed_venizelism_agendas_var
-		remove_variable = grefm_total_venizelism_agendas_var
-	}
-
-	fail = {
-		OR = {
-			NOT = {
-				any_political_movement = {
-					is_political_movement_type = movement_gbbf_venizelist
+				custom_tooltip = {
+					text = grefm_venizelism_assembly_complete
+					always = no
 				}
 			}
-			has_law_or_variant = law_type:law_council_republic
-			has_law_or_variant = law_type:law_anarchy
+			## Constitution Agenda
+			trigger_if = {
+				limit = {
+					has_variable = grefm_venizelism_constitution_agenda
+				}
+				custom_tooltip = {
+					text = grefm_venizelism_constitution_complete
+					always = no
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = grefm_venizelism_constitution_complete
+				}
+				custom_tooltip = {
+					text = grefm_venizelism_constitution_complete
+					always = yes
+				}
+			}
+			
+			## Greek Nationalism Agenda
+			trigger_if = {
+				limit = {
+					has_variable = grefm_venizelism_identity_agenda
+				}
+				custom_tooltip = {
+					text = grefm_venizelism_identity_complete
+					always = no
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = grefm_venizelism_identity_complete
+				}
+				custom_tooltip = {
+					text = grefm_venizelism_identity_complete
+					always = yes
+				}
+			}
+			
+			## Civics Agenda
+			trigger_if = {
+				limit = {
+					has_variable = grefm_venizelism_civic_agenda
+				}
+				custom_tooltip = {
+					text = grefm_venizelism_civic_complete
+					always = no
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = grefm_venizelism_civic_complete
+				}
+				custom_tooltip = {
+					text = grefm_venizelism_civic_complete
+					always = yes
+				}
+			}
+			
+			## Military Agenda
+			trigger_if = {
+				limit = {
+					has_variable = grefm_venizelism_military_agenda
+				}
+				custom_tooltip = {
+					text = grefm_venizelism_military_complete
+					always = no
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = grefm_venizelism_military_complete
+				}
+				custom_tooltip = {
+					text = grefm_venizelism_military_complete
+					always = yes
+				}
+			}
+			
+			## Society Agenda
+			trigger_if = {
+				limit = {
+					has_variable = grefm_venizelism_social_agenda
+				}
+				custom_tooltip = {
+					text = grefm_venizelism_social_complete
+					always = no
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = grefm_venizelism_social_complete
+				}
+				custom_tooltip = {
+					text = grefm_venizelism_social_complete
+					always = yes
+				}
+			}
+			
+			## Education Agenda
+			trigger_if = {
+				limit = {
+					has_variable = grefm_venizelism_education_agenda
+				}
+				custom_tooltip = {
+					text = grefm_venizelism_education_complete
+					always = no
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = grefm_venizelism_education_complete
+				}
+				custom_tooltip = {
+					text = grefm_venizelism_education_complete
+					always = yes
+				}
+			}
+			
+			## Cultural Agenda
+			trigger_if = {
+				limit = {
+					has_variable = grefm_venizelism_culture_agenda
+				}
+				custom_tooltip = {
+					text = grefm_venizelism_culture_complete
+					always = no
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = grefm_venizelism_culture_complete
+				}
+				custom_tooltip = {
+					text = grefm_venizelism_culture_complete
+					always = yes
+				}
+			}
 		}
+		effect = {
+			trigger_event = grefm_greece.057
+			remove_variable = grefm_completed_venizelism_agendas_var
+			remove_variable = grefm_total_venizelism_agendas_var
+		}
+	}
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			OR = {
+				NOT = {
+					any_political_movement = {
+						is_political_movement_type = movement_gbbf_venizelist
+					}
+				}
+				has_law_or_variant = law_type:law_council_republic
+				has_law_or_variant = law_type:law_anarchy
+			}
+		}
+		effect = {
+			remove_variable = grefm_completed_venizelism_agendas_var
+			remove_variable = grefm_total_venizelism_agendas_var}
 	}
 	
 	on_monthly_pulse = {
 		events = {
-			grefm_greece.070
-			grefm_greece.071
-			grefm_greece.072
-			grefm_greece.073
-			grefm_greece.074
+			grefm_greece.058
 			grefm_greece.075
+			grefm_greece.076
+			grefm_greece.077
+			grefm_greece.078
+			grefm_greece.079
 		}
 		effect = {
 			set_variable = {
@@ -1022,7 +1176,12 @@ je_grefm_venizelism = {
 je_grefm_metaxism = {
 	group = je_group_internal_affairs
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	dlc = dlc_grefm
 	weight = 2000
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -1074,124 +1233,136 @@ je_grefm_metaxism = {
 		modifier_grefm_reactionary_thought
 	}
 	
-	complete = {
-		## Tradition Agenda
-		trigger_if = {
-			limit = {
-				has_variable = grefm_metaxism_tradition_agenda
-			}
-			custom_tooltip = {
-				text = grefm_metaxism_tradition_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = grefm_metaxism_tradition_complete
-			}
-			custom_tooltip = {
-				text = grefm_metaxism_tradition_complete
-				always = yes
-			}
-		}
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
 		
-		## Authoritarian Agenda
-		trigger_if = {
-			limit = {
-				has_variable = grefm_metaxism_authoritarian_agenda
-			}
-			custom_tooltip = {
-				text = grefm_metaxism_authoritarian_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = grefm_metaxism_authoritarian_complete
-			}
-			custom_tooltip = {
-				text = grefm_metaxism_authoritarian_complete
-				always = yes
-			}
-		}
-		
-		## Military Agenda
-		trigger_if = {
-			limit = {
-				has_variable = grefm_metaxism_assimilation_agenda
-			}
-			custom_tooltip = {
-				text = grefm_metaxism_assimilation_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = grefm_metaxism_assimilation_complete
-			}
-			custom_tooltip = {
-				text = grefm_metaxism_assimilation_complete
-				always = yes
-			}
-		}
-		
-		## Social Agenda
-		trigger_if = {
-			limit = {
-				has_variable = grefm_metaxism_social_agenda
-			}
-			custom_tooltip = {
-				text = grefm_metaxism_social_complete
-				always = no
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_variable = grefm_metaxism_social_complete
-			}
-			custom_tooltip = {
-				text = grefm_metaxism_social_complete
-				always = yes
-			}
-		}
-	}
-	
-	on_complete = {
-		trigger_event = grefm_greece.081
-	}
-	
-	fail = {
-		OR = {
-			any_interest_group = {
-				filter = {
-					leader = {
-						OR = {
-							has_ideology = ideology:ideology_fascist
-							has_ideology = ideology:ideology_gbbf_metaxist_leader
-							has_ideology = ideology:ideology_ethno_nationalist
-						}
-					}
+		trigger = {
+			## Tradition Agenda
+			trigger_if = {
+				limit = {
+					has_variable = grefm_metaxism_tradition_agenda
 				}
-				count = all
-				is_marginal = yes
-				is_in_government = no
+				custom_tooltip = {
+					text = grefm_metaxism_tradition_complete
+					always = no
+				}
 			}
-			NOT = {
+			trigger_if = {
+				limit = {
+					has_variable = grefm_metaxism_tradition_complete
+				}
+				custom_tooltip = {
+					text = grefm_metaxism_tradition_complete
+					always = yes
+				}
+			}
+			
+			## Authoritarian Agenda
+			trigger_if = {
+				limit = {
+					has_variable = grefm_metaxism_authoritarian_agenda
+				}
+				custom_tooltip = {
+					text = grefm_metaxism_authoritarian_complete
+					always = no
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = grefm_metaxism_authoritarian_complete
+				}
+				custom_tooltip = {
+					text = grefm_metaxism_authoritarian_complete
+					always = yes
+				}
+			}
+			
+			## Military Agenda
+			trigger_if = {
+				limit = {
+					has_variable = grefm_metaxism_assimilation_agenda
+				}
+				custom_tooltip = {
+					text = grefm_metaxism_assimilation_complete
+					always = no
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = grefm_metaxism_assimilation_complete
+				}
+				custom_tooltip = {
+					text = grefm_metaxism_assimilation_complete
+					always = yes
+				}
+			}
+			
+			## Social Agenda
+			trigger_if = {
+				limit = {
+					has_variable = grefm_metaxism_social_agenda
+				}
+				custom_tooltip = {
+					text = grefm_metaxism_social_complete
+					always = no
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_variable = grefm_metaxism_social_complete
+				}
+				custom_tooltip = {
+					text = grefm_metaxism_social_complete
+					always = yes
+				}
+			}
+		}
+		effect = {
+			trigger_event = grefm_greece.081
+		}
+	}
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			OR = {
 				any_interest_group = {
-					leader = {
-						OR = {
-							has_ideology = ideology:ideology_fascist
-							has_ideology = ideology:ideology_gbbf_metaxist_leader
-							has_ideology = ideology:ideology_ethno_nationalist
+					filter = {
+						leader = {
+							OR = {
+								has_ideology = ideology:ideology_fascist
+								has_ideology = ideology:ideology_gbbf_metaxist_leader
+								has_ideology = ideology:ideology_ethno_nationalist
+							}
+						}
+					}
+					count = all
+					is_marginal = yes
+					is_in_government = no
+				}
+				NOT = {
+					any_interest_group = {
+						leader = {
+							OR = {
+								has_ideology = ideology:ideology_fascist
+								has_ideology = ideology:ideology_gbbf_metaxist_leader
+								has_ideology = ideology:ideology_ethno_nationalist
+							}
 						}
 					}
 				}
 			}
 		}
-	}
-	
-	on_fail = {
-		trigger_event = grefm_greece.082
+		effect = {
+			trigger_event = grefm_greece.082
+		}
 	}
 	
 	on_monthly_pulse = {
@@ -1228,7 +1399,12 @@ je_grefm_metaxism = {
 je_grefm_the_womens_journal = {
 	group = je_group_internal_affairs
 	icon = "gfx/interface/icons/invention_icons/feminism.dds"
+	dlc = dlc_grefm
 	weight = 100
+	
+	activation_description = {
+		always = yes
+	}
 
 	can_revolution_inherit = yes
 	transferable = no
@@ -1245,28 +1421,42 @@ je_grefm_the_womens_journal = {
 	}
 
 	immediate = {
-		trigger_event = grefm_greece.123
+		trigger_event = grefm_greece.122
 	}
-
-	complete = {
-		OR = {
-			has_law_or_variant = law_type:law_women_in_the_workplace
-			has_law_or_variant = law_type:law_womens_suffrage
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			OR = {
+				has_law_or_variant = law_type:law_women_in_the_workplace
+				has_law_or_variant = law_type:law_womens_suffrage
+			}
+			NOT = { has_law_or_variant = law_type:law_child_labor_allowed }
 		}
-		NOT = { has_law_or_variant = law_type:law_child_labor_allowed }
+		effect = {
+			trigger_event = grefm_greece.123
+		}
 	}
-
-	on_complete = {
-		trigger_event = grefm_greece.124
-	}
-
-	fail = {
-		has_law_or_variant = law_type:law_no_womens_rights
-	}
-
-	invalid = {
-		hidden_trigger = {
-			has_variable = grefm_feminism_rejected
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			OR = {
+				has_law_or_variant = law_type:law_no_womens_rights
+				hidden_trigger = {
+					has_variable = grefm_feminism_rejected
+				}
+			}
 		}
 	}
 }
@@ -1274,7 +1464,12 @@ je_grefm_the_womens_journal = {
 je_grefm_corinth_canal_survey = {
 	group = je_group_technology
 	icon = "gfx/interface/icons/invention_icons/hydraulic_cranes.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = no
@@ -1289,39 +1484,57 @@ je_grefm_corinth_canal_survey = {
 	}
 
 	immediate = {
+		set_variable = {
+			name = grefm_corinth_canal_var
+			value = 0
+		}
 	}
 
 	modifiers_while_active = {
 		modifier_grefm_corinth_canal_survey
 	}
-
-	complete = {
-		scope:journal_entry = {
-			is_goal_complete = yes
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			scope:journal_entry = {
+				is_goal_complete = yes
+			}
+		}
+		effect = {
+			trigger_event = grefm_greece.130
+			remove_variable = grefm_corinth_canal_var
+			set_global_variable = grefm_corinth_survey_complete
 		}
 	}
-
-	on_complete = {
-		trigger_event = grefm_greece.130
-		remove_variable = grefm_corinth_canal_var
-		set_global_variable = grefm_corinth_survey_complete
-	}
-
-	fail = {
-		NOT = {
-			owns_entire_state_region = STATE_PELOPONNESE
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			NOT = {
+				owns_entire_state_region = STATE_PELOPONNESE
+			}
 		}
-	}
-
-	on_fail = {
-		remove_variable = grefm_corinth_canal_var
+		effect = {
+			remove_variable = grefm_corinth_canal_var
+		}
 	}
 
 	on_monthly_pulse = {
 		effect = {
-			change_variable = {
+			com_change_variable = {
 				name = grefm_corinth_canal_var
-				add = 1
+				value = 1
 			}
 		}
 	}
@@ -1331,69 +1544,90 @@ je_grefm_land_reclamation = {
 	# literally the vanilla reclamation event in a trench coat
 	group = je_group_technology
 	icon = "gfx/interface/icons/invention_icons/hydraulic_cranes.dds"
+	dlc = dlc_grefm
 	weight = 100
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = no
 	transferable = no
 
-	progressbar = yes
-	goal_add_value = {
-		# this is much smaller scale than the vanilla JE
-		add = 3
-	}
-	current_value = {
-		value = global_var:grefm_lake_kopais_var
-	}
-
-	immediate = {
-	}
-
 	modifiers_while_active = {
 		modifier_grefm_reclaiming_land
 	}
-
-	complete = {
-		scope:journal_entry = {
-			is_goal_complete = yes
-		}
-	}
-
-	on_complete = {
-		trigger_event = {
-			id = grefm_greece.112
-			days = 15
-		}
-		remove_global_variable = grefm_lake_kopais_var
-		set_global_variable = grefm_lake_kopais_drained
-		if = {
-			limit = {
-				NOT = {
-					has_global_variable = grefm_gla_exposed
-				}
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			custom_tooltip = {
+				text = je_grefm_land_reclamation_complete
+				s:STATE_ATTICA.var:grefm_lake_kopais_var >= 3
 			}
-			set_global_variable = grefm_gla_exposed
+		}
+		effect = {
+			trigger_event = {
+				id = grefm_greece.114
+				days = 15
+			}
+			s:STATE_ATTICA = {
+				remove_variable = grefm_lake_kopais_var
+				set_variable = grefm_lake_kopais_drained
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_global_variable = grefm_gla_exposed
+					}
+				}
+				set_global_variable = grefm_gla_exposed
+			}
 		}
 	}
-
-	fail = {
-		NOT = { owns_entire_state_region = STATE_ATTICA }
-	}
-
-	on_fail = {
-		remove_global_variable = grefm_lake_kopais_var
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			NOT = {
+				owns_entire_state_region = STATE_ATTICA
+			}
+		}
 	}
 
 	on_monthly_pulse = {
-		events = {
-			grefm_greece.113
+		effect = {
+			if = {
+				limit = {
+					NOT = {
+						has_global_variable = grefm_gla_exposed
+					}
+					s:STATE_ATTICA.var:grefm_lake_kopais_var ?= 2
+				}
+				set_global_variable = grefm_gla_exposed
+				every_country = {
+					limit = {
+						gbbf_country_has_greek_culture_trigger = yes
+					}
+					trigger_event = grefm_greece.115
+				}
+			}
 		}
 	}
 
 	on_yearly_pulse = {
 		random_events = {
 			4 = 0
-			1 = grefm_greece.119
+			1 = grefm_greece.116
 		}
 	}
 
@@ -1402,7 +1636,9 @@ je_grefm_land_reclamation = {
 			triggered_desc = {
 				desc = je_grefm_land_reclamation_status
 				trigger = {
-					has_variable = grefm_lake_kopais_var
+					s:STATE_ATTICA = {
+						has_variable = grefm_lake_kopais_var
+					}
 				}
 			}
 		}

@@ -3,15 +3,7 @@ grefm_initialize_bavarocracy_variables_effect = {
 	set_variable = grefm_bavarocracy
 	set_variable = {
 		name = grefm_bavarocracy_var
-		value = 2000
-	}
-	set_variable = {
-		name = grefm_bavarocracy_support_var
-		value = 0
-	}
-	set_variable = {
-		name = grefm_bavarocracy_opposition_var
-		value = 0
+		value = grefm_bavarocracy_start_value
 	}
 	set_variable = {
 		name = grefm_bavarocracy_progress_var
@@ -19,30 +11,38 @@ grefm_initialize_bavarocracy_variables_effect = {
 	}
 	set_variable = {
 		name = grefm_bavarocracy_instability_var
-		value = 0
+		value = grefm_bavarocracy_instability_start_value
 	}
 	set_variable = {
 		name = grefm_bavarocracy_instability_progress_var
 		value = 0
 	}
-	if = {
-		limit = {
-			has_dlc_feature = ip3_content # National Awakening
-		}
-		set_variable = {
-			name = grefm_bavarocracy_var# Functionality is reversed in the context of IP3
-			value = 0
-		}
-		set_variable = no_heirs
-	}
+	set_variable = no_heirs
+	set_variable = com_no_regencies
 	set_variable = grefm_bavarocracy_started # This specifically tracks GRE
 }
 
 grefm_calculate_bavarocracy_variables_effect = {
 	if = {
 		limit = {
-			has_journal_entry = je_grefm_bavarocracy_main
+			has_dlc_feature = ip3_content
 		}
+		set_variable = {
+			name = grefm_bavarocracy_instability_progress_var
+			value = grefm_bavarocractic_ire_progress_value
+		}
+		clamp_variable = {
+			name = grefm_bavarocracy_instability_var
+			max = 100
+			min = 0
+		}
+		clamp_variable = {
+			name = grefm_bavarocracy_var
+			max = 50
+			min = 0
+		}
+	}
+	else = {
 		set_variable = {
 			name = grefm_bavarocracy_support_var
 			value = grefm_bavarocracy_support_value
@@ -84,46 +84,15 @@ grefm_calculate_bavarocracy_variables_effect = {
 			max = 200
 			min = 0
 		}
-		je:je_grefm_bavarocracy_main = {
-			set_bar_progress = {
-				name = grefm_bavarocracy_main_progressbar
-				value = owner.var:grefm_bavarocracy_var
-			}
-			set_bar_progress = {
-				name = grefm_bavarocracy_instability_progressbar
-				value = owner.var:grefm_bavarocracy_instability_var
-			}
-		}
 	}
-	else_if = {
-		limit = {
-			has_journal_entry = je_grefm_bavarocracy_ip3
+	je:je_grefm_bavarocracy_main = {
+		set_bar_progress = {
+			name = grefm_bavarocracy_main_progressbar
+			value = owner.grefm_bavarocracy_main_progress_bar_value
 		}
-		set_variable = {
-			name = grefm_bavarocracy_instability_progress_var
-			value = grefm_bavarocractic_ire_progress_value
-		}
-		clamp_variable = {
-			name = grefm_bavarocracy_instability_var
-			max = 100
-			min = 0
-		}
-		clamp_variable = {
-			name = grefm_bavarocracy_var
-			max = 50
-			min = 0
-		}
-		je:je_grefm_bavarocracy_ip3 = {
-			set_bar_progress = {
-				name = grefm_bavarocracy_ip3_progressbar
-				value = owner.var:grefm_bavarocracy_var
-			}
-		}
-		je:je_grefm_bavarocracy_ip3 = {
-			set_bar_progress = {
-				name = grefm_bavarocracy_ip3_instability_progressbar
-				value = owner.var:grefm_bavarocracy_instability_var
-			}
+		set_bar_progress = {
+			name = grefm_bavarocracy_instability_progressbar
+			value = owner.grefm_bavarocracy_instability_progress_bar_value
 		}
 	}
 }
@@ -153,8 +122,19 @@ grefm_update_bavarian_auxiliaries_effect = {
 grefm_bavarocracy_very_small_support_effect = {
 	if = {
 		limit = {
-			has_journal_entry = je_grefm_bavarocracy_main
+			has_dlc_feature = ip3_content
 		}
+		custom_tooltip = {
+			text = je_grefm_bavarocracy_ire_minus_2
+			com_change_and_clamp_variable = {
+				name = grefm_bavarocracy_instability_var
+				value = -2
+				max = 100
+				min = 0
+			}
+		}
+	}
+	else = {
 		custom_tooltip = {
 			text = je_grefm_bavarocracy_plus_20
 			change_variable = {
@@ -163,41 +143,12 @@ grefm_bavarocracy_very_small_support_effect = {
 			}
 		}
 	}
-	if = {
-		limit = {
-			has_journal_entry = je_grefm_bavarocracy_ip3
-		}
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_ire_minus_2
-			change_variable = {
-				name = grefm_bavarocracy_instability_var
-				subtract = 2
-			}
-		}
-		clamp_variable = {
-			name = grefm_bavarocracy_instability_var
-			max = 100
-			min = 0
-		}
-	}
 }
 
 grefm_bavarocracy_small_support_effect = {
 	if = {
 		limit = {
-			has_journal_entry = je_grefm_bavarocracy_main
-		}
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_plus_50
-			change_variable = {
-				name = grefm_bavarocracy_var
-				add = 50
-			}
-		}
-	}
-	if = {
-		limit = {
-			has_journal_entry = je_grefm_bavarocracy_ip3
+			has_dlc_feature = ip3_content
 		}
 		custom_tooltip = {
 			text = je_grefm_bavarocracy_ire_minus_5
@@ -212,24 +163,21 @@ grefm_bavarocracy_small_support_effect = {
 			min = 0
 		}
 	}
+	else = {
+		custom_tooltip = {
+			text = je_grefm_bavarocracy_plus_50
+			change_variable = {
+				name = grefm_bavarocracy_var
+				add = 50
+			}
+		}
+	}
 }
 
 grefm_bavarocracy_medium_support_effect= {
 	if = {
 		limit = {
-			has_journal_entry = je_grefm_bavarocracy_main
-		}
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_plus_100
-			change_variable = {
-				name = grefm_bavarocracy_var
-				add = 100
-			}
-		}
-	}
-	if = {
-		limit = {
-			has_journal_entry = je_grefm_bavarocracy_ip3
+			has_dlc_feature = ip3_content
 		}
 		custom_tooltip = {
 			text = je_grefm_bavarocracy_ire_minus_10
@@ -244,24 +192,21 @@ grefm_bavarocracy_medium_support_effect= {
 			min = 0
 		}
 	}
+	else = {
+		custom_tooltip = {
+			text = je_grefm_bavarocracy_plus_100
+			change_variable = {
+				name = grefm_bavarocracy_var
+				add = 100
+			}
+		}
+	}
 }
 
 grefm_bavarocracy_large_support_effect = {
 	if = {
 		limit = {
-			has_journal_entry = je_grefm_bavarocracy_main
-		}
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_plus_200
-			change_variable = {
-				name = grefm_bavarocracy_var
-				add = 200
-			}
-		}
-	}
-	if = {
-		limit = {
-			has_journal_entry = je_grefm_bavarocracy_ip3
+			has_dlc_feature = ip3_content
 		}
 		custom_tooltip = {
 			text = je_grefm_bavarocracy_ire_minus_25
@@ -276,24 +221,21 @@ grefm_bavarocracy_large_support_effect = {
 			min = 0
 		}
 	}
+	else = {
+		custom_tooltip = {
+			text = je_grefm_bavarocracy_plus_200
+			change_variable = {
+				name = grefm_bavarocracy_var
+				add = 200
+			}
+		}
+	}
 }
 
 grefm_bavarocracy_very_small_opposition_effect = {
 	if = {
 		limit = {
-			has_journal_entry = je_grefm_bavarocracy_main
-		}
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_minus_20
-			change_variable = {
-				name = grefm_bavarocracy_var
-				add = -20
-			}
-		}
-	}
-	if = {
-		limit = {
-			has_journal_entry = je_grefm_bavarocracy_ip3
+			has_dlc_feature = ip3_content
 		}
 		custom_tooltip = {
 			text = je_grefm_bavarocracy_ire_plus_2
@@ -308,24 +250,21 @@ grefm_bavarocracy_very_small_opposition_effect = {
 			min = 0
 		}
 	}
+	else = {
+		custom_tooltip = {
+			text = je_grefm_bavarocracy_minus_20
+			change_variable = {
+				name = grefm_bavarocracy_var
+				add = -20
+			}
+		}
+	}
 }
 
 grefm_bavarocracy_small_opposition_effect = {
 	if = {
 		limit = {
-			has_journal_entry = je_grefm_bavarocracy_main
-		}
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_minus_50
-			change_variable = {
-				name = grefm_bavarocracy_var
-				add = -50
-			}
-		}
-	}
-	if = {
-		limit = {
-			has_journal_entry = je_grefm_bavarocracy_ip3
+			has_dlc_feature = ip3_content
 		}
 		custom_tooltip = {
 			text = je_grefm_bavarocracy_ire_plus_5
@@ -340,24 +279,21 @@ grefm_bavarocracy_small_opposition_effect = {
 			min = 0
 		}
 	}
+	else = {
+		custom_tooltip = {
+			text = je_grefm_bavarocracy_minus_50
+			change_variable = {
+				name = grefm_bavarocracy_var
+				add = -50
+			}
+		}
+	}
 }
 
 grefm_bavarocracy_medium_opposition_effect = {
 	if = {
 		limit = {
-			has_journal_entry = je_grefm_bavarocracy_main
-		}
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_minus_100
-			change_variable = {
-				name = grefm_bavarocracy_var
-				add = -100
-			}
-		}
-	}
-	if = {
-		limit = {
-			has_journal_entry = je_grefm_bavarocracy_ip3
+			has_dlc_feature = ip3_content
 		}
 		custom_tooltip = {
 			text = je_grefm_bavarocracy_ire_plus_10
@@ -372,24 +308,21 @@ grefm_bavarocracy_medium_opposition_effect = {
 			min = 0
 		}
 	}
+	else = {
+		custom_tooltip = {
+			text = je_grefm_bavarocracy_minus_100
+			change_variable = {
+				name = grefm_bavarocracy_var
+				add = -100
+			}
+		}
+	}
 }
 
 grefm_bavarocracy_large_opposition_effect = {
 	if = {
 		limit = {
-			has_journal_entry = je_grefm_bavarocracy_main
-		}
-		custom_tooltip = {
-			text = je_grefm_bavarocracy_minus_200
-			change_variable = {
-				name = grefm_bavarocracy_var
-				add = -200
-			}
-		}
-	}
-	if = {
-		limit = {
-			has_journal_entry = je_grefm_bavarocracy_ip3
+			has_dlc_feature = ip3_content
 		}
 		custom_tooltip = {
 			text = je_grefm_bavarocracy_ire_plus_25
@@ -404,9 +337,34 @@ grefm_bavarocracy_large_opposition_effect = {
 			min = 0
 		}
 	}
+	else = {
+		custom_tooltip = {
+			text = je_grefm_bavarocracy_minus_200
+			change_variable = {
+				name = grefm_bavarocracy_var
+				add = -200
+			}
+		}
+	}
 }
 
 grefm_cleanup_bavarocracy_effect = {
+	set_variable = {
+		name = no_heirs
+		months = 6
+	}
+	set_variable = {
+		name = com_no_regencies
+		months = 6
+	}
+	hidden_effect = {
+		every_scope_character = {
+			limit = {
+				has_template = grefm_wittelsbach_otto
+			}
+			set_character_immortal = no
+		}
+	}
 	hidden_effect = {
 		every_interest_group = {
 			remove_modifier = modifier_grefm_constitution_refused
@@ -414,21 +372,19 @@ grefm_cleanup_bavarocracy_effect = {
 		every_interest_group = {
 			remove_modifier = modifier_grefm_constitution_enforced
 		}
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_grefm_bavarian_auxiliaries
+		if = {
+			limit = {
+				has_modifier = modifier_grefm_bavarian_auxiliaries
+			}
+			remove_modifier = modifier_grefm_bavarian_auxiliaries
 		}
-		remove_modifier = modifier_grefm_funding_bavarian_auxiliaries
-	}
-	if = {
-		limit = {
-			has_modifier = modifier_grefm_funding_bavarian_auxiliaries
+		if = {
+			limit = {
+				has_modifier = modifier_grefm_funding_bavarian_auxiliaries
+			}
+			remove_modifier = modifier_grefm_funding_bavarian_auxiliaries
 		}
-		remove_modifier = modifier_grefm_funding_bavarian_auxiliaries
 	}
-	
-	
 	remove_variable = grefm_bavarocracy_var
 	remove_variable = grefm_bavarocracy_support_var
 	remove_variable = grefm_bavarocracy_opposition_var
@@ -437,9 +393,7 @@ grefm_cleanup_bavarocracy_effect = {
 	remove_variable = grefm_bavarocracy_instability_progress_var
 	remove_variable = grefm_tyranny_var
 	remove_variable = je_bavarocracy_timer_var
-	remove_variable = no_heirs
-	
-	set_variable = grefm_don_pacifico_var
+	remove_variable = grefm_succession_crisis_addressed
 }
 
 grefm_expel_bavarocracy_effect = {
@@ -447,14 +401,18 @@ grefm_expel_bavarocracy_effect = {
 		text = grefm_expel_bavarocracy
 		every_scope_character = {
 			limit = {
-				OR = {
-					has_role_of_type = ruler
-					has_role_of_type = heir
-					culture = cu:south_german
-				}
+				culture = cu:south_german
 			}
-			kill_character = {
-				hidden = yes
+			if = {
+				limit = {
+					exists = c:BAV
+				}
+				transfer_character = c:BAV
+			}
+			else = {
+				kill_character = {
+					hidden = yes
+				}
 			}
 		}
 		if = {
@@ -468,6 +426,72 @@ grefm_expel_bavarocracy_effect = {
 				has_modifier = modifier_grefm_funding_bavarian_auxiliaries
 			}
 			remove_modifier = modifier_grefm_funding_bavarian_auxiliaries
+		}
+	}
+	every_scope_character = {
+		limit = {
+			has_modifier = modifier_grefm_philhellene
+		}
+		remove_modifier = modifier_grefm_philhellene
+	}
+}
+
+grefm_anger_greece_protectors_effect = {
+	set_local_variable = {
+		name = grefm_include_bavaria_param
+		value = flag:$include_bavaria$
+	}
+	if = {
+		limit = {
+			exists = c:GBR
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_event_negative
+			target = c:GBR
+		}
+		change_relations = {
+			country = c:GBR
+			value = $value$
+		}
+	}
+	if = {
+		limit = {
+			exists = c:FRA
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_event_negative
+			target = c:FRA
+		}
+		change_relations = {
+			country = c:FRA
+			value = $value$
+		}
+	}
+	if = {
+		limit = {
+			exists = c:RUS
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_event_negative
+			target = c:RUS
+		}
+		change_relations = {
+			country = c:RUS
+			value = $value$
+		}
+	}
+	if = {
+		limit = {
+			local_var:grefm_include_bavaria_param ?= flag:yes
+			exists = c:BAV
+		}
+		create_diplomatic_catalyst = {
+			type = catalyst_event_negative
+			target = c:BAV
+		}
+		change_relations = {
+			country = c:BAV
+			value = -25
 		}
 	}
 }
@@ -509,7 +533,6 @@ grefm_create_cyprus_characters_effect = {
 			demagogue
 		}
 	}
-	
 }
 
 grefm_create_epirus_characters_effect = {

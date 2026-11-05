@@ -1,0 +1,1294 @@
+# INHERITED FROM BASE GAME
+@panel_width_minus_30 = 510
+@panel_width_minus_20 = 520
+@panel_width_minus_10 = 530 # used to be 450
+@panel_width = 540 # used to be 460
+@panel_width_half = 270 # used to be 230
+@panel_width_plus_10 = 550 # used to be 470
+@panel_width_plus_14 = 554 # used to be 474
+@panel_width_plus_14_half = 277 # used to be 237
+@panel_width_plus_20 = 560 # used to be 480
+@panel_width_plus_30 = 570 # used to be 490
+@panel_width_plus_70 = 610 # used to be 530
+
+####---------- INJECTABLE JOURNAL ENTRY WIDGETS ----------####
+flowcontainer = {
+	name = "widget_gbbf_sanusiyyah_situation"
+	ignoreinvisible = yes
+	
+	flowcontainer = {
+		direction = vertical
+		spacing = 5
+		
+		eqfm_sanusiyyah_tab_buttons = {}
+		com_journal_reason_text = {
+			visible = "[Or(
+				GetVariableSystem.HasValue('eqfm_sanusiyyah_tab', 'overview'),
+				Not(GetVariableSystem.Exists('eqfm_sanusiyyah_tab'))
+			)]"
+			maximumsize = { 520 -1 }
+		}
+		eqfm_sanusiyyah_georegion_tab = {}
+		eqfm_sanusiyyah_involvement_tab = {}
+	}
+}
+
+####---------- INJECTABLE JOURNAL ENTRY TYPES ----------####
+
+types gbbf_journal_entry_widget_types {
+	
+	type eqfm_sanusiyyah_tab_buttons = widget {
+		parentanchor = top|hcenter
+		size = { 540 40 }
+		
+		tab_buttons = {
+			parentanchor = center
+			# OVERVIEW TAB
+			blockoverride "first_button" {
+				text = "eqfm_gui_sanusiyyah_overview_header"
+			}
+			blockoverride "first_button_selected" {
+				text = "eqfm_gui_sanusiyyah_overview_header"
+			}
+			blockoverride "first_button_visibility_checked" {
+				visible = "[And(
+					Not(GetVariableSystem.HasValue('eqfm_sanusiyyah_tab', 'overview')),
+					GetVariableSystem.Exists('eqfm_sanusiyyah_tab')
+				)]"
+			}
+			blockoverride "first_button_visibility" {
+				visible = "[Or(
+					GetVariableSystem.HasValue('eqfm_sanusiyyah_tab', 'overview'),
+					Not(GetVariableSystem.Exists('eqfm_sanusiyyah_tab'))
+				)]"
+			}
+			blockoverride "first_button_click" {
+				onclick = "[GetVariableSystem.Set('eqfm_sanusiyyah_tab', 'overview')]"
+			}
+			
+			# STATE REGIONS TAB
+			blockoverride "second_button" {
+				text = "eqfm_gui_state_regions_header"
+			}
+			blockoverride "second_button_selected" {
+				text = "eqfm_gui_state_regions_header"
+			}
+			blockoverride "second_button_visibility_checked" {
+				visible = "[Not(GetVariableSystem.HasValue('eqfm_sanusiyyah_tab', 'regions'))]"
+			}
+			blockoverride "second_button_visibility" {
+				visible = "[GetVariableSystem.HasValue('eqfm_sanusiyyah_tab', 'regions')]"
+			}
+			blockoverride "second_button_click" {
+				onclick = "[GetVariableSystem.Set('eqfm_sanusiyyah_tab', 'regions')]"
+			}
+			
+			# INVOLVEMENT TAB
+			blockoverride "third_button" {
+				text = "eqfm_gui_involvement_header"
+			}
+			blockoverride "third_button_selected" {
+				text = "eqfm_gui_involvement_header"
+			}
+			blockoverride "third_button_visibility_checked" {
+				visible = "[Not(GetVariableSystem.HasValue('eqfm_sanusiyyah_tab', 'involvement'))]"
+			}
+			blockoverride "third_button_visibility" {
+				visible = "[GetVariableSystem.HasValue('eqfm_sanusiyyah_tab', 'involvement')]"
+			}
+			blockoverride "third_button_click" {
+				onclick = "[GetVariableSystem.Set('eqfm_sanusiyyah_tab', 'involvement')]"
+			}
+		}
+	}
+	
+	type eqfm_sanusiyyah_georegion_tab = flowcontainer {
+		parentanchor = top|hcenter
+		direction = vertical
+		minimumsize = { 520 -1 }
+		margin = { 10 10 }
+		spacing = 5
+		
+		visible = "[GetVariableSystem.HasValue('eqfm_sanusiyyah_tab', 'regions')]"
+		
+		using = entry_bg_fancy
+		
+		section_header_button = {
+			blockoverride "layout" {
+				size = { 500 38 }
+			}
+			blockoverride "left_text" {
+				text = "eqfm_gui_scouting_party_header"
+			}
+			blockoverride "onclick" {
+				onclick = "[GetVariableSystem.Toggle('show_scouting_party')]"
+			}
+			blockoverride "onclick_showmore" {
+				visible = "[Not(GetVariableSystem.Exists('show_scouting_party'))]"
+			}
+			blockoverride "onclick_showless" {
+				visible = "[GetVariableSystem.Exists('show_scouting_party')]"
+			}
+		}
+		
+		eqfm_sanusiyyah_expedition_composition = {
+			visible = "[GetVariableSystem.Exists('show_scouting_party')]"
+		}
+		
+		flowcontainer = {
+			parentanchor = top|hcenter
+			direction = vertical
+			spacing = 15
+			
+			eqfm_sanusiyyah_state_region_item = {
+				visible = "[GetStateRegion('STATE_HEDJAZ').MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').IsSet]"
+				blockoverride "state_region_datacontext" {
+					datacontext = "[GetStateRegion('STATE_HEDJAZ')]"
+				}
+				blockoverride "state_region_background" {
+					texture = "/gfx/interface/illustrations/situation_backgrounds/gbbf_situation_background_arab_urban.dds"
+				}
+				blockoverride "spread_button_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_hedjaz'),
+						ScriptedButton.HasTag('spread_action')
+					)]"
+				}
+				blockoverride "expel_button_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_hedjaz'),
+						ScriptedButton.HasTag('expel_action')
+					)]"
+				}
+				blockoverride "button_column_1_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_hedjaz'),
+						ScriptedButton.HasTag('diplo_action')
+					)]"
+				}
+				blockoverride "button_column_2_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_hedjaz'),
+						ScriptedButton.HasTag('repeatable_action')
+					)]"
+				}
+			}
+			eqfm_sanusiyyah_state_region_item = {
+				blockoverride "state_region_datacontext" {
+					datacontext = "[GetStateRegion('STATE_TRIPOLI')]"
+				}
+				blockoverride "state_region_background" {
+					texture = "/gfx/interface/illustrations/situation_backgrounds/gbbf_situation_background_arab_urban.dds"
+				}
+				blockoverride "spread_button_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_tripoli'),
+						ScriptedButton.HasTag('spread_action')
+					)]"
+				}
+				blockoverride "expel_button_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_tripoli'),
+						ScriptedButton.HasTag('expel_action')
+					)]"
+				}
+				blockoverride "button_column_1_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_tripoli'),
+						ScriptedButton.HasTag('diplo_action')
+					)]"
+				}
+				blockoverride "button_column_2_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_tripoli'),
+						ScriptedButton.HasTag('repeatable_action')
+					)]"
+				}
+			}
+			eqfm_sanusiyyah_state_region_item = {
+				blockoverride "state_region_datacontext" {
+					datacontext = "[GetStateRegion('STATE_LIBYA')]"
+				}
+				blockoverride "state_region_background" {
+					texture = "/gfx/interface/illustrations/situation_backgrounds/gbbf_situation_background_desert_traders.dds"
+				}
+				blockoverride "spread_button_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_libya'),
+						ScriptedButton.HasTag('spread_action')
+					)]"
+				}
+				blockoverride "expel_button_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_libya'),
+						ScriptedButton.HasTag('expel_action')
+					)]"
+				}
+				blockoverride "button_column_1_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_libya'),
+						ScriptedButton.HasTag('diplo_action')
+					)]"
+				}
+				blockoverride "button_column_2_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_libya'),
+						ScriptedButton.HasTag('repeatable_action')
+					)]"
+				}
+			}
+			eqfm_sanusiyyah_state_region_item = {
+				blockoverride "state_region_datacontext" {
+					datacontext = "[GetStateRegion('STATE_LIBYAN_DESERT')]"
+				}
+				blockoverride "state_region_background" {
+					texture = "/gfx/interface/illustrations/situation_backgrounds/gbbf_situation_background_desert_traders.dds"
+				}
+				blockoverride "spread_button_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_libyan_desert'),
+						ScriptedButton.HasTag('spread_action')
+					)]"
+				}
+				blockoverride "expel_button_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_libya_desert'),
+						ScriptedButton.HasTag('expel_action')
+					)]"
+				}
+				blockoverride "button_column_1_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_libyan_desert'),
+						ScriptedButton.HasTag('diplo_action')
+					)]"
+				}
+				blockoverride "button_column_2_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_libyan_desert'),
+						ScriptedButton.HasTag('repeatable_action')
+					)]"
+				}
+			}
+			eqfm_sanusiyyah_state_region_item = {
+				blockoverride "state_region_datacontext" {
+					datacontext = "[GetStateRegion('STATE_MATRUH')]"
+				}
+				blockoverride "spread_button_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_matruh'),
+						ScriptedButton.HasTag('spread_action')
+					)]"
+				}
+				blockoverride "expel_button_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_matruh'),
+						ScriptedButton.HasTag('expel_action')
+					)]"
+				}
+				blockoverride "button_column_1_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_matruh'),
+						ScriptedButton.HasTag('diplo_action')
+					)]"
+				}
+				blockoverride "button_column_2_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_matruh'),
+						ScriptedButton.HasTag('repeatable_action')
+					)]"
+				}
+			}
+			eqfm_sanusiyyah_state_region_item = {
+				blockoverride "state_region_datacontext" {
+					datacontext = "[GetStateRegion('STATE_EGYPTIAN_DESERT')]"
+				}
+				blockoverride "spread_button_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_egyptian_desert'),
+						ScriptedButton.HasTag('spread_action')
+					)]"
+				}
+				blockoverride "expel_button_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_egyptian_desert'),
+						ScriptedButton.HasTag('expel_action')
+					)]"
+				}
+				blockoverride "button_column_1_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_egyptian_desert'),
+						ScriptedButton.HasTag('diplo_action')
+					)]"
+				}
+				blockoverride "button_column_2_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_egyptian_desert'),
+						ScriptedButton.HasTag('repeatable_action')
+					)]"
+				}
+			}
+			eqfm_sanusiyyah_state_region_item = {
+				blockoverride "state_region_datacontext" {
+					datacontext = "[GetStateRegion('STATE_CHAD')]"
+				}
+				blockoverride "state_region_background" {
+					texture = "/gfx/interface/illustrations/situation_backgrounds/gbbf_situation_background_mountain_arid.dds"
+				}
+				blockoverride "spread_button_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_chad'),
+						ScriptedButton.HasTag('spread_action')
+					)]"
+				}
+				blockoverride "expel_button_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_chad'),
+						ScriptedButton.HasTag('expel_action')
+					)]"
+				}
+				blockoverride "button_column_1_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_chad'),
+						ScriptedButton.HasTag('diplo_action')
+					)]"
+				}
+				blockoverride "button_column_2_visibility" {
+					visible = "[And(
+						ScriptedButton.HasTag('state_chad'),
+						ScriptedButton.HasTag('repeatable_action')
+					)]"
+				}
+			}
+		}
+	}
+	
+	type eqfm_sanusiyyah_expedition_composition = flowcontainer {
+		parentanchor = top|hcenter
+		direction = vertical
+		minimumsize = { 500 100 }
+		spacing = 5
+		using = entry_bg_fancy
+		
+		flowcontainer = {
+			parentanchor = top|hcenter
+			direction = vertical
+			minimumsize = { 520 -1 }
+			spacing = 0
+			margin_bottom = 15
+			
+			using = entry_bg_fancy
+			
+			default_header_clean_faded = {
+				parentanchor = top|hcenter
+				blockoverride "text" {
+					text = "eqfm_gui_scouting_party_header"
+				}
+				blockoverride "size" {
+					size = { 532 45 }
+				}
+			}
+			
+			flowcontainer = {
+				parentanchor = top|hcenter
+				direction = horizontal
+				minimumsize = { 520 -1 }
+				spacing = 5
+				margin_left = 8
+				
+				background = {
+					texture = "gfx/interface/illustrations/journal_backgrounds/gbbf_desert_expedition_illus.dds"
+					fittype = centercrop
+					alpha = 0.75
+					margin = { 0 5 }
+					
+					modify_texture = {
+						texture = "gfx/interface/backgrounds/default_bg_shading.dds"
+						spriteType = Corneredstretched
+						spriteborder = { 0 0 }
+						blend_mode = overlay
+					}
+					modify_texture = {
+						using = texture_velvet
+					}
+					modify_texture = {
+						texture = "gfx/interface/masks/fade_vertical_center.dds"
+						spriteType = Corneredstretched
+						spriteborder = { 0 10 }
+						blend_mode = alphamultiply
+						alpha = 0.75
+					}
+					
+				}
+				
+				## GUIDE
+				eqfm_scouting_member_widget = {
+					blockoverride "member_available_visible" {
+						visible = "[Or(
+							Not(GetPlayer.MakeScope.Var('eqfm_desert_scouts_guide_var').IsSet),
+							And(
+								GetPlayer.MakeScope.Var('eqfm_desert_scouts_guide_var').IsSet,
+								Not(GetPlayer.MakeScope.Var('eqfm_desert_scouts_guide_var').GetCharacter.IsValid)
+							)
+						)]"
+					}
+					blockoverride "member_employed_visible" {
+						visible = "[And(
+							GetPlayer.MakeScope.Var('eqfm_desert_scouts_guide_var').IsSet,
+							GetPlayer.MakeScope.Var('eqfm_desert_scouts_guide_var').GetCharacter.IsValid
+						)]"
+					}
+					blockoverride "member_background" {
+						texture = "gfx/state_pictures/desert.dds"
+					}
+					blockoverride "member_title_text" {
+						text = "eqfm_sanusiyyah_guide"
+					}
+					blockoverride "member_datacontext" {
+						datacontext = "[GetPlayer.MakeScope.Var('eqfm_desert_scouts_guide_var').GetCharacter]"
+					}
+					blockoverride "member_pose" {
+						portrait_texture = "[Character.GetAnimatedPortrait(
+							'ruler_environment',
+							'camera_leader',
+							'commander_vs_left',
+							GetPortraitRenderSize(PdxGuiWidget.Self))
+						]"
+					}
+					blockoverride "member_hire_button_visibility" {
+						visible = "[ScriptedButton.HasTag('hire_guide')]"
+					}
+					blockoverride "member_dismiss_button_visibility" {
+						visible = "[ScriptedButton.HasTag('dismiss_guide')]"
+					}
+				}
+				
+				## LEADER
+				eqfm_scouting_member_widget = {
+					blockoverride "member_available_visible" {
+						visible = "[Or(
+							Not(GetPlayer.MakeScope.Var('eqfm_desert_scouts_leader_var').IsSet),
+							And(
+								GetPlayer.MakeScope.Var('eqfm_desert_scouts_leader_var').IsSet,
+								Not(GetPlayer.MakeScope.Var('eqfm_desert_scouts_leader_var').GetCharacter.IsValid)
+							)
+						)]"
+					}
+					blockoverride "member_employed_visible" {
+						visible = "[And(
+							GetPlayer.MakeScope.Var('eqfm_desert_scouts_leader_var').IsSet,
+							GetPlayer.MakeScope.Var('eqfm_desert_scouts_leader_var').GetCharacter.IsValid
+						)]"
+					}
+					blockoverride "member_background" {
+						texture = "gfx/state_pictures/desert.dds"
+					}
+					blockoverride "member_title_text" {
+						text = "eqfm_sanusiyyah_leader"
+					}
+					blockoverride "member_datacontext" {
+						datacontext = "[GetPlayer.MakeScope.Var('eqfm_desert_scouts_leader_var').GetCharacter]"
+					}
+					blockoverride "member_pose" {
+						portrait_texture = "[Character.GetAnimatedPortrait(
+							'ruler_environment',
+							'camera_leader',
+							'commander_vs_left',
+							GetPortraitRenderSize(PdxGuiWidget.Self))
+						]"
+					}
+					blockoverride "member_hire_button_visibility" {
+						visible = "[ScriptedButton.HasTag('hire_leader')]"
+					}
+					blockoverride "member_dismiss_button_visibility" {
+						visible = "[ScriptedButton.HasTag('dismiss_leader')]"
+					}
+				}
+				
+				## LOGISTICIAN
+				eqfm_scouting_member_widget = {
+					blockoverride "member_available_visible" {
+						visible = "[Or(
+							Not(GetPlayer.MakeScope.Var('eqfm_desert_scouts_logistician_var').IsSet),
+							And(
+								GetPlayer.MakeScope.Var('eqfm_desert_scouts_logistician_var').IsSet,
+								Not(GetPlayer.MakeScope.Var('eqfm_desert_scouts_logistician_var').GetCharacter.IsValid)
+							)
+						)]"
+					}
+					blockoverride "member_employed_visible" {
+						visible = "[And(
+							GetPlayer.MakeScope.Var('eqfm_desert_scouts_logistician_var').IsSet,
+							GetPlayer.MakeScope.Var('eqfm_desert_scouts_logistician_var').GetCharacter.IsValid
+						)]"
+					}
+					blockoverride "member_background" {
+						texture = "gfx/state_pictures/desert.dds"
+					}
+					blockoverride "member_title_text" {
+						text = "eqfm_sanusiyyah_logistician"
+					}
+					blockoverride "member_datacontext" {
+						datacontext = "[GetPlayer.MakeScope.Var('eqfm_desert_scouts_logistician_var').GetCharacter]"
+					}
+					blockoverride "member_pose" {
+						portrait_texture = "[Character.GetAnimatedPortrait(
+							'ruler_environment',
+							'camera_leader',
+							'commander_vs_left',
+							GetPortraitRenderSize(PdxGuiWidget.Self))
+						]"
+					}
+					blockoverride "member_hire_button_visibility" {
+						visible = "[ScriptedButton.HasTag('hire_logistician')]"
+					}
+					blockoverride "member_dismiss_button_visibility" {
+						visible = "[ScriptedButton.HasTag('dismiss_logistician')]"
+					}
+				}
+			}
+		}
+	}
+	
+	type eqfm_scouting_member_widget = widget {
+		parentanchor = top|hcenter
+		size = { 165 190 }
+		
+		icon = {
+			parentanchor = center
+			position = { 0 15 }
+			scale = 0.25
+			texture = "gfx/interface/portraits/portrait_frame_window_cutoff.dds"
+			
+			modify_texture = {
+				texture = "gfx/interface/masks/fade_vertical_bottom.dds"
+				spriteType = Corneredstretched
+				spriteborder = { 0 10 }
+				blend_mode = alphamultiply
+				alpha = 1
+			}
+			
+			background = {
+				block "member_background" {
+					texture = "gfx/state_pictures/urban_african.dds"
+				}
+				fittype = centercrop
+				scale = 0.5
+				
+				modify_texture = {
+					texture = "gfx/interface/portraits/portrait_frame_window_cutoff_mask.dds"
+					spriteType = Corneredstretched
+					spriteborder = { 20 20 }
+					texture_density = 2
+					blend_mode = alphamultiply
+				}
+				
+				modify_texture = {
+					texture = "gfx/interface/masks/fade_vertical_bottom.dds"
+					spriteType = Corneredstretched
+					spriteborder = { 0 10 }
+					blend_mode = alphamultiply
+					alpha = 1
+				}
+			}
+		}
+		
+		## OPEN POSITION PORTRAIT
+		widget = {
+			parentanchor = center
+			position = { 0 15 }
+			size = { 180 180 }
+			
+			block "member_available_visible" {
+				visible = no
+			}
+			
+			icon = {
+				parentanchor = center
+				position = { 0 -20 }
+				texture = "gfx/portraits/example_portraits/unknown.dds"
+				scale = 0.25
+			}
+			
+			flowcontainer = {
+				direction = vertical
+				parentanchor = bottom|hcenter
+				position = { 0 -10 }
+				spacing = 10
+				
+				flowcontainer = {
+					direction = vertical
+					parentanchor = top|hcenter
+					
+					background = {
+						using = dark_area
+						alpha = 0.7
+						margin = { 20 5 }
+						
+						modify_texture = {
+							texture = "gfx/interface/masks/fade_horizontal_center.dds"
+							spriteType = Corneredstretched
+							spriteborder = { 0 0 }
+							blend_mode = alphamultiply
+						}
+						
+						modify_texture = {
+							texture = "gfx/interface/masks/fade_vertical_center.dds"
+							spriteType = Corneredstretched
+							spriteborder = { 0 0 }
+							blend_mode = alphamultiply
+							alpha = 0.5
+						}
+					}
+					textbox = {
+						parentanchor = top|hcenter
+						block "member_title_text" {
+							raw_text = "#todo member_title_text"
+						}
+						autoresize = yes
+						elide = right
+						using = fontsize_medium
+						max_width = 160
+						
+					}
+					textbox = {
+						parentanchor = top|hcenter
+						raw_text = "#filler Open"
+						autoresize = yes
+						elide = right
+						using = fontsize_medium
+						max_width = 160
+						using = look_at_me_animation
+					}
+				}
+			}
+			
+			flowcontainer = {
+				parentanchor = center
+				datamodel = "[JournalEntry.GetScriptedButtons]"
+				item = {
+					eqfm_sanusiyyah_scripted_button_round = {
+						blockoverride "major_button_visibility" {
+							block "member_hire_button_visibility" {
+								visible = "[ScriptedButton.HasTag('nope')]"
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		## EMPLOYED POSITION PORTRAIT
+		character_portrait_base_no_mask = {
+			parentanchor = center
+			position = { 0 15 }
+			ignore_in_debug_draw = yes
+			size = { 180 180 }
+			
+			block "member_employed_visible" {
+				visible = no
+			}
+			
+			block "member_datacontext" {
+				datacontext = "[GetPlayer.GetRuler]"
+			}
+			blockoverride "portrait_size" {
+				size = { 220 220 }
+			}
+			blockoverride "portrait_texture" {
+				block "member_pose" {
+					portrait_texture = "[Character.GetAnimatedPortrait(
+						'ruler_environment',
+						'camera_leader',
+						'idle',
+						GetPortraitRenderSize(PdxGuiWidget.Self))
+					]"
+				}
+			}
+			
+			flowcontainer = {
+				direction = vertical
+				parentanchor = bottom|hcenter
+				position = { 0 -10 }
+				spacing = 10
+				
+				flowcontainer = {
+					direction = vertical
+					parentanchor = top|hcenter
+					
+					background = {
+						using = dark_area
+						alpha = 0.7
+						margin = { 20 5 }
+						
+						modify_texture = {
+							texture = "gfx/interface/masks/fade_horizontal_center.dds"
+							spriteType = Corneredstretched
+							spriteborder = { 0 0 }
+							blend_mode = alphamultiply
+						}
+						
+						modify_texture = {
+							texture = "gfx/interface/masks/fade_vertical_center.dds"
+							spriteType = Corneredstretched
+							spriteborder = { 0 0 }
+							blend_mode = alphamultiply
+							alpha = 0.5
+						}
+					}
+					textbox = {
+						parentanchor = top|hcenter
+						block "member_title_text" {
+							raw_text = "#bold [Character.GetPrimaryRole.GetName]"
+						}
+						autoresize = yes
+						elide = right
+						using = fontsize_medium
+						max_width = 160
+						
+					}
+					textbox = {
+						parentanchor = top|hcenter
+						raw_text = "[Character.GetLastName]"
+						autoresize = yes
+						elide = right
+						using = fontsize_medium
+						max_width = 160
+						
+					}
+				}
+			}
+			
+			flowcontainer = {
+				parentanchor = center
+				datamodel = "[JournalEntry.GetScriptedButtons]"
+				item = {
+					eqfm_sanusiyyah_scripted_button_round = {
+						blockoverride "major_button_size" {
+							size = { 20 20 }
+						}
+						blockoverride "major_button_visibility" {
+							block "member_dismiss_button_visibility" {
+								visible = "[ScriptedButton.HasTag('nope')]"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	type eqfm_sanusiyyah_state_region_item = widget {
+		parentanchor = top|hcenter
+		size = { @panel_width_minus_20 140 }
+		
+		block "state_region_datacontext" {}
+		
+		icon = {
+			using = dark_area
+			using = frame_small_mask
+			parentanchor = right
+			size = { 240 140 }
+			alpha = 0.2
+			position = { 0 0 }
+			
+			modify_texture = {
+				texture = "gfx/interface/masks/fade_horizontal_left.dds"
+				spriteType = Corneredstretched
+				spriteborder = { 0 0 }
+				blend_mode = alphamultiply
+			}
+		}
+		
+		background = {
+			block "state_region_background" {
+				texture = "/gfx/interface/illustrations/situation_backgrounds/gbbf_situation_background_desert.dds"
+			}
+			using = frame_small_mask
+			alpha = 0.65
+		}
+		
+		background = {
+			texture = "gfx/interface/backgrounds/subject_liberty_desire_frame.dds"
+		}
+		
+		widget = {
+			parentanchor = bottom
+			position = { 0 10 }
+			size = { 307 52 }
+			
+			# Active Entrenchment Progress Bar
+			gold_progressbar_horizontal = {
+				parentanchor = center
+				size = { 220 15 }
+				position = { 0 7 }
+				allow_outside = yes
+				tooltip = eqfm_gui_entrenchment_value
+				
+				visible = "[And(
+					StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').IsSet,
+					Not(EqualTo_CFixedPoint( StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').GetValue, '(CFixedPoint)0' ))
+				)]"
+				
+				blockoverride "frame" {}
+				blockoverride "glow_visible" {
+					visible = "no"
+				}
+				blockoverride "values" {
+					value = "[StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').GetValue]"
+					min = 0
+					max = 100
+				}
+			}
+			
+			# No Entrenchment Progress Bar
+			gold_progressbar_horizontal = {
+				parentanchor = center
+				size = { 220 15 }
+				position = { 0 7 }
+				allow_outside = yes
+				
+				visible = "[Or(
+					Not(StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').IsSet),
+					EqualTo_CFixedPoint( StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').GetValue, '(CFixedPoint)0' )
+				)]"
+				blockoverride "frame" {}
+				blockoverride "glow_visible" {
+					visible = "no"
+				}
+				blockoverride "values" {
+					value = "0"
+					min = 0
+					max = 100
+				}
+			}
+			
+			icon = {
+				size = { 100% 100% }
+				texture = "gfx/interface/backgrounds/subject_liberty_desire_bar.dds"
+			}
+			
+			textbox = {
+				visible = "[Or(
+					Not(StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').IsSet),
+					EqualTo_CFixedPoint( StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').GetValue, '(CFixedPoint)0' )
+				)]"
+				
+				parentanchor = center
+				position = { 0 7 }
+				text = "eqfm_gui_no_entrenchment"
+				autoresize = yes
+				max_width = 220
+				align = center|nobaseline
+				elide = right
+				using = fontsize_medium
+				default_format = "#b;lore"
+				
+				background = {
+					using = dark_area
+					margin = { 24 0 }
+				}
+			}
+		}
+		
+		flowcontainer = {
+			parentanchor = bottom|left
+			position = { 6 6 }
+			direction = vertical
+			ignoreinvisible = yes
+			datamodel = "[JournalEntry.GetScriptedButtons]"
+			
+			item = {
+				eqfm_sanusiyyah_scripted_button_round = {
+					blockoverride "major_button_visibility" {
+						block "expel_button_visibility" {
+							visible = "[ScriptedButton.HasTag('nope')]"
+						}
+					}
+				}
+			}
+		}
+		
+		flowcontainer = {
+			parentanchor = bottom|hcenter
+			position = { 22 6 }
+			direction = vertical
+			ignoreinvisible = yes
+			datamodel = "[JournalEntry.GetScriptedButtons]"
+			
+			item = {
+				eqfm_sanusiyyah_scripted_button_round = {
+					blockoverride "major_button_visibility" {
+						block "spread_button_visibility" {
+							visible = "[ScriptedButton.HasTag('nope')]"
+						}
+					}
+				}
+			}
+		}
+		
+		flowcontainer = {
+			parentanchor = left|top
+			direction = vertical
+			position = { 20 6 }
+			
+			background = {
+				using = dark_area
+				alpha = 0.5
+				margin = { 15 2 }
+				modify_texture = {
+					texture = "gfx/interface/masks/fade_horizontal_right.dds"
+					spriteType = Corneredstretched
+					spriteborder = { 0 0 }
+					blend_mode = alphamultiply
+					alpha = 0.75
+				}
+			}
+			
+			widget = {
+				parentanchor = top|hcenter
+				size = { 250 40 }
+				
+				hbox = {
+					spacing = 5
+					
+					textbox = {
+						autoresize = yes
+						align = nobaseline
+						elide = right
+						fontsize_min = 12
+						using = fontsize_large
+						text = "eqfm_gui_state_region_name"
+					}
+					
+					# Entrenchment Icon
+					icon = {
+						size = { 35 35 }
+						visible = "[StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').IsSet]"
+						texture = "gfx/interface/icons/sanusiyyah_icons/active_entrenchment.dds"
+						tooltip = eqfm_gui_sanusiyyah_entrenchment_tooltip
+					}
+					
+					# Expulsion Icon
+					icon = {
+						size = { 35 35 }
+						visible = "[StateRegion.MakeScope.Var('eqfm_sanusiyyah_explusion_var').IsSet]"
+						texture = "gfx/interface/icons/sanusiyyah_icons/region_secured.dds"
+						tooltip = eqfm_gui_sanusiyyah_expelled_tooltip
+					}
+					
+					# Headquarters Icon
+					icon = {
+						size = { 35 35 }
+						visible = "[StateRegion.MakeScope.Var('eqfm_sanusiyyah_hq_var').IsSet]"
+						texture = "gfx/interface/icons/sanusiyyah_icons/headquarters_location.dds"
+						tooltip = eqfm_gui_sanusiyyah_headquarters_tooltip
+					}
+					
+					# Hidden Lodges Icon
+					icon = {
+						size = { 35 35 }
+						visible = "[And3(
+							StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').IsSet,
+							Not(StateRegion.MakeScope.Var('eqfm_sanusiyyah_exposed_lodges_var').IsSet),
+							Not(StateRegion.MakeScope.Var('eqfm_sanusiyyah_destroyed_lodges_var').IsSet)
+						)]"
+						texture = "gfx/interface/icons/sanusiyyah_icons/lodges_hidden.dds"
+						tooltip = eqfm_gui_sanusiyyah_hidden_lodge_tooltip
+					}
+					
+					# Exposed Lodges Icon
+					icon = {
+						size = { 35 35 }
+						visible = "[And3(
+							StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').IsSet,
+							StateRegion.MakeScope.Var('eqfm_sanusiyyah_exposed_lodges_var').IsSet,
+							Not(StateRegion.MakeScope.Var('eqfm_sanusiyyah_destroyed_lodges_var').IsSet)
+						)]"
+						texture = "gfx/interface/icons/sanusiyyah_icons/lodges_exposed.dds"
+						tooltip = eqfm_gui_sanusiyyah_exposed_lodges_tooltip
+					}
+					
+					# Destroyed Lodges Icon
+					icon = {
+						size = { 35 35 }
+						visible = "[And(
+							StateRegion.MakeScope.Var('eqfm_sanusiyyah_entrenchment_var').IsSet,
+							StateRegion.MakeScope.Var('eqfm_sanusiyyah_destroyed_lodges_var').IsSet
+						)]"
+						texture = "gfx/interface/icons/sanusiyyah_icons/lodges_destroyed.dds"
+						tooltip = eqfm_gui_sanusiyyah_destroyed_lodges_tooltip
+					}
+					
+					# Elders Contacted Icon
+					icon = {
+						size = { 35 35 }
+						visible = "[StateRegion.MakeScope.Var('eqfm_sanusiyyah_elders_contacted_var').IsSet]"
+						texture = "gfx/interface/icons/sanusiyyah_icons/elders_contacted.dds"
+						tooltip = eqfm_gui_sanusiyyah_elders_contacted_tooltip
+					}
+					
+					# Active Expedition Icon
+					icon = {
+						size = { 35 35 }
+						visible = "[StateRegion.MakeScope.Var('eqfm_sanusiyyah_expedition_var').IsSet]"
+						texture = "gfx/interface/icons/sanusiyyah_icons/seeking_lodges.dds"
+						tooltip = eqfm_gui_sanusiyyah_active_expedition_tooltip
+					}
+					
+					expand = {}
+				}
+			}
+			
+			widget = {
+				parentanchor = top|hcenter
+				size = { 200 40 }
+				# visible = "[StateRegion.MakeScope.Var('eqfm_sanusiyyah_reconnaissance_var').IsSet]"
+				
+				background = {
+					using = entry_bg
+				}
+				
+				default_progressbar_horizontal = {
+					parentanchor = top|hcenter
+					size = { 160 40 }
+					blockoverride "values" {
+						min = 0
+						max = "100"
+						value = "50"
+						# value = "[StateRegion.MakeScope.Var('eqfm_sanusiyyah_reconnaissance_var').IsSet]"
+					}
+				}
+				tooltip = "eqfm_gui_sanusiyyah_reconnaissance_tooltip"
+			}
+			
+			textbox = {
+				parentanchor = top|hcenter
+				autoresize = yes
+				align = nobaseline
+				text = "eqfm_gui_state_region_bedouin_pops"
+			}
+			
+			textbox = {
+				parentanchor = top|hcenter
+				autoresize = yes
+				align = nobaseline
+				text = "eqfm_gui_state_region_bedouin_radicalism"
+			}
+		}
+		
+		flowcontainer = {
+			parentanchor = right|vcenter
+			direction = horizontal
+			minimumsize = { 110 120 }
+			maximumsize = { 110 120 }
+			position = { -10 0 }
+			margin_left = 5
+			spacing = 10
+			
+			background = {
+				using = dark_area
+				margin = { 5 5 }
+				alpha = 0.5
+			}
+			
+			vertical_divider_stronger_full = {}
+			
+			flowcontainer = {
+				parentanchor = right|vcenter
+				direction = vertical
+				minimumsize = { -1 125 }
+				datamodel = "[JournalEntry.GetScriptedButtons]"
+				spacing = 3
+				
+				item = {
+					eqfm_sanusiyyah_scripted_button_item = {
+						block "button_column_1_visibility" {
+							visible = no
+						}
+					}
+				}
+			}
+			
+			flowcontainer = {
+				parentanchor = right|vcenter
+				direction = vertical
+				minimumsize = { -1 125 }
+				datamodel = "[JournalEntry.GetScriptedButtons]"
+				spacing = 5
+				
+				item = {
+					eqfm_sanusiyyah_scripted_button_item = {
+						block "button_column_2_visibility" {
+							visible = no
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	type eqfm_sanusiyyah_scripted_button_item = button {
+		parentanchor = top|hcenter
+		using = default_button
+		using = tooltip_above
+		size = { 40 40 }
+		enabled = "[IsValid( ScriptedButton.ExecuteEffect )]"
+		onclick = "[Execute( ScriptedButton.ExecuteEffect )]"
+		tooltip = "SCRIPTED_ACTION_TOOLTIP"
+		
+		widget = {
+			visible = "[ScriptedButton.IsSelected]"
+			size = { 100% 100% }
+			
+			background = {
+				using = paper_bg
+			}
+		}
+		icon = {
+			parentanchor = center
+			size = { 85% 85% }
+			texture = "[ScriptedButton.GetIcon]"
+		}
+		icon = {
+			visible = "[ScriptedButton.IsSelected]"
+			using = highlighted_square_selection
+		}
+	}
+	
+	type eqfm_sanusiyyah_scripted_button_round = button_icon_round {
+		block "major_button_size" {
+			size = { 40 40 }
+		}
+		using = tooltip_above
+		enabled = "[IsValid( ScriptedButton.ExecuteEffect )]"
+		onclick = "[Execute( ScriptedButton.ExecuteEffect )]"
+		tooltip = "SCRIPTED_ACTION_TOOLTIP"
+		
+		block "major_button_visibility" {
+			visible = "[ScriptedButton.HasTag('nope')]"
+		}
+		
+		icon = {
+			parentanchor = center
+			size = { 75% 75% }
+			texture = "[ScriptedButton.GetIcon]"
+		}
+		icon = {
+			visible = "[ScriptedButton.IsSelected]"
+			size = { 100% 100% }
+			using = circle_bg_simple_dark
+		}
+		icon = {
+			visible = "[ScriptedButton.IsSelected]"
+			using = highlighted_circle_selection_small
+		}
+	}
+	
+	type eqfm_sanusiyyah_involvement_tab = flowcontainer {
+		parentanchor = top|hcenter
+		direction = vertical
+		spacing = 5
+		using = entry_bg_fancy
+		margin = { 8 10 }
+		
+		visible = "[GetVariableSystem.HasValue('eqfm_sanusiyyah_tab', 'involvement')]"
+		
+		# Stances
+		widget = {
+			parentanchor = top|hcenter
+			size = { 520 30 }
+			
+			hbox = {
+				maximumsize = { 520 -1 }
+				button = {
+					size = { 220 30 }
+					using = sort_button_bg
+					enabled = no
+					text = "eqfm_gui_sanusiyyah_country_header_header"
+					align = hcenter|nobaseline
+					margin_left = 10
+					margin_right = 10
+					elide = right
+				}
+				button = {
+					size = { 150 30 }
+					using = sort_button_bg
+					enabled = no
+					text = "eqfm_gui_sanusiyyah_stance_header"
+					align = hcenter|nobaseline
+					margin_left = 10
+					margin_right = 10
+					elide = right
+				}
+				button = {
+					size = { 150 30 }
+					using = sort_button_bg
+					enabled = no
+					text = "eqfm_gui_sanusiyyah_influence_header"
+					align = hcenter|nobaseline
+					margin_left = 10
+					margin_right = 10
+					elide = right
+				}
+				expand = { }
+			}
+		}
+		
+		# Involved Countries
+		flowcontainer = {
+			parentanchor = top|hcenter
+			direction = vertical
+			spacing = 5
+			datamodel = "[JournalEntry.GetInvolvedCountries]"
+			
+			item = {
+				flowcontainer = {
+					parentanchor = top|hcenter
+					direction = horizontal
+					minimumsize = { 520 30 }
+					
+					widget = {
+						parentanchor = top|hcenter
+						size = { 520 30 }
+						
+						hbox = {
+							maximumsize = { 520 -1 }
+							
+							expand = { }
+							
+							textbox = {
+								size = { 220 30 }
+								align = nobaseline
+								elide = right
+								fontsize_min = 12
+								fontsize = 18
+								raw_text = "[Country.GetName]"
+								default_format = "#b"
+							}
+							
+							textbox = {
+								size = { 145 30 }
+								align = nobaseline
+								elide = right
+								fontsize_min = 12
+								fontsize = 18
+								text = "eqfm_gui_sanusiyyah_country_stance"
+								default_format = "#b"
+							}
+							
+							textbox = {
+								size = { 140 30 }
+								align = nobaseline
+								elide = right
+								fontsize_min = 12
+								fontsize = 18
+								text = "eqfm_gui_sanusiyyah_country_influence"
+								default_format = "#b;greece"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

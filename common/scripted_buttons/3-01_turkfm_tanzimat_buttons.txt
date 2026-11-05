@@ -1,4 +1,5 @@
-﻿turkfm_start_tanzimat_button = {
+﻿####---------- Reorganization of the State Buttons ----------####
+turkfm_start_tanzimat_button = {
 	name = "turkfm_start_tanzimat_name"
 	desc = "turkfm_start_tanzimat_desc"
 
@@ -19,7 +20,7 @@
 	}
 	effect = {
 		trigger_event = {
-			id = turkfm_tanzimat.002
+			id = turkfm_tanzimat.001
 			popup = yes
 		}
 		turkfm_add_tanzimat_agenda_effect = {
@@ -104,6 +105,114 @@
 	}
 }
 
+turkfm_enforce_identity_button = {
+	name = "turkfm_enforce_identity_name"
+	desc = "turkfm_enforce_identity_desc"
+	
+	visible = {
+		NOT = {
+			has_global_variable = turkfm_tanzimat_identity_complete
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			text = turkfm_enforce_identity_possible_1
+			var:turkfm_tanzimat_reform_var >= 1000
+		}
+		custom_tooltip = {
+			text = turkfm_enforce_identity_possible_2
+			OR = {
+				var:turkfm_tanzimat_identity_var < 100
+				var:turkfm_tanzimat_identity_var > 900
+			}
+		}
+		NOT = {
+			has_law_or_variant = law_type:law_subjecthood
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				var:turkfm_tanzimat_identity_var > 900
+			}
+			custom_tooltip = {
+				text = turkfm_enforce_identity_ottomanist
+				set_global_variable = {
+					name = turkfm_tanzimat_identity_complete
+					value = cu:ottoman
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				var:turkfm_tanzimat_identity_var < 100
+			}
+			custom_tooltip = {
+				text = turkfm_enforce_identity_button_islamist
+				set_global_variable = {
+					name = turkfm_tanzimat_identity_complete
+					value = rel:sunni
+				}
+			}
+		}
+		else = {
+			custom_tooltip = turkfm_ottomanist_identity_effect
+		}
+	}
+}
+
+turkfm_depose_murad_button = {
+	name = "turkfm_depose_murad_name"
+	desc = "turkfm_depose_murad_desc"
+	
+	visible = {
+		ruler = {
+			has_trait = gbbf_trait_incapable
+		}
+	}
+	possible = {
+		ruler = {
+			has_trait = gbbf_trait_incapable
+		}
+		hidden_trigger = {
+			NOT = {
+				has_variable = turkfm_murad_deposed
+			}
+		}
+	}
+	effect = {
+		trigger_event = turkfm_tanzimat.107
+		set_variable = turkfm_murad_deposed
+	}
+}
+
+turkfm_reorganize_security_button = {
+	name = "turkfm_reorganize_security_name"
+	desc = "turkfm_reorganize_security_desc"
+	
+	visible = {
+		has_law = law_type:law_gbbf_palace_service
+	}
+	possible = {
+		ruler = {
+			law_stance = {
+				law = law_type:law_autocracy
+				value > approve
+			}
+		}
+		has_technology_researched = central_archives
+	}
+	effect = {
+		trigger_event = turkfm_tanzimat.019
+		activate_law = law_type:law_gbbf_teshkilat
+	}
+	
+	ai_chance = {
+		value = 100
+	}
+}
+
+####---------- Tanzimat Reforms Buttons ----------####
 turkfm_abolish_cizye_button = {
 	name = turkfm_abolish_cizye_name
 	desc = turkfm_abolish_cizye_desc
@@ -242,86 +351,4 @@ turkfm_abolish_esir_pazari_button = {
 			}
 		}
 	}
-}
-
-
-turkfm_enforce_identity_button = {
-	name = "turkfm_enforce_identity_name"
-	desc = "turkfm_enforce_identity_desc"
-
-	visible = {
-		NOT = {
-			has_global_variable = turkfm_tanzimat_identity_complete
-		}
-	}
-	possible = {
-		custom_tooltip = {
-			text = turkfm_enforce_identity_possible_1
-			var:turkfm_tanzimat_reform_var >= 1000
-		}
-		custom_tooltip = {
-			text = turkfm_enforce_identity_possible_2
-			OR = {
-				var:turkfm_tanzimat_identity_var < 100
-				var:turkfm_tanzimat_identity_var > 900
-			}
-		}
-		NOT = {
-			has_law_or_variant = law_type:law_subjecthood
-		}
-	}
-	effect = {
-		if = {
-			limit = {
-				var:turkfm_tanzimat_identity_var > 900
-			}
-			custom_tooltip = {
-				text = turkfm_enforce_identity_ottomanist
-				set_global_variable = {
-					name = turkfm_tanzimat_identity_complete
-					value = cu:ottoman
-				}
-			}
-		}
-		else_if = {
-			limit = {
-				var:turkfm_tanzimat_identity_var < 100
-			}
-			custom_tooltip = {
-				text = turkfm_enforce_identity_button_islamist
-				set_global_variable = {
-					name = turkfm_tanzimat_identity_complete
-					value = rel:sunni
-				}
-			}
-		}
-		else = {
-			custom_tooltip = turkfm_ottomanist_identity_effect
-		}
-	}
-}
-
-turkfm_depose_murad_button = {
-    name = "turkfm_depose_murad_name"
-    desc = "turkfm_depose_murad_desc"
-
-    visible = {
-        ruler = {
-            has_trait = gbbf_trait_incapable
-        }
-    }
-    possible = {
-        ruler = {
-            has_trait = gbbf_trait_incapable
-        }
-        hidden_trigger = {
-            NOT = {
-                has_variable = turkfm_murad_deposed
-            }
-        }
-    }
-    effect = {
-        trigger_event = turkfm_tanzimat.112
-        set_variable = turkfm_murad_deposed
-    }
 }

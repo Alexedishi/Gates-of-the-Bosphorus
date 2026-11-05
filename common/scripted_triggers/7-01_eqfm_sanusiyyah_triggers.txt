@@ -1,0 +1,354 @@
+﻿####---------- Sanusiyyah Situation Triggers ----------####
+eqfm_sanusiyyah_tranquility_phase_trigger = {
+	custom_description = { 
+		text = eqfm_sanusiyyah_tranquility_phase_trigger
+		global_var:je_eqfm_sanusiyyah ?= {
+			var:eqfm_sanusiyyah_phase_var ?= flag:eqfm_sanusiyyah_tranquility
+		}
+	}
+}
+
+eqfm_sanusiyyah_unease_phase_trigger = {
+	custom_description = {
+		text = eqfm_sanusiyyah_unease_phase_trigger
+		global_var:je_eqfm_sanusiyyah ?= {
+			var:eqfm_sanusiyyah_phase_var ?= flag:eqfm_sanusiyyah_unease
+		}
+	}
+}
+
+eqfm_sanusiyyah_belligerency_phase_trigger = {
+	custom_description = {
+		text = eqfm_sanusiyyah_belligerency_phase_trigger
+		global_var:je_eqfm_sanusiyyah ?= {
+			var:eqfm_sanusiyyah_phase_var ?= flag:eqfm_sanusiyyah_belligerency
+		}
+	}
+}
+
+eqfm_sanusiyyah_can_escalate_trigger = {
+	custom_description = { 
+		text = eqfm_sanusiyyah_can_escalate_trigger
+		global_var:je_eqfm_sanusiyyah ?= {
+			OR = {
+				var:eqfm_sanusiyyah_phase_var ?= flag:eqfm_sanusiyyah_tranquility
+				var:eqfm_sanusiyyah_phase_var ?= flag:eqfm_sanusiyyah_unease
+			}
+		}
+	}
+}
+
+eqfm_sanusiyyah_can_deescalate_trigger = {
+	custom_description = {
+		text = eqfm_sanusiyyah_can_deescalate_trigger
+		global_var:je_eqfm_sanusiyyah ?= {
+			OR = {
+				var:eqfm_sanusiyyah_phase_var ?= flag:eqfm_sanusiyyah_unease
+				var:eqfm_sanusiyyah_phase_var ?= flag:eqfm_sanusiyyah_belligerency
+			}
+		}
+	}
+}
+
+eqfm_character_is_senussi_trigger = {
+	OR = {
+		has_template = eqfm_senussi_dynamic
+		has_template = eqfm_senussi_hasan
+		has_template = eqfm_senussi_idris
+		has_template = eqfm_senussi_ahmed
+		has_template = eqfm_senussi_muhammad_ii
+		has_template = eqfm_senussi_muhammad_i
+	}
+}
+
+
+####---------- Sanusiyyah Country Triggers ----------####
+eqfm_sanusiyyah_is_relevant_due_to_subject_trigger = {
+	custom_description = {
+		text = eqfm_sanusiyyah_is_relevant_due_to_subject_trigger
+		subject = this
+		gbbf_country_is_muslim_trigger = yes
+		any_direct_subject = {
+			any_scope_state = {
+				is_in_geographic_region = geographic_region_sanusiyyah
+			}
+			gbbf_country_is_muslim_trigger = yes
+		}
+	}
+}
+
+eqfm_sanusiyyah_is_relevant_to_overlord_trigger = {
+	custom_description = {
+		text = eqfm_sanusiyyah_is_relevant_to_overlord_trigger
+		subject = this
+		is_subject = yes
+		gbbf_country_is_muslim_trigger = yes
+		overlord = {
+			gbbf_country_is_muslim_trigger = yes
+		}
+	}
+}
+
+eqfm_has_wecloming_stance_trigger = {
+	custom_tooltip = {
+		text = eqfm_has_wecloming_stance
+		var:eqfm_sanusiyyah_stance_var ?= flag:eqfm_sanusiyyah_stance_welcoming
+	}
+}
+
+eqfm_has_aloof_stance_trigger = {
+	custom_tooltip = {
+		text = eqfm_has_aloof_stance
+		var:eqfm_sanusiyyah_stance_var ?= flag:eqfm_sanusiyyah_stance_aloof
+	}
+}
+
+eqfm_has_hostile_stance_trigger = {
+	custom_tooltip = {
+		text = eqfm_has_hostile_stance
+		var:eqfm_sanusiyyah_stance_var ?= flag:eqfm_sanusiyyah_stance_hostile
+	}
+}
+
+eqfm_has_embraced_sanusiyyah_trigger = {
+	custom_description = {
+		text = eqfm_has_embraced_sanusiyyah_trigger
+		active_law:lawgroup_church_and_state = {
+			has_amendment = amendment_type:amendment_gbbf_state_sanusiyyah
+		}
+	}
+}
+
+
+####---------- Sanusiyyah State Region Triggers ----------####
+eqfm_sanusiyyah_entrenchment_trigger = {
+	custom_tooltip = {
+		text = eqfm_sanusiyyah_entrenchment_trigger
+		state_region = {
+			has_variable = eqfm_sanusiyyah_entrenchment_var
+		}
+	}
+}
+
+eqfm_state_region_has_sanusiyyah_entrenchment_trigger = {
+	custom_tooltip = {
+		text = eqfm_state_region_has_sanusiyyah_entrenchment_trigger
+		save_temporary_scope_value_as = {
+			name = eqfm_entrenchment_state_region_scope
+			value = $state_region$
+		}
+		$state_region$ = {
+			has_variable = eqfm_sanusiyyah_entrenchment_var
+		}
+	}
+}
+
+eqfm_state_region_is_being_scouted_trigger = {
+	$state_region$ = {
+		has_variable = eqfm_sanusiyyah_expedition_var
+		exists = var:eqfm_sanusiyyah_expedition_var
+	}
+}
+
+eqfm_state_region_has_adequate_reconnaissance_for_exposure_trigger = {
+	custom_tooltip = {
+		text = eqfm_state_region_has_adequate_reconnaissance_for_exposure_trigger
+		save_temporary_scope_value_as = {
+			name = eqfm_reconnaissance_state_region_scope
+			value = $state_region$
+		}
+		save_temporary_scope_value_as = {
+			name = eqfm_state_region_recon_value
+			value = $state_region$
+		}
+		$state_region$ = {
+			has_variable = eqfm_desert_scouting_reconnaissance_var
+			var:eqfm_desert_scouting_reconnaissance_var >= 50
+		}
+	}
+}
+
+eqfm_state_region_has_adequate_reconnaissance_trigger = {
+	custom_tooltip = {
+		text = eqfm_state_region_has_adequate_reconnaissance_trigger
+		save_temporary_scope_value_as = {
+			name = eqfm_reconnaissance_state_region_scope
+			value = $state_region$
+		}
+		save_temporary_scope_value_as = {
+			name = eqfm_state_region_recon_value
+			value = $state_region$
+		}
+		$state_region$ = {
+			has_variable = eqfm_desert_scouting_reconnaissance_var
+			var:eqfm_desert_scouting_reconnaissance_var >= 75
+		}
+	}
+}
+
+eqfm_country_is_scouting_state_region_trigger = {
+	custom_tooltip = {
+		text = eqfm_country_is_scouting_state_region_trigger
+		save_temporary_scope_value_as = {
+			name = eqfm_scouting_state_region_scope
+			value = $state_region$
+		}
+		$state_region$ = {
+			has_variable = eqfm_sanusiyyah_expedition_var
+			var:eqfm_sanusiyyah_expedition_var ?= root
+		}
+	}
+}
+
+eqfm_eligible_for_entrenchment_event_trigger = {
+	# Call this trigger in the STATE scope!
+	is_in_geographic_region = geographic_region_sanusiyyah
+	state_region = {
+		has_variable = eqfm_sanusiyyah_entrenchment_var
+		NOT = {
+			has_variable = eqfm_sanusiyyah_entrenchment_cooldown
+		}
+	}
+}
+
+eqfm_sanusiyyah_entrenchment_less_or_equals_trigger = {
+	# Call this trigger in the STATE scope!
+	state_region = {
+		has_variable = eqfm_sanusiyyah_entrenchment_var
+		var:eqfm_sanusiyyah_entrenchment_var <= $value$
+	}
+}
+
+eqfm_sanusiyyah_entrenchment_greater_or_equals_trigger = {
+	# Call this trigger in the STATE scope!
+	state_region = {
+		has_variable = eqfm_sanusiyyah_entrenchment_var
+		var:eqfm_sanusiyyah_entrenchment_var >= $value$
+	}
+}
+
+
+####---------- Sanusiyyah Event Triggers ----------####
+eqfm_country_is_colonizing_sanusiyyah_georegion_trigger = {
+	any_scope_state = {
+		is_in_geographic_region = geographic_region_sanusiyyah
+		is_under_colonization = yes
+	}
+}
+
+eqfm_country_shares_sanusiyyah_state_region_with_tribals_trigger = {
+	any_scope_state = {
+		is_in_geographic_region = geographic_region_sanusiyyah
+		is_split_state = yes
+		state_region = {
+			any_scope_state = {
+				owner = {
+					is_country_type = decentralized
+				}
+			}
+		}
+	}
+}
+
+####---------- Sanusiyyah Desert Scouting Triggers ----------####
+eqfm_country_is_scouting_desert_trigger = {
+	custom_description = { 
+		text = eqfm_country_is_scouting_desert_trigger
+		subject = this
+		any_state_region_in_sanusiyyah = {
+			has_variable = eqfm_desert_expedition_var
+			var:eqfm_desert_expedition_var ?= root
+		}
+	}
+}
+
+eqfm_country_has_desert_scouts_leader_trigger = {
+	custom_description = { 
+		text = eqfm_country_has_desert_scouts_leader_trigger
+		subject = this
+		has_variable = eqfm_desert_scouts_leader_var
+		exists = var:eqfm_desert_scouts_leader_var
+	}
+}
+
+eqfm_country_has_desert_scouts_guide_trigger = {
+	custom_description = { 
+		text = eqfm_country_has_desert_scouts_guide_trigger
+		subject = this
+		has_variable = eqfm_desert_scouts_guide_var
+		exists = var:eqfm_desert_scouts_guide_var
+	}
+}
+
+eqfm_country_has_desert_scouts_logistician_trigger = {
+	custom_description = { 
+		text = eqfm_country_has_desert_scouts_logistician_trigger
+		subject = this
+		has_variable = eqfm_desert_scouts_logistician_var
+		exists = var:eqfm_desert_scouts_logistician_var
+	}
+}
+
+eqfm_country_has_sanusiyyah_expedition_trigger = {
+	custom_description = { 
+		text = eqfm_country_has_sanusiyyah_expedition_trigger
+		subject = this
+		has_variable = eqfm_sanusiyyah_expedition_var
+	}
+}
+
+eqfm_desert_expedition_reconnaissance_at_least_trigger = {
+	custom_tooltip = { 
+		text = eqfm_desert_expedition_reconnaissance_at_least_trigger
+		save_temporary_scope_value_as = { 
+			name = eqfm_value
+			value = $value$
+		}
+		has_variable = eqfm_desert_scouting_reconnaissance_var
+		var:eqfm_desert_scouting_reconnaissance_var >= $value$
+	}
+}
+
+eqfm_desert_expedition_reconnaissance_less_than_trigger = {
+	custom_tooltip = {
+		text = eqfm_desert_expedition_reconnaissance_less_than_trigger
+		save_temporary_scope_value_as = {
+			name = eqfm_value
+			value = $value$
+		}
+		has_variable = eqfm_desert_scouting_reconnaissance_var
+		var:eqfm_desert_scouting_reconnaissance_var < $value$
+	}
+}
+
+eqfm_desert_expedition_provisions_at_least_trigger = {
+	custom_tooltip = {
+		text = eqfm_desert_expedition_provisions_at_least_trigger
+		save_temporary_scope_value_as = {
+			name = eqfm_value
+			value = $value$
+		}
+		has_variable = eqfm_desert_scouting_provisionss_var
+		var:eqfm_desert_scouting_provisions_var >= $value$
+	}
+}
+
+eqfm_desert_expedition_provisions_less_than_trigger = {
+	custom_tooltip = {
+		text = eqfm_desert_expedition_provisions_less_than_trigger
+		save_temporary_scope_value_as = {
+			name = eqfm_value
+			value = $value$
+		}
+		has_variable = eqfm_desert_scouting_provisionss_var
+		var:eqfm_desert_scouting_provisions_var < $value$
+	}
+}
+
+eqfm_desert_expedition_no_provisions_trigger = {
+	custom_description = {
+		text = eqfm_desert_expedition_no_provisions_trigger
+		has_variable = eqfm_desert_scouting_provisionss_var
+		var:eqfm_desert_scouting_provisions_var = 0
+	}
+}

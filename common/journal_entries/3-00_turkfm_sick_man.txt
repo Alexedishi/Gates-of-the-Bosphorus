@@ -1,7 +1,12 @@
 ﻿je_turkfm_sick_man_main = {
 	group = je_group_gbbf_sick_man
 	icon = "gfx/interface/icons/event_icons/event_ottoman.dds"
-	weight = 100
+	dlc = dlc_grefm
+	weight = 10000
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -13,56 +18,21 @@
 	
 	scripted_progress_bar = turkfm_sick_main_progress_bar
 	
-	immediate = {
-	}
-	
 	modifiers_while_active = {
 		modifier_turkfm_sick_man
 	}
 	
-	complete = {
-		country_rank >= rank_value:great_power
-		gbbf_controls_anatolia_trigger = yes
-		calc_true_if = {
-			amount >= 4
-			gbbf_controls_aegean_sea_trigger = yes
-			gbbf_controls_balkan_highlands_trigger = yes
-			gbbf_controls_levant_trigger = yes
-			gbbf_controls_nile_river_trigger = yes
-			gbbf_controls_armenian_highlands_trigger = yes
-			gbbf_controls_arabia_trigger = yes
-		}
-		custom_tooltip = {
-			text = turkfm_tanzimat_completed_or_failed
-			NOT = {
-				has_journal_entry = je_turkfm_tanzimat_main
-			}
-		}
-		custom_tooltip = {
-			text = eqfm_separatism_completed_or_failed
-			NOT = {
-				has_global_variable = je_eqfm_balkan_powder_keg
-			}
-		}
-	}
-	
-	on_complete = {
-		trigger_event = turkfm_sick_man.009
-		set_global_variable = {
-			name = turkfm_sick_man_complete
-			value = flag:turkfm_sick_man_completed
-		}
-	}
-	
-	fail = {
-		OR = {
-			country_rank < rank_value:major_power
-			custom_tooltip = {
-				text = turkfm_grand_collapse_failed
-				has_variable = turkfm_grand_collapse_failed
-			}
-			NOR = {
-				gbbf_controls_anatolia_trigger = yes
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			country_rank >= rank_value:great_power
+			gbbf_controls_anatolia_trigger = yes
+			calc_true_if = {
+				amount >= 4
 				gbbf_controls_aegean_sea_trigger = yes
 				gbbf_controls_balkan_highlands_trigger = yes
 				gbbf_controls_levant_trigger = yes
@@ -70,28 +40,78 @@
 				gbbf_controls_armenian_highlands_trigger = yes
 				gbbf_controls_arabia_trigger = yes
 			}
-		}
-	}
-	
-	on_fail = {
-		trigger_event = turkfm_sick_man.008
-		if = {
-			limit = {
-				is_in_power_bloc = yes
-				is_power_bloc_leader = yes
+			custom_tooltip = {
+				text = turkfm_tanzimat_completed_or_failed
+				NOT = {
+					has_journal_entry = je_turkfm_tanzimat_main
+				}
 			}
-			custom_tooltip = sick_man_of_europe_lose_power_bloc
+			custom_tooltip = {
+				text = eqfm_separatism_completed_or_failed
+				NOT = {
+					has_global_variable = je_eqfm_balkan_powder_keg
+				}
+			}
 		}
-		set_global_variable = {
-			name = turkfm_sick_man_complete
-			value = flag:turkfm_sick_man_failed
+		effect = {
+			trigger_event = turkfm_sick_man.009
+			set_global_variable = {
+				name = turkfm_sick_man_complete
+				value = flag:turkfm_sick_man_completed
+			}
 		}
 	}
 	
-	invalid = {
-		hidden_trigger = {
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		flags = { historical }
+		
+		trigger = {
+			OR = {
+				country_rank < rank_value:major_power
+				custom_tooltip = {
+					text = turkfm_grand_collapse_failed
+					has_variable = turkfm_grand_collapse_failed
+				}
+				NOR = {
+					gbbf_controls_anatolia_trigger = yes
+					gbbf_controls_aegean_sea_trigger = yes
+					gbbf_controls_balkan_highlands_trigger = yes
+					gbbf_controls_levant_trigger = yes
+					gbbf_controls_nile_river_trigger = yes
+					gbbf_controls_armenian_highlands_trigger = yes
+					gbbf_controls_arabia_trigger = yes
+				}
+			}
+		}
+		effect = {
+			trigger_event = turkfm_sick_man.008
+			if = {
+				limit = {
+					is_in_power_bloc = yes
+					is_power_bloc_leader = yes
+				}
+				custom_tooltip = sick_man_of_europe_lose_power_bloc
+			}
+			set_global_variable = {
+				name = turkfm_sick_man_complete
+				value = flag:turkfm_sick_man_failed
+			}
+		}
+	}
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
 			has_global_variable = turkfm_sick_man_complete
 		}
+		effect = { }
 	}
 	
 	on_weekly_pulse = {
@@ -114,7 +134,12 @@
 je_turkfm_sick_man_syria = {
 	group = je_group_gbbf_sick_man
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	dlc = dlc_grefm
 	weight = 2000
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = no
 	can_revolution_inherit = yes
@@ -126,47 +151,61 @@ je_turkfm_sick_man_syria = {
 		}
 	}
 	
-	complete = {
-		owns_entire_state_region = STATE_ALEPPO
-		owns_entire_state_region = STATE_SYRIA
-		owns_entire_state_region = STATE_LEBANON
-		owns_entire_state_region = STATE_PALESTINE
-		owns_entire_state_region = STATE_TRANSJORDAN
-		owns_entire_state_region = STATE_ADANA
-	}
-	
-	on_complete = {
-		add_journal_entry = {
-			type = je_turkfm_sick_man_egypt
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			owns_entire_state_region = STATE_ALEPPO
+			owns_entire_state_region = STATE_SYRIA
+			owns_entire_state_region = STATE_LEBANON
+			owns_entire_state_region = STATE_PALESTINE
+			owns_entire_state_region = STATE_TRANSJORDAN
+			owns_entire_state_region = STATE_ADANA
 		}
-		s:STATE_SINAI = {
-			add_claim = ROOT
-		}
-		s:STATE_UPPER_EGYPT = {
-			add_claim = ROOT
-		}
-		s:STATE_MIDDLE_EGYPT = {
-			add_claim = ROOT
-		}
-		s:STATE_LOWER_EGYPT = {
-			add_claim = ROOT
-		}
-	}
-	
-	invalid = {
-		custom_tooltip = {
-			text = turkfm_sick_man_completed_or_failed
-			hidden_trigger = {
-				has_global_variable = turkfm_sick_man_complete
+		effect = {
+			add_journal_entry = {
+				type = je_turkfm_sick_man_egypt
+			}
+			s:STATE_SINAI = {
+				add_claim = ROOT
+			}
+			s:STATE_UPPER_EGYPT = {
+				add_claim = ROOT
+			}
+			s:STATE_MIDDLE_EGYPT = {
+				add_claim = ROOT
+			}
+			s:STATE_LOWER_EGYPT = {
+				add_claim = ROOT
 			}
 		}
+	}
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			has_global_variable = turkfm_sick_man_complete
+		}
+		effect = { }
 	}
 }
 
 je_turkfm_sick_man_egypt = {
 	group = je_group_gbbf_sick_man
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	dlc = dlc_grefm
 	weight = 2000
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = no
 	can_revolution_inherit = yes
@@ -178,110 +217,158 @@ je_turkfm_sick_man_egypt = {
 		}
 	}
 	
-	complete = {
-		OR = {
-			AND = {
-				exists = c:EGY
-				c:EGY = {
-					is_subject_of = ROOT
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			OR = {
+				AND = {
+					exists = c:EGY
+					c:EGY = {
+						is_subject_of = ROOT
+					}
+					country_or_subject_owns_entire_state_region = STATE_SINAI
+					country_or_subject_owns_entire_state_region = STATE_UPPER_EGYPT
+					country_or_subject_owns_entire_state_region = STATE_MIDDLE_EGYPT
+					country_or_subject_owns_entire_state_region = STATE_LOWER_EGYPT
 				}
-				country_or_subject_owns_entire_state_region = STATE_SINAI
-				country_or_subject_owns_entire_state_region = STATE_UPPER_EGYPT
-				country_or_subject_owns_entire_state_region = STATE_MIDDLE_EGYPT
-				country_or_subject_owns_entire_state_region = STATE_LOWER_EGYPT
-			}
-			AND = {
-				owns_entire_state_region = STATE_SINAI
-				owns_entire_state_region = STATE_UPPER_EGYPT
-				owns_entire_state_region = STATE_MIDDLE_EGYPT
-				owns_entire_state_region = STATE_LOWER_EGYPT
+				AND = {
+					owns_entire_state_region = STATE_SINAI
+					owns_entire_state_region = STATE_UPPER_EGYPT
+					owns_entire_state_region = STATE_MIDDLE_EGYPT
+					owns_entire_state_region = STATE_LOWER_EGYPT
+				}
 			}
 		}
+		effect = { }
 	}
 	
-	invalid = {
-		custom_tooltip = {
-			text = turkfm_sick_man_completed_or_failed
-			hidden_trigger = {
-				has_global_variable = turkfm_sick_man_complete
-			}
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			has_global_variable = turkfm_sick_man_complete
 		}
+		effect = { }
 	}
 }
 
 je_turkfm_sick_man_crete = {
 	group = je_group_gbbf_sick_man
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	dlc = dlc_grefm
 	weight = 2000
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = no
 	can_revolution_inherit = yes
 	transferable = no
 	
-	immediate = {
-	}
-	
-	complete = {
-		OR = {
-			owns_entire_state_region = STATE_CRETE
-			c:CRE ?= {
-				is_subject_of = root
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { }
+		
+		trigger = {
+			OR = {
+				owns_entire_state_region = STATE_CRETE
+				c:CRE ?= {
+					is_subject_of = root
+				}
 			}
 		}
+		effect = { }
 	}
 	
-	invalid = {
-		custom_tooltip = {
-			text = turkfm_sick_man_completed_or_failed
-			hidden_trigger = {
-				has_global_variable = turkfm_sick_man_complete
-			}
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			has_global_variable = turkfm_sick_man_complete
 		}
+		effect = { }
 	}
 }
 
 je_turkfm_sick_man_caucasus = {
 	group = je_group_gbbf_sick_man
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	dlc = dlc_grefm
 	weight = 500
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = no
 	can_revolution_inherit = yes
 	transferable = no
 	
-	immediate = {
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			owns_entire_state_region = STATE_KARS
+			owns_entire_state_region = STATE_ARMENIA
+			owns_entire_state_region = STATE_GREATER_CAUCASUS
+			owns_entire_state_region = STATE_ELIZAVETPOL
+			owns_entire_state_region = STATE_AZERBAIJAN
+		}
+		effect = { }
 	}
 	
-	complete = {
-		owns_entire_state_region = STATE_KARS
-		owns_entire_state_region = STATE_ARMENIA
-		owns_entire_state_region = STATE_GREATER_CAUCASUS
-		owns_entire_state_region = STATE_ELIZAVETPOL
-		owns_entire_state_region = STATE_AZERBAIJAN
-	}
-	
-	fail = {
-		NOT = {
-			any_scope_state = {
-				is_in_geographic_region = geographic_region_armenian_highlands
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		flags = { historical }
+		
+		trigger = {
+			NOT = {
+				any_scope_state = {
+					is_in_geographic_region = geographic_region_armenian_highlands
+				}
 			}
 		}
+		effect = { }
 	}
 	
-	invalid = {
-		custom_tooltip = {
-			text = turkfm_sick_man_completed_or_failed
-			hidden_trigger = {
-				has_global_variable = turkfm_sick_man_complete
-			}
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			has_global_variable = turkfm_sick_man_complete
 		}
+		effect = { }
 	}
 }
 
 je_turkfm_sick_man_kurdistan = {
 	group = je_group_gbbf_sick_man
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = no
 	can_revolution_inherit = yes
@@ -289,104 +376,19 @@ je_turkfm_sick_man_kurdistan = {
 	
 	scripted_button = haykfm_organize_kurdistan_button
 	
-	immediate = {
-	}
-	
 	modifiers_while_active = {
 		modifier_turkfm_untamed_frontier
 	}
 	
-	complete = {
-		trigger_if = {
-			limit = {
-				exists = c:KUR
-			}
-			c:KUR ?= {
-				is_subject_of = root
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_state_in_state_region = STATE_ERZURUM
-			}
-			custom_tooltip = {
-				text = je_turkfm_sick_man_kurdistan_complete_erzurum
-				owns_entire_state_region = STATE_ERZURUM
-				s:STATE_ERZURUM.region_state:TUR ?= {
-					is_incorporated = yes
-				}
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_state_in_state_region = STATE_DIYARBAKIR
-			}
-			custom_tooltip = {
-				text = je_turkfm_sick_man_kurdistan_complete_diyarbakir
-				owns_entire_state_region = STATE_DIYARBAKIR
-				s:STATE_DIYARBAKIR.region_state:TUR ?= {
-					is_incorporated = yes
-				}
-			}
-			
-		}
-		trigger_if = {
-			limit = {
-				has_state_in_state_region = STATE_MOSUL
-			}
-			custom_tooltip = {
-				text = je_turkfm_sick_man_kurdistan_complete_mosul
-				owns_entire_state_region = STATE_MOSUL
-				s:STATE_MOSUL.region_state:TUR ?= {
-					is_incorporated = yes
-				}
-			}
-			
-		}
-		trigger_if = {
-			limit = {
-				has_state_in_state_region = STATE_DEIR_EZ_ZOR
-			}
-			custom_tooltip = {
-				text = je_turkfm_sick_man_kurdistan_complete_deir_ez_zor
-				owns_entire_state_region = STATE_DEIR_EZ_ZOR
-				s:STATE_DEIR_EZ_ZOR.region_state:TUR ?= {
-					is_incorporated = yes
-				}
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_state_in_state_region = STATE_URMIA
-			}
-			custom_tooltip = {
-				text = je_turkfm_sick_man_kurdistan_complete_urmia
-				owns_entire_state_region = STATE_URMIA
-				s:STATE_URMIA.region_state:TUR ?= {
-					is_incorporated = yes
-				}
-			}
-		}
-		trigger_if = {
-			limit = {
-				has_state_in_state_region = STATE_PERSIAN_KURDISTAN
-			}
-			custom_tooltip = {
-				text = je_turkfm_sick_man_kurdistan_complete_persian_kurdistan
-				owns_entire_state_region = STATE_PERSIAN_KURDISTAN
-				s:STATE_PERSIAN_KURDISTAN.region_state:TUR ?= {
-					is_incorporated = yes
-				}
-			}
-		}
-	}
-	
-	on_complete = {
-		turkfm_advance_ottomanism1_effect = yes
-	}
-	
-	fail = {
-		NOR = {
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
 			trigger_if = {
 				limit = {
 					exists = c:KUR
@@ -395,26 +397,123 @@ je_turkfm_sick_man_kurdistan = {
 					is_subject_of = root
 				}
 			}
-			has_state_in_state_region = STATE_ERZURUM
-			has_state_in_state_region = STATE_DIYARBAKIR
-			has_state_in_state_region = STATE_MOSUL
-			has_state_in_state_region = STATE_DEIR_EZ_ZOR
-			has_state_in_state_region = STATE_URMIA
-			has_state_in_state_region = STATE_PERSIAN_KURDISTAN
-		}
-	}
-	
-	on_fail = {
-		turkfm_advance_islamism1_effect = yes
-	}
-	
-	invalid = {
-		custom_tooltip = {
-			text = turkfm_sick_man_completed_or_failed
-			hidden_trigger = {
-				has_global_variable = turkfm_sick_man_complete
+			trigger_if = {
+				limit = {
+					has_state_in_state_region = STATE_ERZURUM
+				}
+				custom_tooltip = {
+					text = je_turkfm_sick_man_kurdistan_complete_erzurum
+					owns_entire_state_region = STATE_ERZURUM
+					s:STATE_ERZURUM.region_state:TUR ?= {
+						is_incorporated = yes
+					}
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_state_in_state_region = STATE_DIYARBAKIR
+				}
+				custom_tooltip = {
+					text = je_turkfm_sick_man_kurdistan_complete_diyarbakir
+					owns_entire_state_region = STATE_DIYARBAKIR
+					s:STATE_DIYARBAKIR.region_state:TUR ?= {
+						is_incorporated = yes
+					}
+				}
+				
+			}
+			trigger_if = {
+				limit = {
+					has_state_in_state_region = STATE_MOSUL
+				}
+				custom_tooltip = {
+					text = je_turkfm_sick_man_kurdistan_complete_mosul
+					owns_entire_state_region = STATE_MOSUL
+					s:STATE_MOSUL.region_state:TUR ?= {
+						is_incorporated = yes
+					}
+				}
+				
+			}
+			trigger_if = {
+				limit = {
+					has_state_in_state_region = STATE_DEIR_EZ_ZOR
+				}
+				custom_tooltip = {
+					text = je_turkfm_sick_man_kurdistan_complete_deir_ez_zor
+					owns_entire_state_region = STATE_DEIR_EZ_ZOR
+					s:STATE_DEIR_EZ_ZOR.region_state:TUR ?= {
+						is_incorporated = yes
+					}
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_state_in_state_region = STATE_URMIA
+				}
+				custom_tooltip = {
+					text = je_turkfm_sick_man_kurdistan_complete_urmia
+					owns_entire_state_region = STATE_URMIA
+					s:STATE_URMIA.region_state:TUR ?= {
+						is_incorporated = yes
+					}
+				}
+			}
+			trigger_if = {
+				limit = {
+					has_state_in_state_region = STATE_PERSIAN_KURDISTAN
+				}
+				custom_tooltip = {
+					text = je_turkfm_sick_man_kurdistan_complete_persian_kurdistan
+					owns_entire_state_region = STATE_PERSIAN_KURDISTAN
+					s:STATE_PERSIAN_KURDISTAN.region_state:TUR ?= {
+						is_incorporated = yes
+					}
+				}
 			}
 		}
+		effect = {
+			turkfm_advance_ottomanism1_effect = yes
+		}
+	}
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			NOR = {
+				trigger_if = {
+					limit = {
+						exists = c:KUR
+					}
+					c:KUR ?= {
+						is_subject_of = root
+					}
+				}
+				has_state_in_state_region = STATE_ERZURUM
+				has_state_in_state_region = STATE_DIYARBAKIR
+				has_state_in_state_region = STATE_MOSUL
+				has_state_in_state_region = STATE_DEIR_EZ_ZOR
+				has_state_in_state_region = STATE_URMIA
+				has_state_in_state_region = STATE_PERSIAN_KURDISTAN
+			}
+		}
+		effect = {
+			turkfm_advance_islamism1_effect = yes
+		}
+	}
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			has_global_variable = turkfm_sick_man_complete
+		}
+		effect = { }
 	}
 }
 
@@ -422,18 +521,16 @@ je_turkfm_sick_man_grand_collapse = {
 	# This is a dupe of the vanilla journal... for now
 	group = je_group_gbbf_sick_man
 	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	dlc = dlc_grefm
 	weight = 10000
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = no
 	transferable = no
-	
-	is_shown_when_inactive = {
-		NOT = {
-			has_global_variable = turkfm_tanzimat_started
-		}
-		c:TUR ?= this
-	}
 	
 	scripted_button = je_the_grand_collapse_bribe_politicians_button
 	scripted_button = je_the_grand_collapse_issue_khutbah_button
@@ -442,23 +539,37 @@ je_turkfm_sick_man_grand_collapse = {
 	scripted_button = je_the_grand_collapse_relation_speed_start_button
 	scripted_button = je_the_grand_collapse_relation_Speed_stop_button
 	
+	is_shown_when_inactive = {
+		NOT = {
+			has_global_variable = turkfm_tanzimat_started
+		}
+		c:TUR ?= this
+	}
+	
 	possible = {
 		custom_tooltip = {
 			text = turkfm_tanzimat_failed
 			has_global_variable = turkfm_tanzimat_failed
 		}
 		OR = {
-			NOT = {
-				has_law_or_variant = law_type:law_monarchy
+			NOR = {
+				has_law = law_type:law_monarchy
+				has_law_or_variant = law_type:law_theocracy
 			}
-			any_civil_war = {
-				count >= 1
+			AND = {
+				is_country_type = unrecognized
+				any_civil_war = {
+					civil_war_progress >= 0.75
+					is_civil_war_type = revolution
+				}
 			}
 		}
 	}
 	
 	immediate = {
+		custom_tooltip = ten_years_to_collapse_tt
 		trigger_event = the_grand_collapse.1
+		set_variable = grand_collapse_started
 		hidden_effect = {
 			add_journal_entry = {
 				type = je_the_grand_collapse
@@ -466,68 +577,114 @@ je_turkfm_sick_man_grand_collapse = {
 		}
 	}
 	
-	complete = {
-		any_civil_war = {
-			count = 0
-		}
-		trigger_if = {
-			limit = {
-				is_player = yes
-			}
-			has_law_or_variant = law_type:law_monarchy
-			radical_fraction = {
-				value < 0.1
-			}
-			ig:ig_intelligentsia = {
-				is_in_government = no
-			}
-		}
-		government_legitimacy > 80
-		trigger_if = {
-			limit = {
-				any_subject_or_below = {
-					count > 0
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = "gold_positive"
+		
+		trigger = {
+			custom_tooltip = {
+				text = is_not_in_civil_war_tt
+				any_civil_war = {
+					count = 0
 				}
 			}
-			any_subject_or_below = {
-				relations:root >= relations_threshold:cordial
+			trigger_if = {
+				limit = {
+					is_player = yes
+				}
+				OR = {
+					has_law = law_type:law_monarchy
+					has_law_or_variant = law_type:law_theocracy
+				}
+				radical_fraction = {
+					value < 0.1
+				}
+				ig:ig_intelligentsia ?= {
+					is_in_government = no
+				}
+			}
+			government_legitimacy > 80
+			trigger_if =  {
+				limit = {
+					any_subject_or_below = {
+						count > 0
+					}
+				}
+				any_subject_or_below = {
+					relations:root >= relations_threshold:cordial
+				}
+			}
+			any_interest_group = {
+				ig_approval >= happy
+				count >= 3
 			}
 		}
-		any_interest_group = {
-			ig_approval >= happy
-			count >= 3
+		effect = {
+			trigger_event = the_grand_collapse.4
+			set_variable = turkfm_grand_collapse_completed
+			hidden_effect = {
+				the_grand_collapse_mod_cleanser = yes
+			}
+		}
+		event_outcome_desc = {
+			first_valid = {
+				triggered_desc = {
+					desc = event_effects_the_grand_collapse.4_tt
+				}
+			}
 		}
 	}
 	
-	on_complete = {
-		trigger_event = the_grand_collapse.4
-		hidden_effect = {
-			the_grand_collapse_mod_cleanser = yes
+	outcome = {
+		header = JOURNAL_ENTRY_TIMEOUT
+		effect_header = JOURNAL_ENTRY_ON_TIMEOUT
+		conclusion_desc = je_standard_failure_conclusion_desc
+		
+		flags = { historical timeout }
+		
+		effect = {
+			trigger_event = the_grand_collapse.5
+			set_variable = turkfm_grand_collapse_failed
+			hidden_effect = {
+				the_grand_collapse_mod_cleanser = yes
+			}
 		}
-		set_variable = turkfm_grand_collapse_completed
+		event_outcome_desc = {
+			first_valid = {
+				triggered_desc = {
+					trigger = {
+						has_law = law_type:law_autocracy
+					}
+					desc = event_effects_the_grand_collapse.5_autocracy_tt
+				}
+				triggered_desc = {
+					trigger = {
+						NOT = {
+							has_law = law_type:law_autocracy
+						}
+					}
+					desc = event_effects_the_grand_collapse.5_tt
+				}
+			}
+		}
 	}
-	
 	timeout = 3650
 	
-	on_timeout = {
-		trigger_event = the_grand_collapse.5
-		hidden_effect = {
-			the_grand_collapse_mod_cleanser = yes
-		}
-		set_variable = turkfm_grand_collapse_failed
-	}
-	
-	invalid = {
-		NOT = {
+	outcome = {
+		flags = { hidden invalid_outcome }
+		conclusion_desc = je_standard_failure_conclusion_desc
+		trigger = {
 			any_scope_state = {
-				is_in_geographic_region = geographic_region_rumelia
+				NOT = {
+					region = sr:region_near_east
+				}
+				count = 0
 			}
 		}
-	}
-	
-	on_invalid = {
-		hidden_effect = {
-			the_grand_collapse_mod_cleanser = yes
+		effect = {
+			je_the_grand_collapse_cleanup = yes
 		}
 	}
 	

@@ -1,0 +1,807 @@
+﻿####---------- Sanusiyyah Static Values ----------####
+eqfm_sanusiyyah_situation_start_value = 50
+eqfm_sanusiyyah_situation_max_value = 100
+eqfm_sanusiyyah_situation_min_value = 0
+
+
+####---------- Sanusiyyah Situation Values ----------####
+eqfm_sanusiyyah_situation_progress_value = {
+	value = 0
+	add = {
+		desc = eqfm_value_from_sanusiyyah_pressure
+		value = {
+			add = global_var:je_eqfm_sanusiyyah.var:eqfm_sanusiyyah_pressure_var
+			subtract = 50
+			multiply = 0.01
+			max = 0.5
+			min = -0.05
+			round_to = 0.01
+		}
+	}
+	round_to = 0.01
+}
+
+eqfm_sanusiyyah_pressure_progress_value = {
+	value = 0
+	# General Values
+	if = {
+		limit = {
+			global_var:je_eqfm_sanusiyyah ?= {
+				has_variable = eqfm_senussi_character_var
+				exists = var:eqfm_senussi_character_var
+			}
+		}
+		add = {
+			desc = eqfm_value_from_senussi_popularity
+			value = {
+				add = global_var:je_eqfm_sanusiyyah.var:eqfm_senussi_character_var.popularity
+				divide = 100
+				round_to = 0.01
+			}
+		}
+	}
+	# State Region Values
+	if = {
+		limit = {
+			s:STATE_LIBYA = {
+				has_variable = eqfm_sanusiyyah_entrenchment_var
+			}
+		}
+		add = {
+			desc = eqfm_value_from_sanusiyyah_entrenchment_libya
+			value = {
+				add = s:STATE_LIBYA.var:eqfm_sanusiyyah_entrenchment_var
+				divide = 100
+				round_to = 0.01
+			}
+		}
+	}
+	if = {
+		limit = {
+			s:STATE_LIBYAN_DESERT = {
+				has_variable = eqfm_sanusiyyah_entrenchment_var
+			}
+		}
+		add = {
+			desc = eqfm_value_from_sanusiyyah_entrenchment_libyan_desert
+			value = {
+				add = s:STATE_LIBYAN_DESERT.var:eqfm_sanusiyyah_entrenchment_var
+				divide = 100
+				round_to = 0.01
+			}
+		}
+	}
+	if = {
+		limit = {
+			s:STATE_TRIPOLI = {
+				has_variable = eqfm_sanusiyyah_entrenchment_var
+			}
+		}
+		add = {
+			desc = eqfm_value_from_sanusiyyah_entrenchment_tripoli
+			value = {
+				add = s:STATE_TRIPOLI.var:eqfm_sanusiyyah_entrenchment_var
+				divide = 100
+				round_to = 0.01
+			}
+		}
+	}
+	if = {
+		limit = {
+			s:STATE_MATRUH = {
+				has_variable = eqfm_sanusiyyah_entrenchment_var
+			}
+		}
+		add = {
+			desc = eqfm_value_from_sanusiyyah_entrenchment_matruh
+			value = {
+				add = s:STATE_MATRUH.var:eqfm_sanusiyyah_entrenchment_var
+				divide = 100
+				round_to = 0.01
+			}
+		}
+	}
+	if = {
+		limit = {
+			s:STATE_EGYPTIAN_DESERT = {
+				has_variable = eqfm_sanusiyyah_entrenchment_var
+			}
+		}
+		add = {
+			desc = eqfm_value_from_sanusiyyah_entrenchment_egyptian_desert
+			value = {
+				add = s:STATE_EGYPTIAN_DESERT.var:eqfm_sanusiyyah_entrenchment_var
+				divide = 100
+				round_to = 0.01
+			}
+		}
+	}
+	if = {
+		limit = {
+			s:STATE_CHAD = {
+				has_variable = eqfm_sanusiyyah_entrenchment_var
+			}
+		}
+		add = {
+			desc = eqfm_value_from_sanusiyyah_entrenchment_chad
+			value = {
+				add = s:STATE_CHAD.var:eqfm_sanusiyyah_entrenchment_var
+				divide = 100
+				round_to = 0.01
+			}
+		}
+	}
+	add = {
+		desc = eqfm_value_from_bedouin_radicals
+		value = global_var:je_eqfm_sanusiyyah.var:eqfm_georegion_bedouin_radical_fraction_var
+	}
+	subtract = {
+		desc = eqfm_value_from_bedouin_loyalists value = global_var:je_eqfm_sanusiyyah.var:eqfm_georegion_bedouin_loyalist_fraction_var
+	}
+	round_to = 0.01
+}
+
+
+####---------- Sanusiyyah Influence Values ----------####
+eqfm_sanusiyyah_influence_progress_value = {
+	value = 0
+	add = {
+		desc = eqfm_value_from_sanusiyyah_pressure
+		value = {
+			add = global_var:je_eqfm_sanusiyyah.var:eqfm_sanusiyyah_pressure_var
+			divide = 100
+			round_to = 0.01
+		}
+	}
+	add = {
+		desc = eqfm_value_from_legitimacy
+		value = {
+			add = government_legitimacy
+			subtract = 70
+			divide = 100
+			round_to = 0.01
+		}
+	}
+	add = {
+		desc = eqfm_value_from_sanusiyyah_entrenchment
+		value = {
+			every_scope_state = {
+				limit = {
+					state_region = {
+						has_variable = eqfm_sanusiyyah_entrenchment_var
+					}
+				}
+				state_region = {
+					add = var:eqfm_sanusiyyah_entrenchment_var
+				}
+				divide = 100
+				subtract = 0.5
+				round_to = 0.01
+			}
+		}
+	}
+}
+
+
+####---------- Sanusiyyah State Region Values ----------####
+eqfm_sanusiyyah_entrenchment_progress_value = {
+	# This is evaluated in the !!STATE REGION!! scope
+	value = 0
+	add = {
+		desc = eqfm_value_from_bedouin_literacy
+		value = var:eqfm_state_region_bedouin_literacy_rate_var
+	}
+	add = {
+		desc = eqfm_from_sanusiyyah_strongholds
+		value = {
+			every_scope_state = {
+				limit = {
+					has_modifier = modifier_eqfm_sanusiyyah_stronghold
+				}
+				add = modifier:state_sanusiyyah_pressure_growth_add
+			}
+			divide = {
+				every_scope_state = {
+					limit = {
+						has_modifier = modifier_eqfm_sanusiyyah_stronghold
+					}
+					add = 1
+				}
+				min = 1 # Div0 safety
+			}
+			round_to = 0.01
+		}
+	}
+	add = {
+		desc = eqfm_value_from_bedouin_radicals
+		value = var:eqfm_state_region_bedouin_radical_fraction_var
+	}
+	if = {
+		limit = {
+			s:STATE_LIBYA = this
+		}
+		add = {
+			desc = eqfm_value_from_libya_centralization_ratio
+			value = s:STATE_LIBYA.var:eqfm_state_region_centralization_ratio_var
+		}
+	}
+	if = {
+		limit = {
+			s:STATE_LIBYAN_DESERT = this
+		}
+		add = {
+			desc = eqfm_value_from_libyan_desert_centralization_ratio
+			value = s:STATE_LIBYAN_DESERT.var:eqfm_state_region_centralization_ratio_var
+		}
+	}
+	if = {
+		limit = {
+			s:STATE_TRIPOLI = this
+		}
+		add = {
+			desc = eqfm_value_from_tripoli_centralization_ratio
+			value = s:STATE_TRIPOLI.var:eqfm_state_region_centralization_ratio_var
+		}
+	}
+	if = {
+		limit = {
+			s:STATE_MATRUH = this
+		}
+		add = {
+			desc = eqfm_value_from_matruh_centralization_ratio
+			value = s:STATE_MATRUH.var:eqfm_state_region_centralization_ratio_var
+		}
+	}
+	if = {
+		limit = {
+			s:STATE_EGYPTIAN_DESERT = this
+		}
+		add = {
+			desc = eqfm_value_from_egyptian_desert_centralization_ratio
+			value = s:STATE_EGYPTIAN_DESERT.var:eqfm_state_region_centralization_ratio_var
+		}
+	}
+	if = {
+		limit = {
+			s:STATE_CHAD = this
+		}
+		add = {
+			desc = eqfm_value_from_chad_centralization_ratio
+			value = s:STATE_CHAD.var:eqfm_state_region_centralization_ratio_var
+		}
+	}
+	subtract = {
+		desc = eqfm_value_from_average_urbanization
+		value = {
+			every_scope_state = {
+				limit = {
+					owner = {
+						NOR = {
+							is_country_type = decentralized
+							country_has_primary_culture = cu:bedouin
+						}
+					}
+				}
+				add = state_urbanization_rate
+			}
+			divide = 10
+			round_to = 0.01
+		}
+	}
+	subtract = {
+		desc = eqfm_value_from_bedouin_loyalists
+		value = var:eqfm_state_region_bedouin_loyalist_fraction_var
+	}
+	subtract = {
+		desc = eqfm_value_from_suppression_decrees
+		value = {
+			every_scope_state = {
+				limit = {
+					has_decree = decree_gbbf_suppress_sanusiyyah
+				}
+				add = 0.25
+			}
+		}
+	}
+}
+
+
+####---------- Sanusiyyah Desert Scouting Values ----------####
+eqfm_desert_scouting_leader_aptitude_value = {
+	value = 0
+	if = {
+		limit = {
+			has_trait = direct
+		}
+		add = 2
+	}
+	if = {
+		limit = {
+			has_trait = reckless
+		}
+		add = -1
+	}
+	if = {
+		limit = {
+			has_trait = cautious
+		}
+		add = -1
+	}
+	if = {
+		limit = {
+			has_trait = wrathful
+		}
+		add = -2
+	}
+	if = {
+		limit = {
+			has_trait = meticulous
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = brave
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = imposing
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = reserved
+		}
+		add = -3
+	}
+	if = {
+		limit = {
+			has_trait = compliant
+		}
+		add = -1
+	}
+	if = {
+		limit = {
+			has_trait = tuberculosis
+		}
+		add = -4
+	}
+	if = {
+		limit = {
+			has_trait = senile
+		}
+		add = -10
+	}
+	if = {
+		limit = {
+			has_trait = war_criminal
+		}
+		add = 3
+	}
+	if = {
+		limit = {
+			has_trait = scarred
+		}
+		add = 2
+	}
+	if = {
+		limit = {
+			has_trait = popular_commander
+		}
+		add = 2
+	}
+	if = {
+		limit = {
+			has_trait = celebrity_commander
+		}
+		add = 4
+	}
+	if = {
+		limit = {
+			has_trait = explorer
+		}
+		add = 5
+	}
+	if = {
+		limit = {
+			has_trait = basic_colonial_administrator
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = experienced_colonial_administrator
+		}
+		add = 2
+	}
+	if = {
+		limit = {
+			has_trait = expert_colonial_administrator
+		}
+		add = 3
+	}
+	if = {
+		limit = {
+			has_trait = special_character_colonial_military
+		}
+		add = 5
+	}
+	if = {
+		limit = {
+			has_trait = inept
+		}
+		add = -5
+	}
+	if = {
+		limit = {
+			has_trait = inexperienced
+		}
+		add = -3
+	}
+	add = modifier:character_gbbf_leader_aptitude_add
+	max = 10
+	min = -10
+}
+
+eqfm_desert_scouting_guide_aptitude_value = {
+	value = 0
+	if = {
+		limit = {
+			has_trait = direct
+		}
+		add = 2
+	}
+	if = {
+		limit = {
+			has_trait = arrogant
+		}
+		add = -2
+	}
+	if = {
+		limit = {
+			has_trait = bigoted
+		}
+		add = -1
+	}
+	if = {
+		limit = {
+			has_trait = reckless
+		}
+		add = -1
+	}
+	if = {
+		limit = {
+			has_trait = tactful
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = wrathful
+		}
+		add = -2
+	}
+	if = {
+		limit = {
+			has_trait = reserved
+		}
+		add = -1
+	}
+	if = {
+		limit = {
+			has_trait = cruel
+		}
+		add = -3
+	}
+	if = {
+		limit = {
+			has_trait = charismatic
+		}
+		add = 2
+	}
+	if = {
+		limit = {
+			has_trait = brave
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = pious
+		}
+		add = 2
+	}
+	if = {
+		limit = {
+			has_trait = honorable
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = scarred
+		}
+		add = 3
+	}
+	if = {
+		limit = {
+			has_trait = shellshocked
+		}
+		add = -2
+	}
+	if = {
+		limit = {
+			has_trait = psychological_affliction
+		}
+		add = -5
+	}
+	if = {
+		limit = {
+			has_trait = senile
+		}
+		add = -10
+	}
+	if = {
+		limit = {
+			has_trait = plains_commander
+		}
+		add = 2
+	}
+	if = {
+		limit = {
+			has_trait = surveyor
+		}
+		add = 2
+	}
+	if = {
+		limit = {
+			has_trait = pillager
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = basic_diplomat
+		}
+		add = 2
+	}
+	if = {
+		limit = {
+			has_trait = experienced_diplomat
+		}
+		add = 3
+	}
+	if = {
+		limit = {
+			has_trait = masterful_diplomat
+		}
+		add = 5
+	}
+	if = {
+		limit = {
+			has_trait = explorer
+		}
+		add = 3
+	}
+	if = {
+		limit = {
+			has_trait = bandit
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = social_bandit
+		}
+		add = 2
+	}
+	if = {
+		limit = {
+			has_trait = inept
+		}
+		add = -5
+	}
+	if = {
+		limit = {
+			has_trait = inexperienced
+		}
+		add = -3
+	}
+	add = modifier:character_gbbf_guide_aptitude_add
+	max = 10
+	min = -10
+}
+
+eqfm_desert_scouting_logistician_aptitude_value = {
+	value = 0
+	if = {
+		limit = {
+			has_trait = direct
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = persistent
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = arrogant
+		}
+		add = -1
+	}
+	if = {
+		limit = {
+			has_trait = reckless
+		}
+		add = -2
+	}
+	if = {
+		limit = {
+			has_trait = tactful
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = reserved
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = meticulous
+		}
+		add = 3
+	}
+	if = {
+		limit = {
+			has_trait = innovative
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = alcoholic
+		}
+		add = -1
+	}
+	if = {
+		limit = {
+			has_trait = opium_addiction
+		}
+		add = -3
+	}
+	if = {
+		limit = {
+			has_trait = cocaine_addiction
+		}
+		add = -1
+	}
+	if = {
+		limit = {
+			has_trait = grifter
+		}
+		add = -2
+	}
+	if = {
+		limit = {
+			has_trait = senile
+		}
+		add = -10
+	}
+	if = {
+		limit = {
+			has_trait = psychological_affliction
+		}
+		add = -5
+	}
+	if = {
+		limit = {
+			has_trait = expensive_tastes
+		}
+		add = -5 # Just a little off the top...
+	}
+	if = {
+		limit = {
+			has_trait = resupply_commander
+		}
+		add = 5
+	}
+	if = {
+		limit = {
+			has_trait = surveyor
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = dockyard_master
+		}
+		add = 2
+	}
+	if = {
+		limit = {
+			has_trait = bandit
+		}
+		add = -2
+	}
+	if = {
+		limit = {
+			has_trait = social_bandit
+		}
+		add = -4
+	}
+	if = {
+		limit = {
+			has_trait = explorer
+		}
+		add = 2
+	}
+	if = {
+		limit = {
+			has_trait = erudite
+		}
+		add = 2
+	}
+	if = {
+		limit = {
+			has_trait = master_bureaucrat
+		}
+		add = 3
+	}
+	if = {
+		limit = {
+			has_trait = basic_entrepreneur
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			has_trait = experienced_entrepreneur
+		}
+		add = 2
+	}
+	if = {
+		limit = {
+			has_trait = expert_entrepreneur
+		}
+		add = 3
+	}
+	if = {
+		limit = {
+			has_trait = inept
+		}
+		add = -5
+	}
+	if = {
+		limit = {
+			has_trait = inexperienced
+		}
+		add = -3
+	}
+	add = modifier:character_gbbf_logistician_aptitude_add
+	max = 10
+	min = -10
+}
+
+eqfm_desert_scouting_reconnaissance_generation_value = {
+	value = 0
+}
+
+eqfm_desert_scouting_reconnaissance_progress_value = {
+	value = 0
+}
+
+eqfm_desert_scouting_provisions_generation_value = {
+	value = 0
+}
+
+eqfm_desert_scouting_provisions_consumption_value = {
+	value = 0
+}

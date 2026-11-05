@@ -1,0 +1,762 @@
+# INHERITED FROM BASE GAME
+@panel_width_minus_30 = 510
+@panel_width_minus_20 = 520
+@panel_width_minus_10 = 530 # used to be 450
+@panel_width = 540 # used to be 460
+@panel_width_half = 270 # used to be 230
+@panel_width_plus_10 = 550 # used to be 470
+@panel_width_plus_14 = 554 # used to be 474
+@panel_width_plus_14_half = 277 # used to be 237
+@panel_width_plus_20 = 560 # used to be 480
+@panel_width_plus_30 = 570 # used to be 490
+@panel_width_plus_70 = 610 # used to be 530
+
+####---------- INJECTABLE JOURNAL ENTRY WIDGETS ----------####
+flowcontainer = {
+	name = "widget_gbbf_yugoslav_nationalism"
+	direction = vertical
+	ignoreinvisible = yes
+	spacing = 10
+	
+	balkfm_yugoslav_nationalism_decisions_container = {}
+	balkfm_yugoslav_nationalism_cultures_overview = {}
+}
+
+####---------- INJECTABLE JOURNAL ENTRY TYPES ----------####
+
+types gbbf_journal_entry_widget_types {
+	
+	type balkfm_yugoslav_nationalism_decisions_container = flowcontainer {
+		parentanchor = top|hcenter
+		direction = vertical
+		ignoreinvisible = yes
+		minimumsize = { 520 -1 }
+		maximumsize = { 520 -1 }
+		margin = { 10 10 }
+		spacing = 5
+		
+		background = {
+			using = entry_bg
+		}
+		
+		datamodel = "[JournalEntry.GetScriptedButtons]"
+		
+		item = {
+			widget = {
+				parentanchor = top|hcenter
+				size = { 500 40 }
+				visible = "[ScriptedButton.HasTag('major_action')]"
+				
+				button = {
+					parentanchor = center
+					using = default_button_action
+					tooltip = "SCRIPTED_ACTION_TOOLTIP"
+					enabled = "[IsValid( ScriptedButton.ExecuteEffect )]"
+					onclick = "[Execute( ScriptedButton.ExecuteEffect )]"
+					size = { 480 38 }
+					margin = { 20 20 }
+					
+					widget = {
+						visible = "[ScriptedButton.IsSelected]"
+						size = { 100% 100% }
+						
+						background = {
+							using = paper_bg
+						}
+					}
+					
+					textbox = {
+						parentanchor = center
+						align = nobaseline
+						autoresize = yes
+						max_width = 300
+						elide = right
+						fontsize_min = 14
+						text = "[ScriptedButton.GetName]"
+					}
+					
+					icon = {
+						visible = "[ScriptedButton.IsSelected]"
+						using = highlighted_square_selection
+					}
+				}
+			}
+		}
+	}
+	
+	type balkfm_yugoslav_nationalism_cultures_overview = flowcontainer {
+		parentanchor = top|hcenter
+		direction = vertical
+		minimumsize = { 520 -1 }
+		maximumsize = { 520 -1 }
+		margin = { 10 10 }
+		spacing = 10
+		
+		using = entry_bg_fancy
+		
+		balkfm_yugoslav_culture_item = {
+			visible = "[GetScriptedGui('balkfm_montenegrin_culture_integration_sgui').IsValid(GuiScope.SetRoot(GetPlayer.MakeScope ).End)]"
+			blockoverride "culture_illustration" {
+				texture = "gfx/interface/illustrations/journal_backgrounds/gbbf_yug_montenegrin_illus.dds"
+			}
+			blockoverride "culture_name" {
+				raw_text = "[GetCulture('montenegrin').GetName]"
+			}
+			blockoverride "culture_population" {
+				raw_text = "Population: #v [JournalEntry.MakeScope.Var('balkfm_montenegrin_total_population_var').GetValue|*]#!"
+			}
+			blockoverride "culture_loyalists" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_montenegrin_loyalist_population_var').GetValue|*]#!"
+			}
+			blockoverride "culture_radicals" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_montenegrin_radical_population_var').GetValue|*]#!"
+			}
+			blockoverride "integration_value" {
+				value = "[JournalEntry.MakeScope.Var('balkfm_montenegrin_integration_var').GetValue]"
+			}
+			blockoverride "culture_integrated_visibility" {
+				visible = "[GetScriptedGui('balkfm_montenegrin_culture_integration_sgui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope ).End)]"
+			}
+			blockoverride "culture_not_integrated_visibility" {
+				visible = "[Not(GetScriptedGui('balkfm_montenegrin_culture_integration_sgui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope ).End))]"
+			}
+			blockoverride "culture_button_visibility" {
+				visible = "[And(
+					ScriptedButton.HasTag('integrate_culture'),
+					ScriptedButton.HasTag('montenegrin')
+				)]"
+			}
+			blockoverride "promote_character_visibility" {
+				visible = "[And(
+					ScriptedButton.HasTag('promote_character'),
+					ScriptedButton.HasTag('montenegrin')
+				)]"
+			}
+			blockoverride "integration_tooltip" {
+				tooltip = balkfm_montenegrin_integration_tooltip
+			}
+			blockoverride "culture_characters" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_montenegrin_character_count_var').GetValue|*]#!"
+			}
+			blockoverride "culture_fervor" {
+				raw_text = "#v [GetCulture('montenegrin').GetCurrentFervor|v0]#!"
+			}
+		}
+		balkfm_yugoslav_culture_item = {
+			blockoverride "culture_illustration" {
+				texture = "gfx/interface/illustrations/journal_backgrounds/gbbf_yug_serb_illus.dds"
+			}
+			blockoverride "culture_name" {
+				raw_text = "[GetCulture('serb').GetName]"
+			}
+			blockoverride "culture_population" {
+				raw_text = "Population: #v [JournalEntry.MakeScope.Var('balkfm_serb_total_population_var').GetValue|*]#!"
+			}
+			blockoverride "culture_loyalists" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_serb_loyalist_population_var').GetValue|*]#!"
+			}
+			blockoverride "culture_radicals" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_serb_radical_population_var').GetValue|*]#!"
+			}
+			blockoverride "integration_value" {
+				value = "[JournalEntry.MakeScope.Var('balkfm_serb_integration_var').GetValue]"
+			}
+			blockoverride "culture_integrated_visibility" {
+				visible = "[GetScriptedGui('balkfm_serb_culture_integration_sgui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope ).End)]"
+			}
+			blockoverride "culture_not_integrated_visibility" {
+				visible = "[Not(GetScriptedGui('balkfm_serb_culture_integration_sgui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope ).End))]"
+			}
+			blockoverride "culture_button_visibility" {
+				visible = "[And(
+					ScriptedButton.HasTag('integrate_culture'),
+					ScriptedButton.HasTag('serb')
+				)]"
+			}
+			blockoverride "promote_character_visibility" {
+				visible = "[And(
+					ScriptedButton.HasTag('promote_character'),
+					ScriptedButton.HasTag('serb')
+				)]"
+			}
+			blockoverride "integration_tooltip" {
+				tooltip = balkfm_serb_integration_tooltip
+			}
+			blockoverride "culture_characters" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_serb_character_count_var').GetValue|*]#!"
+			}
+			blockoverride "culture_fervor" {
+				raw_text = "#v [GetCulture('serb').GetCurrentFervor|v0]#!"
+			}
+		}
+		balkfm_yugoslav_culture_item = {
+			visible = "[GetScriptedGui('balkfm_bulgarian_culture_integration_sgui').IsValid(GuiScope.SetRoot(GetPlayer.MakeScope ).End)]"
+			blockoverride "culture_illustration" {
+				texture = "gfx/interface/illustrations/journal_backgrounds/gbbf_yug_bulgarian_illus.dds"
+			}
+			blockoverride "culture_name" {
+				raw_text = "[GetCulture('bulgarian').GetName]"
+			}
+			blockoverride "culture_population" {
+				raw_text = "Population: #v [JournalEntry.MakeScope.Var('balkfm_bulgarian_total_population_var').GetValue|*]#!"
+			}
+			blockoverride "culture_loyalists" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_bulgarian_loyalist_population_var').GetValue|*]#!"
+			}
+			blockoverride "culture_radicals" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_bulgarian_radical_population_var').GetValue|*]#!"
+			}
+			blockoverride "integration_value" {
+				value = "[JournalEntry.MakeScope.Var('balkfm_bulgarian_integration_var').GetValue]"
+			}
+			blockoverride "culture_integrated_visibility" {
+				visible = "[GetScriptedGui('balkfm_bulgarian_culture_integration_sgui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope ).End)]"
+			}
+			blockoverride "culture_not_integrated_visibility" {
+				visible = "[Not(GetScriptedGui('balkfm_bulgarian_culture_integration_sgui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope ).End))]"
+			}
+			blockoverride "culture_button_visibility" {
+				visible = "[And(
+					ScriptedButton.HasTag('integrate_culture'),
+					ScriptedButton.HasTag('bulgarian')
+				)]"
+			}
+			blockoverride "promote_character_visibility" {
+				visible = "[And(
+					ScriptedButton.HasTag('promote_character'),
+					ScriptedButton.HasTag('bulgarian')
+				)]"
+			}
+			blockoverride "integration_tooltip" {
+				tooltip = balkfm_bulgarian_integration_tooltip
+			}
+			blockoverride "culture_characters" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_bulgarian_character_count_var').GetValue|*]#!"
+			}
+			blockoverride "culture_fervor" {
+				raw_text = "#v [GetCulture('bulgarian').GetCurrentFervor|v0]#!"
+			}
+		}
+		balkfm_yugoslav_culture_item = {
+			blockoverride "culture_illustration" {
+				texture = "gfx/interface/illustrations/journal_backgrounds/gbbf_yug_bosniak_illus.dds"
+			}
+			blockoverride "culture_name" {
+				raw_text = "[GetCulture('bosniak').GetName]"
+			}
+			blockoverride "culture_population" {
+				raw_text = "Population: #v [JournalEntry.MakeScope.Var('balkfm_bosniak_total_population_var').GetValue|*]#!"
+			}
+			blockoverride "culture_loyalists" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_bosniak_loyalist_population_var').GetValue|*]#!"
+			}
+			blockoverride "culture_radicals" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_bosniak_radical_population_var').GetValue|*]#!"
+			}
+			blockoverride "integration_value" {
+				value = "[JournalEntry.MakeScope.Var('balkfm_bosniak_integration_var').GetValue]"
+			}
+			blockoverride "culture_integrated_visibility" {
+				visible = "[GetScriptedGui('balkfm_bosniak_culture_integration_sgui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope ).End)]"
+			}
+			blockoverride "culture_not_integrated_visibility" {
+				visible = "[Not(GetScriptedGui('balkfm_bosniak_culture_integration_sgui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope ).End))]"
+			}
+			blockoverride "culture_button_visibility" {
+				visible = "[And(
+					ScriptedButton.HasTag('integrate_culture'),
+					ScriptedButton.HasTag('bosniak')
+				)]"
+			}
+			blockoverride "promote_character_visibility" {
+				visible = "[And(
+					ScriptedButton.HasTag('promote_character'),
+					ScriptedButton.HasTag('bosniak')
+				)]"
+			}
+			blockoverride "integration_tooltip" {
+				tooltip = balkfm_bosniak_integration_tooltip
+			}
+			blockoverride "culture_characters" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_bosniak_character_count_var').GetValue|*]#!"
+			}
+			blockoverride "culture_fervor" {
+				raw_text = "#v [GetCulture('bosniak').GetCurrentFervor|v0]#!"
+			}
+		}
+		balkfm_yugoslav_culture_item = {
+			blockoverride "culture_illustration" {
+				texture = "gfx/interface/illustrations/journal_backgrounds/gbbf_yug_croat_illus.dds"
+			}
+			blockoverride "culture_name" {
+				raw_text = "[GetCulture('croat').GetName]"
+			}
+			blockoverride "culture_population" {
+				raw_text = "Population: #v [JournalEntry.MakeScope.Var('balkfm_croat_total_population_var').GetValue|*]#!"
+			}
+			blockoverride "culture_loyalists" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_croat_loyalist_population_var').GetValue|*]#!"
+			}
+			blockoverride "culture_radicals" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_croat_radical_population_var').GetValue|*]#!"
+			}
+			blockoverride "integration_value" {
+				value = "[JournalEntry.MakeScope.Var('balkfm_croat_integration_var').GetValue]"
+			}
+			blockoverride "culture_integrated_visibility" {
+				visible = "[GetScriptedGui('balkfm_croat_culture_integration_sgui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope ).End)]"
+			}
+			blockoverride "culture_not_integrated_visibility" {
+				visible = "[Not(GetScriptedGui('balkfm_croat_culture_integration_sgui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope ).End))]"
+			}
+			blockoverride "culture_button_visibility" {
+				visible = "[And(
+					ScriptedButton.HasTag('integrate_culture'),
+					ScriptedButton.HasTag('croat')
+				)]"
+			}
+			blockoverride "promote_character_visibility" {
+				visible = "[And(
+					ScriptedButton.HasTag('promote_character'),
+					ScriptedButton.HasTag('croat')
+				)]"
+			}
+			blockoverride "integration_tooltip" {
+				tooltip = balkfm_croat_integration_tooltip
+			}
+			blockoverride "culture_characters" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_croat_character_count_var').GetValue|*]#!"
+			}
+			blockoverride "culture_fervor" {
+				raw_text = "#v [GetCulture('croat').GetCurrentFervor|v0]#!"
+			}
+		}
+		balkfm_yugoslav_culture_item = {
+			blockoverride "culture_illustration" {
+				texture = "gfx/interface/illustrations/journal_backgrounds/gbbf_yug_slovene_illus.dds"
+			}
+			blockoverride "culture_name" {
+				raw_text = "[GetCulture('slovene').GetName]"
+			}
+			blockoverride "culture_population" {
+				raw_text = "Population: #v [JournalEntry.MakeScope.Var('balkfm_slovene_total_population_var').GetValue|*]#!"
+			}
+			blockoverride "culture_loyalists" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_slovene_loyalist_population_var').GetValue|*]#!"
+			}
+			blockoverride "culture_radicals" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_slovene_radical_population_var').GetValue|*]#!"
+			}
+			blockoverride "integration_value" {
+				value = "[JournalEntry.MakeScope.Var('balkfm_slovene_integration_var').GetValue]"
+			}
+			blockoverride "culture_integrated_visibility" {
+				visible = "[GetScriptedGui('balkfm_slovene_culture_integration_sgui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope ).End)]"
+			}
+			blockoverride "culture_not_integrated_visibility" {
+				visible = "[Not(GetScriptedGui('balkfm_slovene_culture_integration_sgui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope ).End))]"
+			}
+			blockoverride "culture_button_visibility" {
+				visible = "[And(
+					ScriptedButton.HasTag('integrate_culture'),
+					ScriptedButton.HasTag('slovene')
+				)]"
+			}
+			blockoverride "promote_character_visibility" {
+				visible = "[And(
+					ScriptedButton.HasTag('promote_character'),
+					ScriptedButton.HasTag('slovene')
+				)]"
+			}
+			blockoverride "integration_tooltip" {
+				tooltip = balkfm_slovene_integration_tooltip
+			}
+			blockoverride "culture_characters" {
+				raw_text = "#v [JournalEntry.MakeScope.Var('balkfm_slovene_character_count_var').GetValue|*]#!"
+			}
+			blockoverride "culture_fervor" {
+				raw_text = "#v [GetCulture('slovene').GetCurrentFervor|v0]#!"
+			}
+		}
+	}
+	
+	type balkfm_yugoslav_culture_item = widget {
+		parentanchor = top|hcenter
+		size = { 500 120 }
+		
+		background = {
+			block "culture_illustration" {
+				texture = "gfx/state_pictures/urban_european.dds"
+			}
+			spriteType = Corneredstretched
+			using = entry_bg_mask_bottom
+			alpha = 0.4
+		}
+		
+		background = {
+			using = dark_area
+			alpha = 0.75
+			using = entry_bg_mask_top
+			using = entry_bg_mask_bottom
+			
+			modify_texture = {
+				texture = "gfx/interface/masks/fade_horizontal_center_inverted.dds"
+				spriteType = Corneredstretched
+				spriteborder = { 0 0 }
+				blend_mode = alphamultiply
+			}
+			
+			modify_texture = {
+				texture = "gfx/interface/masks/fade_vertical_center_inverted.dds"
+				spriteType = Corneredstretched
+				spriteborder = { 0 0 }
+				blend_mode = alphamultiply
+				alpha = 0.5
+			}
+		}
+		
+		background = {
+			using = entry_bg
+		}
+		
+		# Promote Characters Button
+		flowcontainer = {
+			parentanchor = left|bottom
+			minimumsize = { 180 25 }
+			position = { 25 -8 }
+			
+			datamodel = "[JournalEntry.GetScriptedButtons]"
+			
+			item = {
+				button = {
+					parentanchor = left|bottom
+					size = { 180 25 }
+					using = default_button_action
+					
+					block "promote_character_visibility" {
+						visible = "[ScriptedButton.HasTag('nope')]"
+					}
+					
+					tooltip = "SCRIPTED_ACTION_TOOLTIP"
+					enabled = "[IsValid( ScriptedButton.ExecuteEffect )]"
+					onclick = "[Execute( ScriptedButton.ExecuteEffect )]"
+					
+					textbox = {
+						parentanchor = center
+						autoresize = yes
+						elide = right
+						fontsize = 16
+						align = nobaseline
+						max_width = 200
+						text = "[ScriptedButton.GetName]"
+					}
+				}
+			}
+		}
+		
+		# Name and Population
+		widget = {
+			parentanchor = top
+			size = { 500 40 }
+			background = {
+				texture = "gfx/interface/buttons/expand_button_bg.dds"
+				spriteType = Corneredtiled
+				spriteborder = { 20 20 }
+				texture_density = 2
+				using = disabled_stripes
+				
+				modify_texture = {
+					name = "bg_gradient"
+					texture = "gfx/interface/buttons/default_button_bg_gradient.dds"
+					spriteType = Corneredstretched
+					spriteborder = { 0 0 }
+					blend_mode = overlay
+					alpha = 0.5
+				}
+				modify_texture = {
+					name = "texture"
+					texture = "gfx/interface/textures/default_noise_texture.dds"
+					spriteType = Corneredtiled
+					spriteborder = { 0 0 }
+					blend_mode = overlay
+				}
+				modify_texture = {
+					texture = "gfx/interface/masks/fade_horizontal_center.dds"
+					spriteType = Corneredstretched
+					spriteborder = { -220 0 }
+					blend_mode = alphamultiply
+					alpha = 1.0
+				}
+			}
+			
+			hbox = {
+				margin = { 15 0 }
+				textbox = {
+					block "culture_name" {
+						raw_text = "#todo culture_name"
+						using = look_at_me_animation
+					}
+					autoresize = yes
+					elide = right
+					using = fontsize_large
+					
+				}
+				expand = {}
+				textbox = {
+					block "culture_population" {
+						raw_text = "#todo culture_population"
+						using = look_at_me_animation
+					}
+					autoresize = yes
+					elide = right
+					using = fontsize_large
+					
+					icon = {
+						texture = "gfx/interface/icons/generic_icons/population.dds"
+						position = { -35 0 }
+						size = { 30 30 }
+						parentanchor = left|vcenter
+					}
+					
+				}
+			}
+		}
+		
+		# Progressbar
+		default_progressbar_horizontal = {
+			parentanchor = left|vcenter
+			position = { 10 5 }
+			size = { 200 14 }
+			blockoverride "values" {
+				block "integration_value" {
+					value = 50
+				}
+				min = 0
+				max = 100
+			}
+			
+			icon = {
+				parentanchor = center
+				position = { 0 2 }
+				size = { 210 50 }
+				texture = "gfx/interface/progressbar/cohesion_bar.dds"
+			}
+			block "integration_tooltip" {
+				tooltip = "gbbf_placeholder_text"
+			}
+		}
+		
+		# Integrate Culture Button
+		flowcontainer = {
+			parentanchor = center
+			direction = vertical
+			minimumsize = { 50 50 }
+			position = { -20 10 }
+			
+			block "culture_not_integrated_visibility" {}
+			
+			datamodel = "[JournalEntry.GetScriptedButtons]"
+			
+			item = {
+				button_icon_round = {
+					parentanchor = top|hcenter
+					size = { 40 40 }
+					block "culture_button_visibility" {
+						visible = "[ScriptedButton.HasTag('nope')]"
+					}
+					enabled = "[IsValid( ScriptedButton.ExecuteEffect )]"
+					onclick = "[Execute( ScriptedButton.ExecuteEffect )]"
+					tooltip = "SCRIPTED_ACTION_TOOLTIP"
+					using = tooltip_above
+					
+					icon = {
+						parentanchor = center
+						size = { 75% 75% }
+						texture = "gfx/interface/icons/generic_icons/accepted_icon.dds"
+					}
+					
+					icon = {
+						parentanchor = center
+						position = { 0 1 }
+						size = { 110% 110% }
+						texture = "gfx/interface/backgrounds/diplo_play_frame.dds"
+					}
+				}
+			}
+		}
+		
+		# Culture Integrated Icon
+		icon = {
+			parentanchor = center
+			position = { -20 7 }
+			size = { 50 50 }
+			texture = "/gfx/interface/backgrounds/round_button_bg.dds"
+			
+			block "culture_integrated_visibility" {
+				visible = "no"
+			}
+			
+			icon = {
+				parentanchor = center
+				position = { 0 1 }
+				using = rotate_glow_animation_02
+				size = { 100 100 }
+				alwaystransparent = yes
+				using = default_fade_in_out
+				
+				icon = {
+					parentanchor = center
+					size = { 40 40 }
+					texture = "/gfx/interface/icons/generic_icons/gbbf_accepted_culture.dds"
+				}
+			}
+			
+			raw_tooltip = "This [concept_culture] is one of the [concept_primary_cultures] of [JournalEntry.MakeScope.Var('balkfm_yugoslavia_scope').GetCountry.GetNameNoFlag]"
+			# TODO, uhh loc key balkfm_culture_integrated_tooltip doesn't work if passed in with a tooltip parameter?
+		}
+		
+		# Loyalists and Radicals
+		flowcontainer = {
+			parentanchor = right|vcenter
+			direction = horizontal
+			spacing = 10
+			minimumsize = { 200 -1 }
+			position = { -15 20 }
+			
+			flowcontainer = {
+				parentanchor = top|hcenter
+				direction = vertical
+				minimumsize = { 100 -1 }
+				spacing = 5
+				
+				widget = {
+					parentanchor = top|hcenter
+					size = { 100 30 }
+					tooltip = "balkfm_gui_characters_tooltip"
+					
+					background = {
+						using = entry_bg
+					}
+					
+					textbox = {
+						parentanchor = right|vcenter
+						position = { -10 0 }
+						block "culture_characters" {
+							raw_text = "#todo culture_characters"
+							using = look_at_me_animation
+						}
+						autoresize = yes
+						elide = right
+						align = left|nobaseline
+						using = fontsize_medium
+					}
+					
+					icon = {
+						parentanchor = left|vcenter
+						position = { 5 0 }
+						texture = "gfx/interface/icons/generic_icons/leading_interest_group_icon.dds"
+						size = { 26 26 }
+					}
+				}
+				
+				widget = {
+					parentanchor = top|hcenter
+					size = { 100 30 }
+					tooltip = "balkfm_gui_fervor_tooltip"
+					
+					background = {
+						using = entry_bg
+					}
+					
+					textbox = {
+						parentanchor = right|vcenter
+						position = { -10 0 }
+						block "culture_fervor" {
+							raw_text = "#todo culture_fervor"
+							using = look_at_me_animation
+						}
+						autoresize = yes
+						elide = right
+						align = left|nobaseline
+						using = fontsize_medium
+					}
+					
+					icon = {
+						parentanchor = left|vcenter
+						position = { 5 0 }
+						texture = "gfx/interface/icons/generic_icons/cultural_fervor.dds"
+						size = { 26 26 }
+					}
+				}
+			}
+			
+			flowcontainer = {
+				parentanchor = top|hcenter
+				direction = vertical
+				minimumsize = { 100 -1 }
+				spacing = 5
+				
+				widget = {
+					parentanchor = top|hcenter
+					size = { 100 30 }
+					tooltip = "balkfm_gui_loyalism_tooltip"
+					
+					background = {
+						using = entry_bg
+					}
+					
+					textbox = {
+						parentanchor = right|vcenter
+						position = { -10 0 }
+						block "culture_loyalists" {
+							raw_text = "#todo culture_loyalists"
+							using = look_at_me_animation
+						}
+						autoresize = yes
+						elide = right
+						align = left|nobaseline
+						using = fontsize_medium
+					}
+					
+					icon = {
+						parentanchor = left|vcenter
+						position = { 5 0 }
+						texture = "gfx/interface/icons/generic_icons/population_loyalist.dds"
+						size = { 26 26 }
+					}
+				}
+				
+				widget = {
+					parentanchor = top|hcenter
+					size = { 100 30 }
+					tooltip = "balkfm_gui_radicalism_tooltip"
+					
+					background = {
+						using = entry_bg
+					}
+					
+					textbox = {
+						parentanchor = right|vcenter
+						position = { -10 0 }
+						block "culture_radicals" {
+							raw_text = "#todo culture_radicals"
+							using = look_at_me_animation
+						}
+						autoresize = yes
+						elide = right
+						align = left|nobaseline
+						using = fontsize_medium
+					}
+					
+					icon = {
+						parentanchor = left|vcenter
+						position = { 5 0 }
+						texture = "gfx/interface/icons/generic_icons/population_radical.dds"
+						size = { 26 26 }
+					}
+				}
+			}
+		}
+	}
+	
+}

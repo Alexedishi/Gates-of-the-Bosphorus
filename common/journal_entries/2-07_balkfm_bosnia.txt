@@ -1,7 +1,12 @@
 ﻿je_balkfm_bos_ali_pasha = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -11,79 +16,101 @@
 		c:BOS ?= this
 	}
 
-	immediate = {
-	}
-
 	modifiers_while_active = {
 		modifier_balkfm_ali_pasha
 	}
-
-	complete = {
-		trigger_if = {
-			limit = {
-				exists = c:TUR
-			}
-			NOT = {
-				is_subject_of = c:TUR
-			}
-		}
-		trigger_else = {
-			is_subject = no
-		}
-	}
-
-	on_complete = {
-		trigger_event = balkfm_bosnia.002
-		c:TUR ?= {
-			post_notification = balkfm_ali_rizvanbegovic_ascendant
-		}
-		c:MON ?= {
-			post_notification = balkfm_ali_rizvanbegovic_ascendant
-		}
-	}
-
-	fail = {
-		OR = {
-			custom_tooltip = {
-				text = je_balkfm_bos_ali_pasha_fail
-				ruler = {
-					NOR = {
-						has_template = balkfm_rizvanbegovic_ali
-						has_template = balkfm_rizvanbegovic_mehmed
-					}
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			trigger_if = {
+				limit = {
+					exists = c:TUR
+				}
+				NOT = {
+					is_subject_of = c:TUR
 				}
 			}
-			NOT = {
-				has_claim = s:STATE_MONTENEGRO
+			trigger_else = {
+				is_subject = no
 			}
 		}
-		hidden_trigger = {
-			NOT = {
-				has_global_variable = eqfm_ali_rizvanbegovic_waxed
+		effect = {
+			trigger_event = balkfm_bosnia.002
+			c:TUR ?= {
+				post_notification = balkfm_ali_rizvanbegovic_ascendant
+			}
+			c:MON ?= {
+				post_notification = balkfm_ali_rizvanbegovic_ascendant
 			}
 		}
-	}
-
-	on_fail = {
-		trigger_event = balkfm_bosnia.003
-		c:TUR ?= {
-			post_notification = balkfm_ali_rizvanbegovic_waxed
-		}
-		c:MON ?= {
-			post_notification = balkfm_ali_rizvanbegovic_waxed
-		}
-		set_global_variable = eqfm_ali_rizvanbegovic_waxed
 	}
 	
-	invalid = {
-		has_global_variable = eqfm_ali_rizvanbegovic_waxed
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		flags = { historical }
+		
+		trigger = {
+			OR = {
+				custom_tooltip = {
+					text = je_balkfm_bos_ali_pasha_fail
+					ruler = {
+						NOR = {
+							has_template = balkfm_rizvanbegovic_ali
+							has_template = balkfm_rizvanbegovic_mehmed
+						}
+					}
+				}
+				NOT = {
+					has_claim = s:STATE_MONTENEGRO
+				}
+			}
+			hidden_trigger = {
+				NOT = {
+					has_global_variable = eqfm_ali_rizvanbegovic_waxed
+				}
+			}
+		}
+		effect = {
+			trigger_event = balkfm_bosnia.003
+			c:TUR ?= {
+				post_notification = balkfm_ali_rizvanbegovic_waxed
+			}
+			c:MON ?= {
+				post_notification = balkfm_ali_rizvanbegovic_waxed
+			}
+			set_global_variable = eqfm_ali_rizvanbegovic_waxed
+		}
+	}
+	
+	outcome = {
+		conclusion_desc = je_standard_failure_conclusion_desc
+		flags = { invalid_outcome hidden }
+		
+		trigger = {
+			has_global_variable = eqfm_ali_rizvanbegovic_waxed
+		}
+		effect = { }
 	}
 }
 
 je_balkfm_bos_tanzimat = {
 	group = je_group_foreign_affairs
 	icon = "gfx/interface/icons/event_icons/event_fez.dds"
+	dlc = dlc_grefm
 	weight = 100
+	
+	activation_description = {
+		always = yes
+	}
 	
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -93,10 +120,18 @@ je_balkfm_bos_tanzimat = {
 		trigger_event = balkfm_bosnia.005
 	}
 	
-	complete = {
-		custom_tooltip = {
-			text = je_balkfm_bos_tanzimat_complete
-			balkfm_completed_legacies_value >= 3
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			custom_tooltip = {
+				text = je_balkfm_bos_tanzimat_complete
+				balkfm_completed_legacies_value >= 3
+			}
 		}
+		effect = { }
 	}
 }

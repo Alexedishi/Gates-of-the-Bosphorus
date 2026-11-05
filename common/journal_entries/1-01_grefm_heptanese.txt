@@ -1,7 +1,12 @@
 ﻿je_grefm_ion_xenocracy = {
 	group = je_group_historical_content
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	dlc = dlc_grefm
 	weight = 1000
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -11,50 +16,63 @@
 		c:ION ?= this
 	}
 
-	immediate = {
-	}
-
 	modifiers_while_active = {
 		modifier_grefm_xenocracy
 		modifier_grefm_hepantese_administration
 	}
-
-	complete = {
-		AND = {
-			any_scope_building = {
-				is_building_type = building_government_administration
-				OR = {
-					has_active_production_method = pm_vertical_filing_cabinets
-					has_active_production_method = pm_switch_boards
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			AND = {
+				any_scope_building = {
+					is_building_type = building_government_administration
+					OR = {
+						has_active_production_method = pm_vertical_filing_cabinets
+						has_active_production_method = pm_switch_boards
+					}
 				}
+				bureaucracy > 0
+				approaching_bureaucracy_shortage = no
 			}
-			bureaucracy > 0
-			approaching_bureaucracy_shortage = no
-		}
-		institution_investment_level = {
-			institution = institution_police
-			value >= 3
-		}
-		institution_investment_level = {
-			institution = institution_schools
-			value >= 3
-		}
-	}
-
-	on_complete = {
-		trigger_event = grefm_heptanese.002
-	}
-
-	fail = {
-		OR = {
-			is_subject = no
-			trigger_if = {
-				limit = {
-					exists = c:GRE
-				}
-				is_subject_of = c:GRE
+			institution_investment_level = {
+				institution = institution_police
+				value >= 3
+			}
+			institution_investment_level = {
+				institution = institution_schools
+				value >= 3
 			}
 		}
+		effect = {
+			trigger_event = grefm_heptanese.002
+		}
+	}
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
+			OR = {
+				is_subject = no
+				trigger_if = {
+					limit = {
+						exists = c:GRE
+					}
+					is_subject_of = c:GRE
+				}
+			}
+		}
+		effect = { }
 	}
 
 	on_monthly_pulse = {
@@ -67,74 +85,99 @@
 
 je_grefm_ion_venetian_legacy = {
 	group = je_group_technology
-	weight = 500
 	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+	dlc = dlc_grefm
+	weight = 500
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
 
-	immediate = {
-	}
-
 	modifiers_while_active = {
 		modifier_grefm_venetian_legacy
 	}
-
-	complete = {
-		NOR = {
-			has_law_or_variant = law_type:law_traditionalism
-			has_law_or_variant = law_type:law_serfdom
-			has_law_or_variant = law_type:law_tenant_farmers
-		}
-		any_scope_building = {
-			is_building_type = building_wheat_farm
-			earnings >= 5
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
 			NOR = {
-				has_active_production_method = pm_simple_farming
-				has_active_production_method = pm_tools_disabled
+				has_law_or_variant = law_type:law_traditionalism
+				has_law_or_variant = law_type:law_serfdom
+				has_law_or_variant = law_type:law_tenant_farmers
+			}
+			any_scope_building = {
+				is_building_type = building_wheat_farm
+				earnings >= 5
+				NOR = {
+					has_active_production_method = pm_simple_farming
+					has_active_production_method = pm_tools_disabled
+				}
 			}
 		}
-	}
-
-	on_complete = {
-		trigger_event = grefm_heptanese.003
+		effect = {
+			trigger_event = grefm_heptanese.003
+		}
 	}
 }
 
 je_grefm_ion_poverty = {
 	group = je_group_technology
 	icon = "gfx/interface/icons/event_icons/event_portrait.dds"
+	dlc = dlc_grefm
 	weight = 100
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
 	transferable = no
-
-	immediate = {
-	}
-
-	complete = {
-		bureaucracy > 0
-		institution_investment_level = {
-			institution = institution_social_security
-			value >= 2
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		flags = { historical }
+		
+		trigger = {
+			bureaucracy > 0
+			institution_investment_level = {
+				institution = institution_social_security
+				value >= 2
+			}
+			institution_investment_level = {
+				institution = institution_health_system
+				value >= 2
+			}
 		}
-		institution_investment_level = {
-			institution = institution_health_system
-			value >= 2
+		effect = {
+			trigger_event = grefm_heptanese.004
 		}
-	}
-
-	on_complete = {
-		trigger_event = grefm_heptanese.004
 	}
 }
 
 je_grefm_ion_jewry = {
 	group = je_group_internal_affairs
 	icon = "gfx/interface/icons/religion_icons/jewish.dds"
+	dlc = dlc_grefm
 	weight = 500
+	
+	activation_description = {
+		always = yes
+	}
 
 	should_be_pinned_by_default_uninvolved_or_context = yes
 	can_revolution_inherit = yes
@@ -154,43 +197,55 @@ je_grefm_ion_jewry = {
 	modifiers_while_active = {
 		modifier_grefm_jewish_exclusion
 	}
-
-	complete = {
-		OR = {
-			custom_tooltip = {
-				text = je_grefm_ion_jewry_complete_tt1
-				hidden_trigger = {
-					modifier:state_jewish_standard_of_living_add >= 4
+	
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_standard_completion_conclusion_desc
+		color = gold_positive
+		
+		trigger = {
+			OR = {
+				custom_tooltip = {
+					text = je_grefm_ion_jewry_complete_tt1
+					hidden_trigger = {
+						modifier:state_jewish_standard_of_living_add >= 4
+					}
+				}
+				custom_tooltip = {
+					text = je_grefm_ion_jewry_complete_tt2
+					hidden_trigger = {
+						var:grefm_samos_loyalist_jews_var >= 0.75
+					}
+				}
+				cultural_acceptance_base = {
+					target = cu:romanyotim
+					value >= acceptance_status_5
 				}
 			}
+		}
+		effect = {
+			trigger_event = grefm_heptanese.019
+		}
+	}
+	
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_standard_failure_conclusion_desc
+		color = blue_negative
+		
+		trigger = {
 			custom_tooltip = {
-				text = je_grefm_ion_jewry_complete_tt2
+				text = je_grefm_ion_jewry_fail_tt
 				hidden_trigger = {
-					var:grefm_samos_loyalist_jews_var >= 0.75
+					var:grefm_samos_radical_jews_var >= 0.75
 				}
 			}
-			cultural_acceptance_base = {
-				target = cu:romanyotim
-				value >= acceptance_status_5
-			}
 		}
-	}
-
-	on_complete = {
-		trigger_event = grefm_heptanese.019
-	}
-
-	fail = {
-		custom_tooltip = {
-			text = je_grefm_ion_jewry_fail_tt
-			hidden_trigger = {
-				var:grefm_samos_radical_jews_var >= 0.75
-			}
+		effect = {
+			trigger_event = grefm_heptanese.018
 		}
-	}
-
-	on_fail = {
-		trigger_event = grefm_heptanese.018
 	}
 
 	on_weekly_pulse = {

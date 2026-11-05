@@ -1,0 +1,1191 @@
+﻿####---------- on_country_formed ----------####
+on_country_formed = {
+	on_actions = {
+		grefm_byz_culture_validation
+	}
+}
+
+grefm_byz_culture_validation = {
+	trigger = {
+		c:BYZ ?= this
+	}
+	effect = {
+		if = {
+			limit = {
+				has_variable = grefm_culture_var
+			}
+			if = {
+				limit = {
+					var:grefm_culture_var = 1 # Hellene
+				}
+				remove_primary_culture = cu:rhomaios
+			}
+			if = {
+				limit = {
+					var:grefm_culture_var = 2 # Hellene
+				}
+				remove_primary_culture = cu:greek
+			}
+		}
+		else = {
+			if = {
+				limit = {
+					OR = {
+						was_formed_from = GRE
+						was_formed_from = GRE_EPI
+						was_formed_from = ION
+						was_formed_from = CRE
+						was_formed_from = CYP
+						was_formed_from = GRE_SAM
+					}
+				}
+				remove_primary_culture = cu:rhomaios
+			}
+			else_if = {
+				limit = {
+					OR = {
+						was_formed_from = BYZ_TRB
+						was_formed_from = BYZ_TRB
+					}
+				}
+				remove_primary_culture = cu:greek
+			}
+			else_if = {
+				limit = {
+					was_formed_from = GRA_THE
+				}
+				add_primary_culture = cu:urum
+			}
+			else_if = {
+				limit = {
+					was_formed_from = BUL
+				}
+				add_primary_culture = cu:bulgarian
+			}
+			else_if = {
+				limit = {
+					was_formed_from = ROM
+				}
+				add_primary_culture = cu:romanian
+			}
+			else_if = {
+				limit = {
+					was_formed_from = AST
+				}
+				add_primary_culture = cu:australian
+			}
+		}
+	}
+}
+
+
+####---------- on_country_formed ----------####
+on_country_formed = {
+	on_actions = {
+		gbbf_on_byz_formed
+		gbbf_on_yug_formed
+	}
+}
+
+gbbf_on_byz_formed = {
+	trigger = {
+		c:BYZ ?= root
+	}
+	effect = {
+		if = {
+			limit = {
+				var:grefm_culture_var ?= 1 # Hellene Outcome
+			}
+			remove_primary_culture = cu:rhomaios
+			add_primary_culture = cu:greek
+		}
+		else_if = {
+			limit = {
+				var:grefm_culture_var ?= 2 # Rhomaios Outcome
+			}
+			remove_primary_culture = cu:greek
+			add_primary_culture = cu:rhomaios
+		}
+		else_if = {
+			limit = {
+				var:grefm_culture_var ?= 3 # Hybrid Outcome
+			}
+			add_primary_culture = cu:greek
+			add_primary_culture = cu:rhomaios
+		}
+	}
+}
+
+gbbf_on_yug_formed = {
+	trigger = {
+		c:YUG ?= root
+	}
+	events = {
+		balkfm_yugoslavia.014
+	}
+	effect = {
+		if = {
+			limit = {
+				was_formed_from = MON
+			}
+			balkfm_remove_yugoslav_cultures_effect = yes
+			if = {
+				limit = {
+					has_global_variable = balkfm_montegrin_culture_var
+				}
+				add_primary_culture = cu:montenegrin
+			}
+			else = {
+				add_primary_culture = cu:serb
+			}
+			set_state_religion = rel:orthodox
+		}
+		else_if = {
+			limit = {
+				OR = {
+					was_formed_from = SER
+					was_formed_from = SER_RSK
+				}
+			}
+			balkfm_remove_yugoslav_cultures_effect = yes
+			add_primary_culture = cu:serb
+			set_state_religion = rel:orthodox
+		}
+		else_if = {
+			limit = {
+				was_formed_from = BUL
+			}
+			balkfm_remove_yugoslav_cultures_effect = yes
+			add_primary_culture = cu:bulgarian
+		}
+		else_if = {
+			limit = {
+				was_formed_from = BOS
+			}
+			balkfm_remove_yugoslav_cultures_effect = yes
+			add_primary_culture = cu:bosniak
+			set_state_religion = rel:sunni # HAVE FUN BRO
+		}
+		else_if = {
+			limit = {
+				was_formed_from = CRO
+			}
+			balkfm_remove_yugoslav_cultures_effect = yes
+			add_primary_culture = cu:croat
+			set_state_religion = rel:catholic
+		}
+		else_if = {
+			limit = {
+				was_formed_from = SLO
+			}
+			balkfm_remove_yugoslav_cultures_effect = yes
+			add_primary_culture = cu:slovene
+			set_state_religion = rel:catholic
+		}
+		else = {
+			error_log = "The gbbf_on_country_formed was evaluated for YUG and did not have law_multicultural, but none of the was_formed_from triggers were true."
+		}
+		every_state_region_in_yugoslavia = {
+			remove_variable = balkfm_tax_law_var
+		}
+	}
+}
+
+
+####---------- on_country_released ----------####
+on_country_released_as_independent = {
+	on_actions = {
+		balkfm_country_release_1
+	}
+}
+
+on_country_released_as_own_subject = {
+	on_actions = {
+		balkfm_country_release_2
+	}
+}
+
+balkfm_country_release_1 = {
+	# BUL keeps BUL_RUM if fully independent
+	effect = {
+		if = {
+			limit = {
+				c:BUL ?= scope:target
+				NOT = { has_global_variable = balkfm_lion_awakened }
+			}
+			scope:target = {
+				balkfm_set_bulgarian_laws = yes
+				balkfm_create_bulgarian_characters = yes
+				trigger_event = balkfm_bulgaria.001
+			}
+		}
+	}
+}
+
+balkfm_country_release_2 = {
+	# Splits BUL and BUL_RUM if BUL is released as a subject
+	effect = {
+		if = {
+			limit = {
+				c:BUL ?= scope:target
+				NOT = { has_global_variable = balkfm_lion_awakened }
+			}
+			scope:target = {
+				balkfm_set_bulgarian_laws = yes
+				balkfm_create_bulgarian_characters = yes
+				trigger_event = balkfm_bulgaria.001
+			}
+			if = {
+				limit = {
+					c:TUR = {
+						owns_entire_state_region = STATE_NORTHERN_THRACE
+					}
+				}
+				create_country = {
+					tag = BUL_RUM
+					origin = this
+					state = s:STATE_NORTHERN_THRACE.region_state:TUR
+					on_created = {
+					}
+				}
+				c:TUR ?= {
+					create_diplomatic_pact = {
+						country = c:BUL_RUM
+						type = puppet
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					c:BUL = {
+						owns_entire_state_region = STATE_NORTHERN_THRACE
+					}
+				}
+				create_country = {
+					tag = BUL_RUM
+					origin = this
+					state = s:STATE_NORTHERN_THRACE.region_state:BUL
+					on_created = {
+					}
+				}
+				c:TUR ?= {
+					create_diplomatic_pact = {
+						country = c:BUL_RUM
+						type = puppet
+					}
+				}
+			}
+		}
+	}
+}
+
+
+####---------- on_diplomatic_action ----------####
+on_diplomatic_action_overlord_decrease_autonomy = {
+	on_actions = {
+		eqfm_balkans_decrease_autonomy
+	}
+}
+
+on_diplomatic_action_overlord_increase_autonomy = {
+	on_actions = {
+		balkfm_trs_protectorate_autonomy
+		eqfm_balkans_increase_autonomy
+	}
+}
+
+on_diplomatic_action_subject_increase_own_autonomy = {
+	on_actions = {
+		balkfm_trs_protectorate_autonomy
+	}
+}
+
+balkfm_trs_protectorate_autonomy = {
+	trigger = {
+		scope:actor = {
+			c:AUS ?= this
+		}
+		scope:recipient = {
+			c:TRS ?= this
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				c:TRS = {
+					NOT = {
+						is_subject_type = subject_type_protectorate
+					}
+				}
+			}
+			c:TRS = {
+				if = {
+					limit = {
+						is_subject = yes
+					}
+				}
+				make_independent = yes
+			}
+			c:AUS = {
+				create_diplomatic_pact = {
+					type = protectorate
+					country = c:TRS
+				}
+			}
+			error_log = "GotB: Transylvania's autonomy was increased, but it became independent instead. Subjecthood has been fixed."
+		}
+	}
+}
+
+eqfm_balkans_decrease_autonomy = {
+	trigger = {
+		eqfm_balkan_powder_keg_can_escalate_trigger = yes
+		scope:actor = {
+			c:TUR ?= this
+		}
+		scope:recipient = {
+			balkfm_balkans_native_trigger = yes
+		}
+	}
+	effect = {
+		eqfm_add_balkan_powder_keg_escalation_effect = {
+			value = 50
+		}
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_autonomy_decreased
+		}
+	}
+}
+
+eqfm_balkans_increase_autonomy = {
+	trigger = {
+		eqfm_balkan_powder_keg_can_deescalate_trigger = yes
+		scope:actor = {
+			c:TUR ?= this
+		}
+		scope:recipient = {
+			balkfm_balkans_native_trigger = yes
+		}
+	}
+	effect = {
+		eqfm_add_balkan_powder_keg_deescalation_effect = {
+			value = 25
+		}
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_autonomy_increased
+		}
+	}
+}
+
+
+####---------- on_diplomats_expelled ----------####
+# Root = Diplomatic Action
+# scope:target = the country whose diplomats were expelled
+# scope:initiator = the country doing the expelling
+on_diplomats_expelled = {
+	on_actions = {
+		eqfm_balkans_diplomats_expelled
+	}
+}
+
+eqfm_balkans_diplomats_expelled = {
+	trigger = {
+		eqfm_balkan_powder_keg_can_escalate_trigger = yes
+		scope:target = {
+			c:TUR ?= this
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				scope:initiator = {
+					country_rank < rank_value:great_power
+				}
+			}
+			eqfm_add_balkan_powder_keg_escalation_effect = {
+				value = 5
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+				}
+				post_notification = eqfm_diplomats_expelled_1
+			}
+		}
+		else_if = {
+			limit = {
+				scope:initiator = {
+					country_rank >= rank_value:great_power
+				}
+			}
+			eqfm_add_balkan_powder_keg_escalation_effect = {
+				value = 10
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+				}
+				post_notification = eqfm_diplomats_expelled_2
+			}
+		}
+	}
+}
+
+
+####---------- on_harvest_condition_started_in_country ----------####
+# Root = country
+# scope:area = harvest condition area
+# scope:state = affected state with the highest intensity
+# scope:duration = duration of the harvest condition in days
+# scope:num_states = the number of affected states in the country
+# scope:intensity = the highest intensity of the affected states
+on_harvest_condition_started_in_country = {
+	on_actions = {
+#		on_harvest_condition_started_in_lower_nile # TODO enable when support is provided
+	}
+}
+
+on_harvest_condition_started_in_lower_nile = {
+	trigger = {
+		has_global_variable = je_mgrbfm_egypt_nile_river
+		scope:state = {
+			is_in_geographic_region = geographic_region_lower_nile
+		}
+	}
+	effect = {
+		scope:area = {
+			save_scope_as = mgrbfm_flood_epicenter_area
+		}
+		global_var:je_mgrbfm_egypt_nile_river ?= {
+			set_variable = {
+				name = mgrbfm_flood_epicenter_area_var
+				value = scope:mgrbfm_flood_epicenter_area
+			}
+		}
+	}
+}
+
+
+####---------- on_heir_born ----------####
+on_heir_born = {
+	on_actions = {
+		grefm_validate_heir_dynasty
+	}
+}
+
+grefm_validate_heir_dynasty = {
+	trigger = {
+		owner = {
+			OR = {
+				c:GRE ?= this
+				c:BYZ ?= this
+			}
+			has_law = law_type:law_monarchy
+			NOT = {
+				has_variable = no_heirs
+			}
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				owner.ruler ?= {
+					OR = {
+						has_template = grefm_wittelsbach_otto
+						has_template = grefm_wittelsbach_adalbert
+						has_template = grefm_wittelsbach_ludwig_ferdinand
+						has_template = grefm_wittelsbach_noble
+					}
+				}
+				NOR = {
+					has_template = grefm_wittelsbach_adalbert
+					has_template = grefm_wittelsbach_ludwig_ferdinand
+					has_template = grefm_wittelsbach_noble
+				}
+			}
+			owner = {
+				if = {
+					limit = {
+						ruler = {
+							has_template = grefm_wittelsbach_adalbert
+						}
+					}
+					if = {
+						limit = {
+							year >= 1860
+						}
+						create_character = {
+							template = grefm_wittelsbach_ludwig_ferdinand
+							birth_date = 1859.10.22
+						}
+					}
+					else = {
+						create_character = {
+							template = grefm_wittelsbach_ludwig_ferdinand
+							age = 1
+						}
+					}
+				}
+				else = {
+					create_character = {
+						template = grefm_wittelsbach_noble
+						heir = yes
+						age = 1
+					}
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+		else_if = {
+			limit = {
+				owner.ruler ?= {
+					has_template = grefm_armansperg_noble
+				}
+				NOT = {
+					has_template = grefm_armansperg_noble
+				}
+			}
+			owner = {
+				create_character = {
+					template = grefm_armansperg_noble
+					heir = yes
+					age = 1
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+		else_if = {
+			limit = {
+				owner.ruler ?= {
+					has_template = grefm_glucksburg_noble
+				}
+				NOT = {
+					has_template = grefm_glucksburg_noble
+				}
+			}
+			owner = {
+				create_character = {
+					template = grefm_glucksburg_noble
+					heir = yes
+					age = 1
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+		else_if = {
+			limit = {
+				owner.ruler ?= {
+					has_template = grefm_deflandre_noble
+				}
+				NOT = {
+					has_template = grefm_deflandre_noble
+				}
+			}
+			owner = {
+				create_character = {
+					template = grefm_deflandre_noble
+					heir = yes
+					age = 1
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+		else_if = {
+			limit = {
+				owner.ruler ?= {
+					OR = {
+						has_template = grefm_eynard_noble
+						has_template = grefm_eynard_jean_gabriel
+					}
+				}
+				NOR = {
+					has_template = grefm_eynard_noble
+					has_template = grefm_eynard_jean_gabriel
+				}
+			}
+			owner = {
+				create_character = {
+					template = grefm_eynard_noble
+					heir = yes
+					age = 1
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+		else_if = {
+			limit = {
+				owner.ruler ?= {
+					has_template = grefm_saxe-coburg_noble
+				}
+				NOT = {
+					has_template = grefm_saxe-coburg_noble
+				}
+			}
+			owner = {
+				create_character = {
+					template = grefm_saxe-coburg_noble
+					heir = yes
+					age = 1
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+		else_if = {
+			limit = {
+				owner.ruler ?= {
+					has_template = grefm_bourbon_noble
+				}
+				NOT = {
+					has_template = grefm_bourbon_noble
+				}
+			}
+			owner = {
+				create_character = {
+					template = grefm_bourbon_noble
+					heir = yes
+					age = 1
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+		else_if = {
+			limit = {
+				owner.ruler ?= {
+					has_template = grefm_orleans_noble
+				}
+				NOT = {
+					has_template = grefm_orleans_noble
+				}
+			}
+			owner = {
+				create_character = {
+					template = grefm_orleans_noble
+					heir = yes
+					age = 1
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+		else_if = {
+			limit = {
+				owner.ruler ?= {
+					has_template = grefm_bonaparte_noble
+				}
+				NOT = {
+					has_template = grefm_bonaparte_noble
+				}
+			}
+			owner = {
+				create_character = {
+					template = grefm_bonaparte_noble
+					heir = yes
+					age = 1
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+		else_if = {
+			limit = {
+				owner.ruler ?= {
+					has_template = grefm_romanov_noble
+				}
+				NOT = {
+					has_template = grefm_romanov_noble
+				}
+			}
+			owner = {
+				create_character = {
+					template = grefm_romanov_noble
+					heir = yes
+					age = 1
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+		else_if = {
+			limit = {
+				owner.ruler ?= {
+					has_template = grefm_kapodistrias_noble
+				}
+				NOT = {
+					has_template = grefm_kapodistrias_noble
+				}
+			}
+			owner = {
+				create_character = {
+					template = grefm_kapodistrias_noble
+					heir = yes
+					age = 1
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+		else_if = {
+			limit = {
+				owner.ruler ?= {
+					has_template = grefm_mavrokordatos_noble
+				}
+				NOT = {
+					has_template = grefm_mavrokordatos_noble
+				}
+			}
+			owner = {
+				create_character = {
+					template = grefm_mavrokordatos_noble
+					heir = yes
+					age = 1
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+		else_if = {
+			limit = {
+				owner.ruler ?= {
+					has_template = grefm_metaxas_noble
+				}
+				NOT = {
+					has_template = grefm_metaxas_noble
+				}
+			}
+			owner = {
+				create_character = {
+					template = grefm_metaxas_noble
+					heir = yes
+					age = 1
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+		else_if = {
+			limit = {
+				owner.ruler ?= {
+					has_template = grefm_ypsilantis_noble
+				}
+				NOT = {
+					has_template = grefm_ypsilantis_noble
+				}
+			}
+			owner = {
+				create_character = {
+					template = grefm_ypsilantis_noble
+					heir = yes
+					age = 1
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+		else_if = {
+			limit = {
+				owner.ruler ?= {
+					has_template = grefm_angelos_noble
+				}
+				NOT = {
+					has_template = grefm_angelos_noble
+				}
+			}
+			owner = {
+				create_character = {
+					template = grefm_angelos_noble
+					heir = yes
+					age = 1
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+		else_if = {
+			limit = {
+				owner.ruler ?= {
+					has_template = grefm_doukas_noble
+				}
+				NOT = {
+					has_template = grefm_doukas_noble
+				}
+			}
+			owner = {
+				create_character = {
+					template = grefm_doukas_noble
+					heir = yes
+					age = 1
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+		else_if = {
+			limit = {
+				owner.ruler ?= {
+					has_template = grefm_kantakouzenos_noble
+				}
+				NOT = {
+					has_template = grefm_kantakouzenos_noble
+				}
+			}
+			owner = {
+				create_character = {
+					template = grefm_kantakouzenos_noble
+					heir = yes
+					age = 1
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+		else_if = {
+			limit = {
+				owner.ruler ?= {
+					has_template = grefm_palaiologos_noble
+				}
+				NOT = {
+					has_template = grefm_palaiologos_noble
+				}
+			}
+			owner = {
+				create_character = {
+					template = grefm_palaiologos_noble
+					heir = yes
+					age = 1
+				}
+			}
+			kill_character = {
+				hidden = yes
+			}
+		}
+	}
+}
+
+
+####---------- on_law_enactment_started ----------####
+on_law_enactment_started = {
+	on_actions = {
+#		gbbf_on_law_enactment_started # TODO literally disabling this for 24 hours because I'm crunched
+	}
+}
+
+gbbf_on_law_enactment_started = {
+	trigger = {
+		c:GRE ?= this
+	}
+	effect = {
+		if = {
+			limit = {
+				NOT = {
+					has_variable = grefm_mani_will_not_be_tamed
+				}
+				has_journal_entry = je_grefm_bavarocracy_main
+				OR = {
+					has_law_or_variant = law_type:law_consumption_based_taxation
+					has_law_or_variant = law_type:law_land_based_taxation
+				}
+				OR = {
+					is_enacting_law = law_type:law_per_capita_based_taxation
+					is_enacting_law = law_type:law_proportional_taxation
+					is_enacting_law = law_type:law_graduated_taxation
+				}
+			}
+			trigger_event = {
+				id = grefm_greece.015
+				days = 15 # It takes time to walk
+			}
+			set_variable = { # Yes, you can fire this multiple times
+				name = grefm_mani_will_not_be_tamed
+				years = 5
+			}
+		}
+	}
+}
+
+
+####---------- on_new_ruler ----------####
+on_new_ruler = {
+	on_actions = {
+		grefm_on_new_ruler
+	}
+}
+
+grefm_on_new_ruler = {
+	trigger = {
+		owner = {
+			c:GRE ?= this
+			has_law_or_variant = law_type:law_monarchy
+			has_variable = grefm_1862_election_held
+		}
+	}
+	effect = {
+		set_variable = {
+			name = grefm_1862_election_held
+			value = 0
+		}
+	}
+}
+
+####---------- on_law_enactment_pass ----------####
+on_law_enactment_pass = {
+	on_actions = {
+		gbbf_law_enactment_pass
+	}
+}
+
+gbbf_law_enactment_pass = {
+	trigger = {
+		c:TUR ?= this
+	}
+	effect = {
+		if = {
+			limit = {
+				OR = {
+					ROOT.currently_enacting_law.type ?= law_type:law_no_schools
+					ROOT.currently_enacting_law.type ?= law_type:law_religious_schools
+					ROOT.currently_enacting_law.type ?= law_type:law_public_schools
+					ROOT.currently_enacting_law.type ?= law_type:law_private_schools
+				}
+				active_law:lawgroup_education_system ?= {
+					has_amendment = amendment_type:amendment_gbbf_elifba
+				}
+			}
+			currently_enacting_law = {
+				add_amendment = {
+					type = amendment_gbbf_elifba
+					sponsor = prev.ig:ig_landowners
+				}
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					root.currently_enacting_law.type ?= law_type:law_legacy_slavery
+					root.currently_enacting_law.type ?= law_type:law_colonial_slavery
+					root.currently_enacting_law.type ?= law_type:law_debt_slavery
+				}
+				active_law:lawgroup_slavery ?= {
+					has_amendment = amendment_type:amendment_gbbf_esir_pazari
+				}
+			}
+			currently_enacting_law = {
+				add_amendment = {
+					type = amendment_gbbf_elifba
+					sponsor = prev.ig:ig_landowners
+				}
+			}
+		}
+	}
+}
+
+
+####---------- on_state_owner_change ----------####
+on_state_owner_change = {
+	on_actions = {
+		gbbf_evaluate_and_assign_state_hub_dynamic_names
+		gbbf_validate_state_modifiers
+	}
+}
+
+gbbf_evaluate_and_assign_state_hub_dynamic_names = {
+	effect = {
+		gbbf_evaluate_and_assign_state_hub_dynamic_names = yes
+	}
+}
+
+gbbf_validate_state_modifiers = {
+	trigger = {
+		OR = {
+			state_region = s:STATE_MATRUH
+			state_region = s:STATE_EGYPTIAN_DESERT
+		}
+		has_modifier = modifier_mgrbfm_tribal_resistance
+	}
+	effect = {
+		remove_modifier = modifier_mgrbfm_tribal_resistance
+	}
+}
+
+
+####---------- on_state_created ----------####
+on_state_created = {
+	on_actions = {
+		gbbf_evaluate_and_assign_state_hub_dynamic_names
+	}
+}
+
+
+####---------- on_secession_start ----------####
+on_secession_start = {
+	on_actions = {
+		eqfm_balkan_secession_start
+	}
+}
+
+eqfm_balkan_secession_start = {
+	trigger = {
+		is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+		scope:target = {
+			is_in_geographic_region = geographic_region_rumelia
+			gbbf_country_has_rumelian_culture_trigger = yes
+		}
+	}
+	effect = {
+		save_scope_as = eqfm_post_origin_scope
+		scope:target = {
+			save_scope_as = eqfm_rebellion_scope
+			every_scope_state = {
+				remove_modifier = modifier_eqfm_race_riots
+			}
+			add_modifier = {
+				name = modifier_eqfm_nationalist_uprising
+				months = gbbf_normal_modifier_time
+			}
+		}
+		eqfm_add_large_balkan_powder_keg_deescalation_effect = yes
+		every_country = {
+			limit = {
+				is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+			}
+			post_notification = eqfm_balkan_secession_start
+		}
+		trigger_event = eqfm_balkans.008
+	}
+}
+
+
+####---------- on_wargoal_enforced ----------####
+# Root = Country
+# scope:target = the country the wargoal was enforced against
+# scope:diplomatic_play = the relevant diplomatic play
+# scope:wargoal_impact = the impact of the wargoal enforced
+on_wargoal_enforced = {
+	on_actions = {
+		eqfm_balkans_wargoal_enforced_1 # Wargoal against TUR
+		eqfm_balkans_wargoal_enforced_2 # Wargoal from TUR
+	}
+}
+
+eqfm_balkans_wargoal_enforced_1 = {
+	trigger = {
+		eqfm_balkan_powder_keg_can_escalate_trigger = yes
+		scope:target = {
+			c:TUR ?= this
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				country_rank < rank_value:great_power
+			}
+			eqfm_add_balkan_powder_keg_escalation_effect = {
+				value = eqfm_balkan_powder_keg_tiny_escalation_value
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+				}
+				post_notification = eqfm_wargoal_enforced_by_non_gp
+			}
+		}
+		else_if = {
+			limit = {
+				country_rank >= rank_value:great_power
+			}
+			eqfm_add_balkan_powder_keg_escalation_effect = {
+				value = eqfm_balkan_powder_keg_very_small_escalation_value
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+				}
+				post_notification = eqfm_wargoal_enforced_by_great_power
+			}
+		}
+	}
+}
+
+eqfm_balkans_wargoal_enforced_2 = {
+	trigger = {
+		eqfm_balkan_powder_keg_can_deescalate_trigger = yes
+		c:TUR ?= this
+		scope:target = {
+			is_in_geographic_region = geographic_region_rumelia
+		}
+	}
+	effect = {
+		if = {
+			limit = {
+				scope:target = {
+					country_rank >= rank_value:great_power
+				}
+			}
+			eqfm_add_balkan_powder_keg_deescalation_effect = {
+				value = eqfm_balkan_powder_keg_medium_deescalation_value
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+				}
+				post_notification = eqfm_wargoal_enforced_against_great_power
+			}
+		}
+		else_if = {
+			limit = {
+				scope:target = {
+					is_subject_of = c:TUR
+				}
+			}
+			eqfm_add_balkan_powder_keg_deescalation_effect = {
+				value = eqfm_balkan_powder_keg_small_deescalation_value
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+				}
+				post_notification = eqfm_wargoal_enforced_against_subject
+			}
+		}
+		else = { # Yes, this INCREASES escalation
+			eqfm_add_balkan_powder_keg_escalation_effect = {
+				value = eqfm_balkan_powder_keg_small_escalation_value
+			}
+			every_country = {
+				limit = {
+					is_involved_in_journal_entry = je_eqfm_balkan_powder_keg
+				}
+				post_notification = eqfm_wargoal_enforced_against_non_gp
+			}
+		}
+	}
+}

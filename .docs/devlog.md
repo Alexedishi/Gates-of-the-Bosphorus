@@ -1,19 +1,20 @@
 ﻿##########################
 # GATES OF THE BOSPHORUS #
 ##########################
-Mod Version: 4.1.1
-Game Version: 1.13.11 / 1.14-beta
+Mod Version: 4.2.0
+Game Version: 1.15.0
 
 Mod Author: Alexedishi
 Contributors: LordR, Caelreader, CipherParadox
 Special Thanks: RationaLess, Bahmut|Chris
 
 ####---------- Mod Dependencies ----------####
- - Community Mod Framework: https://steamcommunity.com/sharedfiles/filedetails/?id=3385002128
+- Community Mod Framework: https://steamcommunity.com/sharedfiles/filedetails/?id=3385002128
 
 ####---------- Version Compatibility ----------####
 #		GotB Patch	....	Victoria 3 Patch
-#		4.1.1		....	1.13.11
+#		4.2.0		....	1.15.0
+#		4.1.1		....	1.13.11 / 1.14.0
 #		3.4.12		.... 	1.12.3
 #		3.3.7		.... 	1.10.6 / 1.11.1
 #		3.2.8		.... 	1.9.8
@@ -53,7 +54,7 @@ eqfm_: Contains content for the Eastern Question and Expeditions; was formerly m
 
 These are other prefixing conventions used in this mod:
 *Generic and shared files are prefixed with "gbbf_"
-*Script imported from Community Mod Framework is prefixed with "com_"
+*Script imported from Community Mod Framework is prefixed with "com_" (this collides with Community Outfit Mod, but will not change)
 *Script imported from Morgenrote: Dawn of Flavor is prefixed with "mgr_" regardless of Morgenrote content pack origin
 *Script imported from This Land is Mine is prefixed with "tlim_" regardless of TLIM content pack origin
 *Script imported from "Awaken Thee Romanian" is prefixed with "atr_"
@@ -72,98 +73,100 @@ bulfm_: Once contained content for Bulgaria; expanded into balkfm_
 - Entry names should be intuitive and readable, i.e. "grefm_bavarocracy_progress_var"
 
 - The following entry prefix/suffix conventions should be following:
- Note: <module> should be replaced with according to which module the object belongs to, i.e. "grefm_bavarocracy_progressbar"
- -- Alerts:
- -- Amendments: amendment_gbbf_**
- -- Buildings: building_gbbf_**
- -- Characters: <module>_<TAG>_<last_name>_<first_name>
- -- Custom Loc: <module>_**_type
- -- Decisions: <module>_**_decision
- -- Decrees: decree_gbbf_**
- -- Diplo Actions: gbbf_**
- -- Diplo Plays: dp_gbbf_**
- -- Ideologies (Interest Group): ideology_gbbf_**
- -- Ideologies (Character): ideology_gbbf_**_leader
- -- Ideologies (Movement): ideology_gbbf_**_movement
- -- Journal Entries: je_<module>_**
- -- Journal Groups: je_group_gbbf_**
- -- Messages: <module>_**        <---- DO NOT prefix with "notification_"
- -- Political Movements: movement_gbbf_**
- -- Production Methods: pm_gbbf_**
- -- Production Method Groups: pmg_gbbf_**
- -- Script Values: <module>_**_value
- -- Scripted Buttons: <module>_**_button
- -- Scripted Effects: <module>_**_effect
- -- Scripted GUIs: <module>_**_sgui
- -- Scripted Progress Bar: <module>_**_progressbar
- -- Scripted Triggers: <module>_**_trigger
- -- State Traits: gbbf_state_trait_**
- -- Static Modifiers: modifier_<module>_**
- -- Subject Types: subject_type_gbbf_**
- -- Treaty Articles: gbbf_**
- -- Trigger Loc: <module>_**
- -- War Goals: gbbf_**
+  Note: <module> should be replaced with according to which module the object belongs to, i.e. "grefm_bavarocracy_progressbar"
+  -- Alerts:
+  -- Amendments: amendment_gbbf_**
+  -- Buildings: building_gbbf_**
+  -- Characters: <module>_<TAG>_<last_name>_<first_name>
+  -- Custom Loc: <module>_**_type
+  -- Decisions: <module>_**_decision
+  -- Decrees: decree_gbbf_**
+  -- Diplo Actions: gbbf_**
+  -- Diplo Plays: dp_gbbf_**
+  -- Ideologies (Interest Group): ideology_gbbf_**
+  -- Ideologies (Character): ideology_gbbf_**_leader
+  -- Ideologies (Movement): ideology_gbbf_**_movement
+  -- Journal Entries: je_<module>_**
+  -- Journal Groups: je_group_gbbf_**
+  -- Messages: <module>_**        <---- DO NOT prefix with "notification_"
+  -- Political Movements: movement_gbbf_**
+  -- Production Methods: pm_gbbf_**
+  -- Production Method Groups: pmg_gbbf_**
+  -- Script Values: <module>_**_value
+  -- Scripted Buttons: <module>_**_button
+  -- Scripted Effects: <module>_**_effect
+  -- Scripted GUIs: <module>_**_sgui
+  -- Scripted Progress Bar: <module>_**_progressbar
+  -- Scripted Triggers: <module>_**_trigger
+  -- State Traits: gbbf_state_trait_**
+  -- Static Modifiers: modifier_<module>_**
+  -- Subject Types: subject_type_gbbf_**
+  -- Treaty Articles: gbbf_**
+  -- Trigger Loc: <module>_**
+  -- War Goals: gbbf_**
 
 - Variables should be handled with the following conventions:
- -- Prefix with the module the variable belongs to (i.e. gbbf_, grefm_, balkfm_, etc)
- -- If the variable is used to store a value, suffix it with "_var"
- -- If the variable is used in a boolean trigger (has_variable), suffix it using any of the following:
-    "_started", "_completed", "_failed", "_happened", "_cooldown", "_tracker", "_target"
- -- If a variable(s) is used only for a specific journal entry and its direct content, store the variable(s) in that journal
- -- Scripted effects are provided to aid in variable management
+  -- Prefix with the module the variable belongs to (i.e. gbbf_, grefm_, balkfm_, etc)
+  -- If the variable is used to store a value, suffix it with "_var"
+  -- If the variable is used in a boolean trigger (has_variable), suffix it using any of the following:
+  "_started", "_completed", "_failed", "_happened", "_cooldown", "_tracker", "_target"
+  -- If the variable is used to store a scope, suffix it with "_scope"
+  -- Variable lists should be suffixed with "_list"
+  -- Variable maps should be suffixed with "_map"
+  -- Script containers should be suffixed with "_struct"
 
 - Other conventions:
- -- Variable lists shoud be suffixed with "_list"
- -- Variable maps should be suffixed with "_varmap"
+  -- If a variable(s) is used only for a specific journal entry and its direct content, store the variable(s) in that journal
+  -- If content is specific to a state region, avoid global variables and save variables to that state region
 
 *Deviation from these systems is encouraged if it makes the object more readable or intuitive*
 
 
 ####---------- Planned Content/Reworks ----------####
 ----GREFM: Greek Content Module (GRE, ION, GRE_SAM, BYZ)
- - Increase number of factors that contribute to the Hellenism vs Romanism journal
- - Expansion to Theodoro Content
+- Increase number of factors that contribute to the Hellenism vs Romanism journal
+- Expansion to Theodoro Content
 
 ----BALKFM: Balkans Content Module (YUG, MON, SER, BUL, ROM, BOS, ALB, CRO. SLO)
- - MON: Content for the 1905 Constitution
- - MON: New journal "The Spirit of the Black Mountain": Lead Montenegro towards an independent identity; uses Morgenröte's writer mechanics
- - SER: Content for the Serb People's Movement
- - SER: Content for the Serbian Radical Constitution, Timok Rebellion, and May Coup
- - SER: Event chain representing the Krivošije uprising
- - BUL: New Naturalism journal for players using Morgenröte if Ferdinand is chosen as prince.
- - ROM: Rescript journal variables
- - BOS:Content for the Austrian Administration (modernization of Bosnia)
- - ALB: First Chapter of Albania content from the GEC into the early 1900s
- - CRO: Initial round of content
- - SLO: Initial round of content
+- MON: Content for the 1905 Constitution
+- MON: New journal "The Spirit of the Black Mountain": Lead Montenegro towards an independent identity; uses Morgenröte's writer mechanics
+- SER: Content for the Serb People's Movement
+- SER: Content for the Serbian Radical Constitution, Timok Rebellion, and May Coup
+- SER: Event chain representing the Krivošije uprising
+- BUL: New Naturalism journal for players using Morgenröte if Ferdinand is chosen as prince.
+- ROM: Rescript journal variables
+- BOS:Content for the Austrian Administration (modernization of Bosnia)
+- ALB: First Chapter of Albania content from the GEC into the early 1900s
+- CRO: Initial round of content
+- SLO: Initial round of content
 
 ----TURKFM: Ottoman Content Module (TUR, TURAN)
- - TUR:  Second Chapter of Ottoman Content extending from Abdulmecid to Abdulaziz
+- TUR:  Second Chapter of Ottoman Content extending from Abdulmecid to Abdulaziz
 
 ----MGRBFM: Maghrebi Content Module (EGY, TRI, TUN, FZN)
- - EGY:
- -- New journal "Egyptian Nationalism" representing the three-way struggle between the Arab, Misri, and Pharonic identities in Egypt
- - TRI:
- - TUN:
- - FZN:
+- EGY:
+  -- New journal "Egyptian Nationalism" representing the three-way struggle between the Arab, Misri, and Pharonic identities in Egypt
+- TRI:
+- TUN:
+- FZN:
 
 ----HAYKFM: Highlands Content Module (KUR, ARM, ASS)
- - KUR:
- - ARM:
- - ASS:
+- KUR:
+- ARM:
+- ASS:
 
 ----LEVAFM: Levantine Content Module (SYR, LEB, PAL)
- - SYR:
- - LEB:
- - PAL:
+- SYR:
+- LEB:
+- PAL:
 
 ----EQFM: Eastern Question & Expeditions Content Module
- - Balkans: Culture-specific movement radicalism effects in Balkan Separatism events
- - Balkans:Expand the Balkan Wars to cover the Macedonian Question
- - Pirates: Add more random events/interactions
- - Karadag: Consider more province-level mechanics
- - Desert: Add more random events
- - Highlands: New global journal entry "The Eastern Highlands" to represent the struggle between Russia and the Ottomans over their border
+- Balkans: Culture-specific movement radicalism effects in Balkan Separatism events
+- Balkans:Expand the Balkan Wars to cover the Macedonian Question
+- Pirates: Add more random events/interactions
+- Karadag: Consider more province-level mechanics
+- Desert: Add more random events
+- Highlands: New global journal entry "The Eastern Highlands" to represent the struggle between Russia and the Ottomans over their border
 
 ----Compatibility:
 -- The "A National Language" journal now supports Morgenröte's writer mechanics (Greek tags)
@@ -172,38 +175,81 @@ bulfm_: Once contained content for Bulgaria; expanded into balkfm_
 
 
 ####---------- Works Cited ----------####:
- Last Updated: 05.01.2024
+Last Updated: 05.01.2024
 
- Greek History:
- 1. Clogg, Richard (1979). A Short History of Modern Greece
- 2. Clogg, Richard (2002). A Concise History of Greece
- 3. Finlay, George (1877). A history of Greece, from its conquest by the Romans to the present time, B.C. 146 to A.D. 1864, Vol 7
- 4. Gallant, Thomas (2016). Modern Greece: A Political and Social History from the War of Independence to the Present
- 5. Gennadios, Ioannes (1870). Notes on the Recent Murders by Brigands in Greece
- 6. Kairophylas, Kostas (1915). Eleftherios Venizelos, His Life and Work
- 7. Christmas, Walter (1914). King George of Greece
- 8. Avdela, Efi (2005). Engendering ‘Greekness’: Women's Emancipation and Irredentist Politics in Nineteenth-Century Greece
- 9. Tsivanopoulos, Sōkrates (1864). Greece: Its Condition During the Reign of King Otho and Is Prospects under His Majesty George I.
- 10. Petropulos, John A (1968). Politics and Statecraft in the Kingdom of Greece, 1833-1843
+Greek History:
+1. Clogg, Richard (1979). A Short History of Modern Greece
+2. Clogg, Richard (2002). A Concise History of Greece
+3. Finlay, George (1877). A history of Greece, from its conquest by the Romans to the present time, B.C. 146 to A.D. 1864, Vol 7
+4. Gallant, Thomas (2016). Modern Greece: A Political and Social History from the War of Independence to the Present
+5. Gennadios, Ioannes (1870). Notes on the Recent Murders by Brigands in Greece
+6. Kairophylas, Kostas (1915). Eleftherios Venizelos, His Life and Work
+7. Christmas, Walter (1914). King George of Greece
+8. Avdela, Efi (2005). Engendering ‘Greekness’: Women's Emancipation and Irredentist Politics in Nineteenth-Century Greece
+9. Tsivanopoulos, Sōkrates (1864). Greece: Its Condition During the Reign of King Otho and Is Prospects under His Majesty George I.
+10. Petropulos, John A (1968). Politics and Statecraft in the Kingdom of Greece, 1833-1843
 
- Last Words by Koert Davidse: vimeo . com / 88034680
+Last Words by Koert Davidse: vimeo . com / 88034680
 
 
 ####---------- Planned Updates ----------####
 
---Update 4.2.0--
+--Update 4.3.0--
 New Additions:
-- ##New journal "The Nature of Yugoslavia" Promote a Centralized or Federalist approach to the Yugoslav state
-- ##Added "Yugoslav Integralist" ideologies and movement representing the Integralist movement in Yugoslavia
 - ##Fully implemented the Young Turks content with varying outcomes for the Republican movements in the Ottoman Empire
 - ##New journal "The Foundation of the State" representing the multiple outcomes of Turkish identity after the failure of the Tanzimat
-- ##Rebuilt "The Teachings of al-Sanusi" into a global journal with new mechanics, events, and modifiers
+- Two new Secret Police law variants "Palace Service" and "Teşkilat" to represent Ottoman internal security
+- ##New journal "The Lands of Kurdistan" for Kurdish revanchism
+- ##Rebuilt "The Teachings of al-Sanusi" into a struggle-style journal with new mechanics, events, and modifiers
 
-Fixes:
+
+---Update 4.2.1--
+New Additions:
+- ##Implemented outcomes for the "The Ethiopian Frontier" journal
+- ##Added option to grefm_greece.021 to appoint Elimar of Oldenburg as heir of Greece
 - ##Fixed several issues that could derail Greece's "Military League" journal
 
-
 ####---------- Published Updates ----------####
+
+--Update 4.2.0-- **Major Update**
+New Additions:
+- Added a new outcome to the Bavarocracy in the event Otto dies without an heir along with several more events
+- FINALLY reworked and enabled the Philorthodox Conspiracy event for GRE
+- Added DNA for Eynard the Philhellene courtesy of LordR with some associated events
+- Added several events for GRE in the era between the Bavarocracy and Venizelism
+- New journal "The Nature of Yugoslavia" Promote a Centralized or Federalist approach to the Yugoslav state
+- Added "Yugoslav Integralist" and "Yugoslav Particularist" ideologies for Yugoslav movements
+- Annexing Yugoslav countries via the "The Yugoslav Project" journal will transfer all of their characters to the annexing country
+- New decision representing the suppression of the Circassian slave trade
+- New law "Military Governate" for Tripolitania
+
+Balance:
+- Adjusted Otto's traits and starting popularity
+- GRE now starts with land-based taxation and one more level of gov admin
+- YUG formation will now strip all but the founding country's primary cultures regardless of law setup
+- YUG formation will now set the state religion to that of the founding country's definition
+- Yugoslav countries cannot be released by YUG while the "The Nature of Yugoslavia" journal is active
+- Esir Pazari amendment will follow newly enacted Slave Trade laws (except for Slave Trade or Slavery Banned)
+
+Adjustments:
+- Hayreddin Pasha now has the Abkhazian culture
+- Mahmud Raif Pasha now belongs to the Armed Forces IG
+- je_grefm_bavarocracy_main and je_grefm_bavarocracy_ip3 have been merged; DLC content is gated in a manner similar to je_balkfm_ser_monarchism
+- Added a progress bar to je_grefm_the_dedilomeni_principle
+- je_grefm_land_reclamation now uses a variable set on STATE_ATTICA
+- grefm_greece.113 now triggers via on_pulse and hits all Greek tags
+
+Fixes:
+- "Serbia and Montenegro" will now add claims for the surviving country if either tag dies before the journal completes
+- Fixed several diplo relations triggers that could be broken if you became a GP
+
+Notes:
+- Majority of event IDs refactored and a lot of unused/inaccurate localization pruned
+- All journal entries refactored for new outcomes scripting
+- Replaced ideology_social_democrat with ideology_state_socialist
+
+CHECK
+- Busted localization with Armansperg referring to himself during regency events
 
 --Update 4.1.2--
 Fixes:
@@ -396,9 +442,9 @@ New Additions (eqfm):
 
 Mod Integrations:
 - Integrated the "Awaken Thee, Romanian!" mod with permission:
--- Added a game rule to change Romania's color to its cream color from Victoria 2
--- Added multiple flags for Moldavia and Wallachia
--- Added DNA for Alexandru Ioan Cuza, Alexandru Ghica, and Carol and Ferdinand Hohenzollern
+  -- Added a game rule to change Romania's color to its cream color from Victoria 2
+  -- Added multiple flags for Moldavia and Wallachia
+  -- Added DNA for Alexandru Ioan Cuza, Alexandru Ghica, and Carol and Ferdinand Hohenzollern
 
 V3 Patch 1.13 Related Changes:
 - Replaced most scopes to sr: with geographic region triggers
@@ -409,9 +455,9 @@ V3 Patch 1.13 Related Changes:
 
 Compatibility:
 - GotB now has built in compatibility with Morgenröte: Dawn of Flavor:
--- The "Greek Cultural Roots" journal now supports Morgenröte's archaeology mechanics (Greek tags)
--- The "Venizelism" journal now supports Morgenröte's artistic tradition mechanics (Greece)
--- The "14 Regions of Constantinople" now supports Morgenröte's Architect mechanics (Byzantium)
+  -- The "Greek Cultural Roots" journal now supports Morgenröte's archaeology mechanics (Greek tags)
+  -- The "Venizelism" journal now supports Morgenröte's artistic tradition mechanics (Greece)
+  -- The "14 Regions of Constantinople" now supports Morgenröte's Architect mechanics (Byzantium)
 
 Balancing/Adjustments:
 - Updated several event videos to use IP3/IP4 gfx
@@ -1049,7 +1095,7 @@ New Additions:
 - New Social Heirarchy and Institution representing the Millet System
 - New Ideologies to better reflect Ottomanism vs Islamism
 - New Journal "The Pirates of the Adriatic" for Albanian Piracy
--New Journals "Entrenching the State" & "Securing the Desert" for Libya
+  -New Journals "Entrenching the State" & "Securing the Desert" for Libya
 - New Journal "The Teachings of al-Sanusi" & decentralized tag for the Libyan Desert
 - New Journal "The Modernization of Tunis" for Tunis
 - Dozens of new characters for TUR, LIB, and TUN
@@ -1422,11 +1468,11 @@ New Additions:
 
 Balancing/Adjustments:
 -Complete Teardown of "The Bavarocracy" journal and sub-content. The timeout is now a progress bar that drains monthly; this drain speed can be slowed down by completing the sub-journals
-	-Integrated the Bavarian Auxilliaries and Turk-Eater decisions as scripted buttons within the main Bavarocracy journal.
-	-Old Royal Palace is now available during the Bavarocracy journal chain instead of after abandoning the Byzantine Restoration
-	-Added new scripted button to get foreign loans
-	-New event "The Philorthodox Conspiracy" behaves like a grefm-specific version of eocfm.006
-	-Constitution modifiers also impact political strength on top of opinion.
+-Integrated the Bavarian Auxilliaries and Turk-Eater decisions as scripted buttons within the main Bavarocracy journal.
+-Old Royal Palace is now available during the Bavarocracy journal chain instead of after abandoning the Byzantine Restoration
+-Added new scripted button to get foreign loans
+-New event "The Philorthodox Conspiracy" behaves like a grefm-specific version of eocfm.006
+-Constitution modifiers also impact political strength on top of opinion.
 -Reworked the "Tyranny of House Wittelsbach" journal; The timeout is now a progress bar that depends on IG clout, enacted laws, and ruler popularity.
 -Reworked the completion requirements of "A Bavarian Greece" ; it now behaves as an inverse Stamp Out Monarchy journal
 -The Megali Idea opening event now adds all claims at once; grefm.200/201 have been merged and the Treaty of Laussane option has been removed
@@ -1446,14 +1492,14 @@ Balancing/Adjustments:
 
 Fixes:
 - "Comission Icon" button will now be disabled if the event is active
--Stop Church Subsidies button is now visible regardless of your current amount of PA
--Epirote Revolt event now snatches all Greek pops in Ottoman Albania and moves them to Epirote Albania
--Fixed a trigger issue preventing the stop subsides button from appearing if you have don't have enough PA.
--Deconfliction will now be correctly limited to Balkan uprisings
+  -Stop Church Subsidies button is now visible regardless of your current amount of PA
+  -Epirote Revolt event now snatches all Greek pops in Ottoman Albania and moves them to Epirote Albania
+  -Fixed a trigger issue preventing the stop subsides button from appearing if you have don't have enough PA.
+  -Deconfliction will now be correctly limited to Balkan uprisings
 - "Churches Burned in State" option now correctly deducts money
--Adjusted rounding in some script values.
--Kogalniceanu is now correctly freed from the void
--Milos no longer wears a fez
+  -Adjusted rounding in some script values.
+  -Kogalniceanu is now correctly freed from the void
+  -Milos no longer wears a fez
 
 
 --Update 2.1.2--
@@ -1465,7 +1511,7 @@ New Additions:
 Balancing/Adjustments:
 -Natural secessions in the Balkans will place the struggle into Deconfliction
 -All tension events for the Ottomans now send feed notifications
- -Requirement to abolish State Religon replaced with Peasant Levies in "Regulamentul: Legal Standards"
+-Requirement to abolish State Religon replaced with Peasant Levies in "Regulamentul: Legal Standards"
 -Exposed values for Serbian Dynastic Rivalry and reworked the underlying scripting to support this
 Fixes:
 -Eastern Question rioting event will now correctly trigger at high tension
@@ -1499,36 +1545,36 @@ Fixes:
 
 --Update 2.1-- "Garašanin"  **Major Update**
 • Third Chapter of Content for Greece:
-	-Event "Nationalist Fervor" has been given content and handles triggering the "Military League" vs. "A Cretan Champion." While less dramatic in most games, this ensures that players will have access to Venizelism content.
-	-Journal Entry "Venizelism" now consists of a journal chain similar to the "Bavarocracy," giving the player a chance to experience Venizelos' massive influence over the Greek state.
-	-New Event Chain for the "Don Pacifico Affair"
-	-Crete Revolt mechanics reworked to take into account Greek radicalism on Crete.
+-Event "Nationalist Fervor" has been given content and handles triggering the "Military League" vs. "A Cretan Champion." While less dramatic in most games, this ensures that players will have access to Venizelism content.
+-Journal Entry "Venizelism" now consists of a journal chain similar to the "Bavarocracy," giving the player a chance to experience Venizelos' massive influence over the Greek state.
+-New Event Chain for the "Don Pacifico Affair"
+-Crete Revolt mechanics reworked to take into account Greek radicalism on Crete.
 • First Chapter of Yugoslavian Content:
-	-Načertanije: Reworked to provide a path to Yugoslavian formation. Take charge of the Yugoslavian cause and diplomatically annex other Yugoslav nations to form Yugoslavia.
+-Načertanije: Reworked to provide a path to Yugoslavian formation. Take charge of the Yugoslavian cause and diplomatically annex other Yugoslav nations to form Yugoslavia.
 • Second Chapter of Serbian Content:
-	-Cementing the Monarchy: Balance the reactions of Serbian and Turkish politicians to the Declaraton of a Hereditary Monarchy.
-	-Constitutionalism: Guide Serbia through poltical reform under the influence of Ristic.
-	-Greater Serbia: Reject Yugoslavism and restore the Serbian Empire.
+-Cementing the Monarchy: Balance the reactions of Serbian and Turkish politicians to the Declaraton of a Hereditary Monarchy.
+-Constitutionalism: Guide Serbia through poltical reform under the influence of Ristic.
+-Greater Serbia: Reject Yugoslavism and restore the Serbian Empire.
 • Expansion of Content for the Balkans Struggle:
-	-The Eastern Question: Defend or Oppose Ottoman interests in Rumelia or take the reigns as the Sultan as the peoples of the Balkans struggle to break free.
-	-20 new events and two journals representing the simmering separatism in the Balkans.
+-The Eastern Question: Defend or Oppose Ottoman interests in Rumelia or take the reigns as the Sultan as the peoples of the Balkans struggle to break free.
+-20 new events and two journals representing the simmering separatism in the Balkans.
 • First Chapter of Romanian Flavor:
-	-The Regulamentul Organic: Guide the Romanian Principalities through their transiton from post-Ottoman state & elect a new Hospodar every 7 years.
-	-Vanilla Romanian Unification events integrated into this mod.
+-The Regulamentul Organic: Guide the Romanian Principalities through their transiton from post-Ottoman state & elect a new Hospodar every 7 years.
+-Vanilla Romanian Unification events integrated into this mod.
 • Minor Addition for Slovene-Croatian Flavor:
-	-The Triune Dream: Minor journal entry to properly form the Triune Kingdom.
-	-No immediate plans for further work, but Slovene-Croatian flavor is on the docket.
+-The Triune Dream: Minor journal entry to properly form the Triune Kingdom.
+-No immediate plans for further work, but Slovene-Croatian flavor is on the docket.
 • Other fixes/additions:
-	-Increased probability of the Greek/Turkish homeland events by 25x.
-	-Agitating in Crete should no longer give the Ottomans/Egyptians infinite infamy
-	- "A Bavarian Greece" journal no longer thinks you went bankrupt on completion
-	-Byzantium has a new event for getting a Palaiologos Ruler post-1863
-	-BYZ, ERE, & ODXY now have a new flag for autocratic theocracies
-	-YUG is no longer formable from the nation formation tab
-	- "Convoke Ecumenical Council" now has a tooltip indicating what "calls their attention"
+-Increased probability of the Greek/Turkish homeland events by 25x.
+-Agitating in Crete should no longer give the Ottomans/Egyptians infinite infamy
+- "A Bavarian Greece" journal no longer thinks you went bankrupt on completion
+-Byzantium has a new event for getting a Palaiologos Ruler post-1863
+-BYZ, ERE, & ODXY now have a new flag for autocratic theocracies
+-YUG is no longer formable from the nation formation tab
+- "Convoke Ecumenical Council" now has a tooltip indicating what "calls their attention"
 • Notes for Sphere of Influence:
-	-Event providing a Customs Union between Greece and Epirus has been removed in preparation for SoI.
-	-Greece, Bulgaria, and Serbia will receive relevant political lobbies, dependent on what PDX gives them.
+-Event providing a Customs Union between Greece and Epirus has been removed in preparation for SoI.
+-Greece, Bulgaria, and Serbia will receive relevant political lobbies, dependent on what PDX gives them.
 
 
 --Update 2.0.5--
@@ -1541,8 +1587,8 @@ Fixes:
 --Update 2.0.4--
 - "The Royal University of Athens" event will no longer occur if Morgenröte is also loaded.
 - "Annex Rumelia" button now appears if either Bulgaria and Eastern Rumelia are both subjects of the Ottomans, or if both are independent. This is a fallback incase the Ottomans fail the Sick Man journal AFTER the Great Eastern Crisis. It also will not appear if a player is Eastern Rumelia (but why would you do this).
--Fixed the crisis variables being removed too quickly by a forgotten effect, preventing countries from getting post-Crisis modifiers. (The previous fix exposed this issue).
--Crete's former owner now gets a war goal to reconquer Crete instead of letting them go free after the play.
+  -Fixed the crisis variables being removed too quickly by a forgotten effect, preventing countries from getting post-Crisis modifiers. (The previous fix exposed this issue).
+  -Crete's former owner now gets a war goal to reconquer Crete instead of letting them go free after the play.
 
 
 --Update 2.0.3--
@@ -1568,124 +1614,124 @@ Fixes:
 --2.0-- **Major Update**
 # Mod Rename to "Greece, Byzantium, and the Balkans Flavor (GBBF)
 • Third Chapter of Content for Greece representing the role of Venizelos in poltitics.
-	• Venizelism: Take Greece along either a republican or monarchist path by either embracing or opposing the reforms of Venizelos.
-	• Greater Greece: Guide Greece through the build-up to the Balkan Wars and the greater question of its role in the Balkans.
+• Venizelism: Take Greece along either a republican or monarchist path by either embracing or opposing the reforms of Venizelos.
+• Greater Greece: Guide Greece through the build-up to the Balkan Wars and the greater question of its role in the Balkans.
 
 • New Content Module for Balkans Flavor:
-	• Content for Montenegro through the rule of Danilo II:
-		• The Prince-Bishropic: Guide Montenegro into becoming a modern nation state.
-		• The Wrath of Ali Pasha: Stand your ground against neighboring Ottoman Pashas as they attempt to assert Ottoman authority over Montenegro.
-	• Content for Serbia through the rule of Milan I:
-		• Constitutionalism: Experience the back-and-forth between houses Obrenović and Karađorđević for control over Serbia.
-		• Načertanije: Promote the growth of Yugoslavism as a means to expand Serbian influence.
-	• Content for Bulgaria through the short reign of Alexander I:
-		• The Battenburg Monarchy: Struggle to maintain power as Alexander I against the Russophiles.
-		• The Unification of Bulgaria: Seek Unification with Eastern Rumelia and break free from Ottoman suzerainty.
-		• The Golden Lion Roars: Assert Bulgarian revanchism to restore either the Bulgarian Empire or the Byzantine Empire.
-	• Content representing the Great Eastern Crisis of 1875-1878:
-		• Join either side in supporting or opposing Ottoman authority in the Balkans.
-		• Major and minor Turk-splosion events will occur following Ottoman defeats in the Balkans.
+• Content for Montenegro through the rule of Danilo II:
+• The Prince-Bishropic: Guide Montenegro into becoming a modern nation state.
+• The Wrath of Ali Pasha: Stand your ground against neighboring Ottoman Pashas as they attempt to assert Ottoman authority over Montenegro.
+• Content for Serbia through the rule of Milan I:
+• Constitutionalism: Experience the back-and-forth between houses Obrenović and Karađorđević for control over Serbia.
+• Načertanije: Promote the growth of Yugoslavism as a means to expand Serbian influence.
+• Content for Bulgaria through the short reign of Alexander I:
+• The Battenburg Monarchy: Struggle to maintain power as Alexander I against the Russophiles.
+• The Unification of Bulgaria: Seek Unification with Eastern Rumelia and break free from Ottoman suzerainty.
+• The Golden Lion Roars: Assert Bulgarian revanchism to restore either the Bulgarian Empire or the Byzantine Empire.
+• Content representing the Great Eastern Crisis of 1875-1878:
+• Join either side in supporting or opposing Ottoman authority in the Balkans.
+• Major and minor Turk-splosion events will occur following Ottoman defeats in the Balkans.
 
 • New Content Module for Eastern Orthodox Church Flavor:
-	• The Bishops of the East: Utilize state control over the Orthodox Church to assert independence from the Ottoman-controlled Ecumenical Patriarch.
-	• Patriarch Authority: Inspired by the system from EU4, gain bonuses based on support from the Church.
+• The Bishops of the East: Utilize state control over the Orthodox Church to assert independence from the Ottoman-controlled Ecumenical Patriarch.
+• Patriarch Authority: Inspired by the system from EU4, gain bonuses based on support from the Church.
 
 • Mod Compatibility:
-	• GBBF is now compatible with Morgenröte - Dawn of Flavor. Having both mods active will enable alternate journal entries and additional events within this mod.
+• GBBF is now compatible with Morgenröte - Dawn of Flavor. Having both mods active will enable alternate journal entries and additional events within this mod.
 
 • Minor Adjustments/Fixes
-	• Epirus now gets a large opinion modifier towards Greece for the purposes of the Customs Union
+• Epirus now gets a large opinion modifier towards Greece for the purposes of the Customs Union
 
 NOTE FOR TRANSLATION MODS: *Every event* in byzfm has been reordered or modified.
 
 
 --1.1.4-- *Minor Update**
 • Minor Adjustments/Fixes:
-	• Added alternate pathways to trigger "A Cretan Champion" assuming you don't meet the conditions for "The Military League"
-	• Added event reminding the player that they have a claim on Thessaly (this is a vanilla feature) and don't have to wait for the Megali Idea
-	• Ionian Islands receives claims on Attica, Peloponnese, and Thessaly if they go independent (they can already receive the Megali Idea)
-	• Epirus revolt will take chunks of Thessaly if its still owned by the Ottomans
-	• Event will trigger allowing Epirus to join the Greek market if they manage to become independent
-	• Reworked how the cretan revolts journal is handed off between countries that conquer Crete
-	• Fixed localization problem with the Turkish Homeland events
-	• Women's journal will only fire for Greece
+• Added alternate pathways to trigger "A Cretan Champion" assuming you don't meet the conditions for "The Military League"
+• Added event reminding the player that they have a claim on Thessaly (this is a vanilla feature) and don't have to wait for the Megali Idea
+• Ionian Islands receives claims on Attica, Peloponnese, and Thessaly if they go independent (they can already receive the Megali Idea)
+• Epirus revolt will take chunks of Thessaly if its still owned by the Ottomans
+• Event will trigger allowing Epirus to join the Greek market if they manage to become independent
+• Reworked how the cretan revolts journal is handed off between countries that conquer Crete
+• Fixed localization problem with the Turkish Homeland events
+• Women's journal will only fire for Greece
 
 
 --1.1.3-- **Minor Update**
 • Minor Adjustments/Fixes:
-	• Removed leftover triggers in the Tyranny and Cultural Roots journals that were blocking progress
-	• Fixed a global/loval variable mismatch blocking the Gla excavation
-	• Added an excavation for Rhodes & another excavation event that didn't make it for 1.1
+• Removed leftover triggers in the Tyranny and Cultural Roots journals that were blocking progress
+• Fixed a global/loval variable mismatch blocking the Gla excavation
+• Added an excavation for Rhodes & another excavation event that didn't make it for 1.1
 
 
 --1.1.2-- **Minor Update**
 • Minor Adjustments/Fixes
-	• Added fixed appearances for several characters.
-	• Rebalanced the Lake Kopais journal, the drainage events will trigger more quickly and the Gla excavation should unlock correctly now.
-	• Added a prestige buff for completing excavations
-	• Added a new "Bavarocrat" ideology to Josef Ludwig von Armansperg and King Otto
-	• Removed several IG opinion modifiers during the Bavarocracy phase, the new ideologies are more in line with vanilla game design; IGs will also switch to more liberal ideologies if you go the liberal route based on their support for autocracy
-	• Olympics Event only fires once now
+• Added fixed appearances for several characters.
+• Rebalanced the Lake Kopais journal, the drainage events will trigger more quickly and the Gla excavation should unlock correctly now.
+• Added a prestige buff for completing excavations
+• Added a new "Bavarocrat" ideology to Josef Ludwig von Armansperg and King Otto
+• Removed several IG opinion modifiers during the Bavarocracy phase, the new ideologies are more in line with vanilla game design; IGs will also switch to more liberal ideologies if you go the liberal route based on their support for autocracy
+• Olympics Event only fires once now
 
 
 --1.1.1-- **Minor Update**
 • Minor Adjustments/Fixes on the Greece Side:
-	• Added discrete journal groups for a total of 10 groups
-	• Added Trikoupis as a character (along with Andreas Metaxas, Alexandros Kontostavlos, Nikitas Stamatelopoulos, and 	Kanellos Deligiannis)
-	• Added a new event/modifier for Greece's long history of maritime shipping
-	• Removed the progress bar from the Lake Kopais journal; it was misleading
-	• Minor adjustment to the Cretan Revolts
+• Added discrete journal groups for a total of 10 groups
+• Added Trikoupis as a character (along with Andreas Metaxas, Alexandros Kontostavlos, Nikitas Stamatelopoulos, and 	Kanellos Deligiannis)
+• Added a new event/modifier for Greece's long history of maritime shipping
+• Removed the progress bar from the Lake Kopais journal; it was misleading
+• Minor adjustment to the Cretan Revolts
 
 • Minor Adjustments/Fixes on the Byzantium Side:
-	• Removed the progress bar from the Purple Phoenix journal
-	• Adjusted layout of objectives in the Orthodox Realms journal
+• Removed the progress bar from the Purple Phoenix journal
+• Adjusted layout of objectives in the Orthodox Realms journal
 
 
 --1.1-- **Major Update "Trikoupis"
 • New Content for Greece:
-	• The Dedilomeni Principle: Establish legitimacy in the democractic process under George I.
-	• The Military League: Experience a new series of events and journals through the Military League and the Rise of Venizelos.
-	• Greek Nationalism: Follow a series of journal entries and events to establish a discrete Greek identity separate from Slavic or Turkish influence.
-	• Greek Cultural Roots: Conduct a series of excavations for the Greek Archeological Service
-	• The Women's Journal: Support the efforts of Kalliroi Parren in gaining basic rights for women.
+• The Dedilomeni Principle: Establish legitimacy in the democractic process under George I.
+• The Military League: Experience a new series of events and journals through the Military League and the Rise of Venizelos.
+• Greek Nationalism: Follow a series of journal entries and events to establish a discrete Greek identity separate from Slavic or Turkish influence.
+• Greek Cultural Roots: Conduct a series of excavations for the Greek Archeological Service
+• The Women's Journal: Support the efforts of Kalliroi Parren in gaining basic rights for women.
 
 • Minor Adjustments/Fixes on the Greece Side:
-	• Events on the grefm side have been reorganized under the hood
-	• Expanded the Megali Idea journal to fund and provoke revolts in Epirus, Macedonia, and Cyprus along with mechanics for repeatable revolts on Crete and a new Macedonia revolter tag.
-	• Added events and journal entries for industrialization and feminism in Greece.
-	• Additional events and decisions during the reign of Otto I.
+• Events on the grefm side have been reorganized under the hood
+• Expanded the Megali Idea journal to fund and provoke revolts in Epirus, Macedonia, and Cyprus along with mechanics for repeatable revolts on Crete and a new Macedonia revolter tag.
+• Added events and journal entries for industrialization and feminism in Greece.
+• Additional events and decisions during the reign of Otto I.
 
 • Minor Adjustments/Fixes on the Byzantium Side:
-	• New titles and a personality trait for Byzantine Emperors
-	• Decision to change tag to the Eastern Roman Empire (c:ERE)
-	• A silly event involving the Hippodrome
-	• Small tweaks to the event chains for rebuilding the Imperial Palace and Hippodrome
-	• Fixed the Crusade DP (now uses the "Make Protectorate" wargoal)
+• New titles and a personality trait for Byzantine Emperors
+• Decision to change tag to the Eastern Roman Empire (c:ERE)
+• A silly event involving the Hippodrome
+• Small tweaks to the event chains for rebuilding the Imperial Palace and Hippodrome
+• Fixed the Crusade DP (now uses the "Make Protectorate" wargoal)
 
 
 --1.0.1-- **Minor Update**
 • Minor Adjustments/Fixes on the Greece Side:
-	• Updated for compatibility with 1.5.7
-	• Added temporary decisions to provoke the Epirus and Cyprus revolts (these are temporary and will be replaced with better scripting in 1.1
+• Updated for compatibility with 1.5.7
+• Added temporary decisions to provoke the Epirus and Cyprus revolts (these are temporary and will be replaced with better scripting in 1.1
 
 
 --1.0-- **Initial Release**
 • Content for Greece:
-	• The Bavarocracy: A series of events and journals centered around the "Bavarocracy" and the stagnation of the Greek state under Otto I up to the election of George I.
-	• The Megali Idea: A rework of the "Greek Nationalism" journal and event chain, ending with the reformation of Byzantium (or you can remain Greece too).
-	• Historical characters and an agitator for the era of Otto I.
-	• New Epirus revolter tag and the ability to provoke historical revolts in Epirus and Cyprus (and annex them diplomatically).
-	• Decision to build the Corinth Canal and event to build the Old Royal Palace.
-	• Rebalances the Olympics modifier to make the cost less punishing long-term.
-	• Minor event representing the autocephaly of the Greek Orthodox Church
+• The Bavarocracy: A series of events and journals centered around the "Bavarocracy" and the stagnation of the Greek state under Otto I up to the election of George I.
+• The Megali Idea: A rework of the "Greek Nationalism" journal and event chain, ending with the reformation of Byzantium (or you can remain Greece too).
+• Historical characters and an agitator for the era of Otto I.
+• New Epirus revolter tag and the ability to provoke historical revolts in Epirus and Cyprus (and annex them diplomatically).
+• Decision to build the Corinth Canal and event to build the Old Royal Palace.
+• Rebalances the Olympics modifier to make the cost less punishing long-term.
+• Minor event representing the autocephaly of the Greek Orthodox Church
 
 • Content for Byzantium:
-	• The Byzantine Restoration: Events and journal entries to reclaim the former Eastern Roman Empire.
-	• Alt-history for Byzantium: Branching event chain to reform the Roman Empire, reclaim the lands conquered by the Muslims, or establish control over the Orthodox peoples each having a new country tag and flag.
-	• Ability to rebuild the Imperial Palace and the Hippodrome, along with a decision to revive chariot racing (replaces the Olypmics).
-	• Theodoro and Trebizond as releasable tags.
-	• Homeland events regarding Turkish homelands in Anatolia.
-	• Dynamic names for Byzantium
-	• Minor Option to Elect a Palaiologos ruler in 1864
+• The Byzantine Restoration: Events and journal entries to reclaim the former Eastern Roman Empire.
+• Alt-history for Byzantium: Branching event chain to reform the Roman Empire, reclaim the lands conquered by the Muslims, or establish control over the Orthodox peoples each having a new country tag and flag.
+• Ability to rebuild the Imperial Palace and the Hippodrome, along with a decision to revive chariot racing (replaces the Olypmics).
+• Theodoro and Trebizond as releasable tags.
+• Homeland events regarding Turkish homelands in Anatolia.
+• Dynamic names for Byzantium
+• Minor Option to Elect a Palaiologos ruler in 1864
 
 
