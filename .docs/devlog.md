@@ -201,7 +201,13 @@ New Additions:
 - Two new Secret Police law variants "Palace Service" and "Teşkilat" to represent Ottoman internal security
 - ##New journal "The Lands of Kurdistan" for Kurdish revanchism
 - ##Rebuilt "The Teachings of al-Sanusi" into a struggle-style journal with new mechanics, events, and modifiers
+
+
+---Update 4.2.1--
+New Additions:
 - ##Implemented outcomes for the "The Ethiopian Frontier" journal
+- ##Added option to grefm_greece.021 to appoint Elimar of Oldenburg as heir of Greece
+- ##Fixed several issues that could derail Greece's "Military League" journal
 
 ####---------- Published Updates ----------####
 
@@ -234,7 +240,6 @@ Adjustments:
 - grefm_greece.113 now triggers via on_pulse and hits all Greek tags
 
 Fixes:
-- ##Fixed several issues that could derail Greece's "Military League" journal
 - "Serbia and Montenegro" will now add claims for the surviving country if either tag dies before the journal completes
 - Fixed several diplo relations triggers that could be broken if you became a GP
 
@@ -245,7 +250,6 @@ Notes:
 
 CHECK
 - Busted localization with Armansperg referring to himself during regency events
-- 
 
 --Update 4.1.2--
 Fixes:
