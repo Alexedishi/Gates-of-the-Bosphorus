@@ -21,6 +21,13 @@
 
 ####################################
 
+--Update 4.2.1--
+Balance:
+- Adjusted modifiers applied to Montenegro state region and region states to solve migration issues
+- Restricted balkfm_serbia.013/014 to only fire if SER is a subject of TUR
+- Doubled impact of balkfm_serbia.014.b
+
+
 --Update 4.1.0--
 New Additions:
 - Reworked the "Throne of Thorns" journal:
