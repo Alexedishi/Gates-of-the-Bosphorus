@@ -2,16 +2,15 @@
 # GATES OF THE BOSPHORUS CHANGELOG #
 ####################################
 
-# Mod Version: 4.0.6
-# Game Version: 1.13.8
+# Mod Version: 4.2.1
+# Game Version: 1.15.0
 # Author: Alexedishi
 
 ####################################
 
 ####---------- Version Compatibility ----------####
-#		GotB Patch	....	Victoria 3 Patch
-#		4.1.0		....	1.13.11
-#		3.4.12		.... 	1.12.3
+#		4.2.1		....	1.15.0
+#		4.1.1		....	1.13.11 / 1.14.0
 #		3.3.7		.... 	1.10.6 / 1.11.1
 #		3.2.8		.... 	1.9.8
 #		3.0.8		.... 	1.8.7
@@ -21,6 +20,13 @@
 #		1.0.0		....	1.5.6
 
 ####################################
+
+--Update 4.2.1--
+Balance:
+- Adjusted modifiers applied to Montenegro state region and region states to solve migration issues
+- Restricted balkfm_serbia.013/014 to only fire if SER is a subject of TUR
+- Doubled impact of balkfm_serbia.014.b
+
 
 --Update 4.1.0--
 New Additions:

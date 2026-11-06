@@ -194,7 +194,7 @@ Last Words by Koert Davidse: vimeo . com / 88034680
 
 ####---------- Planned Updates ----------####
 
---Update 4.3.0--
+--Major Content--
 New Additions:
 - ##Fully implemented the Young Turks content with varying outcomes for the Republican movements in the Ottoman Empire
 - ##New journal "The Foundation of the State" representing the multiple outcomes of Turkish identity after the failure of the Tanzimat
@@ -203,13 +203,25 @@ New Additions:
 - ##Rebuilt "The Teachings of al-Sanusi" into a struggle-style journal with new mechanics, events, and modifiers
 
 
----Update 4.2.1--
+---Minor Content--
 New Additions:
 - ##Implemented outcomes for the "The Ethiopian Frontier" journal
 - ##Added option to grefm_greece.021 to appoint Elimar of Oldenburg as heir of Greece
 - ##Fixed several issues that could derail Greece's "Military League" journal
 
+
+---Bug Check---
+- Busted localization with Armansperg referring to himself during regency events
+
+
 ####---------- Published Updates ----------####
+
+--Update 4.2.1--
+Balance:
+- Adjusted modifiers applied to Montenegro state region and region states to solve migration issues
+- Restricted balkfm_serbia.013/014 to only fire if SER is a subject of TUR
+- Doubled impact of balkfm_serbia.014.b
+
 
 --Update 4.2.0-- **Major Update**
 New Additions:
@@ -248,8 +260,6 @@ Notes:
 - All journal entries refactored for new outcomes scripting
 - Replaced ideology_social_democrat with ideology_state_socialist
 
-CHECK
-- Busted localization with Armansperg referring to himself during regency events
 
 --Update 4.1.2--
 Fixes:
