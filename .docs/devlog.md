@@ -216,6 +216,10 @@ New Additions:
 
 ####---------- Published Updates ----------####
 
+--Update 4.2.2--
+
+
+
 --Update 4.2.1--
 Balance:
 - Adjusted modifiers applied to Montenegro state region and region states to solve migration issues
