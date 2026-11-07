@@ -181,6 +181,42 @@
 		name = "widget_gbbf_sanusiyyah_situation"
 		container = "custom_widget_container_6"
 	}
+
+	map_color = {
+		if = {
+			limit = {
+				is_in_geographic_region = geographic_region_sanusiyyah
+				state_region = {
+					has_variable = eqfm_sanusiyyah_entrenchment_var
+				}
+			}
+			lerp = {
+				min_color = grey
+				max_color = black_light
+				factor = {
+					add = state_region.var:eqfm_sanusiyyah_entrenchment_var
+					multiply = 0.01
+					max = 1
+					min = 0
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				is_in_geographic_region = geographic_region_sanusiyyah
+			}
+			value = grey_observer
+		}
+	}
+
+	map_tooltip = {
+		if = {
+			limit = {
+				is_in_geographic_region = geographic_region_sanusiyyah
+			}
+			custom_tooltip = eqfm_sanusiyyah_map_tooltip
+		}
+	}
 	
 	should_be_involved = {
 		# as-Sanussi started in Hedjaz in 1835; this will expand automatically in the 1840s
@@ -326,7 +362,6 @@
 							has_variable = eqfm_expelled_sanusiyyah
 						}
 					}
-					
 				}
 			}
 		}
