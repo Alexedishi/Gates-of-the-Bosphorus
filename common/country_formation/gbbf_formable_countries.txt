@@ -189,25 +189,30 @@ TURAN = {
 }
 
 REPLACE:YUG = {
-	states = {
-		STATE_WESTERN_SERBIA
-		STATE_EASTERN_SERBIA
-		STATE_KOSOVO
-		STATE_MONTENEGRO
-		STATE_BOSNIA
-		STATE_CROATIA
-		STATE_DALMATIA
-		STATE_SLAVONIA
-		STATE_SLOVENIA
-		STATE_ISTRIA
-		STATE_BANAT
-		STATE_DELVIDEK
-	}
+	geographic_region = geographic_region_yugoslavia
+	
+	is_major_formation = yes
+	
+	unification_play = dp_unify_yugoslavia
+	leadership_play = dp_leadership_yugoslavia
+	
 	required_states_fraction = 0.75
+	
+	ai_will_do = { always = yes }
+	
 	potential = {
 		NOR = {
 			country_tier = hegemony
 			country_tier = empire
+		}
+		trigger_if = {
+			limit = {
+				c:BUL ?= this
+			}
+			has_variable = bul_pursued_greater_yugoslavism
+		}
+		trigger_else = {
+			always = yes
 		}
 	}
 	possible = {
@@ -266,5 +271,53 @@ REPLACE:YUG = {
 			has_modifier = modifier_balkfm_cultural_schism
 		}
 	}
-	ai_will_do = { always = yes }
+	
+	max_num_formation_candidates = 3 # For the odd Croatia, Serbia and Bulgaria FFA
+	can_be_formation_candidate = {
+		country_rank >= rank_value:major_power
+		NOR = { # Not Danubian State or HRE
+			c:AUS ?= this
+			c:KUK ?= this
+			c:HRE ?= this
+		}
+		trigger_if = {
+			limit = {
+				c:BUL ?= this
+			}
+			custom_tooltip = {
+				text = bulgaria_pursued_greater_yugoslavism_tt
+				has_variable = bul_pursued_greater_yugoslavism
+			}
+		}
+	}
+	
+	can_be_unification_target = {
+		is_in_geographic_region = geographic_region_balkans
+		NAND = { # United States of Greater Austria
+			OR = {
+				country_has_primary_culture = cu:slovene
+				country_has_primary_culture = cu:croat
+				country_has_primary_culture = cu:serb
+			}
+			OR = {
+				has_journal_entry = je_danubian_federation
+				c:KUK ?= this
+				c:HRE ?= this
+			}
+		}
+		trigger_if = {
+			limit = {
+				c:BUL ?= this
+			}
+			custom_tooltip = {
+				text = bulgaria_pursued_greater_yugoslavism_tt
+				has_variable = bul_pursued_greater_yugoslavism
+			}
+		}
+		trigger_else = {
+			always = yes
+		}
+	}
+	
+	should_target_state_in_unification_play = {}
 }
