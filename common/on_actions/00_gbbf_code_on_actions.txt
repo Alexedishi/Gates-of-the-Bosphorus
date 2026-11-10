@@ -1049,6 +1049,7 @@ on_state_created = {
 on_secession_start = {
 	on_actions = {
 		eqfm_balkan_secession_start
+		eqfm_yugoslav_secession_start
 	}
 }
 
@@ -1080,6 +1081,92 @@ eqfm_balkan_secession_start = {
 			post_notification = eqfm_balkan_secession_start
 		}
 		trigger_event = eqfm_balkans.008
+	}
+}
+
+# This exists in case movement_yugoslav_national selects the YUG tag; this is fugly, I know
+# Since this only happens if the AI is YUG, I'm less worried about stripping down all the primary cultures
+eqfm_yugoslav_secession_start = {
+	trigger = {
+		scope:target = {
+			c:YUG ?= this
+		}
+	}
+	effect = {
+		scope:target = {
+			if = {
+				limit = {
+					NOT = {
+						any_scope_state = {
+							state_region = {
+								is_homeland = cu:montenegrin
+							}
+						}
+					}
+				}
+				remove_primary_culture = cu:montenegrin
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_scope_state = {
+							state_region = {
+								is_homeland = cu:serb
+							}
+						}
+					}
+				}
+				remove_primary_culture = cu:serb
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_scope_state = {
+							state_region = {
+								is_homeland = cu:bulgarian
+							}
+						}
+					}
+				}
+				remove_primary_culture = cu:bulgarian
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_scope_state = {
+							state_region = {
+								is_homeland = cu:bosniak
+							}
+						}
+					}
+				}
+				remove_primary_culture = cu:bosniak
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_scope_state = {
+							state_region = {
+								is_homeland = cu:croat
+							}
+						}
+					}
+				}
+				remove_primary_culture = cu:croat
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_scope_state = {
+							state_region = {
+								is_homeland = cu:slovene
+							}
+						}
+					}
+				}
+				remove_primary_culture = cu:slovene
+			}
+		}
 	}
 }
 

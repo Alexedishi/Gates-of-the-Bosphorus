@@ -2,14 +2,14 @@
 # GATES OF THE BOSPHORUS CHANGELOG #
 ####################################
 
-# Mod Version: 4.2.1
+# Mod Version: 4.2.2
 # Game Version: 1.15.0
 # Author: Alexedishi
 
 ####################################
 
 ####---------- Version Compatibility ----------####
-#		4.2.1		....	1.15.0
+#		4.2.2		....	1.15.0
 #		4.1.1		....	1.13.11 / 1.14.0
 #		3.3.7		.... 	1.10.6 / 1.11.1
 #		3.2.8		.... 	1.9.8
@@ -20,6 +20,13 @@
 #		1.0.0		....	1.5.6
 
 ####################################
+
+--Update 4.2.2--
+Fixes:
+- Attached the Bulgarian culture to the YUG formation definition & removed balkfm_form_yugoslavia_button
+- Overrode the base game movement_yugoslav_national to handle YUG secessions; also added on_action to remove YUG primary cultures if it forms via secession
+- Journal je_balkfm_yugoslav_nationalism will not activate if YUG is in a diplo play
+
 
 --Update 4.2.1--
 Balance:

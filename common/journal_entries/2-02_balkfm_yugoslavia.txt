@@ -223,8 +223,7 @@ je_balkfm_yugoslav_project = {
 			country_has_primary_culture = cu:bulgarian
 		}
 	}
-
-	scripted_button = balkfm_form_yugoslavia_button # this is a fallback for Bulgaria
+	
 	scripted_button = balkfm_annex_mon_button
 	scripted_button = balkfm_annex_ser_button
 	scripted_button = balkfm_annex_bul_button
@@ -307,6 +306,15 @@ je_balkfm_yugoslav_project = {
 			custom_tooltip = {
 				text = je_balkfm_yugoslav_project_complete
 				exists = c:YUG
+			}
+			trigger_if = {
+				limit = {
+					exists = c:YUG
+				}
+				c:YUG ?= {
+					is_diplomatic_play_committed_participant = no
+					is_at_war = no
+				}
 			}
 		}
 		effect = {
@@ -601,6 +609,7 @@ je_balkfm_yugoslav_nationalism = {
 				NOT = {
 					has_law_or_variant = law_type:law_multicultural
 				}
+				is_diplomatic_play_committed_participant = no
 			}
 		}
 	}
@@ -620,16 +629,18 @@ je_balkfm_yugoslav_nationalism = {
 	}
 	
 	immediate = {
-		com_save_journal_to_global_variable = {
-			name = je_balkfm_yugoslav_nationalism
-		}
-		c:YUG = {
-			balkfm_create_yugoslav_nationalism_starting_characters_effect = yes
-		}
-		scope:journal_entry = {
-			balkfm_initialize_yugoslav_nationalism_variables_effect = yes
-			set_variable = com_hide_involved_countries
-			set_variable = com_hide_scripted_buttons
+		hidden_effect = {
+			com_save_journal_to_global_variable = {
+				name = je_balkfm_yugoslav_nationalism
+			}
+			c:YUG ?= {
+				balkfm_create_yugoslav_nationalism_starting_characters_effect = yes
+			}
+			scope:journal_entry = {
+				balkfm_initialize_yugoslav_nationalism_variables_effect = yes
+				set_variable = com_hide_involved_countries
+				set_variable = com_hide_scripted_buttons
+			}
 		}
 	}
 

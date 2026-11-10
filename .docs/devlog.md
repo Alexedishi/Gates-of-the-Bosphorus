@@ -216,6 +216,13 @@ New Additions:
 
 ####---------- Published Updates ----------####
 
+--Update 4.2.2--
+Fixes:
+- Attached the Bulgarian culture to the YUG formation definition & removed balkfm_form_yugoslavia_button
+- Overrode the base game movement_yugoslav_national to handle YUG secessions; also added on_action to remove YUG primary cultures if it forms via secession
+- Journal je_balkfm_yugoslav_nationalism will not activate if YUG is in a diplo play
+
+
 --Update 4.2.1--
 Balance:
 - Adjusted modifiers applied to Montenegro state region and region states to solve migration issues
