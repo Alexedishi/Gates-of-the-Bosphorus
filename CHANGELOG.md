@@ -21,6 +21,15 @@
 
 ####################################
 
+--Update 4.2.3--
+New Additions:
+- Added support for CMF's custom error deer icons with two custom error deer icons
+
+Fixes:
+- Fixed a bad tooltip regarding controlling Darfur in je_mgrbfm_egypt_sudan
+- Fixed modifier_mgbrfm_red_sea_secured being applied over months instead of days
+
+
 --Update 4.2.2--
 Fixes:
 - Attached the Bulgarian culture to the YUG formation definition & removed balkfm_form_yugoslavia_button
