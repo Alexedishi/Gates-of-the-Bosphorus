@@ -1,8 +1,8 @@
 ﻿##########################
 # GATES OF THE BOSPHORUS #
 ##########################
-Mod Version: 4.2.0
-Game Version: 1.15.0
+Mod Version: 4.2.4
+Game Version: 1.15.1
 
 Mod Author: Alexedishi
 Contributors: LordR, Caelreader, CipherParadox
@@ -13,7 +13,7 @@ Special Thanks: RationaLess, Bahmut|Chris
 
 ####---------- Version Compatibility ----------####
 #		GotB Patch	....	Victoria 3 Patch
-#		4.2.0		....	1.15.0
+#		4.2.4		....	1.15.1
 #		4.1.1		....	1.13.11 / 1.14.0
 #		3.4.12		.... 	1.12.3
 #		3.3.7		.... 	1.10.6 / 1.11.1
@@ -215,6 +215,12 @@ New Additions:
 
 
 ####---------- Published Updates ----------####
+
+--Update 4.2.4--
+Fixes:
+- je_grefm_national_language will now properly show up if MR is active
+- Fixed gbbf_building_topkapi_palace being created without a starting PM
+
 
 --Update 4.2.3--
 New Additions:
