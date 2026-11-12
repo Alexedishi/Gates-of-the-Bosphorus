@@ -21,6 +21,12 @@
 
 ####################################
 
+--Update 4.2.4--
+Fixes:
+- je_grefm_national_language will now properly show up if MR is active
+- Fixed gbbf_building_topkapi_palace being created without a starting PM
+
+
 --Update 4.2.3--
 New Additions:
 - Added support for CMF's custom error deer icons with two custom error deer icons
