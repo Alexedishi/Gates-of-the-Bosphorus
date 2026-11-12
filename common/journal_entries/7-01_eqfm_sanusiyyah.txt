@@ -398,8 +398,19 @@
 	on_weekly_pulse = {
 		effect = {
 			eqfm_update_senussi_character_effect = yes
+			set_variable = {
+				name = eqfm_sanusiyyah_situation_progress_var
+				value = eqfm_sanusiyyah_situation_progress_value
+			}
+			com_change_and_clamp_variable = {
+				name = eqfm_sanusiyyah_situation_var
+				value = var:eqfm_sanusiyyah_situation_progress_var
+				max = 100
+				min = 0
+			}
+			eqfm_check_sanusiyyah_phase_effect = yes
+			eqfm_update_senussi_progress_bars_effect = yes
 			scope:journal_entry = {
-				eqfm_weekly_sanusiyyah_situation_variables_effect = yes
 				every_scope_je_involved = {
 					trigger_event = {
 						on_action = eqfm_sanusiyyah_desert_scouting_weekly_pulse_country
@@ -425,12 +436,12 @@
 			
 			# Update Desert Scouting Progress so it can contribute to entrenchment math
 			scope:journal_entry = {
-				eqfm_monthly_reconnaissance_progress_effect = yes
+				eqfm_monthly_reconnaissance_math_effect = yes
 			}
 			
 			# Calculate and advance state region entrenchment
 			eqfm_update_sanusiyya_georegion_variables_effect = yes
-			eqfm_monthly_entrenchment_effect = yes
+			eqfm_monthly_entrenchment_math_effect = yes
 			scope:journal_entry = {
 				com_change_and_clamp_variable = {
 					name = eqfm_sanusiyyah_pressure_var

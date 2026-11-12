@@ -31,7 +31,47 @@ eqfm_initialize_sanusiyyah_variables_effect = {
 			name = eqfm_sanusiyyah_entrenchment_var
 			value = 10
 		}
+		set_variable = {
+			name = eqfm_sanusiyyah_reconnaissance_var
+			value = 0
+		}
 		set_variable = eqfm_sanusiyyah_hq_var
+	}
+	s:STATE_LIBYA = {
+		set_variable = {
+			name = eqfm_sanusiyyah_reconnaissance_var
+			value = 0
+		}
+	}
+	s:STATE_LIBYAN_DESERT = {
+		set_variable = {
+			name = eqfm_sanusiyyah_reconnaissance_var
+			value = 0
+		}
+	}
+	s:STATE_TRIPOLI = {
+		set_variable = {
+			name = eqfm_sanusiyyah_reconnaissance_var
+			value = 0
+		}
+	}
+	s:STATE_EGYPTIAN_DESERT = {
+		set_variable = {
+			name = eqfm_sanusiyyah_reconnaissance_var
+			value = 0
+		}
+	}
+	s:STATE_MATRUH = {
+		set_variable = {
+			name = eqfm_sanusiyyah_reconnaissance_var
+			value = 0
+		}
+	}
+	s:STATE_TUNISIA = {
+		set_variable = {
+			name = eqfm_sanusiyyah_reconnaissance_var
+			value = 0
+		}
 	}
 }
 
@@ -82,21 +122,6 @@ eqfm_update_sanusiyyah_journal_involvement_effect = {
 			}
 		}
 	}
-}
-
-eqfm_weekly_sanusiyyah_situation_variables_effect = {
-	set_variable = {
-		name = eqfm_sanusiyyah_situation_progress_var
-		value = eqfm_sanusiyyah_situation_progress_value
-	}
-	com_change_and_clamp_variable = {
-		name = eqfm_sanusiyyah_situation_var
-		value = var:eqfm_sanusiyyah_situation_progress_var
-		max = 100
-		min = 0
-	}
-	eqfm_check_sanusiyyah_phase_effect = yes
-	eqfm_update_senussi_progress_bars_effect = yes
 }
 
 eqfm_update_senussi_progress_bars_effect = {
@@ -385,9 +410,9 @@ eqfm_cleanup_global_sanusiyyah_variables_effect = {
 	}
 	every_state_in_sanusiyyah = {
 		limit = {
-			has_modifier = modifier_eqfm_sanusiyyah_stronghold
+			has_modifier = modifier_eqfm_sanusiyyah_entrenchment
 		}
-		remove_modifier = modifier_eqfm_sanusiyyah_stronghold
+		remove_modifier = modifier_eqfm_sanusiyyah_entrenchment
 	}
 }
 
@@ -395,9 +420,31 @@ eqfm_cleanup_local_sanusiyyah_variables_effect = {
 	remove_variable = eqfm_sanusiyyah_influence_var
 	remove_variable = eqfm_sanusiyyah_influence_progress_var
 	remove_variable = eqfm_sanusiyyah_stance_var
+	remove_variable = eqfm_desert_scouting_provisions_var
 }
 
-####---------- Sanusiyyah Country Effects ----------####
+eqfm_add_sanusiyyah_pressure_effect = {
+	custom_description = {
+		text = eqfm_add_sanusiyyah_pressure_effect
+		subject = this
+		value = $value$
+		global_var:je_eqfm_sanusiyyah = {
+			com_change_and_clamp_variable = {
+				name = eqfm_sanusiyyah_pressure_var
+				value = $value$
+				max = 100
+				min = 0
+			}
+			set_bar_progress = {
+				name = eqfm_sanusiyyah_pressure_progress_bar
+				value = owner.var:eqfm_sanusiyyah_pressure_var
+			}
+		}
+	}
+}
+
+
+####---------- Sanusiyyah Influence & Country Effects ----------####
 eqfm_initialize_local_variables_effect = {
 	if = {
 		limit = {
@@ -415,6 +462,10 @@ eqfm_initialize_local_variables_effect = {
 	set_variable = {
 		name = eqfm_sanusiyyah_stance_var
 		value = flag:eqfm_sanusiyyah_stance_aloof
+	}
+	set_variable = {
+		name = eqfm_desert_scouting_provisions_var
+		value = 500
 	}
 }
 
@@ -436,8 +487,22 @@ eqfm_monthly_sanusiyyah_influence_effect = {
 	}
 }
 
+eqfm_add_sanusiyyah_influence_effect = {
+	custom_description = {
+		text = eqfm_add_sanusiyyah_influence_effect
+		subject = this
+		value = $value$
+		com_change_and_clamp_variable = {
+			name = eqfm_sanusiyyah_influence_var
+			value = $value$
+			max = 100
+			min = 0
+		}
+	}
+}
 
-####---------- Sanusiyyah State Region Effects ----------####
+
+####---------- Sanusiyyah Entrenchment & State Region Effects ----------####
 eqfm_update_sanusiyya_georegion_variables_effect = {
 	# This is a chonky effect; we only call it monthly since script math is stupendously slow
 	every_state_region_in_sanusiyyah = {
@@ -590,13 +655,13 @@ eqfm_update_sanusiyya_georegion_variables_effect = {
 	}
 }
 
-eqfm_monthly_entrenchment_effect = {
+eqfm_monthly_entrenchment_math_effect = {
 	every_state_region_in_sanusiyyah = {
 		every_scope_state = {
 			limit = {
-				has_modifier = modifier_eqfm_sanusiyyah_stronghold
+				has_modifier = modifier_eqfm_sanusiyyah_entrenchment
 			}
-			remove_modifier = modifier_eqfm_sanusiyyah_stronghold
+			remove_modifier = modifier_eqfm_sanusiyyah_entrenchment
 		}
 		save_scope_as = eqfm_entrenchment_operation_scope # because, for some insane reason, multipliers evaluate in **ROOT** scope
 		if = {
@@ -615,9 +680,30 @@ eqfm_monthly_entrenchment_effect = {
 			}
 			every_scope_state = {
 				add_modifier = {
-					name = modifier_eqfm_sanusiyyah_stronghold
+					name = modifier_eqfm_sanusiyyah_entrenchment
 					multiplier = scope:eqfm_entrenchment_operation_scope.var:eqfm_sanusiyyah_entrenchment_var
 				}
+			}
+		}
+	}
+}
+
+eqfm_update_entrenchment_modifiers_effect = {
+	every_state_in_sanusiyyah = {
+		save_scope_as = operating_scope
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_sanusiyyah_entrenchment
+			}
+			remove_modifier = modifier_eqfm_sanusiyyah_entrenchment
+		}
+		add_modifier = {
+			name = modifier_eqfm_sanusiyyah_entrenchment
+			multiplier = {
+				add = scope:operating_scope.state_region.var:eqfm_sanusiyyah_entrenchment_var
+				divide = 100
+				max = 1
+				min = 0
 			}
 		}
 	}
@@ -678,109 +764,18 @@ eqfm_relocate_sanusiyyah_hq_effect = {
 	
 }
 
-
-####---------- Sanusiyyah Event Effects ----------####
-eqfm_save_senussi_scope_effect = {
-	if = {
-		limit = {
-			any_character_in_void = {
-				eqfm_character_is_senussi_trigger = yes
-			}
-		}
-		random_character_in_void = {
-			limit = {
-				eqfm_character_is_senussi_trigger = yes
-			}
-			save_scope_as = eqfm_senussi_character_scope
-		}
-	}
-	else = {
-		eqfm_update_senussi_character_effect = yes
-		random_character_in_void = {
-			limit = {
-				eqfm_character_is_senussi_trigger = yes
-			}
-			save_scope_as = eqfm_senussi_character_scope
-		}
-	}
-}
-
-eqfm_save_desert_scouting_scopes_effect = {
-	if = {
-		limit = {
-			has_variable = eqfm_desert_scouts_leader_var
-			exists = var:eqfm_desert_scouts_leader_var
-		}
-		var:eqfm_desert_scouts_leader_var = {
-			save_scope_as = eqfm_desert_scouts_leader_scope
-		}
-	}
-	if = {
-		limit = {
-			has_variable = eqfm_desert_scouts_guide_var
-			exists = var:eqfm_desert_scouts_guide_var
-		}
-		var:eqfm_desert_scouts_guide_var = {
-			save_scope_as = eqfm_desert_scouts_guide_scope
-		}
-	}
-	if = {
-		limit = {
-			has_variable = eqfm_desert_scouts_logistician_var
-			exists = var:eqfm_desert_scouts_logistician_var
-		}
-		var:eqfm_desert_scouts_logistician_var = {
-			save_scope_as = eqfm_desert_scouts_logistician_scope
-		}
-	}
-	eqfm_save_senussi_scope_effect = yes
-}
-
-eqfm_save_desert_event_scopes_effect = {
-	random_scope_state = {
-		limit = {
-			is_in_geographic_region = geographic_region_sanusiyyah
-			is_under_colonization = yes
-			state_region = {
-				any_scope_state = {
-					owner = {
-						is_country_type = decentralized
-					}
-				}
-			}
-		}
-		save_scope_as = eqfm_desert_event_colonial_state
+eqfm_add_sanusiyyah_entrenchment_effect = {
+	# Call this effect in the STATE scope!
+	custom_description = {
+		text = eqfm_add_sanusiyyah_entrenchment_effect
+		subject = this.state_region
+		value = $value$
 		state_region = {
-			random_scope_state = {
-				limit = {
-					owner = {
-						is_country_type = decentralized
-					}
-				}
-				save_scope_as = eqfm_desert_event_tribal_state
-				owner = {
-					save_scope_as = eqfm_desert_event_tribal_country
-				}
-			}
-		}
-	}
-}
-
-eqfm_save_desert_colony_scopes_effect = {
-	random_scope_state = {
-		limit = {
-			is_in_geographic_region = geographic_region_sanusiyyah
-			is_under_colonization = yes
-		}
-		save_scope_as = eqfm_desert_event_colonial_state
-		state_region = {
-			random_scope_state = {
-				limit = {
-					owner = {
-						is_country_type = decentralized
-					}
-				}
-				save_scope_as = eqfm_desert_event_tribal_state
+			com_change_and_clamp_variable = {
+				name = eqfm_sanusiyyah_entrenchment_var
+				value = $value$
+				max = 100
+				min = 0
 			}
 		}
 	}
@@ -850,7 +845,7 @@ eqfm_update_desert_scouting_costs_effect = {
 	}
 }
 
-eqfm_monthly_reconnaissance_progress_effect = {
+eqfm_monthly_reconnaissance_math_effect = {
 	# Check the state regions and clear non-existent expedition tags
 	every_state_region_in_sanusiyyah = {
 		limit = {
@@ -862,7 +857,7 @@ eqfm_monthly_reconnaissance_progress_effect = {
 		remove_variable = eqfm_sanusiyyah_expedition_var
 	}
 	
-	# Check if lodges should be expose
+	# Check if lodges should be exposed
 	every_state_region_in_sanusiyyah = {
 		if = {
 			limit = {
@@ -873,8 +868,10 @@ eqfm_monthly_reconnaissance_progress_effect = {
 				var:eqfm_desert_scouting_reconnaissance_var >= 50
 			}
 			set_variable = eqfm_sanusiyyah_exposed_lodges_var
-			var:eqfm_sanusiyyah_expedition_var ?= {
-				#	post_notification = eqfm_sanusiyyah_lodge_exposed # TODO
+			global_var:je_eqfm_sanusiyyah = {
+				every_scope_je_involved = {
+					post_notification = eqfm_sanusiyyah_lodge_exposed
+				}
 			}
 		}
 		else_if = {
@@ -928,6 +925,22 @@ eqfm_monthly_reconnaissance_progress_effect = {
 	}
 }
 
+eqfm_add_sanusiyyah_reconnaissance_effect = {
+	custom_description = {
+		text = eqfm_add_sanusiyyah_reconnaissance_effect
+		subject = $state_region$
+		value = $value$
+		$state_region$ = {
+			com_change_and_clamp_variable = {
+				name = eqfm_sanusiyyah_reconnaissance_var
+				value = $value$
+				max = 100
+				min = 0
+			}
+		}
+	}
+}
+
 eqfm_deploy_desert_scouts_to_state_region_effect = {
 	custom_tooltip = {
 		text = eqfm_deploy_desert_scouts_to_state_region_effect
@@ -953,54 +966,130 @@ eqfm_recall_desert_scouts_from_state_region_effect = {
 	}
 }
 
+eqfm_update_reconnsaissance_modifiers_effect = {
+	every_state_in_sanusiyyah = {
+		save_scope_as = operating_scope
+		if = {
+			limit = {
+				has_modifier = modifier_eqfm_desert_scouting
+			}
+			remove_modifier = modifier_eqfm_desert_scouting
+		}
+		add_modifier = {
+			name = modifier_eqfm_desert_scouting
+			multiplier = {
+				add = scope:operating_scope.state_region.var:eqfm_sanusiyyah_reconnaissance_var
+				divide = 100
+				max = 1
+				min = 0
+			}
+		}
+	}
+}
+
 
 ####---------- Sanusiyyah Event Effects ----------####
-eqfm_add_sanusiyyah_pressure_effect = {
-	custom_description = {
-		text = eqfm_add_sanusiyyah_pressure_effect
-		subject = this
-		value = $value$
-		global_var:je_eqfm_sanusiyyah = {
-			com_change_and_clamp_variable = {
-				name = eqfm_sanusiyyah_pressure_var
-				value = $value$
-				max = 100
-				min = 0
+eqfm_save_senussi_scope_effect = {
+	if = {
+		limit = {
+			any_character_in_void = {
+				eqfm_character_is_senussi_trigger = yes
 			}
-			set_bar_progress = {
-				name = eqfm_sanusiyyah_pressure_progress_bar
-				value = owner.var:eqfm_sanusiyyah_pressure_var
+		}
+		random_character_in_void = {
+			limit = {
+				eqfm_character_is_senussi_trigger = yes
 			}
+			save_scope_as = eqfm_senussi_character_scope
+		}
+	}
+	else = {
+		eqfm_update_senussi_character_effect = yes
+		random_character_in_void = {
+			limit = {
+				eqfm_character_is_senussi_trigger = yes
+			}
+			save_scope_as = eqfm_senussi_character_scope
+		}
+	}
+	if = {
+		limit = {
+			has_variable = eqfm_desert_scouts_guide_var
+			exists = var:eqfm_desert_scouts_guide_var
+		}
+		var:eqfm_desert_scouts_guide_var = {
+			save_scope_as = eqfm_desert_scouts_guide_scope
+		}
+	}
+	if = {
+		limit = {
+			has_variable = eqfm_desert_scouts_logistician_var
+			exists = var:eqfm_desert_scouts_logistician_var
+		}
+		var:eqfm_desert_scouts_logistician_var = {
+			save_scope_as = eqfm_desert_scouts_logistician_scope
+		}
+	}
+	eqfm_save_senussi_scope_effect = yes
+}
+
+eqfm_save_desert_scouting_scopes_effect = {
+	if = {
+		limit = {
+			has_variable = eqfm_desert_scouts_leader_var
+			exists = var:eqfm_desert_scouts_leader_var
+		}
+		var:eqfm_desert_scouts_leader_var = {
+			save_scope_as = eqfm_desert_scouts_leader_scope
 		}
 	}
 }
 
-eqfm_add_sanusiyyah_influence_effect = {
-	custom_description = {
-		text = eqfm_add_sanusiyyah_influence_effect
-		subject = this
-		value = $value$
-		com_change_and_clamp_variable = {
-			name = eqfm_sanusiyyah_influence_var
-			value = $value$
-			max = 100
-			min = 0
+eqfm_save_desert_event_scopes_effect = {
+	random_scope_state = {
+		limit = {
+			is_in_geographic_region = geographic_region_sanusiyyah
+			is_under_colonization = yes
+			state_region = {
+				any_scope_state = {
+					owner = {
+						is_country_type = decentralized
+					}
+				}
+			}
 		}
-	}
-}
-
-eqfm_add_sanusiyyah_entrenchment_effect = {
-	# Call this effect in the STATE scope!
-	custom_description = {
-		text = eqfm_add_sanusiyyah_entrenchment_effect
-		subject = this.state_region
-		value = $value$
+		save_scope_as = eqfm_desert_event_colonial_state
 		state_region = {
-			com_change_and_clamp_variable = {
-				name = eqfm_sanusiyyah_entrenchment_var
-				value = $value$
-				max = 100
-				min = 0
+			random_scope_state = {
+				limit = {
+					owner = {
+						is_country_type = decentralized
+					}
+				}
+				save_scope_as = eqfm_desert_event_tribal_state
+				owner = {
+					save_scope_as = eqfm_desert_event_tribal_country
+				}
+			}
+		}
+	}
+}
+
+eqfm_save_desert_colony_scopes_effect = {
+	random_scope_state = {
+		limit = {
+			is_in_geographic_region = geographic_region_sanusiyyah
+			is_under_colonization = yes
+		}
+		save_scope_as = eqfm_desert_event_colonial_state
+		state_region = {
+			random_scope_state = {
+				limit = {
+					owner = {
+						is_country_type = decentralized
+					}
+				}
+				save_scope_as = eqfm_desert_event_tribal_state
 			}
 		}
 	}

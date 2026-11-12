@@ -188,29 +188,21 @@ eqfm_sanusiyyah_entrenchment_progress_value = {
 	# This is evaluated in the !!STATE REGION!! scope
 	value = 0
 	add = {
-		desc = eqfm_value_from_bedouin_literacy
-		value = var:eqfm_state_region_bedouin_literacy_rate_var
+		desc = eqfm_value_from_tribal_relations
+		value = var:eqfm_sanusiyyah_relations_var
+	}
+	if = {
+		limit = {
+			has_variable = eqfm_sanusiyyah_hq_var
+		}
+		add = {
+			desc = eqfm_value_from_sanusiyyah_hq
+			value = 0.50
+		}
 	}
 	add = {
-		desc = eqfm_from_sanusiyyah_strongholds
-		value = {
-			every_scope_state = {
-				limit = {
-					has_modifier = modifier_eqfm_sanusiyyah_stronghold
-				}
-				add = modifier:state_sanusiyyah_pressure_growth_add
-			}
-			divide = {
-				every_scope_state = {
-					limit = {
-						has_modifier = modifier_eqfm_sanusiyyah_stronghold
-					}
-					add = 1
-				}
-				min = 1 # Div0 safety
-			}
-			round_to = 0.01
-		}
+		desc = eqfm_value_from_bedouin_literacy
+		value = var:eqfm_state_region_bedouin_literacy_rate_var
 	}
 	add = {
 		desc = eqfm_value_from_bedouin_radicals
@@ -301,6 +293,15 @@ eqfm_sanusiyyah_entrenchment_progress_value = {
 				}
 				add = 0.25
 			}
+		}
+	}
+	if = {
+		limit = {
+			has_variable = eqfm_sanusiyyah_elders_contacted_var
+		}
+		subtract = {
+			desc = eqfm_value_From_contacting_elders
+			value = -0.15
 		}
 	}
 }
@@ -792,16 +793,132 @@ eqfm_desert_scouting_logistician_aptitude_value = {
 
 eqfm_desert_scouting_reconnaissance_generation_value = {
 	value = 0
+	var:eqfm_desert_scouts_leader_var ?= {
+		add = eqfm_desert_scouting_leader_aptitude_value
+		multiply = 0.1
+	}
+	multiply = {
+		if = {
+			limit = {
+				exists = var:eqfm_desert_scouts_guide_var
+			}
+			var:eqfm_desert_scouts_guide_var = {
+				add = eqfm_desert_scouting_guide_aptitude_value
+			}
+		}
+		else = {
+			add = 0.5
+		}
+	}
+	if = {
+		limit = {
+			var:eqfm_desert_scouting_provisions_var <= 0
+		}
+		multiply = 0.05
+	}
 }
 
 eqfm_desert_scouting_reconnaissance_progress_value = {
 	value = 0
+	every_scope_state = {
+		owner = {
+			if = {
+				limit = {
+					has_variable = eqfm_desert_scouting_reconnaissance_application_var
+				}
+				add = var:eqfm_desert_scouting_reconnaissance_application_var
+			}
+		}
+	}
 }
 
 eqfm_desert_scouting_provisions_generation_value = {
-	value = 0
+	value = 1
+	add = {
+		desc = eqfm_value_from_desert_scouts_logistician_aptitude
+		value = {
+			if = {
+				limit = {
+					exists = var:eqfm_desert_scouts_logistician_var
+				}
+				var:eqfm_desert_scouts_logistician_var ?= {
+					add = eqfm_desert_scouting_logistician_aptitude_value
+				}
+			}
+		}
+	}
+	add = {
+		desc = eqfm_value_from_incorporated_states_in_sanuisiyyah
+		value = {
+			every_scope_state = {
+				limit = {
+					is_in_geographic_region = geographic_region_sanusiyyah
+					is_incorporated = yes
+				}
+				add = 1
+			}
+		}
+	}
 }
 
 eqfm_desert_scouting_provisions_consumption_value = {
 	value = 0
+	add = {
+		desc = eqfm_value_from_active_reconnaissance
+		value = {
+			every_state_region_in_sanusiyyah = {
+				limit = {
+					var:eqfm_sanusiyyah_expedition_var ?= prev
+				}
+				add = 10
+			}
+		}
+	}
+	add = {
+		desc = eqfm_value_from_desert_scouts_leader_aptitude
+		value = {
+			var:eqfm_desert_scouts_leader_var ?= {
+				if = {
+					limit = {
+						eqfm_desert_scouting_leader_aptitude_value < 0
+					}
+					multiply = {
+						add = var:eqfm_desert_scouts_leader_var.eqfm_desert_scouting_leader_aptitude_value
+						multiply = -1
+						divide = 5
+						max = 2
+						min = 1
+					}
+				}
+			}
+		}
+	}
+	add = {
+		desc = eqfm_value_from_desert_scouts_guide_aptitude
+		var:eqfm_desert_scouts_guide_var ?= {
+			if = {
+				limit = {
+					eqfm_desert_scouting_guide_aptitude_value > 0
+				}
+				divide = {
+					add = var:eqfm_desert_scouts_leader_var.eqfm_desert_scouting_leader_aptitude_value
+					divide = 5
+					max = 2
+					min = 1
+				}
+			}
+			else_if = {
+				limit = {
+					eqfm_desert_scouting_guide_aptitude_value < 0
+				}
+				multiply = {
+					add = var:eqfm_desert_scouts_leader_var.eqfm_desert_scouting_leader_aptitude_value
+					multiply = -1
+					divide = 5
+					max = 2
+					min = 1
+				}
+			}
+		}
+	}
 }
