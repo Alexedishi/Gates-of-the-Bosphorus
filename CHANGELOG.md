@@ -2,14 +2,14 @@
 # GATES OF THE BOSPHORUS CHANGELOG #
 ####################################
 
-# Mod Version: 4.2.4
+# Mod Version: 4.2.5
 # Game Version: 1.15.1
 # Author: Alexedishi
 
 ####################################
 
 ####---------- Version Compatibility ----------####
-#		4.2.4		....	1.15.1
+#		4.2.5		....	1.15.1
 #		4.1.1		....	1.13.11 / 1.14.0
 #		3.3.7		.... 	1.10.6 / 1.11.1
 #		3.2.8		.... 	1.9.8
@@ -20,6 +20,13 @@
 #		1.0.0		....	1.5.6
 
 ####################################
+
+--Update 4.2.5--
+Fixes:
+- Replaced modifier_grefm_armansperg_regency with the base game regency modifier
+- Fixed lots of issues with GRE's starting IG leaders
+- Merged in the content for event grefm_greece.041
+
 
 --Update 4.2.4--
 Fixes:
