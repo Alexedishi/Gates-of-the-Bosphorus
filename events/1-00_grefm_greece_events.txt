@@ -4031,7 +4031,6 @@ grefm_greece.040 = {
 
 	trigger = {
 		NOR = {
-			has_variable = grefm_legacy_brigandage
 			has_journal_entry = je_grefm_bavarocracy_main
 			has_journal_entry = je_balkfm_legacies
 		}
@@ -4059,12 +4058,13 @@ grefm_greece.040 = {
 			}
 		}
 	}
+	
+	fire_only_once = yes
 
 	immediate = {
 		ruler = {
 			save_scope_as = grefm_king_george_scope
 		}
-		set_variable = grefm_legacy_brigandage
 	}
 
 	option = { # There is no alternative option. Get bent.
@@ -4098,30 +4098,104 @@ grefm_greece.041 = {
 	
 	trigger = {
 		c:GRE ?= this
-		NOR = {
-			has_variable = grefm_monarchy_assassination_var
+		NOT = {
 			has_journal_entry = je_grefm_bavarocracy_main
 		}
-		has_law_or_variant = law_type:law_monarchy
+		OR = {
+			has_law_or_variant = law_type:law_monarchy
+			has_law_or_variant = law_type:law_social_monarchy
+		}
+		# Technically, it was two apparent anarchists that made the attempt; this trigger structure is to better bind into gameplay
+		any_interest_group = {
+			ig_approval <= -10
+			OR = {
+				law_stance = {
+					law = law_type:law_monarchy
+					value <= disapprove
+				}
+				law_stance = {
+					law = law_type:law_social_monarchy
+					value <= disapprove
+				}
+			}
+		}
 	}
 	
+	fire_only_once = yes
+	
 	cancellation_trigger = {
-		NOT = {
+		NOR = {
 			has_law_or_variant = law_type:law_monarchy
+			has_law_or_variant = law_type:law_social_monarchy
 		}
 	}
 	
 	immediate = {
-		set_variable = grefm_monarchy_assassination_var
+		random_interest_group = {
+			limit = {
+				ig_approval <= -10
+				OR = {
+					law_stance = {
+						law = law_type:law_monarchy
+						value <= disapprove
+					}
+					law_stance = {
+						law = law_type:law_social_monarchy
+						value <= disapprove
+					}
+				}
+			}
+			save_scope_as = grefm_assassin_ig_scope
+		}
+		ruler = {
+			save_scope_as = grefm_ruler_scope
+		}
 	}
 	
 	option = {
 		name = grefm_greece.041.a
 		default_option = yes
+		scope:grefm_ruler_scope = {
+			add_modifier = {
+				name = modifier_grefm_king_of_valor
+				days = long_modifier_time
+				is_decaying = yes
+			}
+		}
+		add_loyalists = {
+			pop_type = aristocrats
+			value = medium_radicals
+		}
 	}
 	
 	option = {
 		name = grefm_greece.041.b
+		scope:grefm_ruler_scope = {
+			add_modifier = {
+				name = modifier_grefm_king_of_valor
+				days = very_long_modifier_time
+				is_decaying = yes
+			}
+		}
+		add_modifier = {
+			name = modifier_grefm_forgave_assassins
+			days = normal_modifier_time
+			is_decaying = yes
+		}
+		add_radicals = {
+			pop_type = aristocrats
+			value = medium_radicals
+		}
+		capital = {
+			add_loyalists_in_state = {
+				value = small_radicals
+				strata = middle
+			}
+			add_loyalists_in_state = {
+				value = small_radicals
+				strata = lower
+			}
+		}
 	}
 }
 
