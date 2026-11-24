@@ -212,14 +212,12 @@ New Additions:
 
 ---Bug Check---
 - Busted localization with Armansperg referring to himself during regency events
+- Reviewed Serbian Dynastic Rivalry math
 
 
 ####---------- Published Updates ----------####
 
 --Update 4.2.6--
-Balancing:
-- Reviewed Serbian Dynastic Rivalry math
-
 Fixes:
 - modifier_lonely_mountain is now applied over days instead of months
 - Fixed option effects in balkfm_yugoslavia.106 being in the wrong order
