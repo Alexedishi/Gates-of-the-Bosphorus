@@ -2,14 +2,14 @@
 # GATES OF THE BOSPHORUS CHANGELOG #
 ####################################
 
-# Mod Version: 4.2.5
-# Game Version: 1.15.1
+# Mod Version: 4.2.6
+# Game Version: 1.15.2
 # Author: Alexedishi
 
 ####################################
 
 ####---------- Version Compatibility ----------####
-#		4.2.5		....	1.15.1
+#		4.2.6		....	1.15.2
 #		4.1.1		....	1.13.11 / 1.14.0
 #		3.3.7		.... 	1.10.6 / 1.11.1
 #		3.2.8		.... 	1.9.8
@@ -20,6 +20,18 @@
 #		1.0.0		....	1.5.6
 
 ####################################
+
+--Update 4.2.6--
+Balancing:
+- Reviewed Serbian Dynastic Rivalry math
+
+Fixes:
+- modifier_lonely_mountain is now applied over days instead of months
+- Fixed option effects in balkfm_yugoslavia.106 being in the wrong order
+- Replaced triggers for checking relations with all GPs in a given region
+- Refactored the localization used for je_balkfm_ser_monarchism factors to fix a CTD
+- Fixed missing effects and localization for several events
+
 
 --Update 4.2.5--
 Fixes:
