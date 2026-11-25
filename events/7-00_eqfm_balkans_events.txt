@@ -5067,7 +5067,7 @@ eqfm_balkans.309 = {
 # Minister Taken Hostage in [State]
 eqfm_balkans.310 = {
 	type = country_event
-	placement = root
+	placement = scope:eqfm_balkan_state_scope
 	icon = "gfx/interface/icons/event_icons/event_fire.dds"
 	duration = 3
 	dlc = dlc_grefm
@@ -5085,6 +5085,10 @@ eqfm_balkans.310 = {
 	
 	trigger = {
 		eqfm_hostility_events_trigger = yes
+		any_scope_state = {
+			is_in_geographic_region = geographic_region_balkans
+			has_building = building_government_administration
+		}
 	}
 	
 	cancellation_trigger = {
@@ -5095,19 +5099,70 @@ eqfm_balkans.310 = {
 	
 	immediate = {
 		eqfm_balkan_powder_keg_event_cooldown_effect = yes
+		random_scope_state = {
+			limit = {
+				is_in_geographic_region = geographic_region_balkans
+				has_building = building_government_administration
+			}
+			save_scope_as = eqfm_balkan_state_scope
+		}
 	}
 	
 	option = {
 		name = eqfm_balkans.310.a
 		default_option = yes
+		add_modifier = {
+			name = modifier_eqfm_paid_ransom
+			days = normal_modifier_time
+			multiplier = money_amount_multiplier_very_small
+			is_decaying = yes
+		}
+		add_modifier = {
+			name = modifier_eqfm_governor_rescued
+			days = normal_modifier_time
+		}
+		eqfm_add_small_balkan_powder_keg_deescalation_effect = yes
 	}
 	
 	option = {
 		name = eqfm_balkans.310.b
+		add_modifier = {
+			name = modifier_eqfm_refused_governor_ransom
+			days = normal_modifier_time
+		}
+		scope:eqfm_balkan_state_scope = {
+			add_modifier = {
+				name = modifier_eqfm_governor_assassinated
+				days = normal_modifier_time
+			}
+		}
+		eqfm_add_medium_balkan_powder_keg_escalation_effect = yes
 	}
 	
 	option = {
 		name = eqfm_balkans.310.c
+		trigger = {
+			has_institution = institution_police
+		}
+		highlighted_option = yes
+		show_as_unavailable = {
+			always = yes
+		}
+		add_modifier = {
+			name = modifier_eqfm_governor_rescued
+			days = normal_modifier_time
+		}
+		scope:eqfm_balkan_state_scope = {
+			state_region = {
+				add_devastation = {
+					value = 5
+				}
+				eqfm_balkan_powder_keg_rumelian_radicals_effect = {
+					value = medium_radicals
+				}
+			}
+		}
+		eqfm_add_small_balkan_powder_keg_escalation_effect = yes
 	}
 }
 
