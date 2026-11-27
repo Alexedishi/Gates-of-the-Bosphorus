@@ -895,21 +895,27 @@ grefm_validate_heir_dynasty = {
 ####---------- on_law_enactment_started ----------####
 on_law_enactment_started = {
 	on_actions = {
-#		gbbf_on_law_enactment_started # TODO literally disabling this for 24 hours because I'm crunched
+		grefm_on_taxation_law_enactment_started
 	}
 }
 
-gbbf_on_law_enactment_started = {
+grefm_on_taxation_law_enactment_started = {
 	trigger = {
 		c:GRE ?= this
+		has_journal_entry = je_grefm_bavarocracy_main
+		NOT = {
+			has_variable = grefm_mani_will_not_be_tamed
+		}
 	}
 	effect = {
 		if = {
 			limit = {
-				NOT = {
-					has_variable = grefm_mani_will_not_be_tamed
+				owns_entire_state_region_uncontested = STATE_PELOPONNESE
+				s:STATE_PELOPONNESE = {
+					region_state:GRE = {
+						literacy_rate < 0.33
+					}
 				}
-				has_journal_entry = je_grefm_bavarocracy_main
 				OR = {
 					has_law_or_variant = law_type:law_consumption_based_taxation
 					has_law_or_variant = law_type:law_land_based_taxation
